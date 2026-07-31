@@ -1,0 +1,197 @@
+# Unresolved facts and limitations
+
+Unknown means the selected tools did not prove the property; it is not a negative fact.
+
+- `AddBits`: Eva result unavailable; From result unavailable
+- `Assert_func`: Eva result unavailable; From result unavailable
+- `BlockPredSearch`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `CErr`: Eva result unavailable; From result unavailable
+- `CalcFullnessOffset`: Eva result unavailable; From result unavailable
+- `DSC_Algorithm`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `DSC_Decode`: Eva result unavailable; From result unavailable
+- `DSC_Encode`: Eva result unavailable; From result unavailable
+- `Err`: Eva result unavailable; From result unavailable
+- `ErrorHandler`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `EscapeCodeSize`: Eva result unavailable; From result unavailable
+- `EstimateBitsForGroup`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `FindMidpoint`: Eva result unavailable; From result unavailable
+- `FlatnessAdjustment`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `GetBits`: Eva result unavailable; From result unavailable
+- `HistoryLookup`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `IchDecision`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `InitializeDSCState`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `IsFlatnessInfoSent`: Eva result unavailable; From result unavailable
+- `IsOrigFlatHIndex`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `IsOrigWithinQerr`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `PErr`: Eva result unavailable; From result unavailable
+- `PickBestHistoryValue`: Eva result unavailable; From result unavailable; loop has a potential read/write dependency across iterations
+- `PopulateOrigLine`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `PredictSize`: Eva result unavailable; From result unavailable
+- `PredictionLoop`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `ProcessGroupDec`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `ProcessGroupEnc`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `RateControl`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `RemoveBitsEncoderBuffer`: Eva result unavailable; From result unavailable
+- `SamplePredict`: Eva result unavailable; From result unavailable
+- `UErr`: Eva result unavailable; From result unavailable
+- `UpdateHistoryElement`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `UpdateICHistory`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `UpdateMidpoint`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `UseICHistory`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `UsingMidpoint`: Eva result unavailable; From result unavailable; loop has a potential read/write dependency across iterations
+- `VLCGroup`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `VLCUnit`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `VLDGroup`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed
+- `VLDUnit`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `WriteEntryToBitstream`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `appendarg`: Eva result unavailable; From result unavailable
+- `assign_line`: Eva result unavailable; From result unavailable
+- `assign_val`: Eva result unavailable; From result unavailable
+- `ceil_log2`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed
+- `change_ext`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed
+- `check_qp_for_overflow`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `chop_dir`: Eva result unavailable; From result unavailable
+- `chop_ext`: Eva result unavailable; From result unavailable
+- `compute_and_display_PSNR`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `compute_offset`: Eva result unavailable; From result unavailable
+- `compute_rc_parameters`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed
+- `conv`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `convert_rgb_2020_to_709`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `convertbits`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `create_dpx_pic`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `determine_field_format`: Eva result unavailable; From result unavailable
+- `distinguish_dist`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `dpx_read`: Eva result unavailable; From result unavailable
+- `dpx_read_hl`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `dpx_write`: Eva result unavailable; From result unavailable
+- `easy_mkdir`: Eva result unavailable; From result unavailable
+- `ends_in_percentd`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed
+- `error_check`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `fifo_clear`: Eva result unavailable; From result unavailable
+- `fifo_clone`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `fifo_flip_get_bits`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `fifo_flip_put_bits`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `fifo_free`: Eva result unavailable; From result unavailable
+- `fifo_get_bits`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `fifo_init`: Eva result unavailable; From result unavailable
+- `fifo_put_bits`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `file_dir`: Eva result unavailable; From result unavailable
+- `file_ext`: Eva result unavailable; From result unavailable
+- `generate_rc_parameters`: Eva result unavailable; From result unavailable; loop has a potential read/write dependency across iterations
+- `generate_timecode`: Eva result unavailable; From result unavailable
+- `getbits`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `gettoken`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `has_ext`: Eva result unavailable; From result unavailable
+- `hdr_dpx_byte_swap`: Eva result unavailable; From result unavailable; loop has a potential read/write dependency across iterations
+- `hdr_dpx_check_string`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed
+- `hdr_dpx_compute_offsets`: Eva result unavailable; From result unavailable
+- `hdr_dpx_create_pic`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `hdr_dpx_determine_file_type`: Eva result unavailable; From result unavailable
+- `hdr_dpx_fill_core_fields`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `hdr_dpx_get_datum`: Eva result unavailable; From result unavailable
+- `hdr_dpx_get_pic_data`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `hdr_dpx_map_datum_to_pic`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `hdr_dpx_pic_to_datum_list`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `hdr_dpx_read`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed
+- `hdr_dpx_rle_encode`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `hdr_dpx_write`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `line_to_int`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `lower_case`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `main`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `make_qp_table`: Eva result unavailable; From result unavailable
+- `make_qp_tables`: Eva result unavailable; From result unavailable
+- `merge_cmd_args`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `order_cmds`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `order_keys`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `palloc`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `parse_cfgfile`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed
+- `parse_cmd`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `parse_cmd_strict`: Eva result unavailable; From result unavailable
+- `parse_cmd_usage`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `parse_key_usage`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `parse_kvline`: Eva result unavailable; From result unavailable
+- `parse_line`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed
+- `parse_line_strict`: Eva result unavailable; From result unavailable
+- `parse_pps`: Eva result unavailable; From result unavailable
+- `pcopy`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `pcopy_header`: Eva result unavailable; From result unavailable
+- `pcreate`: Eva result unavailable; From result unavailable
+- `pcreate_ext`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed
+- `pdestroy`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `populate_pps`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `ppm_read`: Eva result unavailable; From result unavailable
+- `ppm_write`: Eva result unavailable; From result unavailable
+- `print_pps`: Eva result unavailable; From result unavailable
+- `print_pps_v2`: Eva result unavailable; From result unavailable
+- `process_args`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `putbits`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `read_dpx`: Eva result unavailable; From result unavailable
+- `read_dpx_image_data`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `read_dsc_data`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `readppm`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `retrieve_cmds_var`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed
+- `retrieve_keys_var`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed
+- `rgb2ycocg`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `rgb2yuv`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `rgba_read`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `set_convertbits_rounding`: Eva result unavailable; From result unavailable
+- `set_defaults`: Eva result unavailable; From result unavailable; loop has a potential read/write dependency across iterations
+- `set_dpx_colorspace`: Eva result unavailable; From result unavailable
+- `simple422to444`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `simple444to422`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `split_base_and_ext`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `splitstring`: Eva result unavailable; From result unavailable
+- `splitstring_exact`: Eva result unavailable; From result unavailable
+- `splitstring_exact_strict`: Eva result unavailable; From result unavailable
+- `str2d`: Eva result unavailable; From result unavailable
+- `str2dim`: Eva result unavailable; From result unavailable
+- `str2dvect`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `str2f`: Eva result unavailable; From result unavailable
+- `str2fdim`: Eva result unavailable; From result unavailable
+- `str2frange`: Eva result unavailable; From result unavailable
+- `str2fvect`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `str2i`: Eva result unavailable; From result unavailable
+- `str2ivect`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `str2l`: Eva result unavailable; From result unavailable
+- `str2ll`: Eva result unavailable; From result unavailable
+- `str2llvect`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `str2lvect`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `str2p`: Eva result unavailable; From result unavailable
+- `str2pdim`: Eva result unavailable; From result unavailable
+- `str2prange`: Eva result unavailable; From result unavailable
+- `str2pvect`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `str2range`: Eva result unavailable; From result unavailable
+- `str2ui`: Eva result unavailable; From result unavailable
+- `str2uivect`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `str2ul`: Eva result unavailable; From result unavailable
+- `str2ull`: Eva result unavailable; From result unavailable
+- `str2ullvect`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `str2ulvect`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `strisdim`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `strisnum`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed
+- `strisrange`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `test_cmd`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `usage`: Eva result unavailable; From result unavailable
+- `uyvy_read`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `uyvy_write`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `write_dpx`: Eva result unavailable; From result unavailable
+- `write_dpx_ver`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `write_dsc_data`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `write_pps`: Eva result unavailable; From result unavailable
+- `writeppm`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `ycocg2rgb`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `yuv2rgb`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `yuv_420_422`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `yuv_422_420`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `yuv_422_444`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `yuv_422_444_region`: Eva result unavailable; From result unavailable
+- `yuv_444_422`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `yuv_444_422_region`: Eva result unavailable; From result unavailable
+- `yuv_read`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `yuv_write`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+
+- Eva checks report `NO_ALARM_OBSERVED_NOT_PROOF` when no matching alarm was emitted.
+- Direct entry-point ranges for pointer/struct parameters may remain UNKNOWN without an ACSL contract.
+- `cpnt % 3` is retained; no modulo simplification is proposed without a caller-specific range proof.
+- From text is retained as raw log names and only normalized when a dependency line is emitted.
+- This experiment does not analyze sequential hardware or call an LLM.

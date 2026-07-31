@@ -1,0 +1,3147 @@
+{
+  "functions": [
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@AddBits",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "AddBits",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@Assert_func",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "Assert_func",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@BlockPredSearch",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "BlockPredSearch",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@CErr",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "CErr",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@CalcFullnessOffset",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "CalcFullnessOffset",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [
+        {
+          "kind": "field",
+          "location": {
+            "column": 20,
+            "file": "dsc_codec.c",
+            "line": 3106
+          },
+          "name": "dsc_state_t.postMuxNumBits"
+        }
+      ],
+      "clang_usr": "c:@F@DSC_Algorithm",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "DSC_Algorithm",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@DSC_Decode",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "DSC_Decode",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [
+        {
+          "kind": "callee",
+          "location": {
+            "column": 9,
+            "file": "dsc_codec.c",
+            "line": 3120
+          },
+          "name": "DSC_Algorithm"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 68,
+            "file": "dsc_codec.c",
+            "line": 3120
+          },
+          "name": "chunk_sizes"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 48,
+            "file": "dsc_codec.c",
+            "line": 3120
+          },
+          "name": "cmpr_buf"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 26,
+            "file": "dsc_codec.c",
+            "line": 3120
+          },
+          "name": "dsc_cfg"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 35,
+            "file": "dsc_codec.c",
+            "line": 3120
+          },
+          "name": "p_in"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 41,
+            "file": "dsc_codec.c",
+            "line": 3120
+          },
+          "name": "p_out"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 58,
+            "file": "dsc_codec.c",
+            "line": 3120
+          },
+          "name": "temp_pic"
+        }
+      ],
+      "clang_usr": "c:@F@DSC_Encode",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "DSC_Encode",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@Err",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "Err",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@ErrorHandler",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "ErrorHandler",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@EscapeCodeSize",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "EscapeCodeSize",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@EstimateBitsForGroup",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "EstimateBitsForGroup",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [
+        {
+          "kind": "field",
+          "location": {
+            "column": 32,
+            "file": "dsc_codec.c",
+            "line": 913
+          },
+          "name": "dsc_state_t.leftRecon"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 42,
+            "file": "dsc_codec.c",
+            "line": 913
+          },
+          "name": "cpnt"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 21,
+            "file": "dsc_codec.c",
+            "line": 913
+          },
+          "name": "dsc_state"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 52,
+            "file": "dsc_codec.c",
+            "line": 913
+          },
+          "name": "qlevel"
+        }
+      ],
+      "clang_usr": "c:@F@FindMidpoint",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "FindMidpoint",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@FindResidualSize",
+      "from_modified_memory_dependencies": [
+        "SELF",
+        "S___fc_stdout[0]",
+        "eq"
+      ],
+      "from_return_dependencies": [
+        "eq"
+      ],
+      "function": "FindResidualSize",
+      "status": "COMPLETED",
+      "unknown": []
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@FlatnessAdjustment",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "FlatnessAdjustment",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [
+        {
+          "kind": "callee",
+          "location": {
+            "column": 10,
+            "file": "multiplex.c",
+            "line": 108
+          },
+          "name": "fifo_get_bits"
+        },
+        {
+          "kind": "field",
+          "location": {
+            "column": 37,
+            "file": "multiplex.c",
+            "line": 108
+          },
+          "name": "dsc_state_t.shifter"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 26,
+            "file": "multiplex.c",
+            "line": 108
+          },
+          "name": "dsc_state"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 53,
+            "file": "multiplex.c",
+            "line": 108
+          },
+          "name": "nbits"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 60,
+            "file": "multiplex.c",
+            "line": 108
+          },
+          "name": "sign_extend"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 45,
+            "file": "multiplex.c",
+            "line": 108
+          },
+          "name": "unit"
+        }
+      ],
+      "clang_usr": "c:@F@GetBits",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "GetBits",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@GetQpAdjPredSize",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [
+        "S_dsc_cfg",
+        "S_dsc_state",
+        "S_quantTableChroma_0_S_dsc_state[0..1]",
+        "S_quantTableLuma_0_S_dsc_state[0..1]",
+        "cpntBitDepth[0..3]",
+        "dsc_cfg",
+        "dsc_state",
+        "dsc_version_minor",
+        "native_420",
+        "predictedSize[0..3]",
+        "prevPrimaryQp",
+        "primaryQp",
+        "quantTableChroma",
+        "quantTableLuma",
+        "unit",
+        "unitCType[0..3]"
+      ],
+      "function": "GetQpAdjPredSize",
+      "status": "COMPLETED",
+      "unknown": []
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@HistoryLookup",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "HistoryLookup",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@IchDecision",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "IchDecision",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 9,
+            "file": "dsc_codec.c",
+            "line": 2177
+          },
+          "name": "dsc_state"
+        }
+      ],
+      "clang_usr": "c:@F@InitializeDSCState",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "InitializeDSCState",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [
+        {
+          "kind": "field",
+          "location": {
+            "column": 58,
+            "file": "dsc_codec.c",
+            "line": 1118
+          },
+          "name": "dsc_cfg_t.flatness_max_qp"
+        },
+        {
+          "kind": "field",
+          "location": {
+            "column": 24,
+            "file": "dsc_codec.c",
+            "line": 1118
+          },
+          "name": "dsc_cfg_t.flatness_min_qp"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 15,
+            "file": "dsc_codec.c",
+            "line": 1118
+          },
+          "name": "dsc_cfg"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 11,
+            "file": "dsc_codec.c",
+            "line": 1118
+          },
+          "name": "qp"
+        }
+      ],
+      "clang_usr": "c:@F@IsFlatnessInfoSent",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "IsFlatnessInfoSent",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@IsOrigFlatHIndex",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "IsOrigFlatHIndex",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@IsOrigWithinQerr",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "IsOrigWithinQerr",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@MapQpToQlevel",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [
+        "S_dsc_cfg",
+        "S_dsc_state",
+        "S_quantTableChroma_0_S_dsc_state[0..1]",
+        "S_quantTableLuma_0_S_dsc_state[0..1]",
+        "cpnt",
+        "cpntBitDepth[0..1]",
+        "dsc_cfg",
+        "dsc_state",
+        "dsc_version_minor",
+        "native_420",
+        "qp",
+        "quantTableChroma",
+        "quantTableLuma"
+      ],
+      "function": "MapQpToQlevel",
+      "status": "COMPLETED",
+      "unknown": []
+    },
+    {
+      "ast_return_dependencies": [
+        {
+          "kind": "field",
+          "location": {
+            "column": 21,
+            "file": "dsc_codec.c",
+            "line": 269
+          },
+          "name": "dsc_state_t.cpntBitDepth"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 34,
+            "file": "dsc_codec.c",
+            "line": 269
+          },
+          "name": "cpnt"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 10,
+            "file": "dsc_codec.c",
+            "line": 269
+          },
+          "name": "dsc_state"
+        }
+      ],
+      "clang_usr": "c:@F@MaxResidualSize",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [
+        "S_dsc_cfg",
+        "S_dsc_state",
+        "S_quantTableChroma_0_S_dsc_state[0..1]",
+        "S_quantTableLuma_0_S_dsc_state[0..1]",
+        "cpnt",
+        "cpntBitDepth[0..3]",
+        "dsc_cfg",
+        "dsc_state",
+        "dsc_version_minor",
+        "native_420",
+        "qp",
+        "quantTableChroma",
+        "quantTableLuma"
+      ],
+      "function": "MaxResidualSize",
+      "status": "COMPLETED",
+      "unknown": []
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@PErr",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "PErr",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@PickBestHistoryValue",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "PickBestHistoryValue",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@PopulateOrigLine",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "PopulateOrigLine",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@PredictSize",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "PredictSize",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@PredictionLoop",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "PredictionLoop",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@ProcessGroupDec",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "ProcessGroupDec",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@ProcessGroupEnc",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "ProcessGroupEnc",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@Qp2Qlevel",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [
+        "S_dsc_cfg",
+        "bits_per_component",
+        "convert_rgb",
+        "cpnt",
+        "dsc_cfg",
+        "dsc_version_minor",
+        "native_420",
+        "qlevel_chroma_10bpc[0..19]",
+        "qlevel_chroma_12bpc[0..23]",
+        "qlevel_chroma_14bpc[0..27]",
+        "qlevel_chroma_16bpc[0..31]",
+        "qlevel_chroma_8bpc[0..15]",
+        "qlevel_luma_10bpc[0..19]",
+        "qlevel_luma_12bpc[0..23]",
+        "qlevel_luma_14bpc[0..27]",
+        "qlevel_luma_16bpc[0..31]",
+        "qlevel_luma_8bpc[0..15]",
+        "qp"
+      ],
+      "function": "Qp2Qlevel",
+      "status": "COMPLETED",
+      "unknown": []
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@QuantizeResidual",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [
+        "QuantOffset[0..16]",
+        "e",
+        "qlevel"
+      ],
+      "function": "QuantizeResidual",
+      "status": "COMPLETED",
+      "unknown": []
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@RateControl",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "RateControl",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@RemoveBitsEncoderBuffer",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "RemoveBitsEncoderBuffer",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@SampToLineBuf",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [
+        "S_dsc_cfg[0]",
+        "S_dsc_state[0]",
+        "cpnt",
+        "cpntBitDepth[0..3]",
+        "dsc_cfg",
+        "dsc_state",
+        "linebuf_depth",
+        "x"
+      ],
+      "function": "SampToLineBuf",
+      "status": "COMPLETED",
+      "unknown": []
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@SamplePredict",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "SamplePredict",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@UErr",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "UErr",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@UpdateHistoryElement",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "UpdateHistoryElement",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@UpdateICHistory",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "UpdateICHistory",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@UpdateMidpoint",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "UpdateMidpoint",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@UseICHistory",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "UseICHistory",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@UsingMidpoint",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "UsingMidpoint",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@VLCGroup",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "VLCGroup",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@VLCUnit",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "VLCUnit",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@VLDGroup",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "VLDGroup",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@VLDUnit",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "VLDUnit",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@WriteEntryToBitstream",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "WriteEntryToBitstream",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@appendarg",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "appendarg",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:codec_main.c@F@assign_line",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "assign_line",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:cmd_parse.c@F@assign_val",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "assign_val",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@ceil_log2",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "ceil_log2",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@change_ext",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "change_ext",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@check_qp_for_overflow",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "check_qp_for_overflow",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [
+        {
+          "kind": "callee",
+          "location": {
+            "column": 12,
+            "file": "cmd_parse.c",
+            "line": 149
+          },
+          "name": "__builtin___strcpy_chk"
+        },
+        {
+          "kind": "callee",
+          "location": {
+            "column": 10,
+            "file": "cmd_parse.c",
+            "line": 155
+          },
+          "name": "__builtin___strcpy_chk"
+        },
+        {
+          "kind": "callee",
+          "location": {
+            "column": 12,
+            "file": "cmd_parse.c",
+            "line": 149
+          },
+          "name": "__builtin_object_size"
+        },
+        {
+          "kind": "callee",
+          "location": {
+            "column": 10,
+            "file": "cmd_parse.c",
+            "line": 155
+          },
+          "name": "__builtin_object_size"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 12,
+            "file": "cmd_parse.c",
+            "line": 149
+          },
+          "name": "path"
+        }
+      ],
+      "clang_usr": "c:@F@chop_dir",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "chop_dir",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [
+        {
+          "kind": "callee",
+          "location": {
+            "column": 12,
+            "file": "cmd_parse.c",
+            "line": 114
+          },
+          "name": "__builtin___strcpy_chk"
+        },
+        {
+          "kind": "callee",
+          "location": {
+            "column": 12,
+            "file": "cmd_parse.c",
+            "line": 114
+          },
+          "name": "__builtin_object_size"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 12,
+            "file": "cmd_parse.c",
+            "line": 114
+          },
+          "name": "path"
+        }
+      ],
+      "clang_usr": "c:@F@chop_ext",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "chop_ext",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@compute_and_display_PSNR",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "compute_and_display_PSNR",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@compute_offset",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "compute_offset",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@compute_rc_parameters",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "compute_rc_parameters",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@conv",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "conv",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@convert_rgb_2020_to_709",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "convert_rgb_2020_to_709",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@convertbits",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "convertbits",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:dpx.c@F@create_dpx_pic",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "create_dpx_pic",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@determine_field_format",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "determine_field_format",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:cmd_parse.c@F@distinguish_dist",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "distinguish_dist",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [
+        {
+          "kind": "callee",
+          "location": {
+            "column": 9,
+            "file": "dpx.c",
+            "line": 747
+          },
+          "name": "dpx_read_hl"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 62,
+            "file": "dpx.c",
+            "line": 747
+          },
+          "name": "datum_order"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 21,
+            "file": "dpx.c",
+            "line": 747
+          },
+          "name": "fname"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 54,
+            "file": "dpx.c",
+            "line": 747
+          },
+          "name": "noswap"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 28,
+            "file": "dpx.c",
+            "line": 747
+          },
+          "name": "p"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 44,
+            "file": "dpx.c",
+            "line": 747
+          },
+          "name": "pad_ends"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 75,
+            "file": "dpx.c",
+            "line": 747
+          },
+          "name": "swap_r_and_b"
+        }
+      ],
+      "clang_usr": "c:@F@dpx_read",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "dpx_read",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@dpx_read_hl",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "dpx_read_hl",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [
+        {
+          "kind": "callee",
+          "location": {
+            "column": 9,
+            "file": "dpx.c",
+            "line": 227
+          },
+          "name": "write_dpx_ver"
+        },
+        {
+          "kind": "field",
+          "location": {
+            "column": 36,
+            "file": "dpx.c",
+            "line": 227
+          },
+          "name": "pic_s.ar1"
+        },
+        {
+          "kind": "field",
+          "location": {
+            "column": 44,
+            "file": "dpx.c",
+            "line": 227
+          },
+          "name": "pic_s.ar2"
+        },
+        {
+          "kind": "field",
+          "location": {
+            "column": 104,
+            "file": "dpx.c",
+            "line": 227
+          },
+          "name": "pic_s.bits"
+        },
+        {
+          "kind": "field",
+          "location": {
+            "column": 75,
+            "file": "dpx.c",
+            "line": 227
+          },
+          "name": "pic_s.framerate"
+        },
+        {
+          "kind": "field",
+          "location": {
+            "column": 52,
+            "file": "dpx.c",
+            "line": 227
+          },
+          "name": "pic_s.frm_no"
+        },
+        {
+          "kind": "field",
+          "location": {
+            "column": 89,
+            "file": "dpx.c",
+            "line": 227
+          },
+          "name": "pic_s.interlaced"
+        },
+        {
+          "kind": "field",
+          "location": {
+            "column": 63,
+            "file": "dpx.c",
+            "line": 227
+          },
+          "name": "pic_s.seq_len"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 133,
+            "file": "dpx.c",
+            "line": 227
+          },
+          "name": "datum_order"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 23,
+            "file": "dpx.c",
+            "line": 227
+          },
+          "name": "fname"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 146,
+            "file": "dpx.c",
+            "line": 227
+          },
+          "name": "force_packing"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 30,
+            "file": "dpx.c",
+            "line": 227
+          },
+          "name": "p"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 123,
+            "file": "dpx.c",
+            "line": 227
+          },
+          "name": "pad_ends"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 161,
+            "file": "dpx.c",
+            "line": 227
+          },
+          "name": "swaprb"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 169,
+            "file": "dpx.c",
+            "line": 227
+          },
+          "name": "wbswap"
+        }
+      ],
+      "clang_usr": "c:@F@dpx_write",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "dpx_write",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@easy_mkdir",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "easy_mkdir",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@ends_in_percentd",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "ends_in_percentd",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:cmd_parse.c@F@error_check",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "error_check",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@fifo_clear",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "fifo_clear",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@fifo_clone",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "fifo_clone",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@fifo_flip_get_bits",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "fifo_flip_get_bits",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@fifo_flip_put_bits",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "fifo_flip_put_bits",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@fifo_free",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "fifo_free",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@fifo_get_bits",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "fifo_get_bits",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@fifo_init",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "fifo_init",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@fifo_put_bits",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "fifo_put_bits",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [
+        {
+          "kind": "callee",
+          "location": {
+            "column": 12,
+            "file": "cmd_parse.c",
+            "line": 198
+          },
+          "name": "__builtin___strcpy_chk"
+        },
+        {
+          "kind": "callee",
+          "location": {
+            "column": 12,
+            "file": "cmd_parse.c",
+            "line": 205
+          },
+          "name": "__builtin___strcpy_chk"
+        },
+        {
+          "kind": "callee",
+          "location": {
+            "column": 12,
+            "file": "cmd_parse.c",
+            "line": 211
+          },
+          "name": "__builtin___strcpy_chk"
+        },
+        {
+          "kind": "callee",
+          "location": {
+            "column": 12,
+            "file": "cmd_parse.c",
+            "line": 198
+          },
+          "name": "__builtin_object_size"
+        },
+        {
+          "kind": "callee",
+          "location": {
+            "column": 12,
+            "file": "cmd_parse.c",
+            "line": 205
+          },
+          "name": "__builtin_object_size"
+        },
+        {
+          "kind": "callee",
+          "location": {
+            "column": 12,
+            "file": "cmd_parse.c",
+            "line": 211
+          },
+          "name": "__builtin_object_size"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 12,
+            "file": "cmd_parse.c",
+            "line": 198
+          },
+          "name": "path"
+        }
+      ],
+      "clang_usr": "c:@F@file_dir",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "file_dir",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [
+        {
+          "kind": "callee",
+          "location": {
+            "column": 10,
+            "file": "cmd_parse.c",
+            "line": 178
+          },
+          "name": "__builtin___strcpy_chk"
+        },
+        {
+          "kind": "callee",
+          "location": {
+            "column": 10,
+            "file": "cmd_parse.c",
+            "line": 178
+          },
+          "name": "__builtin_object_size"
+        }
+      ],
+      "clang_usr": "c:@F@file_ext",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "file_ext",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@generate_rc_parameters",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "generate_rc_parameters",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:dpx.c@F@generate_timecode",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "generate_timecode",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@getbits",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "getbits",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@gettoken",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "gettoken",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@has_ext",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "has_ext",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@hdr_dpx_byte_swap",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "hdr_dpx_byte_swap",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:hdr_dpx.c@F@hdr_dpx_check_string",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "hdr_dpx_check_string",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@hdr_dpx_compute_offsets",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "hdr_dpx_compute_offsets",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@hdr_dpx_create_pic",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "hdr_dpx_create_pic",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@hdr_dpx_determine_file_type",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "hdr_dpx_determine_file_type",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@hdr_dpx_fill_core_fields",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "hdr_dpx_fill_core_fields",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@hdr_dpx_get_datum",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "hdr_dpx_get_datum",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@hdr_dpx_get_pic_data",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "hdr_dpx_get_pic_data",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@hdr_dpx_map_datum_to_pic",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "hdr_dpx_map_datum_to_pic",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@hdr_dpx_pic_to_datum_list",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "hdr_dpx_pic_to_datum_list",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@hdr_dpx_read",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "hdr_dpx_read",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@hdr_dpx_rle_encode",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "hdr_dpx_rle_encode",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@hdr_dpx_write",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "hdr_dpx_write",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@line_to_int",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "line_to_int",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 10,
+            "file": "cmd_parse.c",
+            "line": 373
+          },
+          "name": "str"
+        }
+      ],
+      "clang_usr": "c:@F@lower_case",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "lower_case",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@main",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "main",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@make_qp_table",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "make_qp_table",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@make_qp_tables",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "make_qp_tables",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@merge_cmd_args",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "merge_cmd_args",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:cmd_parse.c@F@order_cmds",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "order_cmds",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:cmd_parse.c@F@order_keys",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "order_keys",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@palloc",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "palloc",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:codec_main.c@F@parse_cfgfile",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "parse_cfgfile",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@parse_cmd",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "parse_cmd",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@parse_cmd_strict",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "parse_cmd_strict",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@parse_cmd_usage",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "parse_cmd_usage",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@parse_key_usage",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "parse_key_usage",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:cmd_parse.c@F@parse_kvline",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "parse_kvline",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@parse_line",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "parse_line",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@parse_line_strict",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "parse_line_strict",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@parse_pps",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "parse_pps",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@pcopy",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "pcopy",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@pcopy_header",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "pcopy_header",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@pcreate",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "pcreate",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@pcreate_ext",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "pcreate_ext",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@pdestroy",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "pdestroy",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@populate_pps",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "populate_pps",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@ppm_read",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "ppm_read",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@ppm_write",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "ppm_write",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@print_pps",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "print_pps",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@print_pps_v2",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "print_pps_v2",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:codec_main.c@F@process_args",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "process_args",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@putbits",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "putbits",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@read_dpx",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "read_dpx",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:dpx.c@F@read_dpx_image_data",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "read_dpx_image_data",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@read_dsc_data",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "read_dsc_data",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@readppm",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "readppm",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [
+        {
+          "kind": "field",
+          "location": {
+            "column": 26,
+            "file": "cmd_parse.c",
+            "line": 1527
+          },
+          "name": "cmdarg_s.var_ptr"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 15,
+            "file": "cmd_parse.c",
+            "line": 1527
+          },
+          "name": "cmdargs"
+        }
+      ],
+      "clang_usr": "c:@F@retrieve_cmds_var",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "retrieve_cmds_var",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [
+        {
+          "kind": "field",
+          "location": {
+            "column": 26,
+            "file": "cmd_parse.c",
+            "line": 1514
+          },
+          "name": "cmdarg_s.var_ptr"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 15,
+            "file": "cmd_parse.c",
+            "line": 1514
+          },
+          "name": "cmdargs"
+        }
+      ],
+      "clang_usr": "c:@F@retrieve_keys_var",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "retrieve_keys_var",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@rgb2ycocg",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "rgb2ycocg",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@rgb2yuv",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "rgb2yuv",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@rgba_read",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "rgba_read",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@set_convertbits_rounding",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "set_convertbits_rounding",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@set_defaults",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "set_defaults",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@set_dpx_colorspace",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "set_dpx_colorspace",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@simple422to444",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "simple422to444",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@simple444to422",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "simple444to422",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@split_base_and_ext",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "split_base_and_ext",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@splitstring",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "splitstring",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@splitstring_exact",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "splitstring_exact",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@splitstring_exact_strict",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "splitstring_exact_strict",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@str2d",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "str2d",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@str2dim",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "str2dim",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@str2dvect",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "str2dvect",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@str2f",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "str2f",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@str2fdim",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "str2fdim",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@str2frange",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "str2frange",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@str2fvect",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "str2fvect",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@str2i",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "str2i",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@str2ivect",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "str2ivect",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@str2l",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "str2l",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@str2ll",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "str2ll",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@str2llvect",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "str2llvect",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@str2lvect",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "str2lvect",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@str2p",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "str2p",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@str2pdim",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "str2pdim",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@str2prange",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "str2prange",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@str2pvect",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "str2pvect",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@str2range",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "str2range",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@str2ui",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "str2ui",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@str2uivect",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "str2uivect",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@str2ul",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "str2ul",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@str2ull",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "str2ull",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@str2ullvect",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "str2ullvect",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@str2ulvect",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "str2ulvect",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@strisdim",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "strisdim",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@strisnum",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "strisnum",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@strisrange",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "strisrange",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:cmd_parse.c@F@test_cmd",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "test_cmd",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@usage",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "usage",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@uyvy_read",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "uyvy_read",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@uyvy_write",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "uyvy_write",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [
+        {
+          "kind": "callee",
+          "location": {
+            "column": 9,
+            "file": "dpx.c",
+            "line": 232
+          },
+          "name": "write_dpx_ver"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 33,
+            "file": "dpx.c",
+            "line": 232
+          },
+          "name": "ar1"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 38,
+            "file": "dpx.c",
+            "line": 232
+          },
+          "name": "ar2"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 83,
+            "file": "dpx.c",
+            "line": 232
+          },
+          "name": "bpp"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 111,
+            "file": "dpx.c",
+            "line": 232
+          },
+          "name": "datum_order"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 23,
+            "file": "dpx.c",
+            "line": 232
+          },
+          "name": "fname"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 124,
+            "file": "dpx.c",
+            "line": 232
+          },
+          "name": "force_packing"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 43,
+            "file": "dpx.c",
+            "line": 232
+          },
+          "name": "frameno"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 60,
+            "file": "dpx.c",
+            "line": 232
+          },
+          "name": "framerate"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 71,
+            "file": "dpx.c",
+            "line": 232
+          },
+          "name": "interlaced"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 30,
+            "file": "dpx.c",
+            "line": 232
+          },
+          "name": "p"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 101,
+            "file": "dpx.c",
+            "line": 232
+          },
+          "name": "pad_ends"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 52,
+            "file": "dpx.c",
+            "line": 232
+          },
+          "name": "seqlen"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 139,
+            "file": "dpx.c",
+            "line": 232
+          },
+          "name": "swaprb"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 147,
+            "file": "dpx.c",
+            "line": 232
+          },
+          "name": "wbswap"
+        }
+      ],
+      "clang_usr": "c:@F@write_dpx",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "write_dpx",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@write_dpx_ver",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "write_dpx_ver",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@write_dsc_data",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "write_dsc_data",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@write_pps",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "write_pps",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@writeppm",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "writeppm",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@ycocg2rgb",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "ycocg2rgb",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@yuv2rgb",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "yuv2rgb",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@yuv_420_422",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "yuv_420_422",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@yuv_422_420",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "yuv_422_420",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@yuv_422_444",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "yuv_422_444",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@yuv_422_444_region",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "yuv_422_444_region",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@yuv_444_422",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "yuv_444_422",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [],
+      "clang_usr": "c:@F@yuv_444_422_region",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "yuv_444_422_region",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [
+        {
+          "kind": "callee",
+          "location": {
+            "column": 10,
+            "file": "utl.c",
+            "line": 1358
+          },
+          "name": "uyvy_read"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 21,
+            "file": "utl.c",
+            "line": 1358
+          },
+          "name": "ip"
+        }
+      ],
+      "clang_usr": "c:@F@yuv_read",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "yuv_read",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    },
+    {
+      "ast_return_dependencies": [
+        {
+          "kind": "callee",
+          "location": {
+            "column": 10,
+            "file": "utl.c",
+            "line": 1477
+          },
+          "name": "uyvy_write"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 21,
+            "file": "utl.c",
+            "line": 1477
+          },
+          "name": "op"
+        }
+      ],
+      "clang_usr": "c:@F@yuv_write",
+      "from_modified_memory_dependencies": [],
+      "from_return_dependencies": [],
+      "function": "yuv_write",
+      "status": "UNKNOWN",
+      "unknown": [
+        "From did not emit a parseable dependency result"
+      ]
+    }
+  ],
+  "metadata": {
+    "analysis_command": [
+      "clang LibTooling AST Matchers over facts/compile_commands.json",
+      "frama-c -deps -calldeps -main TARGET (focused targets only)",
+      "frama-c -eva -main TARGET (focused targets only)",
+      "generate compile_commands.json from public Makefile flags"
+    ],
+    "clang_version": "Apple clang version 17.0.0 (clang-1700.6.3.2)",
+    "compile_commands_sha256": "56b5e6a919ea0e63fc8c9b8d6068e2d88629e1710ca9f83fbde06e9d433b1ace",
+    "dsc_source_revision": "f26ecb2afa83aa9f0cc608b5b7c2742901ee9207",
+    "frama_c_version": "33.0 (Arsenic)",
+    "frama_excluded_sources": [
+      "cmd_parse.c",
+      "dpx.c",
+      "hdr_dpx.c",
+      "logging.c"
+    ],
+    "generated_timestamp": "2026-07-31T02:36:47.724514+00:00",
+    "schema_version": 1,
+    "semantic_hash": "653e55f97546ffb65b48737ed555c60fee6a9dd11e2992426e79ef054dec7bc5",
+    "source_file_hashes": [
+      {
+        "path": "cmd_parse.c",
+        "sha256": "aa6f8ca2ed1cd62c73007b920f2561d690643a3a63381c3777d04b1b59c08b01"
+      },
+      {
+        "path": "cmd_parse.h",
+        "sha256": "783c66fb9685bac4c1132fbaa5534fca8e08c37f685b6858a314c268304758ea"
+      },
+      {
+        "path": "codec_main.c",
+        "sha256": "6f10916c2e72e3b6c5e8d578fb607954b6b501f309ba3735f8ec4ec61c689500"
+      },
+      {
+        "path": "dpx.c",
+        "sha256": "cf8b5216b23015de699935536163fc47d8ccf2e42df3e0ae3e85dba6eee6e17d"
+      },
+      {
+        "path": "dpx.h",
+        "sha256": "52770467f510bb6eb8c3e41e58b21ca9986dd048e016f9eeb3b4aed29098e85f"
+      },
+      {
+        "path": "dsc_codec.c",
+        "sha256": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf"
+      },
+      {
+        "path": "dsc_codec.h",
+        "sha256": "561770f192aa494ca033a367b467574acde1299a37a395697ca6afe27a01c4e7"
+      },
+      {
+        "path": "dsc_types.h",
+        "sha256": "ccff4ca7e3d8a043a07525fb140a16a417230ffb9852ef86058b912ccab758f8"
+      },
+      {
+        "path": "dsc_utils.c",
+        "sha256": "8aadcb1ecff2586892f385255a73fea367eec9afb6e14608d1010c08b7aca14e"
+      },
+      {
+        "path": "dsc_utils.h",
+        "sha256": "22ce915ae2aac1c438c2a0c8de5ce07778a1a9c2e1fa3b7b02af1aa35d7aed3f"
+      },
+      {
+        "path": "fifo.c",
+        "sha256": "6a886eaffd01b6651703da54bbb90e9cf77d6503131ab419644e0ad3e50a3e6e"
+      },
+      {
+        "path": "fifo.h",
+        "sha256": "e5e206ab84b589bced8578b8502233551a3ba725a7874e2aaaa856dfd1f85ad6"
+      },
+      {
+        "path": "hdr_dpx.c",
+        "sha256": "655820d0da1f2e68565030fe674eb708e1dc53df231e69c3ed403f1867930f3d"
+      },
+      {
+        "path": "hdr_dpx.h",
+        "sha256": "c8b7a370296ca27f3e5da2941d708254ec0b80a482e766beef1ffffe2a861730"
+      },
+      {
+        "path": "logging.c",
+        "sha256": "9194d16f129d5c92e7fca52a7c34de5d0312f64f33d2e069accc85f33913919c"
+      },
+      {
+        "path": "logging.h",
+        "sha256": "ffe542165809e9c5c77b8c879ef7d53a7df4654f1e3d2b55a5188dba53617043"
+      },
+      {
+        "path": "multiplex.c",
+        "sha256": "ab549255599fbdf1f69dd9fa8013ed39c044c3b8f591b187e2e056a5f1f5ab50"
+      },
+      {
+        "path": "multiplex.h",
+        "sha256": "41a198aa3eaf7bfd38e6591e1a88d5f24b32fce8ba87ccd3f3cd61bbdc313863"
+      },
+      {
+        "path": "psnr.c",
+        "sha256": "331f5e3f4ec62c51a184c1e766d073a348a45301745b06b84dc20cda6ad9e438"
+      },
+      {
+        "path": "psnr.h",
+        "sha256": "68731ffa4e873c2a2ebc0d9cd1f2001ce569ae4afed4cdc4107372bf1b252858"
+      },
+      {
+        "path": "rc_tables.h",
+        "sha256": "5d6d2bd27efb1ebab966aa77fbd047d7dd10bb0deef9603b5a5a66b7a3a22faa"
+      },
+      {
+        "path": "utl.c",
+        "sha256": "c673e2e5cd8dd6c5f91461908f628977644a8ad424d2e8a9fe9ba575bfcbffed"
+      },
+      {
+        "path": "utl.h",
+        "sha256": "15e0c59828db41f2a306fc2d5962f661794a8fa6b2d9d10937d72b50d4ee2f8b"
+      },
+      {
+        "path": "vdo.h",
+        "sha256": "e48d318a5c2d8512d25230cafb74835a135bf8dc89232d1c6ccefcb5ef28ebbc"
+      }
+    ],
+    "status": "OK"
+  }
+}

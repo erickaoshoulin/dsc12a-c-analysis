@@ -1,0 +1,6818 @@
+{
+  "functions": [
+    {
+      "clang_usr": "c:@F@AddBits",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "AddBits",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "CType",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "d",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "nbits",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@Assert_func",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "Assert_func",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "condition",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "condition_str",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cline",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cfile",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cfunction",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@BlockPredSearch",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "BlockPredSearch",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cpnt",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "currLine",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "hPos",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@CErr",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "CErr",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "format",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@CalcFullnessOffset",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "CalcFullnessOffset",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "vPos",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "group_count",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "scale",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "bpg_offset",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@DSC_Algorithm",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "DSC_Algorithm",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "isEncoder",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ip",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "op",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cmpr_buf",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "temp_pic",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "chunk_sizes",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@DSC_Decode",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "DSC_Decode",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p_out",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cmpr_buf",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "temp_pic",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@DSC_Encode",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "DSC_Encode",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p_in",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p_out",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cmpr_buf",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "temp_pic",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "chunk_sizes",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@Err",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "Err",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "format",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@ErrorHandler",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "ErrorHandler",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "hPos",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "vPos",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "op",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@EscapeCodeSize",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "EscapeCodeSize",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "qp",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@EstimateBitsForGroup",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "EstimateBitsForGroup",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@FindMidpoint",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "FindMidpoint",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cpnt",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "qlevel",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@FindResidualSize",
+      "eva_checks": {
+        "array_index_bounds": "NO_ALARM_OBSERVED_NOT_PROOF",
+        "invalid_shifts": "NO_ALARM_OBSERVED_NOT_PROOF",
+        "pointer_validity": "NO_ALARM_OBSERVED_NOT_PROOF",
+        "signed_overflow": "NO_ALARM_OBSERVED_NOT_PROOF",
+        "unreachable_branches": "NO_ALARM_OBSERVED_NOT_PROOF"
+      },
+      "eva_values": {
+        "S___fc_stdout[0..1]": "[--..--]",
+        "__retres": "[0..18]",
+        "size_e": "[0..18] or UNINITIALIZED"
+      },
+      "function": "FindResidualSize",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "eq",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "[0..18]",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@FlatnessAdjustment",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "FlatnessAdjustment",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "hPos",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "qp",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "new_quant",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@GetBits",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "GetBits",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "unit",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "nbits",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "sign_extend",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "buf",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@GetQpAdjPredSize",
+      "eva_checks": {
+        "array_index_bounds": "WARNING",
+        "invalid_shifts": "NO_ALARM_OBSERVED_NOT_PROOF",
+        "pointer_validity": "NO_ALARM_OBSERVED_NOT_PROOF",
+        "signed_overflow": "WARNING",
+        "unreachable_branches": "NO_ALARM_OBSERVED_NOT_PROOF"
+      },
+      "eva_values": {
+        "cpnt": "{0; 1; 2; 3}",
+        "max_size": "[-2147483647..2147483647]",
+        "pred_size": "[-2147483648..2147483646]",
+        "qlevel_new": "[--..--]",
+        "qlevel_old": "[--..--]"
+      },
+      "function": "GetQpAdjPredSize",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "unit",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@HistoryLookup",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "HistoryLookup",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "entry",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "hPos",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "first_line_flag",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "is_odd_line",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@IchDecision",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "IchDecision",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "adj_predicted_size",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "alt_pfx",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "alt_size_to_generate",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@InitializeDSCState",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "InitializeDSCState",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@IsFlatnessInfoSent",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "IsFlatnessInfoSent",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "qp",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@IsOrigFlatHIndex",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "IsOrigFlatHIndex",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "hPos",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@IsOrigWithinQerr",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "IsOrigWithinQerr",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "hPos",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "vPos",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "qp",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "sampModCnt",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@MapQpToQlevel",
+      "cpnt_simplification": "NOT_PROPOSED: cpnt % 3 is retained until a caller-specific range is proven",
+      "eva_checks": {
+        "array_index_bounds": "WARNING",
+        "invalid_shifts": "NO_ALARM_OBSERVED_NOT_PROOF",
+        "pointer_validity": "NO_ALARM_OBSERVED_NOT_PROOF",
+        "signed_overflow": "WARNING",
+        "unreachable_branches": "NO_ALARM_OBSERVED_NOT_PROOF"
+      },
+      "eva_values": {
+        "qlevel": "[--..--]"
+      },
+      "function": "MapQpToQlevel",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "qp",
+          "source_index_safety_proposal": {
+            "evidence": "qlevel_* table sizes bound safe indices; the function has no C precondition",
+            "range": [
+              0,
+              31
+            ],
+            "status": "PROPOSAL_NOT_PROVEN_BY_EVA"
+          },
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cpnt",
+          "source_range_proposal": {
+            "evidence": "caller loop evidence may cover 0..2 or 0..3; direct entry has no cpnt precondition",
+            "modulo_expressions": [
+              "cpnt%3"
+            ],
+            "modulo_operator_preserved": true,
+            "range": [
+              0,
+              3
+            ],
+            "status": "UNKNOWN_UNPROVEN_DIRECTLY"
+          },
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "qlevel_source_value_range": {
+        "evidence": "qlevel_luma_* and qlevel_chroma_* initializers",
+        "range": [
+          0,
+          16
+        ],
+        "status": "CLANG_CONSTANT_INITIALIZER_RANGE"
+      },
+      "return": "UNKNOWN",
+      "table_ranges": [
+        {
+          "array_size": 20,
+          "evidence": "Clang evaluated the constant initializer list",
+          "line": 159,
+          "source_file": "dsc_codec.c",
+          "table": "qlevel_chroma_10bpc",
+          "value_range": [
+            0,
+            10
+          ]
+        },
+        {
+          "array_size": 24,
+          "evidence": "Clang evaluated the constant initializer list",
+          "line": 161,
+          "source_file": "dsc_codec.c",
+          "table": "qlevel_chroma_12bpc",
+          "value_range": [
+            0,
+            12
+          ]
+        },
+        {
+          "array_size": 28,
+          "evidence": "Clang evaluated the constant initializer list",
+          "line": 163,
+          "source_file": "dsc_codec.c",
+          "table": "qlevel_chroma_14bpc",
+          "value_range": [
+            0,
+            14
+          ]
+        },
+        {
+          "array_size": 32,
+          "evidence": "Clang evaluated the constant initializer list",
+          "line": 165,
+          "source_file": "dsc_codec.c",
+          "table": "qlevel_chroma_16bpc",
+          "value_range": [
+            0,
+            16
+          ]
+        },
+        {
+          "array_size": 16,
+          "evidence": "Clang evaluated the constant initializer list",
+          "line": 157,
+          "source_file": "dsc_codec.c",
+          "table": "qlevel_chroma_8bpc",
+          "value_range": [
+            0,
+            8
+          ]
+        },
+        {
+          "array_size": 20,
+          "evidence": "Clang evaluated the constant initializer list",
+          "line": 158,
+          "source_file": "dsc_codec.c",
+          "table": "qlevel_luma_10bpc",
+          "value_range": [
+            0,
+            9
+          ]
+        },
+        {
+          "array_size": 24,
+          "evidence": "Clang evaluated the constant initializer list",
+          "line": 160,
+          "source_file": "dsc_codec.c",
+          "table": "qlevel_luma_12bpc",
+          "value_range": [
+            0,
+            11
+          ]
+        },
+        {
+          "array_size": 28,
+          "evidence": "Clang evaluated the constant initializer list",
+          "line": 162,
+          "source_file": "dsc_codec.c",
+          "table": "qlevel_luma_14bpc",
+          "value_range": [
+            0,
+            13
+          ]
+        },
+        {
+          "array_size": 32,
+          "evidence": "Clang evaluated the constant initializer list",
+          "line": 164,
+          "source_file": "dsc_codec.c",
+          "table": "qlevel_luma_16bpc",
+          "value_range": [
+            0,
+            15
+          ]
+        },
+        {
+          "array_size": 16,
+          "evidence": "Clang evaluated the constant initializer list",
+          "line": 156,
+          "source_file": "dsc_codec.c",
+          "table": "qlevel_luma_8bpc",
+          "value_range": [
+            0,
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "clang_usr": "c:@F@MaxResidualSize",
+      "eva_checks": {
+        "array_index_bounds": "WARNING",
+        "invalid_shifts": "NO_ALARM_OBSERVED_NOT_PROOF",
+        "pointer_validity": "NO_ALARM_OBSERVED_NOT_PROOF",
+        "signed_overflow": "WARNING",
+        "unreachable_branches": "NO_ALARM_OBSERVED_NOT_PROOF"
+      },
+      "eva_values": {
+        "__retres": "[--..--]",
+        "qlevel": "[--..--]"
+      },
+      "function": "MaxResidualSize",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cpnt",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "qp",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "[--..--]",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@PErr",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "PErr",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "format",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@PickBestHistoryValue",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "PickBestHistoryValue",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "hPos",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "orig",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@PopulateOrigLine",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "PopulateOrigLine",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ip",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "vPos",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@PredictSize",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "PredictSize",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "req_size",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@PredictionLoop",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "PredictionLoop",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "hPos",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "vPos",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "sampModCnt",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "qp",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@ProcessGroupDec",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "ProcessGroupDec",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "buf",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@ProcessGroupEnc",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "ProcessGroupEnc",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "buf",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@Qp2Qlevel",
+      "cpnt_simplification": "NOT_PROPOSED: cpnt % 3 is retained until a caller-specific range is proven",
+      "eva_checks": {
+        "array_index_bounds": "WARNING",
+        "invalid_shifts": "NO_ALARM_OBSERVED_NOT_PROOF",
+        "pointer_validity": "NO_ALARM_OBSERVED_NOT_PROOF",
+        "signed_overflow": "WARNING",
+        "unreachable_branches": "NO_ALARM_OBSERVED_NOT_PROOF"
+      },
+      "eva_values": {
+        "qlevel": "[--..--]"
+      },
+      "function": "Qp2Qlevel",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "qp",
+          "source_index_safety_proposal": {
+            "evidence": "qlevel_* table sizes bound safe indices; the function has no C precondition",
+            "range": [
+              0,
+              31
+            ],
+            "status": "PROPOSAL_NOT_PROVEN_BY_EVA"
+          },
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cpnt",
+          "source_range_proposal": {
+            "evidence": "caller loop evidence may cover 0..2 or 0..3; direct entry has no cpnt precondition",
+            "modulo_expressions": [
+              "cpnt%3"
+            ],
+            "modulo_operator_preserved": true,
+            "range": [
+              0,
+              3
+            ],
+            "status": "UNKNOWN_UNPROVEN_DIRECTLY"
+          },
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "qlevel_source_value_range": {
+        "evidence": "qlevel_luma_* and qlevel_chroma_* initializers",
+        "range": [
+          0,
+          16
+        ],
+        "status": "CLANG_CONSTANT_INITIALIZER_RANGE"
+      },
+      "return": "UNKNOWN",
+      "table_ranges": [
+        {
+          "array_size": 20,
+          "evidence": "Clang evaluated the constant initializer list",
+          "line": 159,
+          "source_file": "dsc_codec.c",
+          "table": "qlevel_chroma_10bpc",
+          "value_range": [
+            0,
+            10
+          ]
+        },
+        {
+          "array_size": 24,
+          "evidence": "Clang evaluated the constant initializer list",
+          "line": 161,
+          "source_file": "dsc_codec.c",
+          "table": "qlevel_chroma_12bpc",
+          "value_range": [
+            0,
+            12
+          ]
+        },
+        {
+          "array_size": 28,
+          "evidence": "Clang evaluated the constant initializer list",
+          "line": 163,
+          "source_file": "dsc_codec.c",
+          "table": "qlevel_chroma_14bpc",
+          "value_range": [
+            0,
+            14
+          ]
+        },
+        {
+          "array_size": 32,
+          "evidence": "Clang evaluated the constant initializer list",
+          "line": 165,
+          "source_file": "dsc_codec.c",
+          "table": "qlevel_chroma_16bpc",
+          "value_range": [
+            0,
+            16
+          ]
+        },
+        {
+          "array_size": 16,
+          "evidence": "Clang evaluated the constant initializer list",
+          "line": 157,
+          "source_file": "dsc_codec.c",
+          "table": "qlevel_chroma_8bpc",
+          "value_range": [
+            0,
+            8
+          ]
+        },
+        {
+          "array_size": 20,
+          "evidence": "Clang evaluated the constant initializer list",
+          "line": 158,
+          "source_file": "dsc_codec.c",
+          "table": "qlevel_luma_10bpc",
+          "value_range": [
+            0,
+            9
+          ]
+        },
+        {
+          "array_size": 24,
+          "evidence": "Clang evaluated the constant initializer list",
+          "line": 160,
+          "source_file": "dsc_codec.c",
+          "table": "qlevel_luma_12bpc",
+          "value_range": [
+            0,
+            11
+          ]
+        },
+        {
+          "array_size": 28,
+          "evidence": "Clang evaluated the constant initializer list",
+          "line": 162,
+          "source_file": "dsc_codec.c",
+          "table": "qlevel_luma_14bpc",
+          "value_range": [
+            0,
+            13
+          ]
+        },
+        {
+          "array_size": 32,
+          "evidence": "Clang evaluated the constant initializer list",
+          "line": 164,
+          "source_file": "dsc_codec.c",
+          "table": "qlevel_luma_16bpc",
+          "value_range": [
+            0,
+            15
+          ]
+        },
+        {
+          "array_size": 16,
+          "evidence": "Clang evaluated the constant initializer list",
+          "line": 156,
+          "source_file": "dsc_codec.c",
+          "table": "qlevel_luma_8bpc",
+          "value_range": [
+            0,
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "clang_usr": "c:@F@QuantizeResidual",
+      "eva_checks": {
+        "array_index_bounds": "WARNING",
+        "invalid_shifts": "NO_ALARM_OBSERVED_NOT_PROOF",
+        "pointer_validity": "NO_ALARM_OBSERVED_NOT_PROOF",
+        "signed_overflow": "WARNING",
+        "unreachable_branches": "NO_ALARM_OBSERVED_NOT_PROOF"
+      },
+      "eva_values": {
+        "eq": "[-2147483647..2147483647]"
+      },
+      "function": "QuantizeResidual",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "e",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "qlevel",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@RateControl",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "RateControl",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "throttle_offset",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "bpg_offset",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "group_count",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "scale",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "group_size",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@RemoveBitsEncoderBuffer",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "RemoveBitsEncoderBuffer",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@SampToLineBuf",
+      "eva_checks": {
+        "array_index_bounds": "WARNING",
+        "invalid_shifts": "WARNING",
+        "pointer_validity": "NO_ALARM_OBSERVED_NOT_PROOF",
+        "signed_overflow": "WARNING",
+        "unreachable_branches": "NO_ALARM_OBSERVED_NOT_PROOF"
+      },
+      "eva_values": {
+        "__retres": "[0..2147483647]",
+        "round_0": "[0..2147483647]",
+        "shift_amount": "[0..31]",
+        "storedSample": "[0..2147483647]"
+      },
+      "function": "SampToLineBuf",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "x",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cpnt",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "[0..2147483647]",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@SamplePredict",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "SamplePredict",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "prevLine",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "currLine",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "hPos",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "predType",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "qLevel",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "unit",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@UErr",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "UErr",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "format",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@UpdateHistoryElement",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "UpdateHistoryElement",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "recon",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@UpdateICHistory",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "UpdateICHistory",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "currLine",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "hPos",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "vPos",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@UpdateMidpoint",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "UpdateMidpoint",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "currLine",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "hPos",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@UseICHistory",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "UseICHistory",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "currLine",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@UsingMidpoint",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "UsingMidpoint",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "unit",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cpnt",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@VLCGroup",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "VLCGroup",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "byte_out_p",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "force_p1_ich2",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@VLCUnit",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "VLCUnit",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "unit",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "quantized_residuals",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "force_p1_ich2",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@VLDGroup",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "VLDGroup",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "byte_in_p",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@VLDUnit",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "VLDUnit",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "unit",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "quantized_residuals",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "byte_in_p",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@WriteEntryToBitstream",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "WriteEntryToBitstream",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_state",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "buf",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@appendarg",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "appendarg",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "string",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cmdarg",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:codec_main.c@F@assign_line",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "assign_line",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "line",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cmdargs",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:cmd_parse.c@F@assign_val",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "assign_val",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cmdarg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "v",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cmd",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@ceil_log2",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "ceil_log2",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "val",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@change_ext",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "change_ext",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "path",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ext",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@check_qp_for_overflow",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "check_qp_for_overflow",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "pixelsPerGroup",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@chop_dir",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "chop_dir",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "path",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@chop_ext",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "chop_ext",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "path",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@compute_and_display_PSNR",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "compute_and_display_PSNR",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p_in",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p_out",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "bpp",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "logfp",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@compute_offset",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "compute_offset",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "pixelsPerGroup",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "groupsPerLine",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "grpcnt",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@compute_rc_parameters",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "compute_rc_parameters",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "pixelsPerGroup",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "numSsps",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@conv",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "conv",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fir",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "w",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "h",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "x",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "y",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@convert_rgb_2020_to_709",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "convert_rgb_2020_to_709",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ip",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "op",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@convertbits",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "convertbits",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "newbits",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:dpx.c@F@create_dpx_pic",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "create_dpx_pic",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "chroma",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "color",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "w",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "h",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "bits",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@determine_field_format",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "determine_field_format",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "file_name",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:cmd_parse.c@F@distinguish_dist",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "distinguish_dist",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cmdargs",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "order",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "num_args",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@dpx_read",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "dpx_read",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fname",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "pad_ends",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "noswap",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "datum_order",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "swap_r_and_b",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@dpx_read_hl",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "dpx_read_hl",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fname",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "highdata",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "lowdata",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "pad_ends",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "noswap",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "datum_order",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "swap_r_and_b",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@dpx_write",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "dpx_write",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fname",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "pad_ends",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "datum_order",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "force_packing",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "swaprb",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "wbswap",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@easy_mkdir",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "easy_mkdir",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dn",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@ends_in_percentd",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "ends_in_percentd",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "str",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "length",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:cmd_parse.c@F@error_check",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "error_check",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cmdargs",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "num_args",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cmd",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@fifo_clear",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "fifo_clear",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fifo",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@fifo_clone",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "fifo_clone",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dst",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "src",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@fifo_flip_get_bits",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "fifo_flip_get_bits",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fifo",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "n",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "sign_extend",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@fifo_flip_put_bits",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "fifo_flip_put_bits",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fifo",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "d",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "nbits",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@fifo_free",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "fifo_free",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fifo",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@fifo_get_bits",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "fifo_get_bits",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fifo",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "n",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "sign_extend",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@fifo_init",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "fifo_init",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fifo",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "size",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@fifo_put_bits",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "fifo_put_bits",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fifo",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "d",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "nbits",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@file_dir",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "file_dir",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "path",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@file_ext",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "file_ext",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "path",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@generate_rc_parameters",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "generate_rc_parameters",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_codec",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:dpx.c@F@generate_timecode",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "generate_timecode",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "frameno",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "framerate",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@getbits",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "getbits",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "size",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "buf",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "bit_count",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "sign_extend",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@gettoken",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "gettoken",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fp",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "token",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "line",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "pos",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@has_ext",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "has_ext",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "path",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@hdr_dpx_byte_swap",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "hdr_dpx_byte_swap",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "f",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:hdr_dpx.c@F@hdr_dpx_check_string",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "hdr_dpx_check_string",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "str",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "size",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@hdr_dpx_compute_offsets",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "hdr_dpx_compute_offsets",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dpxh",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dpxu",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dpxsbm",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@hdr_dpx_create_pic",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "hdr_dpx_create_pic",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "f",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "out_pic",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@hdr_dpx_determine_file_type",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "hdr_dpx_determine_file_type",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fname",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@hdr_dpx_fill_core_fields",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "hdr_dpx_fill_core_fields",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dpxh",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@hdr_dpx_get_datum",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "hdr_dpx_get_datum",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fifo",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "bits",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dir",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@hdr_dpx_get_pic_data",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "hdr_dpx_get_pic_data",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "f",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fp",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "bswap",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@hdr_dpx_map_datum_to_pic",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "hdr_dpx_map_datum_to_pic",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "f",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dptr",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@hdr_dpx_pic_to_datum_list",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "hdr_dpx_pic_to_datum_list",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "f",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dlist",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@hdr_dpx_read",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "hdr_dpx_read",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fname",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dpxh",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dpxu",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dpxsbm",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@hdr_dpx_rle_encode",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "hdr_dpx_rle_encode",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dlist",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "d_per_pixel",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@hdr_dpx_write",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "hdr_dpx_write",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fname",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dpxh",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dpxu",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dpxsbm",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "write_as_be",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dpxh_written",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@line_to_int",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "line_to_int",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "s",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "l",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@lower_case",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "lower_case",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "str",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@main",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "main",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "argc",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "argv",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@make_qp_table",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "make_qp_table",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "table",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dest",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@make_qp_tables",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "make_qp_tables",
+      "parameters": [],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@merge_cmd_args",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "merge_cmd_args",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "args1",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "args2",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:cmd_parse.c@F@order_cmds",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "order_cmds",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cmdargs",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "num_args",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:cmd_parse.c@F@order_keys",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "order_keys",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cmdargs",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "num_args",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@palloc",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "palloc",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "w",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "h",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:codec_main.c@F@parse_cfgfile",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "parse_cfgfile",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fn",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cmdargs",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@parse_cmd",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "parse_cmd",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg0",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg1",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cmdargs",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@parse_cmd_strict",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "parse_cmd_strict",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg0",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg1",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cmdargs",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@parse_cmd_usage",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "parse_cmd_usage",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cmdargs",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@parse_key_usage",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "parse_key_usage",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cmdargs",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:cmd_parse.c@F@parse_kvline",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "parse_kvline",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "in",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "key_r",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "val_r",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@parse_line",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "parse_line",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "line",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cmdargs",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@parse_line_strict",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "parse_line_strict",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "line",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cmdargs",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@parse_pps",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "parse_pps",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "buf",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@pcopy",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "pcopy",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ip",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@pcopy_header",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "pcopy_header",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ip",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "op",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@pcreate",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "pcreate",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "format",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "color",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "chroma",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "w",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "h",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@pcreate_ext",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "pcreate_ext",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "format",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "color",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "chroma",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "w",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "h",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "bits",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@pdestroy",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "pdestroy",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@populate_pps",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "populate_pps",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_codec",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "slicew",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "sliceh",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@ppm_read",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "ppm_read",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fname",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "pic",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@ppm_write",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "ppm_write",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fname",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "pic_in",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@print_pps",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "print_pps",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "logfp",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@print_pps_v2",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "print_pps_v2",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "logfp",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:codec_main.c@F@process_args",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "process_args",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "argc",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "argv",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cmdargs",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@putbits",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "putbits",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "val",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "size",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "buf",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "bit_count",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@read_dpx",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "read_dpx",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fname",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ar1",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ar2",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "frameno",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "seqlen",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "framerate",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "interlaced",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "bpp",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dpx_bugs",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "noswap",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "datum_order",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "swap_r_and_b",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:dpx.c@F@read_dpx_image_data",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "read_dpx_image_data",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fp",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "orientation",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "sign",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "bpp",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "descriptor",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "rle",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "pad_ends",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "w",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "h",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "bswap",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "packing",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "datum_order",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "swap_r_and_b",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@read_dsc_data",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "read_dsc_data",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "bit_buffer",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "nbytes",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fp",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "vbr_enable",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "slices_per_line",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "slice_height",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@readppm",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "readppm",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fp",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@retrieve_cmds_var",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "retrieve_cmds_var",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cmd",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cmdargs",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@retrieve_keys_var",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "retrieve_keys_var",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "key",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cmdargs",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@rgb2ycocg",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "rgb2ycocg",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ip",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "op",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@rgb2yuv",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "rgb2yuv",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ip",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "op",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@rgba_read",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "rgba_read",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fname",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ip",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "width",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "height",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "bpc",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "alpha_present",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@set_convertbits_rounding",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "set_convertbits_rounding",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "round",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@set_defaults",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "set_defaults",
+      "parameters": [],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@set_dpx_colorspace",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "set_dpx_colorspace",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "color",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@simple422to444",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "simple422to444",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ip",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "op",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@simple444to422",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "simple444to422",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ip",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "op",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@split_base_and_ext",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "split_base_and_ext",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "infname",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "base_name",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "extension",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@splitstring",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "splitstring",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "in",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "sep",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@splitstring_exact",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "splitstring_exact",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "in",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "substr",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@splitstring_exact_strict",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "splitstring_exact_strict",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "in",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "substr",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@str2d",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "str2d",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "title",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@str2dim",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "str2dim",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "title",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "sep",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "result",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@str2dvect",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "str2dvect",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "title",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "result",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "vlng",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@str2f",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "str2f",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "title",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@str2fdim",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "str2fdim",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "title",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "sep",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "result",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@str2frange",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "str2frange",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "title",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "result",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@str2fvect",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "str2fvect",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "title",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "result",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "vlng",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@str2i",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "str2i",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "title",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@str2ivect",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "str2ivect",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "title",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "result",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "vlng",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@str2l",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "str2l",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "title",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@str2ll",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "str2ll",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "title",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@str2llvect",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "str2llvect",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "title",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "result",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "vlng",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@str2lvect",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "str2lvect",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "title",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "result",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "vlng",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@str2p",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "str2p",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "title",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@str2pdim",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "str2pdim",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "title",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "sep",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "result",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@str2prange",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "str2prange",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "title",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "result",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@str2pvect",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "str2pvect",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "title",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "result",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "vlng",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@str2range",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "str2range",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "title",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "result",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@str2ui",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "str2ui",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "title",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@str2uivect",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "str2uivect",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "title",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "result",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "vlng",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@str2ul",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "str2ul",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "title",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@str2ull",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "str2ull",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "title",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@str2ullvect",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "str2ullvect",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "title",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "result",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "vlng",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@str2ulvect",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "str2ulvect",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "title",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "result",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "vlng",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@strisdim",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "strisdim",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "in",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "sep",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@strisnum",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "strisnum",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "in",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@strisrange",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "strisrange",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "in",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:cmd_parse.c@F@test_cmd",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "test_cmd",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "arg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "v",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "cmdarg",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "distinguish",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@usage",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "usage",
+      "parameters": [],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@uyvy_read",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "uyvy_read",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ip",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fp",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@uyvy_write",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "uyvy_write",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "op",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fp",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@write_dpx",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "write_dpx",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fname",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ar1",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ar2",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "frameno",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "seqlen",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "framerate",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "interlaced",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "bpp",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "pad_ends",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "datum_order",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "force_packing",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "swaprb",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "wbswap",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@write_dpx_ver",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "write_dpx_ver",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fname",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ar1",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ar2",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "frameno",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "seqlen",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "framerate",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "interlaced",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "bpp",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ver",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "pad_ends",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "datum_order",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "force_packing",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "swaprb",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "wbswap",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@write_dsc_data",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "write_dsc_data",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "bit_buffer",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "nbytes",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fp",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "vbr_enable",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "slices_per_line",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "slice_height",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "sizes",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@write_pps",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "write_pps",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "buf",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@writeppm",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "writeppm",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fp",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@ycocg2rgb",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "ycocg2rgb",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ip",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "op",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@yuv2rgb",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "yuv2rgb",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ip",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "op",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@yuv_420_422",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "yuv_420_422",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ip",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "op",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@yuv_422_420",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "yuv_422_420",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ip",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "op",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@yuv_422_444",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "yuv_422_444",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ip",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "op",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@yuv_422_444_region",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "yuv_422_444_region",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@yuv_444_422",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "yuv_444_422",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ip",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "op",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@yuv_444_422_region",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "yuv_444_422_region",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "p",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "dsc_cfg",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@yuv_read",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "yuv_read",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fname",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "ip",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "width",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "height",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "framenum",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "bpc",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "numframes",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "filetype",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    },
+    {
+      "clang_usr": "c:@F@yuv_write",
+      "eva_checks": {
+        "array_index_bounds": "UNKNOWN",
+        "invalid_shifts": "UNKNOWN",
+        "pointer_validity": "UNKNOWN",
+        "signed_overflow": "UNKNOWN",
+        "unreachable_branches": "UNKNOWN"
+      },
+      "eva_values": {},
+      "function": "yuv_write",
+      "parameters": [
+        {
+          "eva_range": "UNKNOWN",
+          "name": "fname",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "op",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "framenum",
+          "status": "UNKNOWN"
+        },
+        {
+          "eva_range": "UNKNOWN",
+          "name": "filetype",
+          "status": "UNKNOWN"
+        }
+      ],
+      "proposals": [],
+      "return": "UNKNOWN",
+      "table_ranges": []
+    }
+  ],
+  "metadata": {
+    "analysis_command": [
+      "clang LibTooling AST Matchers over facts/compile_commands.json",
+      "frama-c -deps -calldeps -main TARGET (focused targets only)",
+      "frama-c -eva -main TARGET (focused targets only)",
+      "generate compile_commands.json from public Makefile flags"
+    ],
+    "clang_version": "Apple clang version 17.0.0 (clang-1700.6.3.2)",
+    "compile_commands_sha256": "56b5e6a919ea0e63fc8c9b8d6068e2d88629e1710ca9f83fbde06e9d433b1ace",
+    "dsc_source_revision": "f26ecb2afa83aa9f0cc608b5b7c2742901ee9207",
+    "frama_c_version": "33.0 (Arsenic)",
+    "frama_excluded_sources": [
+      "cmd_parse.c",
+      "dpx.c",
+      "hdr_dpx.c",
+      "logging.c"
+    ],
+    "generated_timestamp": "2026-07-31T02:36:47.724514+00:00",
+    "schema_version": 1,
+    "semantic_hash": "653e55f97546ffb65b48737ed555c60fee6a9dd11e2992426e79ef054dec7bc5",
+    "source_file_hashes": [
+      {
+        "path": "cmd_parse.c",
+        "sha256": "aa6f8ca2ed1cd62c73007b920f2561d690643a3a63381c3777d04b1b59c08b01"
+      },
+      {
+        "path": "cmd_parse.h",
+        "sha256": "783c66fb9685bac4c1132fbaa5534fca8e08c37f685b6858a314c268304758ea"
+      },
+      {
+        "path": "codec_main.c",
+        "sha256": "6f10916c2e72e3b6c5e8d578fb607954b6b501f309ba3735f8ec4ec61c689500"
+      },
+      {
+        "path": "dpx.c",
+        "sha256": "cf8b5216b23015de699935536163fc47d8ccf2e42df3e0ae3e85dba6eee6e17d"
+      },
+      {
+        "path": "dpx.h",
+        "sha256": "52770467f510bb6eb8c3e41e58b21ca9986dd048e016f9eeb3b4aed29098e85f"
+      },
+      {
+        "path": "dsc_codec.c",
+        "sha256": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf"
+      },
+      {
+        "path": "dsc_codec.h",
+        "sha256": "561770f192aa494ca033a367b467574acde1299a37a395697ca6afe27a01c4e7"
+      },
+      {
+        "path": "dsc_types.h",
+        "sha256": "ccff4ca7e3d8a043a07525fb140a16a417230ffb9852ef86058b912ccab758f8"
+      },
+      {
+        "path": "dsc_utils.c",
+        "sha256": "8aadcb1ecff2586892f385255a73fea367eec9afb6e14608d1010c08b7aca14e"
+      },
+      {
+        "path": "dsc_utils.h",
+        "sha256": "22ce915ae2aac1c438c2a0c8de5ce07778a1a9c2e1fa3b7b02af1aa35d7aed3f"
+      },
+      {
+        "path": "fifo.c",
+        "sha256": "6a886eaffd01b6651703da54bbb90e9cf77d6503131ab419644e0ad3e50a3e6e"
+      },
+      {
+        "path": "fifo.h",
+        "sha256": "e5e206ab84b589bced8578b8502233551a3ba725a7874e2aaaa856dfd1f85ad6"
+      },
+      {
+        "path": "hdr_dpx.c",
+        "sha256": "655820d0da1f2e68565030fe674eb708e1dc53df231e69c3ed403f1867930f3d"
+      },
+      {
+        "path": "hdr_dpx.h",
+        "sha256": "c8b7a370296ca27f3e5da2941d708254ec0b80a482e766beef1ffffe2a861730"
+      },
+      {
+        "path": "logging.c",
+        "sha256": "9194d16f129d5c92e7fca52a7c34de5d0312f64f33d2e069accc85f33913919c"
+      },
+      {
+        "path": "logging.h",
+        "sha256": "ffe542165809e9c5c77b8c879ef7d53a7df4654f1e3d2b55a5188dba53617043"
+      },
+      {
+        "path": "multiplex.c",
+        "sha256": "ab549255599fbdf1f69dd9fa8013ed39c044c3b8f591b187e2e056a5f1f5ab50"
+      },
+      {
+        "path": "multiplex.h",
+        "sha256": "41a198aa3eaf7bfd38e6591e1a88d5f24b32fce8ba87ccd3f3cd61bbdc313863"
+      },
+      {
+        "path": "psnr.c",
+        "sha256": "331f5e3f4ec62c51a184c1e766d073a348a45301745b06b84dc20cda6ad9e438"
+      },
+      {
+        "path": "psnr.h",
+        "sha256": "68731ffa4e873c2a2ebc0d9cd1f2001ce569ae4afed4cdc4107372bf1b252858"
+      },
+      {
+        "path": "rc_tables.h",
+        "sha256": "5d6d2bd27efb1ebab966aa77fbd047d7dd10bb0deef9603b5a5a66b7a3a22faa"
+      },
+      {
+        "path": "utl.c",
+        "sha256": "c673e2e5cd8dd6c5f91461908f628977644a8ad424d2e8a9fe9ba575bfcbffed"
+      },
+      {
+        "path": "utl.h",
+        "sha256": "15e0c59828db41f2a306fc2d5962f661794a8fa6b2d9d10937d72b50d4ee2f8b"
+      },
+      {
+        "path": "vdo.h",
+        "sha256": "e48d318a5c2d8512d25230cafb74835a135bf8dc89232d1c6ccefcb5ef28ebbc"
+      }
+    ],
+    "status": "OK"
+  }
+}
