@@ -15,19 +15,9 @@ import json
 import pathlib
 import re
 import subprocess
+import sys
 from collections import defaultdict
 from typing import Any
-
-
-TARGETS = [
-    "Qp2Qlevel",
-    "MapQpToQlevel",
-    "QuantizeResidual",
-    "FindResidualSize",
-    "SampToLineBuf",
-    "MaxResidualSize",
-    "GetQpAdjPredSize",
-]
 
 CHECK_PATTERNS = {
     "array_index_bounds": re.compile(
@@ -53,6 +43,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--clang-version", required=True)
     parser.add_argument("--frama-c-version", required=True)
     parser.add_argument("--compile-commands", required=True, type=pathlib.Path)
+    parser.add_argument("--compile-check", required=True, type=pathlib.Path)
+    parser.add_argument("--target-profile", required=True, type=pathlib.Path)
     parser.add_argument("--analysis-command", action="append", default=[])
     parser.add_argument("--frama-output-dir", required=True, type=pathlib.Path)
     return parser.parse_args()
@@ -110,6 +102,35 @@ def unique_sorted(values: list[Any], key=None) -> list[Any]:
     for value in values:
         result[key(value)] = value
     return [result[item] for item in sorted(result)]
+
+
+def load_analysis_profile(path: pathlib.Path) -> dict[str, Any]:
+    profile = json.loads(path.resolve().read_text(encoding="utf-8"))
+    focused_targets = profile.get("focused_targets", [])
+    comparison_pairs = profile.get("comparison_pairs", [])
+    table_users = profile.get("table_users", [])
+    if focused_targets is None:
+        focused_targets = []
+    if not isinstance(focused_targets, list) or any(
+        not isinstance(name, str) or not name for name in focused_targets
+    ):
+        raise ValueError("focused_targets must be a list of non-empty strings")
+    if not isinstance(comparison_pairs, list) or any(
+        not isinstance(pair, list)
+        or len(pair) != 2
+        or any(not isinstance(name, str) or not name for name in pair)
+        for pair in comparison_pairs
+    ):
+        raise ValueError("comparison_pairs must contain pairs of function names")
+    if not isinstance(table_users, list) or any(
+        not isinstance(name, str) or not name for name in table_users
+    ):
+        raise ValueError("table_users must be a list of non-empty strings")
+    return {
+        "focused_targets": list(dict.fromkeys(focused_targets)),
+        "comparison_pairs": [list(pair) for pair in comparison_pairs],
+        "table_users": list(dict.fromkeys(table_users)),
+    }
 
 
 def parse_eva(path: pathlib.Path, function_name: str) -> dict[str, Any]:
@@ -368,7 +389,9 @@ def normalize_function(
     return result
 
 
-def build_field_facts(functions: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def build_field_facts(
+    functions: list[dict[str, Any]], focused_targets: list[str]
+) -> list[dict[str, Any]]:
     fields: dict[tuple[str, str], dict[str, Any]] = {}
     for function in functions:
         for direction in ("read", "write"):
@@ -418,7 +441,7 @@ def build_field_facts(functions: list[dict[str, Any]]) -> list[dict[str, Any]]:
             )
         elif item["record"] == "dsc_state_t":
             target_access = any(
-                consumer["function"] in TARGETS
+                consumer["function"] in focused_targets
                 for consumer in [*item["read_by"], *item["written_by"]]
             )
             if target_access:
@@ -486,7 +509,11 @@ def table_ranges(raw_globals: dict[str, Any]) -> list[dict[str, Any]]:
     return sorted(result, key=lambda value: value["table"])
 
 
-def range_facts(functions: list[dict[str, Any]], raw_globals: dict[str, Any]) -> list[dict[str, Any]]:
+def range_facts(
+    functions: list[dict[str, Any]],
+    raw_globals: dict[str, Any],
+    table_users: list[str],
+) -> list[dict[str, Any]]:
     tables = table_ranges(raw_globals)
     table_max = max((item["array_size"] for item in tables if isinstance(item["array_size"], int)), default=None)
     table_value_max = max(
@@ -513,10 +540,10 @@ def range_facts(functions: list[dict[str, Any]], raw_globals: dict[str, Any]) ->
             "return": eva.get("return_range", "UNKNOWN"),
             "eva_values": eva.get("values", {}),
             "eva_checks": eva.get("checks", {name: "UNKNOWN" for name in CHECK_PATTERNS}),
-            "table_ranges": tables if function["name"] in {"Qp2Qlevel", "MapQpToQlevel"} else [],
+            "table_ranges": tables if function["name"] in table_users else [],
             "proposals": [],
         }
-        if function["name"] in {"Qp2Qlevel", "MapQpToQlevel"}:
+        if function["name"] in table_users:
             qp = next((value for value in parameters if value["name"] == "qp"), None)
             cpnt = next((value for value in parameters if value["name"] in {"cpnt", "CType"}), None)
             if qp is not None:
@@ -762,7 +789,21 @@ def markdown_unresolved(functions: list[dict[str, Any]], metadata: dict[str, Any
 
 def main() -> int:
     args = parse_args()
-    raw = json.loads(args.raw.read_text(encoding="utf-8"))
+    try:
+        raw = json.loads(args.raw.read_text(encoding="utf-8"))
+        profile = load_analysis_profile(args.target_profile)
+        compile_check = json.loads(
+            args.compile_check.resolve().read_text(encoding="utf-8")
+        )
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        print(f"could not load analysis inputs: {exc}", file=sys.stderr)
+        return 2
+    if compile_check.get("status") != "PASS":
+        print("C compiler front-end receipt is not PASS", file=sys.stderr)
+        return 2
+    focused_targets = profile["focused_targets"]
+    comparison_pairs = profile["comparison_pairs"]
+    table_users = profile["table_users"]
     source_dir = args.source_dir.resolve()
     output_dir = args.output_dir.resolve()
     facts_dir = output_dir / "facts"
@@ -781,14 +822,21 @@ def main() -> int:
         source_functions,
         key=lambda item: (item.get("clang_usr", ""), item.get("source_file", ""), item.get("line", 0)),
     )
+    frama_manifest_path = args.frama_output_dir / "manifest.json"
+    if frama_manifest_path.is_file():
+        frama_manifest = json.loads(frama_manifest_path.read_text(encoding="utf-8"))
+    else:
+        frama_manifest = {}
+    if not focused_targets:
+        focused_targets = list(frama_manifest.get("targets", []))
 
     eva_by_function = {
         target: parse_eva(args.frama_output_dir / f"{target}.eva.log", target)
-        for target in TARGETS
+        for target in focused_targets
     }
     from_by_function = {
         target: parse_from(args.frama_output_dir / f"{target}.from.log", target)
-        for target in TARGETS
+        for target in focused_targets
     }
     normalized = []
     for function in source_functions:
@@ -803,8 +851,8 @@ def main() -> int:
         )
     normalized.sort(key=lambda item: (item["name"], item["source_file"], item["line"], item["clang_usr"]))
 
-    fields = build_field_facts(normalized)
-    ranges = range_facts(normalized, globals_by_usr)
+    fields = build_field_facts(normalized, focused_targets)
+    ranges = range_facts(normalized, globals_by_usr, table_users)
     dependencies = dependency_facts(normalized)
     edges = unique_sorted(
         raw.get("edges", []),
@@ -823,26 +871,57 @@ def main() -> int:
         }
         for function in normalized
     ]
+    discovered_inventory = [
+        {
+            "clang_usr": function.get("clang_usr", "UNKNOWN"),
+            "name": function.get("name", "UNKNOWN"),
+            "qualified_name": function.get("qualified_name", function.get("name", "UNKNOWN")),
+            "source_file": function.get("source_file", "UNKNOWN"),
+            "line": function.get("line", 0),
+            "column": function.get("column", 0),
+        }
+        for function in source_functions
+    ]
+    discovered_inventory.sort(
+        key=lambda item: (
+            item["name"],
+            item["source_file"],
+            item["line"],
+            item["column"],
+            item["clang_usr"],
+        )
+    )
     metadata = {
         "schema_version": 1,
         "status": "OK",
         "dsc_source_revision": args.source_revision,
         "source_file_hashes": source_hashes(source_dir),
         "compile_commands_sha256": file_sha256(args.compile_commands.resolve()),
+        "compile_check_sha256": file_sha256(args.compile_check.resolve()),
+        "compile_check_status": compile_check.get("status", "UNKNOWN"),
+        "compiler_command_count": compile_check.get("compiler_command_count", 0),
+        "target_profile_sha256": file_sha256(args.target_profile.resolve()),
+        "focused_targets": focused_targets,
+        "discovered_function_count": len(discovered_inventory),
+        "function_discovery": {
+            "source": "Clang AST functionDecl(isDefinition())",
+            "count": len(discovered_inventory),
+        },
         "clang_version": args.clang_version,
         "frama_c_version": args.frama_c_version,
         "analysis_command": sorted(args.analysis_command),
         "generated_timestamp": dt.datetime.now(dt.timezone.utc).isoformat(),
     }
-    frama_manifest_path = args.frama_output_dir / "manifest.json"
     if frama_manifest_path.is_file():
-        frama_manifest = json.loads(frama_manifest_path.read_text(encoding="utf-8"))
         metadata["frama_excluded_sources"] = frama_manifest.get("excluded_sources", [])
     else:
         metadata["frama_excluded_sources"] = []
 
     comparison = {}
-    for target in ("Qp2Qlevel", "MapQpToQlevel"):
+    comparison_names = unique_sorted(
+        [name for pair in comparison_pairs for name in pair]
+    )
+    for target in comparison_names:
         function = next((item for item in normalized if item["name"] == target), None)
         if function:
             comparison[target] = {
@@ -855,6 +934,8 @@ def main() -> int:
             }
     artifact_payload = {
         "functions": normalized,
+        "discovered_functions": discovered_inventory,
+        "compile_check": compile_check,
         "callgraph": {"nodes": call_nodes, "edges": edges},
         "field_access": {"fields": fields},
         "loops": {
@@ -889,6 +970,11 @@ def main() -> int:
         return {"metadata": metadata, **payload}
 
     write_json(facts_dir / "functions.json", with_metadata({"functions": normalized}))
+    write_json(
+        facts_dir / "discovered-functions.json",
+        with_metadata({"functions": discovered_inventory}),
+    )
+    write_json(facts_dir / "compile-check.json", with_metadata(compile_check))
     write_json(facts_dir / "callgraph.json", with_metadata({"nodes": call_nodes, "edges": edges}))
     write_json(facts_dir / "field-access.json", with_metadata({"fields": fields}))
     write_json(facts_dir / "loops.json", with_metadata(artifact_payload["loops"]))
@@ -917,9 +1003,13 @@ def main() -> int:
                 "field_count": len(fields),
                 "loop_count": sum(len(item.get("loops", [])) for item in normalized),
                 "candidate_count": artifact_payload["reports"]["candidate_count"],
-                "focused_targets": TARGETS,
+                "focused_targets": focused_targets,
+                "discovered_function_count": len(discovered_inventory),
+                "compile_check_status": compile_check.get("status", "UNKNOWN"),
+                "compiler_command_count": compile_check.get("compiler_command_count", 0),
             },
             "comparisons": comparison,
+            "comparison_pairs": comparison_pairs,
             "quantization_tables": table_ranges(globals_by_usr),
             "component_loop_evidence": component_loop_evidence(normalized),
             "limitations": [

@@ -1,0 +1,1695 @@
+{
+  "functions": [
+    {
+      "clang_usr": "c:@F@AddBits",
+      "column": 6,
+      "line": 89,
+      "name": "AddBits",
+      "qualified_name": "AddBits",
+      "source_file": "multiplex.c"
+    },
+    {
+      "clang_usr": "c:@F@Assert_func",
+      "column": 6,
+      "line": 155,
+      "name": "Assert_func",
+      "qualified_name": "Assert_func",
+      "source_file": "logging.c"
+    },
+    {
+      "clang_usr": "c:@F@BlockPredSearch",
+      "column": 6,
+      "line": 924,
+      "name": "BlockPredSearch",
+      "qualified_name": "BlockPredSearch",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@CErr",
+      "column": 6,
+      "line": 123,
+      "name": "CErr",
+      "qualified_name": "CErr",
+      "source_file": "logging.c"
+    },
+    {
+      "clang_usr": "c:@F@CalcFullnessOffset",
+      "column": 6,
+      "line": 2188,
+      "name": "CalcFullnessOffset",
+      "qualified_name": "CalcFullnessOffset",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@DSC_Algorithm",
+      "column": 5,
+      "line": 2594,
+      "name": "DSC_Algorithm",
+      "qualified_name": "DSC_Algorithm",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@DSC_Decode",
+      "column": 6,
+      "line": 3129,
+      "name": "DSC_Decode",
+      "qualified_name": "DSC_Decode",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@DSC_Encode",
+      "column": 5,
+      "line": 3118,
+      "name": "DSC_Encode",
+      "qualified_name": "DSC_Encode",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@Err",
+      "column": 6,
+      "line": 94,
+      "name": "Err",
+      "qualified_name": "Err",
+      "source_file": "logging.c"
+    },
+    {
+      "clang_usr": "c:@F@ErrorHandler",
+      "column": 6,
+      "line": 171,
+      "name": "ErrorHandler",
+      "qualified_name": "ErrorHandler",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@EscapeCodeSize",
+      "column": 5,
+      "line": 443,
+      "name": "EscapeCodeSize",
+      "qualified_name": "EscapeCodeSize",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@EstimateBitsForGroup",
+      "column": 5,
+      "line": 390,
+      "name": "EstimateBitsForGroup",
+      "qualified_name": "EstimateBitsForGroup",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@FindMidpoint",
+      "column": 5,
+      "line": 906,
+      "name": "FindMidpoint",
+      "qualified_name": "FindMidpoint",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@FindResidualSize",
+      "column": 5,
+      "line": 1078,
+      "name": "FindResidualSize",
+      "qualified_name": "FindResidualSize",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@FlatnessAdjustment",
+      "column": 6,
+      "line": 2510,
+      "name": "FlatnessAdjustment",
+      "qualified_name": "FlatnessAdjustment",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@GetBits",
+      "column": 5,
+      "line": 104,
+      "name": "GetBits",
+      "qualified_name": "GetBits",
+      "source_file": "multiplex.c"
+    },
+    {
+      "clang_usr": "c:@F@GetQpAdjPredSize",
+      "column": 5,
+      "line": 278,
+      "name": "GetQpAdjPredSize",
+      "qualified_name": "GetQpAdjPredSize",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@HistoryLookup",
+      "column": 6,
+      "line": 543,
+      "name": "HistoryLookup",
+      "qualified_name": "HistoryLookup",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@IchDecision",
+      "column": 5,
+      "line": 484,
+      "name": "IchDecision",
+      "qualified_name": "IchDecision",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@InitializeDSCState",
+      "column": 14,
+      "line": 2056,
+      "name": "InitializeDSCState",
+      "qualified_name": "InitializeDSCState",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@IsFlatnessInfoSent",
+      "column": 5,
+      "line": 1116,
+      "name": "IsFlatnessInfoSent",
+      "qualified_name": "IsFlatnessInfoSent",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@IsOrigFlatHIndex",
+      "column": 5,
+      "line": 1126,
+      "name": "IsOrigFlatHIndex",
+      "qualified_name": "IsOrigFlatHIndex",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@IsOrigWithinQerr",
+      "column": 5,
+      "line": 611,
+      "name": "IsOrigWithinQerr",
+      "qualified_name": "IsOrigWithinQerr",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@MapQpToQlevel",
+      "column": 5,
+      "line": 221,
+      "name": "MapQpToQlevel",
+      "qualified_name": "MapQpToQlevel",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@MaxResidualSize",
+      "column": 5,
+      "line": 263,
+      "name": "MaxResidualSize",
+      "qualified_name": "MaxResidualSize",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@PErr",
+      "column": 6,
+      "line": 140,
+      "name": "PErr",
+      "qualified_name": "PErr",
+      "source_file": "logging.c"
+    },
+    {
+      "clang_usr": "c:@F@PickBestHistoryValue",
+      "column": 5,
+      "line": 736,
+      "name": "PickBestHistoryValue",
+      "qualified_name": "PickBestHistoryValue",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@PopulateOrigLine",
+      "column": 6,
+      "line": 2294,
+      "name": "PopulateOrigLine",
+      "qualified_name": "PopulateOrigLine",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@PredictSize",
+      "column": 5,
+      "line": 1476,
+      "name": "PredictSize",
+      "qualified_name": "PredictSize",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@PredictionLoop",
+      "column": 6,
+      "line": 2361,
+      "name": "PredictionLoop",
+      "qualified_name": "PredictionLoop",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@ProcessGroupDec",
+      "column": 6,
+      "line": 159,
+      "name": "ProcessGroupDec",
+      "qualified_name": "ProcessGroupDec",
+      "source_file": "multiplex.c"
+    },
+    {
+      "clang_usr": "c:@F@ProcessGroupEnc",
+      "column": 6,
+      "line": 116,
+      "name": "ProcessGroupEnc",
+      "qualified_name": "ProcessGroupEnc",
+      "source_file": "multiplex.c"
+    },
+    {
+      "clang_usr": "c:@F@Qp2Qlevel",
+      "column": 5,
+      "line": 816,
+      "name": "Qp2Qlevel",
+      "qualified_name": "Qp2Qlevel",
+      "source_file": "codec_main.c"
+    },
+    {
+      "clang_usr": "c:@F@QuantizeResidual",
+      "column": 5,
+      "line": 245,
+      "name": "QuantizeResidual",
+      "qualified_name": "QuantizeResidual",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@RateControl",
+      "column": 6,
+      "line": 1242,
+      "name": "RateControl",
+      "qualified_name": "RateControl",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@RemoveBitsEncoderBuffer",
+      "column": 6,
+      "line": 1201,
+      "name": "RemoveBitsEncoderBuffer",
+      "qualified_name": "RemoveBitsEncoderBuffer",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@SampToLineBuf",
+      "column": 5,
+      "line": 2036,
+      "name": "SampToLineBuf",
+      "qualified_name": "SampToLineBuf",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@SamplePredict",
+      "column": 5,
+      "line": 308,
+      "name": "SamplePredict",
+      "qualified_name": "SamplePredict",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@UErr",
+      "column": 6,
+      "line": 110,
+      "name": "UErr",
+      "qualified_name": "UErr",
+      "source_file": "logging.c"
+    },
+    {
+      "clang_usr": "c:@F@UpdateHistoryElement",
+      "column": 6,
+      "line": 674,
+      "name": "UpdateHistoryElement",
+      "qualified_name": "UpdateHistoryElement",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@UpdateICHistory",
+      "column": 6,
+      "line": 787,
+      "name": "UpdateICHistory",
+      "qualified_name": "UpdateICHistory",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@UpdateMidpoint",
+      "column": 6,
+      "line": 875,
+      "name": "UpdateMidpoint",
+      "qualified_name": "UpdateMidpoint",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@UseICHistory",
+      "column": 6,
+      "line": 832,
+      "name": "UseICHistory",
+      "qualified_name": "UseICHistory",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@UsingMidpoint",
+      "column": 5,
+      "line": 457,
+      "name": "UsingMidpoint",
+      "qualified_name": "UsingMidpoint",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@VLCGroup",
+      "column": 6,
+      "line": 1710,
+      "name": "VLCGroup",
+      "qualified_name": "VLCGroup",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@VLCUnit",
+      "column": 6,
+      "line": 1494,
+      "name": "VLCUnit",
+      "qualified_name": "VLCUnit",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@VLDGroup",
+      "column": 6,
+      "line": 1988,
+      "name": "VLDGroup",
+      "qualified_name": "VLDGroup",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@VLDUnit",
+      "column": 6,
+      "line": 1808,
+      "name": "VLDUnit",
+      "qualified_name": "VLDUnit",
+      "source_file": "dsc_codec.c"
+    },
+    {
+      "clang_usr": "c:@F@WriteEntryToBitstream",
+      "column": 6,
+      "line": 60,
+      "name": "WriteEntryToBitstream",
+      "qualified_name": "WriteEntryToBitstream",
+      "source_file": "multiplex.c"
+    },
+    {
+      "clang_usr": "c:@F@appendarg",
+      "column": 6,
+      "line": 1328,
+      "name": "appendarg",
+      "qualified_name": "appendarg",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:codec_main.c@F@assign_line",
+      "column": 12,
+      "line": 358,
+      "name": "assign_line",
+      "qualified_name": "assign_line",
+      "source_file": "codec_main.c"
+    },
+    {
+      "clang_usr": "c:cmd_parse.c@F@assign_val",
+      "column": 12,
+      "line": 799,
+      "name": "assign_val",
+      "qualified_name": "assign_val",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@ceil_log2",
+      "column": 5,
+      "line": 67,
+      "name": "ceil_log2",
+      "qualified_name": "ceil_log2",
+      "source_file": "dsc_utils.c"
+    },
+    {
+      "clang_usr": "c:@F@change_ext",
+      "column": 6,
+      "line": 376,
+      "name": "change_ext",
+      "qualified_name": "change_ext",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@check_qp_for_overflow",
+      "column": 6,
+      "line": 860,
+      "name": "check_qp_for_overflow",
+      "qualified_name": "check_qp_for_overflow",
+      "source_file": "codec_main.c"
+    },
+    {
+      "clang_usr": "c:@F@chop_dir",
+      "column": 7,
+      "line": 132,
+      "name": "chop_dir",
+      "qualified_name": "chop_dir",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@chop_ext",
+      "column": 7,
+      "line": 102,
+      "name": "chop_ext",
+      "qualified_name": "chop_ext",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@compute_and_display_PSNR",
+      "column": 6,
+      "line": 66,
+      "name": "compute_and_display_PSNR",
+      "qualified_name": "compute_and_display_PSNR",
+      "source_file": "psnr.c"
+    },
+    {
+      "clang_usr": "c:@F@compute_offset",
+      "column": 5,
+      "line": 616,
+      "name": "compute_offset",
+      "qualified_name": "compute_offset",
+      "source_file": "codec_main.c"
+    },
+    {
+      "clang_usr": "c:@F@compute_rc_parameters",
+      "column": 5,
+      "line": 661,
+      "name": "compute_rc_parameters",
+      "qualified_name": "compute_rc_parameters",
+      "source_file": "codec_main.c"
+    },
+    {
+      "clang_usr": "c:@F@conv",
+      "column": 7,
+      "line": 470,
+      "name": "conv",
+      "qualified_name": "conv",
+      "source_file": "utl.c"
+    },
+    {
+      "clang_usr": "c:@F@convert_rgb_2020_to_709",
+      "column": 6,
+      "line": 1644,
+      "name": "convert_rgb_2020_to_709",
+      "qualified_name": "convert_rgb_2020_to_709",
+      "source_file": "utl.c"
+    },
+    {
+      "clang_usr": "c:@F@convertbits",
+      "column": 8,
+      "line": 710,
+      "name": "convertbits",
+      "qualified_name": "convertbits",
+      "source_file": "utl.c"
+    },
+    {
+      "clang_usr": "c:dpx.c@F@create_dpx_pic",
+      "column": 12,
+      "line": 1420,
+      "name": "create_dpx_pic",
+      "qualified_name": "create_dpx_pic",
+      "source_file": "dpx.c"
+    },
+    {
+      "clang_usr": "c:@F@determine_field_format",
+      "column": 10,
+      "line": 67,
+      "name": "determine_field_format",
+      "qualified_name": "determine_field_format",
+      "source_file": "dpx.c"
+    },
+    {
+      "clang_usr": "c:cmd_parse.c@F@distinguish_dist",
+      "column": 13,
+      "line": 1084,
+      "name": "distinguish_dist",
+      "qualified_name": "distinguish_dist",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@dpx_read",
+      "column": 5,
+      "line": 744,
+      "name": "dpx_read",
+      "qualified_name": "dpx_read",
+      "source_file": "dpx.c"
+    },
+    {
+      "clang_usr": "c:@F@dpx_read_hl",
+      "column": 5,
+      "line": 750,
+      "name": "dpx_read_hl",
+      "qualified_name": "dpx_read_hl",
+      "source_file": "dpx.c"
+    },
+    {
+      "clang_usr": "c:@F@dpx_write",
+      "column": 5,
+      "line": 225,
+      "name": "dpx_write",
+      "qualified_name": "dpx_write",
+      "source_file": "dpx.c"
+    },
+    {
+      "clang_usr": "c:@F@easy_mkdir",
+      "column": 5,
+      "line": 220,
+      "name": "easy_mkdir",
+      "qualified_name": "easy_mkdir",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@ends_in_percentd",
+      "column": 5,
+      "line": 86,
+      "name": "ends_in_percentd",
+      "qualified_name": "ends_in_percentd",
+      "source_file": "dpx.c"
+    },
+    {
+      "clang_usr": "c:cmd_parse.c@F@error_check",
+      "column": 13,
+      "line": 952,
+      "name": "error_check",
+      "qualified_name": "error_check",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@fifo_clear",
+      "column": 6,
+      "line": 55,
+      "name": "fifo_clear",
+      "qualified_name": "fifo_clear",
+      "source_file": "fifo.c"
+    },
+    {
+      "clang_usr": "c:@F@fifo_clone",
+      "column": 6,
+      "line": 146,
+      "name": "fifo_clone",
+      "qualified_name": "fifo_clone",
+      "source_file": "fifo.c"
+    },
+    {
+      "clang_usr": "c:@F@fifo_flip_get_bits",
+      "column": 5,
+      "line": 174,
+      "name": "fifo_flip_get_bits",
+      "qualified_name": "fifo_flip_get_bits",
+      "source_file": "fifo.c"
+    },
+    {
+      "clang_usr": "c:@F@fifo_flip_put_bits",
+      "column": 6,
+      "line": 217,
+      "name": "fifo_flip_put_bits",
+      "qualified_name": "fifo_flip_put_bits",
+      "source_file": "fifo.c"
+    },
+    {
+      "clang_usr": "c:@F@fifo_free",
+      "column": 6,
+      "line": 66,
+      "name": "fifo_free",
+      "qualified_name": "fifo_free",
+      "source_file": "fifo.c"
+    },
+    {
+      "clang_usr": "c:@F@fifo_get_bits",
+      "column": 5,
+      "line": 77,
+      "name": "fifo_get_bits",
+      "qualified_name": "fifo_get_bits",
+      "source_file": "fifo.c"
+    },
+    {
+      "clang_usr": "c:@F@fifo_init",
+      "column": 6,
+      "line": 43,
+      "name": "fifo_init",
+      "qualified_name": "fifo_init",
+      "source_file": "fifo.c"
+    },
+    {
+      "clang_usr": "c:@F@fifo_put_bits",
+      "column": 6,
+      "line": 115,
+      "name": "fifo_put_bits",
+      "qualified_name": "fifo_put_bits",
+      "source_file": "fifo.c"
+    },
+    {
+      "clang_usr": "c:@F@file_dir",
+      "column": 7,
+      "line": 189,
+      "name": "file_dir",
+      "qualified_name": "file_dir",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@file_ext",
+      "column": 7,
+      "line": 161,
+      "name": "file_ext",
+      "qualified_name": "file_ext",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@generate_rc_parameters",
+      "column": 6,
+      "line": 904,
+      "name": "generate_rc_parameters",
+      "qualified_name": "generate_rc_parameters",
+      "source_file": "codec_main.c"
+    },
+    {
+      "clang_usr": "c:dpx.c@F@generate_timecode",
+      "column": 14,
+      "line": 708,
+      "name": "generate_timecode",
+      "qualified_name": "generate_timecode",
+      "source_file": "dpx.c"
+    },
+    {
+      "clang_usr": "c:@F@getbits",
+      "column": 5,
+      "line": 109,
+      "name": "getbits",
+      "qualified_name": "getbits",
+      "source_file": "dsc_utils.c"
+    },
+    {
+      "clang_usr": "c:@F@gettoken",
+      "column": 6,
+      "line": 1038,
+      "name": "gettoken",
+      "qualified_name": "gettoken",
+      "source_file": "utl.c"
+    },
+    {
+      "clang_usr": "c:@F@has_ext",
+      "column": 5,
+      "line": 84,
+      "name": "has_ext",
+      "qualified_name": "has_ext",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@hdr_dpx_byte_swap",
+      "column": 6,
+      "line": 1445,
+      "name": "hdr_dpx_byte_swap",
+      "qualified_name": "hdr_dpx_byte_swap",
+      "source_file": "hdr_dpx.c"
+    },
+    {
+      "clang_usr": "c:hdr_dpx.c@F@hdr_dpx_check_string",
+      "column": 13,
+      "line": 1537,
+      "name": "hdr_dpx_check_string",
+      "qualified_name": "hdr_dpx_check_string",
+      "source_file": "hdr_dpx.c"
+    },
+    {
+      "clang_usr": "c:@F@hdr_dpx_compute_offsets",
+      "column": 5,
+      "line": 1514,
+      "name": "hdr_dpx_compute_offsets",
+      "qualified_name": "hdr_dpx_compute_offsets",
+      "source_file": "hdr_dpx.c"
+    },
+    {
+      "clang_usr": "c:@F@hdr_dpx_create_pic",
+      "column": 5,
+      "line": 234,
+      "name": "hdr_dpx_create_pic",
+      "qualified_name": "hdr_dpx_create_pic",
+      "source_file": "hdr_dpx.c"
+    },
+    {
+      "clang_usr": "c:@F@hdr_dpx_determine_file_type",
+      "column": 6,
+      "line": 2051,
+      "name": "hdr_dpx_determine_file_type",
+      "qualified_name": "hdr_dpx_determine_file_type",
+      "source_file": "hdr_dpx.c"
+    },
+    {
+      "clang_usr": "c:@F@hdr_dpx_fill_core_fields",
+      "column": 5,
+      "line": 1551,
+      "name": "hdr_dpx_fill_core_fields",
+      "qualified_name": "hdr_dpx_fill_core_fields",
+      "source_file": "hdr_dpx.c"
+    },
+    {
+      "clang_usr": "c:@F@hdr_dpx_get_datum",
+      "column": 9,
+      "line": 1153,
+      "name": "hdr_dpx_get_datum",
+      "qualified_name": "hdr_dpx_get_datum",
+      "source_file": "hdr_dpx.c"
+    },
+    {
+      "clang_usr": "c:@F@hdr_dpx_get_pic_data",
+      "column": 5,
+      "line": 1172,
+      "name": "hdr_dpx_get_pic_data",
+      "qualified_name": "hdr_dpx_get_pic_data",
+      "source_file": "hdr_dpx.c"
+    },
+    {
+      "clang_usr": "c:@F@hdr_dpx_map_datum_to_pic",
+      "column": 5,
+      "line": 621,
+      "name": "hdr_dpx_map_datum_to_pic",
+      "qualified_name": "hdr_dpx_map_datum_to_pic",
+      "source_file": "hdr_dpx.c"
+    },
+    {
+      "clang_usr": "c:@F@hdr_dpx_pic_to_datum_list",
+      "column": 5,
+      "line": 1077,
+      "name": "hdr_dpx_pic_to_datum_list",
+      "qualified_name": "hdr_dpx_pic_to_datum_list",
+      "source_file": "hdr_dpx.c"
+    },
+    {
+      "clang_usr": "c:@F@hdr_dpx_read",
+      "column": 5,
+      "line": 1966,
+      "name": "hdr_dpx_read",
+      "qualified_name": "hdr_dpx_read",
+      "source_file": "hdr_dpx.c"
+    },
+    {
+      "clang_usr": "c:@F@hdr_dpx_rle_encode",
+      "column": 6,
+      "line": 80,
+      "name": "hdr_dpx_rle_encode",
+      "qualified_name": "hdr_dpx_rle_encode",
+      "source_file": "hdr_dpx.c"
+    },
+    {
+      "clang_usr": "c:@F@hdr_dpx_write",
+      "column": 5,
+      "line": 1746,
+      "name": "hdr_dpx_write",
+      "qualified_name": "hdr_dpx_write",
+      "source_file": "hdr_dpx.c"
+    },
+    {
+      "clang_usr": "c:@F@line_to_int",
+      "column": 6,
+      "line": 382,
+      "name": "line_to_int",
+      "qualified_name": "line_to_int",
+      "source_file": "rc_tables.h"
+    },
+    {
+      "clang_usr": "c:@F@lower_case",
+      "column": 7,
+      "line": 367,
+      "name": "lower_case",
+      "qualified_name": "lower_case",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@main",
+      "column": 5,
+      "line": 1276,
+      "name": "main",
+      "qualified_name": "main",
+      "source_file": "codec_main.c"
+    },
+    {
+      "clang_usr": "c:@F@make_qp_table",
+      "column": 6,
+      "line": 404,
+      "name": "make_qp_table",
+      "qualified_name": "make_qp_table",
+      "source_file": "rc_tables.h"
+    },
+    {
+      "clang_usr": "c:@F@make_qp_tables",
+      "column": 6,
+      "line": 414,
+      "name": "make_qp_tables",
+      "qualified_name": "make_qp_tables",
+      "source_file": "rc_tables.h"
+    },
+    {
+      "clang_usr": "c:@F@merge_cmd_args",
+      "column": 11,
+      "line": 1180,
+      "name": "merge_cmd_args",
+      "qualified_name": "merge_cmd_args",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:cmd_parse.c@F@order_cmds",
+      "column": 13,
+      "line": 1045,
+      "name": "order_cmds",
+      "qualified_name": "order_cmds",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:cmd_parse.c@F@order_keys",
+      "column": 13,
+      "line": 1012,
+      "name": "order_keys",
+      "qualified_name": "order_keys",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@palloc",
+      "column": 7,
+      "line": 55,
+      "name": "palloc",
+      "qualified_name": "palloc",
+      "source_file": "utl.c"
+    },
+    {
+      "clang_usr": "c:codec_main.c@F@parse_cfgfile",
+      "column": 12,
+      "line": 314,
+      "name": "parse_cfgfile",
+      "qualified_name": "parse_cfgfile",
+      "source_file": "codec_main.c"
+    },
+    {
+      "clang_usr": "c:@F@parse_cmd",
+      "column": 5,
+      "line": 1255,
+      "name": "parse_cmd",
+      "qualified_name": "parse_cmd",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@parse_cmd_strict",
+      "column": 5,
+      "line": 1307,
+      "name": "parse_cmd_strict",
+      "qualified_name": "parse_cmd_strict",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@parse_cmd_usage",
+      "column": 6,
+      "line": 1427,
+      "name": "parse_cmd_usage",
+      "qualified_name": "parse_cmd_usage",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@parse_key_usage",
+      "column": 6,
+      "line": 1480,
+      "name": "parse_key_usage",
+      "qualified_name": "parse_key_usage",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:cmd_parse.c@F@parse_kvline",
+      "column": 12,
+      "line": 1142,
+      "name": "parse_kvline",
+      "qualified_name": "parse_kvline",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@parse_line",
+      "column": 5,
+      "line": 1219,
+      "name": "parse_line",
+      "qualified_name": "parse_line",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@parse_line_strict",
+      "column": 7,
+      "line": 1318,
+      "name": "parse_line_strict",
+      "qualified_name": "parse_line_strict",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@parse_pps",
+      "column": 6,
+      "line": 404,
+      "name": "parse_pps",
+      "qualified_name": "parse_pps",
+      "source_file": "dsc_utils.c"
+    },
+    {
+      "clang_usr": "c:@F@pcopy",
+      "column": 8,
+      "line": 1520,
+      "name": "pcopy",
+      "qualified_name": "pcopy",
+      "source_file": "utl.c"
+    },
+    {
+      "clang_usr": "c:@F@pcopy_header",
+      "column": 6,
+      "line": 225,
+      "name": "pcopy_header",
+      "qualified_name": "pcopy_header",
+      "source_file": "utl.c"
+    },
+    {
+      "clang_usr": "c:@F@pcreate",
+      "column": 8,
+      "line": 83,
+      "name": "pcreate",
+      "qualified_name": "pcreate",
+      "source_file": "utl.c"
+    },
+    {
+      "clang_usr": "c:@F@pcreate_ext",
+      "column": 8,
+      "line": 144,
+      "name": "pcreate_ext",
+      "qualified_name": "pcreate_ext",
+      "source_file": "utl.c"
+    },
+    {
+      "clang_usr": "c:@F@pdestroy",
+      "column": 7,
+      "line": 241,
+      "name": "pdestroy",
+      "qualified_name": "pdestroy",
+      "source_file": "utl.c"
+    },
+    {
+      "clang_usr": "c:@F@populate_pps",
+      "column": 6,
+      "line": 1047,
+      "name": "populate_pps",
+      "qualified_name": "populate_pps",
+      "source_file": "codec_main.c"
+    },
+    {
+      "clang_usr": "c:@F@ppm_read",
+      "column": 5,
+      "line": 1206,
+      "name": "ppm_read",
+      "qualified_name": "ppm_read",
+      "source_file": "utl.c"
+    },
+    {
+      "clang_usr": "c:@F@ppm_write",
+      "column": 5,
+      "line": 1246,
+      "name": "ppm_write",
+      "qualified_name": "ppm_write",
+      "source_file": "utl.c"
+    },
+    {
+      "clang_usr": "c:@F@print_pps",
+      "column": 6,
+      "line": 609,
+      "name": "print_pps",
+      "qualified_name": "print_pps",
+      "source_file": "dsc_utils.c"
+    },
+    {
+      "clang_usr": "c:@F@print_pps_v2",
+      "column": 6,
+      "line": 694,
+      "name": "print_pps_v2",
+      "qualified_name": "print_pps_v2",
+      "source_file": "dsc_utils.c"
+    },
+    {
+      "clang_usr": "c:codec_main.c@F@process_args",
+      "column": 12,
+      "line": 402,
+      "name": "process_args",
+      "qualified_name": "process_args",
+      "source_file": "codec_main.c"
+    },
+    {
+      "clang_usr": "c:@F@putbits",
+      "column": 6,
+      "line": 81,
+      "name": "putbits",
+      "qualified_name": "putbits",
+      "source_file": "dsc_utils.c"
+    },
+    {
+      "clang_usr": "c:@F@read_dpx",
+      "column": 5,
+      "line": 727,
+      "name": "read_dpx",
+      "qualified_name": "read_dpx",
+      "source_file": "dpx.c"
+    },
+    {
+      "clang_usr": "c:dpx.c@F@read_dpx_image_data",
+      "column": 12,
+      "line": 981,
+      "name": "read_dpx_image_data",
+      "qualified_name": "read_dpx_image_data",
+      "source_file": "dpx.c"
+    },
+    {
+      "clang_usr": "c:@F@read_dsc_data",
+      "column": 5,
+      "line": 568,
+      "name": "read_dsc_data",
+      "qualified_name": "read_dsc_data",
+      "source_file": "codec_main.c"
+    },
+    {
+      "clang_usr": "c:@F@readppm",
+      "column": 8,
+      "line": 1068,
+      "name": "readppm",
+      "qualified_name": "readppm",
+      "source_file": "utl.c"
+    },
+    {
+      "clang_usr": "c:@F@retrieve_cmds_var",
+      "column": 7,
+      "line": 1521,
+      "name": "retrieve_cmds_var",
+      "qualified_name": "retrieve_cmds_var",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@retrieve_keys_var",
+      "column": 7,
+      "line": 1508,
+      "name": "retrieve_keys_var",
+      "qualified_name": "retrieve_keys_var",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@rgb2ycocg",
+      "column": 6,
+      "line": 145,
+      "name": "rgb2ycocg",
+      "qualified_name": "rgb2ycocg",
+      "source_file": "dsc_utils.c"
+    },
+    {
+      "clang_usr": "c:@F@rgb2yuv",
+      "column": 6,
+      "line": 305,
+      "name": "rgb2yuv",
+      "qualified_name": "rgb2yuv",
+      "source_file": "utl.c"
+    },
+    {
+      "clang_usr": "c:@F@rgba_read",
+      "column": 5,
+      "line": 1592,
+      "name": "rgba_read",
+      "qualified_name": "rgba_read",
+      "source_file": "utl.c"
+    },
+    {
+      "clang_usr": "c:@F@set_convertbits_rounding",
+      "column": 6,
+      "line": 705,
+      "name": "set_convertbits_rounding",
+      "qualified_name": "set_convertbits_rounding",
+      "source_file": "utl.c"
+    },
+    {
+      "clang_usr": "c:@F@set_defaults",
+      "column": 6,
+      "line": 222,
+      "name": "set_defaults",
+      "qualified_name": "set_defaults",
+      "source_file": "codec_main.c"
+    },
+    {
+      "clang_usr": "c:@F@set_dpx_colorspace",
+      "column": 6,
+      "line": 1474,
+      "name": "set_dpx_colorspace",
+      "qualified_name": "set_dpx_colorspace",
+      "source_file": "dpx.c"
+    },
+    {
+      "clang_usr": "c:@F@simple422to444",
+      "column": 6,
+      "line": 306,
+      "name": "simple422to444",
+      "qualified_name": "simple422to444",
+      "source_file": "dsc_utils.c"
+    },
+    {
+      "clang_usr": "c:@F@simple444to422",
+      "column": 6,
+      "line": 344,
+      "name": "simple444to422",
+      "qualified_name": "simple444to422",
+      "source_file": "dsc_utils.c"
+    },
+    {
+      "clang_usr": "c:@F@split_base_and_ext",
+      "column": 6,
+      "line": 481,
+      "name": "split_base_and_ext",
+      "qualified_name": "split_base_and_ext",
+      "source_file": "codec_main.c"
+    },
+    {
+      "clang_usr": "c:@F@splitstring",
+      "column": 7,
+      "line": 392,
+      "name": "splitstring",
+      "qualified_name": "splitstring",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@splitstring_exact",
+      "column": 7,
+      "line": 416,
+      "name": "splitstring_exact",
+      "qualified_name": "splitstring_exact",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@splitstring_exact_strict",
+      "column": 7,
+      "line": 438,
+      "name": "splitstring_exact_strict",
+      "qualified_name": "splitstring_exact_strict",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@str2d",
+      "column": 8,
+      "line": 564,
+      "name": "str2d",
+      "qualified_name": "str2d",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@str2dim",
+      "column": 6,
+      "line": 612,
+      "name": "str2dim",
+      "qualified_name": "str2dim",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@str2dvect",
+      "column": 6,
+      "line": 780,
+      "name": "str2dvect",
+      "qualified_name": "str2dvect",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@str2f",
+      "column": 7,
+      "line": 557,
+      "name": "str2f",
+      "qualified_name": "str2f",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@str2fdim",
+      "column": 6,
+      "line": 620,
+      "name": "str2fdim",
+      "qualified_name": "str2fdim",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@str2frange",
+      "column": 6,
+      "line": 596,
+      "name": "str2frange",
+      "qualified_name": "str2frange",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@str2fvect",
+      "column": 6,
+      "line": 761,
+      "name": "str2fvect",
+      "qualified_name": "str2fvect",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@str2i",
+      "column": 5,
+      "line": 451,
+      "name": "str2i",
+      "qualified_name": "str2i",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@str2ivect",
+      "column": 6,
+      "line": 628,
+      "name": "str2ivect",
+      "qualified_name": "str2ivect",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@str2l",
+      "column": 10,
+      "line": 481,
+      "name": "str2l",
+      "qualified_name": "str2l",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@str2ll",
+      "column": 15,
+      "line": 494,
+      "name": "str2ll",
+      "qualified_name": "str2ll",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@str2llvect",
+      "column": 6,
+      "line": 723,
+      "name": "str2llvect",
+      "qualified_name": "str2llvect",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@str2lvect",
+      "column": 6,
+      "line": 685,
+      "name": "str2lvect",
+      "qualified_name": "str2lvect",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@str2p",
+      "column": 5,
+      "line": 464,
+      "name": "str2p",
+      "qualified_name": "str2p",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@str2pdim",
+      "column": 6,
+      "line": 604,
+      "name": "str2pdim",
+      "qualified_name": "str2pdim",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@str2prange",
+      "column": 6,
+      "line": 580,
+      "name": "str2prange",
+      "qualified_name": "str2prange",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@str2pvect",
+      "column": 6,
+      "line": 647,
+      "name": "str2pvect",
+      "qualified_name": "str2pvect",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@str2range",
+      "column": 6,
+      "line": 588,
+      "name": "str2range",
+      "qualified_name": "str2range",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@str2ui",
+      "column": 14,
+      "line": 512,
+      "name": "str2ui",
+      "qualified_name": "str2ui",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@str2uivect",
+      "column": 6,
+      "line": 666,
+      "name": "str2uivect",
+      "qualified_name": "str2uivect",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@str2ul",
+      "column": 19,
+      "line": 525,
+      "name": "str2ul",
+      "qualified_name": "str2ul",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@str2ull",
+      "column": 24,
+      "line": 538,
+      "name": "str2ull",
+      "qualified_name": "str2ull",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@str2ullvect",
+      "column": 6,
+      "line": 742,
+      "name": "str2ullvect",
+      "qualified_name": "str2ullvect",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@str2ulvect",
+      "column": 6,
+      "line": 704,
+      "name": "str2ulvect",
+      "qualified_name": "str2ulvect",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@strisdim",
+      "column": 5,
+      "line": 333,
+      "name": "strisdim",
+      "qualified_name": "strisdim",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@strisnum",
+      "column": 5,
+      "line": 273,
+      "name": "strisnum",
+      "qualified_name": "strisnum",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@strisrange",
+      "column": 5,
+      "line": 297,
+      "name": "strisrange",
+      "qualified_name": "strisrange",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:cmd_parse.c@F@test_cmd",
+      "column": 12,
+      "line": 1116,
+      "name": "test_cmd",
+      "qualified_name": "test_cmd",
+      "source_file": "cmd_parse.c"
+    },
+    {
+      "clang_usr": "c:@F@usage",
+      "column": 6,
+      "line": 377,
+      "name": "usage",
+      "qualified_name": "usage",
+      "source_file": "codec_main.c"
+    },
+    {
+      "clang_usr": "c:@F@uyvy_read",
+      "column": 5,
+      "line": 1306,
+      "name": "uyvy_read",
+      "qualified_name": "uyvy_read",
+      "source_file": "utl.c"
+    },
+    {
+      "clang_usr": "c:@F@uyvy_write",
+      "column": 5,
+      "line": 1420,
+      "name": "uyvy_write",
+      "qualified_name": "uyvy_write",
+      "source_file": "utl.c"
+    },
+    {
+      "clang_usr": "c:@F@write_dpx",
+      "column": 5,
+      "line": 230,
+      "name": "write_dpx",
+      "qualified_name": "write_dpx",
+      "source_file": "dpx.c"
+    },
+    {
+      "clang_usr": "c:@F@write_dpx_ver",
+      "column": 5,
+      "line": 235,
+      "name": "write_dpx_ver",
+      "qualified_name": "write_dpx_ver",
+      "source_file": "dpx.c"
+    },
+    {
+      "clang_usr": "c:@F@write_dsc_data",
+      "column": 6,
+      "line": 521,
+      "name": "write_dsc_data",
+      "qualified_name": "write_dsc_data",
+      "source_file": "codec_main.c"
+    },
+    {
+      "clang_usr": "c:@F@write_pps",
+      "column": 6,
+      "line": 514,
+      "name": "write_pps",
+      "qualified_name": "write_pps",
+      "source_file": "dsc_utils.c"
+    },
+    {
+      "clang_usr": "c:@F@writeppm",
+      "column": 6,
+      "line": 1222,
+      "name": "writeppm",
+      "qualified_name": "writeppm",
+      "source_file": "utl.c"
+    },
+    {
+      "clang_usr": "c:@F@ycocg2rgb",
+      "column": 6,
+      "line": 225,
+      "name": "ycocg2rgb",
+      "qualified_name": "ycocg2rgb",
+      "source_file": "dsc_utils.c"
+    },
+    {
+      "clang_usr": "c:@F@yuv2rgb",
+      "column": 6,
+      "line": 389,
+      "name": "yuv2rgb",
+      "qualified_name": "yuv2rgb",
+      "source_file": "utl.c"
+    },
+    {
+      "clang_usr": "c:@F@yuv_420_422",
+      "column": 6,
+      "line": 671,
+      "name": "yuv_420_422",
+      "qualified_name": "yuv_420_422",
+      "source_file": "utl.c"
+    },
+    {
+      "clang_usr": "c:@F@yuv_422_420",
+      "column": 6,
+      "line": 615,
+      "name": "yuv_422_420",
+      "qualified_name": "yuv_422_420",
+      "source_file": "utl.c"
+    },
+    {
+      "clang_usr": "c:@F@yuv_422_444",
+      "column": 6,
+      "line": 503,
+      "name": "yuv_422_444",
+      "qualified_name": "yuv_422_444",
+      "source_file": "utl.c"
+    },
+    {
+      "clang_usr": "c:@F@yuv_422_444_region",
+      "column": 6,
+      "line": 375,
+      "name": "yuv_422_444_region",
+      "qualified_name": "yuv_422_444_region",
+      "source_file": "dsc_utils.c"
+    },
+    {
+      "clang_usr": "c:@F@yuv_444_422",
+      "column": 6,
+      "line": 533,
+      "name": "yuv_444_422",
+      "qualified_name": "yuv_444_422",
+      "source_file": "utl.c"
+    },
+    {
+      "clang_usr": "c:@F@yuv_444_422_region",
+      "column": 6,
+      "line": 385,
+      "name": "yuv_444_422_region",
+      "qualified_name": "yuv_444_422_region",
+      "source_file": "dsc_utils.c"
+    },
+    {
+      "clang_usr": "c:@F@yuv_read",
+      "column": 5,
+      "line": 1335,
+      "name": "yuv_read",
+      "qualified_name": "yuv_read",
+      "source_file": "utl.c"
+    },
+    {
+      "clang_usr": "c:@F@yuv_write",
+      "column": 5,
+      "line": 1450,
+      "name": "yuv_write",
+      "qualified_name": "yuv_write",
+      "source_file": "utl.c"
+    }
+  ],
+  "metadata": {
+    "analysis_command": [
+      "clang -fsyntax-only over every compile_commands.json entry",
+      "clang LibTooling AST Matchers over facts/compile_commands.json",
+      "frama-c -deps -calldeps -main PROFILE_TARGET (profile-selected targets)",
+      "frama-c -eva -main PROFILE_TARGET (profile-selected targets)",
+      "generate compile_commands.json from public Makefile flags"
+    ],
+    "clang_version": "Apple clang version 17.0.0 (clang-1700.6.3.2)",
+    "compile_check_sha256": "e77b1146218bd22946a9993887679393ebcbc9cb27bd0165c70b680ce20a6adb",
+    "compile_check_status": "PASS",
+    "compile_commands_sha256": "56b5e6a919ea0e63fc8c9b8d6068e2d88629e1710ca9f83fbde06e9d433b1ace",
+    "compiler_command_count": 11,
+    "discovered_function_count": 194,
+    "dsc_source_revision": "f26ecb2afa83aa9f0cc608b5b7c2742901ee9207",
+    "focused_targets": [
+      "Qp2Qlevel",
+      "MapQpToQlevel",
+      "QuantizeResidual",
+      "FindResidualSize",
+      "SampToLineBuf",
+      "MaxResidualSize",
+      "GetQpAdjPredSize"
+    ],
+    "frama_c_version": "33.0 (Arsenic)",
+    "frama_excluded_sources": [
+      "cmd_parse.c",
+      "dpx.c",
+      "hdr_dpx.c",
+      "logging.c"
+    ],
+    "function_discovery": {
+      "count": 194,
+      "source": "Clang AST functionDecl(isDefinition())"
+    },
+    "generated_timestamp": "2026-07-31T12:06:12.902507+00:00",
+    "schema_version": 1,
+    "semantic_hash": "cd6f3be6ca8c10ddf68face39b8812d7a45ec8c4ae2f2ef258bee2eca2be695d",
+    "source_file_hashes": [
+      {
+        "path": "cmd_parse.c",
+        "sha256": "aa6f8ca2ed1cd62c73007b920f2561d690643a3a63381c3777d04b1b59c08b01"
+      },
+      {
+        "path": "cmd_parse.h",
+        "sha256": "783c66fb9685bac4c1132fbaa5534fca8e08c37f685b6858a314c268304758ea"
+      },
+      {
+        "path": "codec_main.c",
+        "sha256": "6f10916c2e72e3b6c5e8d578fb607954b6b501f309ba3735f8ec4ec61c689500"
+      },
+      {
+        "path": "dpx.c",
+        "sha256": "cf8b5216b23015de699935536163fc47d8ccf2e42df3e0ae3e85dba6eee6e17d"
+      },
+      {
+        "path": "dpx.h",
+        "sha256": "52770467f510bb6eb8c3e41e58b21ca9986dd048e016f9eeb3b4aed29098e85f"
+      },
+      {
+        "path": "dsc_codec.c",
+        "sha256": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf"
+      },
+      {
+        "path": "dsc_codec.h",
+        "sha256": "561770f192aa494ca033a367b467574acde1299a37a395697ca6afe27a01c4e7"
+      },
+      {
+        "path": "dsc_types.h",
+        "sha256": "ccff4ca7e3d8a043a07525fb140a16a417230ffb9852ef86058b912ccab758f8"
+      },
+      {
+        "path": "dsc_utils.c",
+        "sha256": "8aadcb1ecff2586892f385255a73fea367eec9afb6e14608d1010c08b7aca14e"
+      },
+      {
+        "path": "dsc_utils.h",
+        "sha256": "22ce915ae2aac1c438c2a0c8de5ce07778a1a9c2e1fa3b7b02af1aa35d7aed3f"
+      },
+      {
+        "path": "fifo.c",
+        "sha256": "6a886eaffd01b6651703da54bbb90e9cf77d6503131ab419644e0ad3e50a3e6e"
+      },
+      {
+        "path": "fifo.h",
+        "sha256": "e5e206ab84b589bced8578b8502233551a3ba725a7874e2aaaa856dfd1f85ad6"
+      },
+      {
+        "path": "hdr_dpx.c",
+        "sha256": "655820d0da1f2e68565030fe674eb708e1dc53df231e69c3ed403f1867930f3d"
+      },
+      {
+        "path": "hdr_dpx.h",
+        "sha256": "c8b7a370296ca27f3e5da2941d708254ec0b80a482e766beef1ffffe2a861730"
+      },
+      {
+        "path": "logging.c",
+        "sha256": "9194d16f129d5c92e7fca52a7c34de5d0312f64f33d2e069accc85f33913919c"
+      },
+      {
+        "path": "logging.h",
+        "sha256": "ffe542165809e9c5c77b8c879ef7d53a7df4654f1e3d2b55a5188dba53617043"
+      },
+      {
+        "path": "multiplex.c",
+        "sha256": "ab549255599fbdf1f69dd9fa8013ed39c044c3b8f591b187e2e056a5f1f5ab50"
+      },
+      {
+        "path": "multiplex.h",
+        "sha256": "41a198aa3eaf7bfd38e6591e1a88d5f24b32fce8ba87ccd3f3cd61bbdc313863"
+      },
+      {
+        "path": "psnr.c",
+        "sha256": "331f5e3f4ec62c51a184c1e766d073a348a45301745b06b84dc20cda6ad9e438"
+      },
+      {
+        "path": "psnr.h",
+        "sha256": "68731ffa4e873c2a2ebc0d9cd1f2001ce569ae4afed4cdc4107372bf1b252858"
+      },
+      {
+        "path": "rc_tables.h",
+        "sha256": "5d6d2bd27efb1ebab966aa77fbd047d7dd10bb0deef9603b5a5a66b7a3a22faa"
+      },
+      {
+        "path": "utl.c",
+        "sha256": "c673e2e5cd8dd6c5f91461908f628977644a8ad424d2e8a9fe9ba575bfcbffed"
+      },
+      {
+        "path": "utl.h",
+        "sha256": "15e0c59828db41f2a306fc2d5962f661794a8fa6b2d9d10937d72b50d4ee2f8b"
+      },
+      {
+        "path": "vdo.h",
+        "sha256": "e48d318a5c2d8512d25230cafb74835a135bf8dc89232d1c6ccefcb5ef28ebbc"
+      }
+    ],
+    "status": "OK",
+    "target_profile_sha256": "1e551e958db80751b34fb2cedee3fac4d816486e0d42b3b7414d75d8ba347ade"
+  }
+}

@@ -1,0 +1,444 @@
+{
+  "compiler_command_count": 11,
+  "metadata": {
+    "analysis_command": [
+      "clang -fsyntax-only over every compile_commands.json entry",
+      "clang LibTooling AST Matchers over facts/compile_commands.json",
+      "frama-c -deps -calldeps -main PROFILE_TARGET (profile-selected targets)",
+      "frama-c -eva -main PROFILE_TARGET (profile-selected targets)",
+      "generate compile_commands.json from public Makefile flags"
+    ],
+    "clang_version": "Apple clang version 17.0.0 (clang-1700.6.3.2)",
+    "compile_check_sha256": "e77b1146218bd22946a9993887679393ebcbc9cb27bd0165c70b680ce20a6adb",
+    "compile_check_status": "PASS",
+    "compile_commands_sha256": "56b5e6a919ea0e63fc8c9b8d6068e2d88629e1710ca9f83fbde06e9d433b1ace",
+    "compiler_command_count": 11,
+    "discovered_function_count": 194,
+    "dsc_source_revision": "f26ecb2afa83aa9f0cc608b5b7c2742901ee9207",
+    "focused_targets": [
+      "Qp2Qlevel",
+      "MapQpToQlevel",
+      "QuantizeResidual",
+      "FindResidualSize",
+      "SampToLineBuf",
+      "MaxResidualSize",
+      "GetQpAdjPredSize"
+    ],
+    "frama_c_version": "33.0 (Arsenic)",
+    "frama_excluded_sources": [
+      "cmd_parse.c",
+      "dpx.c",
+      "hdr_dpx.c",
+      "logging.c"
+    ],
+    "function_discovery": {
+      "count": 194,
+      "source": "Clang AST functionDecl(isDefinition())"
+    },
+    "generated_timestamp": "2026-07-31T12:06:12.902507+00:00",
+    "schema_version": 1,
+    "semantic_hash": "cd6f3be6ca8c10ddf68face39b8812d7a45ec8c4ae2f2ef258bee2eca2be695d",
+    "source_file_hashes": [
+      {
+        "path": "cmd_parse.c",
+        "sha256": "aa6f8ca2ed1cd62c73007b920f2561d690643a3a63381c3777d04b1b59c08b01"
+      },
+      {
+        "path": "cmd_parse.h",
+        "sha256": "783c66fb9685bac4c1132fbaa5534fca8e08c37f685b6858a314c268304758ea"
+      },
+      {
+        "path": "codec_main.c",
+        "sha256": "6f10916c2e72e3b6c5e8d578fb607954b6b501f309ba3735f8ec4ec61c689500"
+      },
+      {
+        "path": "dpx.c",
+        "sha256": "cf8b5216b23015de699935536163fc47d8ccf2e42df3e0ae3e85dba6eee6e17d"
+      },
+      {
+        "path": "dpx.h",
+        "sha256": "52770467f510bb6eb8c3e41e58b21ca9986dd048e016f9eeb3b4aed29098e85f"
+      },
+      {
+        "path": "dsc_codec.c",
+        "sha256": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf"
+      },
+      {
+        "path": "dsc_codec.h",
+        "sha256": "561770f192aa494ca033a367b467574acde1299a37a395697ca6afe27a01c4e7"
+      },
+      {
+        "path": "dsc_types.h",
+        "sha256": "ccff4ca7e3d8a043a07525fb140a16a417230ffb9852ef86058b912ccab758f8"
+      },
+      {
+        "path": "dsc_utils.c",
+        "sha256": "8aadcb1ecff2586892f385255a73fea367eec9afb6e14608d1010c08b7aca14e"
+      },
+      {
+        "path": "dsc_utils.h",
+        "sha256": "22ce915ae2aac1c438c2a0c8de5ce07778a1a9c2e1fa3b7b02af1aa35d7aed3f"
+      },
+      {
+        "path": "fifo.c",
+        "sha256": "6a886eaffd01b6651703da54bbb90e9cf77d6503131ab419644e0ad3e50a3e6e"
+      },
+      {
+        "path": "fifo.h",
+        "sha256": "e5e206ab84b589bced8578b8502233551a3ba725a7874e2aaaa856dfd1f85ad6"
+      },
+      {
+        "path": "hdr_dpx.c",
+        "sha256": "655820d0da1f2e68565030fe674eb708e1dc53df231e69c3ed403f1867930f3d"
+      },
+      {
+        "path": "hdr_dpx.h",
+        "sha256": "c8b7a370296ca27f3e5da2941d708254ec0b80a482e766beef1ffffe2a861730"
+      },
+      {
+        "path": "logging.c",
+        "sha256": "9194d16f129d5c92e7fca52a7c34de5d0312f64f33d2e069accc85f33913919c"
+      },
+      {
+        "path": "logging.h",
+        "sha256": "ffe542165809e9c5c77b8c879ef7d53a7df4654f1e3d2b55a5188dba53617043"
+      },
+      {
+        "path": "multiplex.c",
+        "sha256": "ab549255599fbdf1f69dd9fa8013ed39c044c3b8f591b187e2e056a5f1f5ab50"
+      },
+      {
+        "path": "multiplex.h",
+        "sha256": "41a198aa3eaf7bfd38e6591e1a88d5f24b32fce8ba87ccd3f3cd61bbdc313863"
+      },
+      {
+        "path": "psnr.c",
+        "sha256": "331f5e3f4ec62c51a184c1e766d073a348a45301745b06b84dc20cda6ad9e438"
+      },
+      {
+        "path": "psnr.h",
+        "sha256": "68731ffa4e873c2a2ebc0d9cd1f2001ce569ae4afed4cdc4107372bf1b252858"
+      },
+      {
+        "path": "rc_tables.h",
+        "sha256": "5d6d2bd27efb1ebab966aa77fbd047d7dd10bb0deef9603b5a5a66b7a3a22faa"
+      },
+      {
+        "path": "utl.c",
+        "sha256": "c673e2e5cd8dd6c5f91461908f628977644a8ad424d2e8a9fe9ba575bfcbffed"
+      },
+      {
+        "path": "utl.h",
+        "sha256": "15e0c59828db41f2a306fc2d5962f661794a8fa6b2d9d10937d72b50d4ee2f8b"
+      },
+      {
+        "path": "vdo.h",
+        "sha256": "e48d318a5c2d8512d25230cafb74835a135bf8dc89232d1c6ccefcb5ef28ebbc"
+      }
+    ],
+    "status": "OK",
+    "target_profile_sha256": "1e551e958db80751b34fb2cedee3fac4d816486e0d42b3b7414d75d8ba347ade"
+  },
+  "results": [
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-Wall",
+        "-D_FILE_OFFSET_BITS=64",
+        "-I",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "-D__GNUC__=4",
+        "-D__APPLE__",
+        "-isysroot",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk",
+        "-resource-dir",
+        "/Library/Developer/CommandLineTools/usr/lib/clang/17",
+        "-isystem",
+        "/Library/Developer/CommandLineTools/usr/lib/clang/17/include",
+        "-isystem",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include",
+        "-fsyntax-only",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/cmd_parse.c"
+      ],
+      "directory": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+      "file": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/cmd_parse.c",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-Wall",
+        "-D_FILE_OFFSET_BITS=64",
+        "-I",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "-D__GNUC__=4",
+        "-D__APPLE__",
+        "-isysroot",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk",
+        "-resource-dir",
+        "/Library/Developer/CommandLineTools/usr/lib/clang/17",
+        "-isystem",
+        "/Library/Developer/CommandLineTools/usr/lib/clang/17/include",
+        "-isystem",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include",
+        "-fsyntax-only",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c"
+      ],
+      "directory": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+      "file": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-Wall",
+        "-D_FILE_OFFSET_BITS=64",
+        "-I",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "-D__GNUC__=4",
+        "-D__APPLE__",
+        "-isysroot",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk",
+        "-resource-dir",
+        "/Library/Developer/CommandLineTools/usr/lib/clang/17",
+        "-isystem",
+        "/Library/Developer/CommandLineTools/usr/lib/clang/17/include",
+        "-isystem",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include",
+        "-fsyntax-only",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dpx.c"
+      ],
+      "directory": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+      "file": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dpx.c",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-Wall",
+        "-D_FILE_OFFSET_BITS=64",
+        "-I",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "-D__GNUC__=4",
+        "-D__APPLE__",
+        "-isysroot",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk",
+        "-resource-dir",
+        "/Library/Developer/CommandLineTools/usr/lib/clang/17",
+        "-isystem",
+        "/Library/Developer/CommandLineTools/usr/lib/clang/17/include",
+        "-isystem",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include",
+        "-fsyntax-only",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c"
+      ],
+      "directory": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+      "file": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-Wall",
+        "-D_FILE_OFFSET_BITS=64",
+        "-I",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "-D__GNUC__=4",
+        "-D__APPLE__",
+        "-isysroot",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk",
+        "-resource-dir",
+        "/Library/Developer/CommandLineTools/usr/lib/clang/17",
+        "-isystem",
+        "/Library/Developer/CommandLineTools/usr/lib/clang/17/include",
+        "-isystem",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include",
+        "-fsyntax-only",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_utils.c"
+      ],
+      "directory": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+      "file": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_utils.c",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-Wall",
+        "-D_FILE_OFFSET_BITS=64",
+        "-I",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "-D__GNUC__=4",
+        "-D__APPLE__",
+        "-isysroot",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk",
+        "-resource-dir",
+        "/Library/Developer/CommandLineTools/usr/lib/clang/17",
+        "-isystem",
+        "/Library/Developer/CommandLineTools/usr/lib/clang/17/include",
+        "-isystem",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include",
+        "-fsyntax-only",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/fifo.c"
+      ],
+      "directory": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+      "file": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/fifo.c",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-Wall",
+        "-D_FILE_OFFSET_BITS=64",
+        "-I",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "-D__GNUC__=4",
+        "-D__APPLE__",
+        "-isysroot",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk",
+        "-resource-dir",
+        "/Library/Developer/CommandLineTools/usr/lib/clang/17",
+        "-isystem",
+        "/Library/Developer/CommandLineTools/usr/lib/clang/17/include",
+        "-isystem",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include",
+        "-fsyntax-only",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c"
+      ],
+      "directory": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+      "file": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c",
+      "output": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c:90:6: warning: variable 'yidx' set but not used [-Wunused-but-set-variable]\n   90 |         int yidx = 0;\n      |             ^\n/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n3 warnings generated.\n",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-Wall",
+        "-D_FILE_OFFSET_BITS=64",
+        "-I",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "-D__GNUC__=4",
+        "-D__APPLE__",
+        "-isysroot",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk",
+        "-resource-dir",
+        "/Library/Developer/CommandLineTools/usr/lib/clang/17",
+        "-isystem",
+        "/Library/Developer/CommandLineTools/usr/lib/clang/17/include",
+        "-isystem",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include",
+        "-fsyntax-only",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/logging.c"
+      ],
+      "directory": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+      "file": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/logging.c",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-Wall",
+        "-D_FILE_OFFSET_BITS=64",
+        "-I",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "-D__GNUC__=4",
+        "-D__APPLE__",
+        "-isysroot",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk",
+        "-resource-dir",
+        "/Library/Developer/CommandLineTools/usr/lib/clang/17",
+        "-isystem",
+        "/Library/Developer/CommandLineTools/usr/lib/clang/17/include",
+        "-isystem",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include",
+        "-fsyntax-only",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/multiplex.c"
+      ],
+      "directory": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+      "file": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/multiplex.c",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-Wall",
+        "-D_FILE_OFFSET_BITS=64",
+        "-I",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "-D__GNUC__=4",
+        "-D__APPLE__",
+        "-isysroot",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk",
+        "-resource-dir",
+        "/Library/Developer/CommandLineTools/usr/lib/clang/17",
+        "-isystem",
+        "/Library/Developer/CommandLineTools/usr/lib/clang/17/include",
+        "-isystem",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include",
+        "-fsyntax-only",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/psnr.c"
+      ],
+      "directory": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+      "file": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/psnr.c",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-Wall",
+        "-D_FILE_OFFSET_BITS=64",
+        "-I",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "-D__GNUC__=4",
+        "-D__APPLE__",
+        "-isysroot",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk",
+        "-resource-dir",
+        "/Library/Developer/CommandLineTools/usr/lib/clang/17",
+        "-isystem",
+        "/Library/Developer/CommandLineTools/usr/lib/clang/17/include",
+        "-isystem",
+        "/Library/Developer/CommandLineTools/SDKs/MacOSX26.2.sdk/usr/include",
+        "-fsyntax-only",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/utl.c"
+      ],
+      "directory": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+      "file": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/utl.c",
+      "returncode": 0,
+      "status": "PASS"
+    }
+  ],
+  "schema_version": 1,
+  "status": "PASS"
+}

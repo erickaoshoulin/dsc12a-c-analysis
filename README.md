@@ -20,23 +20,30 @@ file. Override the source location without changing the experiment:
 DSC_SOURCE_DIR=/path/to/DSC_model_20210623/source ./run.sh
 ```
 
-The focused targets are `Qp2Qlevel`, `MapQpToQlevel`, `QuantizeResidual`,
-`FindResidualSize`, `SampToLineBuf`, `MaxResidualSize`, and
-`GetQpAdjPredSize`. Clang collects facts for every C function in the generated
-compilation database; Eva and From are run only for those seven entry points.
+Clang discovers every source-defined C function in the generated compilation
+database. `analysis-profile.json` is a declarative scope/profile file only: it
+selects which discovered entry points receive focused Eva/From analysis and
+which discovered functions are compared. It does not define the function
+inventory, and an empty `focused_targets` list makes the Frama-C runner use the
+complete AST-discovered inventory.
 
 ## Method
 
 1. `tools/generate_compile_commands.py` emits a stable `facts/compile_commands.json`
    from the public model's C translation units.
-2. `clang_facts.cpp` uses Clang LibTooling and AST Matchers for function USRs,
+2. `tools/check_compile_commands.py` runs the compiler front end with
+   `-fsyntax-only` for every compilation-database entry. Any failure is an
+   infrastructure failure.
+3. `clang_facts.cpp` uses Clang LibTooling and AST Matchers for every defined
+   function's USR,
    calls, global/field accesses, pointer writes, effects, loops, return
    expressions, constant table initializers, and operator evidence.
-3. `run_frama.py` runs focused Frama-C Eva and From commands. Eva warnings are
+4. `run_frama.py` reads the AST-discovered inventory and the declarative
+   profile, then runs the selected Frama-C Eva and From commands. Eva warnings are
    retained for bounds, shifts, signed overflow, pointer validity, and
    unreachable-branch checks. From output is retained for return and modified
    memory dependencies.
-4. `assemble_facts.py` combines only the tool outputs into JSON facts and
+5. `assemble_facts.py` combines only the tool outputs into JSON facts and
    Markdown reports. It never lexes or parses C text.
 
 The focused Frama-C invocation excludes the command-line/platform glue units
@@ -73,6 +80,8 @@ the run.
 ```text
 facts/
   compile_commands.json
+  compile-check.json
+  discovered-functions.json
   functions.json
   callgraph.json
   field-access.json
@@ -85,13 +94,18 @@ reports/
   candidate-functions.md
   unresolved.md
 summary.json
+analysis-profile.json
+PROMPT.md
 ```
 
 Each JSON file contains `metadata` with the DSC source revision, source file
-hashes, the consumed `compile_commands.json` hash, Clang and Frama-C versions,
-analysis commands, semantic hash, and generated timestamp. `summary.json` also records the Qp2Qlevel/MapQpToQlevel
+hashes, the consumed `compile_commands.json` and compiler-check hashes, Clang
+and Frama-C versions, AST discovery count, analysis commands, semantic hash,
+and generated timestamp. `summary.json` also records the profile-selected
 comparison, quantization-table initialization/use evidence, loop facts, and
-the candidate count gate.
+the candidate count gate. The local reference PDF used for this run is
+`DSC_v1.2a.pdf` (VESA DSC Standard Version 1.2a); the PDF itself is not copied
+into this repository.
 
 ## Limitations
 

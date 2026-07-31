@@ -141588,14 +141588,28 @@
   ],
   "metadata": {
     "analysis_command": [
+      "clang -fsyntax-only over every compile_commands.json entry",
       "clang LibTooling AST Matchers over facts/compile_commands.json",
-      "frama-c -deps -calldeps -main TARGET (focused targets only)",
-      "frama-c -eva -main TARGET (focused targets only)",
+      "frama-c -deps -calldeps -main PROFILE_TARGET (profile-selected targets)",
+      "frama-c -eva -main PROFILE_TARGET (profile-selected targets)",
       "generate compile_commands.json from public Makefile flags"
     ],
     "clang_version": "Apple clang version 17.0.0 (clang-1700.6.3.2)",
+    "compile_check_sha256": "e77b1146218bd22946a9993887679393ebcbc9cb27bd0165c70b680ce20a6adb",
+    "compile_check_status": "PASS",
     "compile_commands_sha256": "56b5e6a919ea0e63fc8c9b8d6068e2d88629e1710ca9f83fbde06e9d433b1ace",
+    "compiler_command_count": 11,
+    "discovered_function_count": 194,
     "dsc_source_revision": "f26ecb2afa83aa9f0cc608b5b7c2742901ee9207",
+    "focused_targets": [
+      "Qp2Qlevel",
+      "MapQpToQlevel",
+      "QuantizeResidual",
+      "FindResidualSize",
+      "SampToLineBuf",
+      "MaxResidualSize",
+      "GetQpAdjPredSize"
+    ],
     "frama_c_version": "33.0 (Arsenic)",
     "frama_excluded_sources": [
       "cmd_parse.c",
@@ -141603,9 +141617,13 @@
       "hdr_dpx.c",
       "logging.c"
     ],
-    "generated_timestamp": "2026-07-31T02:36:47.724514+00:00",
+    "function_discovery": {
+      "count": 194,
+      "source": "Clang AST functionDecl(isDefinition())"
+    },
+    "generated_timestamp": "2026-07-31T12:06:12.902507+00:00",
     "schema_version": 1,
-    "semantic_hash": "653e55f97546ffb65b48737ed555c60fee6a9dd11e2992426e79ef054dec7bc5",
+    "semantic_hash": "cd6f3be6ca8c10ddf68face39b8812d7a45ec8c4ae2f2ef258bee2eca2be695d",
     "source_file_hashes": [
       {
         "path": "cmd_parse.c",
@@ -141704,6 +141722,7 @@
         "sha256": "e48d318a5c2d8512d25230cafb74835a135bf8dc89232d1c6ccefcb5ef28ebbc"
       }
     ],
-    "status": "OK"
+    "status": "OK",
+    "target_profile_sha256": "1e551e958db80751b34fb2cedee3fac4d816486e0d42b3b7414d75d8ba347ade"
   }
 }

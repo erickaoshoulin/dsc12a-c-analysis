@@ -10,20 +10,9 @@ import shlex
 import subprocess
 import sys
 
-
-TARGETS = (
-    "Qp2Qlevel",
-    "MapQpToQlevel",
-    "QuantizeResidual",
-    "FindResidualSize",
-    "SampToLineBuf",
-    "MaxResidualSize",
-    "GetQpAdjPredSize",
-)
-
 # These command-line/platform glue units have host-specific headers or a
 # dynamic DPX layout that Frama-C's parser configuration cannot consume, and
-# none of the focused targets depends on them.
+# the focused entry points do not depend on them.
 # Clang still analyzes every compile_commands.json entry for the complete
 # structural facts; this exclusion is only for the focused Eva/From scope.
 FRAMA_EXCLUDED_SOURCES = {"cmd_parse.c", "dpx.c", "hdr_dpx.c", "logging.c"}
@@ -36,6 +25,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--source-dir", required=True, type=pathlib.Path)
     parser.add_argument("--output-dir", required=True, type=pathlib.Path)
     parser.add_argument("--timeout", required=True, type=int)
+    parser.add_argument("--clang-facts", required=True, type=pathlib.Path)
+    parser.add_argument("--target-profile", required=True, type=pathlib.Path)
     return parser.parse_args()
 
 
@@ -86,6 +77,30 @@ def cpp_extra_args(entries: list[dict]) -> str:
     return shlex.join(flags)
 
 
+def discovered_function_names(path: pathlib.Path) -> list[str]:
+    raw = json.loads(path.resolve().read_text(encoding="utf-8"))
+    names = {
+        function.get("name")
+        for function in raw.get("functions", [])
+        if function.get("name")
+        and function.get("source_file")
+        and not function.get("source_file", "").startswith("<external>/")
+    }
+    return sorted(names)
+
+
+def profile_targets(path: pathlib.Path) -> list[str]:
+    profile = json.loads(path.resolve().read_text(encoding="utf-8"))
+    configured = profile.get("focused_targets", [])
+    if configured is None:
+        configured = []
+    if not isinstance(configured, list) or any(
+        not isinstance(name, str) or not name for name in configured
+    ):
+        raise ValueError("analysis profile focused_targets must be a list of non-empty strings")
+    return list(dict.fromkeys(configured))
+
+
 def run_one(command: list[str], output: pathlib.Path, timeout: int) -> int:
     try:
         completed = subprocess.run(
@@ -117,13 +132,38 @@ def main() -> int:
     sources = command_sources(entries)
     cpp_extra = cpp_extra_args(entries)
 
+    try:
+        discovered = discovered_function_names(args.clang_facts)
+        configured = profile_targets(args.target_profile)
+    except (OSError, ValueError, json.JSONDecodeError) as exc:
+        print(f"could not load AST facts or analysis profile: {exc}", file=sys.stderr)
+        return 2
+    targets = configured or discovered
+    missing = sorted(set(configured) - set(discovered))
+    if missing:
+        print(
+            "analysis profile names were not found in the AST-discovered function inventory: "
+            + ", ".join(missing),
+            file=sys.stderr,
+        )
+        return 2
+    if not targets:
+        print("AST collector discovered no source-defined functions", file=sys.stderr)
+        return 2
+
     manifest = {
-        "targets": list(TARGETS),
+        "targets": targets,
+        "focused_targets": targets,
+        "discovered_functions": discovered,
+        "discovery": {
+            "source": "Clang AST functionDecl(isDefinition())",
+            "count": len(discovered),
+        },
         "excluded_sources": sorted(FRAMA_EXCLUDED_SOURCES),
         "eva": {},
         "from": {},
     }
-    for target in TARGETS:
+    for target in targets:
         eva_log = output_dir / f"{target}.eva.log"
         eva_command = [
             args.frama_c,

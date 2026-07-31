@@ -3,9 +3,10 @@
 set -u
 
 SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
-REPO_DIR="$(CDPATH= cd -- "$SCRIPT_DIR/../.." && pwd)"
+REPO_DIR="$SCRIPT_DIR"
 SOURCE_DIR="${DSC_SOURCE_DIR:-$REPO_DIR/DSC_model_20210623/source}"
 OUTPUT_DIR="$SCRIPT_DIR"
+TARGET_PROFILE="$SCRIPT_DIR/analysis-profile.json"
 PYTHON="${PYTHON:-python3}"
 TIMEOUT_SECONDS="${DSC_ANALYSIS_TIMEOUT_SECONDS:-300}"
 CLANGXX="${CLANGXX:-$(command -v clang++ 2>/dev/null || true)}"
@@ -49,6 +50,8 @@ clear_generated_outputs() {
   rm -f -- \
     "$OUTPUT_DIR/summary.json" \
     "$OUTPUT_DIR/facts/compile_commands.json" \
+    "$OUTPUT_DIR/facts/compile-check.json" \
+    "$OUTPUT_DIR/facts/discovered-functions.json" \
     "$OUTPUT_DIR/facts/functions.json" \
     "$OUTPUT_DIR/facts/callgraph.json" \
     "$OUTPUT_DIR/facts/field-access.json" \
@@ -110,6 +113,15 @@ run_once() {
     return 1
   fi
 
+  local compile_check_raw="$attempt_dir/compile-check.json"
+  if ! "$PYTHON" "$SCRIPT_DIR/tools/check_compile_commands.py" \
+      --compile-commands "$OUTPUT_DIR/facts/compile_commands.json" \
+      --output "$compile_check_raw" \
+      --timeout "$TIMEOUT_SECONDS"; then
+    fail "INFRASTRUCTURE_FAILURE: C compiler front-end check failed; see $compile_check_raw"
+    return 1
+  fi
+
   if [ -z "$LLVM_CONFIG" ] || ! command -v "$LLVM_CONFIG" >/dev/null 2>&1; then
     fail "INFRASTRUCTURE_FAILURE: Clang LibTooling/AST Matchers development package is not installed (llvm-config missing)"
     return 1
@@ -157,7 +169,9 @@ run_once() {
       --compile-commands "$OUTPUT_DIR/facts/compile_commands.json" \
       --source-dir "$SOURCE_DIR" \
       --output-dir "$frama_dir" \
-      --timeout "$TIMEOUT_SECONDS"; then
+      --timeout "$TIMEOUT_SECONDS" \
+      --clang-facts "$raw_json" \
+      --target-profile "$TARGET_PROFILE"; then
     fail "INFRASTRUCTURE_FAILURE: focused Frama-C Eva/From analysis failed or timed out; see $frama_dir"
     return 1
   fi
@@ -170,11 +184,14 @@ run_once() {
       --clang-version "$CLANG_VERSION" \
       --frama-c-version "$FRAMA_VERSION" \
       --compile-commands "$OUTPUT_DIR/facts/compile_commands.json" \
+      --compile-check "$compile_check_raw" \
+      --target-profile "$TARGET_PROFILE" \
       --frama-output-dir "$frama_dir" \
       --analysis-command "generate compile_commands.json from public Makefile flags" \
+      --analysis-command "clang -fsyntax-only over every compile_commands.json entry" \
       --analysis-command "clang LibTooling AST Matchers over facts/compile_commands.json" \
-      --analysis-command "frama-c -eva -main TARGET (focused targets only)" \
-      --analysis-command "frama-c -deps -calldeps -main TARGET (focused targets only)"; then
+      --analysis-command "frama-c -eva -main PROFILE_TARGET (profile-selected targets)" \
+      --analysis-command "frama-c -deps -calldeps -main PROFILE_TARGET (profile-selected targets)"; then
     fail "fact assembly failed"
     return 1
   fi
