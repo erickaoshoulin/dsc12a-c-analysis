@@ -1,0 +1,297 @@
+{
+  "binary": {
+    "path": "source/dsc",
+    "sha256": "1aa30a5c49f7b87bc18c2150f94ad620bc005f3aa935327d63799cb3f674216c",
+    "size_bytes": 246352,
+    "symbols": {
+      "entry_symbols": [
+        "main"
+      ],
+      "raw": "000000010001e5d0 T _AddBits\n000000010001e4ac T _Assert_func\n0000000100002dc0 T _BlockPredSearch\n000000010001e3d4 T _CErr\n00000001000059a4 T _CalcFullnessOffset\n0000000100006a70 T _DSC_Algorithm\n0000000100008840 T _DSC_Decode\n0000000100008820 T _DSC_Encode\n000000010001e314 T _Err\n0000000100000638 T _ErrorHandler\n000000010000174c T _EscapeCodeSize\n0000000100000cac T _EstimateBitsForGroup\n0000000100002d94 T _FindMidpoint\n00000001000015bc T _FindResidualSize\n00000001000067e4 T _FlatnessAdjustment\n000000010001e614 T _GetBits\n00000001000008d4 T _GetQpAdjPredSize\n0000000100001de8 T _HistoryLookup\n0000000100001850 T _IchDecision\n00000001000054d4 T _InitializeDSCState\n0000000100003480 T _IsFlatnessInfoSent\n0000000100001acc T _IsOrigFlatHIndex\n0000000100001ff4 T _IsOrigWithinQerr\n00000001000007a8 T _MapQpToQlevel\n0000000100000848 T _MaxResidualSize\n000000010001e434 T _PErr\n00000001000027dc T _PickBestHistoryValue\n0000000100005b60 T _PopulateOrigLine\n0000000100003f40 T _PredictSize\n0000000100005d28 T _PredictionLoop\n000000010001e7c4 T _ProcessGroupDec\n000000010001e638 T _ProcessGroupEnc\n00000001000128d8 T _Qp2Qlevel\n0000000100024680 S _QuantDivisor\n00000001000246c4 S _QuantOffset\n0000000100000820 T _QuantizeResidual\n0000000100003564 T _RateControl\n00000001000034a4 T _RemoveBitsEncoderBuffer\n000000010000548c T _SampToLineBuf\n0000000100000a20 T _SamplePredict\n000000010001e374 T _UErr\n0000000100002358 T _UpdateHistoryElement\n0000000100002994 T _UpdateICHistory\n0000000100002c54 T _UpdateMidpoint\n0000000100002ab8 T _UseICHistory\n0000000100001764 T _UsingMidpoint\n000000010000479c T _VLCGroup\n0000000100003f5c T _VLCUnit\n000000010000537c T _VLDGroup\n0000000100004b8c T _VLDUnit\n000000010001e4e8 T _WriteEntryToBitstream\n                 U ___assert_rtn\n                 U ___chkstk_darwin\n                 U ___error\n                 U ___sprintf_chk\n                 U ___stack_chk_fail\n                 U ___stack_chk_guard\n                 U ___stderrp\n                 U ___stdoutp\n                 U ___strcat_chk\n                 U ___strcpy_chk\n                 U ___strncat_chk\n                 U ___tolower\n0000000100000000 T __mh_execute_header\n0000000100010554 T _appendarg\n                 U _atoi\n                 U _bzero\n                 U _calloc\n0000000100008860 T _ceil_log2\n000000010000d7e0 T _change_ext\n0000000100012a00 T _check_qp_for_overflow\n0000000100035a60 D _chm_422_420_03\n0000000100035658 D _chm_444_422_03\n000000010000d130 T _chop_dir\n000000010000d070 T _chop_ext\n                 U _closedir\n000000010001e894 T _compute_and_display_PSNR\n0000000100011f48 T _compute_offset\n0000000100012030 T _compute_rc_parameters\n0000000100020160 T _conv\n0000000100023f98 T _convert_rgb_2020_to_709\n00000001000210a0 T _convertbits\n0000000100016a24 T _determine_field_format\n000000010001868c T _dpx_read\n0000000100017fe0 T _dpx_read_hl\n0000000100016ba8 T _dpx_write\n000000010000d38c T _easy_mkdir\n0000000100016b58 T _ends_in_percentd\n                 U _exit\n                 U _fclose\n                 U _feof\n                 U _fflush\n                 U _fgetc\n                 U _fgets\n0000000100019a84 T _fifo_clear\n0000000100019c60 T _fifo_clone\n000000010001a004 T _fifo_flip_get_bits\n000000010001a0d8 T _fifo_flip_put_bits\n0000000100019a94 T _fifo_free\n0000000100019a9c T _fifo_get_bits\n0000000100019a44 T _fifo_init\n0000000100019ba0 T _fifo_put_bits\n000000010000d2a8 T _file_dir\n000000010000d1fc T _file_ext\n                 U _fopen\n                 U _fprintf\n                 U _fputc\n                 U _fread\n                 U _free\n                 U _fscanf\n                 U _fseek\n                 U _fseeko\n                 U _ftell\n                 U _ftello\n                 U _fwrite\n0000000100035ec8 S _g_fp_dbg\n0000000100035ed0 S _g_verbose\n0000000100013040 T _generate_rc_parameters\n0000000100008950 T _getbits\n0000000100022084 T _gettoken\n0000000100035f68 S _global_verbose_level\n000000010000cfd4 T _has_ext\n000000010001c9e8 T _hdr_dpx_byte_swap\n000000010001cc6c T _hdr_dpx_compute_offsets\n000000010001adcc T _hdr_dpx_create_pic\n000000010001e1c8 T _hdr_dpx_determine_file_type\n000000010001cd10 T _hdr_dpx_fill_core_fields\n000000010001bdc4 T _hdr_dpx_get_datum\n000000010001be78 T _hdr_dpx_get_pic_data\n000000010001b334 T _hdr_dpx_map_datum_to_pic\n000000010001b96c T _hdr_dpx_pic_to_datum_list\n000000010001dd5c T _hdr_dpx_read\n000000010001a1b4 T _hdr_dpx_rle_encode\n000000010001d624 T _hdr_dpx_write\n00000001000106a8 T _line_to_int\n                 U _log10\n000000010000d7a0 T _lower_case\n0000000100014258 T _main\n0000000100010750 T _make_qp_table\n0000000100010828 T _make_qp_tables\n                 U _malloc\n0000000100034ac8 D _maxqp420_10b\n0000000100034bb8 D _maxqp420_12b\n00000001000349d8 D _maxqp420_8b\n00000001000347f8 D _maxqp422_10b\n00000001000348e8 D _maxqp422_12b\n0000000100034708 D _maxqp422_8b\n0000000100034528 D _maxqp444_10b\n0000000100034618 D _maxqp444_12b\n0000000100034438 D _maxqp444_8b\n0000000100035ed8 S _maxqp_420\n0000000100035ef0 S _maxqp_422\n0000000100035f08 S _maxqp_444\n                 U _memcpy\n                 U _memmove\n                 U _memset\n                 U _memset_pattern16\n000000010000eef0 T _merge_cmd_args\n0000000100034a50 D _minqp420_10b\n0000000100034b40 D _minqp420_12b\n0000000100034960 D _minqp420_8b\n0000000100034780 D _minqp422_10b\n0000000100034870 D _minqp422_12b\n0000000100034690 D _minqp422_8b\n00000001000344b0 D _minqp444_10b\n00000001000345a0 D _minqp444_12b\n00000001000343c0 D _minqp444_8b\n0000000100035f20 S _minqp_420\n0000000100035f38 S _minqp_422\n0000000100035f50 S _minqp_444\n                 U _opendir\n000000010001f340 T _palloc\n000000010000f884 T _parse_cmd\n000000010000fe8c T _parse_cmd_strict\n000000010000fee8 T _parse_cmd_usage\n00000001000101d8 T _parse_key_usage\n000000010000efdc T _parse_line\n000000010001017c T _parse_line_strict\n000000010000920c T _parse_pps\n0000000100023970 T _pcopy\n000000010001f7f0 T _pcopy_header\n000000010001f3f0 T _pcreate\n000000010001f534 T _pcreate_ext\n000000010001f824 T _pdestroy\n                 U _perror\n00000001000136fc T _populate_pps\n0000000100022b14 T _ppm_read\n0000000100022cf4 T _ppm_write\n000000010000b1ec T _print_pps\n000000010000bcd4 T _print_pps_v2\n                 U _printf\n0000000100008884 T _putbits\n                 U _putchar\n                 U _puts\n00000001000340d0 D _qlevel_chroma_10bpc\n0000000100034180 D _qlevel_chroma_12bpc\n0000000100034250 D _qlevel_chroma_14bpc\n0000000100034340 D _qlevel_chroma_16bpc\n0000000100034040 D _qlevel_chroma_8bpc\n0000000100034080 D _qlevel_luma_10bpc\n0000000100034120 D _qlevel_luma_12bpc\n00000001000341e0 D _qlevel_luma_14bpc\n00000001000342c0 D _qlevel_luma_16bpc\n0000000100034000 D _qlevel_luma_8bpc\n0000000100017f34 T _read_dpx\n0000000100011b9c T _read_dsc_data\n0000000100022188 T _readppm\n                 U _realloc\n0000000100010610 T _retrieve_cmds_var\n0000000100010578 T _retrieve_keys_var\n0000000100008a04 T _rgb2ycocg\n000000010001fa04 T _rgb2yuv\n0000000100035e68 D _rgb_2020_709\n0000000100023d04 T _rgba_read\n0000000100021094 T _set_convertbits_rounding\n0000000100011460 T _set_defaults\n0000000100019a38 T _set_dpx_colorspace\n0000000100008ec4 T _simple422to444\n0000000100009074 T _simple444to422\n00000001000116e8 T _split_base_and_ext\n000000010000d808 T _splitstring\n000000010000d870 T _splitstring_exact\n000000010000d8c8 T _splitstring_exact_strict\n000000010000de44 T _str2d\n000000010000e1b4 T _str2dim\n000000010000edac T _str2dvect\n000000010000dddc T _str2f\n000000010000e27c T _str2fdim\n000000010000dfe0 T _str2frange\n000000010000ec64 T _str2fvect\n000000010000d93c T _str2i\n000000010000e3ac T _str2ivect\n000000010000d9e8 T _str2l\n000000010000db50 T _str2ll\n000000010000e97c T _str2llvect\n000000010000e694 T _str2lvect\n000000010000da90 T _str2p\n000000010000e0ec T _str2pdim\n000000010000dea8 T _str2prange\n000000010000e4a4 T _str2pvect\n000000010000df44 T _str2range\n000000010000dbf8 T _str2ui\n000000010000e59c T _str2uivect\n000000010000dc9c T _str2ul\n000000010000dd3c T _str2ull\n000000010000eaf0 T _str2ullvect\n000000010000e808 T _str2ulvect\n                 U _strcat\n                 U _strcmp\n                 U _strcpy\n                 U _strcspn\n000000010000d6dc T _strisdim\n000000010000d530 T _strisnum\n000000010000d600 T _strisrange\n                 U _strlen\n                 U _strncpy\n                 U _strrchr\n                 U _strspn\n                 U _strstr\n                 U _strtod\n                 U _strtoll\n                 U _strtoull\n                 U _system\n0000000100011690 T _usage\n0000000100022f30 T _uyvy_read\n0000000100023530 T _uyvy_write\n                 U _vfprintf\n0000000100017f04 T _write_dpx\n0000000100016bf8 T _write_dpx_ver\n00000001000117d4 T _write_dsc_data\n0000000100009534 T _write_pps\n0000000100022b68 T _writeppm\n0000000100008c54 T _ycocg2rgb\n000000010001fdc0 T _yuv2rgb\n0000000100020e1c T _yuv_420_422\n0000000100020a54 T _yuv_422_420\n0000000100020200 T _yuv_422_444\n00000001000091d4 T _yuv_422_444_region\n0000000100020550 T _yuv_444_422\n00000001000091f0 T _yuv_444_422_region\n0000000100023124 T _yuv_read\n00000001000236a4 T _yuv_write\n",
+      "status": "PASS"
+    }
+  },
+  "commands": [
+    {
+      "command": [
+        "make",
+        "-j1",
+        "-C",
+        "<build-copy>/source",
+        "clean"
+      ],
+      "duration_seconds": 0.014,
+      "log": "make-clean.log",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "make",
+        "-j1",
+        "-C",
+        "<build-copy>/source"
+      ],
+      "duration_seconds": 1.658,
+      "log": "make-build.log",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "<build-copy>/bittrue_smoke/run_c_baseline.sh"
+      ],
+      "duration_seconds": 1.997,
+      "log": "smoke.log",
+      "returncode": 0,
+      "status": "PASS"
+    }
+  ],
+  "copy_excluded_paths": [
+    ".git",
+    "bittrue_smoke/out",
+    "dsc-rs",
+    "operator_bittrue"
+  ],
+  "copy_excludes": [
+    ".git",
+    "__pycache__",
+    "build",
+    "dsc-rs",
+    "operator_bittrue",
+    "out",
+    "target"
+  ],
+  "do_not_edit": true,
+  "metadata": {
+    "analysis_command": [
+      "Clang LibTooling AST Matchers over every compile_commands.json entry",
+      "Frama-C Eva and From on the top-ranked tool-selected candidates",
+      "deterministic PDF anchors and C model-note links; no LLM calls",
+      "discover local PDF and C model by metadata/source gates",
+      "make -j1 clean then make -j1 and run bittrue C smoke in an isolated copy",
+      "rank production/output-contributing bounded candidates without a function-name allowlist"
+    ],
+    "binary_sha256": "1aa30a5c49f7b87bc18c2150f94ad620bc005f3aa935327d63799cb3f674216c",
+    "build_receipt_sha256": "dfaee4a5f1dc607d5a20441f6945f7180b9c0ee48c033b273ffda92ce85fe828",
+    "build_status": "PASS",
+    "candidate_receipt_sha256": "97f6a5455ec94fe9c09f0595dc59e6127f19887d4707b690309ee3732a6c4cba",
+    "candidate_selection": {
+      "boundary_root_usrs": [
+        "c:@F@DSC_Algorithm",
+        "c:@F@DSC_Decode",
+        "c:@F@DSC_Encode"
+      ],
+      "criteria": [
+        "production_reachable",
+        "contributes_to_observable_output",
+        "no_direct_or_transitive_state_write",
+        "no_io_allocation_or_logging",
+        "bounded_computation"
+      ],
+      "entry_symbols": [
+        "main"
+      ],
+      "method": "linked_executable_entry_symbols",
+      "output_sink_usrs": [
+        "c:@F@hdr_dpx_write",
+        "c:@F@write_dpx_ver"
+      ],
+      "root_usrs": [
+        "c:@F@main"
+      ],
+      "top_n": 10
+    },
+    "clang_version": "Apple clang version 17.0.0 (clang-1700.6.3.2)",
+    "compile_check_sha256": "e77b1146218bd22946a9993887679393ebcbc9cb27bd0165c70b680ce20a6adb",
+    "compile_check_status": "PASS",
+    "compile_commands_sha256": "56b5e6a919ea0e63fc8c9b8d6068e2d88629e1710ca9f83fbde06e9d433b1ace",
+    "compiler_command_count": 11,
+    "discovered_function_count": 194,
+    "do_not_edit": true,
+    "dsc_source_revision": "f26ecb2afa83aa9f0cc608b5b7c2742901ee9207",
+    "frama_c_version": "33.0 (Arsenic)",
+    "frama_excluded_sources": [
+      "cmd_parse.c",
+      "dpx.c",
+      "hdr_dpx.c",
+      "logging.c"
+    ],
+    "frama_targets": [
+      "FindMidpoint",
+      "IsFlatnessInfoSent",
+      "MapQpToQlevel",
+      "PredictSize",
+      "QuantizeResidual",
+      "SampToLineBuf",
+      "SamplePredict",
+      "EscapeCodeSize",
+      "MaxResidualSize",
+      "GetQpAdjPredSize"
+    ],
+    "function_discovery": {
+      "count": 194,
+      "source": "Clang AST functionDecl(isDefinition())"
+    },
+    "generated_timestamp": "2026-08-01T14:03:19.965036+00:00",
+    "input_manifest_sha256": "c1cf90cdd06ff4afd38b80de7cfc476944d708d1c15cb0ee9b372e3cc254cb6b",
+    "schema_version": 2,
+    "semantic_hash": "88dec0a2317c112a5cc36ded8319664c5d60ec4f939722210dcff1cc80ff7c44",
+    "source_file_hashes": [
+      {
+        "path": "cmd_parse.c",
+        "sha256": "aa6f8ca2ed1cd62c73007b920f2561d690643a3a63381c3777d04b1b59c08b01"
+      },
+      {
+        "path": "cmd_parse.h",
+        "sha256": "783c66fb9685bac4c1132fbaa5534fca8e08c37f685b6858a314c268304758ea"
+      },
+      {
+        "path": "codec_main.c",
+        "sha256": "6f10916c2e72e3b6c5e8d578fb607954b6b501f309ba3735f8ec4ec61c689500"
+      },
+      {
+        "path": "dpx.c",
+        "sha256": "cf8b5216b23015de699935536163fc47d8ccf2e42df3e0ae3e85dba6eee6e17d"
+      },
+      {
+        "path": "dpx.h",
+        "sha256": "52770467f510bb6eb8c3e41e58b21ca9986dd048e016f9eeb3b4aed29098e85f"
+      },
+      {
+        "path": "dsc_codec.c",
+        "sha256": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf"
+      },
+      {
+        "path": "dsc_codec.h",
+        "sha256": "561770f192aa494ca033a367b467574acde1299a37a395697ca6afe27a01c4e7"
+      },
+      {
+        "path": "dsc_types.h",
+        "sha256": "ccff4ca7e3d8a043a07525fb140a16a417230ffb9852ef86058b912ccab758f8"
+      },
+      {
+        "path": "dsc_utils.c",
+        "sha256": "8aadcb1ecff2586892f385255a73fea367eec9afb6e14608d1010c08b7aca14e"
+      },
+      {
+        "path": "dsc_utils.h",
+        "sha256": "22ce915ae2aac1c438c2a0c8de5ce07778a1a9c2e1fa3b7b02af1aa35d7aed3f"
+      },
+      {
+        "path": "fifo.c",
+        "sha256": "6a886eaffd01b6651703da54bbb90e9cf77d6503131ab419644e0ad3e50a3e6e"
+      },
+      {
+        "path": "fifo.h",
+        "sha256": "e5e206ab84b589bced8578b8502233551a3ba725a7874e2aaaa856dfd1f85ad6"
+      },
+      {
+        "path": "hdr_dpx.c",
+        "sha256": "655820d0da1f2e68565030fe674eb708e1dc53df231e69c3ed403f1867930f3d"
+      },
+      {
+        "path": "hdr_dpx.h",
+        "sha256": "c8b7a370296ca27f3e5da2941d708254ec0b80a482e766beef1ffffe2a861730"
+      },
+      {
+        "path": "logging.c",
+        "sha256": "9194d16f129d5c92e7fca52a7c34de5d0312f64f33d2e069accc85f33913919c"
+      },
+      {
+        "path": "logging.h",
+        "sha256": "ffe542165809e9c5c77b8c879ef7d53a7df4654f1e3d2b55a5188dba53617043"
+      },
+      {
+        "path": "multiplex.c",
+        "sha256": "ab549255599fbdf1f69dd9fa8013ed39c044c3b8f591b187e2e056a5f1f5ab50"
+      },
+      {
+        "path": "multiplex.h",
+        "sha256": "41a198aa3eaf7bfd38e6591e1a88d5f24b32fce8ba87ccd3f3cd61bbdc313863"
+      },
+      {
+        "path": "psnr.c",
+        "sha256": "331f5e3f4ec62c51a184c1e766d073a348a45301745b06b84dc20cda6ad9e438"
+      },
+      {
+        "path": "psnr.h",
+        "sha256": "68731ffa4e873c2a2ebc0d9cd1f2001ce569ae4afed4cdc4107372bf1b252858"
+      },
+      {
+        "path": "rc_tables.h",
+        "sha256": "5d6d2bd27efb1ebab966aa77fbd047d7dd10bb0deef9603b5a5a66b7a3a22faa"
+      },
+      {
+        "path": "utl.c",
+        "sha256": "c673e2e5cd8dd6c5f91461908f628977644a8ad424d2e8a9fe9ba575bfcbffed"
+      },
+      {
+        "path": "utl.h",
+        "sha256": "15e0c59828db41f2a306fc2d5962f661794a8fa6b2d9d10937d72b50d4ee2f8b"
+      },
+      {
+        "path": "vdo.h",
+        "sha256": "e48d318a5c2d8512d25230cafb74835a135bf8dc89232d1c6ccefcb5ef28ebbc"
+      }
+    ],
+    "source_git": {
+      "branch": "codex/operator-bittrue-coverage",
+      "commit": "f26ecb2afa83aa9f0cc608b5b7c2742901ee9207",
+      "remote_origin": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port.git",
+      "root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
+      "status_porcelain": ""
+    },
+    "source_hashes_sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+    "spec_pdf_sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+    "status": "OK",
+    "traceability_counts": {
+      "comment_count": 343,
+      "exact_count": 0,
+      "heading_anchor_count": 182,
+      "link_count": 59,
+      "model_note_count": 28,
+      "proposed_count": 59,
+      "reviewed_count": 0,
+      "spec_anchor_count": 327,
+      "stale_count": 0,
+      "untraced_production_function_count": 112,
+      "untraced_spec_anchor_count": 153
+    },
+    "traceability_sha256": "f80c37857195e053d85ae0af3be8c425df945a44f631847493d462a34c340116"
+  },
+  "model_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
+  "schema_version": 2,
+  "smoke": {
+    "expected_hash": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+    "mode": "bittrue_smoke/run_c_baseline.sh",
+    "outputs": [
+      {
+        "path": "bittrue_smoke/out/log.txt",
+        "sha256": "cef42f83b1ccbbac96c99fb68106d1a214c2f158057450483a5ad4e84ea44c20",
+        "size_bytes": 199
+      },
+      {
+        "path": "bittrue_smoke/out/simple_192x108.dsc",
+        "sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+        "size_bytes": 31236
+      },
+      {
+        "path": "bittrue_smoke/out/simple_192x108.dsc.sha256",
+        "sha256": "bae2de0d6f62d670d2ca4a4dd93183098a623329fcab25de65d9cc1cf6959676",
+        "size_bytes": 201
+      }
+    ]
+  },
+  "status": "PASS",
+  "tool_versions": {
+    "cc": "Apple clang version 17.0.0 (clang-1700.6.3.2)",
+    "make": "GNU Make 3.81",
+    "nm": "llvm-nm, compatible with GNU nm"
+  },
+  "warnings": [
+    "hdr_dpx.c:90:6: warning: variable 'yidx' set but not used [-Wunused-but-set-variable]",
+    "hdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]",
+    "hdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]"
+  ]
+}

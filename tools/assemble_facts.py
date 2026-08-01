@@ -44,7 +44,10 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--frama-c-version", required=True)
     parser.add_argument("--compile-commands", required=True, type=pathlib.Path)
     parser.add_argument("--compile-check", required=True, type=pathlib.Path)
-    parser.add_argument("--target-profile", required=True, type=pathlib.Path)
+    parser.add_argument("--input-manifest", required=True, type=pathlib.Path)
+    parser.add_argument("--build-receipt", required=True, type=pathlib.Path)
+    parser.add_argument("--candidates", required=True, type=pathlib.Path)
+    parser.add_argument("--traceability", required=True, type=pathlib.Path)
     parser.add_argument("--analysis-command", action="append", default=[])
     parser.add_argument("--frama-output-dir", required=True, type=pathlib.Path)
     return parser.parse_args()
@@ -102,35 +105,6 @@ def unique_sorted(values: list[Any], key=None) -> list[Any]:
     for value in values:
         result[key(value)] = value
     return [result[item] for item in sorted(result)]
-
-
-def load_analysis_profile(path: pathlib.Path) -> dict[str, Any]:
-    profile = json.loads(path.resolve().read_text(encoding="utf-8"))
-    focused_targets = profile.get("focused_targets", [])
-    comparison_pairs = profile.get("comparison_pairs", [])
-    table_users = profile.get("table_users", [])
-    if focused_targets is None:
-        focused_targets = []
-    if not isinstance(focused_targets, list) or any(
-        not isinstance(name, str) or not name for name in focused_targets
-    ):
-        raise ValueError("focused_targets must be a list of non-empty strings")
-    if not isinstance(comparison_pairs, list) or any(
-        not isinstance(pair, list)
-        or len(pair) != 2
-        or any(not isinstance(name, str) or not name for name in pair)
-        for pair in comparison_pairs
-    ):
-        raise ValueError("comparison_pairs must contain pairs of function names")
-    if not isinstance(table_users, list) or any(
-        not isinstance(name, str) or not name for name in table_users
-    ):
-        raise ValueError("table_users must be a list of non-empty strings")
-    return {
-        "focused_targets": list(dict.fromkeys(focused_targets)),
-        "comparison_pairs": [list(pair) for pair in comparison_pairs],
-        "table_users": list(dict.fromkeys(table_users)),
-    }
 
 
 def parse_eva(path: pathlib.Path, function_name: str) -> dict[str, Any]:
@@ -390,7 +364,7 @@ def normalize_function(
 
 
 def build_field_facts(
-    functions: list[dict[str, Any]], focused_targets: list[str]
+    functions: list[dict[str, Any]], production_usrs: set[str]
 ) -> list[dict[str, Any]]:
     fields: dict[tuple[str, str], dict[str, Any]] = {}
     for function in functions:
@@ -428,31 +402,20 @@ def build_field_facts(
                 role = "FUNCTION_INPUT_CONFIGURATION_FIELD"
             item["role_proposal"] = role
             item["evidence"].append("Role is derived from this field's individual read/write sites")
-        elif item["record"] == "dsc_state_t" and item["field"] in {
-            "quantTableLuma",
-            "quantTableChroma",
-        }:
-            item["role_proposal"] = "CONSTANT_TABLE_POINTER"
-            item["evidence"].extend(
-                [
-                    "Field is assigned by InitializeDSCState to a qlevel_* table",
-                    "Field is indexed by MapQpToQlevel",
-                ]
-            )
         elif item["record"] == "dsc_state_t":
             target_access = any(
-                consumer["function"] in focused_targets
+                consumer["clang_usr"] in production_usrs
                 for consumer in [*item["read_by"], *item["written_by"]]
             )
             if target_access:
                 item["role_proposal"] = "RUNTIME_STATE_INPUT_CANDIDATE"
                 item["evidence"].append(
-                    "Field is accessed by a focused codec helper; this is a dataflow role proposal, not a sequential-hardware claim"
+                    "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
                 )
             else:
                 item["role_proposal"] = "MODEL_ONLY_OR_RUNTIME_UNKNOWN"
                 item["evidence"].append(
-                    "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+                    "Field is outside the production-reachable access path; AST alone does not prove model-only versus runtime state"
                 )
         else:
             item["role_proposal"] = "UNKNOWN"
@@ -493,9 +456,9 @@ def component_loop_evidence(functions: list[dict[str, Any]]) -> list[dict[str, A
 def table_ranges(raw_globals: dict[str, Any]) -> list[dict[str, Any]]:
     result = []
     for item in raw_globals.values():
-        if not re.fullmatch(r"qlevel_(?:luma|chroma)_\d+bpc", item.get("name", "")):
-            continue
         values = item.get("constant_values", [])
+        if not item.get("is_array", item.get("array_size") is not None) or not values:
+            continue
         result.append(
             {
                 "table": item["name"],
@@ -503,7 +466,7 @@ def table_ranges(raw_globals: dict[str, Any]) -> list[dict[str, Any]]:
                 "line": item.get("line", 0),
                 "array_size": item.get("array_size"),
                 "value_range": [min(values), max(values)] if values else "UNKNOWN",
-                "evidence": "Clang evaluated the constant initializer list",
+                "evidence": "Clang evaluated the constant initializer list for an array global",
             }
         )
     return sorted(result, key=lambda value: value["table"])
@@ -512,14 +475,9 @@ def table_ranges(raw_globals: dict[str, Any]) -> list[dict[str, Any]]:
 def range_facts(
     functions: list[dict[str, Any]],
     raw_globals: dict[str, Any],
-    table_users: list[str],
 ) -> list[dict[str, Any]]:
     tables = table_ranges(raw_globals)
-    table_max = max((item["array_size"] for item in tables if isinstance(item["array_size"], int)), default=None)
-    table_value_max = max(
-        (item["value_range"][1] for item in tables if isinstance(item["value_range"], list)),
-        default=None,
-    )
+    table_names = {item["table"] for item in tables}
     result = []
     for function in functions:
         eva = function.get("analysis", {}).get("eva", {})
@@ -533,6 +491,13 @@ def range_facts(
                     "status": "EVA_RANGE" if name in eva.get("parameter_ranges", {}) else "UNKNOWN",
                 }
             )
+        used_tables = sorted(
+            {
+                access.get("name", "")
+                for access in function.get("globals_read", [])
+                if access.get("name", "") in table_names
+            }
+        )
         item = {
             "function": function["name"],
             "clang_usr": function["clang_usr"],
@@ -540,37 +505,15 @@ def range_facts(
             "return": eva.get("return_range", "UNKNOWN"),
             "eva_values": eva.get("values", {}),
             "eva_checks": eva.get("checks", {name: "UNKNOWN" for name in CHECK_PATTERNS}),
-            "table_ranges": tables if function["name"] in table_users else [],
+            "table_ranges": [table for table in tables if table["table"] in used_tables],
             "proposals": [],
         }
-        if function["name"] in table_users:
-            qp = next((value for value in parameters if value["name"] == "qp"), None)
-            cpnt = next((value for value in parameters if value["name"] in {"cpnt", "CType"}), None)
-            if qp is not None:
-                qp["source_index_safety_proposal"] = {
-                    "range": [0, table_max - 1] if table_max else "UNKNOWN",
-                    "status": "PROPOSAL_NOT_PROVEN_BY_EVA",
-                    "evidence": "qlevel_* table sizes bound safe indices; the function has no C precondition",
-                }
-            if cpnt is not None:
-                modulo_evidence = [
-                    item.get("expression", "UNKNOWN")
-                    for item in function.get("operators", [])
-                    if item.get("operator") == "%"
-                ]
-                cpnt["source_range_proposal"] = {
-                    "range": [0, 3],
-                    "status": "UNKNOWN_UNPROVEN_DIRECTLY",
-                    "evidence": "caller loop evidence may cover 0..2 or 0..3; direct entry has no cpnt precondition",
-                    "modulo_operator_preserved": bool(modulo_evidence),
-                    "modulo_expressions": modulo_evidence,
-                }
-            item["qlevel_source_value_range"] = {
-                "range": [0, table_value_max] if table_value_max is not None else "UNKNOWN",
-                "status": "CLANG_CONSTANT_INITIALIZER_RANGE",
-                "evidence": "qlevel_luma_* and qlevel_chroma_* initializers",
+        if used_tables:
+            item["table_use"] = {
+                "tables": used_tables,
+                "status": "CLANG_GLOBAL_READ",
+                "evidence": "The function reads a constant-initializer array global",
             }
-            item["cpnt_simplification"] = "NOT_PROPOSED: cpnt % 3 is retained until a caller-specific range is proven"
         result.append(item)
     return result
 
@@ -628,7 +571,7 @@ def markdown_function_summary(functions: list[dict[str, Any]]) -> str:
     lines = [
         "# Function summary",
         "",
-        "Facts are from Clang LibTooling/AST Matchers and focused Frama-C Eva/From runs.",
+        "Facts are from Clang LibTooling/AST Matchers and Frama-C runs selected by the auto-ranked candidate receipt.",
         "A proposal is not a hardware equivalence claim.",
         "",
     ]
@@ -712,15 +655,13 @@ def markdown_field_summary(fields: list[dict[str, Any]], functions: list[dict[st
         [
             "## dsc_state_t role split",
             "",
-            "- `quantTableLuma` and `quantTableChroma`: constant-table pointer proposal; initialization and indexed use are explicit in the facts.",
-            "- Focused-helper state fields: runtime-state input candidate based on observed access sites; fields outside that path remain model-only-or-runtime UNKNOWN.",
+            "- Constant-initializer array globals and their pointer uses are recorded in `value-ranges.json` and field facts.",
+            "- Production-reachable state fields: runtime-state input candidate based on observed access sites; fields outside that path remain model-only-or-runtime UNKNOWN.",
             "- This report does not infer sequential hardware from state access.",
             "",
             "## Quant table initialization and use",
             "",
-            "- `InitializeDSCState` writes the two table pointers for each bits-per-component table family.",
-            "- `MapQpToQlevel` reads the selected table pointer at `[qp]` and applies the component/mode branch.",
-            "- `Qp2Qlevel` reads the global `qlevel_*` tables directly after selecting by `bits_per_component`.",
+            "- Constant-initializer table declarations, observed readers, and value ranges are emitted without a function-name allowlist.",
             "",
         ]
     )
@@ -779,7 +720,7 @@ def markdown_unresolved(functions: list[dict[str, Any]], metadata: dict[str, Any
             "",
             "- Eva checks report `NO_ALARM_OBSERVED_NOT_PROOF` when no matching alarm was emitted.",
             "- Direct entry-point ranges for pointer/struct parameters may remain UNKNOWN without an ACSL contract.",
-            "- `cpnt % 3` is retained; no modulo simplification is proposed without a caller-specific range proof.",
+            "- Modulo behavior is retained; no simplification is proposed without a caller-specific range proof.",
             "- From text is retained as raw log names and only normalized when a dependency line is emitted.",
             "- This experiment does not analyze sequential hardware or call an LLM.",
         ]
@@ -790,20 +731,22 @@ def markdown_unresolved(functions: list[dict[str, Any]], metadata: dict[str, Any
 def main() -> int:
     args = parse_args()
     try:
-        raw = json.loads(args.raw.read_text(encoding="utf-8"))
-        profile = load_analysis_profile(args.target_profile)
-        compile_check = json.loads(
-            args.compile_check.resolve().read_text(encoding="utf-8")
-        )
+        raw = json.loads(args.raw.resolve().read_text(encoding="utf-8"))
+        compile_check = json.loads(args.compile_check.resolve().read_text(encoding="utf-8"))
+        input_manifest = json.loads(args.input_manifest.resolve().read_text(encoding="utf-8"))
+        build_receipt = json.loads(args.build_receipt.resolve().read_text(encoding="utf-8"))
+        candidate_payload = json.loads(args.candidates.resolve().read_text(encoding="utf-8"))
+        traceability_payload = json.loads(args.traceability.resolve().read_text(encoding="utf-8"))
     except (OSError, ValueError, json.JSONDecodeError) as exc:
         print(f"could not load analysis inputs: {exc}", file=sys.stderr)
         return 2
     if compile_check.get("status") != "PASS":
         print("C compiler front-end receipt is not PASS", file=sys.stderr)
         return 2
-    focused_targets = profile["focused_targets"]
-    comparison_pairs = profile["comparison_pairs"]
-    table_users = profile["table_users"]
+    if build_receipt.get("status") != "PASS":
+        print("C model build receipt is not PASS", file=sys.stderr)
+        return 2
+
     source_dir = args.source_dir.resolve()
     output_dir = args.output_dir.resolve()
     facts_dir = output_dir / "facts"
@@ -813,46 +756,55 @@ def main() -> int:
 
     raw_globals = raw.get("global_declarations", [])
     globals_by_usr = {item.get("clang_usr", "UNKNOWN"): item for item in raw_globals}
-    source_functions = [
-        function
-        for function in raw.get("functions", [])
-        if function.get("source_file") and not function.get("source_file", "").startswith("<external>/")
-    ]
     source_functions = unique_sorted(
-        source_functions,
-        key=lambda item: (item.get("clang_usr", ""), item.get("source_file", ""), item.get("line", 0)),
+        [
+            function
+            for function in raw.get("functions", [])
+            if function.get("source_file")
+            and not function.get("source_file", "").startswith("<external>/")
+        ],
+        key=lambda item: (
+            item.get("clang_usr", ""),
+            item.get("source_file", ""),
+            item.get("line", 0),
+        ),
     )
     frama_manifest_path = args.frama_output_dir / "manifest.json"
-    if frama_manifest_path.is_file():
-        frama_manifest = json.loads(frama_manifest_path.read_text(encoding="utf-8"))
-    else:
-        frama_manifest = {}
-    if not focused_targets:
-        focused_targets = list(frama_manifest.get("targets", []))
-
+    frama_manifest = (
+        json.loads(frama_manifest_path.read_text(encoding="utf-8"))
+        if frama_manifest_path.is_file()
+        else {}
+    )
+    analysis_targets = list(frama_manifest.get("targets", []))
     eva_by_function = {
         target: parse_eva(args.frama_output_dir / f"{target}.eva.log", target)
-        for target in focused_targets
+        for target in analysis_targets
     }
     from_by_function = {
         target: parse_from(args.frama_output_dir / f"{target}.from.log", target)
-        for target in focused_targets
+        for target in analysis_targets
     }
     normalized = []
     for function in source_functions:
-        target = function.get("name")
+        name = function.get("name")
         normalized.append(
             normalize_function(
                 function,
-                eva_by_function.get(target, {"status": "UNKNOWN", "values": {}}),
-                from_by_function.get(target, {"status": "UNKNOWN"}),
+                eva_by_function.get(name, {"status": "UNKNOWN", "values": {}}),
+                from_by_function.get(name, {"status": "UNKNOWN"}),
                 globals_by_usr,
             )
         )
     normalized.sort(key=lambda item: (item["name"], item["source_file"], item["line"], item["clang_usr"]))
 
-    fields = build_field_facts(normalized, focused_targets)
-    ranges = range_facts(normalized, globals_by_usr, table_users)
+    candidate_records = candidate_payload.get("functions", [])
+    production_usrs = {
+        item.get("clang_usr")
+        for item in candidate_records
+        if item.get("production_reachable")
+    }
+    fields = build_field_facts(normalized, production_usrs)
+    ranges = range_facts(normalized, globals_by_usr)
     dependencies = dependency_facts(normalized)
     edges = unique_sorted(
         raw.get("edges", []),
@@ -868,6 +820,7 @@ def main() -> int:
             "name": function["name"],
             "source_file": function["source_file"],
             "line": function["line"],
+            "end_line": function.get("end_line", function["line"]),
         }
         for function in normalized
     ]
@@ -879,6 +832,8 @@ def main() -> int:
             "source_file": function.get("source_file", "UNKNOWN"),
             "line": function.get("line", 0),
             "column": function.get("column", 0),
+            "end_line": function.get("end_line", function.get("line", 0)),
+            "end_column": function.get("end_column", function.get("column", 0)),
         }
         for function in source_functions
     ]
@@ -891,43 +846,51 @@ def main() -> int:
             item["clang_usr"],
         )
     )
+    trace_counts = traceability_payload.get("counts", {})
+    source_manifest = input_manifest.get("source", {})
     metadata = {
-        "schema_version": 1,
+        "schema_version": 2,
         "status": "OK",
+        "do_not_edit": True,
         "dsc_source_revision": args.source_revision,
+        "source_git": source_manifest.get("git", {}),
         "source_file_hashes": source_hashes(source_dir),
+        "source_hashes_sha256": source_manifest.get("source_hashes_sha256", "UNKNOWN"),
+        "spec_pdf_sha256": input_manifest.get("spec", {}).get("sha256", "UNKNOWN"),
+        "input_manifest_sha256": file_sha256(args.input_manifest.resolve()),
+        "build_receipt_sha256": file_sha256(args.build_receipt.resolve()),
         "compile_commands_sha256": file_sha256(args.compile_commands.resolve()),
         "compile_check_sha256": file_sha256(args.compile_check.resolve()),
         "compile_check_status": compile_check.get("status", "UNKNOWN"),
         "compiler_command_count": compile_check.get("compiler_command_count", 0),
-        "target_profile_sha256": file_sha256(args.target_profile.resolve()),
-        "focused_targets": focused_targets,
+        "candidate_receipt_sha256": file_sha256(args.candidates.resolve()),
+        "traceability_sha256": file_sha256(args.traceability.resolve()),
+        "build_status": build_receipt.get("status", "UNKNOWN"),
+        "binary_sha256": build_receipt.get("binary", {}).get("sha256", "UNKNOWN"),
+        "frama_targets": analysis_targets,
+        "frama_excluded_sources": frama_manifest.get("excluded_sources", []),
         "discovered_function_count": len(discovered_inventory),
         "function_discovery": {
             "source": "Clang AST functionDecl(isDefinition())",
             "count": len(discovered_inventory),
         },
+        "candidate_selection": candidate_payload.get("selection", {}),
+        "traceability_counts": trace_counts,
         "clang_version": args.clang_version,
         "frama_c_version": args.frama_c_version,
         "analysis_command": sorted(args.analysis_command),
         "generated_timestamp": dt.datetime.now(dt.timezone.utc).isoformat(),
     }
-    if frama_manifest_path.is_file():
-        metadata["frama_excluded_sources"] = frama_manifest.get("excluded_sources", [])
-    else:
-        metadata["frama_excluded_sources"] = []
 
     comparison = {}
-    comparison_names = unique_sorted(
-        [name for pair in comparison_pairs for name in pair]
-    )
-    for target in comparison_names:
-        function = next((item for item in normalized if item["name"] == target), None)
+    comparison_names = unique_sorted(candidate_payload.get("selected_for_frama", [])[:2])
+    for name in comparison_names:
+        function = next((item for item in normalized if item["name"] == name), None)
         if function:
-            comparison[target] = {
+            comparison[name] = {
                 "callers": function.get("callers", []),
                 "callees": function.get("callees", []),
-                "usage_paths": usage_paths(normalized, target),
+                "usage_paths": usage_paths(normalized, name),
                 "fields_read": function.get("fields_read", []),
                 "globals_read": function.get("globals_read", []),
                 "return_dependencies": function.get("return_dependencies", []),
@@ -936,6 +899,9 @@ def main() -> int:
         "functions": normalized,
         "discovered_functions": discovered_inventory,
         "compile_check": compile_check,
+        "build_receipt": build_receipt,
+        "candidates": candidate_payload,
+        "traceability": traceability_payload,
         "callgraph": {"nodes": call_nodes, "edges": edges},
         "field_access": {"fields": fields},
         "loops": {
@@ -952,9 +918,9 @@ def main() -> int:
         "value_ranges": {"functions": ranges},
         "dependencies": {"functions": dependencies},
         "reports": {
-            "candidate_count": sum(
-                1 for item in normalized if item.get("proposal", {}).get("combinational_candidate")
-            ),
+            "candidate_count": candidate_payload.get("counts", {}).get("eligible_candidates", 0),
+            "production_reachable_count": candidate_payload.get("counts", {}).get("production_reachable", 0),
+            "output_contributing_count": candidate_payload.get("counts", {}).get("output_contributing", 0),
             "comparison": comparison,
             "table_ranges": table_ranges(globals_by_usr),
             "component_loop_evidence": component_loop_evidence(normalized),
@@ -970,29 +936,20 @@ def main() -> int:
         return {"metadata": metadata, **payload}
 
     write_json(facts_dir / "functions.json", with_metadata({"functions": normalized}))
-    write_json(
-        facts_dir / "discovered-functions.json",
-        with_metadata({"functions": discovered_inventory}),
-    )
+    write_json(facts_dir / "discovered-functions.json", with_metadata({"functions": discovered_inventory}))
     write_json(facts_dir / "compile-check.json", with_metadata(compile_check))
+    write_json(facts_dir / "build-receipt.json", with_metadata(build_receipt))
+    write_json(facts_dir / "candidates.json", with_metadata(candidate_payload))
     write_json(facts_dir / "callgraph.json", with_metadata({"nodes": call_nodes, "edges": edges}))
     write_json(facts_dir / "field-access.json", with_metadata({"fields": fields}))
     write_json(facts_dir / "loops.json", with_metadata(artifact_payload["loops"]))
     write_json(facts_dir / "value-ranges.json", with_metadata(artifact_payload["value_ranges"]))
     write_json(facts_dir / "dependencies.json", with_metadata(artifact_payload["dependencies"]))
 
-    reports_dir.joinpath("function-summary.md").write_text(
-        markdown_function_summary(normalized), encoding="utf-8"
-    )
-    reports_dir.joinpath("field-summary.md").write_text(
-        markdown_field_summary(fields, normalized), encoding="utf-8"
-    )
-    reports_dir.joinpath("candidate-functions.md").write_text(
-        markdown_candidates(normalized), encoding="utf-8"
-    )
-    reports_dir.joinpath("unresolved.md").write_text(
-        markdown_unresolved(normalized, metadata), encoding="utf-8"
-    )
+    reports_dir.joinpath("function-summary.md").write_text(markdown_function_summary(normalized), encoding="utf-8")
+    reports_dir.joinpath("field-summary.md").write_text(markdown_field_summary(fields, normalized), encoding="utf-8")
+    reports_dir.joinpath("candidate-functions.md").write_text(markdown_candidates(normalized), encoding="utf-8")
+    reports_dir.joinpath("unresolved.md").write_text(markdown_unresolved(normalized, metadata), encoding="utf-8")
 
     summary = with_metadata(
         {
@@ -1003,19 +960,23 @@ def main() -> int:
                 "field_count": len(fields),
                 "loop_count": sum(len(item.get("loops", [])) for item in normalized),
                 "candidate_count": artifact_payload["reports"]["candidate_count"],
-                "focused_targets": focused_targets,
+                "production_reachable_count": artifact_payload["reports"]["production_reachable_count"],
+                "output_contributing_count": artifact_payload["reports"]["output_contributing_count"],
+                "frama_targets": analysis_targets,
                 "discovered_function_count": len(discovered_inventory),
                 "compile_check_status": compile_check.get("status", "UNKNOWN"),
                 "compiler_command_count": compile_check.get("compiler_command_count", 0),
             },
             "comparisons": comparison,
-            "comparison_pairs": comparison_pairs,
+            "candidate_summary": candidate_payload.get("counts", {}),
+            "traceability_summary": trace_counts,
             "quantization_tables": table_ranges(globals_by_usr),
             "component_loop_evidence": component_loop_evidence(normalized),
             "limitations": [
                 "Eva no-alarm observations are not substituted for proof.",
                 "Direct parameter ranges can remain UNKNOWN without contracts.",
-                "cpnt modulo behavior is retained until caller-specific range proof.",
+                "Candidate links and non-exact spec links remain visibly proposed or orphaned until review.",
+                "No LLM calls or RTL generation are used by this pipeline.",
             ],
         }
     )

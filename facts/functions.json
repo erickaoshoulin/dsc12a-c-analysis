@@ -45,6 +45,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 93,
       "fields_read": [
         {
           "context": "call_argument",
@@ -253,6 +255,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 166,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [
@@ -411,6 +415,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1073,
       "fields_read": [
         {
           "context": "condition",
@@ -1167,6 +1173,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 134,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [
@@ -1286,6 +1294,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 2286,
       "fields_read": [
         {
           "context": "expression",
@@ -3004,6 +3014,8 @@
         "logging": true,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 3108,
       "fields_read": [
         {
           "context": "condition",
@@ -6126,6 +6138,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 3132,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -6275,6 +6289,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 3121,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -6621,6 +6637,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 105,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [
@@ -6740,6 +6758,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 213,
       "fields_read": [
         {
           "context": "condition",
@@ -7268,13 +7288,83 @@
     {
       "analysis": {
         "eva": {
-          "status": "UNKNOWN",
-          "values": {}
+          "checks": {
+            "array_index_bounds": "WARNING",
+            "invalid_shifts": "NO_ALARM_OBSERVED_NOT_PROOF",
+            "pointer_validity": "NO_ALARM_OBSERVED_NOT_PROOF",
+            "signed_overflow": "WARNING",
+            "unreachable_branches": "NO_ALARM_OBSERVED_NOT_PROOF"
+          },
+          "parameter_ranges": {
+            "alt_size_to_generate": "[--..--]",
+            "qlevel": "[--..--]"
+          },
+          "raw_log": "EscapeCodeSize.eva.log",
+          "return_range": "UNKNOWN",
+          "status": "COMPLETED",
+          "values": {
+            "alt_size_to_generate": "[--..--]",
+            "qlevel": "[--..--]"
+          },
+          "warnings": [
+            {
+              "line": 816,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:227: Warning: out of bounds read. assert \\valid_read(&dsc_state->quantTableLuma);"
+            },
+            {
+              "line": 818,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:227: Warning: out of bounds read. assert \\valid_read(dsc_state->quantTableLuma + qp);"
+            },
+            {
+              "line": 820,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:448: Warning: signed overflow. assert dsc_state->cpntBitDepth[0] + 1 ≤ 2147483647;"
+            },
+            {
+              "line": 822,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:448: Warning: signed overflow. assert -2147483648 ≤ (int)(dsc_state->cpntBitDepth[0] + 1) - qlevel;"
+            },
+            {
+              "line": 825,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:448: Warning: signed overflow. assert (int)(dsc_state->cpntBitDepth[0] + 1) - qlevel ≤ 2147483647;"
+            }
+          ]
         },
         "from": {
-          "status": "UNKNOWN"
+          "modified_memory_dependencies": [],
+          "raw_log": "EscapeCodeSize.from.log",
+          "return_dependencies": [
+            "S_dsc_state",
+            "S_quantTableLuma_0_S_dsc_state[0..1]",
+            "cpntBitDepth[0]",
+            "dsc_state",
+            "qp",
+            "quantTableLuma"
+          ],
+          "status": "COMPLETED",
+          "warnings": []
         },
-        "warnings": []
+        "warnings": [
+          {
+            "line": 816,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:227: Warning: out of bounds read. assert \\valid_read(&dsc_state->quantTableLuma);"
+          },
+          {
+            "line": 818,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:227: Warning: out of bounds read. assert \\valid_read(dsc_state->quantTableLuma + qp);"
+          },
+          {
+            "line": 820,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:448: Warning: signed overflow. assert dsc_state->cpntBitDepth[0] + 1 ≤ 2147483647;"
+          },
+          {
+            "line": 822,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:448: Warning: signed overflow. assert -2147483648 ≤ (int)(dsc_state->cpntBitDepth[0] + 1) - qlevel;"
+          },
+          {
+            "line": 825,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:448: Warning: signed overflow. assert (int)(dsc_state->cpntBitDepth[0] + 1) - qlevel ≤ 2147483647;"
+          }
+        ]
       },
       "callees": [
         {
@@ -7314,6 +7404,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 451,
       "fields_read": [
         {
           "context": "expression",
@@ -7399,10 +7491,7 @@
       "return_type": "int",
       "source_file": "dsc_codec.c",
       "static_mutable_state": [],
-      "unknown_facts": [
-        "Eva result unavailable",
-        "From result unavailable"
-      ]
+      "unknown_facts": []
     },
     {
       "analysis": {
@@ -7501,6 +7590,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 437,
       "fields_read": [
         {
           "context": "expression",
@@ -7816,13 +7907,107 @@
     {
       "analysis": {
         "eva": {
-          "status": "UNKNOWN",
-          "values": {}
+          "checks": {
+            "array_index_bounds": "WARNING",
+            "invalid_shifts": "WARNING",
+            "pointer_validity": "NO_ALARM_OBSERVED_NOT_PROOF",
+            "signed_overflow": "WARNING",
+            "unreachable_branches": "NO_ALARM_OBSERVED_NOT_PROOF"
+          },
+          "parameter_ranges": {
+            "__retres": "[-2147483646..2147483647]",
+            "range": "[1..2147483647]"
+          },
+          "raw_log": "FindMidpoint.eva.log",
+          "return_range": "[-2147483646..2147483647]",
+          "status": "COMPLETED",
+          "values": {
+            "__retres": "[-2147483646..2147483647]",
+            "range": "[1..2147483647]"
+          },
+          "warnings": [
+            {
+              "line": 816,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:911: Warning: accessing out of bounds index. assert 0 ≤ cpnt;"
+            },
+            {
+              "line": 818,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:911: Warning: accessing out of bounds index. assert cpnt < 4;"
+            },
+            {
+              "line": 820,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:911: Warning: out of bounds read. assert \\valid_read(&dsc_state->cpntBitDepth[cpnt]);"
+            },
+            {
+              "line": 822,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:911: Warning: invalid RHS operand for shift. assert 0 ≤ dsc_state->cpntBitDepth[cpnt] < 32;"
+            },
+            {
+              "line": 824,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:911: Warning: signed overflow. assert 1 << dsc_state->cpntBitDepth[cpnt] ≤ 2147483647;"
+            },
+            {
+              "line": 826,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:913: Warning: invalid RHS operand for shift. assert 0 ≤ qlevel < 32;"
+            },
+            {
+              "line": 828,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:913: Warning: signed overflow. assert 1 << qlevel ≤ 2147483647;"
+            },
+            {
+              "line": 830,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:913: Warning: signed overflow. assert (int)(range / 2) + (int)(dsc_state->leftRecon[cpnt] % (int)(1 << qlevel)) ≤ 2147483647;"
+            }
+          ]
         },
         "from": {
-          "status": "UNKNOWN"
+          "modified_memory_dependencies": [],
+          "raw_log": "FindMidpoint.from.log",
+          "return_dependencies": [
+            "S_dsc_state[0]",
+            "cpnt",
+            "cpntBitDepth[0..3]",
+            "dsc_state",
+            "leftRecon[0..3]",
+            "qlevel"
+          ],
+          "status": "COMPLETED",
+          "warnings": []
         },
-        "warnings": []
+        "warnings": [
+          {
+            "line": 816,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:911: Warning: accessing out of bounds index. assert 0 ≤ cpnt;"
+          },
+          {
+            "line": 818,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:911: Warning: accessing out of bounds index. assert cpnt < 4;"
+          },
+          {
+            "line": 820,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:911: Warning: out of bounds read. assert \\valid_read(&dsc_state->cpntBitDepth[cpnt]);"
+          },
+          {
+            "line": 822,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:911: Warning: invalid RHS operand for shift. assert 0 ≤ dsc_state->cpntBitDepth[cpnt] < 32;"
+          },
+          {
+            "line": 824,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:911: Warning: signed overflow. assert 1 << dsc_state->cpntBitDepth[cpnt] ≤ 2147483647;"
+          },
+          {
+            "line": 826,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:913: Warning: invalid RHS operand for shift. assert 0 ≤ qlevel < 32;"
+          },
+          {
+            "line": 828,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:913: Warning: signed overflow. assert 1 << qlevel ≤ 2147483647;"
+          },
+          {
+            "line": 830,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:913: Warning: signed overflow. assert (int)(range / 2) + (int)(dsc_state->leftRecon[cpnt] % (int)(1 << qlevel)) ≤ 2147483647;"
+          }
+        ]
       },
       "callees": [],
       "callers": [
@@ -7841,6 +8026,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 914,
       "fields_read": [
         {
           "context": "expression",
@@ -7974,48 +8161,16 @@
       "return_type": "int",
       "source_file": "dsc_codec.c",
       "static_mutable_state": [],
-      "unknown_facts": [
-        "Eva result unavailable",
-        "From result unavailable"
-      ]
+      "unknown_facts": []
     },
     {
       "analysis": {
         "eva": {
-          "checks": {
-            "array_index_bounds": "NO_ALARM_OBSERVED_NOT_PROOF",
-            "invalid_shifts": "NO_ALARM_OBSERVED_NOT_PROOF",
-            "pointer_validity": "NO_ALARM_OBSERVED_NOT_PROOF",
-            "signed_overflow": "NO_ALARM_OBSERVED_NOT_PROOF",
-            "unreachable_branches": "NO_ALARM_OBSERVED_NOT_PROOF"
-          },
-          "parameter_ranges": {
-            "S___fc_stdout[0..1]": "[--..--]",
-            "__retres": "[0..18]",
-            "size_e": "[0..18] or UNINITIALIZED"
-          },
-          "raw_log": "FindResidualSize.eva.log",
-          "return_range": "[0..18]",
-          "status": "COMPLETED",
-          "values": {
-            "S___fc_stdout[0..1]": "[--..--]",
-            "__retres": "[0..18]",
-            "size_e": "[0..18] or UNINITIALIZED"
-          },
-          "warnings": []
+          "status": "UNKNOWN",
+          "values": {}
         },
         "from": {
-          "modified_memory_dependencies": [
-            "SELF",
-            "S___fc_stdout[0]",
-            "eq"
-          ],
-          "raw_log": "FindResidualSize.from.log",
-          "return_dependencies": [
-            "eq"
-          ],
-          "status": "COMPLETED",
-          "warnings": []
+          "status": "UNKNOWN"
         },
         "warnings": []
       },
@@ -8069,6 +8224,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1109,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -8103,7 +8260,10 @@
       "return_type": "int",
       "source_file": "dsc_codec.c",
       "static_mutable_state": [],
-      "unknown_facts": []
+      "unknown_facts": [
+        "Eva result unavailable",
+        "From result unavailable"
+      ]
     },
     {
       "analysis": {
@@ -8176,6 +8336,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 2583,
       "fields_read": [
         {
           "context": "condition",
@@ -9045,6 +9207,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 109,
       "fields_read": [
         {
           "context": "call_argument",
@@ -9501,6 +9665,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 297,
       "fields_read": [
         {
           "context": "expression",
@@ -9708,6 +9874,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 600,
       "fields_read": [
         {
           "context": "expression",
@@ -10291,6 +10459,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 533,
       "fields_read": [
         {
           "context": "condition",
@@ -10787,6 +10957,8 @@
         "logging": false,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 2178,
       "fields_read": [
         {
           "context": "expression",
@@ -12356,13 +12528,44 @@
     {
       "analysis": {
         "eva": {
-          "status": "UNKNOWN",
-          "values": {}
+          "checks": {
+            "array_index_bounds": "WARNING",
+            "invalid_shifts": "NO_ALARM_OBSERVED_NOT_PROOF",
+            "pointer_validity": "NO_ALARM_OBSERVED_NOT_PROOF",
+            "signed_overflow": "NO_ALARM_OBSERVED_NOT_PROOF",
+            "unreachable_branches": "NO_ALARM_OBSERVED_NOT_PROOF"
+          },
+          "parameter_ranges": {},
+          "raw_log": "IsFlatnessInfoSent.eva.log",
+          "return_range": "UNKNOWN",
+          "status": "COMPLETED",
+          "values": {},
+          "warnings": [
+            {
+              "line": 816,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:1118: Warning: out of bounds read. assert \\valid_read(&dsc_cfg->flatness_min_qp);"
+            }
+          ]
         },
         "from": {
-          "status": "UNKNOWN"
+          "modified_memory_dependencies": [],
+          "raw_log": "IsFlatnessInfoSent.from.log",
+          "return_dependencies": [
+            "S_dsc_cfg[0]",
+            "dsc_cfg",
+            "flatness_max_qp",
+            "flatness_min_qp",
+            "qp"
+          ],
+          "status": "COMPLETED",
+          "warnings": []
         },
-        "warnings": []
+        "warnings": [
+          {
+            "line": 816,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:1118: Warning: out of bounds read. assert \\valid_read(&dsc_cfg->flatness_min_qp);"
+          }
+        ]
       },
       "callees": [],
       "callers": [
@@ -12389,6 +12592,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1119,
       "fields_read": [
         {
           "context": "expression",
@@ -12506,10 +12711,7 @@
       "return_type": "int",
       "source_file": "dsc_codec.c",
       "static_mutable_state": [],
-      "unknown_facts": [
-        "Eva result unavailable",
-        "From result unavailable"
-      ]
+      "unknown_facts": []
     },
     {
       "analysis": {
@@ -12560,6 +12762,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1195,
       "fields_read": [
         {
           "context": "expression",
@@ -12977,6 +13181,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 667,
       "fields_read": [
         {
           "context": "expression",
@@ -13518,6 +13724,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 238,
       "fields_read": [
         {
           "context": "condition",
@@ -13886,6 +14094,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 270,
       "fields_read": [
         {
           "context": "expression",
@@ -14142,6 +14352,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 152,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [
@@ -14407,6 +14619,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 777,
       "fields_read": [
         {
           "context": "condition",
@@ -14672,6 +14886,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 2351,
       "fields_read": [
         {
           "context": "expression",
@@ -15357,13 +15573,78 @@
     {
       "analysis": {
         "eva": {
-          "status": "UNKNOWN",
-          "values": {}
+          "checks": {
+            "array_index_bounds": "WARNING",
+            "invalid_shifts": "NO_ALARM_OBSERVED_NOT_PROOF",
+            "pointer_validity": "NO_ALARM_OBSERVED_NOT_PROOF",
+            "signed_overflow": "WARNING",
+            "unreachable_branches": "NO_ALARM_OBSERVED_NOT_PROOF"
+          },
+          "parameter_ranges": {},
+          "raw_log": "PredictSize.eva.log",
+          "return_range": "UNKNOWN",
+          "status": "COMPLETED",
+          "values": {},
+          "warnings": [
+            {
+              "line": 816,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:1481: Warning: out of bounds read. assert \\valid_read(req_size + 0);"
+            },
+            {
+              "line": 818,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:1481: Warning: out of bounds read. assert \\valid_read(req_size + 1);"
+            },
+            {
+              "line": 820,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:1481: Warning: signed overflow. assert -2147483648 ≤ *(req_size + 0) + *(req_size + 1);"
+            },
+            {
+              "line": 822,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:1481: Warning: signed overflow. assert *(req_size + 0) + *(req_size + 1) ≤ 2147483647;"
+            },
+            {
+              "line": 824,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:1481: Warning: signed overflow. assert pred_size + (int)(*(req_size + 0) + *(req_size + 1)) ≤ 2147483647;"
+            },
+            {
+              "line": 827,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:1482: Warning: out of bounds read. assert \\valid_read(req_size + 2);"
+            }
+          ]
         },
         "from": {
-          "status": "UNKNOWN"
+          "modified_memory_dependencies": [],
+          "raw_log": "PredictSize.from.log",
+          "return_dependencies": [],
+          "status": "UNKNOWN",
+          "warnings": []
         },
-        "warnings": []
+        "warnings": [
+          {
+            "line": 816,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:1481: Warning: out of bounds read. assert \\valid_read(req_size + 0);"
+          },
+          {
+            "line": 818,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:1481: Warning: out of bounds read. assert \\valid_read(req_size + 1);"
+          },
+          {
+            "line": 820,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:1481: Warning: signed overflow. assert -2147483648 ≤ *(req_size + 0) + *(req_size + 1);"
+          },
+          {
+            "line": 822,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:1481: Warning: signed overflow. assert *(req_size + 0) + *(req_size + 1) ≤ 2147483647;"
+          },
+          {
+            "line": 824,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:1481: Warning: signed overflow. assert pred_size + (int)(*(req_size + 0) + *(req_size + 1)) ≤ 2147483647;"
+          },
+          {
+            "line": 827,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:1482: Warning: out of bounds read. assert \\valid_read(req_size + 2);"
+          }
+        ]
       },
       "callees": [],
       "callers": [
@@ -15386,6 +15667,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1486,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -15451,7 +15734,6 @@
       "source_file": "dsc_codec.c",
       "static_mutable_state": [],
       "unknown_facts": [
-        "Eva result unavailable",
         "From result unavailable"
       ]
     },
@@ -15811,6 +16093,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 2502,
       "fields_read": [
         {
           "context": "expression",
@@ -16598,6 +16882,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 176,
       "fields_read": [
         {
           "context": "condition",
@@ -16938,6 +17224,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 152,
       "fields_read": [
         {
           "context": "expression",
@@ -17252,237 +17540,13 @@
     {
       "analysis": {
         "eva": {
-          "checks": {
-            "array_index_bounds": "WARNING",
-            "invalid_shifts": "NO_ALARM_OBSERVED_NOT_PROOF",
-            "pointer_validity": "NO_ALARM_OBSERVED_NOT_PROOF",
-            "signed_overflow": "WARNING",
-            "unreachable_branches": "NO_ALARM_OBSERVED_NOT_PROOF"
-          },
-          "parameter_ranges": {
-            "qlevel": "[--..--]"
-          },
-          "raw_log": "Qp2Qlevel.eva.log",
-          "return_range": "UNKNOWN",
-          "status": "COMPLETED",
-          "values": {
-            "qlevel": "[--..--]"
-          },
-          "warnings": [
-            {
-              "line": 816,
-              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:820: Warning: out of bounds read. assert \\valid_read(&dsc_cfg->native_420);"
-            },
-            {
-              "line": 818,
-              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:822: Warning: out of bounds read. assert \\valid_read(&dsc_cfg->bits_per_component);"
-            },
-            {
-              "line": 820,
-              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:824: Warning: accessing out of bounds index. assert 0 ≤ qp;"
-            },
-            {
-              "line": 822,
-              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:824: Warning: accessing out of bounds index. assert qp < 16;"
-            },
-            {
-              "line": 824,
-              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:825: Warning: accessing out of bounds index. assert 0 ≤ qp;"
-            },
-            {
-              "line": 826,
-              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:825: Warning: accessing out of bounds index. assert qp < 20;"
-            },
-            {
-              "line": 828,
-              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:826: Warning: accessing out of bounds index. assert 0 ≤ qp;"
-            },
-            {
-              "line": 830,
-              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:826: Warning: accessing out of bounds index. assert qp < 24;"
-            },
-            {
-              "line": 832,
-              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:827: Warning: accessing out of bounds index. assert 0 ≤ qp;"
-            },
-            {
-              "line": 834,
-              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:827: Warning: accessing out of bounds index. assert qp < 28;"
-            },
-            {
-              "line": 836,
-              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:828: Warning: accessing out of bounds index. assert 0 ≤ qp;"
-            },
-            {
-              "line": 838,
-              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:828: Warning: accessing out of bounds index. assert qp < 32;"
-            },
-            {
-              "line": 840,
-              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:833: Warning: accessing out of bounds index. assert 0 ≤ qp;"
-            },
-            {
-              "line": 842,
-              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:833: Warning: accessing out of bounds index. assert qp < 16;"
-            },
-            {
-              "line": 844,
-              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:834: Warning: accessing out of bounds index. assert 0 ≤ qp;"
-            },
-            {
-              "line": 846,
-              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:834: Warning: accessing out of bounds index. assert qp < 20;"
-            },
-            {
-              "line": 848,
-              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:835: Warning: accessing out of bounds index. assert 0 ≤ qp;"
-            },
-            {
-              "line": 850,
-              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:835: Warning: accessing out of bounds index. assert qp < 24;"
-            },
-            {
-              "line": 852,
-              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:836: Warning: accessing out of bounds index. assert 0 ≤ qp;"
-            },
-            {
-              "line": 854,
-              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:836: Warning: accessing out of bounds index. assert qp < 28;"
-            },
-            {
-              "line": 856,
-              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:837: Warning: accessing out of bounds index. assert 0 ≤ qp;"
-            },
-            {
-              "line": 858,
-              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:837: Warning: accessing out of bounds index. assert qp < 32;"
-            },
-            {
-              "line": 860,
-              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:840: Warning: signed overflow. assert -2147483648 ≤ qlevel - 1;"
-            }
-          ]
+          "status": "UNKNOWN",
+          "values": {}
         },
         "from": {
-          "modified_memory_dependencies": [],
-          "raw_log": "Qp2Qlevel.from.log",
-          "return_dependencies": [
-            "S_dsc_cfg",
-            "bits_per_component",
-            "convert_rgb",
-            "cpnt",
-            "dsc_cfg",
-            "dsc_version_minor",
-            "native_420",
-            "qlevel_chroma_10bpc[0..19]",
-            "qlevel_chroma_12bpc[0..23]",
-            "qlevel_chroma_14bpc[0..27]",
-            "qlevel_chroma_16bpc[0..31]",
-            "qlevel_chroma_8bpc[0..15]",
-            "qlevel_luma_10bpc[0..19]",
-            "qlevel_luma_12bpc[0..23]",
-            "qlevel_luma_14bpc[0..27]",
-            "qlevel_luma_16bpc[0..31]",
-            "qlevel_luma_8bpc[0..15]",
-            "qp"
-          ],
-          "status": "COMPLETED",
-          "warnings": []
+          "status": "UNKNOWN"
         },
-        "warnings": [
-          {
-            "line": 816,
-            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:820: Warning: out of bounds read. assert \\valid_read(&dsc_cfg->native_420);"
-          },
-          {
-            "line": 818,
-            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:822: Warning: out of bounds read. assert \\valid_read(&dsc_cfg->bits_per_component);"
-          },
-          {
-            "line": 820,
-            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:824: Warning: accessing out of bounds index. assert 0 ≤ qp;"
-          },
-          {
-            "line": 822,
-            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:824: Warning: accessing out of bounds index. assert qp < 16;"
-          },
-          {
-            "line": 824,
-            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:825: Warning: accessing out of bounds index. assert 0 ≤ qp;"
-          },
-          {
-            "line": 826,
-            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:825: Warning: accessing out of bounds index. assert qp < 20;"
-          },
-          {
-            "line": 828,
-            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:826: Warning: accessing out of bounds index. assert 0 ≤ qp;"
-          },
-          {
-            "line": 830,
-            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:826: Warning: accessing out of bounds index. assert qp < 24;"
-          },
-          {
-            "line": 832,
-            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:827: Warning: accessing out of bounds index. assert 0 ≤ qp;"
-          },
-          {
-            "line": 834,
-            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:827: Warning: accessing out of bounds index. assert qp < 28;"
-          },
-          {
-            "line": 836,
-            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:828: Warning: accessing out of bounds index. assert 0 ≤ qp;"
-          },
-          {
-            "line": 838,
-            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:828: Warning: accessing out of bounds index. assert qp < 32;"
-          },
-          {
-            "line": 840,
-            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:833: Warning: accessing out of bounds index. assert 0 ≤ qp;"
-          },
-          {
-            "line": 842,
-            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:833: Warning: accessing out of bounds index. assert qp < 16;"
-          },
-          {
-            "line": 844,
-            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:834: Warning: accessing out of bounds index. assert 0 ≤ qp;"
-          },
-          {
-            "line": 846,
-            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:834: Warning: accessing out of bounds index. assert qp < 20;"
-          },
-          {
-            "line": 848,
-            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:835: Warning: accessing out of bounds index. assert 0 ≤ qp;"
-          },
-          {
-            "line": 850,
-            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:835: Warning: accessing out of bounds index. assert qp < 24;"
-          },
-          {
-            "line": 852,
-            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:836: Warning: accessing out of bounds index. assert 0 ≤ qp;"
-          },
-          {
-            "line": 854,
-            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:836: Warning: accessing out of bounds index. assert qp < 28;"
-          },
-          {
-            "line": 856,
-            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:837: Warning: accessing out of bounds index. assert 0 ≤ qp;"
-          },
-          {
-            "line": 858,
-            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:837: Warning: accessing out of bounds index. assert qp < 32;"
-          },
-          {
-            "line": 860,
-            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c:840: Warning: signed overflow. assert -2147483648 ≤ qlevel - 1;"
-          }
-        ]
+        "warnings": []
       },
       "callees": [],
       "callers": [
@@ -17501,6 +17565,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 844,
       "fields_read": [
         {
           "context": "expression",
@@ -17755,7 +17821,10 @@
       "return_type": "int",
       "source_file": "codec_main.c",
       "static_mutable_state": [],
-      "unknown_facts": []
+      "unknown_facts": [
+        "Eva result unavailable",
+        "From result unavailable"
+      ]
     },
     {
       "analysis": {
@@ -17858,6 +17927,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 255,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [
@@ -18215,6 +18286,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1469,
       "fields_read": [
         {
           "context": "expression",
@@ -19763,6 +19836,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1231,
       "fields_read": [
         {
           "context": "expression",
@@ -20392,6 +20467,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 2049,
       "fields_read": [
         {
           "context": "expression",
@@ -20511,13 +20588,78 @@
     {
       "analysis": {
         "eva": {
-          "status": "UNKNOWN",
-          "values": {}
+          "checks": {
+            "array_index_bounds": "WARNING",
+            "invalid_shifts": "NO_ALARM_OBSERVED_NOT_PROOF",
+            "pointer_validity": "NO_ALARM_OBSERVED_NOT_PROOF",
+            "signed_overflow": "WARNING",
+            "unreachable_branches": "NO_ALARM_OBSERVED_NOT_PROOF"
+          },
+          "parameter_ranges": {},
+          "raw_log": "SamplePredict.eva.log",
+          "return_range": "UNKNOWN",
+          "status": "COMPLETED",
+          "values": {},
+          "warnings": [
+            {
+              "line": 816,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:326: Warning: accessing out of bounds index. assert 0 ≤ unit;"
+            },
+            {
+              "line": 818,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:326: Warning: accessing out of bounds index. assert unit < 4;"
+            },
+            {
+              "line": 820,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:326: Warning: out of bounds read. assert \\valid_read(&dsc_state->unitCType[unit]);"
+            },
+            {
+              "line": 822,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:327: Warning: signed overflow. assert (int)((int)(hPos / 3) * 3) + 5 ≤ 2147483647;"
+            },
+            {
+              "line": 824,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:330: Warning: out of bounds read. assert \\valid_read(prevLine + (int)(h_offset_array_idx - 1));"
+            },
+            {
+              "line": 827,
+              "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:331: Warning: out of bounds read. assert \\valid_read(prevLine + h_offset_array_idx);"
+            }
+          ]
         },
         "from": {
-          "status": "UNKNOWN"
+          "modified_memory_dependencies": [],
+          "raw_log": "SamplePredict.from.log",
+          "return_dependencies": [],
+          "status": "UNKNOWN",
+          "warnings": []
         },
-        "warnings": []
+        "warnings": [
+          {
+            "line": 816,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:326: Warning: accessing out of bounds index. assert 0 ≤ unit;"
+          },
+          {
+            "line": 818,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:326: Warning: accessing out of bounds index. assert unit < 4;"
+          },
+          {
+            "line": 820,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:326: Warning: out of bounds read. assert \\valid_read(&dsc_state->unitCType[unit]);"
+          },
+          {
+            "line": 822,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:327: Warning: signed overflow. assert (int)((int)(hPos / 3) * 3) + 5 ≤ 2147483647;"
+          },
+          {
+            "line": 824,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:330: Warning: out of bounds read. assert \\valid_read(prevLine + (int)(h_offset_array_idx - 1));"
+          },
+          {
+            "line": 827,
+            "text": "[eva:alarm] /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c:331: Warning: out of bounds read. assert \\valid_read(prevLine + h_offset_array_idx);"
+          }
+        ]
       },
       "callees": [],
       "callers": [
@@ -20540,6 +20682,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 383,
       "fields_read": [
         {
           "context": "expression",
@@ -20866,7 +21010,6 @@
       "source_file": "dsc_codec.c",
       "static_mutable_state": [],
       "unknown_facts": [
-        "Eva result unavailable",
         "From result unavailable"
       ]
     },
@@ -21066,6 +21209,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 118,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [
@@ -21202,6 +21347,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 726,
       "fields_read": [
         {
           "context": "call_argument",
@@ -21703,6 +21850,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 825,
       "fields_read": [
         {
           "context": "condition",
@@ -21983,6 +22132,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 899,
       "fields_read": [
         {
           "context": "expression",
@@ -22276,6 +22427,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 867,
       "fields_read": [
         {
           "context": "expression",
@@ -22623,6 +22776,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 476,
       "fields_read": [
         {
           "context": "condition",
@@ -22947,6 +23102,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1799,
       "fields_read": [
         {
           "context": "condition",
@@ -24396,6 +24553,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1703,
       "fields_read": [
         {
           "context": "condition",
@@ -25586,6 +25745,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 2028,
       "fields_read": [
         {
           "context": "condition",
@@ -26367,6 +26528,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1981,
       "fields_read": [
         {
           "context": "condition",
@@ -27450,6 +27613,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 80,
       "fields_read": [
         {
           "context": "call_argument",
@@ -27962,6 +28127,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1422,
       "fields_read": [
         {
           "context": "expression",
@@ -28114,6 +28281,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 369,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [
@@ -28743,6 +28912,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 950,
       "fields_read": [
         {
           "context": "expression",
@@ -29426,6 +29597,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 73,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -29539,6 +29712,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 383,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -29697,6 +29872,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 892,
       "fields_read": [
         {
           "context": "expression",
@@ -30125,6 +30302,8 @@
         "logging": false,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 156,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -30376,6 +30555,8 @@
         "logging": false,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 122,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -30722,6 +30903,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 197,
       "fields_read": [
         {
           "context": "expression",
@@ -31734,6 +31917,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 641,
       "fields_read": [
         {
           "context": "expression",
@@ -32324,6 +32509,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 802,
       "fields_read": [
         {
           "context": "expression",
@@ -33787,6 +33974,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 495,
       "fields_read": [
         {
           "context": "expression",
@@ -34069,6 +34258,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1677,
       "fields_read": [
         {
           "context": "expression",
@@ -34708,6 +34899,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1036,
       "fields_read": [
         {
           "context": "expression",
@@ -40841,6 +41034,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1471,
       "fields_read": [
         {
           "context": "condition",
@@ -41457,6 +41652,8 @@
         "logging": false,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 84,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -41621,6 +41818,8 @@
         "logging": false,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 1109,
       "fields_read": [
         {
           "context": "call_argument",
@@ -41838,6 +42037,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 748,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -42431,6 +42632,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 972,
       "fields_read": [
         {
           "context": "condition",
@@ -44590,6 +44793,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 228,
       "fields_read": [
         {
           "context": "call_argument",
@@ -45083,6 +45288,8 @@
         "logging": false,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 267,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -45164,6 +45371,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 100,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -45364,6 +45573,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1010,
       "fields_read": [
         {
           "context": "expression",
@@ -46009,6 +46220,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 61,
       "fields_read": [],
       "fields_write": [
         {
@@ -46253,6 +46466,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 167,
       "fields_read": [
         {
           "context": "expression",
@@ -46529,6 +46744,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 210,
       "fields_read": [
         {
           "context": "expression",
@@ -46825,6 +47042,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 247,
       "fields_read": [
         {
           "context": "condition",
@@ -47184,6 +47403,8 @@
         "logging": false,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 69,
       "fields_read": [
         {
           "context": "call_argument",
@@ -47343,6 +47564,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 108,
       "fields_read": [
         {
           "context": "expression",
@@ -47618,6 +47841,8 @@
         "logging": false,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 51,
       "fields_read": [],
       "fields_write": [
         {
@@ -47855,6 +48080,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 140,
       "fields_read": [
         {
           "context": "condition",
@@ -48377,6 +48604,8 @@
         "logging": false,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 217,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -48604,6 +48833,8 @@
         "logging": false,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 179,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -48768,6 +48999,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1031,
       "fields_read": [
         {
           "context": "expression",
@@ -50573,6 +50806,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 723,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -50710,6 +50945,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 138,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -50870,6 +51107,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1066,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -51085,6 +51324,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 97,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -51169,6 +51410,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1512,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -51292,6 +51535,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1549,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -51415,6 +51660,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1535,
       "fields_read": [
         {
           "context": "expression",
@@ -51968,6 +52215,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 617,
       "fields_read": [
         {
           "context": "condition",
@@ -53990,6 +54239,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 2080,
       "fields_read": [
         {
           "context": "call_argument",
@@ -54468,6 +54719,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1743,
       "fields_read": [
         {
           "context": "condition",
@@ -59498,6 +59751,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1170,
       "fields_read": [],
       "fields_write": [
         {
@@ -60097,6 +60352,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1442,
       "fields_read": [
         {
           "context": "call_argument",
@@ -62160,6 +62417,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1075,
       "fields_read": [
         {
           "context": "condition",
@@ -73763,6 +74022,8 @@
         "logging": false,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 1150,
       "fields_read": [
         {
           "context": "expression",
@@ -74860,6 +75121,8 @@
         "logging": true,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 2049,
       "fields_read": [
         {
           "context": "condition",
@@ -75581,6 +75844,8 @@
         "logging": false,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 231,
       "fields_read": [
         {
           "context": "expression",
@@ -77479,6 +77744,8 @@
         "logging": false,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 1963,
       "fields_read": [
         {
           "context": "call_argument",
@@ -79141,6 +79408,8 @@
         "logging": false,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 402,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -79317,6 +79586,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 374,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -83008,6 +83279,8 @@
         "logging": true,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 2021,
       "fields_read": [
         {
           "context": "condition",
@@ -88145,6 +88418,8 @@
         "logging": false,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 412,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -88465,6 +88740,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 436,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [
@@ -88971,6 +89248,8 @@
         "logging": false,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 1212,
       "fields_read": [
         {
           "context": "expression",
@@ -89502,6 +89781,8 @@
         "logging": false,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 1075,
       "fields_read": [
         {
           "context": "condition",
@@ -89751,6 +90032,8 @@
         "logging": false,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 1043,
       "fields_read": [
         {
           "context": "call_argument",
@@ -90089,6 +90372,8 @@
         "logging": false,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 80,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [
@@ -90343,6 +90628,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 343,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -90613,6 +90900,8 @@
         "logging": false,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 1304,
       "fields_read": [
         {
           "context": "condition",
@@ -90950,6 +91239,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1316,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -91246,6 +91537,8 @@
         "logging": true,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 1475,
       "fields_read": [
         {
           "context": "call_argument",
@@ -91594,6 +91887,8 @@
         "logging": true,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 1505,
       "fields_read": [
         {
           "context": "call_argument",
@@ -91874,6 +92169,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1178,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -92087,6 +92384,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1244,
       "fields_read": [
         {
           "context": "condition",
@@ -92361,6 +92660,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1325,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -93085,6 +93386,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 499,
       "fields_read": [
         {
           "context": "condition",
@@ -93895,6 +94198,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1589,
       "fields_read": [
         {
           "context": "expression",
@@ -95686,6 +95991,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 239,
       "fields_read": [
         {
           "context": "expression",
@@ -96273,6 +96580,8 @@
         "logging": false,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 142,
       "fields_read": [],
       "fields_write": [
         {
@@ -97380,6 +97689,8 @@
         "logging": false,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 223,
       "fields_read": [],
       "fields_write": [
         {
@@ -98633,6 +98944,8 @@
         "logging": false,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 302,
       "fields_read": [
         {
           "context": "call_argument",
@@ -100410,6 +100723,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1260,
       "fields_read": [
         {
           "context": "condition",
@@ -102735,6 +103050,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1219,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -103156,6 +103473,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1303,
       "fields_read": [
         {
           "context": "condition",
@@ -104194,6 +104513,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 678,
       "fields_read": [
         {
           "context": "call_argument",
@@ -107664,6 +107985,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 798,
       "fields_read": [
         {
           "context": "call_argument",
@@ -108694,6 +109017,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 464,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [
@@ -109000,6 +109325,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 101,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -109154,6 +109481,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 742,
       "fields_read": [
         {
           "context": "expression",
@@ -110248,6 +110577,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1418,
       "fields_read": [
         {
           "context": "expression",
@@ -112263,6 +112594,8 @@
         "logging": false,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 596,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -112815,6 +113148,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1204,
       "fields_read": [
         {
           "context": "expression",
@@ -113830,6 +114165,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1531,
       "fields_read": [
         {
           "context": "call_argument",
@@ -114030,6 +114367,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1518,
       "fields_read": [
         {
           "context": "call_argument",
@@ -114323,6 +114662,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 218,
       "fields_read": [
         {
           "context": "expression",
@@ -115252,6 +115593,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 386,
       "fields_read": [
         {
           "context": "expression",
@@ -116137,6 +116480,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1635,
       "fields_read": [
         {
           "context": "condition",
@@ -116795,6 +117140,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 708,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -116931,6 +117278,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 300,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [
@@ -117777,6 +118126,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1477,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -117928,6 +118279,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 338,
       "fields_read": [
         {
           "context": "condition",
@@ -118729,6 +119082,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 373,
       "fields_read": [
         {
           "context": "condition",
@@ -119310,6 +119665,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 502,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -119512,6 +119869,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 409,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -119642,6 +120001,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 434,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -119790,6 +120151,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 446,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -119945,6 +120308,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 575,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -120103,6 +120468,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 616,
       "fields_read": [],
       "fields_write": [
         {
@@ -120307,6 +120674,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 795,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -120483,6 +120852,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 560,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -120638,6 +121009,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 624,
       "fields_read": [],
       "fields_write": [
         {
@@ -120827,6 +121200,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 600,
       "fields_read": [],
       "fields_write": [
         {
@@ -121025,6 +121400,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 776,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -121216,6 +121593,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 460,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -121374,6 +121753,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 643,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -121550,6 +121931,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 490,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -121713,6 +122096,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 508,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -121871,6 +122256,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 738,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -122076,6 +122463,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 700,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -122278,6 +122667,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 477,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -122436,6 +122827,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 608,
       "fields_read": [],
       "fields_write": [
         {
@@ -122625,6 +123018,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 584,
       "fields_read": [],
       "fields_write": [
         {
@@ -122823,6 +123218,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 662,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -123013,6 +123410,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 592,
       "fields_read": [],
       "fields_write": [
         {
@@ -123189,6 +123588,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 521,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -123347,6 +123748,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 681,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -123519,6 +123922,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 534,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -123682,6 +124087,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 552,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -123840,6 +124247,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 757,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -124045,6 +124454,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 719,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -124219,6 +124630,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 362,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -124355,6 +124768,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 291,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -124481,6 +124896,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 327,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -124584,6 +125001,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1138,
       "fields_read": [
         {
           "context": "condition",
@@ -124851,6 +125270,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 386,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -125020,6 +125441,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1332,
       "fields_read": [
         {
           "context": "expression",
@@ -125751,6 +126174,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1447,
       "fields_read": [
         {
           "context": "expression",
@@ -126094,6 +126519,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 233,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -127449,6 +127876,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 705,
       "fields_read": [
         {
           "context": "call_argument",
@@ -131919,6 +132348,8 @@
         "logging": false,
         "malloc": true
       },
+      "end_column": 1,
+      "end_line": 547,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -132749,6 +133180,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 595,
       "fields_read": [
         {
           "context": "call_argument",
@@ -133532,6 +133965,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1243,
       "fields_read": [
         {
           "context": "expression",
@@ -134101,6 +134536,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 300,
       "fields_read": [
         {
           "context": "expression",
@@ -135024,6 +135461,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 465,
       "fields_read": [
         {
           "context": "expression",
@@ -135684,6 +136123,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 701,
       "fields_read": [
         {
           "context": "expression",
@@ -136829,6 +137270,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 667,
       "fields_read": [
         {
           "context": "expression",
@@ -137513,6 +137956,8 @@
         "logging": false,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 531,
       "fields_read": [
         {
           "context": "expression",
@@ -138452,6 +138897,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 379,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -138654,6 +139101,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 609,
       "fields_read": [
         {
           "context": "expression",
@@ -139766,6 +140215,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 389,
       "fields_read": [],
       "fields_write": [],
       "globals_read": [],
@@ -140094,6 +140545,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1417,
       "fields_read": [
         {
           "context": "expression",
@@ -141017,6 +141470,8 @@
         "logging": true,
         "malloc": false
       },
+      "end_column": 1,
+      "end_line": 1518,
       "fields_read": [
         {
           "context": "expression",
@@ -141588,28 +142043,51 @@
   ],
   "metadata": {
     "analysis_command": [
-      "clang -fsyntax-only over every compile_commands.json entry",
-      "clang LibTooling AST Matchers over facts/compile_commands.json",
-      "frama-c -deps -calldeps -main PROFILE_TARGET (profile-selected targets)",
-      "frama-c -eva -main PROFILE_TARGET (profile-selected targets)",
-      "generate compile_commands.json from public Makefile flags"
+      "Clang LibTooling AST Matchers over every compile_commands.json entry",
+      "Frama-C Eva and From on the top-ranked tool-selected candidates",
+      "deterministic PDF anchors and C model-note links; no LLM calls",
+      "discover local PDF and C model by metadata/source gates",
+      "make -j1 clean then make -j1 and run bittrue C smoke in an isolated copy",
+      "rank production/output-contributing bounded candidates without a function-name allowlist"
     ],
+    "binary_sha256": "1aa30a5c49f7b87bc18c2150f94ad620bc005f3aa935327d63799cb3f674216c",
+    "build_receipt_sha256": "dfaee4a5f1dc607d5a20441f6945f7180b9c0ee48c033b273ffda92ce85fe828",
+    "build_status": "PASS",
+    "candidate_receipt_sha256": "97f6a5455ec94fe9c09f0595dc59e6127f19887d4707b690309ee3732a6c4cba",
+    "candidate_selection": {
+      "boundary_root_usrs": [
+        "c:@F@DSC_Algorithm",
+        "c:@F@DSC_Decode",
+        "c:@F@DSC_Encode"
+      ],
+      "criteria": [
+        "production_reachable",
+        "contributes_to_observable_output",
+        "no_direct_or_transitive_state_write",
+        "no_io_allocation_or_logging",
+        "bounded_computation"
+      ],
+      "entry_symbols": [
+        "main"
+      ],
+      "method": "linked_executable_entry_symbols",
+      "output_sink_usrs": [
+        "c:@F@hdr_dpx_write",
+        "c:@F@write_dpx_ver"
+      ],
+      "root_usrs": [
+        "c:@F@main"
+      ],
+      "top_n": 10
+    },
     "clang_version": "Apple clang version 17.0.0 (clang-1700.6.3.2)",
     "compile_check_sha256": "e77b1146218bd22946a9993887679393ebcbc9cb27bd0165c70b680ce20a6adb",
     "compile_check_status": "PASS",
     "compile_commands_sha256": "56b5e6a919ea0e63fc8c9b8d6068e2d88629e1710ca9f83fbde06e9d433b1ace",
     "compiler_command_count": 11,
     "discovered_function_count": 194,
+    "do_not_edit": true,
     "dsc_source_revision": "f26ecb2afa83aa9f0cc608b5b7c2742901ee9207",
-    "focused_targets": [
-      "Qp2Qlevel",
-      "MapQpToQlevel",
-      "QuantizeResidual",
-      "FindResidualSize",
-      "SampToLineBuf",
-      "MaxResidualSize",
-      "GetQpAdjPredSize"
-    ],
     "frama_c_version": "33.0 (Arsenic)",
     "frama_excluded_sources": [
       "cmd_parse.c",
@@ -141617,13 +142095,26 @@
       "hdr_dpx.c",
       "logging.c"
     ],
+    "frama_targets": [
+      "FindMidpoint",
+      "IsFlatnessInfoSent",
+      "MapQpToQlevel",
+      "PredictSize",
+      "QuantizeResidual",
+      "SampToLineBuf",
+      "SamplePredict",
+      "EscapeCodeSize",
+      "MaxResidualSize",
+      "GetQpAdjPredSize"
+    ],
     "function_discovery": {
       "count": 194,
       "source": "Clang AST functionDecl(isDefinition())"
     },
-    "generated_timestamp": "2026-07-31T12:06:12.902507+00:00",
-    "schema_version": 1,
-    "semantic_hash": "cd6f3be6ca8c10ddf68face39b8812d7a45ec8c4ae2f2ef258bee2eca2be695d",
+    "generated_timestamp": "2026-08-01T14:03:19.965036+00:00",
+    "input_manifest_sha256": "c1cf90cdd06ff4afd38b80de7cfc476944d708d1c15cb0ee9b372e3cc254cb6b",
+    "schema_version": 2,
+    "semantic_hash": "88dec0a2317c112a5cc36ded8319664c5d60ec4f939722210dcff1cc80ff7c44",
     "source_file_hashes": [
       {
         "path": "cmd_parse.c",
@@ -141722,7 +142213,29 @@
         "sha256": "e48d318a5c2d8512d25230cafb74835a135bf8dc89232d1c6ccefcb5ef28ebbc"
       }
     ],
+    "source_git": {
+      "branch": "codex/operator-bittrue-coverage",
+      "commit": "f26ecb2afa83aa9f0cc608b5b7c2742901ee9207",
+      "remote_origin": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port.git",
+      "root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
+      "status_porcelain": ""
+    },
+    "source_hashes_sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+    "spec_pdf_sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
     "status": "OK",
-    "target_profile_sha256": "1e551e958db80751b34fb2cedee3fac4d816486e0d42b3b7414d75d8ba347ade"
+    "traceability_counts": {
+      "comment_count": 343,
+      "exact_count": 0,
+      "heading_anchor_count": 182,
+      "link_count": 59,
+      "model_note_count": 28,
+      "proposed_count": 59,
+      "reviewed_count": 0,
+      "spec_anchor_count": 327,
+      "stale_count": 0,
+      "untraced_production_function_count": 112,
+      "untraced_spec_anchor_count": 153
+    },
+    "traceability_sha256": "f80c37857195e053d85ae0af3be8c425df945a44f631847493d462a34c340116"
   }
 }

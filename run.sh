@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
-# Reproducible focused DSC 1.2a C-model analysis.
+# Reproducible auto-discovery DSC 1.2a C-model analysis.
 set -u
 
 SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 REPO_DIR="$SCRIPT_DIR"
-SOURCE_DIR="${DSC_SOURCE_DIR:-$REPO_DIR/DSC_model_20210623/source}"
 OUTPUT_DIR="$SCRIPT_DIR"
-TARGET_PROFILE="$SCRIPT_DIR/analysis-profile.json"
 PYTHON="${PYTHON:-python3}"
-TIMEOUT_SECONDS="${DSC_ANALYSIS_TIMEOUT_SECONDS:-300}"
+TIMEOUT_SECONDS="${DSC_ANALYSIS_TIMEOUT_SECONDS:-600}"
+BUILD_TIMEOUT_SECONDS="${DSC_BUILD_TIMEOUT_SECONDS:-$TIMEOUT_SECONDS}"
+TOP_N="${DSC_ANALYSIS_TOP_N:-10}"
 CLANGXX="${CLANGXX:-$(command -v clang++ 2>/dev/null || true)}"
 CLANG="${CLANG:-$(command -v clang 2>/dev/null || true)}"
 FRAMA_C="${FRAMA_C:-$(command -v frama-c 2>/dev/null || true)}"
@@ -19,6 +19,7 @@ if [ -z "$SYSROOT" ] && command -v xcrun >/dev/null 2>&1; then
   SYSROOT="$(xcrun --show-sdk-path 2>/dev/null || true)"
 fi
 
+MANIFEST="$OUTPUT_DIR/spec/manifest.json"
 WORK_DIR="$(mktemp -d "${TMPDIR:-/tmp}/dsc12a-analysis.XXXXXX")"
 cleanup() {
   rm -rf -- "$WORK_DIR"
@@ -28,6 +29,8 @@ trap cleanup EXIT
 CLANG_VERSION="UNKNOWN"
 FRAMA_VERSION="UNKNOWN"
 SOURCE_REVISION="UNKNOWN"
+SOURCE_DIR="${DSC_SOURCE_DIR:-$REPO_DIR/DSC_model_20210623/source}"
+MODEL_ROOT=""
 FAILURE_REASON=""
 
 if [ -n "$CLANG" ]; then
@@ -35,10 +38,6 @@ if [ -n "$CLANG" ]; then
 fi
 if [ -n "$FRAMA_C" ]; then
   FRAMA_VERSION="$($FRAMA_C -version 2>/dev/null | head -1 || true)"
-fi
-if [ -d "$(dirname -- "$SOURCE_DIR")" ]; then
-  SOURCE_REVISION="$(git -C "$(dirname -- "$SOURCE_DIR")" rev-parse HEAD 2>/dev/null || true)"
-  [ -n "$SOURCE_REVISION" ] || SOURCE_REVISION="UNKNOWN"
 fi
 
 fail() {
@@ -58,10 +57,40 @@ clear_generated_outputs() {
     "$OUTPUT_DIR/facts/loops.json" \
     "$OUTPUT_DIR/facts/value-ranges.json" \
     "$OUTPUT_DIR/facts/dependencies.json" \
+    "$OUTPUT_DIR/facts/comments.json" \
+    "$OUTPUT_DIR/facts/candidates.json" \
+    "$OUTPUT_DIR/facts/build-receipt.json" \
+    "$OUTPUT_DIR/spec/anchors.json" \
+    "$OUTPUT_DIR/traceability/links.proposed.yaml" \
+    "$OUTPUT_DIR/traceability/traceability.json" \
     "$OUTPUT_DIR/reports/function-summary.md" \
     "$OUTPUT_DIR/reports/field-summary.md" \
     "$OUTPUT_DIR/reports/candidate-functions.md" \
+    "$OUTPUT_DIR/reports/candidates.md" \
+    "$OUTPUT_DIR/reports/spec-to-code.md" \
+    "$OUTPUT_DIR/reports/code-to-spec.md" \
+    "$OUTPUT_DIR/reports/orphans.md" \
     "$OUTPUT_DIR/reports/unresolved.md"
+}
+
+manifest_value() {
+  "$PYTHON" - "$MANIFEST" "$1" <<'PY'
+import json
+import pathlib
+import sys
+
+manifest = json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8"))
+key = sys.argv[2]
+if key == "source_dir":
+    value = manifest.get("source", {}).get("source_dir", "")
+elif key == "model_root":
+    value = manifest.get("source", {}).get("model_root", "")
+elif key == "revision":
+    value = manifest.get("source", {}).get("git", {}).get("commit", "UNKNOWN")
+else:
+    value = ""
+print(value)
+PY
 }
 
 run_once() {
@@ -70,17 +99,13 @@ run_once() {
   local frama_dir="$attempt_dir/frama"
   local before_hash="$attempt_dir/source-before.json"
   local after_hash="$attempt_dir/source-after.json"
-  if ! mkdir -p "$attempt_dir" "$frama_dir" "$OUTPUT_DIR/facts" "$OUTPUT_DIR/reports"; then
+  if ! mkdir -p "$attempt_dir" "$frama_dir" "$OUTPUT_DIR/facts" "$OUTPUT_DIR/reports" "$OUTPUT_DIR/spec" "$OUTPUT_DIR/traceability"; then
     fail "INFRASTRUCTURE_FAILURE: disk full or analysis output directory is not writable"
     return 1
   fi
 
   if [ ! -d "$SOURCE_DIR" ]; then
-    fail "INFRASTRUCTURE_FAILURE: DSC source/submodule does not exist: $SOURCE_DIR"
-    return 1
-  fi
-  if ! find "$SOURCE_DIR" -type f -name '*.c' -print -quit | grep -q .; then
-    fail "INFRASTRUCTURE_FAILURE: DSC source contains no C files: $SOURCE_DIR"
+    fail "INFRASTRUCTURE_FAILURE: discovered DSC source does not exist: $SOURCE_DIR"
     return 1
   fi
   if [ -z "$CLANG" ] || [ -z "$CLANGXX" ]; then
@@ -105,11 +130,11 @@ run_once() {
     compdb_args+=(--sysroot "$SYSROOT")
   fi
   if ! "$PYTHON" "$SCRIPT_DIR/tools/generate_compile_commands.py" "${compdb_args[@]}"; then
-    fail "compile_commands.json generation failed"
+    fail "INFRASTRUCTURE_FAILURE: compile_commands.json generation failed"
     return 1
   fi
   if ! "$PYTHON" "$SCRIPT_DIR/tools/hash_source.py" "$SOURCE_DIR" >"$before_hash"; then
-    fail "source hash manifest generation failed"
+    fail "INFRASTRUCTURE_FAILURE: source hash manifest generation failed"
     return 1
   fi
 
@@ -164,15 +189,35 @@ run_once() {
     return 1
   fi
 
+  if ! "$PYTHON" "$SCRIPT_DIR/tools/rank_candidates.py" \
+      --raw "$raw_json" \
+      --build-receipt "$OUTPUT_DIR/build/build-receipt.json" \
+      --output "$OUTPUT_DIR/facts/candidates.json" \
+      --report "$OUTPUT_DIR/reports/candidates.md" \
+      --top-n "$TOP_N"; then
+    fail "INFRASTRUCTURE_FAILURE: auto-discovered candidate ranking failed"
+    return 1
+  fi
+
+  if ! "$PYTHON" "$SCRIPT_DIR/tools/traceability.py" \
+      --input-manifest "$MANIFEST" \
+      --raw "$raw_json" \
+      --candidates "$OUTPUT_DIR/facts/candidates.json" \
+      --output-dir "$OUTPUT_DIR" \
+      --reviewed "$OUTPUT_DIR/traceability/links.reviewed.yaml"; then
+    fail "INFRASTRUCTURE_FAILURE: deterministic PDF/C traceability extraction failed"
+    return 1
+  fi
+
   if ! "$PYTHON" "$SCRIPT_DIR/tools/run_frama.py" \
       --frama-c "$FRAMA_C" \
       --compile-commands "$OUTPUT_DIR/facts/compile_commands.json" \
       --source-dir "$SOURCE_DIR" \
       --output-dir "$frama_dir" \
       --timeout "$TIMEOUT_SECONDS" \
-      --clang-facts "$raw_json" \
-      --target-profile "$TARGET_PROFILE"; then
-    fail "INFRASTRUCTURE_FAILURE: focused Frama-C Eva/From analysis failed or timed out; see $frama_dir"
+      --candidates "$OUTPUT_DIR/facts/candidates.json" \
+      --top-n "$TOP_N"; then
+    fail "INFRASTRUCTURE_FAILURE: tool-ranked Frama-C Eva/From analysis failed or timed out; see $frama_dir"
     return 1
   fi
 
@@ -185,19 +230,23 @@ run_once() {
       --frama-c-version "$FRAMA_VERSION" \
       --compile-commands "$OUTPUT_DIR/facts/compile_commands.json" \
       --compile-check "$compile_check_raw" \
-      --target-profile "$TARGET_PROFILE" \
+      --input-manifest "$MANIFEST" \
+      --build-receipt "$OUTPUT_DIR/build/build-receipt.json" \
+      --candidates "$OUTPUT_DIR/facts/candidates.json" \
+      --traceability "$OUTPUT_DIR/traceability/traceability.json" \
       --frama-output-dir "$frama_dir" \
-      --analysis-command "generate compile_commands.json from public Makefile flags" \
-      --analysis-command "clang -fsyntax-only over every compile_commands.json entry" \
-      --analysis-command "clang LibTooling AST Matchers over facts/compile_commands.json" \
-      --analysis-command "frama-c -eva -main PROFILE_TARGET (profile-selected targets)" \
-      --analysis-command "frama-c -deps -calldeps -main PROFILE_TARGET (profile-selected targets)"; then
-    fail "fact assembly failed"
+      --analysis-command "discover local PDF and C model by metadata/source gates" \
+      --analysis-command "make -j1 clean then make -j1 and run bittrue C smoke in an isolated copy" \
+      --analysis-command "Clang LibTooling AST Matchers over every compile_commands.json entry" \
+      --analysis-command "rank production/output-contributing bounded candidates without a function-name allowlist" \
+      --analysis-command "Frama-C Eva and From on the top-ranked tool-selected candidates" \
+      --analysis-command "deterministic PDF anchors and C model-note links; no LLM calls"; then
+    fail "INFRASTRUCTURE_FAILURE: fact assembly failed"
     return 1
   fi
 
   if ! "$PYTHON" "$SCRIPT_DIR/tools/hash_source.py" "$SOURCE_DIR" >"$after_hash"; then
-    fail "source hash manifest generation failed after analysis"
+    fail "INFRASTRUCTURE_FAILURE: source hash manifest generation failed after analysis"
     return 1
   fi
   if ! cmp -s "$before_hash" "$after_hash"; then
@@ -207,8 +256,76 @@ run_once() {
   return 0
 }
 
+if [ -z "$PYTHON" ] || ! command -v "$PYTHON" >/dev/null 2>&1; then
+  echo "INFRASTRUCTURE_FAILURE: Python runtime is not installed" >&2
+  exit 1
+fi
+mkdir -p "$OUTPUT_DIR/spec" "$OUTPUT_DIR/facts" "$OUTPUT_DIR/reports" "$OUTPUT_DIR/traceability"
+
+if ! "$PYTHON" "$SCRIPT_DIR/tools/discover_inputs.py" \
+    --repo-root "$REPO_DIR" \
+    --output "$MANIFEST" \
+    --timeout "$TIMEOUT_SECONDS"; then
+  echo "INFRASTRUCTURE_FAILURE: input discovery tool failed; see $MANIFEST" >&2
+  exit 1
+fi
+
+DISCOVERY_STATUS="$("$PYTHON" - "$MANIFEST" <<'PY'
+import json
+import pathlib
+import sys
+print(json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8")).get("status", "UNKNOWN"))
+PY
+)"
+if [ "$DISCOVERY_STATUS" != "OK" ]; then
+  echo "${DISCOVERY_STATUS:-INPUT_UNAVAILABLE}: local DSC PDF/C model gate did not pass; see $MANIFEST" >&2
+  exit 1
+fi
+SOURCE_DIR="$("$PYTHON" - "$MANIFEST" <<'PY'
+import json
+import pathlib
+import sys
+print(json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8")).get("source", {}).get("source_dir", ""))
+PY
+)"
+MODEL_ROOT="$("$PYTHON" - "$MANIFEST" <<'PY'
+import json
+import pathlib
+import sys
+print(json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8")).get("source", {}).get("model_root", ""))
+PY
+)"
+SOURCE_REVISION="$("$PYTHON" - "$MANIFEST" <<'PY'
+import json
+import pathlib
+import sys
+print(json.loads(pathlib.Path(sys.argv[1]).read_text(encoding="utf-8")).get("source", {}).get("git", {}).get("commit", "UNKNOWN"))
+PY
+)"
+if [ -z "$SOURCE_DIR" ] || [ -z "$MODEL_ROOT" ]; then
+  echo "INFRASTRUCTURE_FAILURE: discovery manifest has no source/model path" >&2
+  exit 1
+fi
+
+if ! "$PYTHON" "$SCRIPT_DIR/tools/build_model.py" \
+    --model-root "$MODEL_ROOT" \
+    --output-dir "$OUTPUT_DIR/build" \
+    --work-dir "$WORK_DIR/model-build" \
+    --timeout "$BUILD_TIMEOUT_SECONDS"; then
+  echo "INFRASTRUCTURE_FAILURE: isolated C clean-build/smoke gate failed; see $OUTPUT_DIR/build/build-receipt.json" >&2
+  exit 1
+fi
+
+if [ ! -f "$OUTPUT_DIR/traceability/links.reviewed.yaml" ]; then
+  cat >"$OUTPUT_DIR/traceability/links.reviewed.yaml" <<'EOF'
+schema_version: 1
+do_not_edit: false
+# Human-edited reviewed links are intentionally kept separate from generated proposals.
+links: []
+EOF
+fi
+
 clear_generated_outputs
-mkdir -p "$OUTPUT_DIR/facts" "$OUTPUT_DIR/reports"
 
 success=0
 for attempt in 1 2; do
@@ -233,4 +350,4 @@ if [ "$success" -ne 1 ]; then
   exit 1
 fi
 
-echo "DSC 1.2a focused C analysis complete: $OUTPUT_DIR/summary.json"
+echo "DSC 1.2a auto-discovery C analysis complete: $OUTPUT_DIR/summary.json"

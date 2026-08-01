@@ -129,6 +129,7 @@ struct FunctionFact {
   std::string qualified_name;
   std::string return_type;
   Location location;
+  Location end_location;
   bool is_static = false;
   std::vector<std::tuple<std::string, std::string, bool, bool>> parameters;
   std::map<std::string, std::string> callers;
@@ -933,6 +934,9 @@ private:
     fact.qualified_name = function->getQualifiedNameAsString();
     fact.return_type = trimType(function->getReturnType().getAsString());
     fact.location = locationFor(function->getLocation(), context);
+    fact.end_location = function->hasBody()
+                            ? locationFor(function->getBody()->getEndLoc(), context)
+                            : fact.location;
     fact.is_static = function->getStorageClass() == SC_Static;
     if (fact.parameters.empty()) {
       for (const ParmVarDecl *param : function->parameters()) {
@@ -1166,7 +1170,9 @@ private:
     out << ",\"source_file\":";
     quoted(out, fact.location.file);
     out << ",\"line\":" << fact.location.line << ",\"column\":"
-        << fact.location.column << ",\"return_type\":";
+        << fact.location.column << ",\"end_line\":" << fact.end_location.line
+        << ",\"end_column\":" << fact.end_location.column
+        << ",\"return_type\":";
     quoted(out, fact.return_type);
     out << ",\"is_static\":" << (fact.is_static ? "true" : "false");
     out << ",\"parameters\":[";

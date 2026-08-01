@@ -1985,83 +1985,83 @@ Roles are per-field proposals. No complete `dsc_cfg_t` or `dsc_state_t` is treat
 ## `dsc_state_t.bitSaveMode`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: RateControl, RateControl, RateControl, RateControl
 - Written by: RateControl, RateControl, RateControl, RateControl, RateControl
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.bitsClamped`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: RemoveBitsEncoderBuffer, RemoveBitsEncoderBuffer
 - Written by: DSC_Algorithm, DSC_Algorithm, RemoveBitsEncoderBuffer
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.bpCount`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: BlockPredSearch
 - Written by: BlockPredSearch, BlockPredSearch, BlockPredSearch
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.bpgFracAccum`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: RemoveBitsEncoderBuffer, RemoveBitsEncoderBuffer
 - Written by: RemoveBitsEncoderBuffer, RemoveBitsEncoderBuffer, RemoveBitsEncoderBuffer
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.bufferFullness`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, RateControl, RateControl, RateControl, RateControl, RateControl, RateControl, RateControl, RateControl, RateControl, VLCGroup, VLCGroup, VLCGroup, VLDGroup, VLDGroup
 - Written by: DSC_Algorithm, DSC_Algorithm, InitializeDSCState, RemoveBitsEncoderBuffer, RemoveBitsEncoderBuffer, RemoveBitsEncoderBuffer, VLCGroup, VLDGroup
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.chunkCount`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: DSC_Algorithm, DSC_Algorithm, DSC_Algorithm
 - Written by: DSC_Algorithm, RemoveBitsEncoderBuffer, RemoveBitsEncoderBuffer
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.chunkPixelTimes`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: RemoveBitsEncoderBuffer
 - Written by: RemoveBitsEncoderBuffer, RemoveBitsEncoderBuffer
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.chunkSizes`
 
 - Type: `int *`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: DSC_Algorithm
 - Written by: DSC_Algorithm, DSC_Algorithm, RemoveBitsEncoderBuffer
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.codedGroupSize`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: RateControl, RateControl, RateControl, RateControl, VLDGroup
 - Written by: VLCGroup, VLDGroup
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.cpntBitDepth`
 
@@ -2070,376 +2070,376 @@ Roles are per-field proposals. No complete `dsc_cfg_t` or `dsc_state_t` is treat
 - Read by: BlockPredSearch, BlockPredSearch, BlockPredSearch, DSC_Algorithm, EscapeCodeSize, FindMidpoint, MapQpToQlevel, MapQpToQlevel, MaxResidualSize, PopulateOrigLine, PredictionLoop, RateControl, RateControl, SampToLineBuf, SamplePredict, SamplePredict, UsingMidpoint, VLCUnit, VLCUnit, VLCUnit, VLCUnit, VLDUnit
 - Written by: DSC_Algorithm, DSC_Algorithm
 - Evidence:
-  - Field is accessed by a focused codec helper; this is a dataflow role proposal, not a sequential-hardware claim
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.currLine`
 
 - Type: `int *[4]`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: DSC_Algorithm, DSC_Algorithm, PredictionLoop, PredictionLoop, PredictionLoop, PredictionLoop
 - Written by: DSC_Algorithm, PredictionLoop
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.currentScale`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: CalcFullnessOffset, CalcFullnessOffset
 - Written by: CalcFullnessOffset, CalcFullnessOffset, CalcFullnessOffset, CalcFullnessOffset
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.edgeDetected`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: BlockPredSearch
 - Written by: BlockPredSearch, BlockPredSearch
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.encBalanceFifo`
 
 - Type: `fifo_t[4]`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: AddBits, DSC_Algorithm, InitializeDSCState, ProcessGroupEnc, ProcessGroupEnc, ProcessGroupEnc, VLCGroup, VLCGroup, VLCGroup, VLCGroup, VLCGroup, VLCGroup, WriteEntryToBitstream, WriteEntryToBitstream, WriteEntryToBitstream
 - Written by: NONE
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.errorOccurred`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: DSC_Algorithm
 - Written by: DSC_Algorithm, RateControl, RateControl, VLDGroup
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.firstFlat`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: FlatnessAdjustment, FlatnessAdjustment, FlatnessAdjustment, RateControl, VLCUnit, VLCUnit, VLCUnit, VLDGroup, VLDUnit
 - Written by: FlatnessAdjustment, InitializeDSCState, VLDUnit, VLDUnit
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.flatnessType`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: FlatnessAdjustment, FlatnessAdjustment, VLCUnit, VLCUnit, VLDUnit
 - Written by: FlatnessAdjustment, FlatnessAdjustment, VLCUnit, VLDUnit, VLDUnit
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.forceMpp`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: VLCUnit, VLCUnit
 - Written by: VLCGroup, VLCGroup, VLCGroup
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.groupCount`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: FlatnessAdjustment, FlatnessAdjustment, FlatnessAdjustment, FlatnessAdjustment, VLCGroup, VLCGroup, VLCUnit, VLCUnit, VLDGroup, VLDUnit, VLDUnit
 - Written by: DSC_Algorithm, DSC_Algorithm
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.groupCountLine`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: NONE
 - Written by: DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, VLCGroup, VLDGroup
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.hPos`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: EstimateBitsForGroup, IchDecision, UpdateHistoryElement, UseICHistory
 - Written by: DSC_Algorithm, DSC_Algorithm
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.history`
 
 - Type: `dsc_history_t`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: DSC_Algorithm, DSC_Algorithm, HistoryLookup, InitializeDSCState, IsOrigWithinQerr, PickBestHistoryValue, UpdateHistoryElement, UpdateHistoryElement
 - Written by: DSC_Algorithm, InitializeDSCState, InitializeDSCState, InitializeDSCState, IsOrigWithinQerr, UpdateHistoryElement, UpdateHistoryElement, UpdateHistoryElement, UpdateHistoryElement, UpdateICHistory, UpdateICHistory
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.ichIndexUnitMap`
 
 - Type: `int[6]`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: VLCUnit, VLCUnit, VLDUnit, VLDUnit
 - Written by: InitializeDSCState, InitializeDSCState, InitializeDSCState, InitializeDSCState
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.ichIndicesInGroup`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: IchDecision, UseICHistory, VLCUnit, VLCUnit, VLCUnit, VLCUnit, VLCUnit, VLDUnit, VLDUnit, VLDUnit, VLDUnit
 - Written by: InitializeDSCState
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.ichLookup`
 
 - Type: `int[6]`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, UseICHistory, VLCUnit, VLCUnit, VLCUnit, VLDUnit
 - Written by: DSC_Algorithm, DSC_Algorithm, VLDUnit, VLDUnit
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.ichPixels`
 
 - Type: `unsigned int[6][4]`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, UseICHistory, UseICHistory, UseICHistory, UseICHistory
 - Written by: NONE
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.ichSelected`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: DSC_Algorithm, DSC_Algorithm, RateControl, RateControl, RateControl, UpdateHistoryElement, UseICHistory, VLCUnit, VLCUnit, VLDUnit, VLDUnit
 - Written by: InitializeDSCState, VLCUnit, VLCUnit, VLDUnit, VLDUnit
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.isEncoder`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, FlatnessAdjustment, PredictionLoop, PredictionLoop, PredictionLoop, ProcessGroupEnc, RateControl, RateControl, RateControl, RemoveBitsEncoderBuffer, UpdateHistoryElement, UpdateHistoryElement
 - Written by: DSC_Algorithm
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.lastEdgeCount`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: BlockPredSearch
 - Written by: BlockPredSearch, BlockPredSearch, BlockPredSearch
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.lastErr`
 
 - Type: `int[4][3][13]`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: BlockPredSearch
 - Written by: BlockPredSearch, BlockPredSearch, InitializeDSCState
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.leftRecon`
 
 - Type: `int[4]`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: FindMidpoint
 - Written by: DSC_Algorithm, DSC_Algorithm
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.maxError`
 
 - Type: `int[4]`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: IchDecision, PredictionLoop
 - Written by: DSC_Algorithm, PredictionLoop
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.maxIchError`
 
 - Type: `int[4]`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: DSC_Algorithm, IchDecision
 - Written by: DSC_Algorithm, DSC_Algorithm
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.maxMidError`
 
 - Type: `int[4]`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: IchDecision, PredictionLoop
 - Written by: DSC_Algorithm, PredictionLoop
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.maxSeSize`
 
 - Type: `int[4]`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: ProcessGroupDec, ProcessGroupEnc, VLCGroup, VLCGroup
 - Written by: InitializeDSCState, InitializeDSCState, InitializeDSCState, InitializeDSCState, InitializeDSCState, InitializeDSCState, InitializeDSCState, InitializeDSCState
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.midpointRecon`
 
 - Type: `int[4][6]`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: PredictionLoop, PredictionLoop, UpdateMidpoint
 - Written by: PredictionLoop
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.midpointSelected`
 
 - Type: `int[4]`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: RateControl, RateControl, RateControl, RateControl, UpdateMidpoint
 - Written by: DSC_Algorithm, VLCGroup, VLCUnit, VLCUnit
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.mppState`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: RateControl
 - Written by: RateControl, RateControl, RateControl
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.native420`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: NONE
 - Written by: InitializeDSCState
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.nonFirstLineBpgTarget`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: NONE
 - Written by: InitializeDSCState
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.numBits`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: ProcessGroupEnc, VLCGroup, VLCGroup, VLCGroup, VLDGroup, VLDGroup
 - Written by: AddBits, GetBits, InitializeDSCState
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.numBitsChunk`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: RemoveBitsEncoderBuffer, RemoveBitsEncoderBuffer, RemoveBitsEncoderBuffer, VLCGroup, VLCGroup
 - Written by: RemoveBitsEncoderBuffer, RemoveBitsEncoderBuffer
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.numComponents`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: BlockPredSearch, BlockPredSearch, BlockPredSearch, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, ErrorHandler, HistoryLookup, InitializeDSCState, InitializeDSCState, IsOrigFlatHIndex, IsOrigFlatHIndex, IsOrigFlatHIndex, IsOrigWithinQerr, IsOrigWithinQerr, PopulateOrigLine, UpdateHistoryElement, UpdateHistoryElement, UpdateICHistory, UseICHistory
 - Written by: InitializeDSCState, InitializeDSCState
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.numSsps`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: ProcessGroupDec, ProcessGroupEnc, VLCGroup, VLCGroup, VLCGroup, VLCGroup, WriteEntryToBitstream
 - Written by: InitializeDSCState, InitializeDSCState
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.origIsFlat`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: FlatnessAdjustment, FlatnessAdjustment
 - Written by: FlatnessAdjustment, FlatnessAdjustment, FlatnessAdjustment, VLDGroup, VLDGroup
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.origLine`
 
 - Type: `int *[4]`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: DSC_Algorithm, DSC_Algorithm, IsOrigFlatHIndex, IsOrigFlatHIndex, IsOrigWithinQerr, PredictionLoop
 - Written by: DSC_Algorithm, PopulateOrigLine, PopulateOrigLine, PopulateOrigLine, PopulateOrigLine, PopulateOrigLine, PopulateOrigLine, PopulateOrigLine, PopulateOrigLine
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.origWithinQerr`
 
 - Type: `int[6]`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: VLCUnit
 - Written by: DSC_Algorithm, IsOrigWithinQerr, IsOrigWithinQerr
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.pixelCount`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: CalcFullnessOffset, CalcFullnessOffset, CalcFullnessOffset, CalcFullnessOffset, CalcFullnessOffset, RateControl, VLCGroup
 - Written by: RateControl
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.pixelsInGroup`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: CalcFullnessOffset, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, EstimateBitsForGroup, FlatnessAdjustment, HistoryLookup, HistoryLookup, HistoryLookup, InitializeDSCState, UpdateICHistory, UpdateMidpoint, UseICHistory, VLCGroup
 - Written by: InitializeDSCState
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.postMuxNumBits`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: DSC_Algorithm, DSC_Algorithm, ProcessGroupDec, ProcessGroupEnc, WriteEntryToBitstream, WriteEntryToBitstream
 - Written by: NONE
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.predErr`
 
 - Type: `int[4][13]`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: BlockPredSearch
 - Written by: BlockPredSearch, BlockPredSearch
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.predictedSize`
 
@@ -2448,79 +2448,79 @@ Roles are per-field proposals. No complete `dsc_cfg_t` or `dsc_state_t` is treat
 - Read by: GetQpAdjPredSize, RateControl, RateControl, RateControl, RateControl, RateControl, RateControl, RateControl, RateControl
 - Written by: InitializeDSCState, VLCUnit, VLDUnit
 - Evidence:
-  - Field is accessed by a focused codec helper; this is a dataflow role proposal, not a sequential-hardware claim
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.prevFirstFlat`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: FlatnessAdjustment, VLCUnit, VLDUnit, VLDUnit
 - Written by: FlatnessAdjustment, FlatnessAdjustment, FlatnessAdjustment, InitializeDSCState, VLDUnit, VLDUnit, VLDUnit
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.prevFlatnessType`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: FlatnessAdjustment
 - Written by: FlatnessAdjustment
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.prevIchSelected`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: EstimateBitsForGroup, IchDecision, UpdateHistoryElement, VLCUnit, VLCUnit, VLCUnit, VLCUnit, VLDUnit, VLDUnit
 - Written by: VLCUnit, VLDUnit
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.prevIsFlat`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: FlatnessAdjustment
 - Written by: FlatnessAdjustment, FlatnessAdjustment, FlatnessAdjustment
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.prevLine`
 
 - Type: `int *[5]`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: ErrorHandler, ErrorHandler, ErrorHandler, ErrorHandler, HistoryLookup, HistoryLookup, HistoryLookup, HistoryLookup, HistoryLookup, HistoryLookup, HistoryLookup, HistoryLookup, HistoryLookup, HistoryLookup, HistoryLookup, HistoryLookup, HistoryLookup, HistoryLookup, HistoryLookup, HistoryLookup, HistoryLookup, PredictionLoop, PredictionLoop, PredictionLoop, PredictionLoop
 - Written by: DSC_Algorithm, DSC_Algorithm
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.prevLinePred`
 
 - Type: `PRED_TYPE *`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: DSC_Algorithm, InitializeDSCState, InitializeDSCState, PredictionLoop
 - Written by: BlockPredSearch, BlockPredSearch, InitializeDSCState
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.prevNumBits`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: VLCGroup, VLCGroup
 - Written by: InitializeDSCState, VLCGroup
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.prevPixelCount`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: CalcFullnessOffset
 - Written by: CalcFullnessOffset
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.prevPrimaryQp`
 
@@ -2529,25 +2529,25 @@ Roles are per-field proposals. No complete `dsc_cfg_t` or `dsc_state_t` is treat
 - Read by: GetQpAdjPredSize
 - Written by: InitializeDSCState, VLCGroup, VLDGroup
 - Evidence:
-  - Field is accessed by a focused codec helper; this is a dataflow role proposal, not a sequential-hardware claim
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.prevQp`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: DSC_Algorithm, DSC_Algorithm, FlatnessAdjustment, RateControl, RateControl, RateControl, RateControl
 - Written by: FlatnessAdjustment, FlatnessAdjustment, InitializeDSCState, RateControl
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.prevRange`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: RateControl
 - Written by: RateControl
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.primaryQp`
 
@@ -2556,162 +2556,160 @@ Roles are per-field proposals. No complete `dsc_cfg_t` or `dsc_state_t` is treat
 - Read by: DSC_Algorithm, EstimateBitsForGroup, EstimateBitsForGroup, EstimateBitsForGroup, FlatnessAdjustment, FlatnessAdjustment, FlatnessAdjustment, FlatnessAdjustment, GetQpAdjPredSize, GetQpAdjPredSize, IsOrigFlatHIndex, UsingMidpoint, VLCGroup, VLCUnit, VLCUnit, VLCUnit, VLCUnit, VLCUnit, VLCUnit, VLDGroup, VLDUnit, VLDUnit, VLDUnit, VLDUnit, VLDUnit, VLDUnit
 - Written by: DSC_Algorithm, DSC_Algorithm, InitializeDSCState, PredictionLoop
 - Evidence:
-  - Field is accessed by a focused codec helper; this is a dataflow role proposal, not a sequential-hardware claim
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.quantTableChroma`
 
 - Type: `int *`
-- Role proposal: **CONSTANT_TABLE_POINTER**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: MapQpToQlevel
 - Written by: InitializeDSCState, InitializeDSCState, InitializeDSCState, InitializeDSCState, InitializeDSCState
 - Evidence:
-  - Field is assigned by InitializeDSCState to a qlevel_* table
-  - Field is indexed by MapQpToQlevel
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.quantTableLuma`
 
 - Type: `int *`
-- Role proposal: **CONSTANT_TABLE_POINTER**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: MapQpToQlevel, MapQpToQlevel
 - Written by: InitializeDSCState, InitializeDSCState, InitializeDSCState, InitializeDSCState, InitializeDSCState
 - Evidence:
-  - Field is assigned by InitializeDSCState to a qlevel_* table
-  - Field is indexed by MapQpToQlevel
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.quantizedResidual`
 
 - Type: `int[4][3]`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: EstimateBitsForGroup, PredictionLoop, SamplePredict, SamplePredict, SamplePredict, SamplePredict, UsingMidpoint, VLCGroup, VLCGroup, VLDGroup, VLDGroup, VLDGroup
 - Written by: DSC_Algorithm, DSC_Algorithm, InitializeDSCState, PredictionLoop
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.quantizedResidualMid`
 
 - Type: `int[4][3]`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: PredictionLoop, PredictionLoop, PredictionLoop, PredictionLoop, VLCUnit, VLCUnit
 - Written by: DSC_Algorithm, PredictionLoop, PredictionLoop, PredictionLoop
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.rcOffsetClampEnable`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: CalcFullnessOffset
 - Written by: CalcFullnessOffset
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.rcSizeGroup`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: RateControl
 - Written by: InitializeDSCState, RateControl
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.rcSizeUnit`
 
 - Type: `int[4]`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: RateControl
 - Written by: InitializeDSCState, VLCUnit, VLCUnit, VLCUnit, VLDUnit, VLDUnit, VLDUnit
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.rcXformOffset`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: CalcFullnessOffset, CalcFullnessOffset, CalcFullnessOffset, DSC_Algorithm, DSC_Algorithm
 - Written by: CalcFullnessOffset, CalcFullnessOffset, CalcFullnessOffset, InitializeDSCState
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.scaleAdjustCounter`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: CalcFullnessOffset, CalcFullnessOffset
 - Written by: CalcFullnessOffset, CalcFullnessOffset, CalcFullnessOffset, CalcFullnessOffset, CalcFullnessOffset, CalcFullnessOffset
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.scaleIncrementStart`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: CalcFullnessOffset, CalcFullnessOffset
 - Written by: CalcFullnessOffset
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.seSizeFifo`
 
 - Type: `fifo_t[4]`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: DSC_Algorithm, DSC_Algorithm, InitializeDSCState, ProcessGroupEnc, VLCGroup, VLCGroup, WriteEntryToBitstream
 - Written by: NONE
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.secondOffsetApplied`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: CalcFullnessOffset
 - Written by: CalcFullnessOffset
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.shifter`
 
 - Type: `fifo_t[4]`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: DSC_Algorithm, GetBits, InitializeDSCState, ProcessGroupDec, ProcessGroupDec, ProcessGroupEnc, ProcessGroupEnc, ProcessGroupEnc
 - Written by: NONE
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.sliceWidth`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, ErrorHandler, EstimateBitsForGroup, FlatnessAdjustment, HistoryLookup, HistoryLookup, InitializeDSCState, InitializeDSCState, IsOrigFlatHIndex, IsOrigFlatHIndex, PopulateOrigLine, PopulateOrigLine, PopulateOrigLine, RemoveBitsEncoderBuffer, UpdateMidpoint, VLCGroup
 - Written by: InitializeDSCState
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.stQp`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: DSC_Algorithm, DSC_Algorithm, FlatnessAdjustment, FlatnessAdjustment, RateControl, RateControl
 - Written by: FlatnessAdjustment, FlatnessAdjustment, FlatnessAdjustment, FlatnessAdjustment, InitializeDSCState, RateControl
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.throttleFrac`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: CalcFullnessOffset, CalcFullnessOffset
 - Written by: CalcFullnessOffset, CalcFullnessOffset, InitializeDSCState
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.throttleInt`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: NONE
 - Written by: InitializeDSCState
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.unitCType`
 
@@ -2720,52 +2718,52 @@ Roles are per-field proposals. No complete `dsc_cfg_t` or `dsc_state_t` is treat
 - Read by: DSC_Algorithm, EstimateBitsForGroup, EstimateBitsForGroup, GetQpAdjPredSize, IchDecision, PredictionLoop, SamplePredict, UpdateMidpoint, VLCUnit, VLDUnit
 - Written by: InitializeDSCState, InitializeDSCState
 - Evidence:
-  - Field is accessed by a focused codec helper; this is a dataflow role proposal, not a sequential-hardware claim
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.unitSspMap`
 
 - Type: `int[4]`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: VLCUnit, VLDUnit
 - Written by: InitializeDSCState
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.unitStartHPos`
 
 - Type: `int[4]`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: EstimateBitsForGroup, PredictionLoop, UpdateMidpoint
 - Written by: InitializeDSCState
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.unitsPerGroup`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: DSC_Algorithm, DSC_Algorithm, DSC_Algorithm, EstimateBitsForGroup, EstimateBitsForGroup, IchDecision, IchDecision, IchDecision, PredictionLoop, RateControl, RateControl, UpdateMidpoint, VLCGroup, VLCGroup, VLCGroup, VLCGroup, VLCGroup, VLCGroup, VLDGroup, VLDGroup, VLDGroup, VLDGroup, VLDUnit, VLDUnit
 - Written by: InitializeDSCState, InitializeDSCState, InitializeDSCState
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.useMidpoint`
 
 - Type: `int[4]`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: PredictionLoop, PredictionLoop, RateControl, RateControl, RateControl, RateControl
 - Written by: VLDUnit
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `dsc_state_t.vPos`
 
 - Type: `int`
-- Role proposal: **MODEL_ONLY_OR_RUNTIME_UNKNOWN**
+- Role proposal: **RUNTIME_STATE_INPUT_CANDIDATE**
 - Read by: IsOrigWithinQerr, IsOrigWithinQerr, PickBestHistoryValue, PickBestHistoryValue, PickBestHistoryValue, RateControl, UpdateHistoryElement, UpdateHistoryElement, UpdateHistoryElement
 - Written by: DSC_Algorithm, DSC_Algorithm
 - Evidence:
-  - Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state
+  - Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim
 
 ## `fifo_s.byte_ctr`
 
@@ -3354,12 +3352,10 @@ Roles are per-field proposals. No complete `dsc_cfg_t` or `dsc_state_t` is treat
 
 ## dsc_state_t role split
 
-- `quantTableLuma` and `quantTableChroma`: constant-table pointer proposal; initialization and indexed use are explicit in the facts.
-- Focused-helper state fields: runtime-state input candidate based on observed access sites; fields outside that path remain model-only-or-runtime UNKNOWN.
+- Constant-initializer array globals and their pointer uses are recorded in `value-ranges.json` and field facts.
+- Production-reachable state fields: runtime-state input candidate based on observed access sites; fields outside that path remain model-only-or-runtime UNKNOWN.
 - This report does not infer sequential hardware from state access.
 
 ## Quant table initialization and use
 
-- `InitializeDSCState` writes the two table pointers for each bits-per-component table family.
-- `MapQpToQlevel` reads the selected table pointer at `[qp]` and applies the component/mode branch.
-- `Qp2Qlevel` reads the global `qlevel_*` tables directly after selecting by `bits_per_component`.
+- Constant-initializer table declarations, observed readers, and value ranges are emitted without a function-name allowlist.

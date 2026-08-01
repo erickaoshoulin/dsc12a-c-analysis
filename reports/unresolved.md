@@ -12,27 +12,26 @@ Unknown means the selected tools did not prove the property; it is not a negativ
 - `DSC_Encode`: Eva result unavailable; From result unavailable
 - `Err`: Eva result unavailable; From result unavailable
 - `ErrorHandler`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
-- `EscapeCodeSize`: Eva result unavailable; From result unavailable
 - `EstimateBitsForGroup`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
-- `FindMidpoint`: Eva result unavailable; From result unavailable
+- `FindResidualSize`: Eva result unavailable; From result unavailable
 - `FlatnessAdjustment`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
 - `GetBits`: Eva result unavailable; From result unavailable
 - `HistoryLookup`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
 - `IchDecision`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
 - `InitializeDSCState`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
-- `IsFlatnessInfoSent`: Eva result unavailable; From result unavailable
 - `IsOrigFlatHIndex`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
 - `IsOrigWithinQerr`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
 - `PErr`: Eva result unavailable; From result unavailable
 - `PickBestHistoryValue`: Eva result unavailable; From result unavailable; loop has a potential read/write dependency across iterations
 - `PopulateOrigLine`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
-- `PredictSize`: Eva result unavailable; From result unavailable
+- `PredictSize`: From result unavailable
 - `PredictionLoop`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
 - `ProcessGroupDec`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
 - `ProcessGroupEnc`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
+- `Qp2Qlevel`: Eva result unavailable; From result unavailable
 - `RateControl`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
 - `RemoveBitsEncoderBuffer`: Eva result unavailable; From result unavailable
-- `SamplePredict`: Eva result unavailable; From result unavailable
+- `SamplePredict`: From result unavailable
 - `UErr`: Eva result unavailable; From result unavailable
 - `UpdateHistoryElement`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
 - `UpdateICHistory`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
@@ -192,6 +191,6 @@ Unknown means the selected tools did not prove the property; it is not a negativ
 
 - Eva checks report `NO_ALARM_OBSERVED_NOT_PROOF` when no matching alarm was emitted.
 - Direct entry-point ranges for pointer/struct parameters may remain UNKNOWN without an ACSL contract.
-- `cpnt % 3` is retained; no modulo simplification is proposed without a caller-specific range proof.
+- Modulo behavior is retained; no simplification is proposed without a caller-specific range proof.
 - From text is retained as raw log names and only normalized when a dependency line is emitted.
 - This experiment does not analyze sequential hardware or call an LLM.

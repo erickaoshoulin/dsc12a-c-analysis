@@ -1,6 +1,6 @@
 # Function summary
 
-Facts are from Clang LibTooling/AST Matchers and focused Frama-C Eva/From runs.
+Facts are from Clang LibTooling/AST Matchers and Frama-C runs selected by the auto-ranked candidate receipt.
 A proposal is not a hardware equivalence claim.
 
 ## `AddBits`
