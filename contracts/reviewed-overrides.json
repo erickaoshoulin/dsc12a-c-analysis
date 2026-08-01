@@ -1,0 +1,70 @@
+{
+  "schema_version": 1,
+  "purpose": "Reviewed domain evidence for dynamically discovered leaves; this file is data, not a function allowlist.",
+  "overrides": [
+    {
+      "match": {
+        "exact_anchor_id": "pdf:model-note:MN_ENC_QUANTIZATION:p083"
+      },
+      "review_status": "REVIEWED",
+      "reviewed_by": "codex",
+      "evidence": [
+        {
+          "kind": "EXACT_SPEC",
+          "anchor_id": "pdf:model-note:MN_ENC_QUANTIZATION:p083",
+          "reason": "DSC 1.2a 6.4.5 defines signed residual E, qLevel, ROUND and truncating shift semantics."
+        },
+        {
+          "kind": "EXACT_TABLE",
+          "anchor_id": "pdf:section:6.4.5",
+          "reason": "The legal qLevel domain is the Table 6-2 qLevel range [0,16]."
+        },
+        {
+          "kind": "RUNTIME_EVIDENCE",
+          "source": "8..16 bpc smoke input domains",
+          "reason": "A residual is the difference of two component samples; the widest supported sample domain is [-(2^16-1), 2^16-1]."
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {
+            "name": "e",
+            "c_type": "int",
+            "signed": true,
+            "logical_width": 17,
+            "legal_domain": {
+              "kind": "range",
+              "range": [-65535, 65535],
+              "basis": "runtime sample-domain evidence for 16bpc residuals"
+            }
+          },
+          {
+            "name": "qlevel",
+            "c_type": "int",
+            "signed": false,
+            "logical_width": 5,
+            "legal_domain": {
+              "kind": "range",
+              "range": [0, 16],
+              "basis": "EXACT Table 6-2 qLevel domain"
+            }
+          }
+        ],
+        "output": {
+          "name": "return_value",
+          "c_type": "int",
+          "signed": true,
+          "logical_width": 17,
+          "legal_range": [-65535, 65535]
+        }
+      },
+      "semantics": {
+        "kind": "quantization",
+        "expression": "e > 0 ? ((e + QuantOffset[qlevel]) >> qlevel) : -((QuantOffset[qlevel] - e) >> qlevel)",
+        "rounding": "QuantOffset[qlevel] = (qlevel > 0) ? ((1 << qlevel) / 2 - 1) : 0",
+        "signedness": "C signed int arithmetic; legal residual and result ranges fit signed 17 bits",
+        "quant_offset": [0, 0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767]
+      }
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 {
-  "agent": "generic-c-to-rtl-cicd",
+  "agent": "executable-generic-c-to-rtl-cicd",
   "contracts": [
     {
       "artifacts": [
@@ -37,20 +37,21 @@
         "integration/generated-overlay/findmidpoint/rtl_bridge.cpp",
         "integration/generated-overlay/findmidpoint/shadow.json"
       ],
-      "cache_reused": true,
       "contract_id": "findmidpoint",
-      "current_state": "PROMOTED",
-      "failure_reason": null,
+      "current_state": "CONTRACT_LOCKED",
+      "failure_reason": "bounded selection deferred",
       "function": "FindMidpoint",
       "hashes": {
-        "agent": "e6d5ac5594e4754e855f2ee0a77d6b5f20d32f85c925779e2f7fd3d0b779438c",
-        "contract": "7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda",
-        "dependency": "154d4583c435a4851e5109dca8f696bc2c21f9ffe5a02d4029a0aa41e3df1889",
-        "model": "deterministic-no-model",
-        "prompt": "4472eac47e0093cedf287e593cc7343fd0580c38e293ccffe84abf6c3c00e763",
+        "agent": "04f08fb4c4b68067efc1739fcf120b2f77ad268868a921a6b7ef15f31240fef5",
+        "contract": "ddf6b008659477f8b63803b7d5b599f7227e5f363ae460be83a305e5b39d0dea",
+        "dependency": "1891d53f1908a01fb0e98ee5a0f36f704f41968cf7f669234fd8d3a766b10fdd",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "52046cde6759294b04e2e32ae56cb5d9873f873c6bd03b84f2e8ea9a7d5db353",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "a3d226b0da34ef8a84294085ab5755dccea729e2603c4dad44eaf0bd261539a0"
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4"
       },
       "history": [
         {
@@ -63,13 +64,52 @@
           "failure_reason": null,
           "state": "PROMOTED",
           "status": "PASS"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
         }
       ],
+      "interface_shape": [
+        [
+          "input",
+          "cpnt",
+          2,
+          false
+        ],
+        [
+          "input",
+          "cpntBitDepth",
+          5,
+          false
+        ],
+        [
+          "input",
+          "leftRecon",
+          16,
+          false
+        ],
+        [
+          "input",
+          "qlevel",
+          5,
+          false
+        ],
+        [
+          "output",
+          "return_value",
+          17,
+          false
+        ]
+      ],
       "model_calls": 0,
-      "status": "PASS"
+      "origin": "locked_contract",
+      "selected": false,
+      "status": "DEFERRED",
+      "token_count": 0
     },
     {
-      "artifact_status": "PASS",
       "artifacts": [
         "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/artifact-manifest.json",
         "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/generation.json",
@@ -90,14 +130,16 @@
       "failure_reason": "arithmetic_semantics; field:dsc_cfg_t.flatness_max_qp; field:dsc_cfg_t.flatness_min_qp; interface:flatness_max_qp; interface:flatness_min_qp; interface:qp; interface:return_value; no_exact_spec_link; parameter:qp",
       "function": "IsFlatnessInfoSent",
       "hashes": {
-        "agent": "e6d5ac5594e4754e855f2ee0a77d6b5f20d32f85c925779e2f7fd3d0b779438c",
-        "contract": "15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697",
-        "dependency": "154d4583c435a4851e5109dca8f696bc2c21f9ffe5a02d4029a0aa41e3df1889",
-        "model": "deterministic-no-model",
-        "prompt": "4472eac47e0093cedf287e593cc7343fd0580c38e293ccffe84abf6c3c00e763",
+        "agent": "04f08fb4c4b68067efc1739fcf120b2f77ad268868a921a6b7ef15f31240fef5",
+        "contract": "1d9bc596110ec2ebf4b21ff142ebe4b2af3aa65b3c765f87f7cd65348002b945",
+        "dependency": "49155ca440c27e1656a93d039885d9f2399cf15e0fbf6773c25c5bc91914c8f1",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "52046cde6759294b04e2e32ae56cb5d9873f873c6bd03b84f2e8ea9a7d5db353",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "a3d226b0da34ef8a84294085ab5755dccea729e2603c4dad44eaf0bd261539a0"
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4"
       },
       "history": [
         {
@@ -112,11 +154,39 @@
           "status": "BLOCKED"
         }
       ],
+      "interface_shape": [
+        [
+          "input",
+          "flatness_max_qp",
+          32,
+          false
+        ],
+        [
+          "input",
+          "flatness_min_qp",
+          32,
+          false
+        ],
+        [
+          "input",
+          "qp",
+          32,
+          false
+        ],
+        [
+          "output",
+          "return_value",
+          32,
+          true
+        ]
+      ],
       "model_calls": 0,
-      "status": "BLOCKED"
+      "origin": "locked_contract",
+      "selected": false,
+      "status": "BLOCKED",
+      "token_count": 0
     },
     {
-      "artifact_status": "PASS",
       "artifacts": [
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/artifact-manifest.json",
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/generation.json",
@@ -137,14 +207,16 @@
       "failure_reason": "arithmetic_semantics; field:dsc_cfg_t.dsc_version_minor; field:dsc_cfg_t.native_420; field:dsc_state_t.quantTableChroma; field:dsc_state_t.quantTableLuma; interface:dsc_version_minor; interface:native_420; interface:qp; interface:quantTableChroma; interface:quantTableLuma; interface:return_value; parameter:qp",
       "function": "MapQpToQlevel",
       "hashes": {
-        "agent": "e6d5ac5594e4754e855f2ee0a77d6b5f20d32f85c925779e2f7fd3d0b779438c",
-        "contract": "ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa",
-        "dependency": "154d4583c435a4851e5109dca8f696bc2c21f9ffe5a02d4029a0aa41e3df1889",
-        "model": "deterministic-no-model",
-        "prompt": "4472eac47e0093cedf287e593cc7343fd0580c38e293ccffe84abf6c3c00e763",
+        "agent": "04f08fb4c4b68067efc1739fcf120b2f77ad268868a921a6b7ef15f31240fef5",
+        "contract": "b5d32e96c0ef357adad943e57b6e785389935d2b3a7265a6a709013ecb3e9a9f",
+        "dependency": "c2fb87ed47a776f205dfcceb73d42a6191bdd017a16e637a5a98791cb117908b",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "52046cde6759294b04e2e32ae56cb5d9873f873c6bd03b84f2e8ea9a7d5db353",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "a3d226b0da34ef8a84294085ab5755dccea729e2603c4dad44eaf0bd261539a0"
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4"
       },
       "history": [
         {
@@ -159,150 +231,350 @@
           "status": "BLOCKED"
         }
       ],
+      "interface_shape": [
+        [
+          "input",
+          "cpnt",
+          2,
+          false
+        ],
+        [
+          "input",
+          "cpntBitDepth",
+          5,
+          false
+        ],
+        [
+          "input",
+          "dsc_version_minor",
+          32,
+          false
+        ],
+        [
+          "input",
+          "native_420",
+          32,
+          false
+        ],
+        [
+          "input",
+          "qp",
+          32,
+          false
+        ],
+        [
+          "input",
+          "quantTableChroma",
+          5,
+          false
+        ],
+        [
+          "input",
+          "quantTableLuma",
+          5,
+          false
+        ],
+        [
+          "output",
+          "return_value",
+          32,
+          true
+        ]
+      ],
       "model_calls": 0,
-      "status": "BLOCKED"
+      "origin": "locked_contract",
+      "selected": false,
+      "status": "BLOCKED",
+      "token_count": 0
+    },
+    {
+      "artifacts": [
+        "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2"
+      ],
+      "cache": "REUSED_VERIFIED_RECEIPT",
+      "contract_id": "quantizeresidual",
+      "current_state": "PROMOTED",
+      "failure_reason": null,
+      "function": "QuantizeResidual",
+      "hashes": {
+        "agent": "04f08fb4c4b68067efc1739fcf120b2f77ad268868a921a6b7ef15f31240fef5",
+        "contract": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+        "dependency": "9c0a6bc17523a90470b5a5c08efd38b7e73cdb740ff92fd681932484ff71d3e6",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "52046cde6759294b04e2e32ae56cb5d9873f873c6bd03b84f2e8ea9a7d5db353",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4"
+      },
+      "history": [
+        {
+          "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "INFRASTRUCTURE_FAILURE"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "UNPROVED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "UNPROVED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "FAIL"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "FAIL"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "FAIL"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        }
+      ],
+      "interface_shape": [
+        [
+          "input",
+          "e",
+          17,
+          true
+        ],
+        [
+          "input",
+          "qlevel",
+          5,
+          false
+        ],
+        [
+          "output",
+          "return_value",
+          17,
+          true
+        ]
+      ],
+      "model_calls": 0,
+      "origin": "tool_discovered_reviewed_override",
+      "selected": true,
+      "status": "CACHE_REUSED",
+      "token_count": 0
     }
   ],
-  "input_facts": {
-    "baseline_artifact": {
-      "path": "bittrue_smoke/out/simple_192x108.dsc",
-      "sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
-      "size_bytes": 31236
-    },
-    "baseline_hash": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
-    "errors": [],
-    "source_dir": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-    "source_file_hashes": [
+  "dependency_pair": {
+    "call_sites": [
       {
-        "path": "Makefile",
-        "sha256": "6738c39ca0e92f061c70b24f437e5c284dce576a5535a30633a2356b1e60165e"
+        "callee_contract": "quantizeresidual",
+        "callee_function": "QuantizeResidual",
+        "callee_usr": "c:@F@QuantizeResidual",
+        "caller_contract": null,
+        "caller_function": "PredictionLoop",
+        "caller_usr": "c:@F@PredictionLoop",
+        "location": {
+          "column": 12,
+          "file": "dsc_codec.c",
+          "line": 2419
+        },
+        "source": "facts/callgraph.json"
       },
       {
-        "path": "cmd_parse.c",
-        "sha256": "aa6f8ca2ed1cd62c73007b920f2561d690643a3a63381c3777d04b1b59c08b01"
+        "callee_contract": "quantizeresidual",
+        "callee_function": "QuantizeResidual",
+        "callee_usr": "c:@F@QuantizeResidual",
+        "caller_contract": null,
+        "caller_function": "PredictionLoop",
+        "caller_usr": "c:@F@PredictionLoop",
+        "location": {
+          "column": 130,
+          "file": "dsc_codec.c",
+          "line": 2424
+        },
+        "source": "facts/callgraph.json"
       },
       {
-        "path": "cmd_parse.h",
-        "sha256": "783c66fb9685bac4c1132fbaa5534fca8e08c37f685b6858a314c268304758ea"
-      },
-      {
-        "path": "codec_main.c",
-        "sha256": "6f10916c2e72e3b6c5e8d578fb607954b6b501f309ba3735f8ec4ec61c689500"
-      },
-      {
-        "path": "dpx.c",
-        "sha256": "cf8b5216b23015de699935536163fc47d8ccf2e42df3e0ae3e85dba6eee6e17d"
-      },
-      {
-        "path": "dpx.h",
-        "sha256": "52770467f510bb6eb8c3e41e58b21ca9986dd048e016f9eeb3b4aed29098e85f"
-      },
-      {
-        "path": "dsc_codec.c",
-        "sha256": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf"
-      },
-      {
-        "path": "dsc_codec.h",
-        "sha256": "561770f192aa494ca033a367b467574acde1299a37a395697ca6afe27a01c4e7"
-      },
-      {
-        "path": "dsc_types.h",
-        "sha256": "ccff4ca7e3d8a043a07525fb140a16a417230ffb9852ef86058b912ccab758f8"
-      },
-      {
-        "path": "dsc_utils.c",
-        "sha256": "8aadcb1ecff2586892f385255a73fea367eec9afb6e14608d1010c08b7aca14e"
-      },
-      {
-        "path": "dsc_utils.h",
-        "sha256": "22ce915ae2aac1c438c2a0c8de5ce07778a1a9c2e1fa3b7b02af1aa35d7aed3f"
-      },
-      {
-        "path": "fifo.c",
-        "sha256": "6a886eaffd01b6651703da54bbb90e9cf77d6503131ab419644e0ad3e50a3e6e"
-      },
-      {
-        "path": "fifo.h",
-        "sha256": "e5e206ab84b589bced8578b8502233551a3ba725a7874e2aaaa856dfd1f85ad6"
-      },
-      {
-        "path": "hdr_dpx.c",
-        "sha256": "655820d0da1f2e68565030fe674eb708e1dc53df231e69c3ed403f1867930f3d"
-      },
-      {
-        "path": "hdr_dpx.h",
-        "sha256": "c8b7a370296ca27f3e5da2941d708254ec0b80a482e766beef1ffffe2a861730"
-      },
-      {
-        "path": "logging.c",
-        "sha256": "9194d16f129d5c92e7fca52a7c34de5d0312f64f33d2e069accc85f33913919c"
-      },
-      {
-        "path": "logging.h",
-        "sha256": "ffe542165809e9c5c77b8c879ef7d53a7df4654f1e3d2b55a5188dba53617043"
-      },
-      {
-        "path": "multiplex.c",
-        "sha256": "ab549255599fbdf1f69dd9fa8013ed39c044c3b8f591b187e2e056a5f1f5ab50"
-      },
-      {
-        "path": "multiplex.h",
-        "sha256": "41a198aa3eaf7bfd38e6591e1a88d5f24b32fce8ba87ccd3f3cd61bbdc313863"
-      },
-      {
-        "path": "psnr.c",
-        "sha256": "331f5e3f4ec62c51a184c1e766d073a348a45301745b06b84dc20cda6ad9e438"
-      },
-      {
-        "path": "psnr.h",
-        "sha256": "68731ffa4e873c2a2ebc0d9cd1f2001ce569ae4afed4cdc4107372bf1b252858"
-      },
-      {
-        "path": "rc_tables.h",
-        "sha256": "5d6d2bd27efb1ebab966aa77fbd047d7dd10bb0deef9603b5a5a66b7a3a22faa"
-      },
-      {
-        "path": "utl.c",
-        "sha256": "c673e2e5cd8dd6c5f91461908f628977644a8ad424d2e8a9fe9ba575bfcbffed"
-      },
-      {
-        "path": "utl.h",
-        "sha256": "15e0c59828db41f2a306fc2d5962f661794a8fa6b2d9d10937d72b50d4ee2f8b"
-      },
-      {
-        "path": "vdo.h",
-        "sha256": "e48d318a5c2d8512d25230cafb74835a135bf8dc89232d1c6ccefcb5ef28ebbc"
+        "callee_contract": "quantizeresidual",
+        "callee_function": "QuantizeResidual",
+        "callee_usr": "c:@F@QuantizeResidual",
+        "caller_contract": null,
+        "caller_function": "PredictionLoop",
+        "caller_usr": "c:@F@PredictionLoop",
+        "location": {
+          "column": 60,
+          "file": "dsc_codec.c",
+          "line": 2431
+        },
+        "source": "facts/callgraph.json"
       }
     ],
-    "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
-    "source_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
-    "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-    "spec_pages": "145",
-    "spec_path": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf",
-    "tool_versions": {
-      "clang": "Apple clang version 17.0.0 (clang-1700.6.3.2)",
-      "llvm-cov": "Homebrew LLVM version 22.1.8",
-      "llvm-profdata": "Homebrew LLVM version 22.1.8",
-      "make": "GNU Make 3.81",
-      "pdfinfo": "pdfinfo version 26.05.0",
-      "pdftotext": "pdftotext version 26.05.0",
-      "python": "Python 3.14.6",
-      "verilator": "Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701"
-    },
-    "tools": {
-      "clang": "/usr/bin/clang",
-      "llvm-cov": "/opt/homebrew/opt/llvm/bin/llvm-cov",
-      "llvm-profdata": "/opt/homebrew/opt/llvm/bin/llvm-profdata",
-      "make": "/usr/bin/make",
-      "pdfinfo": "/Users/snow/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override/pdfinfo",
-      "pdftotext": "/Users/snow/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/poppler/poppler/bin/pdftotext",
-      "python": "/opt/homebrew/bin/python3",
-      "verilator": "/opt/homebrew/bin/verilator"
-    }
+    "callee_contract": "quantizeresidual",
+    "callee_function": "QuantizeResidual",
+    "callee_usr": "c:@F@QuantizeResidual",
+    "caller_contract": null,
+    "caller_function": "PredictionLoop",
+    "caller_usr": "c:@F@PredictionLoop",
+    "selection_basis": "smallest acyclic direct call site from facts/callgraph.json"
   },
+  "generator_invocations": 0,
   "model_calls": 0,
   "rollback_mode": "C_ONLY",
-  "schema_version": 1,
+  "schema_version": 2,
+  "selected_contracts": [
+    "quantizeresidual"
+  ],
   "state_order": [
     "DISCOVERED",
     "CONTRACT_LOCKED",
@@ -313,5 +585,6 @@
     "RTL_RETURN_PASS",
     "BITSTREAM_PASS",
     "PROMOTED"
-  ]
+  ],
+  "token_count": 0
 }

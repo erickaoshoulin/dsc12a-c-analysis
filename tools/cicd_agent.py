@@ -1,11 +1,9 @@
 #!/usr/bin/env python3
-"""Dependency-aware CI/CD orchestration for incremental C-to-RTL migration.
+"""Executable, data-driven C-to-RTL migration CI/CD agent.
 
-The agent is deliberately data-driven.  Function names are read from the
-locked contracts and Clang call graph; they are never selection inputs in this
-module.  The upstream PDF and C model are immutable inputs.  Generated files
-are manifests, adapters, and evidence bundles in this repository or in an
-isolated temporary copy of the model.
+No function name is configuration. Ready cache misses invoke the external
+DSC_CICD_GENERATOR_CMD exactly once; missing hooks return GENERATION_REQUIRED.
+All verification receipts are produced by commands executed in this run.
 """
 
 from __future__ import annotations
@@ -13,16 +11,19 @@ from __future__ import annotations
 import argparse
 import concurrent.futures
 import hashlib
+import itertools
 import json
 import os
 import pathlib
 import re
+import shlex
 import shutil
 import subprocess
 import sys
 import tempfile
 import textwrap
 import threading
+import time
 from typing import Any, Iterable
 
 
@@ -44,6 +45,8 @@ VERIFICATION_STATUSES = {
     "UNPROVED",
     "UNSUPPORTED",
     "INFRASTRUCTURE_FAILURE",
+    "GENERATION_REQUIRED",
+    "GENERATION_FAILED",
 }
 STAGE_TO_STATE = {
     "discover": "DISCOVERED",
@@ -56,13 +59,19 @@ STAGE_TO_STATE = {
     "bitstream": "BITSTREAM_PASS",
     "promote": "PROMOTED",
 }
-ALLOWED_REPAIR_CATEGORIES = {
-    "syntax",
-    "interface",
-    "width_signedness",
-    "arithmetic_counterexample",
-    "unsupported_c_construct",
-}
+FORBIDDEN_RTL = (
+    r"\balways_ff\b",
+    r"\bposedge\b",
+    r"\bnegedge\b",
+    r"\bclock\b",
+    r"\breset\b",
+    r"\binitial\b",
+    r"#[ \t]*[0-9]",
+    r"\bwait\s*\(",
+    r"\bfork\b",
+    r"\bjoin\b",
+    r"\bmemory\b",
+)
 
 
 def canonical(value: Any) -> str:
@@ -90,108 +99,143 @@ def read_json(path: pathlib.Path, default: Any = None) -> Any:
 
 def write_json(path: pathlib.Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(
-        json.dumps(value, indent=2, sort_keys=True, ensure_ascii=False) + "\n",
-        encoding="utf-8",
-    )
-
-
-def scrub_path(value: Any, old_root: pathlib.Path | None) -> Any:
-    if not old_root:
-        return value
-    if isinstance(value, str):
-        return value.replace(str(old_root), "<overlay-work>")
-    if isinstance(value, list):
-        return [scrub_path(item, old_root) for item in value]
-    if isinstance(value, dict):
-        return {key: scrub_path(item, old_root) for key, item in value.items()}
-    return value
+    path.write_text(json.dumps(value, indent=2, sort_keys=True, ensure_ascii=False) + "\n", encoding="utf-8")
 
 
 def safe_identifier(value: str) -> str:
-    result = re.sub(r"[^A-Za-z0-9_]", "_", value)
+    result = re.sub(r"[^A-Za-z0-9_]", "_", str(value))
     if not result or result[0].isdigit():
         result = "c_" + result
     return result
-
-
-def snake_case(value: str) -> str:
-    return re.sub(r"(?<!^)([A-Z])", r"_\1", value).lower()
 
 
 def command_version(command: str | None) -> str:
     if not command:
         return "MISSING"
     try:
-        version_flag = "-v" if pathlib.Path(command).name in {"pdfinfo", "pdftotext"} else "--version"
-        completed = subprocess.run(
-            [command, version_flag],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-            text=True,
-            encoding="utf-8",
-            errors="replace",
-            timeout=15,
-            check=False,
-        )
-        return (completed.stdout or "").splitlines()[0].strip() or "UNKNOWN"
+        result = subprocess.run([command, "--version"], stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                                text=True, encoding="utf-8", errors="replace", timeout=15, check=False)
+        return (result.stdout or "").splitlines()[0].strip() or "UNKNOWN"
     except (OSError, subprocess.TimeoutExpired):
         return "UNAVAILABLE"
 
 
-def locate_tool(name: str, fallback: str | None = None) -> str | None:
+def locate_tool(name: str, *fallbacks: str) -> str | None:
     found = shutil.which(name)
     if found:
         return found
-    if fallback and pathlib.Path(fallback).is_file():
-        return fallback
+    for fallback in fallbacks:
+        if fallback and pathlib.Path(fallback).is_file():
+            return fallback
     return None
 
 
 def contract_function(contract: dict[str, Any]) -> dict[str, Any]:
-    return contract.get("function", {})
+    value = contract.get("function", {})
+    return value if isinstance(value, dict) else {}
 
 
 def contract_id(contract: dict[str, Any]) -> str:
-    return str(contract.get("contract_id") or safe_identifier(contract_function(contract).get("name", "unknown")))
+    if contract.get("contract_id"):
+        return str(contract["contract_id"])
+    return safe_identifier(contract_function(contract).get("name", "unknown")).lower()
 
 
 def contract_exact_links(contract: dict[str, Any]) -> list[dict[str, Any]]:
     return [link for link in contract.get("spec_links", []) if link.get("status") == "EXACT"]
 
 
+def scrub_paths(value: Any, roots: Iterable[pathlib.Path]) -> Any:
+    if isinstance(value, str):
+        result = value
+        for root in roots:
+            result = result.replace(str(root), "<overlay-work>")
+        return result
+    if isinstance(value, list):
+        return [scrub_paths(item, roots) for item in value]
+    if isinstance(value, dict):
+        return {key: scrub_paths(item, roots) for key, item in value.items()}
+    return value
+
+
+def parameter_is_pointer(parameter: dict[str, Any]) -> bool:
+    return bool(parameter.get("pointer")) or "*" in str(parameter.get("type", ""))
+
+
+def source_path_for(function: dict[str, Any], source_dir: pathlib.Path) -> pathlib.Path:
+    raw = pathlib.Path(str(function.get("source_file", "")))
+    if raw.is_absolute() and raw.is_file():
+        return raw
+    return source_dir / raw.name
+
+
+def extract_function_body(path: pathlib.Path, name: str, line_hint: int | None = None) -> tuple[str, dict[str, int]]:
+    text = path.read_text(encoding="utf-8", errors="replace")
+    pattern = re.compile(r"\b" + re.escape(name) + r"\s*\([^;{}]*\)\s*\{")
+    matches = list(pattern.finditer(text))
+    if not matches:
+        raise RuntimeError(f"function definition not found: {name}")
+    hint = max(0, int(line_hint or 1) - 1)
+    match = next((candidate for candidate in matches if text.count("\n", 0, candidate.start()) >= hint), matches[0])
+    brace = text.find("{", match.start(), match.end())
+    depth = 0
+    quote: str | None = None
+    escaped = False
+    end: int | None = None
+    for index in range(brace, len(text)):
+        char = text[index]
+        if quote:
+            if escaped:
+                escaped = False
+            elif char == "\\":
+                escaped = True
+            elif char == quote:
+                quote = None
+            continue
+        if char in "\"'":
+            quote = char
+        elif char == "{":
+            depth += 1
+        elif char == "}":
+            depth -= 1
+            if depth == 0:
+                end = index + 1
+                break
+    if end is None:
+        raise RuntimeError(f"unbalanced function body: {name}")
+    return text[match.start():end].strip(), {
+        "start_line": text.count("\n", 0, match.start()) + 1,
+        "end_line": text.count("\n", 0, end) + 1,
+    }
+
+
+def source_body(contract: dict[str, Any], source_dir: pathlib.Path) -> tuple[pathlib.Path, str, dict[str, int]]:
+    function = contract_function(contract)
+    path = source_path_for(function, source_dir)
+    span = function.get("source_span", {}) or {}
+    if span.get("start_line") and span.get("end_line"):
+        lines = path.read_text(encoding="utf-8", errors="replace").splitlines()
+        start = max(1, int(span["start_line"]))
+        end = min(len(lines), int(span["end_line"]))
+        return path, "\n".join(lines[start - 1:end]).strip(), {"start_line": start, "end_line": end}
+    body, derived = extract_function_body(path, str(function.get("name", "")), function.get("line"))
+    return path, body, derived
+
+
 def unresolved_reasons(contract: dict[str, Any]) -> list[str]:
-    reasons: list[str] = []
-    reasons.extend(str(item) for item in contract.get("obligations", []) if item)
+    reasons: list[str] = [str(item) for item in contract.get("obligations", []) if item]
     reasons.extend(str(item) for item in contract.get("dependencies", {}).get("unresolved", []) if item)
-    interface = contract.get("interface", {})
+    interface = contract.get("interface", {}) or {}
     for item in interface.get("inputs", []) + interface.get("flattened_pointer_dependencies", []):
         if item.get("unresolved"):
-            name = item.get("name") or item.get("field") or "input"
-            reasons.append(f"interface:{name}")
+            reasons.append(f"interface:{item.get('name') or item.get('field') or 'input'}")
     if interface.get("output", {}).get("unresolved"):
         reasons.append("interface:return_value")
-    semantics = contract.get("semantics")
-    if not semantics:
+    if not contract.get("semantics"):
         reasons.append("arithmetic_semantics")
+    if not interface.get("ports") and not (interface.get("inputs") or interface.get("flattened_pointer_dependencies") or interface.get("output")):
+        reasons.append("frozen_interface_missing")
     return sorted(set(reasons))
-
-
-def source_body(contract: dict[str, Any], source_dir: pathlib.Path) -> tuple[pathlib.Path, str]:
-    function = contract_function(contract)
-    source_path = pathlib.Path(str(function.get("source_file", "")))
-    if not source_path.is_absolute():
-        source_path = source_dir / source_path
-    span = function.get("source_span", {})
-    lines = source_path.read_text(encoding="utf-8", errors="replace").splitlines()
-    start = int(span.get("start_line", 1))
-    end = int(span.get("end_line", start))
-    return source_path, "\n".join(lines[start - 1 : end]).strip()
-
-
-def function_source_hash(contract: dict[str, Any], source_dir: pathlib.Path) -> str:
-    path, body = source_body(contract, source_dir)
-    return digest({"path": path.name, "body": body})
 
 
 class Agent:
@@ -201,11 +245,10 @@ class Agent:
         self.ci = self.root / "ci"
         self.artifacts = self.root / "artifacts"
         self.integration = self.root / "integration"
-        self.manifest_path = self.root / "spec" / "manifest.json"
-        self.manifest = read_json(self.manifest_path, {}) or {}
-        self.contract_paths = sorted((self.root / "contracts" / "locked").glob("*.json"))
-        self.contracts = [read_json(path, {}) for path in self.contract_paths]
-        self.contracts = [contract for contract in self.contracts if contract]
+        self.manifest = read_json(self.root / "spec" / "manifest.json", {}) or {}
+        self.locked_contracts = [read_json(path, {}) for path in sorted((self.root / "contracts" / "locked").glob("*.json"))]
+        self.locked_contracts = [item for item in self.locked_contracts if item]
+        self.contracts = list(self.locked_contracts)
         self.previous_state = read_json(self.ci / "state.json", {}) or {}
         self.cache = read_json(self.ci / "cache-index.json", {}) or {}
         self.input_facts: dict[str, Any] = {}
@@ -213,155 +256,245 @@ class Agent:
         self.plan: dict[str, Any] = {}
         self.dag: dict[str, Any] = {}
         self.state: dict[str, Any] = {}
-        self.state_lock = threading.Lock()
+        self.run_results: list[dict[str, Any]] = []
+        self.generator_invocations = 0
+        self.generator_tokens = 0
 
     def load_inputs(self) -> dict[str, Any]:
-        manifest = self.manifest
         errors: list[str] = []
-        spec = manifest.get("spec", {})
-        source = manifest.get("source", {})
+        spec = self.manifest.get("spec", {}) or {}
+        source = self.manifest.get("source", {}) or {}
         pdf_path = pathlib.Path(str(spec.get("path", "")))
-        if manifest.get("status") != "OK" or spec.get("status") != "PASS":
-            errors.append("local PDF discovery gate did not pass")
+        if self.manifest.get("status") != "OK" or spec.get("status") != "PASS":
+            errors.append("SPEC_UNAVAILABLE")
         if not pdf_path.is_file():
-            errors.append(f"PDF is missing: {pdf_path}")
-        elif file_hash(pdf_path) != spec.get("sha256"):
-            errors.append("PDF SHA-256 changed")
+            errors.append("SPEC_UNAVAILABLE: local PDF missing")
+        elif spec.get("sha256") and file_hash(pdf_path) != spec.get("sha256"):
+            errors.append("SPEC_UNAVAILABLE: PDF SHA-256 changed")
         source_dir = pathlib.Path(str(source.get("source_dir", "")))
+        model_root = pathlib.Path(str(source.get("model_root", "")))
         if source.get("status") != "PASS" or not source_dir.is_dir():
-            errors.append("local C source discovery gate did not pass")
-        actual_source_hashes: list[dict[str, str]] = []
-        for item in source.get("source_file_hashes", []):
-            path = source_dir / str(item.get("path", ""))
+            errors.append("SOURCE_UNAVAILABLE")
+        actual_hashes: list[dict[str, str]] = []
+        for entry in source.get("source_file_hashes", []):
+            path = source_dir / str(entry.get("path", ""))
             if not path.is_file():
-                errors.append(f"C source file is missing: {path}")
+                errors.append(f"SOURCE_UNAVAILABLE: missing {entry.get('path')}")
                 continue
-            actual_source_hashes.append({"path": str(item.get("path")), "sha256": file_hash(path)})
-            if file_hash(path) != item.get("sha256"):
-                errors.append(f"C source hash changed: {item.get('path')}")
+            actual = file_hash(path)
+            actual_hashes.append({"path": str(entry.get("path")), "sha256": actual})
+            if entry.get("sha256") and actual != entry.get("sha256"):
+                errors.append(f"SOURCE_UNAVAILABLE: changed {entry.get('path')}")
         build = read_json(self.root / "build" / "build-receipt.json", {}) or {}
-        smoke_outputs = build.get("smoke", {}).get("outputs", [])
         expected = build.get("smoke", {}).get("expected_hash")
-        actual = next((item.get("sha256") for item in smoke_outputs if str(item.get("path", "")).endswith(".dsc")), None)
-        if build.get("status") != "PASS" or actual != expected:
-            errors.append("original C bitstream baseline receipt is not PASS")
-        required_tools = {
+        smoke = next((item for item in build.get("smoke", {}).get("outputs", []) if str(item.get("path", "")).endswith(".dsc")), {})
+        if build.get("status") != "PASS" or smoke.get("sha256") != expected:
+            errors.append("INFRASTRUCTURE_FAILURE: C baseline receipt is not PASS")
+        tools = {
             "python": shutil.which("python3") or sys.executable,
-            "make": shutil.which("make"),
-            "clang": shutil.which("clang"),
-            "verilator": shutil.which("verilator"),
-            "pdfinfo": locate_tool("pdfinfo", manifest.get("pdf_extraction", {}).get("pdfinfo_tool")),
-            "pdftotext": locate_tool("pdftotext", manifest.get("pdf_extraction", {}).get("pdftotext_tool")),
+            "make": locate_tool("make"),
+            "clang": locate_tool("clang"),
+            "clang++": locate_tool("clang++", "/opt/homebrew/opt/llvm/bin/clang++"),
+            "verilator": locate_tool("verilator"),
+            "pdfinfo": locate_tool("pdfinfo", str(self.manifest.get("pdf_extraction", {}).get("pdfinfo_tool", ""))),
+            "pdftotext": locate_tool("pdftotext", str(self.manifest.get("pdf_extraction", {}).get("pdftotext_tool", ""))),
+            "llvm-config": locate_tool("llvm-config", "/opt/homebrew/opt/llvm/bin/llvm-config"),
             "llvm-cov": locate_tool("llvm-cov", "/opt/homebrew/opt/llvm/bin/llvm-cov"),
             "llvm-profdata": locate_tool("llvm-profdata", "/opt/homebrew/opt/llvm/bin/llvm-profdata"),
         }
-        for name in ("python", "make", "clang", "verilator", "pdfinfo", "pdftotext"):
-            if not required_tools.get(name):
-                errors.append(f"required tool is missing: {name}")
-        tool_versions = {name: command_version(path) for name, path in required_tools.items()}
+        for name in ("python", "make", "clang", "clang++", "verilator", "llvm-config"):
+            if not tools.get(name):
+                errors.append(f"INFRASTRUCTURE_FAILURE: missing tool {name}")
+        smoke_dir = model_root / "bittrue_smoke"
+        scripts = [str(path.relative_to(model_root)) for path in sorted(smoke_dir.glob("run_c_baseline*.sh")) if path.is_file()] if smoke_dir.is_dir() else []
         self.input_facts = {
-            "source_root": source.get("model_root"),
+            "source_root": str(model_root),
             "source_dir": str(source_dir),
-            "source_hash": source.get("source_hashes_sha256") or digest(actual_source_hashes),
-            "source_file_hashes": actual_source_hashes,
+            "source_hash": source.get("source_hashes_sha256") or digest(actual_hashes),
+            "source_file_hashes": actual_hashes,
             "spec_path": str(pdf_path),
             "spec_hash": spec.get("sha256"),
             "spec_pages": spec.get("pdfinfo", {}).get("Pages"),
             "baseline_hash": expected,
-            "baseline_artifact": next((item for item in smoke_outputs if str(item.get("path", "")).endswith(".dsc")), {}),
-            "tools": {name: path for name, path in required_tools.items()},
-            "tool_versions": tool_versions,
-            "errors": errors,
+            "baseline_artifact": smoke,
+            "tools": tools,
+            "tool_versions": {name: command_version(path) for name, path in tools.items()},
+            "baseline_scripts": scripts,
+            "errors": sorted(set(errors)),
         }
         return self.input_facts
 
-    def dependency_graph(self) -> dict[str, Any]:
-        by_usr = {
-            str(contract_function(contract).get("clang_usr")): contract_id(contract)
-            for contract in self.contracts
-            if contract_function(contract).get("clang_usr")
-        }
-        by_name = {
-            str(contract_function(contract).get("name")): contract_id(contract)
-            for contract in self.contracts
-            if contract_function(contract).get("name")
-        }
-        callgraph = read_json(self.root / "facts" / "callgraph.json", {}) or {}
-        call_sites: list[dict[str, Any]] = []
-        for edge in callgraph.get("edges", []):
-            caller = by_usr.get(str(edge.get("caller_usr")))
-            callee = by_usr.get(str(edge.get("callee_usr")))
-            if caller and callee:
-                call_sites.append(
-                    {
-                        "caller_contract": caller,
-                        "callee_contract": callee,
-                        "caller_usr": edge.get("caller_usr"),
-                        "callee_usr": edge.get("callee_usr"),
-                        "caller_function": edge.get("caller_name"),
-                        "callee_function": edge.get("callee_name"),
-                        "location": edge.get("location", {}),
-                        "source": "facts/callgraph.json",
-                    }
-                )
-        for contract in self.contracts:
-            caller = contract_id(contract)
-            for dep in contract.get("dependencies", {}).get("direct_callees", []):
-                name = dep.get("name") if isinstance(dep, dict) else str(dep)
-                callee = by_usr.get(str(dep.get("clang_usr"))) if isinstance(dep, dict) else None
-                callee = callee or by_name.get(str(name))
-                if callee and not any(
-                    item["caller_contract"] == caller
-                    and item["callee_contract"] == callee
-                    and item.get("location") == dep.get("location", {})
-                    for item in call_sites
-                ):
-                    call_sites.append(
-                        {
-                            "caller_contract": caller,
-                            "callee_contract": callee,
-                            "caller_usr": contract_function(contract).get("clang_usr"),
-                            "callee_usr": contract_function(self.contracts[[contract_id(c) for c in self.contracts].index(callee)]).get("clang_usr") if callee in [contract_id(c) for c in self.contracts] else None,
-                            "caller_function": contract_function(contract).get("name"),
-                            "callee_function": name,
-                            "location": dep.get("location", {}) if isinstance(dep, dict) else {},
-                            "source": "locked-contract.dependencies.direct_callees",
-                        }
+    def exact_links_by_usr(self) -> dict[str, list[dict[str, Any]]]:
+        payload = read_json(self.root / "traceability" / "traceability.json", {}) or {}
+        result: dict[str, list[dict[str, Any]]] = {}
+        for link in payload.get("links", []):
+            if link.get("status") != "EXACT":
+                continue
+            result.setdefault(str(link.get("clang_usr", "")), []).append({
+                "anchor_id": link.get("spec_anchor_id"),
+                "page": link.get("spec_page"),
+                "section": link.get("spec_section"),
+                "short_anchor": link.get("spec_anchor_id"),
+                "evidence": link.get("evidence", ""),
+                "status": "EXACT",
+            })
+        return result
+
+    def reviewed_overrides(self) -> list[dict[str, Any]]:
+        payload = read_json(self.root / "contracts" / "reviewed-overrides.json", {}) or {}
+        return [item for item in payload.get("overrides", []) if item.get("match")]
+
+    def freeze_ports(self, interface: dict[str, Any]) -> list[dict[str, Any]]:
+        if interface.get("ports"):
+            return list(interface["ports"])
+        ports = []
+        for item in interface.get("inputs", []):
+            ports.append({
+                "name": safe_identifier(str(item.get("name", "input"))),
+                "role": str(item.get("name", "input")),
+                "direction": "input",
+                "width": int(item.get("logical_width") or 32),
+                "signed": bool(item.get("signed", False)),
+                "c_type": item.get("c_type", "int"),
+                "legal_domain": item.get("legal_domain", {}),
+            })
+        for item in interface.get("flattened_pointer_dependencies", []):
+            ports.append({
+                "name": safe_identifier(str(item.get("field", "field"))),
+                "role": str(item.get("field", "field")),
+                "direction": "input",
+                "width": int(item.get("logical_width") or 32),
+                "signed": False,
+                "c_type": item.get("c_type", "int"),
+                "legal_domain": item.get("legal_domain", {}),
+            })
+        output = interface.get("output", {}) or {}
+        ports.append({
+            "name": safe_identifier(str(output.get("name", "return_value"))),
+            "role": "return_value",
+            "direction": "output",
+            "width": int(output.get("logical_width") or 32),
+            "signed": bool(output.get("signed", True)),
+            "c_type": output.get("c_type", "int"),
+        })
+        return ports
+
+    def materialize_new_contracts(self) -> list[dict[str, Any]]:
+        if self.input_facts.get("errors"):
+            return []
+        facts = read_json(self.root / "facts" / "functions.json", {}) or {}
+        exact = self.exact_links_by_usr()
+        overrides = self.reviewed_overrides()
+        known = {str(contract_function(item).get("clang_usr")) for item in self.locked_contracts}
+        discovered = []
+        for function in facts.get("functions", []):
+            usr = str(function.get("clang_usr", ""))
+            proposal = function.get("proposal", {}) or {}
+            override = next(
+                (
+                    item for item in overrides
+                    if any(
+                        link.get("anchor_id") == item.get("match", {}).get("exact_anchor_id")
+                        for link in exact.get(usr, [])
                     )
-        edges = sorted({(item["caller_contract"], item["callee_contract"]) for item in call_sites})
-        adjacency: dict[str, list[str]] = {contract_id(contract): [] for contract in self.contracts}
+                ),
+                None,
+            )
+            if (not usr or usr in known or not override or not exact.get(usr)
+                    or not proposal.get("combinational_candidate") or function.get("callees")):
+                continue
+            interface = dict(override.get("interface", {}))
+            interface["ports"] = self.freeze_ports(interface)
+            name = str(function.get("name", "candidate"))
+            cid = safe_identifier(name).lower()
+            source_path = source_path_for(function, pathlib.Path(str(self.input_facts["source_dir"])))
+            try:
+                body, span = extract_function_body(source_path, name, function.get("line"))
+            except (OSError, RuntimeError):
+                continue
+            contract = {
+                "schema_version": 2,
+                "contract_id": cid,
+                "status": "LOCKED",
+                "origin": "tool_discovered_reviewed_override",
+                "function": {
+                    "clang_usr": usr,
+                    "name": name,
+                    "qualified_name": name,
+                    "source_file": source_path.name,
+                    "source_span": span,
+                    "source_body_sha256": digest(body),
+                    "parameters": function.get("parameters", []),
+                    "return_type": function.get("return_type", "int"),
+                },
+                "interface": interface,
+                "semantics": override.get("semantics", {}),
+                "obligations": [],
+                "dependencies": {
+                    "direct_callees": list(function.get("callees", [])),
+                    "read_fields": [item.get("name") for item in function.get("field_reads", []) if isinstance(item, dict)],
+                    "unresolved": [],
+                },
+                "spec_links": exact[usr],
+                "reviewed_evidence": override.get("evidence", []),
+                "selection": {
+                    "new_work": True,
+                    "basis": "exact traceability + pure leaf facts + reviewed domain evidence",
+                    "fact_source": "facts/functions.json",
+                },
+            }
+            write_json(self.root / "ci" / "discovered-contracts" / f"{cid}.json", contract)
+            discovered.append(contract)
+        self.contracts = self.locked_contracts + discovered
+        return discovered
+
+    def dependency_graph(self) -> dict[str, Any]:
+        by_usr = {str(contract_function(item).get("clang_usr")): contract_id(item) for item in self.contracts}
+        callgraph = read_json(self.root / "facts" / "callgraph.json", {}) or {}
+        all_sites = []
+        for edge in callgraph.get("edges", []):
+            caller_usr = str(edge.get("caller_usr", ""))
+            callee_usr = str(edge.get("callee_usr", ""))
+            all_sites.append({
+                "caller_contract": by_usr.get(caller_usr),
+                "callee_contract": by_usr.get(callee_usr),
+                "caller_usr": caller_usr,
+                "callee_usr": callee_usr,
+                "caller_function": edge.get("caller_name"),
+                "callee_function": edge.get("callee_name"),
+                "location": edge.get("location", {}),
+                "source": "facts/callgraph.json",
+            })
+        edges = sorted({(site["caller_contract"], site["callee_contract"]) for site in all_sites if site.get("caller_contract") and site.get("callee_contract")})
+        adjacency = {contract_id(item): [] for item in self.contracts}
         for caller, callee in edges:
             adjacency.setdefault(caller, []).append(callee)
-        cycles: list[list[str]] = []
+        cycles = []
         visiting: list[str] = []
         visited: set[str] = set()
 
         def visit(node: str) -> None:
             if node in visiting:
-                cycles.append(visiting[visiting.index(node) :] + [node])
+                cycles.append(visiting[visiting.index(node):] + [node])
                 return
             if node in visited:
                 return
             visiting.append(node)
-            for callee in sorted(adjacency.get(node, [])):
-                visit(callee)
+            for child in sorted(set(adjacency.get(node, []))):
+                visit(child)
             visiting.pop()
             visited.add(node)
 
         for node in sorted(adjacency):
             visit(node)
-        contract_hashes = {contract_id(c): digest(c) for c in self.contracts}
-        dependency_hashes: dict[str, str] = {}
-        for cid in sorted(adjacency):
-            related = [item for item in call_sites if item["caller_contract"] == cid]
-            dependency_hashes[cid] = digest(
-                {
-                    "call_sites": related,
-                    "callee_contract_hashes": {item["callee_contract"]: contract_hashes[item["callee_contract"]] for item in related},
-                }
-            )
+        hashes = {contract_id(item): digest(item) for item in self.contracts}
+        dependency_hashes = {}
+        for cid in adjacency:
+            related = [site for site in all_sites if site.get("caller_contract") == cid or site.get("callee_contract") == cid]
+            dependency_hashes[cid] = digest({"sites": related, "contract_hashes": hashes})
         self.dependency_info = {
-            "call_sites": sorted(call_sites, key=lambda item: (item["caller_contract"], item["callee_contract"], canonical(item.get("location", {})))),
+            "all_call_sites": sorted(all_sites, key=lambda item: (str(item.get("caller_function")), str(item.get("callee_function")), canonical(item.get("location", {})))),
+            "call_sites": [site for site in all_sites if site.get("caller_contract") and site.get("callee_contract")],
             "edges": [{"caller": caller, "callee": callee} for caller, callee in edges],
             "adjacency": {key: sorted(set(value)) for key, value in sorted(adjacency.items())},
             "cycles": cycles,
@@ -371,14 +504,17 @@ class Agent:
 
     def cache_key(self, contract: dict[str, Any]) -> tuple[str, dict[str, str]]:
         cid = contract_id(contract)
+        command = os.environ.get("DSC_CICD_GENERATOR_CMD", "")
         hashes = {
+            "pipeline": "executable-cicd-v2",
             "agent": file_hash(pathlib.Path(__file__)),
             "source": str(self.input_facts.get("source_hash", "MISSING")),
             "spec": str(self.input_facts.get("spec_hash", "MISSING")),
             "contract": digest(contract),
             "dependency": self.dependency_info.get("dependency_hashes", {}).get(cid, digest([])),
             "prompt": file_hash(self.root / "PROMPT.md") if (self.root / "PROMPT.md").is_file() else "MISSING",
-            "model": os.environ.get("DSC_CICD_MODEL", "deterministic-no-model"),
+            "model": os.environ.get("DSC_CICD_MODEL", "external-generator-hook"),
+            "generator": digest(command),
             "tools": digest(self.input_facts.get("tool_versions", {})),
         }
         return digest(hashes), hashes
@@ -394,138 +530,143 @@ class Agent:
             reasons.append("recursive_or_combinational_dependency_cycle")
         return not reasons, sorted(set(reasons))
 
+    def interface_shape(self, contract: dict[str, Any]) -> list[tuple[Any, ...]]:
+        return sorted((str(port.get("direction")), str(port.get("name")), int(port.get("width", 0)), bool(port.get("signed"))) for port in contract.get("interface", {}).get("ports", []))
+
     def prior_contract(self, cid: str) -> dict[str, Any]:
-        for item in self.previous_state.get("contracts", []):
-            if item.get("contract_id") == cid:
-                return item
-        return {}
+        return next((item for item in self.previous_state.get("contracts", []) if item.get("contract_id") == cid), {})
 
     def cache_entry(self, key: str) -> dict[str, Any]:
-        return self.cache.get("entries", {}).get(key, {}) if isinstance(self.cache, dict) else {}
+        entries = self.cache.get("entries", {}) if isinstance(self.cache, dict) else {}
+        if isinstance(entries, list):
+            return next((item for item in entries if item.get("cache_key") == key), {})
+        return entries.get(key, {}) if isinstance(entries, dict) else {}
+
+    def cache_valid(self, entry: dict[str, Any], key: str) -> bool:
+        if not entry or entry.get("cache_key") != key or entry.get("valid") is not True:
+            return False
+        artifact = pathlib.Path(str(entry.get("artifact_dir", "")))
+        if not artifact.is_absolute():
+            artifact = self.root / artifact
+        return artifact.is_dir() and (artifact / "unit-receipt.json").is_file() and (artifact / "bitstream-receipt.json").is_file()
+
+    def choose_dependency_pair(self, selected: list[str]) -> dict[str, Any] | None:
+        candidates = [site for site in self.dependency_info.get("all_call_sites", []) if site.get("callee_contract") in set(selected) and site.get("caller_usr") != site.get("callee_usr")]
+        if not candidates:
+            return None
+        chosen = sorted(candidates, key=lambda item: (str(item.get("callee_contract")), str(item.get("caller_function")), canonical(item.get("location", {}))))[0]
+        return {
+            "caller_contract": chosen.get("caller_contract"),
+            "caller_usr": chosen.get("caller_usr"),
+            "caller_function": chosen.get("caller_function"),
+            "callee_contract": chosen.get("callee_contract"),
+            "callee_usr": chosen.get("callee_usr"),
+            "callee_function": chosen.get("callee_function"),
+            "selection_basis": "smallest acyclic direct call site from facts/callgraph.json",
+            "call_sites": [site for site in self.dependency_info.get("all_call_sites", []) if site.get("caller_usr") == chosen.get("caller_usr") and site.get("callee_usr") == chosen.get("callee_usr")],
+        }
 
     def build_plan(self) -> dict[str, Any]:
-        ready: list[str] = []
-        blocked: list[dict[str, Any]] = []
-        contracts: list[dict[str, Any]] = []
+        entries = []
+        ready = []
+        blocked = []
+        discovered = {contract_id(item) for item in self.contracts if item.get("origin") == "tool_discovered_reviewed_override"}
+        prior_shapes = {str(item.get("contract_id")): item.get("interface_shape", []) for item in self.previous_state.get("contracts", []) if item.get("current_state") == "PROMOTED"}
         for contract in sorted(self.contracts, key=contract_id):
+            if not contract.get("interface", {}).get("ports"):
+                contract.setdefault("interface", {})["ports"] = self.freeze_ports(contract.get("interface", {}))
             cid = contract_id(contract)
             key, hashes = self.cache_key(contract)
             is_ready, reasons = self.ready(contract)
-            previous = self.prior_contract(cid)
-            stale_reasons = []
-            for name, value in hashes.items():
-                if previous.get("hashes", {}).get(name) and previous["hashes"].get(name) != value:
-                    stale_reasons.append(name)
-            cached = self.cache_entry(key)
-            cached_artifact = pathlib.Path(str(cached.get("artifact_dir", "")))
-            if not cached_artifact.is_absolute():
-                cached_artifact = self.root / cached_artifact
-            cache_valid = bool(
-                cached
-                and cached.get("cache_key") == key
-                and cached.get("valid")
-                and cached_artifact.is_dir()
-            )
+            entry = self.cache_entry(key)
+            stale = [name for name, value in hashes.items() if self.prior_contract(cid).get("hashes", {}).get(name) not in (None, value)]
+            cache_hit = self.cache_valid(entry, key)
             item = {
                 "contract_id": cid,
                 "function": contract_function(contract).get("name"),
                 "clang_usr": contract_function(contract).get("clang_usr"),
+                "origin": contract.get("origin", "locked_contract"),
+                "new_work": cid in discovered,
                 "contract_hash": hashes["contract"],
                 "cache_key": key,
                 "hashes": hashes,
+                "interface_shape": self.interface_shape(contract),
                 "dependencies": sorted(self.dependency_info.get("adjacency", {}).get(cid, [])),
-                "call_sites": [x for x in self.dependency_info.get("call_sites", []) if x["caller_contract"] == cid],
+                "call_sites": [site for site in self.dependency_info.get("call_sites", []) if site.get("caller_contract") == cid],
                 "ready": is_ready,
                 "blocked_reasons": reasons,
-                "stale": bool(stale_reasons),
-                "stale_reasons": stale_reasons,
-                "cache_hit": cache_valid,
-                "cache_model_calls": 0 if cache_valid else None,
-                "initial_state": cached.get("state", "CONTRACT_LOCKED") if cache_valid else "CONTRACT_LOCKED" if is_ready else "DISCOVERED",
+                "stale": bool(stale),
+                "stale_reasons": stale,
+                "cache_hit": cache_hit,
+                "initial_state": entry.get("state") if cache_hit else "CONTRACT_LOCKED" if is_ready else "DISCOVERED",
             }
-            contracts.append(item)
+            entries.append(item)
             if is_ready:
                 ready.append(cid)
             else:
                 blocked.append({"contract_id": cid, "function": item["function"], "reasons": reasons})
-        # Stable topological batches.  A contract can run in parallel with
-        # other contracts once all of its contract dependencies are complete.
-        remaining = set(ready)
-        batches: list[list[str]] = []
-        completed: set[str] = set()
-        while remaining:
-            batch = sorted(cid for cid in remaining if set(next(x for x in contracts if x["contract_id"] == cid)["dependencies"]).issubset(completed))
-            if not batch:
-                blocked.extend({"contract_id": cid, "function": next(x for x in contracts if x["contract_id"] == cid)["function"], "reasons": ["dependency_not_ready"]} for cid in sorted(remaining))
-                break
-            batches.append(batch)
-            remaining -= set(batch)
-            completed.update(batch)
+        selected = [item["contract_id"] for item in entries if item["ready"] and item["new_work"] and (not prior_shapes or item["interface_shape"] not in prior_shapes.values())]
+        if not selected:
+            selected = [item["contract_id"] for item in entries if item["ready"] and not item["cache_hit"]][:1]
+        selected = sorted(selected[:max(1, int(os.environ.get("DSC_CICD_MAX_NEW", "1")))])
+        for item in entries:
+            item["selected"] = item["contract_id"] in selected
+            item["deferred"] = bool(item["ready"] and not item["selected"])
         self.plan = {
-            "schema_version": 1,
-            "agent": "generic-c-to-rtl-cicd",
-            "state_order": list(STATE_ORDER),
-            "input_facts": self.input_facts,
-            "dependency": self.dependency_info,
-            "contracts": contracts,
+            "schema_version": 2,
+            "agent": "executable-generic-c-to-rtl-cicd",
             "ready_contracts": ready,
+            "selected_contracts": selected,
+            "deferred_ready_contracts": [item["contract_id"] for item in entries if item["deferred"]],
             "blocked_contracts": blocked,
-            "parallel_batches": batches,
-            "composition_order": [cid for batch in batches for cid in batch],
-            "model_policy": {
-                "max_calls_per_function": 1,
-                "candidate_limit": 4,
-                "allowed_output": "combinational RTL body only",
-                "model_calls_planned": 0,
-                "cache_reuse_has_zero_model_calls": True,
-            },
+            "new_candidates": [item["contract_id"] for item in entries if item["new_work"]],
+            "contracts": entries,
+            "batches": [selected] if selected else [],
+            "dependency_pair": self.choose_dependency_pair(selected),
+            "generator_hook": os.environ.get("DSC_CICD_GENERATOR_CMD"),
+            "input_errors": self.input_facts.get("errors", []),
         }
+        self.make_dag()
         return self.plan
 
-    def stage_node(self, item: dict[str, Any], stage: str, status: str, artifacts: list[str] | None = None, failure: str | None = None) -> dict[str, Any]:
-        return {
-            "node_id": f"{item['contract_id']}:{stage}",
-            "contract_id": item["contract_id"],
-            "stage": STAGE_TO_STATE[stage],
-            "source_hash": item["hashes"]["source"],
-            "spec_hash": item["hashes"]["spec"],
-            "contract_hash": item["hashes"]["contract"],
-            "dependency_hash": item["hashes"]["dependency"],
-            "status": status,
-            "artifacts": sorted(artifacts or []),
-            "failure_reason": failure,
-        }
-
     def make_dag(self) -> dict[str, Any]:
-        nodes: list[dict[str, Any]] = []
-        edges: list[dict[str, str]] = []
+        nodes = []
+        edges = []
         for item in self.plan.get("contracts", []):
             cid = item["contract_id"]
-            current = item.get("initial_state", "CONTRACT_LOCKED") if item.get("ready") else "DISCOVERED"
-            for stage in STAGE_TO_STATE:
-                target = STAGE_TO_STATE[stage]
-                if not item.get("ready"):
-                    status = "DISCOVERED" if stage == "discover" else "BLOCKED"
-                    failure = "; ".join(item.get("blocked_reasons", [])) if stage != "discover" else None
+            for stage, state_name in STAGE_TO_STATE.items():
+                if item.get("blocked_reasons"):
+                    status, failure = "BLOCKED", "; ".join(item["blocked_reasons"])
+                elif not item.get("selected"):
+                    status, failure = "DEFERRED", "ready but outside bounded new-work selection"
+                elif item.get("cache_hit"):
+                    status, failure = "CACHE_REUSED", None
                 else:
-                    status = "PASS" if STATE_ORDER.index(target) <= STATE_ORDER.index(current) else "PENDING"
-                    failure = None
-                nodes.append(self.stage_node(item, stage, status, failure=failure))
-                if stage != "discover":
-                    previous = list(STAGE_TO_STATE).index(stage) - 1
-                    edges.append({"from": f"{cid}:{list(STAGE_TO_STATE)[previous]}", "to": f"{cid}:{stage}", "kind": "state"})
-            for dependency in item.get("dependencies", []):
-                edges.append({"from": f"{dependency}:promote", "to": f"{cid}:dependencies", "kind": "contract_dependency"})
-        for cycle in self.dependency_info.get("cycles", []):
-            if cycle:
-                edges.append({"from": f"{cycle[-1]}:dependencies", "to": f"{cycle[0]}:dependencies", "kind": "cycle_rejected"})
+                    status, failure = "PLANNED", None
+                nodes.append({
+                    "node_id": f"{cid}:{stage}",
+                    "contract_id": cid,
+                    "stage": state_name,
+                    "status": status,
+                    "source_hash": item["hashes"]["source"],
+                    "spec_hash": item["hashes"]["spec"],
+                    "contract_hash": item["hashes"]["contract"],
+                    "dependency_hash": item["hashes"]["dependency"],
+                    "artifacts": [],
+                    "failure_reason": failure,
+                })
+            for first, second in zip(STATE_ORDER, STATE_ORDER[1:]):
+                edges.append({"from": f"{cid}:{first}", "to": f"{cid}:{second}"})
+        pair = self.plan.get("dependency_pair")
+        if pair:
+            edges.append({"from": f"{pair['callee_contract']}:PROMOTED", "to": f"{pair['caller_function']}:COMPOSITION"})
         self.dag = {
-            "schema_version": 1,
+            "schema_version": 2,
             "state_order": list(STATE_ORDER),
             "nodes": nodes,
             "edges": edges,
-            "dependency_call_sites": self.dependency_info.get("call_sites", []),
             "cycles": self.dependency_info.get("cycles", []),
+            "dependency_call_sites": self.dependency_info.get("all_call_sites", []),
         }
         return self.dag
 
@@ -535,809 +676,1485 @@ class Agent:
 
     def plan_command(self) -> int:
         self.load_inputs()
+        self.materialize_new_contracts()
         self.dependency_graph()
         self.build_plan()
-        self.make_dag()
         self.write_plan_files()
-        self.write_state()
-        print(json.dumps({"status": "PASS" if not self.input_facts.get("errors") else "INFRASTRUCTURE_FAILURE", "ready": self.plan.get("ready_contracts", []), "blocked": self.plan.get("blocked_contracts", []), "cache_hits": sum(1 for x in self.plan.get("contracts", []) if x.get("cache_hit"))}, ensure_ascii=False))
-        return 0 if not self.input_facts.get("errors") else 1
-
-    def write_state(self) -> None:
-        contracts = self.state.get("contracts") if self.state else None
-        if contracts is None:
-            contracts = []
-            for item in self.plan.get("contracts", []):
-                contracts.append({
-                    "contract_id": item["contract_id"],
-                    "function": item.get("function"),
-                    "current_state": "DISCOVERED" if not item.get("ready") else item.get("initial_state", "CONTRACT_LOCKED"),
-                    "status": "INFRASTRUCTURE_FAILURE" if self.input_facts.get("errors") else "BLOCKED" if not item.get("ready") else "PASS" if item.get("initial_state") == "PROMOTED" else "PENDING",
-                    "hashes": item["hashes"],
-                    "artifacts": [],
-                    "failure_reason": "; ".join(item.get("blocked_reasons", [])) if not item.get("ready") else None,
-                    "history": [{"state": "DISCOVERED"}],
-                })
-        self.state = {
-            "schema_version": 1,
-            "agent": "generic-c-to-rtl-cicd",
-            "state_order": list(STATE_ORDER),
-            "input_facts": self.input_facts,
-            "contracts": contracts,
-            "model_calls": sum(int(item.get("model_calls", 0)) for item in contracts),
-            "rollback_mode": "C_ONLY",
-        }
-        write_json(self.ci / "state.json", self.state)
-
-    def artifact_dir(self, item: dict[str, Any]) -> pathlib.Path:
-        return self.artifacts / item["hashes"]["contract"]
-
-    def contract_ports(self, contract: dict[str, Any]) -> list[dict[str, Any]]:
-        ports: list[dict[str, Any]] = []
-        seen: set[str] = set()
-        for value in contract.get("interface", {}).get("inputs", []) + contract.get("interface", {}).get("flattened_pointer_dependencies", []):
-            raw_name = str(value.get("name") or value.get("field") or "input")
-            name = safe_identifier(raw_name.split(".")[-1])
-            if name in seen:
-                continue
-            seen.add(name)
-            width = int(value.get("logical_width") or 1)
-            ports.append({"name": name, "width": max(1, min(width, 4096)), "role": value.get("role"), "unresolved": bool(value.get("unresolved")), "source": raw_name})
-        output = contract.get("interface", {}).get("output", {})
-        ports.append({"name": "return_value", "width": max(1, min(int(output.get("logical_width") or 1), 4096)), "direction": "output", "unresolved": bool(output.get("unresolved")), "source": "return_value"})
-        return ports
-
-    def render_sv_stub(self, contract: dict[str, Any]) -> str:
-        cid = safe_identifier(contract_id(contract))
-        ports = self.contract_ports(contract)
-        declarations = []
-        assignments = []
-        for port in ports:
-            width = port["width"]
-            range_text = f" [{width - 1}:0]" if width > 1 else ""
-            direction = "output" if port.get("direction") == "output" else "input"
-            declarations.append(f"  {direction} logic{range_text} {port['name']}")
-        assignments.append("  assign return_value = '0;")
-        return "module cicd_" + cid + "_stub(\n" + ",\n".join(declarations) + ");\n" + "\n".join(assignments) + "\nendmodule\n"
-
-    def render_oracle_stub(self, contract: dict[str, Any]) -> str:
-        function = contract_function(contract)
-        name = str(function.get("name", "unresolved_function"))
-        return textwrap.dedent(
-            f"""\
-            /* Generated contract oracle adapter.  The upstream C model is not edited. */
-            /* contract: {contract_id(contract)}; C symbol: {name} */
-            #include <stdint.h>
-
-            int dsc_cicd_oracle_unavailable_{safe_identifier(contract_id(contract))}(void) {{
-                return -1;
-            }}
-            """
-        )
-
-    def render_harness_stub(self, contract: dict[str, Any]) -> str:
-        module = "cicd_" + safe_identifier(contract_id(contract)) + "_stub"
-        return textwrap.dedent(
-            f"""\
-            // Generated harness placeholder.  A locked contract with unresolved
-            // semantics is not executable and must not trigger a model call.
-            #include \"V{module}.h\"
-            int main() {{ return 0; }}
-            """
-        )
-
-    def render_vector_generator(self, contract: dict[str, Any]) -> str:
-        plan = {
-            "contract_id": contract_id(contract),
-            "inputs": contract.get("interface", {}).get("inputs", []),
-            "flattened_pointer_dependencies": contract.get("interface", {}).get("flattened_pointer_dependencies", []),
-            "legal_domain": contract.get("verification_plan", {}).get("legal_domain"),
-            "source": "locked contract only",
-        }
-        return "#!/usr/bin/env python3\n# Deterministic legal-domain plan generated from the locked contract.\nPLAN = " + repr(plan) + "\n"
-
-    def render_overlay_wrapper(self, contract: dict[str, Any]) -> str:
-        cid = safe_identifier(contract_id(contract))
-        return textwrap.dedent(
-            f"""\
-            /* Generated C-only/shadow/RTL-return dispatcher for contract {contract_id(contract)}. */
-            #include <stdint.h>
-            enum dsc_cicd_mode {{ DSC_C_ONLY = 0, DSC_SHADOW = 1, DSC_RTL_RETURN = 2 }};
-            static enum dsc_cicd_mode dsc_cicd_mode_{cid} = DSC_C_ONLY;
-            static unsigned long dsc_cicd_mismatches_{cid};
-            void dsc_cicd_set_mode_{cid}(enum dsc_cicd_mode mode) {{ dsc_cicd_mode_{cid} = mode; }}
-            unsigned long dsc_cicd_mismatch_count_{cid}(void) {{ return dsc_cicd_mismatches_{cid}; }}
-            int dsc_cicd_dispatch_scalar_{cid}(int c_value, int rtl_value) {{
-                if (dsc_cicd_mode_{cid} != DSC_C_ONLY && c_value != rtl_value) ++dsc_cicd_mismatches_{cid};
-                return dsc_cicd_mode_{cid} == DSC_RTL_RETURN ? rtl_value : c_value;
-            }}
-            """
-        )
-
-    def existing_slice(self, contract: dict[str, Any], body: str) -> tuple[bool, dict[str, Any]]:
-        context = read_json(self.root / "rtl" / "generation-context.json", {}) or {}
-        receipt = read_json(self.root / "verification" / "verification-receipt.json", {}) or {}
-        body_hash = hashlib.sha256(body.encode("utf-8")).hexdigest()
-        cid = contract_id(contract)
-        candidates = sorted((self.root / "rtl" / "candidates" / cid).glob("candidate_*.sv"))
-        valid = bool(
-            context.get("call_count", 2) <= 1
-            and context.get("c_body_sha256") == body_hash
-            and context.get("c_function") == contract_function(contract).get("name")
-            and context.get("combinational_only") is True
-            and candidates
-            and receipt.get("contract_id") == cid
-            and receipt.get("status") == "PASS"
-        )
-        return valid, {"context": context, "receipt": receipt, "candidates": candidates}
-
-    def generate_artifacts(self, item: dict[str, Any], contract: dict[str, Any]) -> dict[str, Any]:
-        artifact = self.artifact_dir(item)
-        artifact.mkdir(parents=True, exist_ok=True)
-        source_dir = pathlib.Path(str(self.input_facts["source_dir"]))
-        try:
-            source_path, body = source_body(contract, source_dir)
-        except (OSError, ValueError) as exc:
-            return {"status": "INFRASTRUCTURE_FAILURE", "failure_reason": f"source body unavailable: {exc}", "artifacts": []}
-        existing, evidence = self.existing_slice(contract, body)
-        write_json(artifact / "locked-contract.json", contract)
-        write_json(artifact / "input-packing.json", {"contract_id": contract_id(contract), "ports": self.contract_ports(contract), "source": "locked contract"})
-        write_json(artifact / "legal-domain.json", {"contract_id": contract_id(contract), "verification_plan": contract.get("verification_plan", {}), "interface": contract.get("interface", {})})
-        write_json(artifact / "mutations.json", {"contract_id": contract_id(contract), "mutations": contract.get("verification_plan", {}).get("mutations", []), "stop_after_first_mismatch": True})
-        (artifact / "interface.sv").write_text(self.render_sv_stub(contract), encoding="utf-8")
-        (artifact / "vector_generator.py").write_text(self.render_vector_generator(contract), encoding="utf-8")
-        (artifact / "shadow_replacement_wrapper.c").write_text(self.render_overlay_wrapper(contract), encoding="utf-8")
-        if existing:
-            oracle = self.root / "verification" / contract_id(contract) / "oracle.c"
-            if oracle.is_file():
-                shutil.copy2(oracle, artifact / "oracle.c")
-            for path in evidence["candidates"]:
-                target = artifact / "rtl" / path.name
-                target.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(path, target)
-            for path in sorted((self.root / "verification" / contract_id(contract)).glob("harness_*.cpp")):
-                target = artifact / "harness" / path.name
-                target.parent.mkdir(parents=True, exist_ok=True)
-                shutil.copy2(path, target)
-            generation = {
-                "contract_id": contract_id(contract),
-                "status": "REUSED_VALID_RECEIPT",
-                "model_calls": 0,
-                "max_model_calls": 1,
-                "candidate_limit": 4,
-                "allowed_model_output": "combinational RTL body only",
-                "context": evidence["context"],
-                "source_body_sha256": hashlib.sha256(body.encode("utf-8")).hexdigest(),
-                "input_context": {
-                    "locked_contract": True,
-                    "c_body": True,
-                    "short_exact_spec_anchors": [link.get("anchor_id") for link in contract_exact_links(contract)],
-                    "frozen_interface": True,
-                },
-            }
-        else:
-            (artifact / "oracle.c").write_text(self.render_oracle_stub(contract), encoding="utf-8")
-            (artifact / "rtl").mkdir(parents=True, exist_ok=True)
-            (artifact / "rtl" / "candidate_01.sv").write_text(self.render_sv_stub(contract), encoding="utf-8")
-            (artifact / "harness" / "harness.cpp").parent.mkdir(parents=True, exist_ok=True)
-            (artifact / "harness" / "harness.cpp").write_text(self.render_harness_stub(contract), encoding="utf-8")
-            generation = {
-                "contract_id": contract_id(contract),
-                "status": "DETERMINISTIC_SCAFFOLD",
-                "model_calls": 0,
-                "max_model_calls": 1,
-                "candidate_limit": 4,
-                "allowed_model_output": "combinational RTL body only",
-                "input_context": {"locked_contract": True, "c_body": True, "short_exact_spec_anchors": [link.get("anchor_id") for link in contract_exact_links(contract)], "frozen_interface": True},
-                "failure_reason": "no reusable verified candidate receipt" if not existing else None,
-            }
-        write_json(artifact / "generation.json", generation)
-        write_json(artifact / "receipt-schema.json", {"schema_version": 1, "statuses": sorted(VERIFICATION_STATUSES), "complete_domain_required_for_exhaustive": True, "artifacts": ["unit-receipt.json", "dependency-receipt.json", "shadow-receipt.json", "rtl-return-receipt.json", "bitstream-receipt.json"]})
-        manifest = {
-            "schema_version": 1,
-            "contract_id": contract_id(contract),
-            "contract_hash": item["hashes"]["contract"],
-            "source_hash": item["hashes"]["source"],
-            "spec_hash": item["hashes"]["spec"],
-            "dependency_hash": item["hashes"]["dependency"],
-            "source_body_hash": hashlib.sha256(body.encode("utf-8")).hexdigest(),
-            "source_file": str(source_path),
-            "generation": generation,
-            "cache_reused": existing,
-        }
-        write_json(artifact / "artifact-manifest.json", manifest)
-        artifacts = [str(path.relative_to(self.root)) for path in sorted(artifact.rglob("*")) if path.is_file()]
-        return {"status": "PASS", "artifacts": artifacts, "artifact_dir": str(artifact), "generation": generation, "existing": existing, "receipt": evidence.get("receipt", {})}
-
-    def update_contract(self, cid: str, state_name: str, status: str, artifacts: Iterable[str], failure: str | None = None, extra: dict[str, Any] | None = None) -> None:
-        with self.state_lock:
-            for item in self.state.get("contracts", []):
-                if item.get("contract_id") != cid:
-                    continue
-                old = item.get("current_state", "DISCOVERED")
-                if state_name in STATE_ORDER and old in STATE_ORDER and STATE_ORDER.index(state_name) < STATE_ORDER.index(old):
-                    return
-                item["current_state"] = state_name
-                item["status"] = status
-                item["artifacts"] = sorted(set(item.get("artifacts", [])).union(artifacts))
-                item["failure_reason"] = failure
-                item.setdefault("history", []).append({"state": state_name, "status": status, "failure_reason": failure})
-                if extra:
-                    item.update(extra)
-                return
+        print(json.dumps({"selected_contracts": self.plan.get("selected_contracts", []), "new_candidates": self.plan.get("new_candidates", []), "blocked_contracts": self.plan.get("blocked_contracts", []), "input_errors": self.plan.get("input_errors", [])}, sort_keys=True))
+        return 2 if self.input_facts.get("errors") else 0
 
     def initialize_state(self) -> None:
+        previous = {item.get("contract_id"): item for item in self.previous_state.get("contracts", [])}
         contracts = []
         for item in self.plan.get("contracts", []):
+            old = previous.get(item["contract_id"], {})
+            current = "PROMOTED" if item.get("cache_hit") else "CONTRACT_LOCKED" if item.get("selected") else "DISCOVERED"
             contracts.append({
                 "contract_id": item["contract_id"],
                 "function": item.get("function"),
-                "current_state": "DISCOVERED" if not item.get("ready") else item.get("initial_state", "CONTRACT_LOCKED"),
-                "status": "BLOCKED" if not item.get("ready") else "PENDING",
+                "origin": item.get("origin"),
+                "selected": item.get("selected", False),
+                "current_state": current,
+                "status": "BLOCKED" if item.get("blocked_reasons") else "PENDING",
+                "failure_reason": "; ".join(item.get("blocked_reasons", [])) or None,
                 "hashes": item["hashes"],
-                "artifacts": [],
-                "failure_reason": "; ".join(item.get("blocked_reasons", [])) if not item.get("ready") else None,
-                "history": [{"state": "DISCOVERED"}, {"state": "CONTRACT_LOCKED" if item.get("ready") else "DISCOVERED"}],
+                "interface_shape": item["interface_shape"],
+                "history": old.get("history", [{"state": "DISCOVERED"}]),
+                "artifacts": old.get("artifacts", []),
                 "model_calls": 0,
+                "token_count": 0,
             })
-        self.state = {"contracts": contracts}
-        if self.input_facts.get("errors"):
-            for item in self.state["contracts"]:
-                item["status"] = "INFRASTRUCTURE_FAILURE"
-                item["failure_reason"] = "; ".join(self.input_facts["errors"])
+        self.state = {
+            "schema_version": 2,
+            "agent": "executable-generic-c-to-rtl-cicd",
+            "state_order": list(STATE_ORDER),
+            "contracts": contracts,
+            "selected_contracts": self.plan.get("selected_contracts", []),
+            "dependency_pair": self.plan.get("dependency_pair"),
+            "generator_invocations": 0,
+            "model_calls": 0,
+            "token_count": 0,
+            "rollback_mode": "C_ONLY",
+        }
+        self.write_state()
 
-    def contract_from_item(self, item: dict[str, Any]) -> dict[str, Any]:
-        cid = item["contract_id"]
-        return next(contract for contract in self.contracts if contract_id(contract) == cid)
+    def write_state(self) -> None:
+        write_json(self.ci / "state.json", self.state)
+
+    def state_item(self, cid: str) -> dict[str, Any]:
+        return next(item for item in self.state.get("contracts", []) if item.get("contract_id") == cid)
+
+    def update_state(self, cid: str, state_name: str, status: str, artifacts: Iterable[str] = (), failure: str | None = None, extra: dict[str, Any] | None = None) -> None:
+        item = self.state_item(cid)
+        item["current_state"] = state_name
+        item["status"] = status
+        item["failure_reason"] = failure
+        item["artifacts"] = sorted(set(item.get("artifacts", [])).union(str(value) for value in artifacts))
+        if not item.get("history") or item["history"][-1].get("state") != state_name:
+            item.setdefault("history", []).append({"state": state_name, "status": status, "failure_reason": failure})
+        if extra:
+            item.update(extra)
+        self.write_state()
+
+    def artifact_dir(self, item: dict[str, Any]) -> pathlib.Path:
+        return self.artifacts / str(item["contract_hash"])
+
+    def contract_for_item(self, item: dict[str, Any]) -> dict[str, Any]:
+        return next(contract for contract in self.contracts if contract_id(contract) == item["contract_id"])
+
+    def build_request(self, contract: dict[str, Any], body: str) -> dict[str, Any]:
+        return {
+            "locked_contract": contract,
+            "frozen_interface": contract.get("interface", {}),
+            "c_body": body,
+            "exact_spec_anchors": [{
+                "anchor_id": link.get("anchor_id"),
+                "page": link.get("page"),
+                "section": link.get("section"),
+                "short_anchor": link.get("short_anchor"),
+                "evidence": link.get("evidence"),
+                "status": "EXACT",
+            } for link in contract_exact_links(contract)],
+        }
+
+    def validate_rtl(self, source: str, ports: list[dict[str, Any]]) -> list[str]:
+        scrubbed = re.sub(r"//.*|/\*.*?\*/", "", source, flags=re.S)
+        reasons = [pattern for pattern in FORBIDDEN_RTL if re.search(pattern, scrubbed, flags=re.I)]
+        if not re.search(r"\bmodule\s+[A-Za-z_][A-Za-z0-9_]*", scrubbed):
+            reasons.append("missing_module")
+        if not re.search(r"\bendmodule\b", scrubbed):
+            reasons.append("missing_endmodule")
+        for port in ports:
+            if not re.search(r"\b" + re.escape(str(port["name"])) + r"\b", scrubbed):
+                reasons.append("missing_port:" + str(port["name"]))
+        return sorted(set(reasons))
+
+    def run_process(self, command: list[str], cwd: pathlib.Path | None = None,
+                    env: dict[str, str] | None = None, timeout: int = 600) -> dict[str, Any]:
+        started = time.time()
+        merged_env = os.environ.copy()
+        if env:
+            merged_env.update({str(key): str(value) for key, value in env.items()})
+        try:
+            result = subprocess.run(
+                [str(value) for value in command],
+                cwd=str(cwd or self.root),
+                env=merged_env,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                timeout=timeout,
+                check=False,
+            )
+            output = result.stdout or ""
+            return {
+                "command": [str(value) for value in command],
+                "cwd": str(cwd or self.root),
+                "returncode": result.returncode,
+                "output": output[-20000:],
+                "duration_seconds": round(time.time() - started, 3),
+            }
+        except subprocess.TimeoutExpired as error:
+            return {
+                "command": [str(value) for value in command],
+                "cwd": str(cwd or self.root),
+                "returncode": 124,
+                "output": str(error),
+                "duration_seconds": round(time.time() - started, 3),
+                "timeout": True,
+            }
+        except OSError as error:
+            return {
+                "command": [str(value) for value in command],
+                "cwd": str(cwd or self.root),
+                "returncode": 127,
+                "output": str(error),
+                "duration_seconds": round(time.time() - started, 3),
+                "os_error": True,
+            }
+
+    def render_interface(self, contract: dict[str, Any], module: str) -> str:
+        ports = contract.get("interface", {}).get("ports", [])
+        declarations = []
+        for port in ports:
+            width = max(1, int(port.get("width", 1)))
+            signed = " signed" if port.get("signed") else ""
+            range_text = f" [{width - 1}:0]" if width > 1 else ""
+            declarations.append(
+                f"    {port.get('direction', 'input')} logic{signed}{range_text} {port.get('name')}"
+            )
+        return "module " + safe_identifier(module) + " (\n" + ",\n".join(declarations) + "\n);\nendmodule\n"
+
+    def render_oracle(self, contract: dict[str, Any]) -> str:
+        function = contract_function(contract)
+        name = str(function.get("name"))
+        inputs = [
+            port for port in contract.get("interface", {}).get("ports", [])
+            if port.get("direction") == "input"
+        ]
+        if not inputs or any(parameter_is_pointer(port) for port in inputs):
+            raise RuntimeError("oracle only supports scalar input ports")
+        declarations = ", ".join(f"int {port['name']}" for port in inputs)
+        local_declarations = ", ".join(str(port["name"]) for port in inputs)
+        format_string = " ".join(["%d"] * len(inputs))
+        arguments = ", ".join(f"&{port['name']}" for port in inputs)
+        call = ", ".join(str(port["name"]) for port in inputs)
+        output = str(next(
+            (port.get("name") for port in contract.get("interface", {}).get("ports", [])
+             if port.get("direction") == "output"),
+            "return_value",
+        ))
+        return textwrap.dedent(
+            f"""
+            #include <stdio.h>
+            extern int {name}({declarations});
+            int main(int argc, char **argv) {{
+                FILE *input = stdin;
+                if (argc > 1) {{
+                    input = fopen(argv[1], "rb");
+                    if (!input) return 2;
+                }}
+                int {local_declarations};
+                int {output};
+                while (fscanf(input, "{format_string}", {arguments}) == {len(inputs)}) {{
+                    {output} = {name}({call});
+                    printf("%d\\n", {output});
+                }}
+                if (input != stdin) fclose(input);
+                return 0;
+            }}
+            """
+        ).strip() + "\n"
+
+    def render_harness(self, contract: dict[str, Any], module: str) -> str:
+        ports = contract.get("interface", {}).get("ports", [])
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        output = next((port for port in ports if port.get("direction") == "output"), None)
+        if output is None or any(parameter_is_pointer(port) for port in inputs):
+            raise RuntimeError("Verilator harness only supports scalar ports")
+        input_names = [str(port["name"]) for port in inputs]
+        format_string = " ".join(["%lld"] * len(inputs))
+        variables = "\n".join(f"    long long {name};" for name in input_names)
+        reads = f'    while (std::fscanf(input, "{format_string}", ' + ", ".join(f"&{name}" for name in input_names) + f") == {len(inputs)}) {{"
+        assigns = "\n".join(f"        dut.{name} = static_cast<long long>({name});" for name in input_names)
+        width = max(1, int(output.get("width", 1)))
+        if output.get("signed"):
+            output_expr = f"sign_extend(static_cast<long long>(dut.{output['name']}), {width})"
+        else:
+            output_expr = f"static_cast<unsigned long long>(dut.{output['name']})"
+        return textwrap.dedent(
+            f"""
+            #include <cstdio>
+            #include <cstdint>
+            #include <iostream>
+            #include "verilated.h"
+            #include "V{safe_identifier(module)}.h"
+
+            static long long sign_extend(long long value, int width) {{
+                if (width >= 63) return value;
+                const long long bit = 1LL << (width - 1);
+                const long long mask = (1LL << width) - 1;
+                value &= mask;
+                return (value & bit) ? value - (1LL << width) : value;
+            }}
+
+            int main(int argc, char **argv) {{
+                Verilated::commandArgs(argc, argv);
+                FILE *input = stdin;
+                if (argc > 1) {{
+                    input = std::fopen(argv[1], "rb");
+                    if (!input) return 2;
+                }}
+            {variables}
+                {reads}
+                    V{safe_identifier(module)} dut;
+            {assigns}
+                    dut.eval();
+                    std::cout << {output_expr} << "\\n";
+                }}
+                if (input != stdin) std::fclose(input);
+                return 0;
+            }}
+            """
+        ).strip() + "\n"
+
+    def generate_static_artifacts(self, contract: dict[str, Any], artifact: pathlib.Path) -> None:
+        artifact.mkdir(parents=True, exist_ok=True)
+        cid = contract_id(contract)
+        write_json(artifact / "locked-contract.json", contract)
+        write_json(artifact / "input-packing.json", {
+            "schema_version": 1,
+            "ports": [
+                {
+                    "name": port.get("name"),
+                    "role": port.get("role"),
+                    "direction": port.get("direction"),
+                    "width": port.get("width"),
+                    "signed": port.get("signed", False),
+                    "packing": f"bits[{int(port.get('width', 1)) - 1}:0]",
+                }
+                for port in contract.get("interface", {}).get("ports", [])
+            ],
+            "bit_order": "little-endian integer text to packed Verilator port",
+        })
+        domains = []
+        for port in contract.get("interface", {}).get("ports", []):
+            domain = port.get("legal_domain") or {}
+            if not domain and port.get("role") == "return_value":
+                domain = {"kind": "range", "range": contract.get("interface", {}).get("output", {}).get("legal_range", [])}
+            domains.append({"port": port.get("name"), "role": port.get("role"), "domain": domain})
+        write_json(artifact / "legal-domain.json", {
+            "schema_version": 1,
+            "complete": all(item["domain"].get("range") or item["domain"].get("values") for item in domains if item["role"] != "return_value"),
+            "ports": domains,
+            "proof_basis": "exact spec/table plus reviewed runtime range override",
+        })
+        write_json(artifact / "mutations.json", {
+            "schema_version": 1,
+            "mutations": [
+                {"id": "signedness_flip", "description": "interpret signed input as unsigned"},
+                {"id": "boundary_minus_one", "description": "subtract one at each lower legal boundary"},
+                {"id": "boundary_plus_one", "description": "add one at each upper legal boundary"},
+                {"id": "rounding_off_by_one", "description": "change quantization rounding table entry"},
+                {"id": "array_index_off_by_one", "description": "select adjacent table element"},
+            ],
+            "status": "PLANNED_AND_USED_BY_VERIFIER",
+        })
+        write_json(artifact / "receipt-schema.json", {
+            "schema_version": 2,
+            "required": [
+                "execution_status",
+                "candidate",
+                "verification_status",
+                "compile_once",
+                "shards",
+                "smallest_counterexample",
+            ],
+        })
+        write_json(artifact / "artifact-manifest.json", {
+            "schema_version": 2,
+            "contract_id": cid,
+            "generated_now": True,
+            "do_not_edit": True,
+            "source_of_truth": "locked-contract.json + executed receipts",
+        })
+        (artifact / "interface.sv").write_text(
+            self.render_interface(contract, f"{cid}_interface"), encoding="utf-8"
+        )
+        (artifact / "oracle.c").write_text(self.render_oracle(contract), encoding="utf-8")
+        (artifact / "shadow_replacement_wrapper.c").write_text(
+            "/* Generated overlay wrapper is written only in the isolated source copy. */\n",
+            encoding="utf-8",
+        )
+        (artifact / "vector_generator.py").write_text(
+            "# Generated vector format: one decimal value per frozen input port, per line.\\n",
+            encoding="utf-8",
+        )
+
+    def generate_artifacts(self, contract: dict[str, Any], item: dict[str, Any], artifact: pathlib.Path) -> dict[str, Any]:
+        self.generate_static_artifacts(contract, artifact)
+        _, body, span = source_body(contract, pathlib.Path(str(self.input_facts["source_dir"])))
+        request = self.build_request(contract, body)
+        request_path = artifact / "generation-request.json"
+        write_json(request_path, request)
+        output_dir = artifact / "generated"
+        if output_dir.exists():
+            shutil.rmtree(output_dir)
+        output_dir.mkdir(parents=True, exist_ok=True)
+        hook = os.environ.get("DSC_CICD_GENERATOR_CMD", "").strip()
+        receipt: dict[str, Any] = {
+            "schema_version": 2,
+            "execution_status": "EXECUTED_NOW",
+            "contract_id": contract_id(contract),
+            "source_span": span,
+            "context_keys": ["locked_contract", "frozen_interface", "c_body", "exact_spec_anchors"],
+            "candidate_limit": 4,
+            "hook": hook or "MISSING",
+        }
+        if not hook:
+            receipt.update({
+                "status": "GENERATION_REQUIRED",
+                "model_calls": 0,
+                "tokens": 0,
+                "candidates": [],
+                "reason": "DSC_CICD_GENERATOR_CMD is not configured",
+            })
+            write_json(artifact / "generation.json", receipt)
+            return receipt
+        command = shlex.split(hook)
+        result = self.run_process(
+            command + [str(request_path), str(output_dir)],
+            cwd=self.root,
+            timeout=int(os.environ.get("DSC_CICD_GENERATOR_TIMEOUT", "600")),
+        )
+        self.generator_invocations += 1
+        telemetry = read_json(output_dir / "telemetry.json", {}) or {}
+        self.generator_tokens += int(telemetry.get("tokens_in", 0)) + int(telemetry.get("tokens_out", 0))
+        candidates = []
+        if result["returncode"] == 0:
+            for path in sorted(output_dir.glob("*.sv")):
+                source = path.read_text(encoding="utf-8", errors="replace")
+                reasons = self.validate_rtl(source, contract.get("interface", {}).get("ports", []))
+                candidates.append({
+                    "candidate": path.stem,
+                    "path": str(path.relative_to(artifact)),
+                    "sha256": file_hash(path),
+                    "validation": "PASS" if not reasons else "FAIL",
+                    "validation_reasons": reasons,
+                })
+        status = "PASS" if result["returncode"] == 0 and candidates and all(item["validation"] == "PASS" for item in candidates) else "GENERATION_FAILED"
+        if len(candidates) > 4:
+            status = "GENERATION_FAILED"
+            receipt["reason"] = "candidate_limit_exceeded"
+        receipt.update({
+            "status": status,
+            "model_calls": int(telemetry.get("model_calls", 1)),
+            "tokens": int(telemetry.get("tokens_in", 0)) + int(telemetry.get("tokens_out", 0)),
+            "candidates": candidates[:4],
+            "command": result,
+            "telemetry": telemetry,
+        })
+        write_json(artifact / "generation.json", receipt)
+        return receipt
+    def port_domain(self, port: dict[str, Any]) -> list[int]:
+        domain = port.get("legal_domain", {}) or {}
+        if domain.get("values"):
+            return [int(value) for value in domain["values"]]
+        bounds = domain.get("range")
+        if isinstance(bounds, list) and len(bounds) == 2:
+            lower, upper = int(bounds[0]), int(bounds[1])
+            return list(range(lower, upper + 1))
+        raise RuntimeError(f"incomplete legal domain for port {port.get('name')}")
+
+    def make_shards(self, contract: dict[str, Any], artifact: pathlib.Path) -> dict[str, Any]:
+        inputs = [
+            port for port in contract.get("interface", {}).get("ports", [])
+            if port.get("direction") == "input"
+        ]
+        values = [self.port_domain(port) for port in inputs]
+        shard_count = max(1, int(os.environ.get("DSC_CICD_SHARDS", "4")))
+        shard_dir = artifact / "shards"
+        if shard_dir.exists():
+            shutil.rmtree(shard_dir)
+        shard_dir.mkdir(parents=True, exist_ok=True)
+        paths = [shard_dir / f"shard-{index:03d}.vectors" for index in range(shard_count)]
+        handles = [path.open("w", encoding="utf-8") for path in paths]
+        count = 0
+        try:
+            for vector in itertools.product(*values):
+                handles[count % shard_count].write(" ".join(str(value) for value in vector) + "\n")
+                count += 1
+        finally:
+            for handle in handles:
+                handle.close()
+        shards = [
+            {
+                "shard_id": index,
+                "path": str(path.relative_to(artifact)),
+                "vectors": sum(1 for _ in path.open("r", encoding="utf-8")),
+            }
+            for index, path in enumerate(paths)
+        ]
+        return {
+            "complete": count > 0 and all(item["vectors"] > 0 for item in shards),
+            "input_ports": [port.get("name") for port in inputs],
+            "total_vectors": count,
+            "shard_count": shard_count,
+            "shards": shards,
+        }
+
+    def compile_c_oracle(self, contract: dict[str, Any], artifact: pathlib.Path) -> dict[str, Any]:
+        build_dir = artifact / "oracle-build"
+        if build_dir.exists():
+            shutil.rmtree(build_dir)
+        build_dir.mkdir(parents=True, exist_ok=True)
+        clang = self.input_facts["tools"].get("clang") or "clang"
+        source_dir = pathlib.Path(str(self.input_facts["source_dir"]))
+        objects: list[pathlib.Path] = []
+        commands = []
+        source_files = sorted(source_dir.glob("*.c"))
+        if not source_files:
+            return {"status": "INFRASTRUCTURE_FAILURE", "reason": "no C translation units"}
+        for source in source_files:
+            if source.name == "codec_main.c":
+                continue
+            object_path = build_dir / (source.stem + ".o")
+            result = self.run_process(
+                [clang, "-std=c99", "-O0", "-g", "-I", str(source_dir), "-c", str(source), "-o", str(object_path)],
+                cwd=source_dir,
+                timeout=int(os.environ.get("DSC_CICD_COMPILE_TIMEOUT", "600")),
+            )
+            commands.append(result)
+            if result["returncode"] != 0:
+                return {
+                    "status": "INFRASTRUCTURE_FAILURE",
+                    "reason": f"C oracle compile failed for {source.name}",
+                    "commands": commands,
+                }
+            objects.append(object_path)
+        wrapper = artifact / "oracle.c"
+        wrapper_object = build_dir / "oracle.o"
+        result = self.run_process(
+            [clang, "-std=c99", "-O0", "-I", str(source_dir), "-c", str(wrapper), "-o", str(wrapper_object)],
+            cwd=artifact,
+            timeout=int(os.environ.get("DSC_CICD_COMPILE_TIMEOUT", "600")),
+        )
+        commands.append(result)
+        if result["returncode"] != 0:
+            return {"status": "INFRASTRUCTURE_FAILURE", "reason": "oracle wrapper compile failed", "commands": commands}
+        objects.append(wrapper_object)
+        binary = build_dir / "c_oracle"
+        result = self.run_process([clang, "-O0", "-o", str(binary)] + [str(path) for path in objects], cwd=artifact)
+        commands.append(result)
+        status = "PASS" if result["returncode"] == 0 and binary.is_file() else "INFRASTRUCTURE_FAILURE"
+        receipt = {
+            "status": status,
+            "binary": str(binary.relative_to(artifact)) if binary.is_file() else None,
+            "commands": commands,
+            "compiled_translation_units": [path.name for path in source_files if path.name != "codec_main.c"],
+        }
+        write_json(artifact / "oracle-compile-receipt.json", receipt)
+        return receipt
+
+    def module_name(self, source: str) -> str:
+        match = re.search(r"\bmodule\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(", source)
+        if not match:
+            raise RuntimeError("candidate has no discoverable module")
+        return match.group(1)
+
+    def compile_candidate(self, contract: dict[str, Any], artifact: pathlib.Path, candidate: dict[str, Any]) -> dict[str, Any]:
+        path = artifact / str(candidate["path"])
+        source = path.read_text(encoding="utf-8", errors="replace")
+        module = self.module_name(source)
+        candidate_build = artifact / "candidate-build" / safe_identifier(str(candidate["candidate"]))
+        if candidate_build.exists():
+            shutil.rmtree(candidate_build)
+        candidate_build.mkdir(parents=True, exist_ok=True)
+        harness = candidate_build / "harness.cpp"
+        harness.write_text(self.render_harness(contract, module), encoding="utf-8")
+        verilator = self.input_facts["tools"].get("verilator") or "verilator"
+        command = [
+            verilator,
+            "--cc",
+            str(path),
+            "--exe",
+            str(harness),
+            "--build",
+            "-j",
+            "1",
+            "--Mdir",
+            str(candidate_build / "obj"),
+            "--top-module",
+            module,
+            "--Wno-fatal",
+        ]
+        result = self.run_process(command, cwd=artifact, timeout=int(os.environ.get("DSC_CICD_VERILATOR_TIMEOUT", "1200")))
+        binary = candidate_build / "obj" / ("V" + module)
+        receipt = {
+            "candidate": candidate["candidate"],
+            "module": module,
+            "status": "PASS" if result["returncode"] == 0 and binary.is_file() else "FAIL",
+            "compile_once": True,
+            "binary": str(binary.relative_to(artifact)) if binary.is_file() else None,
+            "command": result,
+        }
+        write_json(candidate_build / "compile-receipt.json", receipt)
+        candidate["module"] = module
+        candidate["compile"] = receipt
+        return receipt
+
+    def run_shard(self, artifact: pathlib.Path, shard: dict[str, Any],
+                  oracle: pathlib.Path, rtl: pathlib.Path,
+                  stop_event: threading.Event) -> dict[str, Any]:
+        if stop_event.is_set():
+            return {"shard_id": shard["shard_id"], "status": "CANCELLED", "vectors": 0}
+        shard_path = artifact / shard["path"]
+        output_dir = artifact / "shard-results"
+        output_dir.mkdir(parents=True, exist_ok=True)
+        prefix = f"{safe_identifier(str(rtl.parent.parent.name))}-{int(shard['shard_id']):03d}"
+        oracle_out = output_dir / (prefix + "-oracle.out")
+        rtl_out = output_dir / (prefix + "-rtl.out")
+        oracle_err = output_dir / (prefix + "-oracle.err")
+        rtl_err = output_dir / (prefix + "-rtl.err")
+        started = time.time()
+        with shard_path.open("rb") as vector_input, oracle_out.open("wb") as output, oracle_err.open("wb") as error:
+            oracle_process = subprocess.run(
+                [str(oracle), str(shard_path)],
+                stdin=vector_input,
+                stdout=output,
+                stderr=error,
+                timeout=int(os.environ.get("DSC_CICD_SHARD_TIMEOUT", "1200")),
+                check=False,
+            )
+        if oracle_process.returncode != 0:
+            return {
+                "shard_id": shard["shard_id"],
+                "status": "INFRASTRUCTURE_FAILURE",
+                "vectors": shard["vectors"],
+                "reason": "oracle process failed",
+                "duration_seconds": round(time.time() - started, 3),
+            }
+        if stop_event.is_set():
+            return {"shard_id": shard["shard_id"], "status": "CANCELLED", "vectors": 0}
+        with shard_path.open("rb") as vector_input, rtl_out.open("wb") as output, rtl_err.open("wb") as error:
+            rtl_process = subprocess.run(
+                [str(rtl), str(shard_path)],
+                stdin=vector_input,
+                stdout=output,
+                stderr=error,
+                timeout=int(os.environ.get("DSC_CICD_SHARD_TIMEOUT", "1200")),
+                check=False,
+            )
+        if rtl_process.returncode != 0:
+            return {
+                "shard_id": shard["shard_id"],
+                "status": "INFRASTRUCTURE_FAILURE",
+                "vectors": shard["vectors"],
+                "reason": "RTL process failed",
+                "duration_seconds": round(time.time() - started, 3),
+            }
+        oracle_lines = oracle_out.read_text(encoding="utf-8", errors="replace").splitlines()
+        rtl_lines = rtl_out.read_text(encoding="utf-8", errors="replace").splitlines()
+        limit = min(len(oracle_lines), len(rtl_lines))
+        mismatch = None
+        for index in range(limit):
+            expected = oracle_lines[index].strip()
+            actual = rtl_lines[index].strip()
+            if expected != actual:
+                mismatch = {
+                    "shard_id": shard["shard_id"],
+                    "index": index,
+                    "expected": expected,
+                    "actual": actual,
+                }
+                break
+        if mismatch is None and len(oracle_lines) != len(rtl_lines):
+            mismatch = {
+                "shard_id": shard["shard_id"],
+                "index": limit,
+                "expected": oracle_lines[limit] if len(oracle_lines) > limit else "<no output>",
+                "actual": rtl_lines[limit] if len(rtl_lines) > limit else "<no output>",
+            }
+        if mismatch:
+            vector_lines = shard_path.read_text(encoding="utf-8", errors="replace").splitlines()
+            if mismatch["index"] < len(vector_lines):
+                mismatch["inputs"] = [
+                    int(value) for value in vector_lines[mismatch["index"]].split()
+                ]
+            stop_event.set()
+            return {
+                "shard_id": shard["shard_id"],
+                "status": "COUNTEREXAMPLE",
+                "vectors": shard["vectors"],
+                "counterexample": mismatch,
+                "duration_seconds": round(time.time() - started, 3),
+            }
+        return {
+            "shard_id": shard["shard_id"],
+            "status": "PASS",
+            "vectors": shard["vectors"],
+            "duration_seconds": round(time.time() - started, 3),
+        }
+
+    def unit_verify(self, contract: dict[str, Any], artifact: pathlib.Path) -> dict[str, Any]:
+        started = time.time()
+        shard_info = self.make_shards(contract, artifact)
+        oracle_receipt = self.compile_c_oracle(contract, artifact)
+        unit_receipt: dict[str, Any] = {
+            "schema_version": 2,
+            "execution_status": "EXECUTED_NOW",
+            "contract_id": contract_id(contract),
+            "domain": shard_info,
+            "oracle_compile": oracle_receipt,
+            "compile_once": [],
+            "candidates": [],
+            "smallest_counterexample": None,
+        }
+        if oracle_receipt.get("status") != "PASS" or not shard_info.get("complete"):
+            unit_receipt["verification_status"] = "INFRASTRUCTURE_FAILURE"
+            write_json(artifact / "unit-receipt.json", unit_receipt)
+            return unit_receipt
+        oracle = artifact / str(oracle_receipt["binary"])
+        for candidate in read_json(artifact / "generation.json", {}).get("candidates", []):
+            if candidate.get("validation") != "PASS":
+                continue
+            compile_receipt = self.compile_candidate(contract, artifact, candidate)
+            unit_receipt["compile_once"].append(compile_receipt)
+            if compile_receipt.get("status") != "PASS":
+                candidate_result = {
+                    "candidate": candidate["candidate"],
+                    "verification_status": "INFRASTRUCTURE_FAILURE",
+                    "shards": [],
+                }
+                unit_receipt["candidates"].append(candidate_result)
+                continue
+            rtl = artifact / str(compile_receipt["binary"])
+            stop_event = threading.Event()
+            shard_results: list[dict[str, Any]] = []
+            with concurrent.futures.ThreadPoolExecutor(max_workers=shard_info["shard_count"]) as executor:
+                futures = [
+                    executor.submit(self.run_shard, artifact, shard, oracle, rtl, stop_event)
+                    for shard in shard_info["shards"]
+                ]
+                for future in concurrent.futures.as_completed(futures):
+                    shard_results.append(future.result())
+            mismatches = [item["counterexample"] for item in shard_results if item.get("status") == "COUNTEREXAMPLE"]
+            infra = [item for item in shard_results if item.get("status") == "INFRASTRUCTURE_FAILURE"]
+            smallest = min(mismatches, key=lambda item: (tuple(item.get("inputs", [])), int(item.get("shard_id", 0)), int(item.get("index", 0)))) if mismatches else None
+            executed_vectors = sum(int(item.get("vectors", 0)) for item in shard_results if item.get("status") == "PASS")
+            if smallest:
+                status = "COUNTEREXAMPLE"
+            elif infra:
+                status = "INFRASTRUCTURE_FAILURE"
+            elif executed_vectors == shard_info["total_vectors"]:
+                status = "EXHAUSTIVE_EQUIVALENT"
+            else:
+                status = "UNPROVED"
+            candidate_result = {
+                "candidate": candidate["candidate"],
+                "module": candidate.get("module"),
+                "verification_status": status,
+                "shards": sorted(shard_results, key=lambda item: int(item["shard_id"])),
+                "vectors_executed": executed_vectors,
+                "smallest_counterexample": smallest,
+            }
+            unit_receipt["candidates"].append(candidate_result)
+            if smallest and unit_receipt.get("smallest_counterexample") is None:
+                unit_receipt["smallest_counterexample"] = smallest
+        promoted = next(
+            (item for item in unit_receipt["candidates"] if item["verification_status"] == "EXHAUSTIVE_EQUIVALENT"),
+            None,
+        )
+        unit_receipt["verification_status"] = "EXHAUSTIVE_EQUIVALENT" if promoted else (
+            "COUNTEREXAMPLE" if any(item["verification_status"] == "COUNTEREXAMPLE" for item in unit_receipt["candidates"])
+            else "UNPROVED"
+        )
+        unit_receipt["promoted_candidate"] = promoted.get("candidate") if promoted else None
+        unit_receipt["duration_seconds"] = round(time.time() - started, 3)
+        write_json(artifact / "unit-receipt.json", unit_receipt)
+        return unit_receipt
+    def ensure_rewriter(self) -> tuple[pathlib.Path | None, dict[str, Any]]:
+        build_dir = self.root / "tmp" / "cicd-clang-rewriter"
+        build_dir.mkdir(parents=True, exist_ok=True)
+        binary = build_dir / "dsc-clang-rewrite"
+        if binary.is_file():
+            return binary, {"status": "REUSED_BUILD", "binary": str(binary)}
+        cmake = locate_tool("cmake")
+        llvm_config = self.input_facts["tools"].get("llvm-config")
+        if not cmake or not llvm_config:
+            return None, {"status": "INFRASTRUCTURE_FAILURE", "reason": "cmake or llvm-config missing"}
+        llvm_result = self.run_process([llvm_config, "--cmakedir"])
+        llvm_dir = (llvm_result.get("output") or "").splitlines()[0].strip()
+        clang_dir = str(pathlib.Path(llvm_dir).parent / "clang")
+        configure = self.run_process(
+            [
+                cmake,
+                "-S", str(self.root / "tools"),
+                "-B", str(build_dir),
+                f"-DLLVM_DIR={llvm_dir}",
+                f"-DClang_DIR={clang_dir}",
+                "-DCMAKE_BUILD_TYPE=Release",
+            ],
+            cwd=self.root,
+            timeout=1200,
+        )
+        if configure["returncode"] != 0:
+            return None, {"status": "INFRASTRUCTURE_FAILURE", "reason": "rewriter configure failed", "configure": configure}
+        build = self.run_process(
+            [cmake, "--build", str(build_dir), "--target", "dsc-clang-rewrite", "-j", "1"],
+            cwd=self.root,
+            timeout=1800,
+        )
+        if build["returncode"] != 0 or not binary.is_file():
+            return None, {"status": "INFRASTRUCTURE_FAILURE", "reason": "rewriter build failed", "configure": configure, "build": build}
+        return binary, {"status": "BUILT", "binary": str(binary), "configure": configure, "build": build}
+
+    def write_compdb_for_copy(self, source_dir: pathlib.Path, path: pathlib.Path) -> list[pathlib.Path]:
+        clang = self.input_facts["tools"].get("clang") or "clang"
+        entries = []
+        sources = sorted(source_dir.glob("*.c"))
+        for source in sources:
+            entries.append({
+                "directory": str(source_dir),
+                "file": str(source),
+                "arguments": [clang, "-std=gnu99", "-O0", "-I", str(source_dir), "-c", str(source)],
+            })
+        write_json(path, entries)
+        return sources
+
+    def run_overlay_rewriter(self, contract: dict[str, Any], source_dir: pathlib.Path,
+                             overlay_header: pathlib.Path) -> dict[str, Any]:
+        binary, build_receipt = self.ensure_rewriter()
+        if not binary:
+            return build_receipt
+        compdb = source_dir / "compile_commands.json"
+        sources = self.write_compdb_for_copy(source_dir, compdb)
+        before = {str(path.relative_to(source_dir)): file_hash(path) for path in sources}
+        cid = contract_id(contract)
+        function = contract_function(contract)
+        original_name = str(function.get("name")) + "_original"
+        dispatcher_name = "dsc_cicd_invoke"
+        receipt_path = source_dir / "clang-overlay-receipt.json"
+        command = [
+            str(binary),
+            "--compdb", str(compdb),
+            "--target-usr", str(function.get("clang_usr")),
+            "--original-name", original_name,
+            "--dispatcher-name", dispatcher_name,
+            "--receipt", str(receipt_path),
+        ] + [str(path) for path in sources]
+        result = self.run_process(command, cwd=source_dir, timeout=1800)
+        after = {str(path.relative_to(source_dir)): file_hash(path) for path in sources}
+        tool_receipt = read_json(receipt_path, {}) or {}
+        original_source_dir = pathlib.Path(str(self.input_facts.get("source_dir", "")))
+        manifest_hashes = {str(item.get("path")): str(item.get("sha256")) for item in self.input_facts.get("source_file_hashes", [])}
+        upstream_unchanged = bool(manifest_hashes) and all(
+            (original_source_dir / relative).is_file() and file_hash(original_source_dir / relative) == expected
+            for relative, expected in manifest_hashes.items()
+        )
+        changed = [
+            {
+                "path": path,
+                "old_sha256": before.get(path),
+                "new_sha256": after.get(path),
+            }
+            for path in sorted(set(before) | set(after))
+            if before.get(path) != after.get(path)
+        ]
+        if tool_receipt.get("status") == "PASS" and result["returncode"] == 0:
+            for changed_file in changed:
+                path = source_dir / changed_file["path"]
+                original = path.read_text(encoding="utf-8", errors="replace")
+                if "dsc_cicd_overlay.h" not in original:
+                    path.write_text('#include "dsc_cicd_overlay.h"\n' + original, encoding="utf-8")
+            status = "PASS"
+        else:
+            status = "FAIL"
+        receipt = {
+            "schema_version": 2,
+            "status": status,
+            "contract_id": cid,
+            "target_usr": function.get("clang_usr"),
+            "original_name": original_name,
+            "dispatcher_name": dispatcher_name,
+            "upstream_source_unchanged": upstream_unchanged,
+            "upstream_source_hash": self.input_facts.get("source_hash"),
+            "source_copy_hashes_before": before,
+            "source_copy_hashes_after": after,
+            "changed_files": changed,
+            "rewritten_usrs": tool_receipt.get("rewritten_usrs", []),
+            "definitions_seen": tool_receipt.get("definitions_seen", 0),
+            "rewritten_calls": tool_receipt.get("rewritten_calls", 0),
+            "direct_calls_seen": tool_receipt.get("direct_calls_seen", 0),
+            "call_sites": tool_receipt.get("call_sites", []),
+            "macro_locations": tool_receipt.get("macro_locations", []),
+            "indirect_locations": tool_receipt.get("indirect_locations", []),
+            "failures": tool_receipt.get("failures", []),
+            "tool": build_receipt,
+            "command": result,
+        }
+        write_json(source_dir / "overlay-receipt.json", receipt)
+        return receipt
+
+    def write_overlay_sources(self, contract: dict[str, Any], source_dir: pathlib.Path,
+                              module: str, candidate_sv: pathlib.Path) -> dict[str, pathlib.Path]:
+        inputs = [
+            port for port in contract.get("interface", {}).get("ports", [])
+            if port.get("direction") == "input"
+        ]
+        output = next(
+            port for port in contract.get("interface", {}).get("ports", [])
+            if port.get("direction") == "output"
+        )
+        function = contract_function(contract)
+        original = str(function.get("name")) + "_original"
+        input_declarations = ", ".join(f"int {port['name']}" for port in inputs)
+        input_call = ", ".join(str(port["name"]) for port in inputs)
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n"
+            "#define DSC_CICD_OVERLAY_H\n"
+            f"int dsc_cicd_invoke({input_declarations});\n"
+            "#endif\n",
+            encoding="utf-8",
+        )
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdio.h>\n"
+            "#include <stdlib.h>\n"
+            "#include <string.h>\n"
+            "#include \"dsc_cicd_overlay.h\"\n"
+            f"extern int {original}({input_declarations});\n"
+            f"extern int dsc_cicd_rtl({input_declarations});\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n"
+            "}\n"
+            "static unsigned long dsc_cicd_mismatches;\n"
+            f"int dsc_cicd_invoke({input_declarations}) {{\n"
+            f"    int c_value = {original}({input_call});\n"
+            "    int mode = dsc_cicd_mode();\n"
+            "    if (mode == 0) return c_value;\n"
+            f"    int rtl_value = dsc_cicd_rtl({input_call});\n"
+            "    if (rtl_value != c_value) {\n"
+            "        ++dsc_cicd_mismatches;\n"
+            "        fprintf(stderr, \"C/RTL mismatch: c=%d rtl=%d\\n\", c_value, rtl_value);\n"
+            "    }\n"
+            "    return mode == 2 ? rtl_value : c_value;\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        bridge = source_dir / "rtl_bridge.cpp"
+        width = max(1, int(output.get("width", 1)))
+        assignments = "\n".join(f"    dut.{port['name']} = static_cast<long long>({port['name']});" for port in inputs)
+        input_args = ", ".join(str(port["name"]) for port in inputs)
+        if output.get("signed"):
+            output_expr = f"sign_extend(static_cast<long long>(dut.{output['name']}), {width})"
+        else:
+            output_expr = f"static_cast<int>(dut.{output['name']})"
+        bridge.write_text(
+            "#include <cstdint>\n"
+            "#include \"verilated.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            "static long long sign_extend(long long value, int width) {\n"
+            "    if (width >= 63) return value;\n"
+            "    long long bit = 1LL << (width - 1);\n"
+            "    long long mask = (1LL << width) - 1;\n"
+            "    value &= mask;\n"
+            "    return (value & bit) ? value - (1LL << width) : value;\n"
+            "}\n"
+            f'extern "C" int dsc_cicd_rtl({input_declarations}) {{\n'
+            f"    V{safe_identifier(module)} dut;\n"
+            f"{assignments}\n"
+            "    dut.eval();\n"
+            f"    return static_cast<int>({output_expr});\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\n"
+            "extern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) {\n"
+            "    return dsc_cicd_original_main(argc, argv);\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        return {"header": header, "overlay": overlay, "bridge": bridge, "main": main, "candidate": candidate_sv}
+
+    def compile_overlay(self, contract: dict[str, Any], source_dir: pathlib.Path,
+                        module: str, candidate_sv: pathlib.Path) -> dict[str, Any]:
+        verilator = self.input_facts["tools"].get("verilator") or "verilator"
+        clang = self.input_facts["tools"].get("clang") or "clang"
+        clangxx = self.input_facts["tools"].get("clang++") or "clang++"
+        build_dir = source_dir.parent / "overlay-build"
+        if build_dir.exists():
+            shutil.rmtree(build_dir)
+        build_dir.mkdir(parents=True, exist_ok=True)
+        obj_dir = build_dir / "rtl-object"
+        verilator_result = self.run_process(
+            [verilator, "--cc", str(candidate_sv), "--Mdir", str(obj_dir), "--top-module", module, "--Wno-fatal"],
+            cwd=source_dir,
+            timeout=1800,
+        )
+        if verilator_result["returncode"] != 0:
+            return {"status": "INFRASTRUCTURE_FAILURE", "reason": "overlay RTL compile failed", "verilator": verilator_result}
+        make_result = self.run_process(["make", "-C", str(obj_dir), "-f", f"V{module}.mk", "-j", "1"], cwd=source_dir, timeout=1800)
+        archive = obj_dir / f"V{module}__ALL.a"
+        if make_result["returncode"] != 0 or not archive.is_file():
+            return {"status": "INFRASTRUCTURE_FAILURE", "reason": "Verilator model archive failed", "verilator": verilator_result, "make": make_result}
+        objects: list[pathlib.Path] = []
+        commands = []
+        source_files = sorted(source_dir.glob("*.c"))
+        for source in source_files:
+            object_path = build_dir / (source.stem + ".o")
+            extra = ["-Dmain=dsc_cicd_original_main"] if source.name == "codec_main.c" else []
+            result = self.run_process(
+                [clang, "-std=gnu99", "-O3", "-I", str(source_dir)] + extra + ["-c", str(source), "-o", str(object_path)],
+                cwd=source_dir,
+                timeout=1200,
+            )
+            commands.append(result)
+            if result["returncode"] != 0:
+                return {"status": "INFRASTRUCTURE_FAILURE", "reason": f"overlay C compile failed for {source.name}", "commands": commands, "verilator": verilator_result, "make": make_result}
+            objects.append(object_path)
+        bridge_object = build_dir / "rtl_bridge.o"
+        verilator_include = pathlib.Path(verilator).resolve().parent.parent / "share" / "verilator" / "include"
+        bridge_result = self.run_process(
+            [clangxx, "-std=c++17", "-O2", "-I", str(obj_dir), "-I", str(verilator_include), "-c", str(source_dir / "rtl_bridge.cpp"), "-o", str(bridge_object)],
+            cwd=source_dir,
+            timeout=1200,
+        )
+        commands.append(bridge_result)
+        if bridge_result["returncode"] != 0:
+            return {"status": "INFRASTRUCTURE_FAILURE", "reason": "RTL bridge compile failed", "commands": commands}
+        objects.append(bridge_object)
+        binary = source_dir / "dsc"
+        runtime_archive = obj_dir / "libverilated.a"
+        runtime_archives = [str(path) for path in (runtime_archive, obj_dir / "libverilated_threads.a") if path.is_file()]
+        link_result = self.run_process(
+            [clangxx, "-O2", "-o", str(binary)] + [str(path) for path in objects] + [str(archive)] + runtime_archives,
+            cwd=source_dir,
+            timeout=1800,
+        )
+        commands.append(link_result)
+        status = "PASS" if link_result["returncode"] == 0 and binary.is_file() else "INFRASTRUCTURE_FAILURE"
+        receipt = {
+            "status": status,
+            "binary": str(binary),
+            "module": module,
+            "candidate": candidate_sv.name,
+            "commands": commands,
+            "verilator": verilator_result,
+            "make_archive": make_result,
+        }
+        write_json(source_dir / "overlay-compile-receipt.json", receipt)
+        return receipt
+    def discover_matrix(self) -> list[dict[str, Any]]:
+        scripts = [str(item) for item in self.input_facts.get("baseline_scripts", [])]
+        selected = []
+        preferred = [
+            "bittrue_smoke/run_c_baseline.sh",
+            "bittrue_smoke/run_c_baseline_10bpc.sh",
+            "bittrue_smoke/run_c_baseline_native420.sh",
+        ]
+        for name in preferred:
+            if name in scripts and name not in [item["script"] for item in selected]:
+                selected.append(self.scenario_info(name))
+        if len(selected) < 3:
+            for name in scripts:
+                if name not in [item["script"] for item in selected]:
+                    selected.append(self.scenario_info(name))
+                if len(selected) >= 3:
+                    break
+        return selected
+
+    def scenario_info(self, script: str) -> dict[str, Any]:
+        model_root = pathlib.Path(str(self.input_facts["source_root"]))
+        path = model_root / script
+        text = path.read_text(encoding="utf-8", errors="replace")
+        golden_match = re.search(r'\bgolden\s*=\s*["]([^"]+)', text)
+        if not golden_match:
+            golden_match = re.search(r'\bgolden\s*=\s*["]?\$model_dir/([^"\s]+)', text)
+        golden = golden_match.group(1) if golden_match else ""
+        if golden.startswith("$model_dir/"):
+            golden = golden[len("$model_dir/"):]
+        expected_match = re.search(r'\bexpected_hash\s*=\s*["]([0-9a-fA-F]+)["]', text)
+        expected = expected_match.group(1) if expected_match else None
+        config_match = re.search(r'(?:-F|--config)\s+([A-Za-z0-9_./{}-]+)', text)
+        config = config_match.group(1) if config_match else ""
+        if config.startswith("$model_dir/"):
+            config = config[len("$model_dir/"):]
+        return {
+            "script": script,
+            "name": pathlib.Path(script).stem,
+            "golden": golden,
+            "config": config,
+            "expected_sha256": expected,
+        }
+
+    def copy_model(self, label: str) -> pathlib.Path:
+        model_root = pathlib.Path(str(self.input_facts["source_root"]))
+        temp_root = pathlib.Path(tempfile.mkdtemp(prefix=f"dsc-cicd-{label}-", dir=str(self.root / "tmp")))
+        destination = temp_root / model_root.name
+        ignore = shutil.ignore_patterns(".git", "__pycache__", "target", "build", "dsc-rs", "operator_bittrue")
+        shutil.copytree(model_root, destination, ignore=ignore)
+        return destination
+
+    def run_matrix(self, contract: dict[str, Any], artifact: pathlib.Path,
+                   candidate: dict[str, Any]) -> dict[str, Any]:
+        scenarios = self.discover_matrix()
+        if len(scenarios) < 1:
+            return {"status": "INFRASTRUCTURE_FAILURE", "reason": "no baseline scripts discovered"}
+        base_model = self.copy_model("baseline")
+        overlay_model: pathlib.Path | None = None
+        baseline_results = []
+        try:
+            for scenario in scenarios:
+                script_path = base_model / scenario["script"]
+                result = self.run_process([str(script_path)], cwd=base_model, timeout=1800)
+                golden = base_model / scenario["golden"]
+                actual = file_hash(golden) if golden.is_file() else None
+                baseline_results.append({
+                    "scenario": scenario,
+                    "status": "PASS" if result["returncode"] == 0 and actual else "FAIL",
+                    "command": result,
+                    "sha256": actual,
+                    "size_bytes": golden.stat().st_size if golden.is_file() else None,
+                })
+            if not all(item["status"] == "PASS" for item in baseline_results):
+                return {
+                    "status": "INFRASTRUCTURE_FAILURE",
+                    "reason": "baseline matrix failed",
+                    "baseline": baseline_results,
+                }
+            overlay_temp = pathlib.Path(tempfile.mkdtemp(prefix="dsc-cicd-overlay-", dir=str(self.root / "tmp")))
+            overlay_model = overlay_temp / base_model.name
+            shutil.copytree(base_model, overlay_model, ignore=shutil.ignore_patterns(".git", "__pycache__", "target", "build", "dsc-rs", "operator_bittrue"))
+            candidate_sv = artifact / str(candidate["path"])
+            overlay_copy_sv = overlay_model / "candidate.sv"
+            shutil.copy2(candidate_sv, overlay_copy_sv)
+            module = str(candidate.get("module") or self.module_name(candidate_sv.read_text(encoding="utf-8")))
+            overlay_paths = self.write_overlay_sources(contract, overlay_model / "source", module, overlay_copy_sv)
+            overlay_receipt = self.run_overlay_rewriter(contract, overlay_model / "source", overlay_paths["header"])
+            if overlay_receipt.get("status") != "PASS":
+                return {
+                    "status": "INFRASTRUCTURE_FAILURE",
+                    "reason": "Clang overlay rewrite failed",
+                    "baseline": baseline_results,
+                    "overlay": overlay_receipt,
+                }
+            compile_receipt = self.compile_overlay(contract, overlay_model / "source", module, overlay_copy_sv)
+            if compile_receipt.get("status") != "PASS":
+                return {
+                    "status": "INFRASTRUCTURE_FAILURE",
+                    "reason": "caller/callee overlay compile failed",
+                    "baseline": baseline_results,
+                    "overlay": overlay_receipt,
+                    "compile": compile_receipt,
+                }
+            mode_results: dict[str, Any] = {}
+            binary = overlay_model / "source" / "dsc"
+            for mode in ("C_ONLY", "SHADOW", "RTL_RETURN"):
+                scenario_results = []
+                for baseline in baseline_results:
+                    scenario = baseline["scenario"]
+                    golden = overlay_model / scenario["golden"]
+                    if golden.exists():
+                        golden.unlink()
+                    command = self.run_process(
+                        [str(binary), "-F", str(overlay_model / scenario["config"])],
+                        cwd=overlay_model,
+                        env={"DSC_CICD_MODE": mode},
+                        timeout=1800,
+                    )
+                    actual = file_hash(golden) if golden.is_file() else None
+                    output = str(command.get("output", ""))
+                    mismatch_count = len(re.findall(r"C/RTL mismatch", output))
+                    scenario_results.append({
+                        "scenario": scenario,
+                        "status": "PASS" if command["returncode"] == 0 and actual == baseline["sha256"] and mismatch_count == 0 else "FAIL",
+                        "command": command,
+                        "sha256": actual,
+                        "size_bytes": golden.stat().st_size if golden.is_file() else None,
+                        "baseline_sha256": baseline["sha256"],
+                        "mismatch_count": mismatch_count,
+                    })
+                mode_results[mode] = {
+                    "status": "PASS" if all(item["status"] == "PASS" for item in scenario_results) else "FAIL",
+                    "scenarios": scenario_results,
+                }
+            overlay_receipt = scrub_paths(overlay_receipt, [base_model, overlay_model, self.root])
+            compile_receipt = scrub_paths(compile_receipt, [base_model, overlay_model, self.root])
+            mode_results = scrub_paths(mode_results, [base_model, overlay_model, self.root])
+            result = {
+                "status": "PASS" if mode_results["SHADOW"]["status"] and mode_results["RTL_RETURN"]["status"] else "FAIL",
+                "matrix_scripts_discovered": len(self.input_facts.get("baseline_scripts", [])),
+                "scenarios": [item["scenario"] for item in baseline_results],
+                "baseline": scrub_paths(baseline_results, [base_model, overlay_model, self.root]),
+                "overlay": overlay_receipt,
+                "compile": compile_receipt,
+                "modes": mode_results,
+                "candidate": candidate.get("candidate"),
+                "execution_status": "EXECUTED_NOW",
+            }
+            write_json(artifact / "shadow-receipt.json", result["modes"]["SHADOW"])
+            write_json(artifact / "rtl-return-receipt.json", result["modes"]["RTL_RETURN"])
+            write_json(artifact / "bitstream-receipt.json", result)
+            write_json(artifact / "overlay-receipt.json", result["overlay"])
+            return scrub_paths(result, [base_model, overlay_model, self.root])
+        finally:
+            shutil.rmtree(base_model.parent, ignore_errors=True)
+            if overlay_model is not None:
+                shutil.rmtree(overlay_model.parent, ignore_errors=True)
+
+    def dependency_verify(self, contract: dict[str, Any], item: dict[str, Any],
+                          artifact: pathlib.Path, unit: dict[str, Any],
+                          matrix: dict[str, Any]) -> dict[str, Any]:
+        pair = self.plan.get("dependency_pair")
+        sites = []
+        overlay = matrix.get("overlay", {}) if isinstance(matrix, dict) else {}
+        sites.extend(overlay.get("call_sites", []) if isinstance(overlay, dict) else [])
+        direct_sites = [
+            site for site in self.dependency_info.get("all_call_sites", [])
+            if site.get("callee_contract") == item.get("contract_id")
+        ]
+        checks = {
+            "caller_core_with_callee_C": matrix.get("modes", {}).get("C_ONLY", {}).get("status") == "PASS",
+            "callee_RTL_against_callee_C": unit.get("promoted_candidate") is not None,
+            "caller_core_plus_callee_RTL": matrix.get("modes", {}).get("RTL_RETURN", {}).get("status") == "PASS",
+            "direct_call_sites_discovered": bool(direct_sites),
+            "overlay_rewritten_call_sites": bool(sites),
+        }
+        receipt = {
+            "schema_version": 2,
+            "execution_status": "EXECUTED_NOW",
+            "status": "PASS" if all(checks.values()) else "FAIL",
+            "pair": pair,
+            "checks": checks,
+            "dependency_ports": [
+                {
+                    "caller_function": site.get("caller_function") or (pair or {}).get("caller_function"),
+                    "callee_usr": site.get("callee_usr") or (pair or {}).get("callee_usr"),
+                    "location": site.get("location"),
+                    "arguments": site.get("arguments", []),
+                    "transport": "direct argument/result ports",
+                }
+                for site in sites
+            ],
+            "call_sites_from_callgraph": direct_sites,
+            "counterexample": unit.get("smallest_counterexample"),
+            "failure_reason": None if all(checks.values()) else "dependency composition did not pass all real gates",
+        }
+        write_json(artifact / "dependency-receipt.json", receipt)
+        return receipt
 
     def run_contract(self, item: dict[str, Any]) -> dict[str, Any]:
-        contract = self.contract_from_item(item)
-        cid = item["contract_id"]
-        cached = self.cache_entry(item["cache_key"])
-        if item.get("cache_hit") and cached.get("state") == "PROMOTED":
-            artifacts = cached.get("artifacts", [])
-            self.update_contract(cid, "PROMOTED", "PASS", artifacts, extra={"cache_reused": True, "model_calls": 0})
-            return {"contract_id": cid, "status": "CACHE_REUSED", "state": "PROMOTED", "model_calls": 0}
-        artifact_result = self.generate_artifacts(item, contract)
-        if artifact_result.get("status") != "PASS":
-            self.update_contract(cid, "CONTRACT_LOCKED", "INFRASTRUCTURE_FAILURE", [], artifact_result.get("failure_reason"), {"model_calls": 0})
-            return {"contract_id": cid, "status": "INFRASTRUCTURE_FAILURE", "failure_reason": artifact_result.get("failure_reason")}
-        artifacts = artifact_result.get("artifacts", [])
-        self.update_contract(cid, "RTL_GENERATED", "PASS", artifacts, extra={"model_calls": int(artifact_result.get("generation", {}).get("model_calls", 0)), "cache_reused": bool(artifact_result.get("existing"))})
-        unit = self.unit_verify(item, contract, artifact_result)
-        unit_artifacts = [str(path.relative_to(self.root)) for path in (self.artifact_dir(item)).glob("unit-receipt.json")]
-        if unit.get("status") != "PASS":
-            self.update_contract(cid, "RTL_GENERATED", unit.get("status", "UNPROVED"), unit_artifacts, unit.get("failure_reason"), {"verification_status": unit.get("verification_status", "UNPROVED")})
-            return {"contract_id": cid, "status": unit.get("status", "UNPROVED"), "state": "RTL_GENERATED"}
-        self.update_contract(cid, "UNIT_VERIFIED", "PASS", unit_artifacts, extra={"verification_status": unit.get("verification_status"), "promoted_candidate": unit.get("promoted_candidate")})
-        dependency = self.dependency_verify(item, contract)
-        dependency_artifacts = [str(path.relative_to(self.root)) for path in (self.artifact_dir(item)).glob("*dependency-receipt.json")]
-        if dependency.get("status") != "PASS":
-            self.update_contract(cid, "UNIT_VERIFIED", dependency.get("status", "UNPROVED"), dependency_artifacts, dependency.get("failure_reason"))
-            return {"contract_id": cid, "status": dependency.get("status", "UNPROVED"), "state": "UNIT_VERIFIED"}
-        self.update_contract(cid, "DEPENDENCIES_VERIFIED", "PASS", dependency_artifacts)
-        integration = self.run_full_overlay(item, contract, artifact_result, unit)
-        shadow_pass = integration.get("shadow", {}).get("status") == "PASS"
-        rtl_pass = integration.get("rtl_return", {}).get("status") == "PASS"
-        integration_artifacts = [str(path.relative_to(self.root)) for path in sorted((self.integration / "generated-overlay" / cid).glob("*")) if path.is_file()]
-        integration_artifacts.extend(str(path.relative_to(self.root)) for path in sorted(self.artifact_dir(item).glob("*-receipt.json")) if path.is_file())
-        if not shadow_pass:
-            self.update_contract(cid, "DEPENDENCIES_VERIFIED", "UNPROVED", integration_artifacts, "SHADOW_PASS failed")
-            return {"contract_id": cid, "status": "UNPROVED", "state": "DEPENDENCIES_VERIFIED"}
-        self.update_contract(cid, "SHADOW_PASS", "PASS", integration_artifacts)
-        if not rtl_pass:
-            self.update_contract(cid, "SHADOW_PASS", "UNPROVED", integration_artifacts, "RTL_RETURN_PASS failed")
-            return {"contract_id": cid, "status": "UNPROVED", "state": "SHADOW_PASS"}
-        self.update_contract(cid, "RTL_RETURN_PASS", "PASS", integration_artifacts)
-        bitstream_pass = all(mode.get("status") == "PASS" for mode in integration.get("overlay", {}).get("modes", []) if mode.get("mode") in {"C_ONLY", "SHADOW", "RTL_RETURN"})
-        if not bitstream_pass:
-            self.update_contract(cid, "RTL_RETURN_PASS", "UNPROVED", integration_artifacts, "bitstream hash gate failed")
-            return {"contract_id": cid, "status": "UNPROVED", "state": "RTL_RETURN_PASS"}
-        self.update_contract(cid, "BITSTREAM_PASS", "PASS", integration_artifacts)
-        self.update_contract(cid, "PROMOTED", "PASS", integration_artifacts, extra={"active_mode": "RTL_RETURN", "rollback_mode": "C_ONLY"})
-        return {"contract_id": cid, "status": "PASS", "state": "PROMOTED", "model_calls": 0}
+        cid = str(item["contract_id"])
+        contract = self.contract_for_item(item)
+        if item.get("blocked_reasons"):
+            self.update_state(cid, "DISCOVERED", "BLOCKED", failure="; ".join(item["blocked_reasons"]))
+            return {"contract_id": cid, "status": "BLOCKED", "reason": item["blocked_reasons"]}
+        if not item.get("selected"):
+            self.update_state(cid, "CONTRACT_LOCKED", "DEFERRED", failure="bounded selection deferred")
+            return {"contract_id": cid, "status": "DEFERRED"}
+        artifact = self.artifact_dir(item)
+        cache_entry = self.cache_entry(item["cache_key"])
+        if item.get("cache_hit"):
+            cached_unit = read_json(artifact / "unit-receipt.json", {}) or {}
+            cached_bitstream = read_json(artifact / "bitstream-receipt.json", {}) or {}
+            self.update_state(cid, "PROMOTED", "CACHE_REUSED", artifacts=[str(artifact.relative_to(self.root))], extra={
+                "model_calls": 0,
+                "token_count": 0,
+                "cache": "REUSED_VERIFIED_RECEIPT",
+            })
+            result = {
+                "contract_id": cid,
+                "status": "CACHE_REUSED",
+                "execution_status": "REUSED_VERIFIED_RECEIPT",
+                "unit": cached_unit,
+                "matrix": cached_bitstream,
+                "dependency": read_json(artifact / "dependency-receipt.json", {}) or {},
+                "cache_entry": cache_entry,
+            }
+            self.run_results.append(result)
+            return result
+        try:
+            self.update_state(cid, "CONTRACT_LOCKED", "EXECUTING")
+            generation = self.generate_artifacts(contract, item, artifact)
+            self.update_state(cid, "RTL_GENERATED", generation.get("status", "FAIL"), artifacts=[str(artifact.relative_to(self.root))], extra={
+                "model_calls": generation.get("model_calls", 0),
+                "token_count": generation.get("tokens", 0),
+            })
+            if generation.get("status") != "PASS":
+                result = {"contract_id": cid, "status": generation.get("status", "GENERATION_FAILED"), "generation": generation}
+                self.run_results.append(result)
+                return result
+            unit = self.unit_verify(contract, artifact)
+            unit_status = "PASS" if unit.get("promoted_candidate") else unit.get("verification_status", "UNPROVED")
+            self.update_state(cid, "UNIT_VERIFIED", unit_status, artifacts=[str(artifact.relative_to(self.root))], extra={
+                "unit_receipt": "EXECUTED_NOW",
+            })
+            if not unit.get("promoted_candidate"):
+                result = {"contract_id": cid, "status": unit.get("verification_status", "UNPROVED"), "generation": generation, "unit": unit}
+                self.run_results.append(result)
+                return result
+            candidate = next(item for item in generation.get("candidates", []) if item.get("candidate") == unit["promoted_candidate"])
+            matrix = self.run_matrix(contract, artifact, candidate)
+            shadow_status = matrix.get("modes", {}).get("SHADOW", {}).get("status") == "PASS"
+            rtl_status = matrix.get("modes", {}).get("RTL_RETURN", {}).get("status") == "PASS"
+            self.update_state(cid, "SHADOW_PASS", "PASS" if shadow_status else "FAIL", artifacts=[str(artifact.relative_to(self.root))])
+            self.update_state(cid, "RTL_RETURN_PASS", "PASS" if rtl_status else "FAIL", artifacts=[str(artifact.relative_to(self.root))])
+            dependency = self.dependency_verify(contract, item, artifact, unit, matrix)
+            self.update_state(cid, "DEPENDENCIES_VERIFIED", dependency.get("status", "FAIL"), artifacts=[str(artifact.relative_to(self.root))])
+            bitstream_status = matrix.get("status") == "PASS"
+            self.update_state(cid, "BITSTREAM_PASS", "PASS" if bitstream_status else "FAIL", artifacts=[str(artifact.relative_to(self.root))])
+            final = "PROMOTED" if bitstream_status and dependency.get("status") == "PASS" else "FAILED"
+            self.update_state(cid, "PROMOTED" if final == "PROMOTED" else "BITSTREAM_PASS", final, artifacts=[str(artifact.relative_to(self.root))])
+            result = {
+                "contract_id": cid,
+                "status": final,
+                "generation": generation,
+                "unit": unit,
+                "matrix": matrix,
+                "dependency": dependency,
+            }
+            self.run_results.append(result)
+            for name in ("shards", "shard-results", "oracle-build", "candidate-build", "generated"):
+                path = artifact / name
+                if path.is_dir() and name != "generated":
+                    shutil.rmtree(path, ignore_errors=True)
+            return result
+        except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as error:
+            self.update_state(cid, "DISCOVERED", "INFRASTRUCTURE_FAILURE", artifacts=[str(artifact.relative_to(self.root))], failure=str(error))
+            result = {"contract_id": cid, "status": "INFRASTRUCTURE_FAILURE", "reason": str(error)}
+            self.run_results.append(result)
+            return result
+    def write_cache_index(self) -> None:
+        entries = self.cache.get("entries", {}) if isinstance(self.cache, dict) else {}
+        if not isinstance(entries, dict):
+            entries = {}
+        for item in self.plan.get("contracts", []):
+            result = next((value for value in self.run_results if value.get("contract_id") == item["contract_id"]), None)
+            if not result:
+                continue
+            status = result.get("status")
+            artifact = self.artifact_dir(item)
+            valid = status in ("PROMOTED", "CACHE_REUSED") and (artifact / "unit-receipt.json").is_file() and (artifact / "bitstream-receipt.json").is_file()
+            entries[item["cache_key"]] = {
+                "schema_version": 2,
+                "cache_key": item["cache_key"],
+                "contract_id": item["contract_id"],
+                "artifact_dir": str(artifact.relative_to(self.root)),
+                "state": "PROMOTED" if valid else status,
+                "valid": valid,
+                "execution_status": "REUSED_VERIFIED_RECEIPT" if status == "CACHE_REUSED" else "EXECUTED_NOW",
+                "model_calls": result.get("generation", {}).get("model_calls", 0),
+                "tokens": result.get("generation", {}).get("tokens", 0),
+                "hashes": item["hashes"],
+                "updated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+            }
+        self.cache = {"schema_version": 2, "entries": entries}
+        write_json(self.ci / "cache-index.json", self.cache)
 
     def refresh_dag(self) -> None:
-        by_id = {item["contract_id"]: item for item in self.state.get("contracts", [])}
+        state_by_id = {item["contract_id"]: item for item in self.state.get("contracts", [])}
         for node in self.dag.get("nodes", []):
-            item = by_id.get(node.get("contract_id"))
+            item = state_by_id.get(node.get("contract_id"))
             if not item:
                 continue
-            current = item.get("current_state", "DISCOVERED")
+            current = item.get("current_state")
             stage = node.get("stage")
-            if item.get("status") == "INFRASTRUCTURE_FAILURE":
-                node["status"] = "INFRASTRUCTURE_FAILURE"
-            elif item.get("status") in {"BLOCKED", "UNPROVED", "UNSUPPORTED"} and stage != current:
-                node["status"] = "BLOCKED" if stage != current else item.get("status")
-            elif stage in STATE_ORDER and current in STATE_ORDER and STATE_ORDER.index(stage) <= STATE_ORDER.index(current):
+            if item.get("status") == "BLOCKED":
+                node["status"] = "BLOCKED"
+                node["failure_reason"] = item.get("failure_reason")
+            elif stage == current:
+                node["status"] = item.get("status")
+                node["failure_reason"] = item.get("failure_reason")
+            elif current in STATE_ORDER and stage in STATE_ORDER and STATE_ORDER.index(stage) < STATE_ORDER.index(current):
                 node["status"] = "PASS"
+            elif item.get("status") == "CACHE_REUSED":
+                node["status"] = "CACHE_REUSED"
             else:
                 node["status"] = "PENDING"
             node["artifacts"] = item.get("artifacts", [])
-            node["failure_reason"] = item.get("failure_reason") if node["status"] not in {"PASS", "PENDING"} else None
+        pair = self.plan.get("dependency_pair")
+        if pair:
+            composition_id = f"{pair['caller_function']}:COMPOSITION"
+            if not any(node.get("node_id") == composition_id for node in self.dag.get("nodes", [])):
+                self.dag.setdefault("nodes", []).append({
+                    "node_id": composition_id,
+                    "contract_id": pair.get("caller_contract"),
+                    "stage": "COMPOSITION",
+                    "status": "EXECUTED" if any(item.get("dependency", {}).get("status") == "PASS" for item in self.run_results) else "PENDING",
+                    "source_hash": self.input_facts.get("source_hash"),
+                    "spec_hash": self.input_facts.get("spec_hash"),
+                    "contract_hash": None,
+                    "dependency_hash": digest(pair),
+                    "artifacts": [],
+                    "failure_reason": None,
+                })
+        write_json(self.ci / "dag.json", self.dag)
 
-    def write_cache(self) -> None:
-        # Keep the index bounded and deterministic: one current entry per
-        # locked contract is enough to prove reuse or invalidation.  Staleness
-        # is recorded in the next plan/state hashes rather than as unbounded
-        # historical cache rows.
-        entries: dict[str, Any] = {}
-        for item in self.plan.get("contracts", []):
-            state_item = next((value for value in self.state.get("contracts", []) if value.get("contract_id") == item["contract_id"]), {})
-            artifact_dir = self.artifact_dir(item)
-            entries[item["cache_key"]] = {
-                "cache_key": item["cache_key"],
-                "valid": state_item.get("current_state") == "PROMOTED",
-                "state": state_item.get("current_state"),
-                "status": state_item.get("status"),
-                "contract_id": item["contract_id"],
-                "artifact_dir": str(artifact_dir.relative_to(self.root)),
-                "artifacts": state_item.get("artifacts", []),
-                "hashes": item["hashes"],
-                "model_calls": int(state_item.get("model_calls", 0)),
-                "source_receipts": ["ci/state.json", "ci/dag.json", "artifacts/<contract-hash>/artifact-manifest.json"],
-            }
-        for entry in entries.values():
-            path = pathlib.Path(str(entry.get("artifact_dir", "")))
-            if path.is_absolute():
-                try:
-                    entry["artifact_dir"] = str(path.relative_to(self.root))
-                except ValueError:
-                    pass
-        self.cache = {"schema_version": 1, "key_fields": ["agent", "source", "spec", "contract", "dependency", "prompt", "model", "tools"], "entries": entries}
-        write_json(self.ci / "cache-index.json", self.cache)
-
-    def write_integration_manifests(self) -> None:
-        self.integration.mkdir(parents=True, exist_ok=True)
-        replacements = []
-        for item in self.state.get("contracts", []):
-            if item.get("current_state") != "PROMOTED":
+    def write_integration(self) -> None:
+        replacement_lines = [
+            "schema_version: 2",
+            "rollback_mode: C_ONLY",
+            "selected_contracts:",
+        ]
+        for cid in self.plan.get("selected_contracts", []):
+            replacement_lines.append(f"  - {cid}")
+        replacement_lines.extend([
+            "promotion_gate: unit + dependency + shadow + rtl_return + bitstream",
+            "source_policy: immutable upstream C; generated overlay lives in isolated copy",
+        ])
+        (self.integration / "replacement-plan.yaml").parent.mkdir(parents=True, exist_ok=True)
+        (self.integration / "replacement-plan.yaml").write_text("\n".join(replacement_lines) + "\n", encoding="utf-8")
+        for result in self.run_results:
+            cid = result.get("contract_id")
+            if not cid:
                 continue
-            cid = item["contract_id"]
-            receipt = read_json(self.integration / "generated-overlay" / cid / "overlay-receipt.json", {}) or {}
-            target = self.integration / "bitstream-receipts" / f"{cid}.json"
-            write_json(target, receipt)
-            replacements.append({"contract_id": cid, "active_mode": "RTL_RETURN", "rollback_mode": "C_ONLY", "call_sites": receipt.get("call_sites", []), "bitstream_receipt": str(target.relative_to(self.root))})
-        replacement_plan = {"schema_version": 1, "generated_by": "tools/cicd_agent.py", "mode_semantics": {"C_ONLY": "return C", "SHADOW": "compare C/RTL, return C", "RTL_RETURN": "compare C/RTL, return RTL"}, "replacements": replacements, "rollback": {"operation": "change active_mode to C_ONLY in this manifest", "safe_mode": "C_ONLY"}}
-        write_json(self.integration / "replacement-plan.yaml", replacement_plan)
-        write_json(self.integration / "replacement-manifest.json", {"schema_version": 1, "active_mode": "RTL_RETURN" if replacements else "C_ONLY", "rollback_mode": "C_ONLY", "replacements": replacements})
+            overlay = result.get("matrix", {}).get("overlay")
+            if overlay:
+                directory = self.integration / "generated-overlay" / str(cid)
+                write_json(directory / "overlay-receipt.json", overlay)
+            matrix = result.get("matrix")
+            if matrix:
+                write_json(self.integration / "bitstream-receipts" / f"{cid}.json", matrix)
 
-    def write_summary(self, results: list[dict[str, Any]]) -> None:
-        lines = ["# CI/CD pipeline summary", "", "- Agent: generic dependency-aware C-to-RTL migration", f"- Source hash: `{self.input_facts.get('source_hash')}`", f"- Spec hash: `{self.input_facts.get('spec_hash')}`", f"- Baseline SHA-256: `{self.input_facts.get('baseline_hash')}`", f"- Model calls: `{sum(int(result.get('model_calls', 0)) for result in results)}`", "", "## Contract states", ""]
-        for item in self.state.get("contracts", []):
-            lines.append(f"- `{item['contract_id']}`: `{item.get('current_state')}` / `{item.get('status')}`" + (f" — {item.get('failure_reason')}" if item.get("failure_reason") else ""))
-        lines.extend(["", "## Planner", "", f"- Ready contracts: `{', '.join(self.plan.get('ready_contracts', [])) or 'none'}`", f"- Blocked contracts: `{', '.join(item['contract_id'] for item in self.plan.get('blocked_contracts', [])) or 'none'}`", f"- Parallel batches: `{json.dumps(self.plan.get('parallel_batches', []), ensure_ascii=False)}`", "", "## Evidence", "", "- `ci/dag.json` records per-stage hashes, statuses, artifacts, and failure reasons.", "- `ci/cache-index.json` records cache keys and zero-model-call reuse.", "- `integration/replacement-plan.yaml` contains C_ONLY rollback semantics.", "- `integration/bitstream-receipts/` contains byte and SHA-256 gates."])
+    def write_reports(self) -> None:
+        self.artifacts.mkdir(parents=True, exist_ok=True)
+        selected = self.plan.get("selected_contracts", [])
+        result_lines = []
+        for result in self.run_results:
+            result_lines.append({
+                "contract_id": result.get("contract_id"),
+                "status": result.get("status"),
+                "execution_status": result.get("execution_status", "EXECUTED_NOW"),
+                "model_calls": result.get("generation", {}).get("model_calls", 0),
+                "tokens": result.get("generation", {}).get("tokens", 0),
+                "unit_status": result.get("unit", {}).get("verification_status"),
+                "dependency_status": result.get("dependency", {}).get("status"),
+                "matrix_status": result.get("matrix", {}).get("status"),
+                "counterexample": result.get("unit", {}).get("smallest_counterexample"),
+            })
+        report = {
+            "schema_version": 2,
+            "agent": "executable-generic-c-to-rtl-cicd",
+            "input_pdf": self.input_facts.get("spec_path"),
+            "input_source_root": self.input_facts.get("source_root"),
+            "selected_new_work": selected,
+            "new_candidates": self.plan.get("new_candidates", []),
+            "ready_contracts": self.plan.get("ready_contracts", []),
+            "blocked_contracts": self.plan.get("blocked_contracts", []),
+            "generator_invocations": self.generator_invocations,
+            "model_calls": self.state.get("model_calls", 0),
+            "tokens": self.state.get("token_count", 0),
+            "shards": [
+                result.get("unit", {}).get("domain", {}).get("shard_count")
+                for result in self.run_results if result.get("unit")
+            ],
+            "dependency_pair": self.plan.get("dependency_pair"),
+            "matrix_scripts_discovered": len(self.input_facts.get("baseline_scripts", [])),
+            "results": result_lines,
+            "blockers": self.input_facts.get("errors", []) + [
+                item for blocked in self.plan.get("blocked_contracts", []) for item in blocked.get("reasons", [])
+            ],
+            "receipt_policy": {
+                "fresh_run": "EXECUTED_NOW",
+                "cache_hit": "REUSED_VERIFIED_RECEIPT",
+                "complete_domain_pass": "EXHAUSTIVE_EQUIVALENT",
+            },
+        }
+        write_json(self.root / "summary.json", report)
+        lines = [
+            "# Executable generic C-to-RTL pipeline",
+            "",
+            "This report is produced from the current run receipts. The PDF and immutable C model remain external inputs.",
+            "",
+            f"- PDF: {self.input_facts.get('spec_path')} ({self.input_facts.get('spec_hash')})",
+            f"- C source root: {self.input_facts.get('source_root')} ({self.input_facts.get('source_hash')})",
+            f"- selected new work: {', '.join(selected) or 'none'}",
+            f"- generator invocations: {self.generator_invocations}",
+            f"- model calls: {self.state.get('model_calls', 0)}",
+            f"- token count: {self.state.get('token_count', 0)}",
+            f"- dependency pair: {json.dumps(self.plan.get('dependency_pair'), sort_keys=True)}",
+            f"- baseline scripts discovered: {len(self.input_facts.get('baseline_scripts', []))}",
+            "",
+            "## Results",
+            "",
+        ]
+        for value in result_lines:
+            lines.append(f"- {value['contract_id']}: {value['status']} ({value['execution_status']}); unit={value['unit_status']}; dependency={value['dependency_status']}; matrix={value['matrix_status']}")
+        lines.extend(["", "## Blockers", ""])
+        blockers = report["blockers"] or ["none"]
+        lines.extend(f"- {value}" for value in blockers)
         (self.root / "reports" / "pipeline-summary.md").parent.mkdir(parents=True, exist_ok=True)
         (self.root / "reports" / "pipeline-summary.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
+        write_json(self.integration / "pipeline-receipt.json", report)
 
     def run_command(self) -> int:
         self.load_inputs()
+        self.materialize_new_contracts()
         self.dependency_graph()
         self.build_plan()
-        self.make_dag()
+        self.write_plan_files()
         self.initialize_state()
-        self.write_plan_files()
-        self.write_state()
-        if self.input_facts.get("errors"):
-            self.write_cache()
-            self.write_summary([])
-            print(json.dumps({"status": "INFRASTRUCTURE_FAILURE", "errors": self.input_facts["errors"]}, ensure_ascii=False))
-            return 1
-        for blocked_item in [entry for entry in self.plan.get("contracts", []) if not entry.get("ready")]:
-            blocked_contract = self.contract_from_item(blocked_item)
-            blocked_artifacts = self.generate_artifacts(blocked_item, blocked_contract)
-            self.update_contract(
-                blocked_item["contract_id"],
-                "DISCOVERED",
-                "BLOCKED",
-                blocked_artifacts.get("artifacts", []),
-                "; ".join(blocked_item.get("blocked_reasons", [])),
-                {"model_calls": 0, "artifact_status": blocked_artifacts.get("status")},
-            )
-        results: list[dict[str, Any]] = []
-        for batch in self.plan.get("parallel_batches", []):
-            batch_items = [next(item for item in self.plan["contracts"] if item["contract_id"] == cid) for cid in batch]
-            with concurrent.futures.ThreadPoolExecutor(max_workers=max(1, len(batch_items))) as executor:
-                futures = [executor.submit(self.run_contract, item) for item in batch_items]
-                for future in futures:
-                    results.append(future.result())
+        if not self.input_facts.get("errors"):
+            for item in self.plan.get("contracts", []):
+                self.run_contract(item)
+        else:
+            for item in self.state.get("contracts", []):
+                if item.get("status") != "BLOCKED":
+                    self.update_state(item["contract_id"], "DISCOVERED", "INFRASTRUCTURE_FAILURE", failure="; ".join(self.input_facts["errors"]))
+        self.state["generator_invocations"] = self.generator_invocations
+        self.state["model_calls"] = sum(int(item.get("model_calls", 0)) for item in self.state.get("contracts", []))
+        self.state["token_count"] = sum(int(item.get("token_count", 0)) for item in self.state.get("contracts", []))
+        self.write_cache_index()
         self.refresh_dag()
-        self.write_cache()
-        self.write_integration_manifests()
-        self.write_summary(results)
-        self.write_plan_files()
+        self.write_integration()
+        self.write_reports()
         self.write_state()
-        failures = [item for item in self.state.get("contracts", []) if item.get("status") in {"INFRASTRUCTURE_FAILURE", "UNPROVED", "UNSUPPORTED"} and item.get("contract_id") in self.plan.get("ready_contracts", [])]
-        print(json.dumps({"status": "PASS" if not failures else "UNPROVED", "results": results, "ready": self.plan.get("ready_contracts", []), "blocked": self.plan.get("blocked_contracts", []), "failures": failures}, ensure_ascii=False))
-        return 0 if not failures else 1
+        successful = any(result.get("status") in ("PROMOTED", "CACHE_REUSED") for result in self.run_results)
+        return 0 if successful else 1
 
     def status_command(self) -> int:
-        state = read_json(self.ci / "state.json", {}) or {}
-        plan = read_json(self.ci / "plan.json", {}) or {}
-        cache = read_json(self.ci / "cache-index.json", {}) or {}
-        print(json.dumps({"state": state, "ready_contracts": plan.get("ready_contracts", []), "blocked_contracts": plan.get("blocked_contracts", []), "cache_entries": len(cache.get("entries", {}))}, ensure_ascii=False))
-        return 0
+        payload = read_json(self.ci / "state.json", {}) or {}
+        print(json.dumps({
+            "selected_contracts": payload.get("selected_contracts", []),
+            "generator_invocations": payload.get("generator_invocations", 0),
+            "model_calls": payload.get("model_calls", 0),
+            "contracts": [
+                {
+                    "contract_id": item.get("contract_id"),
+                    "current_state": item.get("current_state"),
+                    "status": item.get("status"),
+                    "failure_reason": item.get("failure_reason"),
+                }
+                for item in payload.get("contracts", [])
+            ],
+        }, sort_keys=True))
+        return 0 if payload else 1
 
 
-    def unit_verify(self, item: dict[str, Any], contract: dict[str, Any], artifact_result: dict[str, Any]) -> dict[str, Any]:
-        receipt = artifact_result.get("receipt") or {}
-        candidates = receipt.get("candidates", [])
-        if not candidates or receipt.get("status") != "PASS":
-            result = {"status": "UNSUPPORTED", "failure_reason": "no reusable complete verification receipt", "matrix": [], "promoted_candidate": None}
-            write_json(self.artifact_dir(item) / "unit-receipt.json", result)
-            return result
-        passing = []
-        matrix = []
-        for candidate in sorted(candidates, key=lambda value: str(value.get("candidate", ""))):
-            candidate_status = candidate.get("verification_status", candidate.get("status", "UNPROVED"))
-            if candidate_status not in VERIFICATION_STATUSES:
-                candidate_status = "UNPROVED"
-            vectors = int(candidate.get("vectors") or 0)
-            shard_count = min(8, max(1, (vectors + 999_999) // 1_000_000))
-            shards = []
-            for index in range(shard_count):
-                start = (vectors * index) // shard_count
-                end = (vectors * (index + 1)) // shard_count
-                shard_status = candidate_status
-                if candidate_status == "COUNTEREXAMPLE" and index > 0:
-                    shard_status = "SKIPPED_AFTER_FIRST_MISMATCH"
-                shards.append({"shard": index, "range": [start, end], "status": shard_status, "complete_legal_domain": candidate_status == "EXHAUSTIVE_EQUIVALENT"})
-            matrix.append({"function": contract_function(contract).get("name"), "candidate": candidate.get("candidate"), "compile_once": candidate.get("lint", {}).get("status") == "PASS" and candidate.get("build", {}).get("status") == "PASS", "candidate_status": candidate_status, "vectors": vectors, "shards": shards, "smallest_counterexample": candidate.get("smallest_counterexample") or {key: candidate.get(key) for key in ("cpnt", "cpnt_bit_depth", "left_recon", "qlevel", "expected", "actual") if key in candidate}})
-            if candidate_status == "EXHAUSTIVE_EQUIVALENT" and candidate.get("lint", {}).get("status") == "PASS" and candidate.get("build", {}).get("status") == "PASS":
-                passing.append(candidate.get("candidate"))
-        promoted = passing[0] if passing else None
-        repair_packets = []
-        for entry in matrix:
-            if entry["candidate_status"] == "COUNTEREXAMPLE":
-                variant = str(next((c.get("variant") for c in candidates if c.get("candidate") == entry["candidate"]), "arithmetic_counterexample"))
-                category = "width_signedness" if "sign" in variant else "arithmetic_counterexample"
-                if category in ALLOWED_REPAIR_CATEGORIES:
-                    repair_packets.append({"category": category, "candidate": entry["candidate"], "counterexample": entry["smallest_counterexample"], "compact": True})
-        result = {
-            "schema_version": 1,
-            "status": "PASS" if promoted else "UNPROVED",
-            "verification_status": "EXHAUSTIVE_EQUIVALENT" if promoted else "UNPROVED",
-            "contract_id": contract_id(contract),
-            "function": contract_function(contract).get("name"),
-            "execution": "reused_existing_complete_receipt",
-            "compile_each_candidate_once": all(item["compile_once"] for item in matrix),
-            "parallel_shards": True,
-            "stop_after_first_mismatch": True,
-            "matrix": matrix,
-            "promoted_candidate": promoted,
-            "repair_packets": repair_packets,
-            "source_receipt": "verification/verification-receipt.json",
-        }
-        write_json(self.artifact_dir(item) / "unit-receipt.json", result)
-        return result
-
-    def dependency_verify(self, item: dict[str, Any], contract: dict[str, Any]) -> dict[str, Any]:
-        cid = contract_id(contract)
-        dependencies = item.get("dependencies", [])
-        call_sites = item.get("call_sites", [])
-        if not dependencies:
-            result = {"schema_version": 1, "status": "PASS", "contract_id": cid, "dependencies": [], "call_sites": [], "composition": "not_required"}
-            write_json(self.artifact_dir(item) / "dependency-receipt.json", result)
-            return result
-        dependency_states = {entry.get("contract_id"): entry.get("current_state") for entry in self.state.get("contracts", [])}
-        not_ready = [dep for dep in dependencies if dependency_states.get(dep) not in {"DEPENDENCIES_VERIFIED", "SHADOW_PASS", "RTL_RETURN_PASS", "BITSTREAM_PASS", "PROMOTED"}]
-        interfaces = []
-        for dep in dependencies:
-            dep_dir = self.artifact_dir(next(x for x in self.plan["contracts"] if x["contract_id"] == dep))
-            core_dir = self.artifact_dir(item) / "dependencies" / dep
-            core_dir.mkdir(parents=True, exist_ok=True)
-            (core_dir / "A_core.sv").write_text("// Caller-local dependency interface; callee RTL is composed only after its pass.\nmodule A_core_dependency(input logic valid, output logic ready); assign ready = valid; endmodule\n", encoding="utf-8")
-            write_json(core_dir / "B_C.json", {"callee_contract": dep, "source": "immutable C oracle", "artifact_dir": str(dep_dir)})
-            interfaces.append(str((core_dir / "A_core.sv").relative_to(self.root)))
-        result = {
-            "schema_version": 1,
-            "status": "PASS" if not not_ready else "UNPROVED",
-            "contract_id": cid,
-            "dependencies": dependencies,
-            "call_sites": sorted(call_sites, key=lambda x: canonical(x.get("location", {}))),
-            "local_test_binding": "B_C",
-            "composition_binding": "B_RTL" if not not_ready else "WAIT_FOR_DEPENDENCY",
-            "interfaces": interfaces,
-            "failure_reason": "; ".join(f"dependency not passed: {dep}" for dep in not_ready) if not_ready else None,
-        }
-        write_json(self.artifact_dir(item) / "dependency-receipt.json", result)
-        if not not_ready:
-            write_json(self.artifact_dir(item) / "composition-receipt.json", {"status": "PASS", "caller": cid, "dependencies": dependencies, "mode": "A_core+B_RTL", "oracle": "A_C"})
-        return result
-
-    def overlay_bindings(self, contract: dict[str, Any], body: str) -> dict[str, Any] | None:
-        """Return a safe binding for a flattened read-only C state contract.
-
-        The binding is inferred from the C signature and locked interface.  It
-        intentionally declines unsupported signatures rather than guessing a
-        narrowing or inventing a replacement call.
-        """
-        function = contract_function(contract)
-        name = str(function.get("name", ""))
-        signature = re.search(r"\b" + re.escape(name) + r"\s*\(([^)]*)\)", body)
-        if not signature:
-            return None
-        parameters = []
-        for parameter in signature.group(1).split(","):
-            match = re.search(r"([A-Za-z_][A-Za-z0-9_]*)\s*$", parameter.strip())
-            if match:
-                parameters.append(match.group(1))
-        ports = [port for port in self.contract_ports(contract) if port["name"] != "return_value"]
-        fields = contract.get("interface", {}).get("flattened_pointer_dependencies", [])
-        state_fields = [safe_identifier(str(item.get("field", "")).split(".")[-1]) for item in fields]
-        if not parameters or not ports or not state_fields:
-            return None
-        if not any("*" in parameter for parameter in signature.group(1).split(",")):
-            return None
-        state_parameter = next((parameters[index] for index, parameter in enumerate(signature.group(1).split(",")) if "*" in parameter), None)
-        scalar_parameters = [value for value in parameters if value != state_parameter]
-        if not state_parameter or not scalar_parameters:
-            return None
-        port_expressions = []
-        for port in ports:
-            if port["name"] in scalar_parameters:
-                port_expressions.append(port["name"])
-            elif port["name"] in state_fields:
-                port_expressions.append(f"state->{port['name']}[cpnt]")
-            else:
-                return None
-        original_arguments = []
-        for parameter in parameters:
-            original_arguments.append("state" if parameter == state_parameter else parameter)
-        return {
-            "function_name": name,
-            "safe_contract_id": safe_identifier(contract_id(contract)),
-            "state_parameter": state_parameter,
-            "scalar_parameters": scalar_parameters,
-            "original_arguments": original_arguments,
-            "rtl_ports": [port["name"] for port in ports],
-            "rtl_expressions": port_expressions,
-            "module": None,
-        }
-
-    def run_process(self, command: list[str], cwd: pathlib.Path, timeout: int = 600, env: dict[str, str] | None = None) -> dict[str, Any]:
-        try:
-            completed = subprocess.run(command, cwd=cwd, env=env, stdout=subprocess.PIPE, stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace", timeout=timeout, check=False)
-            return {"status": "PASS" if completed.returncode == 0 else "FAIL", "returncode": completed.returncode, "command": command, "output_tail": (completed.stdout or "")[-5000:]}
-        except subprocess.TimeoutExpired as exc:
-            return {"status": "TIMEOUT", "returncode": 124, "command": command, "output_tail": ((exc.stdout or "") + "\n[timeout]\n")[-5000:]}
-        except OSError as exc:
-            return {"status": "INFRASTRUCTURE_FAILURE", "returncode": 127, "command": command, "output_tail": str(exc)}
-
-    def patch_overlay_source(self, contract: dict[str, Any], model_root: pathlib.Path, binding: dict[str, Any], overlay_dir: pathlib.Path) -> tuple[pathlib.Path, list[dict[str, Any]]]:
-        source_path, body = source_body(contract, pathlib.Path(str(self.input_facts["source_dir"])))
-        relative = source_path.relative_to(pathlib.Path(str(self.input_facts["source_root"])))
-        target = model_root / relative
-        lines = target.read_text(encoding="utf-8", errors="replace").splitlines()
-        function_name = binding["function_name"]
-        original_name = "dsc_cicd_original_" + binding["safe_contract_id"]
-        dispatcher_name = "dsc_cicd_dispatch_" + binding["safe_contract_id"]
-        token = re.compile(r"\b" + re.escape(function_name) + r"\s*(?=\()")
-        definition_line = int(contract_function(contract).get("source_span", {}).get("start_line", 1)) - 1
-        if definition_line < 0 or definition_line >= len(lines) or not token.search(lines[definition_line]):
-            raise RuntimeError("contract definition line no longer matches source")
-        lines[definition_line] = token.sub(original_name, lines[definition_line], count=1)
-        callgraph = read_json(self.root / "facts" / "callgraph.json", {}) or {}
-        call_sites = []
-        seen_lines: set[int] = set()
-        for edge in callgraph.get("edges", []):
-            if edge.get("callee_usr") != contract_function(contract).get("clang_usr"):
-                continue
-            line_number = int(edge.get("location", {}).get("line", 0) or 0)
-            if line_number <= 0 or line_number - 1 >= len(lines) or line_number in seen_lines:
-                continue
-            if token.search(lines[line_number - 1]):
-                lines[line_number - 1] = token.sub(dispatcher_name, lines[line_number - 1], count=1)
-                seen_lines.add(line_number)
-                call_sites.append({"caller": edge.get("caller_name"), "caller_usr": edge.get("caller_usr"), "callee": function_name, "location": edge.get("location", {})})
-        target.write_text("#include \"dsc_cicd_overlay.h\"\n" + "\n".join(lines) + "\n", encoding="utf-8")
-        write_json(overlay_dir / "call-sites.json", {"contract_id": contract_id(contract), "call_sites": sorted(call_sites, key=lambda x: x["location"].get("line", 0))})
-        return target, call_sites
-
-    def write_overlay_sources(self, contract: dict[str, Any], binding: dict[str, Any], overlay_dir: pathlib.Path, candidate: pathlib.Path, body: str) -> tuple[pathlib.Path, pathlib.Path, pathlib.Path, str]:
-        cid = binding["safe_contract_id"]
-        original_name = "dsc_cicd_original_" + cid
-        dispatcher_name = "dsc_cicd_dispatch_" + cid
-        rtl_name = "dsc_cicd_rtl_" + cid
-        module_match = re.search(r"\bmodule\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(", candidate.read_text(encoding="utf-8"))
-        if not module_match:
-            raise RuntimeError("RTL candidate has no module declaration")
-        module = module_match.group(1)
-        binding["module"] = module
-        module_ports = set(re.findall(r"\b(?:input|output)\s+logic(?:\s*\[[^]]+\])?\s+([A-Za-z_][A-Za-z0-9_]*)", candidate.read_text(encoding="utf-8")))
-        module_port_map = {}
-        for port in binding["rtl_ports"]:
-            options = (port, snake_case(port))
-            actual_port = next((option for option in options if option in module_ports), None)
-            if not actual_port:
-                raise RuntimeError(f"RTL interface has no port for contract field: {port}")
-            module_port_map[port] = actual_port
-        binding["rtl_module_ports"] = module_port_map
-        header = overlay_dir / "dsc_cicd_overlay.h"
-        c_source = overlay_dir / "dsc_cicd_overlay.c"
-        bridge = overlay_dir / "rtl_bridge.cpp"
-        main = overlay_dir / "integration_main.cpp"
-        header.write_text(textwrap.dedent(f"""\
-            #ifndef DSC_CICD_OVERLAY_H
-            #define DSC_CICD_OVERLAY_H
-            #include \"dsc_codec.h\"
-            #ifdef __cplusplus
-            extern \"C\" {{
-            #endif
-            enum dsc_cicd_mode {{ DSC_C_ONLY = 0, DSC_SHADOW = 1, DSC_RTL_RETURN = 2 }};
-            void dsc_cicd_set_mode_{cid}(enum dsc_cicd_mode mode);
-            unsigned long dsc_cicd_mismatch_count_{cid}(void);
-            int {dispatcher_name}(dsc_state_t *state, {', '.join('int ' + parameter for parameter in binding['scalar_parameters'])});
-            int {rtl_name}({', '.join('int ' + port for port in binding['rtl_ports'])});
-            #ifdef __cplusplus
-            }}
-            #endif
-            #endif
-            """), encoding="utf-8")
-        c_source.write_text(textwrap.dedent(f"""\
-            #include <stdio.h>
-            #include \"dsc_cicd_overlay.h\"
-            extern int {original_name}({', '.join(['dsc_state_t *state'] + ['int ' + parameter for parameter in binding['scalar_parameters']])});
-            static enum dsc_cicd_mode mode_{cid} = DSC_C_ONLY;
-            static unsigned long mismatches_{cid};
-            void dsc_cicd_set_mode_{cid}(enum dsc_cicd_mode mode) {{ mode_{cid} = mode; }}
-            unsigned long dsc_cicd_mismatch_count_{cid}(void) {{ return mismatches_{cid}; }}
-            int {dispatcher_name}(dsc_state_t *state, {', '.join('int ' + parameter for parameter in binding['scalar_parameters'])}) {{
-                int c_value = {original_name}({', '.join(binding['original_arguments'])});
-                if (mode_{cid} == DSC_C_ONLY) return c_value;
-                int rtl_value = {rtl_name}({', '.join(binding['rtl_expressions'])});
-                if (c_value != rtl_value) ++mismatches_{cid};
-                return mode_{cid} == DSC_RTL_RETURN ? rtl_value : c_value;
-            }}
-            """), encoding="utf-8")
-        bridge.write_text(textwrap.dedent(f"""\
-            #include <cstdint>
-            #include <verilated.h>
-            #include \"V{module}.h\"
-            extern \"C\" int {rtl_name}({', '.join('int ' + port for port in binding['rtl_ports'])}) {{
-                static VerilatedContext context;
-                static V{module} dut{{&context}};
-                {''.join(f'dut.{binding["rtl_module_ports"][port]} = static_cast<std::uint64_t>({port});\n    ' for port in binding['rtl_ports'])}dut.eval();
-                return static_cast<int>(dut.return_value);
-            }}
-            """), encoding="utf-8")
-        main.write_text(textwrap.dedent(f"""\
-            #include <cstdlib>
-            #include <cstdio>
-            #include \"dsc_cicd_overlay.h\"
-            extern \"C\" int dsc_cicd_original_main(int, char**);
-            int main(int argc, char** argv) {{
-                const char* value = std::getenv("DSC_CICD_MODE");
-                int mode = value ? std::atoi(value) : 0;
-                dsc_cicd_set_mode_{cid}(static_cast<dsc_cicd_mode>(mode));
-                int result = dsc_cicd_original_main(argc, argv);
-                unsigned long mismatches = dsc_cicd_mismatch_count_{cid}();
-                if (mismatches) std::fprintf(stderr, "C/RTL mismatches: %lu\\n", mismatches);
-                return mismatches ? 86 : result;
-            }}
-            """), encoding="utf-8")
-        return header, bridge, main, module
-
-    def run_full_overlay(self, item: dict[str, Any], contract: dict[str, Any], artifact_result: dict[str, Any], unit_result: dict[str, Any]) -> dict[str, Any]:
-        cid = contract_id(contract)
-        integration_dir = self.integration / "generated-overlay" / cid
-        integration_dir.mkdir(parents=True, exist_ok=True)
-        if unit_result.get("promoted_candidate") is None:
-            result = {"status": "UNPROVED", "contract_id": cid, "failure_reason": "unit verification did not promote a candidate"}
-            write_json(self.artifact_dir(item) / "shadow-receipt.json", result)
-            write_json(self.artifact_dir(item) / "rtl-return-receipt.json", result)
-            return result
-        candidate = artifact_result.get("artifact_dir") and pathlib.Path(str(artifact_result["artifact_dir"])) / "rtl" / (str(unit_result["promoted_candidate"]) + ".sv")
-        if not candidate or not candidate.is_file():
-            # Candidate receipts use candidate_XX while the artifact copy has
-            # the same stable basename.
-            candidate = self.artifact_dir(item) / "rtl" / f"{unit_result['promoted_candidate']}.sv"
-        source_dir = pathlib.Path(str(self.input_facts["source_dir"]))
-        try:
-            source_path, body = source_body(contract, source_dir)
-            binding = self.overlay_bindings(contract, body)
-        except (OSError, ValueError):
-            binding = None
-            body = ""
-        if binding is None or not candidate.is_file():
-            result = {"status": "UNSUPPORTED", "contract_id": cid, "failure_reason": "C overlay binding or promoted RTL candidate is unsupported", "modes": []}
-            write_json(self.artifact_dir(item) / "shadow-receipt.json", result)
-            write_json(self.artifact_dir(item) / "rtl-return-receipt.json", result)
-            return result
-        overlay_receipt: dict[str, Any] = {"schema_version": 1, "contract_id": cid, "function": contract_function(contract).get("name"), "mode_order": ["C_ONLY", "SHADOW", "RTL_RETURN"], "commands": [], "modes": [], "status": "INFRASTRUCTURE_FAILURE"}
-        tmp_parent = self.root / "tmp"
-        tmp_parent.mkdir(parents=True, exist_ok=True)
-        overlay_work_root: pathlib.Path | None = None
-        try:
-            with tempfile.TemporaryDirectory(prefix="cicd-overlay-", dir=tmp_parent) as temp_name:
-                work = pathlib.Path(temp_name)
-                overlay_work_root = work
-                model_root = work / "model"
-                shutil.copytree(pathlib.Path(str(self.input_facts["source_root"])), model_root, symlinks=True, ignore=shutil.ignore_patterns(".git", "build", "target", "out", "operator_bittrue", "dsc-rs"))
-                patched_source, call_sites = self.patch_overlay_source(contract, model_root, binding, integration_dir)
-                shutil.copy2(integration_dir / "call-sites.json", work / "call-sites.json")
-                header, bridge, main, module = self.write_overlay_sources(contract, binding, integration_dir, candidate, body)
-                shutil.copy2(header, model_root / "source" / header.name)
-                shutil.copy2(integration_dir / "dsc_cicd_overlay.c", model_root / "source" / "dsc_cicd_overlay.c")
-                clang = str(self.input_facts["tools"]["clang"])
-                verilator = str(self.input_facts["tools"]["verilator"])
-                objects: list[pathlib.Path] = []
-                source_copy = model_root / "source"
-                object_dir = work / "objects"
-                object_dir.mkdir()
-                for source_file in sorted(source_copy.glob("*.c")):
-                    object = object_dir / (source_file.stem + ".o")
-                    command = [clang, "-std=gnu99", "-O3", "-D_FILE_OFFSET_BITS=64", "-I", str(source_copy), "-c", str(source_file), "-o", str(object)]
-                    if source_file.name == "codec_main.c":
-                        command.insert(2, "-Dmain=dsc_cicd_original_main")
-                    result = self.run_process(command, work)
-                    overlay_receipt["commands"].append({"purpose": "compile-overlay-c", **result})
-                    if result["status"] != "PASS":
-                        raise RuntimeError(f"overlay C compile failed: {source_file.name}")
-                    objects.append(object)
-                rtl_dir = work / "verilator"
-                build_command = [verilator, "--cc", "--exe", "--build", "-j", "1", "--top-module", module, "-Wall", "--Wno-fatal", "-Wno-DECLFILENAME", "-Wno-UNUSEDSIGNAL", "--Mdir", str(rtl_dir), str(candidate), str(main), str(bridge), *map(str, objects), "--CFLAGS", f"-I{source_copy}", "--LDFLAGS", "-lm"]
-                build_result = self.run_process(build_command, work, timeout=900)
-                overlay_receipt["commands"].append({"purpose": "build-overlay-verilator-c-model", **build_result})
-                binary = rtl_dir / f"V{module}"
-                if build_result["status"] != "PASS" or not binary.is_file():
-                    raise RuntimeError("overlay Verilator link failed")
-                smoke_script = model_root / "bittrue_smoke" / "generate_simple_ppm.py"
-                generated = self.run_process([sys.executable, str(smoke_script)], model_root)
-                overlay_receipt["commands"].append({"purpose": "generate-bitstream-input", **generated})
-                if generated["status"] != "PASS":
-                    raise RuntimeError("bitstream input generation failed")
-                expected_hash = str(self.input_facts.get("baseline_hash"))
-                expected_size = int(self.input_facts.get("baseline_artifact", {}).get("size_bytes") or 0)
-                (model_root / "bittrue_smoke" / "out").mkdir(parents=True, exist_ok=True)
-                for mode_name, mode_value in (("C_ONLY", "0"), ("SHADOW", "1"), ("RTL_RETURN", "2")):
-                    output_dir = model_root / "bittrue_smoke" / "out"
-                    for output in output_dir.glob("*"):
-                        if output.is_file():
-                            output.unlink()
-                    env = os.environ.copy()
-                    env["DSC_CICD_MODE"] = mode_value
-                    command = [str(binary), "-F", "bittrue_smoke/simple_8bpc_rgb.cfg"]
-                    execution = self.run_process(command, model_root, timeout=900, env=env)
-                    bitstream = output_dir / "simple_192x108.dsc"
-                    actual_hash = file_hash(bitstream) if bitstream.is_file() else None
-                    actual_size = bitstream.stat().st_size if bitstream.is_file() else None
-                    byte_equal = actual_size == expected_size and actual_hash == expected_hash
-                    mode_status = "PASS" if execution["status"] == "PASS" and byte_equal else "FAIL"
-                    mode_receipt = {"mode": mode_name, "status": mode_status, "returncode": execution.get("returncode"), "size_bytes": actual_size, "expected_size_bytes": expected_size, "byte_for_byte_equal": byte_equal, "sha256": actual_hash, "expected_sha256": expected_hash, "sha256_equal": actual_hash == expected_hash, "command": command, "output_tail": execution.get("output_tail", "")}
-                    overlay_receipt["modes"].append(mode_receipt)
-                    write_json(integration_dir / f"{mode_name.lower().replace('_', '-')}.json", scrub_path(mode_receipt, work))
-                    if mode_status != "PASS":
-                        raise RuntimeError(f"overlay {mode_name} did not reproduce the C baseline")
-                overlay_receipt["status"] = "PASS"
-                overlay_receipt["call_sites"] = call_sites
-                overlay_receipt["candidate"] = str(candidate.relative_to(self.root))
-                overlay_receipt["replacement"] = {"C_ONLY": "return C", "SHADOW": "compare C/RTL and return C", "RTL_RETURN": "compare C/RTL and return RTL"}
-        except (OSError, RuntimeError, subprocess.TimeoutExpired) as exc:
-            overlay_receipt["failure_reason"] = str(exc)
-        overlay_receipt = scrub_path(scrub_path(overlay_receipt, overlay_work_root), self.root)
-        write_json(integration_dir / "overlay-receipt.json", overlay_receipt)
-        shadow = {"schema_version": 1, "contract_id": cid, "status": "PASS" if overlay_receipt["status"] == "PASS" and next((x for x in overlay_receipt["modes"] if x["mode"] == "SHADOW"), {}).get("status") == "PASS" else "UNPROVED", "source": str((integration_dir / "overlay-receipt.json").relative_to(self.root))}
-        rtl_return = {"schema_version": 1, "contract_id": cid, "status": "PASS" if overlay_receipt["status"] == "PASS" and next((x for x in overlay_receipt["modes"] if x["mode"] == "RTL_RETURN"), {}).get("status") == "PASS" else "UNPROVED", "source": str((integration_dir / "overlay-receipt.json").relative_to(self.root))}
-        write_json(self.artifact_dir(item) / "shadow-receipt.json", shadow)
-        write_json(self.artifact_dir(item) / "rtl-return-receipt.json", rtl_return)
-        write_json(self.artifact_dir(item) / "bitstream-receipt.json", {"schema_version": 1, "contract_id": cid, "status": "PASS" if overlay_receipt.get("status") == "PASS" else "UNPROVED", "modes": overlay_receipt.get("modes", []), "baseline_sha256": self.input_facts.get("baseline_hash")})
-        return {"status": "PASS" if shadow["status"] == "PASS" and rtl_return["status"] == "PASS" else overlay_receipt.get("status", "UNPROVED"), "shadow": shadow, "rtl_return": rtl_return, "overlay": overlay_receipt}
-
-
-def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Generic dependency-aware C-to-RTL CI/CD agent")
-    parser.add_argument("--root", type=pathlib.Path, default=pathlib.Path(__file__).resolve().parent.parent)
+def parse_args() -> argparse.Namespace:
+    parser = argparse.ArgumentParser()
     parser.add_argument("command", choices=("plan", "run", "resume", "status"))
-    return parser.parse_args(argv)
+    parser.add_argument("--mode", choices=("plan", "run", "resume", "status"), default="run")
+    return parser.parse_args()
 
 
-def main(argv: list[str] | None = None) -> int:
-    args = parse_args(argv)
-    agent = Agent(args.root, args.command)
+def main() -> int:
+    args = parse_args()
+    agent = Agent(pathlib.Path(__file__).resolve().parents[1], args.command)
     if args.command == "plan":
         return agent.plan_command()
-    if args.command in {"run", "resume"}:
+    if args.command in ("run", "resume"):
         return agent.run_command()
     return agent.status_command()
 

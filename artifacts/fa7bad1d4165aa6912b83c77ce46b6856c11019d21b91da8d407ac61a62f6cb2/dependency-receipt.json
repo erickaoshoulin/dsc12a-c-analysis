@@ -1,0 +1,152 @@
+{
+  "call_sites_from_callgraph": [
+    {
+      "callee_contract": "quantizeresidual",
+      "callee_function": "QuantizeResidual",
+      "callee_usr": "c:@F@QuantizeResidual",
+      "caller_contract": null,
+      "caller_function": "PredictionLoop",
+      "caller_usr": "c:@F@PredictionLoop",
+      "location": {
+        "column": 12,
+        "file": "dsc_codec.c",
+        "line": 2419
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "quantizeresidual",
+      "callee_function": "QuantizeResidual",
+      "callee_usr": "c:@F@QuantizeResidual",
+      "caller_contract": null,
+      "caller_function": "PredictionLoop",
+      "caller_usr": "c:@F@PredictionLoop",
+      "location": {
+        "column": 130,
+        "file": "dsc_codec.c",
+        "line": 2424
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "quantizeresidual",
+      "callee_function": "QuantizeResidual",
+      "callee_usr": "c:@F@QuantizeResidual",
+      "caller_contract": null,
+      "caller_function": "PredictionLoop",
+      "caller_usr": "c:@F@PredictionLoop",
+      "location": {
+        "column": 60,
+        "file": "dsc_codec.c",
+        "line": 2431
+      },
+      "source": "facts/callgraph.json"
+    }
+  ],
+  "checks": {
+    "callee_RTL_against_callee_C": true,
+    "caller_core_plus_callee_RTL": true,
+    "caller_core_with_callee_C": true,
+    "direct_call_sites_discovered": true,
+    "overlay_rewritten_call_sites": true
+  },
+  "counterexample": {
+    "actual": "-65534",
+    "expected": "-65535",
+    "index": 0,
+    "inputs": [
+      -65535,
+      0
+    ],
+    "shard_id": 0
+  },
+  "dependency_ports": [
+    {
+      "arguments": [
+        "err_raw",
+        "qlevel"
+      ],
+      "callee_usr": "c:@F@QuantizeResidual",
+      "caller_function": "PredictionLoop",
+      "location": "<overlay-work>/source/dsc_codec.c:2419:12",
+      "transport": "direct argument/result ports"
+    },
+    {
+      "arguments": [
+        "err_raw",
+        "qlevel"
+      ],
+      "callee_usr": "c:@F@QuantizeResidual",
+      "caller_function": "PredictionLoop",
+      "location": "<overlay-work>/source/dsc_codec.c:2424:130",
+      "transport": "direct argument/result ports"
+    },
+    {
+      "arguments": [
+        "err_raw",
+        "qlevel"
+      ],
+      "callee_usr": "c:@F@QuantizeResidual",
+      "caller_function": "PredictionLoop",
+      "location": "<overlay-work>/source/dsc_codec.c:2431:60",
+      "transport": "direct argument/result ports"
+    }
+  ],
+  "execution_status": "EXECUTED_NOW",
+  "failure_reason": null,
+  "pair": {
+    "call_sites": [
+      {
+        "callee_contract": "quantizeresidual",
+        "callee_function": "QuantizeResidual",
+        "callee_usr": "c:@F@QuantizeResidual",
+        "caller_contract": null,
+        "caller_function": "PredictionLoop",
+        "caller_usr": "c:@F@PredictionLoop",
+        "location": {
+          "column": 12,
+          "file": "dsc_codec.c",
+          "line": 2419
+        },
+        "source": "facts/callgraph.json"
+      },
+      {
+        "callee_contract": "quantizeresidual",
+        "callee_function": "QuantizeResidual",
+        "callee_usr": "c:@F@QuantizeResidual",
+        "caller_contract": null,
+        "caller_function": "PredictionLoop",
+        "caller_usr": "c:@F@PredictionLoop",
+        "location": {
+          "column": 130,
+          "file": "dsc_codec.c",
+          "line": 2424
+        },
+        "source": "facts/callgraph.json"
+      },
+      {
+        "callee_contract": "quantizeresidual",
+        "callee_function": "QuantizeResidual",
+        "callee_usr": "c:@F@QuantizeResidual",
+        "caller_contract": null,
+        "caller_function": "PredictionLoop",
+        "caller_usr": "c:@F@PredictionLoop",
+        "location": {
+          "column": 60,
+          "file": "dsc_codec.c",
+          "line": 2431
+        },
+        "source": "facts/callgraph.json"
+      }
+    ],
+    "callee_contract": "quantizeresidual",
+    "callee_function": "QuantizeResidual",
+    "callee_usr": "c:@F@QuantizeResidual",
+    "caller_contract": null,
+    "caller_function": "PredictionLoop",
+    "caller_usr": "c:@F@PredictionLoop",
+    "selection_basis": "smallest acyclic direct call site from facts/callgraph.json"
+  },
+  "schema_version": 2,
+  "status": "PASS"
+}
