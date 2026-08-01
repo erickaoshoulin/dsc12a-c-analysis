@@ -1,0 +1,161 @@
+{
+  "contract_id": "mapqptoqlevel",
+  "interface": {
+    "flattened_pointer_dependencies": [
+      {
+        "access": "READ_ONLY",
+        "c_type": "int",
+        "field": "dsc_version_minor",
+        "legal_domain": {
+          "kind": "unresolved",
+          "range": null,
+          "values": []
+        },
+        "logical_width": 32,
+        "record": "dsc_cfg_t",
+        "role": "RUNTIME_INPUT",
+        "unresolved": true,
+        "width_source": "C_TYPE_FALLBACK"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int",
+        "field": "native_420",
+        "legal_domain": {
+          "kind": "unresolved",
+          "range": null,
+          "values": []
+        },
+        "logical_width": 32,
+        "record": "dsc_cfg_t",
+        "role": "RUNTIME_INPUT",
+        "unresolved": true,
+        "width_source": "C_TYPE_FALLBACK"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "conditional": "selected component bit depth; leftRecon range is conditional on this value",
+        "field": "cpntBitDepth",
+        "legal_domain": {
+          "basis": "PPS bits_per_component plus one-bit RGB chroma extension",
+          "kind": "set",
+          "range": [
+            8,
+            16
+          ],
+          "values": [
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "record": "dsc_state_t",
+        "role": "CONFIG_STATIC",
+        "unresolved": false,
+        "width_source": "NORMATIVE_COMPONENT_BIT_DEPTH_DOMAIN"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int *",
+        "field": "quantTableChroma",
+        "legal_domain": {
+          "basis": "Table 6-2 masterQp rows; table values remain a dependency obligation",
+          "kind": "table",
+          "range": [
+            0,
+            31
+          ],
+          "values": []
+        },
+        "logical_width": 5,
+        "record": "dsc_state_t",
+        "role": "CONSTANT_TABLE",
+        "unresolved": true,
+        "width_source": "NORMATIVE_TABLE_DOMAIN"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int *",
+        "field": "quantTableLuma",
+        "legal_domain": {
+          "basis": "Table 6-2 masterQp rows; table values remain a dependency obligation",
+          "kind": "table",
+          "range": [
+            0,
+            31
+          ],
+          "values": []
+        },
+        "logical_width": 5,
+        "record": "dsc_state_t",
+        "role": "CONSTANT_TABLE",
+        "unresolved": true,
+        "width_source": "NORMATIVE_TABLE_DOMAIN"
+      }
+    ],
+    "input_bit_count": 113,
+    "inputs": [
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "kind": "unresolved",
+          "range": null,
+          "values": []
+        },
+        "logical_width": 32,
+        "name": "qp",
+        "pointer": false,
+        "role": "RUNTIME_INPUT",
+        "unresolved": true,
+        "width_source": "C_TYPE_FALLBACK"
+      },
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "dsc_state_t component arrays have extent 4",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ],
+          "values": []
+        },
+        "logical_width": 2,
+        "name": "cpnt",
+        "pointer": false,
+        "role": "RUNTIME_INPUT",
+        "unresolved": false,
+        "width_source": "C_ARRAY_EXTENT"
+      }
+    ],
+    "output": {
+      "c_type": "int",
+      "legal_range": null,
+      "logical_width": 32,
+      "name": "return_value",
+      "signed": true,
+      "unresolved": true,
+      "width_source": "C_TYPE_FALLBACK"
+    }
+  },
+  "verification_plan": {
+    "legal_domain": "cpnt in [0,3], cpntBitDepth in {8..16}, qlevel <= table-derived maximum for the selected component depth, leftRecon in [0,(1<<cpntBitDepth)-1]",
+    "mutations": [
+      "signedness",
+      "boundary",
+      "array-index",
+      "off-by-one"
+    ],
+    "oracle": "call the immutable C function through a generated wrapper with flattened state dependencies",
+    "rtl": "at most four generated combinational SystemVerilog candidates",
+    "simulator": "Verilator lint/compile plus exhaustive legal-domain comparison"
+  }
+}

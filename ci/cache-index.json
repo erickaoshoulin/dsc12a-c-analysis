@@ -1,0 +1,152 @@
+{
+  "entries": {
+    "32f901800b6434de74d6872165b34b26ef93ad9fa7b365f5f72465f3a321dfc1": {
+      "artifact_dir": "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa",
+      "artifacts": [
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/artifact-manifest.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/generation.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/harness/harness.cpp",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/input-packing.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/interface.sv",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/legal-domain.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/locked-contract.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/mutations.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/oracle.c",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/receipt-schema.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/rtl/candidate_01.sv",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/shadow_replacement_wrapper.c",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/vector_generator.py"
+      ],
+      "cache_key": "32f901800b6434de74d6872165b34b26ef93ad9fa7b365f5f72465f3a321dfc1",
+      "contract_id": "mapqptoqlevel",
+      "hashes": {
+        "agent": "e6d5ac5594e4754e855f2ee0a77d6b5f20d32f85c925779e2f7fd3d0b779438c",
+        "contract": "ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa",
+        "dependency": "154d4583c435a4851e5109dca8f696bc2c21f9ffe5a02d4029a0aa41e3df1889",
+        "model": "deterministic-no-model",
+        "prompt": "4472eac47e0093cedf287e593cc7343fd0580c38e293ccffe84abf6c3c00e763",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "a3d226b0da34ef8a84294085ab5755dccea729e2603c4dad44eaf0bd261539a0"
+      },
+      "model_calls": 0,
+      "source_receipts": [
+        "ci/state.json",
+        "ci/dag.json",
+        "artifacts/<contract-hash>/artifact-manifest.json"
+      ],
+      "state": "DISCOVERED",
+      "status": "BLOCKED",
+      "valid": false
+    },
+    "562c20a0081ca7ef05c249282e14cbdaf5a1550addbf3b527f2d096b361ef157": {
+      "artifact_dir": "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697",
+      "artifacts": [
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/artifact-manifest.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/generation.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/harness/harness.cpp",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/input-packing.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/interface.sv",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/legal-domain.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/locked-contract.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/mutations.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/oracle.c",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/receipt-schema.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/rtl/candidate_01.sv",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/shadow_replacement_wrapper.c",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/vector_generator.py"
+      ],
+      "cache_key": "562c20a0081ca7ef05c249282e14cbdaf5a1550addbf3b527f2d096b361ef157",
+      "contract_id": "isflatnessinfosent",
+      "hashes": {
+        "agent": "e6d5ac5594e4754e855f2ee0a77d6b5f20d32f85c925779e2f7fd3d0b779438c",
+        "contract": "15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697",
+        "dependency": "154d4583c435a4851e5109dca8f696bc2c21f9ffe5a02d4029a0aa41e3df1889",
+        "model": "deterministic-no-model",
+        "prompt": "4472eac47e0093cedf287e593cc7343fd0580c38e293ccffe84abf6c3c00e763",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "a3d226b0da34ef8a84294085ab5755dccea729e2603c4dad44eaf0bd261539a0"
+      },
+      "model_calls": 0,
+      "source_receipts": [
+        "ci/state.json",
+        "ci/dag.json",
+        "artifacts/<contract-hash>/artifact-manifest.json"
+      ],
+      "state": "DISCOVERED",
+      "status": "BLOCKED",
+      "valid": false
+    },
+    "97082d587c6dbea378728889c0c2397fd26f89f04b0570a1fb1bc947b199679d": {
+      "artifact_dir": "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda",
+      "artifacts": [
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/artifact-manifest.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/bitstream-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/dependency-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/generation.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_01.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_02.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_03.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_04.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/input-packing.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/interface.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/legal-domain.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/locked-contract.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/mutations.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/oracle.c",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/receipt-schema.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl-return-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_01.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_02.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_03.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_04.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/shadow-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/shadow_replacement_wrapper.c",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/unit-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/vector_generator.py",
+        "integration/generated-overlay/findmidpoint/c-only.json",
+        "integration/generated-overlay/findmidpoint/call-sites.json",
+        "integration/generated-overlay/findmidpoint/dsc_cicd_overlay.c",
+        "integration/generated-overlay/findmidpoint/dsc_cicd_overlay.h",
+        "integration/generated-overlay/findmidpoint/integration_main.cpp",
+        "integration/generated-overlay/findmidpoint/overlay-receipt.json",
+        "integration/generated-overlay/findmidpoint/rtl-return.json",
+        "integration/generated-overlay/findmidpoint/rtl_bridge.cpp",
+        "integration/generated-overlay/findmidpoint/shadow.json"
+      ],
+      "cache_key": "97082d587c6dbea378728889c0c2397fd26f89f04b0570a1fb1bc947b199679d",
+      "contract_id": "findmidpoint",
+      "hashes": {
+        "agent": "e6d5ac5594e4754e855f2ee0a77d6b5f20d32f85c925779e2f7fd3d0b779438c",
+        "contract": "7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda",
+        "dependency": "154d4583c435a4851e5109dca8f696bc2c21f9ffe5a02d4029a0aa41e3df1889",
+        "model": "deterministic-no-model",
+        "prompt": "4472eac47e0093cedf287e593cc7343fd0580c38e293ccffe84abf6c3c00e763",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "a3d226b0da34ef8a84294085ab5755dccea729e2603c4dad44eaf0bd261539a0"
+      },
+      "model_calls": 0,
+      "source_receipts": [
+        "ci/state.json",
+        "ci/dag.json",
+        "artifacts/<contract-hash>/artifact-manifest.json"
+      ],
+      "state": "PROMOTED",
+      "status": "PASS",
+      "valid": true
+    }
+  },
+  "key_fields": [
+    "agent",
+    "source",
+    "spec",
+    "contract",
+    "dependency",
+    "prompt",
+    "model",
+    "tools"
+  ],
+  "schema_version": 1
+}

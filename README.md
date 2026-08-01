@@ -130,6 +130,39 @@ All generated JSON includes provenance and semantic hashes. Build/tool/path,
 compiler, timeout, or source-integrity failures are
 `INFRASTRUCTURE_FAILURE`; no regeneration or LLM fallback is attempted.
 
+## Dependency-aware CI/CD agent
+
+The generic migration agent consumes the locked contracts, coverage facts,
+traceability, call graph, and existing verification receipts. It does not take
+function names as configuration. Run it with:
+
+```sh
+python3 tools/cicd_agent.py plan
+python3 tools/cicd_agent.py run
+python3 tools/cicd_agent.py resume
+python3 tools/cicd_agent.py status
+```
+
+`plan` verifies the local PDF/C source, tool versions, and immutable C
+bitstream baseline; hashes source/spec/contract/dependency/prompt/model/tool
+inputs; detects cycles; and schedules every locked contract whose semantics
+are resolved. Independent ready contracts use stable parallel batches.
+`resume` reuses a valid cache entry with zero model calls. Stale hashes are
+visible in `ci/plan.json` and cannot silently reuse old artifacts.
+
+The state machine is recorded in `ci/dag.json` and `ci/state.json`. Each
+contract hash gets an artifact bundle containing its frozen interface, C
+oracle adapter, harness, input packing, legal-domain plan, mutations, overlay
+wrapper, and receipt schema. The integration overlay supports `C_ONLY`,
+`SHADOW`, and `RTL_RETURN`; the latter two compare C and RTL while the full
+DSC smoke stream is checked byte-for-byte and by SHA-256. Rollback is a
+manifest change back to `C_ONLY`.
+
+Generated CI outputs are under `ci/`, `artifacts/<contract-hash>/`,
+`integration/generated-overlay/`, `integration/replacement-plan.yaml`,
+`integration/bitstream-receipts/`, and
+`reports/pipeline-summary.md`. The upstream C model and PDF are never edited.
+
 ## Environment
 
 Set `DSC_ANALYSIS_TIMEOUT_SECONDS` for compiler/Clang/Frama-C commands,

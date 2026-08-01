@@ -1,0 +1,49 @@
+{
+  "cache_reused": true,
+  "contract_hash": "7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda",
+  "contract_id": "findmidpoint",
+  "dependency_hash": "154d4583c435a4851e5109dca8f696bc2c21f9ffe5a02d4029a0aa41e3df1889",
+  "generation": {
+    "allowed_model_output": "combinational RTL body only",
+    "candidate_limit": 4,
+    "context": {
+      "c_body": "int FindMidpoint(dsc_state_t *dsc_state, int cpnt, int qlevel)\n{\n\tint range;\n\n\t// *MODEL NOTE* MN_MIDPOINT_PRED\n\trange = 1<<dsc_state->cpntBitDepth[cpnt];\n\n\treturn (range/2 + (dsc_state->leftRecon[cpnt]%(1<<qlevel)));\n}",
+      "c_body_sha256": "f77f26c7cda5744cb7ca68eaa76b559defebe33173ed0a18d53d4cd52f345349",
+      "c_function": "FindMidpoint",
+      "c_source_span": {
+        "end_column": 1,
+        "end_line": 914,
+        "start_column": 5,
+        "start_line": 906
+      },
+      "call_count": 1,
+      "combinational_only": true,
+      "exact_spec_anchors": [
+        "pdf:model-note:MN_MIDPOINT_PRED:p080",
+        "pdf:section:6.4.3"
+      ],
+      "generator": "Codex",
+      "input_contract": "contracts/proposed/findmidpoint.yaml",
+      "output_limit": 4
+    },
+    "contract_id": "findmidpoint",
+    "input_context": {
+      "c_body": true,
+      "frozen_interface": true,
+      "locked_contract": true,
+      "short_exact_spec_anchors": [
+        "pdf:model-note:MN_MIDPOINT_PRED:p080",
+        "pdf:section:6.4.3"
+      ]
+    },
+    "max_model_calls": 1,
+    "model_calls": 0,
+    "source_body_sha256": "f77f26c7cda5744cb7ca68eaa76b559defebe33173ed0a18d53d4cd52f345349",
+    "status": "REUSED_VALID_RECEIPT"
+  },
+  "schema_version": 1,
+  "source_body_hash": "f77f26c7cda5744cb7ca68eaa76b559defebe33173ed0a18d53d4cd52f345349",
+  "source_file": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c",
+  "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+  "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+}

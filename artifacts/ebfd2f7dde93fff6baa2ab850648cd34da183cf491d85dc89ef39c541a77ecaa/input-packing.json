@@ -1,0 +1,62 @@
+{
+  "contract_id": "mapqptoqlevel",
+  "ports": [
+    {
+      "name": "qp",
+      "role": "RUNTIME_INPUT",
+      "source": "qp",
+      "unresolved": true,
+      "width": 32
+    },
+    {
+      "name": "cpnt",
+      "role": "RUNTIME_INPUT",
+      "source": "cpnt",
+      "unresolved": false,
+      "width": 2
+    },
+    {
+      "name": "dsc_version_minor",
+      "role": "RUNTIME_INPUT",
+      "source": "dsc_version_minor",
+      "unresolved": true,
+      "width": 32
+    },
+    {
+      "name": "native_420",
+      "role": "RUNTIME_INPUT",
+      "source": "native_420",
+      "unresolved": true,
+      "width": 32
+    },
+    {
+      "name": "cpntBitDepth",
+      "role": "CONFIG_STATIC",
+      "source": "cpntBitDepth",
+      "unresolved": false,
+      "width": 5
+    },
+    {
+      "name": "quantTableChroma",
+      "role": "CONSTANT_TABLE",
+      "source": "quantTableChroma",
+      "unresolved": true,
+      "width": 5
+    },
+    {
+      "name": "quantTableLuma",
+      "role": "CONSTANT_TABLE",
+      "source": "quantTableLuma",
+      "unresolved": true,
+      "width": 5
+    },
+    {
+      "direction": "output",
+      "name": "return_value",
+      "source": "return_value",
+      "unresolved": true,
+      "width": 32
+    }
+  ],
+  "source": "locked contract"
+}
