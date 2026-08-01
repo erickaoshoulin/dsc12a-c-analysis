@@ -11,9 +11,12 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import os
 import pathlib
 import re
+import shutil
 import struct
+import subprocess
 import zlib
 from collections import defaultdict
 from typing import Any
@@ -25,6 +28,24 @@ SECTION_RE = re.compile(r"\bSection\s*([0-9]+(?:\.[0-9]+)*)\b", re.I)
 PAGE_RE = re.compile(r"\b(?:spec\s+)?P(?:age\s*)?(\d{1,3})\b", re.I)
 TABLE_RE = re.compile(r"\bTable\s*([A-Z]?-?\d+(?:-\d+)?)\b", re.I)
 FIGURE_RE = re.compile(r"\bFigure\s*([A-Z]?-?\d+(?:-\d+)?)\b", re.I)
+
+# These files are host/input/output plumbing rather than codec datapath
+# evidence.  Their comments and functions stay visible to the compiler facts,
+# but are not allowed to create specification links or production-code
+# orphans in this report.
+EXCLUDED_SOURCE_BASENAMES = {
+    "cmd_parse.c",
+    "cmd_parse.h",
+    "codec_main.c",
+    "dpx.c",
+    "dpx.h",
+    "hdr_dpx.c",
+    "hdr_dpx.h",
+    "logging.c",
+    "logging.h",
+    "psnr.c",
+    "psnr.h",
+}
 
 CONCEPT_ALIASES = {
     "csc": {"color", "space", "conversion"},
@@ -311,6 +332,248 @@ def heading_candidates(extractor: PdfTextExtractor) -> list[dict[str, Any]]:
     return sorted(result, key=lambda item: (item["page"], item["kind"], item["identifier"]))
 
 
+def find_external_tool(name: str) -> str | None:
+    """Find the runtime-provided Poppler utility used for PDF facts."""
+    found = shutil.which(name)
+    if found:
+        return found
+    runtime_root = pathlib.Path(
+        "/Users/snow/.cache/codex-runtimes/codex-primary-runtime/dependencies"
+    )
+    candidates = [
+        runtime_root / "bin" / "override" / name,
+        runtime_root / "native" / "poppler" / "poppler" / "bin" / name,
+    ]
+    for candidate in candidates:
+        if candidate.is_file() and os.access(candidate, os.X_OK):
+            return str(candidate)
+    return None
+
+
+def run_pdf_tool(command: list[str], timeout: int = 120) -> subprocess.CompletedProcess[str]:
+    env = os.environ.copy()
+    # Poppler's bundled fonts are not on the ordinary shell search path in the
+    # Codex runtime.  Supplying them makes extraction/rendering deterministic.
+    fontconfig = pathlib.Path(
+        "/Users/snow/.cache/codex-runtimes/codex-primary-runtime/dependencies/native/poppler/poppler/etc/fonts/fonts.conf"
+    )
+    if fontconfig.is_file():
+        env["FONTCONFIG_FILE"] = str(fontconfig)
+    return subprocess.run(
+        command,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        env=env,
+        timeout=timeout,
+        check=False,
+    )
+
+
+def parse_pdfinfo_output(text: str) -> dict[str, str]:
+    result: dict[str, str] = {}
+    for line in text.splitlines():
+        if ":" not in line:
+            continue
+        key, value = line.split(":", 1)
+        result[key.strip().lower().replace(" ", "_")] = value.strip()
+    return result
+
+
+def valid_layout_section(identifier: str) -> bool:
+    parts = identifier.split(".")
+    try:
+        numbers = [int(part) for part in parts]
+    except ValueError:
+        return False
+    return bool(numbers) and 1 <= numbers[0] <= 7 and len(numbers) <= 5
+
+
+def layout_heading(line: str) -> tuple[str, str] | None:
+    value = normalize_pdf_text(line.strip())
+    if not value or "Page " in value or value.startswith(("Table ", "Figure ")):
+        return None
+    annex = re.match(r"^([A-H])\s+(.+\((?:Normative|Informative)\))\s*$", value, re.I)
+    if annex:
+        return annex.group(1).upper(), compact_text(annex.group(2), 300)
+    match = re.match(r"^(?:Section\s+)?([0-9]+(?:\.[0-9]+){0,4})\s+(.+?)\s*$", value)
+    if not match or not valid_layout_section(match.group(1)):
+        return None
+    title = compact_text(match.group(2), 300)
+    # Ordinary prose occasionally begins with a number.  A section heading is
+    # short and title-like; this excludes numeric equations and table rows.
+    if len(title) < 2 or len(title) > 180 or title.endswith((".", ";")):
+        return None
+    return match.group(1), title
+
+
+def layout_table_or_figure(line: str) -> tuple[str, str, str] | None:
+    value = normalize_pdf_text(line.strip())
+    match = re.match(r"^(Table|Figure)\s*([A-Z]?-?\d+(?:-\d+)?)(?::|\s+)(.*)$", value, re.I)
+    if not match:
+        return None
+    return match.group(1).lower(), match.group(2).upper(), compact_text(match.group(3), 240)
+
+
+def layout_pdf_anchors(pages: list[str], pdfinfo: dict[str, str], pdf_path: pathlib.Path) -> list[dict[str, Any]]:
+    """Build short anchors from pdftotext -layout output.
+
+    Model-note anchors retain the exact section heading that precedes the note
+    on that same PDF page.  No semantic similarity is used in this stage.
+    """
+    section_occurrences: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    table_occurrences: dict[tuple[str, str], list[dict[str, Any]]] = defaultdict(list)
+    note_occurrences: list[dict[str, Any]] = []
+    for page_number, page_text in enumerate(pages, start=1):
+        current_heading: dict[str, Any] | None = None
+        for line_number, raw_line in enumerate(page_text.splitlines(), start=1):
+            line = raw_line.rstrip()
+            heading = layout_heading(line)
+            if heading:
+                identifier, title = heading
+                current_heading = {
+                    "identifier": identifier,
+                    "title": title,
+                    "page": page_number,
+                    "line": line_number,
+                    "raw": normalize_pdf_text(line),
+                }
+                section_occurrences[identifier].append(dict(current_heading))
+            table_or_figure = layout_table_or_figure(line)
+            if table_or_figure:
+                kind, identifier, title = table_or_figure
+                table_occurrences[(kind, identifier)].append(
+                    {
+                        "kind": kind,
+                        "identifier": identifier,
+                        "title": title,
+                        "page": page_number,
+                        "line": line_number,
+                        "raw": normalize_pdf_text(line),
+                    }
+                )
+            model_notes = sorted(set(MN_RE.findall(line)))
+            if model_notes:
+                for mn_id in model_notes:
+                    note_occurrences.append(
+                        {
+                            "identifier": mn_id,
+                            "page": page_number,
+                            "line": line_number,
+                            "raw": normalize_pdf_text(line),
+                            "section": dict(current_heading) if current_heading else None,
+                        }
+                    )
+
+    def choose_occurrence(values: list[dict[str, Any]], threshold: int = 14) -> dict[str, Any]:
+        return next((value for value in values if value["page"] >= threshold), values[0])
+
+    anchors: list[dict[str, Any]] = []
+    for identifier, values in sorted(section_occurrences.items()):
+        selected = choose_occurrence(values)
+        anchors.append(
+            {
+                "anchor_id": f"pdf:section:{identifier}",
+                "kind": "section",
+                "identifier": identifier,
+                "title": selected["title"],
+                "page": selected["page"],
+                "references": ref_ids(selected["raw"]),
+                "mn_ids": sorted(
+                    {
+                        note["identifier"]
+                        for note in note_occurrences
+                        if note["section"] and note["section"]["identifier"] == identifier
+                    }
+                ),
+                "short_anchor": compact_text(selected["raw"], 180),
+                "source": "pdftotext -layout",
+            }
+        )
+    for (kind, identifier), values in sorted(table_occurrences.items()):
+        selected = choose_occurrence(values, threshold=10)
+        anchors.append(
+            {
+                "anchor_id": f"pdf:{kind}:{identifier}",
+                "kind": kind,
+                "identifier": identifier,
+                "title": selected["title"],
+                "page": selected["page"],
+                "references": ref_ids(selected["raw"]),
+                "mn_ids": sorted(set(MN_RE.findall(selected["raw"]))),
+                "short_anchor": compact_text(selected["raw"], 180),
+                "source": "pdftotext -layout",
+            }
+        )
+    for occurrence in note_occurrences:
+        section = occurrence["section"]
+        section_id = section["identifier"] if section else None
+        section_anchor_id = f"pdf:section:{section_id}" if section_id else None
+        anchor = {
+            "anchor_id": f"pdf:model-note:{occurrence['identifier']}:p{occurrence['page']:03d}",
+            "kind": "model_note",
+            "identifier": occurrence["identifier"],
+            "title": section["title"] if section else "",
+            "page": occurrence["page"],
+            "line": occurrence["line"],
+            "section_id": section_id,
+            "section_anchor_id": section_anchor_id,
+            "references": ref_ids(" ".join([occurrence["raw"], section["raw"] if section else ""])),
+            "mn_ids": [occurrence["identifier"]],
+            "short_anchor": compact_text(
+                f"{section_id or 'unattached'} {section['title'] if section else ''}; {occurrence['raw']}",
+                220,
+            ),
+            "source": "pdftotext -layout",
+        }
+        anchors.append(anchor)
+    page_count = int(pdfinfo.get("pages", len(pages)) or len(pages))
+    for page_number in range(1, page_count + 1):
+        anchors.append(
+            {
+                "anchor_id": f"pdf:page:{page_number:03d}",
+                "kind": "page",
+                "identifier": f"P{page_number}",
+                "title": "",
+                "page": page_number,
+                "references": {"sections": [], "pages": [page_number], "tables": [], "figures": []},
+                "mn_ids": [],
+                "short_anchor": f"DSC 1.2a PDF page {page_number}",
+                "source": "pdftotext -layout",
+            }
+        )
+    return sorted(anchors, key=lambda item: (item["page"], item["kind"], item["identifier"], item.get("line", 0)))
+
+
+def extract_pdf_layout(pdf_path: pathlib.Path) -> dict[str, Any]:
+    pdfinfo_tool = find_external_tool("pdfinfo")
+    pdftotext_tool = find_external_tool("pdftotext")
+    if not pdfinfo_tool or not pdftotext_tool:
+        raise RuntimeError("pdfinfo and pdftotext are required for primary PDF extraction")
+    info_result = run_pdf_tool([pdfinfo_tool, str(pdf_path)])
+    if info_result.returncode != 0:
+        raise RuntimeError(f"pdfinfo failed: {info_result.stderr.strip()}")
+    text_result = run_pdf_tool([pdftotext_tool, "-layout", str(pdf_path), "-"])
+    if text_result.returncode != 0:
+        raise RuntimeError(f"pdftotext -layout failed: {text_result.stderr.strip()}")
+    page_text = text_result.stdout.split("\f")
+    while page_text and not page_text[-1].strip():
+        page_text.pop()
+    info = parse_pdfinfo_output(info_result.stdout)
+    anchors = layout_pdf_anchors(page_text, info, pdf_path)
+    return {
+        "pdfinfo_tool": pdfinfo_tool,
+        "pdftotext_tool": pdftotext_tool,
+        "pdfinfo": info,
+        "page_count": int(info.get("pages", len(page_text)) or len(page_text)),
+        "text_pages": len(page_text),
+        "anchors": anchors,
+        "pdf_sha256": sha256_file(pdf_path),
+    }
+
+
 def resolve_source_path(value: pathlib.Path | str, source_dir: pathlib.Path) -> pathlib.Path:
     path = pathlib.Path(value)
     return path.resolve() if path.is_absolute() else (source_dir / path).resolve()
@@ -384,6 +647,8 @@ def extract_c_comments(manifest: dict[str, Any], raw: dict[str, Any]) -> dict[st
     for path in sorted(source_dir.rglob("*")):
         if not path.is_file() or path.suffix not in {".c", ".h"}:
             continue
+        if path.name in EXCLUDED_SOURCE_BASENAMES:
+            continue
         text = path.read_text(encoding="utf-8", errors="replace")
         for match in re.finditer(r"//[^\n]*|/\*.*?\*/", text, re.S):
             value = compact_text(match.group(0))
@@ -426,6 +691,8 @@ def extract_c_comments(manifest: dict[str, Any], raw: dict[str, Any]) -> dict[st
         )
     code_anchors = []
     for function in sorted(functions, key=lambda item: (item.get("name", ""), item.get("source_file", ""), item.get("line", 0), item.get("clang_usr", ""))):
+        if pathlib.Path(function.get("source_file", "")).name in EXCLUDED_SOURCE_BASENAMES:
+            continue
         code_anchors.append(
             {
                 "code_anchor_id": f"code:function:{function.get('clang_usr', 'UNKNOWN')}",
@@ -457,7 +724,17 @@ def proposal_links(
     anchors: list[dict[str, Any]], comments: dict[str, Any], candidates: dict[str, Any], manifest: dict[str, Any]
 ) -> list[dict[str, Any]]:
     by_mn: dict[str, list[dict[str, Any]]] = defaultdict(list)
-    by_identifier = {anchor["identifier"].lower(): anchor for anchor in anchors if anchor["kind"] != "page"}
+    by_identifier: dict[str, dict[str, Any]] = {}
+    for anchor in anchors:
+        identifier = str(anchor.get("identifier", "")).lower()
+        if not identifier:
+            continue
+        by_identifier[identifier] = anchor
+        if anchor.get("kind") in {"section", "table", "figure"}:
+            by_identifier[f"{anchor['kind']}{identifier}".lower()] = anchor
+        if anchor.get("kind") == "page":
+            by_identifier[f"page{anchor['page']}".lower()] = anchor
+            by_identifier[f"p{anchor['page']}".lower()] = anchor
     for anchor in anchors:
         for mn_id in anchor.get("mn_ids", []):
             by_mn[mn_id].append(anchor)
@@ -480,7 +757,9 @@ def proposal_links(
                 "evidence": evidence,
                 "spec_anchor_id": anchor["anchor_id"],
                 "spec_page": anchor["page"],
-                "spec_section": anchor["identifier"] if anchor["kind"] == "section" else None,
+                "spec_section": anchor.get("section_id")
+                if anchor.get("kind") == "model_note"
+                else anchor["identifier"] if anchor["kind"] == "section" else None,
                 "spec_sha256": pdf_sha,
                 "code_anchor_id": code["code_anchor_id"],
                 "function": code["function"],
@@ -504,8 +783,13 @@ def proposal_links(
         refs = comment.get("spec_refs", {})
         identifiers = [
             *[value.lower() for value in refs.get("sections", [])],
+            *[f"section{value}".lower() for value in refs.get("sections", [])],
             *[value.lower().replace(" ", "") for value in refs.get("tables", [])],
+            *[f"table{value}".lower().replace(" ", "") for value in refs.get("tables", [])],
             *[value.lower().replace(" ", "") for value in refs.get("figures", [])],
+            *[f"figure{value}".lower().replace(" ", "") for value in refs.get("figures", [])],
+            *[f"p{value}" for value in refs.get("pages", [])],
+            *[f"page{value}" for value in refs.get("pages", [])],
         ]
         for identifier in identifiers:
             for key, anchor in by_identifier.items():
@@ -525,7 +809,7 @@ def proposal_links(
             if anchor["kind"] == "page":
                 continue
             overlap = query & tokens(" ".join([anchor.get("identifier", ""), anchor.get("title", "")]))
-            if overlap:
+            if len(overlap) >= 2:
                 scored.append((len(overlap), anchor["page"], anchor["anchor_id"], anchor, overlap))
         if scored:
             _, _, _, anchor, overlap = sorted(scored, key=lambda item: (-item[0], item[1], item[2]))[0]
@@ -543,7 +827,7 @@ def proposal_links(
             if anchor["kind"] == "page":
                 continue
             overlap = query & tokens(" ".join([anchor.get("identifier", ""), anchor.get("title", "")]))
-            if overlap:
+            if len(overlap) >= 2:
                 scored.append((len(overlap), anchor["page"], anchor["anchor_id"], anchor, overlap))
         if scored:
             _, _, _, anchor, overlap = sorted(scored, key=lambda item: (-item[0], item[1], item[2]))[0]
@@ -622,8 +906,8 @@ def main() -> int:
     raw = json.loads(args.raw.resolve().read_text(encoding="utf-8"))
     candidates = json.loads(args.candidates.resolve().read_text(encoding="utf-8"))
     pdf_path = pathlib.Path(manifest["spec"]["path"])
-    extractor = PdfTextExtractor(pdf_path)
-    anchors = heading_candidates(extractor)
+    pdf_payload = extract_pdf_layout(pdf_path)
+    anchors = pdf_payload["anchors"]
     comments = extract_c_comments(manifest, raw)
     links = proposal_links(anchors, comments, candidates, manifest)
     links = apply_reviewed(links, parse_reviewed(args.reviewed.resolve()), manifest)
@@ -635,7 +919,19 @@ def main() -> int:
     code_orphans = sorted(production_anchors - linked_code)
     counts = {
         "spec_anchor_count": len(anchors),
-        "heading_anchor_count": sum(anchor["kind"] != "page" for anchor in anchors),
+        "heading_anchor_count": sum(anchor["kind"] in {"section", "table", "figure"} for anchor in anchors),
+        "model_note_anchor_count": sum(anchor["kind"] == "model_note" for anchor in anchors),
+        "pdf_model_note_ids": sorted(
+            {
+                mn_id
+                for anchor in anchors
+                if anchor["kind"] == "model_note"
+                for mn_id in anchor.get("mn_ids", [])
+            }
+        ),
+        "c_model_note_ids": sorted(
+            {mn_id for comment in comments["comments"] for mn_id in comment.get("mn_ids", [])}
+        ),
         "comment_count": len(comments["comments"]),
         "model_note_count": sum(bool(comment["mn_ids"]) for comment in comments["comments"]),
         "link_count": len(links),
@@ -646,6 +942,10 @@ def main() -> int:
         "untraced_spec_anchor_count": len(spec_orphans),
         "untraced_production_function_count": len(code_orphans),
     }
+    counts["shared_model_note_ids"] = sorted(
+        set(counts["pdf_model_note_ids"]) & set(counts["c_model_note_ids"])
+    )
+    counts["shared_model_note_count"] = len(counts["shared_model_note_ids"])
     payload = {
         "schema_version": 2,
         "do_not_edit": True,
@@ -659,7 +959,22 @@ def main() -> int:
         },
     }
     output = args.output_dir.resolve()
-    write_json(output / "spec" / "anchors.json", {"schema_version": 2, "do_not_edit": True, "pdf_sha256": payload["spec_sha256"], "page_count": len(extractor.pages), "anchors": anchors})
+    write_json(
+        output / "spec" / "anchors.json",
+        {
+            "schema_version": 3,
+            "do_not_edit": True,
+            "pdf_sha256": payload["spec_sha256"],
+            "page_count": pdf_payload["page_count"],
+            "extraction": {
+                "tool": "pdftotext -layout",
+                "pdfinfo_tool": pdf_payload["pdfinfo_tool"],
+                "pdftotext_tool": pdf_payload["pdftotext_tool"],
+                "model_note_assignment": "nearest preceding section heading on the same page",
+            },
+            "anchors": anchors,
+        },
+    )
     write_json(output / "facts" / "comments.json", comments)
     write_json(output / "traceability" / "traceability.json", payload)
     (output / "traceability" / "links.proposed.yaml").write_text(render_yaml(links, generated=True), encoding="utf-8")
@@ -677,10 +992,14 @@ def main() -> int:
         encoding="utf-8",
     )
     manifest["pdf_extraction"] = {
-        "tool": "tools/traceability.py built-in PDF page/text-stream reader",
-        "page_count": len(extractor.pages),
+        "tool": "pdftotext -layout",
+        "pdfinfo_tool": pdf_payload["pdfinfo_tool"],
+        "pdftotext_tool": pdf_payload["pdftotext_tool"],
+        "pdfinfo": pdf_payload["pdfinfo"],
+        "page_count": pdf_payload["page_count"],
         "anchor_count": len(anchors),
-        "text_stream_pages": len(extractor.pages),
+        "text_stream_pages": pdf_payload["text_pages"],
+        "model_note_assignment": "nearest preceding section heading on the same pdftotext -layout page",
     }
     write_json(args.input_manifest.resolve(), manifest)
     print(f"traceability generated: {counts['exact_count']} exact, {counts['proposed_count']} proposed, {counts['reviewed_count']} reviewed")

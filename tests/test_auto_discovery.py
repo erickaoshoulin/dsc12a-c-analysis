@@ -106,6 +106,57 @@ class AutoDiscoveryTests(unittest.TestCase):
         )
         self.assertEqual(result[0]["status"], "STALE")
 
+    def test_every_shared_model_note_has_an_exact_link(self):
+        payload = json.loads((ROOT / "traceability" / "traceability.json").read_text(encoding="utf-8"))
+        shared = payload["counts"]["shared_model_note_ids"]
+        self.assertEqual(payload["counts"]["shared_model_note_count"], len(shared))
+        for model_note in shared:
+            exact = [
+                link
+                for link in payload["links"]
+                if link["status"] == "EXACT" and model_note in link.get("evidence", "")
+            ]
+            self.assertTrue(exact, model_note)
+
+    def test_layout_model_note_attaches_to_same_page_preceding_heading(self):
+        anchors = traceability.layout_pdf_anchors(
+            ["6.4.3 Midpoint Prediction\n\nmodel note: MN_TEST in dsc_codec.c\n"],
+            {"pages": "1"},
+            pathlib.Path("synthetic.pdf"),
+        )
+        note = next(item for item in anchors if item["kind"] == "model_note")
+        self.assertEqual(note["section_id"], "6.4.3")
+        self.assertEqual(note["section_anchor_id"], "pdf:section:6.4.3")
+
+    def test_heuristic_requires_two_meaningful_tokens(self):
+        anchors = [
+            {
+                "anchor_id": "pdf:section:6.4.3",
+                "kind": "section",
+                "identifier": "6.4.3",
+                "title": "Midpoint Prediction",
+                "page": 80,
+                "mn_ids": [],
+            }
+        ]
+        comments = {
+            "code_anchors": [
+                {"code_anchor_id": "code:function:U_one", "clang_usr": "U_one", "function": "Midpoint", "file": "dsc_codec.c", "line": 1, "permalink": "x"},
+                {"code_anchor_id": "code:function:U_two", "clang_usr": "U_two", "function": "MidpointPrediction", "file": "dsc_codec.c", "line": 2, "permalink": "x"},
+            ],
+            "comments": [],
+        }
+        manifest = {"spec": {"sha256": "pdf"}, "source": {"source_hashes_sha256": "src"}}
+        candidates = {
+            "ranked_candidates": [
+                {"clang_usr": "U_one", "name": "Midpoint", "production_reachable": True},
+                {"clang_usr": "U_two", "name": "MidpointPrediction", "production_reachable": True},
+            ]
+        }
+        links = traceability.proposal_links(anchors, comments, candidates, manifest)
+        self.assertEqual([link["function"] for link in links], ["MidpointPrediction"])
+        self.assertEqual(links[0]["status"], "PROPOSED")
+
 
 if __name__ == "__main__":
     unittest.main()

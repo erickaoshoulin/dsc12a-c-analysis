@@ -3,224 +3,138 @@
 
 ## `BlockPredSearch`
 
-- `PROPOSED` page 32 `pdf:figure:3-6` (normalized_concept_heuristic)
+- `EXACT` page 80 `pdf:model-note:MN_BP_SEARCH:p080` (exact_mn_id)
+- `EXACT` page 80 `pdf:section:6.4.4.1` (exact_mn_id)
 
 ## `CalcFullnessOffset`
 
-- `PROPOSED` page 104 `pdf:figure:6-15` (normalized_concept_heuristic)
-
-## `DSC_Algorithm`
-
-- `PROPOSED` page 97 `pdf:figure:6-12` (normalized_function_identifier)
-
-## `ErrorHandler`
-
-- `PROPOSED` page 91 `pdf:section:6.5.3.3` (normalized_function_identifier)
-
-## `EstimateBitsForGroup`
-
-- `PROPOSED` page 47 `pdf:figure:3-12` (normalized_function_identifier)
+- `EXACT` page 103 `pdf:model-note:MN_CALC_SCALE_OFFSET:p103` (exact_mn_id)
+- `EXACT` page 103 `pdf:section:6.8.2` (exact_mn_id)
 
 ## `FindMidpoint`
 
-- `PROPOSED` page 32 `pdf:section:3.3.3` (normalized_concept_heuristic)
-
-## `FindResidualSize`
-
-- `PROPOSED` page 34 `pdf:table:3-1` (normalized_function_identifier)
+- `EXACT` page 80 `pdf:model-note:MN_MIDPOINT_PRED:p080` (exact_mn_id)
+- `EXACT` page 80 `pdf:section:6.4.3` (exact_mn_id)
 
 ## `FlatnessAdjustment`
 
-- `PROPOSED` page 111 `pdf:section:6.8.5.1` (normalized_concept_heuristic)
-- `PROPOSED` page 113 `pdf:section:6.8.5.2` (normalized_concept_heuristic)
+- `EXACT` page 111 `pdf:model-note:MN_ENC_FLATNESS_DECISION:p111` (exact_mn_id)
+- `EXACT` page 111 `pdf:section:6.8.5.1` (exact_mn_id)
+- `EXACT` page 113 `pdf:model-note:MN_FLAT_QP_ADJ:p113` (exact_mn_id)
+- `EXACT` page 113 `pdf:section:6.8.5.2` (exact_mn_id)
 
 ## `GetQpAdjPredSize`
 
-- `PROPOSED` page 30 `pdf:section:3.3` (normalized_concept_heuristic)
-
-## `HistoryLookup`
-
-- `PROPOSED` page 13 `pdf:table:3` (normalized_function_identifier)
+- `PROPOSED` page 113 `pdf:model-note:MN_FLAT_QP_ADJ:p113` (normalized_concept_heuristic)
 
 ## `IchDecision`
 
-- `PROPOSED` page 88 `pdf:section:6.5.3.2` (normalized_concept_heuristic)
+- `EXACT` page 88 `pdf:model-note:MN_ENC_ICH_MODE_SELECT:p088` (exact_mn_id)
+- `EXACT` page 88 `pdf:section:6.5.3.2` (exact_mn_id)
 
-## `IsFlatnessInfoSent`
+## `IsOrigFlatHIndex`
 
-- `PROPOSED` page 94 `pdf:section:6.6.3` (normalized_function_identifier)
+- `PROPOSED` page 111 `pdf:figure:6-19` (normalized_function_identifier)
 
 ## `IsOrigWithinQerr`
 
-- `PROPOSED` page 91 `pdf:section:6.5.3.3` (normalized_concept_heuristic)
+- `PROPOSED` page 88 `pdf:model-note:MN_ENC_ICH_IDX_SELECT:p088` (normalized_concept_heuristic)
 
 ## `MapQpToQlevel`
 
-- `PROPOSED` page 113 `pdf:section:6.8.5.2` (normalized_concept_heuristic)
-
-## `MaxResidualSize`
-
-- `PROPOSED` page 34 `pdf:table:3-1` (normalized_function_identifier)
+- `EXACT` page 113 `pdf:model-note:MN_MAP_QP_TO_QLEVEL:p113` (exact_mn_id)
+- `EXACT` page 113 `pdf:section:6.8.6` (exact_mn_id)
 
 ## `PickBestHistoryValue`
 
-- `PROPOSED` page 91 `pdf:section:6.5.3.3` (normalized_concept_heuristic)
-
-## `PopulateOrigLine`
-
-- `PROPOSED` page 46 `pdf:figure:3-11` (normalized_function_identifier)
+- `EXACT` page 88 `pdf:model-note:MN_ENC_ICH_IDX_SELECT:p088` (exact_mn_id)
+- `EXACT` page 88 `pdf:section:6.5.3.1` (exact_mn_id)
 
 ## `PredictionLoop`
 
-- `PROPOSED` page 83 `pdf:section:6.4.6` (normalized_concept_heuristic)
-
-## `ProcessGroupDec`
-
-- `PROPOSED` page 47 `pdf:figure:3-12` (normalized_function_identifier)
-
-## `ProcessGroupEnc`
-
-- `PROPOSED` page 47 `pdf:figure:3-12` (normalized_function_identifier)
-
-## `Qp2Qlevel`
-
-- `PROPOSED` page 30 `pdf:section:3.3` (normalized_function_identifier)
+- `EXACT` page 83 `pdf:model-note:MN_IQ_RECON:p083` (exact_mn_id)
+- `EXACT` page 83 `pdf:section:6.4.6` (exact_mn_id)
 
 ## `QuantizeResidual`
 
-- `PROPOSED` page 30 `pdf:section:3.3` (normalized_concept_heuristic)
+- `EXACT` page 83 `pdf:model-note:MN_ENC_QUANTIZATION:p083` (exact_mn_id)
+- `EXACT` page 83 `pdf:section:6.4.5` (exact_mn_id)
 
 ## `RateControl`
 
-- `PROPOSED` page 38 `pdf:section:3.6` (normalized_concept_heuristic)
-- `PROPOSED` page 98 `pdf:figure:6-13` (normalized_concept_heuristic)
-
-## `RemoveBitsEncoderBuffer`
-
-- `PROPOSED` page 84 `pdf:figure:6-6` (normalized_function_identifier)
+- `EXACT` page 103 `pdf:model-note:MN_RC_XFORM:p103` (exact_mn_id)
+- `EXACT` page 103 `pdf:section:6.8.2` (exact_mn_id)
+- `EXACT` page 105 `pdf:model-note:MN_RC_LONG_TERM:p105` (exact_mn_id)
+- `EXACT` page 105 `pdf:section:6.8.3` (exact_mn_id)
+- `EXACT` page 107 `pdf:model-note:MN_RC_SHORT_TERM:p107` (exact_mn_id)
+- `EXACT` page 107 `pdf:section:6.8.4` (exact_mn_id)
 
 ## `SampToLineBuf`
 
-- `PROPOSED` page 75 `pdf:section:6.3` (normalized_concept_heuristic)
+- `EXACT` page 75 `pdf:model-note:MN_LINE_STORAGE:p075` (exact_mn_id)
+- `EXACT` page 75 `pdf:section:6.3` (exact_mn_id)
+- `EXACT` page 117 `pdf:model-note:MN_LINE_STORAGE:p117` (exact_mn_id)
+- `EXACT` page 117 `pdf:section:7.4` (exact_mn_id)
 
 ## `SamplePredict`
 
-- `PROPOSED` page 78 `pdf:figure:6-2` (normalized_concept_heuristic)
-- `PROPOSED` page 31 `pdf:section:3.3.2` (normalized_concept_heuristic)
+- `EXACT` page 76 `pdf:model-note:MN_MMAP:p076` (exact_mn_id)
+- `EXACT` page 76 `pdf:section:6.4.1` (exact_mn_id)
+- `EXACT` page 78 `pdf:model-note:MN_MMAP:p078` (exact_mn_id)
+- `EXACT` page 78 `pdf:section:6.4.1.1` (exact_mn_id)
+- `EXACT` page 79 `pdf:model-note:MN_MMAP:p079` (exact_mn_id)
+- `EXACT` page 79 `pdf:section:6.4.1.2` (exact_mn_id)
+- `EXACT` page 79 `pdf:model-note:MN_BLOCK_PRED:p079` (exact_mn_id)
+- `EXACT` page 79 `pdf:section:6.4.2` (exact_mn_id)
 
 ## `UpdateHistoryElement`
 
-- `PROPOSED` page 91 `pdf:section:6.5.3.3` (normalized_concept_heuristic)
-
-## `UpdateMidpoint`
-
-- `PROPOSED` page 32 `pdf:section:3.3.3` (normalized_function_identifier)
-
-## `UsingMidpoint`
-
-- `PROPOSED` page 32 `pdf:section:3.3.3` (normalized_function_identifier)
+- `PROPOSED` page 84 `pdf:figure:6-6` (normalized_concept_heuristic)
 
 ## `VLCUnit`
 
 - `PROPOSED` page 91 `pdf:section:6.6` (normalized_concept_heuristic)
-- `PROPOSED` page 32 `pdf:section:3.3.3` (normalized_concept_heuristic)
+- `EXACT` page 82 `pdf:model-note:MN_ENC_MPP_SELECT:p082` (exact_mn_id)
+- `EXACT` page 82 `pdf:section:6.4.4.2` (exact_mn_id)
 
 ## `VLDGroup`
 
-- `PROPOSED` page 91 `pdf:section:6.6` (normalized_concept_heuristic)
+- `EXACT` page 116 `pdf:model-note:MN_DEC_ENTROPY:p116` (exact_mn_id)
+- `EXACT` page 116 `pdf:section:7.2` (exact_mn_id)
 
 ## `VLDUnit`
 
-- `PROPOSED` page 32 `pdf:section:3.3.3` (normalized_concept_heuristic)
-
-## `check_qp_for_overflow`
-
-- `PROPOSED` page 113 `pdf:section:6.8.5.2` (normalized_function_identifier)
-
-## `compute_and_display_PSNR`
-
-- `PROPOSED` page 16 `pdf:section:1.2` (normalized_function_identifier)
-
-## `compute_offset`
-
-- `PROPOSED` page 104 `pdf:figure:6-15` (normalized_function_identifier)
-
-## `compute_rc_parameters`
-
-- `PROPOSED` page 38 `pdf:section:3.6` (normalized_concept_heuristic)
-
-## `determine_field_format`
-
-- `PROPOSED` page 64 `pdf:table:4-7` (normalized_function_identifier)
-
-## `ends_in_percentd`
-
-- `PROPOSED` page 25 `pdf:figure:3-1` (normalized_function_identifier)
-
-## `generate_rc_parameters`
-
-- `PROPOSED` page 38 `pdf:section:3.6` (normalized_function_identifier)
-
-## `hdr_dpx_determine_file_type`
-
-- `PROPOSED` page 122 `pdf:table:A-1` (normalized_function_identifier)
-
-## `line_to_int`
-
-- `PROPOSED` page 46 `pdf:figure:3-11` (normalized_function_identifier)
+- `EXACT` page 118 `pdf:model-note:MN_DEC_MPP_SELECT:p118` (exact_mn_id)
+- `EXACT` page 118 `pdf:section:7.5.2.2` (exact_mn_id)
 
 ## `make_qp_table`
 
-- `PROPOSED` page 113 `pdf:section:6.8.5.2` (normalized_function_identifier)
+- `PROPOSED` page 107 `pdf:figure:6-17` (normalized_function_identifier)
 
 ## `make_qp_tables`
 
-- `PROPOSED` page 113 `pdf:section:6.8.5.2` (normalized_function_identifier)
+- `PROPOSED` page 107 `pdf:figure:6-17` (normalized_function_identifier)
 
-## `parse_line`
+## `readppm`
 
-- `PROPOSED` page 46 `pdf:figure:3-11` (normalized_function_identifier)
-
-## `parse_pps`
-
-- `PROPOSED` page 130 `pdf:table:E-2` (normalized_function_identifier)
-
-## `populate_pps`
-
-- `PROPOSED` page 130 `pdf:table:E-2` (normalized_function_identifier)
-
-## `print_pps`
-
-- `PROPOSED` page 130 `pdf:table:E-2` (normalized_function_identifier)
-
-## `print_pps_v2`
-
-- `PROPOSED` page 130 `pdf:table:E-2` (normalized_function_identifier)
+- `EXACT` page 6 `pdf:page:006` (explicit_c_reference)
 
 ## `rgb2ycocg`
 
-- `PROPOSED` page 30 `pdf:section:3.2` (normalized_concept_heuristic)
+- `EXACT` page 74 `pdf:model-note:MN_ENC_CSC:p074` (exact_mn_id)
+- `EXACT` page 74 `pdf:section:6.1` (exact_mn_id)
 
 ## `simple422to444`
 
-- `PROPOSED` page 123 `pdf:figure:B-2` (normalized_concept_heuristic)
+- `EXACT` page 123 `pdf:model-note:MN_SIMPLE_422_444:p123` (exact_mn_id)
+- `EXACT` page 123 `pdf:section:B` (exact_mn_id)
 
 ## `simple444to422`
 
-- `PROPOSED` page 123 `pdf:figure:B-2` (normalized_concept_heuristic)
-
-## `write_pps`
-
-- `PROPOSED` page 130 `pdf:table:E-2` (normalized_function_identifier)
+- `EXACT` page 123 `pdf:model-note:MN_SIMPLE_444_422:p123` (exact_mn_id)
+- `EXACT` page 123 `pdf:section:B` (exact_mn_id)
 
 ## `ycocg2rgb`
 
-- `PROPOSED` page 30 `pdf:section:3.2` (normalized_concept_heuristic)
-
-## `error_check`
-
-- `PROPOSED` page 91 `pdf:section:6.5.3.3` (normalized_function_identifier)
-
-## `assign_line`
-
-- `PROPOSED` page 46 `pdf:figure:3-11` (normalized_function_identifier)
+- `EXACT` page 120 `pdf:model-note:MN_DEC_CSC:p120` (exact_mn_id)
+- `EXACT` page 120 `pdf:section:7.7` (exact_mn_id)

@@ -1,0 +1,20 @@
+{
+  "call_count": 1,
+  "generator": "Codex",
+  "input_contract": "contracts/proposed/findmidpoint.yaml",
+  "c_function": "FindMidpoint",
+  "c_source_span": {
+    "end_column": 1,
+    "end_line": 914,
+    "start_column": 5,
+    "start_line": 906
+  },
+  "c_body": "int FindMidpoint(dsc_state_t *dsc_state, int cpnt, int qlevel)\n{\n\tint range;\n\n\t// *MODEL NOTE* MN_MIDPOINT_PRED\n\trange = 1<<dsc_state->cpntBitDepth[cpnt];\n\n\treturn (range/2 + (dsc_state->leftRecon[cpnt]%(1<<qlevel)));\n}",
+  "c_body_sha256": "f77f26c7cda5744cb7ca68eaa76b559defebe33173ed0a18d53d4cd52f345349",
+  "exact_spec_anchors": [
+    "pdf:model-note:MN_MIDPOINT_PRED:p080",
+    "pdf:section:6.4.3"
+  ],
+  "output_limit": 4,
+  "combinational_only": true
+}

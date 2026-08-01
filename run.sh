@@ -350,4 +350,51 @@ if [ "$success" -ne 1 ]; then
   exit 1
 fi
 
+if ! "$PYTHON" "$SCRIPT_DIR/tools/run_coverage.py" \
+    --model-root "$MODEL_ROOT" \
+    --output-dir "$OUTPUT_DIR/coverage" \
+    --work-dir "$WORK_DIR/coverage" \
+    --timeout "$BUILD_TIMEOUT_SECONDS" \
+    --functions "$OUTPUT_DIR/facts/functions.json" \
+    --candidates "$OUTPUT_DIR/facts/candidates.json" \
+    --build-receipt "$OUTPUT_DIR/build/build-receipt.json"; then
+  echo "INFRASTRUCTURE_FAILURE: instrumented C coverage/smoke gate failed; see $OUTPUT_DIR/coverage/coverage-receipt.json" >&2
+  exit 1
+fi
+
+if ! "$PYTHON" "$SCRIPT_DIR/tools/create_contracts.py" \
+    --manifest "$MANIFEST" \
+    --functions "$OUTPUT_DIR/facts/functions.json" \
+    --candidates "$OUTPUT_DIR/facts/candidates.json" \
+    --coverage "$OUTPUT_DIR/coverage/coverage.json" \
+    --traceability "$OUTPUT_DIR/traceability/traceability.json" \
+    --anchors "$OUTPUT_DIR/spec/anchors.json" \
+    --output-dir "$OUTPUT_DIR/contracts" \
+    --top-n 3; then
+  echo "INFRASTRUCTURE_FAILURE: tool-selected contract generation failed" >&2
+  exit 1
+fi
+
+if ! "$PYTHON" "$SCRIPT_DIR/tools/generate_slice.py" \
+    --manifest "$MANIFEST" \
+    --contracts "$OUTPUT_DIR/contracts" \
+    --output-dir "$OUTPUT_DIR/verification" \
+    --work-dir "$WORK_DIR/rtl-slice" \
+    --timeout "$BUILD_TIMEOUT_SECONDS"; then
+  echo "UNPROVED: Verilator/C-oracle RTL slice did not prove; see $OUTPUT_DIR/verification/verification-receipt.json" >&2
+  exit 1
+fi
+
+if ! "$PYTHON" "$SCRIPT_DIR/tools/finalize_outputs.py" \
+    --summary "$OUTPUT_DIR/summary.json" \
+    --traceability "$OUTPUT_DIR/traceability/traceability.json" \
+    --coverage "$OUTPUT_DIR/coverage/coverage.json" \
+    --contracts "$OUTPUT_DIR/contracts" \
+    --verification "$OUTPUT_DIR/verification/verification-receipt.json" \
+    --build "$OUTPUT_DIR/build/build-receipt.json" \
+    --output-report "$OUTPUT_DIR/reports/progress.md"; then
+  echo "INFRASTRUCTURE_FAILURE: final progress/summary assembly failed" >&2
+  exit 1
+fi
+
 echo "DSC 1.2a auto-discovery C analysis complete: $OUTPUT_DIR/summary.json"

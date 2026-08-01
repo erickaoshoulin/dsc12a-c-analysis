@@ -20,7 +20,7 @@
         "<build-copy>/source",
         "clean"
       ],
-      "duration_seconds": 0.014,
+      "duration_seconds": 0.016,
       "log": "make-clean.log",
       "returncode": 0,
       "status": "PASS"
@@ -32,7 +32,7 @@
         "-C",
         "<build-copy>/source"
       ],
-      "duration_seconds": 1.658,
+      "duration_seconds": 1.746,
       "log": "make-build.log",
       "returncode": 0,
       "status": "PASS"
@@ -41,7 +41,7 @@
       "command": [
         "<build-copy>/bittrue_smoke/run_c_baseline.sh"
       ],
-      "duration_seconds": 1.997,
+      "duration_seconds": 2.391,
       "log": "smoke.log",
       "returncode": 0,
       "status": "PASS"
@@ -81,8 +81,8 @@
       },
       {
         "path": "bittrue_smoke/out/simple_192x108.dsc.sha256",
-        "sha256": "bae2de0d6f62d670d2ca4a4dd93183098a623329fcab25de65d9cc1cf6959676",
-        "size_bytes": 201
+        "sha256": "cacaf7d49d11f2fc1a56c6a975df335d17b69c26500f82177ae5dbe73c19ce33",
+        "size_bytes": 162
       }
     ]
   },
