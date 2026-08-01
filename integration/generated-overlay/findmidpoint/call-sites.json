@@ -1,0 +1,35 @@
+{
+  "call_sites": [
+    {
+      "callee": "FindMidpoint",
+      "caller": "PredictionLoop",
+      "caller_usr": "c:@F@PredictionLoop",
+      "location": {
+        "column": 25,
+        "file": "dsc_codec.c",
+        "line": 2421
+      }
+    },
+    {
+      "callee": "FindMidpoint",
+      "caller": "PredictionLoop",
+      "caller_usr": "c:@F@PredictionLoop",
+      "location": {
+        "column": 14,
+        "file": "dsc_codec.c",
+        "line": 2452
+      }
+    },
+    {
+      "callee": "FindMidpoint",
+      "caller": "PredictionLoop",
+      "caller_usr": "c:@F@PredictionLoop",
+      "location": {
+        "column": 20,
+        "file": "dsc_codec.c",
+        "line": 2483
+      }
+    }
+  ],
+  "contract_id": "findmidpoint"
+}

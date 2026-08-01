@@ -1,0 +1,41 @@
+{
+  "contract_id": "findmidpoint",
+  "ports": [
+    {
+      "name": "cpnt",
+      "role": "RUNTIME_INPUT",
+      "source": "cpnt",
+      "unresolved": false,
+      "width": 2
+    },
+    {
+      "name": "qlevel",
+      "role": "RUNTIME_INPUT",
+      "source": "qlevel",
+      "unresolved": false,
+      "width": 5
+    },
+    {
+      "name": "cpntBitDepth",
+      "role": "CONFIG_STATIC",
+      "source": "cpntBitDepth",
+      "unresolved": false,
+      "width": 5
+    },
+    {
+      "name": "leftRecon",
+      "role": "RUNTIME_INPUT",
+      "source": "leftRecon",
+      "unresolved": false,
+      "width": 16
+    },
+    {
+      "direction": "output",
+      "name": "return_value",
+      "source": "return_value",
+      "unresolved": false,
+      "width": 17
+    }
+  ],
+  "source": "locked contract"
+}

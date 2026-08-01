@@ -1,0 +1,15 @@
+{
+  "allowed_model_output": "combinational RTL body only",
+  "candidate_limit": 4,
+  "contract_id": "isflatnessinfosent",
+  "failure_reason": "no reusable verified candidate receipt",
+  "input_context": {
+    "c_body": true,
+    "frozen_interface": true,
+    "locked_contract": true,
+    "short_exact_spec_anchors": []
+  },
+  "max_model_calls": 1,
+  "model_calls": 0,
+  "status": "DETERMINISTIC_SCAFFOLD"
+}

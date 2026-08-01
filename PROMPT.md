@@ -167,3 +167,53 @@ feat: create DSC contracts and first bit-true RTL slice
 ```
 
 Then push the requested branch and open a draft PR with the same title.
+
+## Dependency-aware CI/CD migration agent
+
+The next migration stage is generic and must not add a function-name allowlist.
+Use `python3 tools/cicd_agent.py plan|run|resume|status` and consume the
+existing manifest, Clang facts, coverage, traceability, locked contracts,
+callgraph, and verification receipts.
+
+Emit `ci/dag.json`, `ci/plan.json`, `ci/state.json`, and
+`ci/cache-index.json`. Each node records source/spec/contract/dependency
+hashes, status, artifacts, and failure reason. Hash changes make old entries
+stale. A valid cache entry is reusable with zero model calls; cache keys also
+include prompt/model and tool-version hashes. Select every locked contract
+whose semantics are resolved, execute independent contracts in stable parallel
+batches, and compose callers only after callee RTL passes. Reject recursion and
+combinational dependency cycles.
+
+The contract-driven artifact bundle is under
+`artifacts/<contract-hash>/` and includes a frozen SV interface/stub, C oracle,
+Verilator harness, input packing, legal-domain/vector generator, mutations,
+shadow/replacement wrapper, and receipt schema. The model may generate only a
+combinational RTL body, at most once per function and at most four candidates.
+Reject clocks, resets, latches, delays, initial blocks, stateful memory, and
+testbench logic.
+
+Verification is function × candidate × input shard. Compile each candidate
+once, run shards in parallel, stop after the first mismatch, and retain the
+smallest deterministic counterexample. Only complete legal-domain coverage is
+`EXHAUSTIVE_EQUIVALENT`; other outcomes use `DIFFERENTIAL_PASS`,
+`COUNTEREXAMPLE`, `UNPROVED`, `UNSUPPORTED`, or
+`INFRASTRUCTURE_FAILURE`.
+
+For caller/callee dependencies create an `A_core` interface, use `B_C` for
+local testing, and compose `A_core+B_RTL` only after the callee passes. Record
+each call site separately. Generate an immutable-C overlay with `C_ONLY`,
+`SHADOW`, and `RTL_RETURN` modes. Run SHADOW before RTL_RETURN; require the
+RTL_RETURN DSC stream to match the original byte-for-byte and by SHA-256.
+Promotion requires unit, dependency, shadow, RTL_RETURN, and bitstream passes.
+Rollback is a manifest change back to `C_ONLY`. Missing tools/source/PDF,
+checkout failures, baseline mismatches, stale cache, timeouts, disk/network
+failures, and missing Verilator are infrastructure failures and never trigger
+an LLM call. Write `integration/generated-overlay/`,
+`integration/replacement-plan.yaml`, `integration/bitstream-receipts/`, and
+`reports/pipeline-summary.md`.
+
+For the dependency-aware CI/CD change, commit and open a draft PR with:
+
+```text
+feat: add dependency-aware C-to-RTL CI/CD agent
+```

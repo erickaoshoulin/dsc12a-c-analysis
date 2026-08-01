@@ -1,0 +1,19 @@
+{
+  "artifacts": [
+    "unit-receipt.json",
+    "dependency-receipt.json",
+    "shadow-receipt.json",
+    "rtl-return-receipt.json",
+    "bitstream-receipt.json"
+  ],
+  "complete_domain_required_for_exhaustive": true,
+  "schema_version": 1,
+  "statuses": [
+    "COUNTEREXAMPLE",
+    "DIFFERENTIAL_PASS",
+    "EXHAUSTIVE_EQUIVALENT",
+    "INFRASTRUCTURE_FAILURE",
+    "UNPROVED",
+    "UNSUPPORTED"
+  ]
+}

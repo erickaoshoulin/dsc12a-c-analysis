@@ -1,0 +1,38 @@
+{
+  "allowed_model_output": "combinational RTL body only",
+  "candidate_limit": 4,
+  "context": {
+    "c_body": "int FindMidpoint(dsc_state_t *dsc_state, int cpnt, int qlevel)\n{\n\tint range;\n\n\t// *MODEL NOTE* MN_MIDPOINT_PRED\n\trange = 1<<dsc_state->cpntBitDepth[cpnt];\n\n\treturn (range/2 + (dsc_state->leftRecon[cpnt]%(1<<qlevel)));\n}",
+    "c_body_sha256": "f77f26c7cda5744cb7ca68eaa76b559defebe33173ed0a18d53d4cd52f345349",
+    "c_function": "FindMidpoint",
+    "c_source_span": {
+      "end_column": 1,
+      "end_line": 914,
+      "start_column": 5,
+      "start_line": 906
+    },
+    "call_count": 1,
+    "combinational_only": true,
+    "exact_spec_anchors": [
+      "pdf:model-note:MN_MIDPOINT_PRED:p080",
+      "pdf:section:6.4.3"
+    ],
+    "generator": "Codex",
+    "input_contract": "contracts/proposed/findmidpoint.yaml",
+    "output_limit": 4
+  },
+  "contract_id": "findmidpoint",
+  "input_context": {
+    "c_body": true,
+    "frozen_interface": true,
+    "locked_contract": true,
+    "short_exact_spec_anchors": [
+      "pdf:model-note:MN_MIDPOINT_PRED:p080",
+      "pdf:section:6.4.3"
+    ]
+  },
+  "max_model_calls": 1,
+  "model_calls": 0,
+  "source_body_sha256": "f77f26c7cda5744cb7ca68eaa76b559defebe33173ed0a18d53d4cd52f345349",
+  "status": "REUSED_VALID_RECEIPT"
+}

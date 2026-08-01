@@ -1,0 +1,121 @@
+{
+  "contract_id": "findmidpoint",
+  "interface": {
+    "flattened_pointer_dependencies": [
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "conditional": "selected component bit depth; leftRecon range is conditional on this value",
+        "field": "cpntBitDepth",
+        "legal_domain": {
+          "basis": "PPS bits_per_component plus one-bit RGB chroma extension",
+          "kind": "set",
+          "range": [
+            8,
+            16
+          ],
+          "values": [
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "record": "dsc_state_t",
+        "role": "CONFIG_STATIC",
+        "unresolved": false,
+        "width_source": "NORMATIVE_COMPONENT_BIT_DEPTH_DOMAIN"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "conditional": "upper bound is (1 << cpntBitDepth) - 1",
+        "field": "leftRecon",
+        "legal_domain": {
+          "basis": "0 <= leftRecon < (1 << cpntBitDepth)",
+          "kind": "conditional_range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "record": "dsc_state_t",
+        "role": "RUNTIME_INPUT",
+        "unresolved": false,
+        "width_source": "NORMATIVE_SAMPLE_DOMAIN"
+      }
+    ],
+    "input_bit_count": 28,
+    "inputs": [
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "dsc_state_t component arrays have extent 4",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ],
+          "values": []
+        },
+        "logical_width": 2,
+        "name": "cpnt",
+        "pointer": false,
+        "role": "RUNTIME_INPUT",
+        "unresolved": false,
+        "width_source": "C_ARRAY_EXTENT"
+      },
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "Table 6-2 qLevel columns",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ],
+          "values": []
+        },
+        "logical_width": 5,
+        "name": "qlevel",
+        "pointer": false,
+        "role": "RUNTIME_INPUT",
+        "spec_domain_anchor": "pdf:table:6-2",
+        "unresolved": false,
+        "width_source": "NORMATIVE_TABLE_DOMAIN"
+      }
+    ],
+    "output": {
+      "c_type": "int",
+      "legal_range": [
+        128,
+        131071
+      ],
+      "logical_width": 17,
+      "name": "return_value",
+      "range_formula": "(1 << (cpntBitDepth - 1)) + ((leftRecon) % (1 << qlevel))",
+      "signed": false,
+      "unresolved": false,
+      "width_source": "NORMATIVE_FORMULA_RANGE"
+    }
+  },
+  "verification_plan": {
+    "legal_domain": "cpnt in [0,3], cpntBitDepth in {8..16}, qlevel <= table-derived maximum for the selected component depth, leftRecon in [0,(1<<cpntBitDepth)-1]",
+    "mutations": [
+      "signedness",
+      "boundary",
+      "array-index",
+      "off-by-one"
+    ],
+    "oracle": "call the immutable C function through a generated wrapper with flattened state dependencies",
+    "rtl": "at most four generated combinational SystemVerilog candidates",
+    "simulator": "Verilator lint/compile plus exhaustive legal-domain comparison"
+  }
+}

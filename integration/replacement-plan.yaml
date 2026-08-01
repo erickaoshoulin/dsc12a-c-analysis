@@ -1,0 +1,53 @@
+{
+  "generated_by": "tools/cicd_agent.py",
+  "mode_semantics": {
+    "C_ONLY": "return C",
+    "RTL_RETURN": "compare C/RTL, return RTL",
+    "SHADOW": "compare C/RTL, return C"
+  },
+  "replacements": [
+    {
+      "active_mode": "RTL_RETURN",
+      "bitstream_receipt": "integration/bitstream-receipts/findmidpoint.json",
+      "call_sites": [
+        {
+          "callee": "FindMidpoint",
+          "caller": "PredictionLoop",
+          "caller_usr": "c:@F@PredictionLoop",
+          "location": {
+            "column": 25,
+            "file": "dsc_codec.c",
+            "line": 2421
+          }
+        },
+        {
+          "callee": "FindMidpoint",
+          "caller": "PredictionLoop",
+          "caller_usr": "c:@F@PredictionLoop",
+          "location": {
+            "column": 14,
+            "file": "dsc_codec.c",
+            "line": 2452
+          }
+        },
+        {
+          "callee": "FindMidpoint",
+          "caller": "PredictionLoop",
+          "caller_usr": "c:@F@PredictionLoop",
+          "location": {
+            "column": 20,
+            "file": "dsc_codec.c",
+            "line": 2483
+          }
+        }
+      ],
+      "contract_id": "findmidpoint",
+      "rollback_mode": "C_ONLY"
+    }
+  ],
+  "rollback": {
+    "operation": "change active_mode to C_ONLY in this manifest",
+    "safe_mode": "C_ONLY"
+  },
+  "schema_version": 1
+}

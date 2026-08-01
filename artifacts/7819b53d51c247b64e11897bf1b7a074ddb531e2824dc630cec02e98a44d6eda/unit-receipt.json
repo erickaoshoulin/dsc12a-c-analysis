@@ -1,0 +1,243 @@
+{
+  "compile_each_candidate_once": true,
+  "contract_id": "findmidpoint",
+  "execution": "reused_existing_complete_receipt",
+  "function": "FindMidpoint",
+  "matrix": [
+    {
+      "candidate": "candidate_01",
+      "candidate_status": "EXHAUSTIVE_EQUIVALENT",
+      "compile_once": true,
+      "function": "FindMidpoint",
+      "shards": [
+        {
+          "complete_legal_domain": true,
+          "range": [
+            0,
+            1025920
+          ],
+          "shard": 0,
+          "status": "EXHAUSTIVE_EQUIVALENT"
+        },
+        {
+          "complete_legal_domain": true,
+          "range": [
+            1025920,
+            2051840
+          ],
+          "shard": 1,
+          "status": "EXHAUSTIVE_EQUIVALENT"
+        },
+        {
+          "complete_legal_domain": true,
+          "range": [
+            2051840,
+            3077760
+          ],
+          "shard": 2,
+          "status": "EXHAUSTIVE_EQUIVALENT"
+        },
+        {
+          "complete_legal_domain": true,
+          "range": [
+            3077760,
+            4103680
+          ],
+          "shard": 3,
+          "status": "EXHAUSTIVE_EQUIVALENT"
+        },
+        {
+          "complete_legal_domain": true,
+          "range": [
+            4103680,
+            5129600
+          ],
+          "shard": 4,
+          "status": "EXHAUSTIVE_EQUIVALENT"
+        },
+        {
+          "complete_legal_domain": true,
+          "range": [
+            5129600,
+            6155520
+          ],
+          "shard": 5,
+          "status": "EXHAUSTIVE_EQUIVALENT"
+        },
+        {
+          "complete_legal_domain": true,
+          "range": [
+            6155520,
+            7181440
+          ],
+          "shard": 6,
+          "status": "EXHAUSTIVE_EQUIVALENT"
+        },
+        {
+          "complete_legal_domain": true,
+          "range": [
+            7181440,
+            8207360
+          ],
+          "shard": 7,
+          "status": "EXHAUSTIVE_EQUIVALENT"
+        }
+      ],
+      "smallest_counterexample": {},
+      "vectors": 8207360
+    },
+    {
+      "candidate": "candidate_02",
+      "candidate_status": "COUNTEREXAMPLE",
+      "compile_once": true,
+      "function": "FindMidpoint",
+      "shards": [
+        {
+          "complete_legal_domain": false,
+          "range": [
+            0,
+            962304
+          ],
+          "shard": 0,
+          "status": "COUNTEREXAMPLE"
+        },
+        {
+          "complete_legal_domain": false,
+          "range": [
+            962304,
+            1924609
+          ],
+          "shard": 1,
+          "status": "SKIPPED_AFTER_FIRST_MISMATCH"
+        },
+        {
+          "complete_legal_domain": false,
+          "range": [
+            1924609,
+            2886913
+          ],
+          "shard": 2,
+          "status": "SKIPPED_AFTER_FIRST_MISMATCH"
+        },
+        {
+          "complete_legal_domain": false,
+          "range": [
+            2886913,
+            3849218
+          ],
+          "shard": 3,
+          "status": "SKIPPED_AFTER_FIRST_MISMATCH"
+        }
+      ],
+      "smallest_counterexample": {
+        "actual": 32767,
+        "cpnt": 0,
+        "cpnt_bit_depth": 16,
+        "expected": 32769,
+        "left_recon": 32769,
+        "qlevel": 1
+      },
+      "vectors": 3849218
+    },
+    {
+      "candidate": "candidate_03",
+      "candidate_status": "COUNTEREXAMPLE",
+      "compile_once": true,
+      "function": "FindMidpoint",
+      "shards": [
+        {
+          "complete_legal_domain": false,
+          "range": [
+            0,
+            258
+          ],
+          "shard": 0,
+          "status": "COUNTEREXAMPLE"
+        }
+      ],
+      "smallest_counterexample": {
+        "actual": 128,
+        "cpnt": 0,
+        "cpnt_bit_depth": 8,
+        "expected": 129,
+        "left_recon": 1,
+        "qlevel": 1
+      },
+      "vectors": 258
+    },
+    {
+      "candidate": "candidate_04",
+      "candidate_status": "COUNTEREXAMPLE",
+      "compile_once": true,
+      "function": "FindMidpoint",
+      "shards": [
+        {
+          "complete_legal_domain": false,
+          "range": [
+            0,
+            2
+          ],
+          "shard": 0,
+          "status": "COUNTEREXAMPLE"
+        }
+      ],
+      "smallest_counterexample": {
+        "actual": 129,
+        "cpnt": 0,
+        "cpnt_bit_depth": 8,
+        "expected": 128,
+        "left_recon": 1,
+        "qlevel": 0
+      },
+      "vectors": 2
+    }
+  ],
+  "parallel_shards": true,
+  "promoted_candidate": "candidate_01",
+  "repair_packets": [
+    {
+      "candidate": "candidate_02",
+      "category": "width_signedness",
+      "compact": true,
+      "counterexample": {
+        "actual": 32767,
+        "cpnt": 0,
+        "cpnt_bit_depth": 16,
+        "expected": 32769,
+        "left_recon": 32769,
+        "qlevel": 1
+      }
+    },
+    {
+      "candidate": "candidate_03",
+      "category": "arithmetic_counterexample",
+      "compact": true,
+      "counterexample": {
+        "actual": 128,
+        "cpnt": 0,
+        "cpnt_bit_depth": 8,
+        "expected": 129,
+        "left_recon": 1,
+        "qlevel": 1
+      }
+    },
+    {
+      "candidate": "candidate_04",
+      "category": "arithmetic_counterexample",
+      "compact": true,
+      "counterexample": {
+        "actual": 129,
+        "cpnt": 0,
+        "cpnt_bit_depth": 8,
+        "expected": 128,
+        "left_recon": 1,
+        "qlevel": 0
+      }
+    }
+  ],
+  "schema_version": 1,
+  "source_receipt": "verification/verification-receipt.json",
+  "status": "PASS",
+  "stop_after_first_mismatch": true,
+  "verification_status": "EXHAUSTIVE_EQUIVALENT"
+}

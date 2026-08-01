@@ -1,0 +1,29 @@
+{
+  "cache_reused": false,
+  "contract_hash": "ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa",
+  "contract_id": "mapqptoqlevel",
+  "dependency_hash": "154d4583c435a4851e5109dca8f696bc2c21f9ffe5a02d4029a0aa41e3df1889",
+  "generation": {
+    "allowed_model_output": "combinational RTL body only",
+    "candidate_limit": 4,
+    "contract_id": "mapqptoqlevel",
+    "failure_reason": "no reusable verified candidate receipt",
+    "input_context": {
+      "c_body": true,
+      "frozen_interface": true,
+      "locked_contract": true,
+      "short_exact_spec_anchors": [
+        "pdf:model-note:MN_MAP_QP_TO_QLEVEL:p113",
+        "pdf:section:6.8.6"
+      ]
+    },
+    "max_model_calls": 1,
+    "model_calls": 0,
+    "status": "DETERMINISTIC_SCAFFOLD"
+  },
+  "schema_version": 1,
+  "source_body_hash": "1df142a6789220d42d5b1a4a21a8e44123420067cec2390b8797ceb40d4bce4d",
+  "source_file": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c",
+  "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+  "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+}

@@ -1,0 +1,18 @@
+{
+  "allowed_model_output": "combinational RTL body only",
+  "candidate_limit": 4,
+  "contract_id": "mapqptoqlevel",
+  "failure_reason": "no reusable verified candidate receipt",
+  "input_context": {
+    "c_body": true,
+    "frozen_interface": true,
+    "locked_contract": true,
+    "short_exact_spec_anchors": [
+      "pdf:model-note:MN_MAP_QP_TO_QLEVEL:p113",
+      "pdf:section:6.8.6"
+    ]
+  },
+  "max_model_calls": 1,
+  "model_calls": 0,
+  "status": "DETERMINISTIC_SCAFFOLD"
+}
