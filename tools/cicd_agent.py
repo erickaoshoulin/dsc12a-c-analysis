@@ -61,6 +61,7 @@ STAGE_TO_STATE = {
 }
 FORBIDDEN_RTL = (
     r"\balways_ff\b",
+    r"\balways_latch\b",
     r"\bposedge\b",
     r"\bnegedge\b",
     r"\bclock\b",
@@ -71,6 +72,7 @@ FORBIDDEN_RTL = (
     r"\bfork\b",
     r"\bjoin\b",
     r"\bmemory\b",
+    r"\b(?:logic|reg|bit|wire)\b[^;\n]*\]\s*[A-Za-z_][A-Za-z0-9_]*\s*\[",
 )
 
 
@@ -516,6 +518,8 @@ class Agent:
             "model": os.environ.get("DSC_CICD_MODEL", "external-generator-hook"),
             "generator": digest(command),
             "tools": digest(self.input_facts.get("tool_versions", {})),
+            "shards": os.environ.get("DSC_CICD_SHARDS", "4"),
+            "workers": os.environ.get("DSC_CICD_WORKERS", "2"),
         }
         return digest(hashes), hashes
 
@@ -994,6 +998,20 @@ class Agent:
         )
 
     def generate_artifacts(self, contract: dict[str, Any], item: dict[str, Any], artifact: pathlib.Path) -> dict[str, Any]:
+        if self.input_facts.get("errors"):
+            artifact.mkdir(parents=True, exist_ok=True)
+            receipt = {
+                "schema_version": 2,
+                "execution_status": "EXECUTED_NOW",
+                "status": "INFRASTRUCTURE_FAILURE",
+                "contract_id": contract_id(contract),
+                "model_calls": 0,
+                "tokens": 0,
+                "candidates": [],
+                "reason": "; ".join(str(error) for error in self.input_facts["errors"]),
+            }
+            write_json(artifact / "generation.json", receipt)
+            return receipt
         self.generate_static_artifacts(contract, artifact)
         _, body, span = source_body(contract, pathlib.Path(str(self.input_facts["source_dir"])))
         request = self.build_request(contract, body)
@@ -1208,8 +1226,12 @@ class Agent:
     def run_shard(self, artifact: pathlib.Path, shard: dict[str, Any],
                   oracle: pathlib.Path, rtl: pathlib.Path,
                   stop_event: threading.Event) -> dict[str, Any]:
+        commands = {
+            "oracle": [str(oracle), str(artifact / shard["path"])],
+            "rtl": [str(rtl), str(artifact / shard["path"])],
+        }
         if stop_event.is_set():
-            return {"shard_id": shard["shard_id"], "status": "CANCELLED", "vectors": 0}
+            return {"shard_id": shard["shard_id"], "status": "CANCELLED", "vectors": 0, "commands": commands}
         shard_path = artifact / shard["path"]
         output_dir = artifact / "shard-results"
         output_dir.mkdir(parents=True, exist_ok=True)
@@ -1235,9 +1257,10 @@ class Agent:
                 "vectors": shard["vectors"],
                 "reason": "oracle process failed",
                 "duration_seconds": round(time.time() - started, 3),
+                "commands": commands,
             }
         if stop_event.is_set():
-            return {"shard_id": shard["shard_id"], "status": "CANCELLED", "vectors": 0}
+            return {"shard_id": shard["shard_id"], "status": "CANCELLED", "vectors": 0, "commands": commands}
         with shard_path.open("rb") as vector_input, rtl_out.open("wb") as output, rtl_err.open("wb") as error:
             rtl_process = subprocess.run(
                 [str(rtl), str(shard_path)],
@@ -1254,6 +1277,7 @@ class Agent:
                 "vectors": shard["vectors"],
                 "reason": "RTL process failed",
                 "duration_seconds": round(time.time() - started, 3),
+                "commands": commands,
             }
         oracle_lines = oracle_out.read_text(encoding="utf-8", errors="replace").splitlines()
         rtl_lines = rtl_out.read_text(encoding="utf-8", errors="replace").splitlines()
@@ -1290,12 +1314,14 @@ class Agent:
                 "vectors": shard["vectors"],
                 "counterexample": mismatch,
                 "duration_seconds": round(time.time() - started, 3),
+                "commands": commands,
             }
         return {
             "shard_id": shard["shard_id"],
             "status": "PASS",
             "vectors": shard["vectors"],
             "duration_seconds": round(time.time() - started, 3),
+            "commands": commands,
         }
 
     def unit_verify(self, contract: dict[str, Any], artifact: pathlib.Path) -> dict[str, Any]:
@@ -1333,13 +1359,38 @@ class Agent:
             rtl = artifact / str(compile_receipt["binary"])
             stop_event = threading.Event()
             shard_results: list[dict[str, Any]] = []
-            with concurrent.futures.ThreadPoolExecutor(max_workers=shard_info["shard_count"]) as executor:
-                futures = [
-                    executor.submit(self.run_shard, artifact, shard, oracle, rtl, stop_event)
+            cancellation_requested = False
+            cancelled_futures = 0
+            worker_count = max(1, min(
+                shard_info["shard_count"],
+                int(os.environ.get("DSC_CICD_WORKERS", "2")),
+            ))
+            with concurrent.futures.ThreadPoolExecutor(max_workers=worker_count) as executor:
+                future_to_shard = {
+                    executor.submit(self.run_shard, artifact, shard, oracle, rtl, stop_event): shard
                     for shard in shard_info["shards"]
-                ]
-                for future in concurrent.futures.as_completed(futures):
-                    shard_results.append(future.result())
+                }
+                for future in concurrent.futures.as_completed(future_to_shard):
+                    shard = future_to_shard[future]
+                    if future.cancelled():
+                        shard_results.append({
+                            "shard_id": shard["shard_id"],
+                            "status": "CANCELLED",
+                            "vectors": 0,
+                            "commands": {
+                                "oracle": [str(oracle), str(artifact / shard["path"])],
+                                "rtl": [str(rtl), str(artifact / shard["path"])],
+                            },
+                        })
+                        continue
+                    result = future.result()
+                    shard_results.append(result)
+                    if result.get("status") == "COUNTEREXAMPLE" and not cancellation_requested:
+                        cancellation_requested = True
+                        stop_event.set()
+                        for pending in future_to_shard:
+                            if pending is not future and not pending.done() and pending.cancel():
+                                cancelled_futures += 1
             mismatches = [item["counterexample"] for item in shard_results if item.get("status") == "COUNTEREXAMPLE"]
             infra = [item for item in shard_results if item.get("status") == "INFRASTRUCTURE_FAILURE"]
             smallest = min(mismatches, key=lambda item: (tuple(item.get("inputs", [])), int(item.get("shard_id", 0)), int(item.get("index", 0)))) if mismatches else None
@@ -1359,6 +1410,11 @@ class Agent:
                 "shards": sorted(shard_results, key=lambda item: int(item["shard_id"])),
                 "vectors_executed": executed_vectors,
                 "smallest_counterexample": smallest,
+                "cancellation": {
+                    "requested_after_counterexample": cancellation_requested,
+                    "futures_cancelled": cancelled_futures,
+                    "worker_count": worker_count,
+                },
             }
             unit_receipt["candidates"].append(candidate_result)
             if smallest and unit_receipt.get("smallest_counterexample") is None:
@@ -1792,8 +1848,12 @@ class Agent:
             overlay_receipt = scrub_paths(overlay_receipt, [base_model, overlay_model, self.root])
             compile_receipt = scrub_paths(compile_receipt, [base_model, overlay_model, self.root])
             mode_results = scrub_paths(mode_results, [base_model, overlay_model, self.root])
+            all_modes_pass = all(
+                mode_results.get(mode, {}).get("status") == "PASS"
+                for mode in ("C_ONLY", "SHADOW", "RTL_RETURN")
+            )
             result = {
-                "status": "PASS" if mode_results["SHADOW"]["status"] and mode_results["RTL_RETURN"]["status"] else "FAIL",
+                "status": "PASS" if all_modes_pass else "FAIL",
                 "matrix_scripts_discovered": len(self.input_facts.get("baseline_scripts", [])),
                 "scenarios": [item["scenario"] for item in baseline_results],
                 "baseline": scrub_paths(baseline_results, [base_model, overlay_model, self.root]),
@@ -1812,6 +1872,84 @@ class Agent:
             shutil.rmtree(base_model.parent, ignore_errors=True)
             if overlay_model is not None:
                 shutil.rmtree(overlay_model.parent, ignore_errors=True)
+
+    def verify_rejected_candidates(self, contract: dict[str, Any], artifact: pathlib.Path,
+                                   generation: dict[str, Any], unit: dict[str, Any]) -> list[dict[str, Any]]:
+        generated = {
+            str(candidate.get("candidate")): candidate
+            for candidate in generation.get("candidates", [])
+        }
+        results: list[dict[str, Any]] = []
+        for candidate_result in unit.get("candidates", []):
+            unit_status = str(candidate_result.get("verification_status", "UNPROVED"))
+            if unit_status == "EXHAUSTIVE_EQUIVALENT":
+                continue
+            name = str(candidate_result.get("candidate", "candidate"))
+            candidate = generated.get(name, {})
+            rejected_artifact = artifact / "rejected" / safe_identifier(name)
+            if rejected_artifact.exists():
+                shutil.rmtree(rejected_artifact)
+            source = artifact / str(candidate.get("path", ""))
+            candidate_path = rejected_artifact / "generated" / source.name
+            candidate_path.parent.mkdir(parents=True, exist_ok=True)
+            matrix: dict[str, Any] = {}
+            candidate_copy = dict(candidate)
+            candidate_copy["path"] = str(candidate_path.relative_to(rejected_artifact))
+            candidate_copy["module"] = candidate_result.get("module") or candidate.get("module")
+            if not source.is_file() or not candidate_copy.get("module"):
+                matrix_status = "NOT_RUN_COMPILE_FAILURE"
+                bitstream_gate = "FAIL"
+            else:
+                shutil.copy2(source, candidate_path)
+                matrix = self.run_matrix(contract, rejected_artifact, candidate_copy)
+                matrix_status = str(matrix.get("status", "INFRASTRUCTURE_FAILURE"))
+                bitstream_gate = "PASS" if matrix_status == "PASS" else "FAIL"
+            composition_status = "FAIL"
+            if matrix:
+                composition_status = "PASS" if (
+                    matrix.get("modes", {}).get("SHADOW", {}).get("status") == "PASS"
+                    and matrix.get("modes", {}).get("RTL_RETURN", {}).get("status") == "PASS"
+                ) else "FAIL"
+            expected = unit_status != "EXHAUSTIVE_EQUIVALENT" and bitstream_gate == "FAIL"
+            full_receipt = {
+                "schema_version": 2,
+                "execution_status": "EXECUTED_NOW",
+                "status": "EXPECTED_REJECTION" if expected else "FAIL",
+                "candidate": name,
+                "unit_gate": {
+                    "status": "FAIL",
+                    "verification_status": unit_status,
+                    "vectors_executed": candidate_result.get("vectors_executed", 0),
+                    "shards": candidate_result.get("shards", []),
+                    "counterexample": candidate_result.get("smallest_counterexample"),
+                },
+                "bitstream_gate": {
+                    "status": bitstream_gate,
+                    "matrix_status": matrix_status,
+                    "receipt": "bitstream-receipt.json" if matrix else None,
+                },
+                "composition_gate": {
+                    "status": composition_status,
+                    "call_sites": matrix.get("overlay", {}).get("call_sites", []) if matrix else [],
+                    "caller_core_with_callee_rtl": matrix.get("modes", {}).get("RTL_RETURN", {}) if matrix else {},
+                },
+                "matrix": matrix,
+                "expected_rejection": expected,
+            }
+            write_json(rejected_artifact / "rejection-receipt.json", full_receipt)
+            results.append({
+                "candidate": name,
+                "status": full_receipt["status"],
+                "unit_gate": "FAIL",
+                "unit_verification_status": unit_status,
+                "bitstream_gate": bitstream_gate,
+                "composition_gate": composition_status,
+                "matrix_status": matrix_status,
+                "expected_rejection": expected,
+                "receipt": str((rejected_artifact / "rejection-receipt.json").relative_to(self.root)),
+                "counterexample": candidate_result.get("smallest_counterexample"),
+            })
+        return results
 
     def dependency_verify(self, contract: dict[str, Any], item: dict[str, Any],
                           artifact: pathlib.Path, unit: dict[str, Any],
@@ -1849,6 +1987,22 @@ class Agent:
             ],
             "call_sites_from_callgraph": direct_sites,
             "counterexample": unit.get("smallest_counterexample"),
+            "execution_evidence": {
+                "callee_oracle_compile": unit.get("oracle_compile", {}).get("commands", []),
+                "callee_candidate_compile": unit.get("compile_once", []),
+                "callee_rtl_against_c": [
+                    candidate for candidate in unit.get("candidates", [])
+                    if candidate.get("candidate") == unit.get("promoted_candidate")
+                ],
+                "caller_core_with_callee_c": matrix.get("modes", {}).get("C_ONLY", {}),
+                "caller_core_plus_callee_rtl": matrix.get("modes", {}).get("RTL_RETURN", {}),
+                "vectors": unit.get("domain", {}),
+                "counterexamples": [
+                    candidate.get("smallest_counterexample")
+                    for candidate in unit.get("candidates", [])
+                    if candidate.get("smallest_counterexample") is not None
+                ],
+            },
             "failure_reason": None if all(checks.values()) else "dependency composition did not pass all real gates",
         }
         write_json(artifact / "dependency-receipt.json", receipt)
@@ -1880,6 +2034,7 @@ class Agent:
                 "unit": cached_unit,
                 "matrix": cached_bitstream,
                 "dependency": read_json(artifact / "dependency-receipt.json", {}) or {},
+                "rejected_candidates": cached_unit.get("rejected_candidates", []),
                 "cache_entry": cache_entry,
             }
             self.run_results.append(result)
@@ -1900,8 +2055,17 @@ class Agent:
             self.update_state(cid, "UNIT_VERIFIED", unit_status, artifacts=[str(artifact.relative_to(self.root))], extra={
                 "unit_receipt": "EXECUTED_NOW",
             })
+            rejected_candidates = self.verify_rejected_candidates(contract, artifact, generation, unit)
+            unit["rejected_candidates"] = rejected_candidates
+            write_json(artifact / "unit-receipt.json", unit)
             if not unit.get("promoted_candidate"):
-                result = {"contract_id": cid, "status": unit.get("verification_status", "UNPROVED"), "generation": generation, "unit": unit}
+                result = {
+                    "contract_id": cid,
+                    "status": unit.get("verification_status", "UNPROVED"),
+                    "generation": generation,
+                    "unit": unit,
+                    "rejected_candidates": rejected_candidates,
+                }
                 self.run_results.append(result)
                 return result
             candidate = next(item for item in generation.get("candidates", []) if item.get("candidate") == unit["promoted_candidate"])
@@ -1923,6 +2087,7 @@ class Agent:
                 "unit": unit,
                 "matrix": matrix,
                 "dependency": dependency,
+                "rejected_candidates": rejected_candidates,
             }
             self.run_results.append(result)
             for name in ("shards", "shard-results", "oracle-build", "candidate-build", "generated"):
@@ -2032,6 +2197,17 @@ class Agent:
         selected = self.plan.get("selected_contracts", [])
         result_lines = []
         for result in self.run_results:
+            unit = result.get("unit", {})
+            domain = unit.get("domain", {})
+            promoted = next(
+                (
+                    candidate for candidate in unit.get("candidates", [])
+                    if candidate.get("candidate") == unit.get("promoted_candidate")
+                ),
+                {},
+            )
+            dependency = result.get("dependency", {})
+            matrix = result.get("matrix", {})
             result_lines.append({
                 "contract_id": result.get("contract_id"),
                 "status": result.get("status"),
@@ -2041,7 +2217,26 @@ class Agent:
                 "unit_status": result.get("unit", {}).get("verification_status"),
                 "dependency_status": result.get("dependency", {}).get("status"),
                 "matrix_status": result.get("matrix", {}).get("status"),
-                "counterexample": result.get("unit", {}).get("smallest_counterexample"),
+                "matrix_modes": {
+                    mode: matrix.get("modes", {}).get(mode, {}).get("status")
+                    for mode in ("C_ONLY", "SHADOW", "RTL_RETURN")
+                },
+                "executed_shards": domain.get("shard_count", 0),
+                "executed_vectors": domain.get("total_vectors", 0),
+                "shard_durations_seconds": [
+                    shard.get("duration_seconds")
+                    for shard in promoted.get("shards", [])
+                    if shard.get("duration_seconds") is not None
+                ],
+                "dependency_evidence": {
+                    "call_sites": len(dependency.get("dependency_ports", [])),
+                    "direct_call_sites": len(dependency.get("call_sites_from_callgraph", [])),
+                    "compile_commands": bool(dependency.get("execution_evidence", {}).get("callee_oracle_compile")),
+                    "matrix_commands": bool(dependency.get("execution_evidence", {}).get("caller_core_with_callee_c", {}).get("scenarios")),
+                    "vectors": bool(dependency.get("execution_evidence", {}).get("vectors")),
+                },
+                "rejected_candidates": result.get("rejected_candidates", []),
+                "counterexample": unit.get("smallest_counterexample"),
             })
         report = {
             "schema_version": 2,
@@ -2091,6 +2286,17 @@ class Agent:
         ]
         for value in result_lines:
             lines.append(f"- {value['contract_id']}: {value['status']} ({value['execution_status']}); unit={value['unit_status']}; dependency={value['dependency_status']}; matrix={value['matrix_status']}")
+            lines.append(
+                f"  - executed vectors/shards: {value['executed_vectors']}/{value['executed_shards']}; "
+                f"shard seconds: {value['shard_durations_seconds']}"
+            )
+            lines.append(f"  - matrix modes: {json.dumps(value['matrix_modes'], sort_keys=True)}")
+            lines.append(f"  - dependency evidence: {json.dumps(value['dependency_evidence'], sort_keys=True)}")
+            for rejected in value.get("rejected_candidates", []):
+                lines.append(
+                    f"  - rejected {rejected['candidate']}: unit={rejected['unit_gate']}; "
+                    f"bitstream={rejected['bitstream_gate']}; receipt={rejected['receipt']}"
+                )
         lines.extend(["", "## Blockers", ""])
         blockers = report["blockers"] or ["none"]
         lines.extend(f"- {value}" for value in blockers)

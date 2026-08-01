@@ -14,6 +14,10 @@ This report is produced from the current run receipts. The PDF and immutable C m
 ## Results
 
 - quantizeresidual: CACHE_REUSED (REUSED_VERIFIED_RECEIPT); unit=EXHAUSTIVE_EQUIVALENT; dependency=PASS; matrix=PASS
+  - executed vectors/shards: 2228207/4; shard seconds: [1.266, 1.325, 0.641, 0.632]
+  - matrix modes: {"C_ONLY": "PASS", "RTL_RETURN": "PASS", "SHADOW": "PASS"}
+  - dependency evidence: {"call_sites": 3, "compile_commands": true, "direct_call_sites": 3, "matrix_commands": true, "vectors": true}
+  - rejected candidate_02: unit=FAIL; bitstream=FAIL; receipt=artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2/rejected/candidate_02/rejection-receipt.json
 
 ## Blockers
 
