@@ -1,83 +1,76 @@
 # DSC 1.2a C model analysis
 
-This standalone repository contains a small, rerunnable structural analysis of
-the public DSC 1.2a C reference model. It produces deterministic facts for
-later DUT mining and LLM work. It does not modify the upstream model, generate
-RTL, introduce a C parser, or make a sequential-hardware claim.
+This standalone repository analyzes the local DSC 1.2a C reference model and
+links tool-discovered C facts back to the local PDF specification. It is
+isolated from SVRT and unrelated projects. It does not modify the upstream
+model, copy the PDF, generate RTL, add a handwritten C parser, or call an LLM
+for exact analysis.
 
-## Scope
+## Inputs
 
-The default source is:
-
-```text
-DSC_model_20210623/source/
-```
-
-The nested public-model revision and hashes are recorded in every JSON fact
-file. Override the source location without changing the experiment:
-
-```sh
-DSC_SOURCE_DIR=/path/to/DSC_model_20210623/source ./run.sh
-```
-
-Clang discovers every source-defined C function in the generated compilation
-database. `analysis-profile.json` is a declarative scope/profile file only: it
-selects which discovered entry points receive focused Eva/From analysis and
-which discovered functions are compared. It does not define the function
-inventory, and an empty `focused_targets` list makes the Frama-C runner use the
-complete AST-discovered inventory.
-
-## Method
-
-1. `tools/generate_compile_commands.py` emits a stable `facts/compile_commands.json`
-   from the public model's C translation units.
-2. `tools/check_compile_commands.py` runs the compiler front end with
-   `-fsyntax-only` for every compilation-database entry. Any failure is an
-   infrastructure failure.
-3. `clang_facts.cpp` uses Clang LibTooling and AST Matchers for every defined
-   function's USR,
-   calls, global/field accesses, pointer writes, effects, loops, return
-   expressions, constant table initializers, and operator evidence.
-4. `run_frama.py` reads the AST-discovered inventory and the declarative
-   profile, then runs the selected Frama-C Eva and From commands. Eva warnings are
-   retained for bounds, shifts, signed overflow, pointer validity, and
-   unreachable-branch checks. From output is retained for return and modified
-   memory dependencies.
-5. `assemble_facts.py` combines only the tool outputs into JSON facts and
-   Markdown reports. It never lexes or parses C text.
-
-The focused Frama-C invocation excludes the command-line/platform glue units
-`cmd_parse.c`, `dpx.c`, `hdr_dpx.c`, and `logging.c`: their host-specific
-headers or dynamic DPX layout are outside the seven helper entry points and
-cannot be consumed by this Frama-C parser configuration. The Clang collection
-still covers every translation unit in the compile database, and the exact
-exclusion list is recorded in the Frama manifest and fact metadata.
-
-The generated timestamp is excluded from `metadata.semantic_hash`. A missing
-proof is recorded as `UNKNOWN`; no `% 3` simplification is proposed until a
-caller-specific `cpnt` range is proved. Struct roles are per-field proposals:
-`dsc_cfg_t` is not treated as one static-configuration object, and
-`dsc_state_t` table pointers, runtime state, and model-only data are kept
-separate or explicitly left unknown.
-
-## Run
+Run:
 
 ```sh
 ./run.sh
 ```
 
-The script performs the same command at most twice. It stops with
-`INFRASTRUCTURE_FAILURE` for missing source, compile database errors, missing
-Clang/LibTooling, missing Frama-C, include/configuration errors, timeout, or
-disk/write failures. It does not call an LLM or invoke a fallback parser.
+Input discovery uses this precedence:
 
-Set `DSC_ANALYSIS_TIMEOUT_SECONDS` to change the per-command timeout. The
-temporary build and raw logs are outside the repository and are removed after
-the run.
+1. `DSC_SPEC_PDF`, `DSC_SOURCE_DIR`, or `DSC_MODEL_ROOT`.
+2. macOS `mdfind`.
+3. A bounded search under the repository parent, `~/Desktop`, and
+   `~/Downloads`.
+
+The PDF gate records the path, SHA-256, `pdfinfo` metadata, and requires DSC
+1.2a metadata plus 145 pages. The C gate requires a model root containing
+`source/Makefile`, `source/codec_main.c`, and `source/dsc_codec.c`.
+Missing inputs are recorded as `SPEC_UNAVAILABLE` or
+`SOURCE_UNAVAILABLE`; the pipeline does not download or synthesize inputs.
+
+## Build and analysis
+
+Before analysis, the model root is copied to a temporary directory. The copy is
+clean-built with `make -j1 clean` and `make -j1`; the resulting
+`source/dsc` is run through `bittrue_smoke/run_c_baseline.sh` when available.
+The receipt records commands, versions, warnings, smoke/golden hashes, binary
+hashes, and excluded derived directories. The upstream source remains
+read-only.
+
+Clang LibTooling analyzes every translation unit in
+`compile_commands.json`. It records the complete function inventory, USRs,
+call graph, direct/transitive global/field/pointee effects, loops and trip
+facts, return dependencies, and source ranges. Production scope is inferred
+from linked executable entry symbols and dataflow to observable bitstream or
+reconstructed-output sinks.
+
+Candidates are ranked without a function-name allowlist. Each function gets
+purity, timing, role, production reachability, observable-output contribution,
+confidence, and evidence. The eligible criteria are production reachability,
+output contribution, no direct/transitive state write, no I/O/allocation/logging,
+and bounded computation. The top 10 (configurable with
+`DSC_ANALYSIS_TOP_N`) are passed to Frama-C Eva/From when analyzable.
+
+## Specification traceability
+
+The deterministic PDF extractor records page count, headings, tables, figures,
+and short anchors in `spec/anchors.json`; it never stores long PDF text.
+C comments, `MN_*` model notes, explicit page/section/table references,
+function ranges, constants, tables, USRs, source hashes, and fixed-commit
+permalinks are recorded in `facts/comments.json`.
+
+`traceability/links.proposed.yaml` contains generated exact/proposed links.
+`traceability/links.reviewed.yaml` is the human-edited review surface and is
+never overwritten. A reviewed link becomes `STALE` if either input hash
+changes. Reports are bidirectional and retain visible unknowns/orphans.
 
 ## Outputs
 
 ```text
+spec/
+  manifest.json
+  anchors.json
+build/
+  build-receipt.json
 facts/
   compile_commands.json
   compile-check.json
@@ -88,29 +81,31 @@ facts/
   loops.json
   value-ranges.json
   dependencies.json
+  candidates.json
+  comments.json
+traceability/
+  links.proposed.yaml
+  links.reviewed.yaml
+  traceability.json
 reports/
+  candidates.md
+  candidate-functions.md
+  spec-to-code.md
+  code-to-spec.md
+  orphans.md
   function-summary.md
   field-summary.md
-  candidate-functions.md
   unresolved.md
 summary.json
-analysis-profile.json
-PROMPT.md
 ```
 
-Each JSON file contains `metadata` with the DSC source revision, source file
-hashes, the consumed `compile_commands.json` and compiler-check hashes, Clang
-and Frama-C versions, AST discovery count, analysis commands, semantic hash,
-and generated timestamp. `summary.json` also records the profile-selected
-comparison, quantization-table initialization/use evidence, loop facts, and
-the candidate count gate. The local reference PDF used for this run is
-`DSC_v1.2a.pdf` (VESA DSC Standard Version 1.2a); the PDF itself is not copied
-into this repository.
+All generated JSON includes provenance and semantic hashes. Build/tool/path,
+compiler, timeout, or source-integrity failures are
+`INFRASTRUCTURE_FAILURE`; no regeneration or LLM fallback is attempted.
 
-## Limitations
+## Environment
 
-Eva's `NO_ALARM_OBSERVED_NOT_PROOF` status is intentionally not rewritten as a
-proof. Entry-point parameter ranges can remain unknown without a contract;
-From can similarly leave return or modified-memory dependencies unknown when
-the plugin does not emit a parseable dependency line. These limitations are
-listed in `reports/unresolved.md`.
+Set `DSC_ANALYSIS_TIMEOUT_SECONDS` for compiler/Clang/Frama-C commands,
+`DSC_BUILD_TIMEOUT_SECONDS` for the isolated build/smoke gate, and
+`DSC_ANALYSIS_TOP_N` for the Frama-C candidate count. The temporary copy and
+raw logs are removed after each run.

@@ -1,41 +1,107 @@
 {
-  "comparison_pairs": [
-    [
-      "Qp2Qlevel",
-      "MapQpToQlevel"
-    ]
-  ],
+  "candidate_summary": {
+    "eligible_candidates": 10,
+    "output_contributing": 57,
+    "production_reachable": 167,
+    "source_functions": 194
+  },
   "comparisons": {
-    "MapQpToQlevel": {
+    "FindMidpoint": {
       "callees": [],
       "callers": [
         {
-          "clang_usr": "c:@F@EscapeCodeSize",
-          "name": "EscapeCodeSize"
-        },
-        {
-          "clang_usr": "c:@F@GetQpAdjPredSize",
-          "name": "GetQpAdjPredSize"
-        },
-        {
-          "clang_usr": "c:@F@IsOrigFlatHIndex",
-          "name": "IsOrigFlatHIndex"
-        },
-        {
-          "clang_usr": "c:@F@IsOrigWithinQerr",
-          "name": "IsOrigWithinQerr"
-        },
-        {
-          "clang_usr": "c:@F@MaxResidualSize",
-          "name": "MaxResidualSize"
-        },
-        {
           "clang_usr": "c:@F@PredictionLoop",
           "name": "PredictionLoop"
+        }
+      ],
+      "fields_read": [
+        {
+          "context": "expression",
+          "location": {
+            "column": 24,
+            "file": "dsc_codec.c",
+            "line": 911
+          },
+          "name": "cpntBitDepth",
+          "record": "dsc_state_t",
+          "role": "READ",
+          "type": "int[4]"
         },
         {
-          "clang_usr": "c:@F@UsingMidpoint",
-          "name": "UsingMidpoint"
+          "context": "expression",
+          "location": {
+            "column": 32,
+            "file": "dsc_codec.c",
+            "line": 913
+          },
+          "name": "leftRecon",
+          "record": "dsc_state_t",
+          "role": "READ",
+          "type": "int[4]"
+        }
+      ],
+      "globals_read": [],
+      "return_dependencies": [
+        {
+          "kind": "field",
+          "location": {
+            "column": 32,
+            "file": "dsc_codec.c",
+            "line": 913
+          },
+          "name": "dsc_state_t.leftRecon"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 42,
+            "file": "dsc_codec.c",
+            "line": 913
+          },
+          "name": "cpnt"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 21,
+            "file": "dsc_codec.c",
+            "line": 913
+          },
+          "name": "dsc_state"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 52,
+            "file": "dsc_codec.c",
+            "line": 913
+          },
+          "name": "qlevel"
+        }
+      ],
+      "usage_paths": [
+        [
+          "main",
+          "DSC_Decode",
+          "DSC_Algorithm",
+          "PredictionLoop",
+          "FindMidpoint"
+        ],
+        [
+          "main",
+          "DSC_Encode",
+          "DSC_Algorithm",
+          "PredictionLoop",
+          "FindMidpoint"
+        ]
+      ]
+    },
+    "IsFlatnessInfoSent": {
+      "callees": [],
+      "callers": [
+        {
+          "clang_usr": "c:@F@FlatnessAdjustment",
+          "name": "FlatnessAdjustment"
         },
         {
           "clang_usr": "c:@F@VLCUnit",
@@ -48,49 +114,13 @@
       ],
       "fields_read": [
         {
-          "context": "condition",
+          "context": "expression",
           "location": {
-            "column": 53,
+            "column": 58,
             "file": "dsc_codec.c",
-            "line": 233
+            "line": 1118
           },
-          "name": "cpntBitDepth",
-          "record": "dsc_state_t",
-          "role": "READ",
-          "type": "int[4]"
-        },
-        {
-          "context": "condition",
-          "location": {
-            "column": 83,
-            "file": "dsc_codec.c",
-            "line": 233
-          },
-          "name": "cpntBitDepth",
-          "record": "dsc_state_t",
-          "role": "READ",
-          "type": "int[4]"
-        },
-        {
-          "context": "condition",
-          "location": {
-            "column": 16,
-            "file": "dsc_codec.c",
-            "line": 233
-          },
-          "name": "dsc_version_minor",
-          "record": "dsc_cfg_t",
-          "role": "READ",
-          "type": "int"
-        },
-        {
-          "context": "condition",
-          "location": {
-            "column": 21,
-            "file": "dsc_codec.c",
-            "line": 228
-          },
-          "name": "native_420",
+          "name": "flatness_max_qp",
           "record": "dsc_cfg_t",
           "role": "READ",
           "type": "int"
@@ -98,224 +128,62 @@
         {
           "context": "expression",
           "location": {
-            "column": 23,
+            "column": 24,
             "file": "dsc_codec.c",
-            "line": 232
+            "line": 1118
           },
-          "name": "quantTableChroma",
-          "record": "dsc_state_t",
+          "name": "flatness_min_qp",
+          "record": "dsc_cfg_t",
           "role": "READ",
-          "type": "int *"
-        },
-        {
-          "context": "expression",
-          "location": {
-            "column": 23,
-            "file": "dsc_codec.c",
-            "line": 227
-          },
-          "name": "quantTableLuma",
-          "record": "dsc_state_t",
-          "role": "READ",
-          "type": "int *"
-        },
-        {
-          "context": "expression",
-          "location": {
-            "column": 23,
-            "file": "dsc_codec.c",
-            "line": 229
-          },
-          "name": "quantTableLuma",
-          "record": "dsc_state_t",
-          "role": "READ",
-          "type": "int *"
+          "type": "int"
         }
       ],
       "globals_read": [],
-      "return_dependencies": [],
+      "return_dependencies": [
+        {
+          "kind": "field",
+          "location": {
+            "column": 58,
+            "file": "dsc_codec.c",
+            "line": 1118
+          },
+          "name": "dsc_cfg_t.flatness_max_qp"
+        },
+        {
+          "kind": "field",
+          "location": {
+            "column": 24,
+            "file": "dsc_codec.c",
+            "line": 1118
+          },
+          "name": "dsc_cfg_t.flatness_min_qp"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 15,
+            "file": "dsc_codec.c",
+            "line": 1118
+          },
+          "name": "dsc_cfg"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 11,
+            "file": "dsc_codec.c",
+            "line": 1118
+          },
+          "name": "qp"
+        }
+      ],
       "usage_paths": [
-        [
-          "DSC_Algorithm",
-          "VLCGroup",
-          "VLCUnit",
-          "GetQpAdjPredSize",
-          "MaxResidualSize",
-          "MapQpToQlevel"
-        ],
-        [
-          "DSC_Algorithm",
-          "VLCGroup",
-          "VLCUnit",
-          "IchDecision",
-          "IsOrigFlatHIndex",
-          "MapQpToQlevel"
-        ],
-        [
-          "DSC_Algorithm",
-          "VLCGroup",
-          "VLCUnit",
-          "IchDecision",
-          "UsingMidpoint",
-          "MapQpToQlevel"
-        ],
-        [
-          "DSC_Algorithm",
-          "VLDGroup",
-          "VLDUnit",
-          "GetQpAdjPredSize",
-          "MaxResidualSize",
-          "MapQpToQlevel"
-        ],
-        [
-          "DSC_Decode",
-          "DSC_Algorithm",
-          "VLCGroup",
-          "VLCUnit",
-          "EscapeCodeSize",
-          "MapQpToQlevel"
-        ],
-        [
-          "DSC_Decode",
-          "DSC_Algorithm",
-          "VLCGroup",
-          "VLCUnit",
-          "GetQpAdjPredSize",
-          "MapQpToQlevel"
-        ],
-        [
-          "DSC_Decode",
-          "DSC_Algorithm",
-          "VLCGroup",
-          "VLCUnit",
-          "MaxResidualSize",
-          "MapQpToQlevel"
-        ],
-        [
-          "DSC_Decode",
-          "DSC_Algorithm",
-          "VLDGroup",
-          "VLDUnit",
-          "EscapeCodeSize",
-          "MapQpToQlevel"
-        ],
-        [
-          "DSC_Decode",
-          "DSC_Algorithm",
-          "VLDGroup",
-          "VLDUnit",
-          "GetQpAdjPredSize",
-          "MapQpToQlevel"
-        ],
-        [
-          "DSC_Decode",
-          "DSC_Algorithm",
-          "VLDGroup",
-          "VLDUnit",
-          "MaxResidualSize",
-          "MapQpToQlevel"
-        ],
-        [
-          "DSC_Encode",
-          "DSC_Algorithm",
-          "VLCGroup",
-          "VLCUnit",
-          "EscapeCodeSize",
-          "MapQpToQlevel"
-        ],
-        [
-          "DSC_Encode",
-          "DSC_Algorithm",
-          "VLCGroup",
-          "VLCUnit",
-          "GetQpAdjPredSize",
-          "MapQpToQlevel"
-        ],
-        [
-          "DSC_Encode",
-          "DSC_Algorithm",
-          "VLCGroup",
-          "VLCUnit",
-          "MaxResidualSize",
-          "MapQpToQlevel"
-        ],
-        [
-          "DSC_Encode",
-          "DSC_Algorithm",
-          "VLDGroup",
-          "VLDUnit",
-          "EscapeCodeSize",
-          "MapQpToQlevel"
-        ],
-        [
-          "DSC_Encode",
-          "DSC_Algorithm",
-          "VLDGroup",
-          "VLDUnit",
-          "GetQpAdjPredSize",
-          "MapQpToQlevel"
-        ],
-        [
-          "DSC_Encode",
-          "DSC_Algorithm",
-          "VLDGroup",
-          "VLDUnit",
-          "MaxResidualSize",
-          "MapQpToQlevel"
-        ],
-        [
-          "VLCGroup",
-          "VLCUnit",
-          "IchDecision",
-          "EstimateBitsForGroup",
-          "GetQpAdjPredSize",
-          "MapQpToQlevel"
-        ],
-        [
-          "VLCGroup",
-          "VLCUnit",
-          "IchDecision",
-          "EstimateBitsForGroup",
-          "MaxResidualSize",
-          "MapQpToQlevel"
-        ],
-        [
-          "VLCUnit",
-          "IchDecision",
-          "EstimateBitsForGroup",
-          "GetQpAdjPredSize",
-          "MaxResidualSize",
-          "MapQpToQlevel"
-        ],
         [
           "main",
           "DSC_Decode",
           "DSC_Algorithm",
           "FlatnessAdjustment",
-          "IsOrigFlatHIndex",
-          "MapQpToQlevel"
-        ],
-        [
-          "main",
-          "DSC_Decode",
-          "DSC_Algorithm",
-          "IsOrigWithinQerr",
-          "MapQpToQlevel"
-        ],
-        [
-          "main",
-          "DSC_Decode",
-          "DSC_Algorithm",
-          "PredictionLoop",
-          "MapQpToQlevel"
-        ],
-        [
-          "main",
-          "DSC_Decode",
-          "DSC_Algorithm",
-          "PredictionLoop",
-          "MaxResidualSize",
-          "MapQpToQlevel"
+          "IsFlatnessInfoSent"
         ],
         [
           "main",
@@ -323,7 +191,7 @@
           "DSC_Algorithm",
           "VLCGroup",
           "VLCUnit",
-          "MapQpToQlevel"
+          "IsFlatnessInfoSent"
         ],
         [
           "main",
@@ -331,37 +199,14 @@
           "DSC_Algorithm",
           "VLDGroup",
           "VLDUnit",
-          "MapQpToQlevel"
+          "IsFlatnessInfoSent"
         ],
         [
           "main",
           "DSC_Encode",
           "DSC_Algorithm",
           "FlatnessAdjustment",
-          "IsOrigFlatHIndex",
-          "MapQpToQlevel"
-        ],
-        [
-          "main",
-          "DSC_Encode",
-          "DSC_Algorithm",
-          "IsOrigWithinQerr",
-          "MapQpToQlevel"
-        ],
-        [
-          "main",
-          "DSC_Encode",
-          "DSC_Algorithm",
-          "PredictionLoop",
-          "MapQpToQlevel"
-        ],
-        [
-          "main",
-          "DSC_Encode",
-          "DSC_Algorithm",
-          "PredictionLoop",
-          "MaxResidualSize",
-          "MapQpToQlevel"
+          "IsFlatnessInfoSent"
         ],
         [
           "main",
@@ -369,7 +214,7 @@
           "DSC_Algorithm",
           "VLCGroup",
           "VLCUnit",
-          "MapQpToQlevel"
+          "IsFlatnessInfoSent"
         ],
         [
           "main",
@@ -377,209 +222,7 @@
           "DSC_Algorithm",
           "VLDGroup",
           "VLDUnit",
-          "MapQpToQlevel"
-        ]
-      ]
-    },
-    "Qp2Qlevel": {
-      "callees": [],
-      "callers": [
-        {
-          "clang_usr": "c:@F@check_qp_for_overflow",
-          "name": "check_qp_for_overflow"
-        }
-      ],
-      "fields_read": [
-        {
-          "context": "expression",
-          "location": {
-            "column": 19,
-            "file": "codec_main.c",
-            "line": 822
-          },
-          "name": "bits_per_component",
-          "record": "dsc_cfg_t",
-          "role": "READ",
-          "type": "int"
-        },
-        {
-          "context": "expression",
-          "location": {
-            "column": 19,
-            "file": "codec_main.c",
-            "line": 831
-          },
-          "name": "bits_per_component",
-          "record": "dsc_cfg_t",
-          "role": "READ",
-          "type": "int"
-        },
-        {
-          "context": "condition",
-          "location": {
-            "column": 51,
-            "file": "codec_main.c",
-            "line": 839
-          },
-          "name": "convert_rgb",
-          "record": "dsc_cfg_t",
-          "role": "READ",
-          "type": "int"
-        },
-        {
-          "context": "condition",
-          "location": {
-            "column": 16,
-            "file": "codec_main.c",
-            "line": 839
-          },
-          "name": "dsc_version_minor",
-          "record": "dsc_cfg_t",
-          "role": "READ",
-          "type": "int"
-        },
-        {
-          "context": "condition",
-          "location": {
-            "column": 36,
-            "file": "codec_main.c",
-            "line": 820
-          },
-          "name": "native_420",
-          "record": "dsc_cfg_t",
-          "role": "READ",
-          "type": "int"
-        }
-      ],
-      "globals_read": [
-        {
-          "context": "expression",
-          "location": {
-            "column": 24,
-            "file": "codec_main.c",
-            "line": 834
-          },
-          "name": "qlevel_chroma_10bpc",
-          "record": "",
-          "role": "READ",
-          "type": "int[]"
-        },
-        {
-          "context": "expression",
-          "location": {
-            "column": 24,
-            "file": "codec_main.c",
-            "line": 835
-          },
-          "name": "qlevel_chroma_12bpc",
-          "record": "",
-          "role": "READ",
-          "type": "int[]"
-        },
-        {
-          "context": "expression",
-          "location": {
-            "column": 24,
-            "file": "codec_main.c",
-            "line": 836
-          },
-          "name": "qlevel_chroma_14bpc",
-          "record": "",
-          "role": "READ",
-          "type": "int[]"
-        },
-        {
-          "context": "expression",
-          "location": {
-            "column": 24,
-            "file": "codec_main.c",
-            "line": 837
-          },
-          "name": "qlevel_chroma_16bpc",
-          "record": "",
-          "role": "READ",
-          "type": "int[]"
-        },
-        {
-          "context": "expression",
-          "location": {
-            "column": 24,
-            "file": "codec_main.c",
-            "line": 833
-          },
-          "name": "qlevel_chroma_8bpc",
-          "record": "",
-          "role": "READ",
-          "type": "int[]"
-        },
-        {
-          "context": "expression",
-          "location": {
-            "column": 23,
-            "file": "codec_main.c",
-            "line": 825
-          },
-          "name": "qlevel_luma_10bpc",
-          "record": "",
-          "role": "READ",
-          "type": "int[]"
-        },
-        {
-          "context": "expression",
-          "location": {
-            "column": 23,
-            "file": "codec_main.c",
-            "line": 826
-          },
-          "name": "qlevel_luma_12bpc",
-          "record": "",
-          "role": "READ",
-          "type": "int[]"
-        },
-        {
-          "context": "expression",
-          "location": {
-            "column": 23,
-            "file": "codec_main.c",
-            "line": 827
-          },
-          "name": "qlevel_luma_14bpc",
-          "record": "",
-          "role": "READ",
-          "type": "int[]"
-        },
-        {
-          "context": "expression",
-          "location": {
-            "column": 23,
-            "file": "codec_main.c",
-            "line": 828
-          },
-          "name": "qlevel_luma_16bpc",
-          "record": "",
-          "role": "READ",
-          "type": "int[]"
-        },
-        {
-          "context": "expression",
-          "location": {
-            "column": 23,
-            "file": "codec_main.c",
-            "line": 824
-          },
-          "name": "qlevel_luma_8bpc",
-          "record": "",
-          "role": "READ",
-          "type": "int[]"
-        }
-      ],
-      "return_dependencies": [],
-      "usage_paths": [
-        [
-          "main",
-          "populate_pps",
-          "check_qp_for_overflow",
-          "Qp2Qlevel"
+          "IsFlatnessInfoSent"
         ]
       ]
     }
@@ -980,52 +623,81 @@
   "facts": {
     "callgraph_edge_count": 2161,
     "callgraph_node_count": 194,
-    "candidate_count": 47,
+    "candidate_count": 10,
     "compile_check_status": "PASS",
     "compiler_command_count": 11,
     "discovered_function_count": 194,
     "field_count": 372,
-    "focused_targets": [
-      "Qp2Qlevel",
+    "frama_targets": [
+      "FindMidpoint",
+      "IsFlatnessInfoSent",
       "MapQpToQlevel",
+      "PredictSize",
       "QuantizeResidual",
-      "FindResidualSize",
       "SampToLineBuf",
+      "SamplePredict",
+      "EscapeCodeSize",
       "MaxResidualSize",
       "GetQpAdjPredSize"
     ],
     "function_count": 194,
-    "loop_count": 410
+    "loop_count": 410,
+    "output_contributing_count": 57,
+    "production_reachable_count": 167
   },
   "limitations": [
     "Eva no-alarm observations are not substituted for proof.",
     "Direct parameter ranges can remain UNKNOWN without contracts.",
-    "cpnt modulo behavior is retained until caller-specific range proof."
+    "Candidate links and non-exact spec links remain visibly proposed or orphaned until review.",
+    "No LLM calls or RTL generation are used by this pipeline."
   ],
   "metadata": {
     "analysis_command": [
-      "clang -fsyntax-only over every compile_commands.json entry",
-      "clang LibTooling AST Matchers over facts/compile_commands.json",
-      "frama-c -deps -calldeps -main PROFILE_TARGET (profile-selected targets)",
-      "frama-c -eva -main PROFILE_TARGET (profile-selected targets)",
-      "generate compile_commands.json from public Makefile flags"
+      "Clang LibTooling AST Matchers over every compile_commands.json entry",
+      "Frama-C Eva and From on the top-ranked tool-selected candidates",
+      "deterministic PDF anchors and C model-note links; no LLM calls",
+      "discover local PDF and C model by metadata/source gates",
+      "make -j1 clean then make -j1 and run bittrue C smoke in an isolated copy",
+      "rank production/output-contributing bounded candidates without a function-name allowlist"
     ],
+    "binary_sha256": "1aa30a5c49f7b87bc18c2150f94ad620bc005f3aa935327d63799cb3f674216c",
+    "build_receipt_sha256": "dfaee4a5f1dc607d5a20441f6945f7180b9c0ee48c033b273ffda92ce85fe828",
+    "build_status": "PASS",
+    "candidate_receipt_sha256": "97f6a5455ec94fe9c09f0595dc59e6127f19887d4707b690309ee3732a6c4cba",
+    "candidate_selection": {
+      "boundary_root_usrs": [
+        "c:@F@DSC_Algorithm",
+        "c:@F@DSC_Decode",
+        "c:@F@DSC_Encode"
+      ],
+      "criteria": [
+        "production_reachable",
+        "contributes_to_observable_output",
+        "no_direct_or_transitive_state_write",
+        "no_io_allocation_or_logging",
+        "bounded_computation"
+      ],
+      "entry_symbols": [
+        "main"
+      ],
+      "method": "linked_executable_entry_symbols",
+      "output_sink_usrs": [
+        "c:@F@hdr_dpx_write",
+        "c:@F@write_dpx_ver"
+      ],
+      "root_usrs": [
+        "c:@F@main"
+      ],
+      "top_n": 10
+    },
     "clang_version": "Apple clang version 17.0.0 (clang-1700.6.3.2)",
     "compile_check_sha256": "e77b1146218bd22946a9993887679393ebcbc9cb27bd0165c70b680ce20a6adb",
     "compile_check_status": "PASS",
     "compile_commands_sha256": "56b5e6a919ea0e63fc8c9b8d6068e2d88629e1710ca9f83fbde06e9d433b1ace",
     "compiler_command_count": 11,
     "discovered_function_count": 194,
+    "do_not_edit": true,
     "dsc_source_revision": "f26ecb2afa83aa9f0cc608b5b7c2742901ee9207",
-    "focused_targets": [
-      "Qp2Qlevel",
-      "MapQpToQlevel",
-      "QuantizeResidual",
-      "FindResidualSize",
-      "SampToLineBuf",
-      "MaxResidualSize",
-      "GetQpAdjPredSize"
-    ],
     "frama_c_version": "33.0 (Arsenic)",
     "frama_excluded_sources": [
       "cmd_parse.c",
@@ -1033,13 +705,26 @@
       "hdr_dpx.c",
       "logging.c"
     ],
+    "frama_targets": [
+      "FindMidpoint",
+      "IsFlatnessInfoSent",
+      "MapQpToQlevel",
+      "PredictSize",
+      "QuantizeResidual",
+      "SampToLineBuf",
+      "SamplePredict",
+      "EscapeCodeSize",
+      "MaxResidualSize",
+      "GetQpAdjPredSize"
+    ],
     "function_discovery": {
       "count": 194,
       "source": "Clang AST functionDecl(isDefinition())"
     },
-    "generated_timestamp": "2026-07-31T12:06:12.902507+00:00",
-    "schema_version": 1,
-    "semantic_hash": "cd6f3be6ca8c10ddf68face39b8812d7a45ec8c4ae2f2ef258bee2eca2be695d",
+    "generated_timestamp": "2026-08-01T14:03:19.965036+00:00",
+    "input_manifest_sha256": "c1cf90cdd06ff4afd38b80de7cfc476944d708d1c15cb0ee9b372e3cc254cb6b",
+    "schema_version": 2,
+    "semantic_hash": "88dec0a2317c112a5cc36ded8319664c5d60ec4f939722210dcff1cc80ff7c44",
     "source_file_hashes": [
       {
         "path": "cmd_parse.c",
@@ -1138,13 +823,68 @@
         "sha256": "e48d318a5c2d8512d25230cafb74835a135bf8dc89232d1c6ccefcb5ef28ebbc"
       }
     ],
+    "source_git": {
+      "branch": "codex/operator-bittrue-coverage",
+      "commit": "f26ecb2afa83aa9f0cc608b5b7c2742901ee9207",
+      "remote_origin": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port.git",
+      "root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
+      "status_porcelain": ""
+    },
+    "source_hashes_sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+    "spec_pdf_sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
     "status": "OK",
-    "target_profile_sha256": "1e551e958db80751b34fb2cedee3fac4d816486e0d42b3b7414d75d8ba347ade"
+    "traceability_counts": {
+      "comment_count": 343,
+      "exact_count": 0,
+      "heading_anchor_count": 182,
+      "link_count": 59,
+      "model_note_count": 28,
+      "proposed_count": 59,
+      "reviewed_count": 0,
+      "spec_anchor_count": 327,
+      "stale_count": 0,
+      "untraced_production_function_count": 112,
+      "untraced_spec_anchor_count": 153
+    },
+    "traceability_sha256": "f80c37857195e053d85ae0af3be8c425df945a44f631847493d462a34c340116"
   },
   "quantization_tables": [
     {
+      "array_size": 17,
+      "evidence": "Clang evaluated the constant initializer list for an array global",
+      "line": 154,
+      "source_file": "dsc_codec.c",
+      "table": "QuantDivisor",
+      "value_range": [
+        1,
+        65536
+      ]
+    },
+    {
+      "array_size": 17,
+      "evidence": "Clang evaluated the constant initializer list for an array global",
+      "line": 155,
+      "source_file": "dsc_codec.c",
+      "table": "QuantOffset",
+      "value_range": [
+        0,
+        32767
+      ]
+    },
+    {
+      "array_size": 16,
+      "evidence": "Clang evaluated the constant initializer list for an array global",
+      "line": 49,
+      "source_file": "<external>/uuid.h",
+      "table": "UUID_NULL",
+      "value_range": [
+        0,
+        0
+      ]
+    },
+    {
       "array_size": 20,
-      "evidence": "Clang evaluated the constant initializer list",
+      "evidence": "Clang evaluated the constant initializer list for an array global",
       "line": 159,
       "source_file": "dsc_codec.c",
       "table": "qlevel_chroma_10bpc",
@@ -1155,7 +895,7 @@
     },
     {
       "array_size": 24,
-      "evidence": "Clang evaluated the constant initializer list",
+      "evidence": "Clang evaluated the constant initializer list for an array global",
       "line": 161,
       "source_file": "dsc_codec.c",
       "table": "qlevel_chroma_12bpc",
@@ -1166,7 +906,7 @@
     },
     {
       "array_size": 28,
-      "evidence": "Clang evaluated the constant initializer list",
+      "evidence": "Clang evaluated the constant initializer list for an array global",
       "line": 163,
       "source_file": "dsc_codec.c",
       "table": "qlevel_chroma_14bpc",
@@ -1177,7 +917,7 @@
     },
     {
       "array_size": 32,
-      "evidence": "Clang evaluated the constant initializer list",
+      "evidence": "Clang evaluated the constant initializer list for an array global",
       "line": 165,
       "source_file": "dsc_codec.c",
       "table": "qlevel_chroma_16bpc",
@@ -1188,7 +928,7 @@
     },
     {
       "array_size": 16,
-      "evidence": "Clang evaluated the constant initializer list",
+      "evidence": "Clang evaluated the constant initializer list for an array global",
       "line": 157,
       "source_file": "dsc_codec.c",
       "table": "qlevel_chroma_8bpc",
@@ -1199,7 +939,7 @@
     },
     {
       "array_size": 20,
-      "evidence": "Clang evaluated the constant initializer list",
+      "evidence": "Clang evaluated the constant initializer list for an array global",
       "line": 158,
       "source_file": "dsc_codec.c",
       "table": "qlevel_luma_10bpc",
@@ -1210,7 +950,7 @@
     },
     {
       "array_size": 24,
-      "evidence": "Clang evaluated the constant initializer list",
+      "evidence": "Clang evaluated the constant initializer list for an array global",
       "line": 160,
       "source_file": "dsc_codec.c",
       "table": "qlevel_luma_12bpc",
@@ -1221,7 +961,7 @@
     },
     {
       "array_size": 28,
-      "evidence": "Clang evaluated the constant initializer list",
+      "evidence": "Clang evaluated the constant initializer list for an array global",
       "line": 162,
       "source_file": "dsc_codec.c",
       "table": "qlevel_luma_14bpc",
@@ -1232,7 +972,7 @@
     },
     {
       "array_size": 32,
-      "evidence": "Clang evaluated the constant initializer list",
+      "evidence": "Clang evaluated the constant initializer list for an array global",
       "line": 164,
       "source_file": "dsc_codec.c",
       "table": "qlevel_luma_16bpc",
@@ -1243,7 +983,7 @@
     },
     {
       "array_size": 16,
-      "evidence": "Clang evaluated the constant initializer list",
+      "evidence": "Clang evaluated the constant initializer list for an array global",
       "line": 156,
       "source_file": "dsc_codec.c",
       "table": "qlevel_luma_8bpc",
@@ -1252,5 +992,18 @@
         7
       ]
     }
-  ]
+  ],
+  "traceability_summary": {
+    "comment_count": 343,
+    "exact_count": 0,
+    "heading_anchor_count": 182,
+    "link_count": 59,
+    "model_note_count": 28,
+    "proposed_count": 59,
+    "reviewed_count": 0,
+    "spec_anchor_count": 327,
+    "stale_count": 0,
+    "untraced_production_function_count": 112,
+    "untraced_spec_anchor_count": 153
+  }
 }

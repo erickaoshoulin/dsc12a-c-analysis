@@ -34497,7 +34497,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "bitSaveMode",
       "read_by": [
@@ -34543,7 +34543,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -34600,7 +34600,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "bitsClamped",
       "read_by": [
@@ -34626,7 +34626,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -34663,7 +34663,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "bpCount",
       "read_by": [
@@ -34679,7 +34679,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -34716,7 +34716,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "bpgFracAccum",
       "read_by": [
@@ -34742,7 +34742,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -34779,7 +34779,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "bufferFullness",
       "read_by": [
@@ -34975,7 +34975,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -35062,7 +35062,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "chunkCount",
       "read_by": [
@@ -35098,7 +35098,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -35135,7 +35135,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "chunkPixelTimes",
       "read_by": [
@@ -35151,7 +35151,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -35178,7 +35178,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "chunkSizes",
       "read_by": [
@@ -35194,7 +35194,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int *",
       "written_by": [
         {
@@ -35231,7 +35231,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "codedGroupSize",
       "read_by": [
@@ -35287,7 +35287,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -35314,7 +35314,7 @@
     },
     {
       "evidence": [
-        "Field is accessed by a focused codec helper; this is a dataflow role proposal, not a sequential-hardware claim"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "cpntBitDepth",
       "read_by": [
@@ -35567,7 +35567,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "currLine",
       "read_by": [
@@ -35633,7 +35633,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int *[4]",
       "written_by": [
         {
@@ -35660,7 +35660,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "currentScale",
       "read_by": [
@@ -35686,7 +35686,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -35733,7 +35733,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "edgeDetected",
       "read_by": [
@@ -35749,7 +35749,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -35776,7 +35776,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "encBalanceFifo",
       "read_by": [
@@ -35932,13 +35932,13 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "fifo_t[4]",
       "written_by": []
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "errorOccurred",
       "read_by": [
@@ -35954,7 +35954,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -36001,7 +36001,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "firstFlat",
       "read_by": [
@@ -36097,7 +36097,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -36144,7 +36144,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "flatnessType",
       "read_by": [
@@ -36200,7 +36200,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -36257,7 +36257,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "forceMpp",
       "read_by": [
@@ -36283,7 +36283,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -36320,7 +36320,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "groupCount",
       "read_by": [
@@ -36436,7 +36436,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -36463,12 +36463,12 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "groupCountLine",
       "read_by": [],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -36525,7 +36525,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "hPos",
       "read_by": [
@@ -36571,7 +36571,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -36598,7 +36598,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "history",
       "read_by": [
@@ -36684,7 +36684,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "dsc_history_t",
       "written_by": [
         {
@@ -36801,7 +36801,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "ichIndexUnitMap",
       "read_by": [
@@ -36847,7 +36847,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int[6]",
       "written_by": [
         {
@@ -36894,7 +36894,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "ichIndicesInGroup",
       "read_by": [
@@ -37010,7 +37010,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -37027,7 +37027,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "ichLookup",
       "read_by": [
@@ -37113,7 +37113,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int[6]",
       "written_by": [
         {
@@ -37160,7 +37160,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "ichPixels",
       "read_by": [
@@ -37276,13 +37276,13 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "unsigned int[6][4]",
       "written_by": []
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "ichSelected",
       "read_by": [
@@ -37398,7 +37398,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -37455,7 +37455,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "isEncoder",
       "read_by": [
@@ -37601,7 +37601,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -37618,7 +37618,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "lastEdgeCount",
       "read_by": [
@@ -37634,7 +37634,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -37671,7 +37671,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "lastErr",
       "read_by": [
@@ -37687,7 +37687,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int[4][3][13]",
       "written_by": [
         {
@@ -37724,7 +37724,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "leftRecon",
       "read_by": [
@@ -37740,7 +37740,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int[4]",
       "written_by": [
         {
@@ -37767,7 +37767,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "maxError",
       "read_by": [
@@ -37793,7 +37793,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int[4]",
       "written_by": [
         {
@@ -37820,7 +37820,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "maxIchError",
       "read_by": [
@@ -37846,7 +37846,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int[4]",
       "written_by": [
         {
@@ -37873,7 +37873,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "maxMidError",
       "read_by": [
@@ -37899,7 +37899,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int[4]",
       "written_by": [
         {
@@ -37926,7 +37926,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "maxSeSize",
       "read_by": [
@@ -37972,7 +37972,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int[4]",
       "written_by": [
         {
@@ -38059,7 +38059,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "midpointRecon",
       "read_by": [
@@ -38095,7 +38095,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int[4][6]",
       "written_by": [
         {
@@ -38112,7 +38112,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "midpointSelected",
       "read_by": [
@@ -38168,7 +38168,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int[4]",
       "written_by": [
         {
@@ -38215,7 +38215,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "mppState",
       "read_by": [
@@ -38231,7 +38231,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -38268,12 +38268,12 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "native420",
       "read_by": [],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -38290,12 +38290,12 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "nonFirstLineBpgTarget",
       "read_by": [],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -38312,7 +38312,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "numBits",
       "read_by": [
@@ -38378,7 +38378,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -38415,7 +38415,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "numBitsChunk",
       "read_by": [
@@ -38471,7 +38471,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -38498,7 +38498,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "numComponents",
       "read_by": [
@@ -38774,7 +38774,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -38801,7 +38801,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "numSsps",
       "read_by": [
@@ -38877,7 +38877,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -38904,7 +38904,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "origIsFlat",
       "read_by": [
@@ -38930,7 +38930,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -38987,7 +38987,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "origLine",
       "read_by": [
@@ -39053,7 +39053,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int *[4]",
       "written_by": [
         {
@@ -39150,7 +39150,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "origWithinQerr",
       "read_by": [
@@ -39166,7 +39166,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int[6]",
       "written_by": [
         {
@@ -39203,7 +39203,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "pixelCount",
       "read_by": [
@@ -39279,7 +39279,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -39296,7 +39296,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "pixelsInGroup",
       "read_by": [
@@ -39522,7 +39522,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -39539,7 +39539,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "postMuxNumBits",
       "read_by": [
@@ -39605,13 +39605,13 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": []
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "predErr",
       "read_by": [
@@ -39627,7 +39627,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int[4][13]",
       "written_by": [
         {
@@ -39654,7 +39654,7 @@
     },
     {
       "evidence": [
-        "Field is accessed by a focused codec helper; this is a dataflow role proposal, not a sequential-hardware claim"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "predictedSize",
       "read_by": [
@@ -39787,7 +39787,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "prevFirstFlat",
       "read_by": [
@@ -39833,7 +39833,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -39910,7 +39910,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "prevFlatnessType",
       "read_by": [
@@ -39926,7 +39926,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -39943,7 +39943,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "prevIchSelected",
       "read_by": [
@@ -40039,7 +40039,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -40066,7 +40066,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "prevIsFlat",
       "read_by": [
@@ -40082,7 +40082,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -40119,7 +40119,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "prevLine",
       "read_by": [
@@ -40375,7 +40375,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int *[5]",
       "written_by": [
         {
@@ -40402,7 +40402,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "prevLinePred",
       "read_by": [
@@ -40448,7 +40448,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "PRED_TYPE *",
       "written_by": [
         {
@@ -40485,7 +40485,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "prevNumBits",
       "read_by": [
@@ -40511,7 +40511,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -40538,7 +40538,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "prevPixelCount",
       "read_by": [
@@ -40554,7 +40554,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -40571,7 +40571,7 @@
     },
     {
       "evidence": [
-        "Field is accessed by a focused codec helper; this is a dataflow role proposal, not a sequential-hardware claim"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "prevPrimaryQp",
       "read_by": [
@@ -40624,7 +40624,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "prevQp",
       "read_by": [
@@ -40700,7 +40700,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -40747,7 +40747,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "prevRange",
       "read_by": [
@@ -40763,7 +40763,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -40780,7 +40780,7 @@
     },
     {
       "evidence": [
-        "Field is accessed by a focused codec helper; this is a dataflow role proposal, not a sequential-hardware claim"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "primaryQp",
       "read_by": [
@@ -41093,8 +41093,7 @@
     },
     {
       "evidence": [
-        "Field is assigned by InitializeDSCState to a qlevel_* table",
-        "Field is indexed by MapQpToQlevel"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "quantTableChroma",
       "read_by": [
@@ -41110,7 +41109,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "CONSTANT_TABLE_POINTER",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int *",
       "written_by": [
         {
@@ -41167,8 +41166,7 @@
     },
     {
       "evidence": [
-        "Field is assigned by InitializeDSCState to a qlevel_* table",
-        "Field is indexed by MapQpToQlevel"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "quantTableLuma",
       "read_by": [
@@ -41194,7 +41192,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "CONSTANT_TABLE_POINTER",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int *",
       "written_by": [
         {
@@ -41251,7 +41249,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "quantizedResidual",
       "read_by": [
@@ -41377,7 +41375,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int[4][3]",
       "written_by": [
         {
@@ -41424,7 +41422,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "quantizedResidualMid",
       "read_by": [
@@ -41490,7 +41488,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int[4][3]",
       "written_by": [
         {
@@ -41537,7 +41535,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "rcOffsetClampEnable",
       "read_by": [
@@ -41553,7 +41551,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -41570,7 +41568,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "rcSizeGroup",
       "read_by": [
@@ -41586,7 +41584,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -41613,7 +41611,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "rcSizeUnit",
       "read_by": [
@@ -41629,7 +41627,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int[4]",
       "written_by": [
         {
@@ -41706,7 +41704,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "rcXformOffset",
       "read_by": [
@@ -41762,7 +41760,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -41809,7 +41807,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "scaleAdjustCounter",
       "read_by": [
@@ -41835,7 +41833,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -41902,7 +41900,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "scaleIncrementStart",
       "read_by": [
@@ -41928,7 +41926,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -41945,7 +41943,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "seSizeFifo",
       "read_by": [
@@ -42021,13 +42019,13 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "fifo_t[4]",
       "written_by": []
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "secondOffsetApplied",
       "read_by": [
@@ -42043,7 +42041,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -42060,7 +42058,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "shifter",
       "read_by": [
@@ -42146,13 +42144,13 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "fifo_t[4]",
       "written_by": []
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "sliceWidth",
       "read_by": [
@@ -42418,7 +42416,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -42435,7 +42433,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "stQp",
       "read_by": [
@@ -42501,7 +42499,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -42568,7 +42566,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "throttleFrac",
       "read_by": [
@@ -42594,7 +42592,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -42631,12 +42629,12 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "throttleInt",
       "read_by": [],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -42653,7 +42651,7 @@
     },
     {
       "evidence": [
-        "Field is accessed by a focused codec helper; this is a dataflow role proposal, not a sequential-hardware claim"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "unitCType",
       "read_by": [
@@ -42786,7 +42784,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "unitSspMap",
       "read_by": [
@@ -42812,7 +42810,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int[4]",
       "written_by": [
         {
@@ -42829,7 +42827,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "unitStartHPos",
       "read_by": [
@@ -42865,7 +42863,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int[4]",
       "written_by": [
         {
@@ -42882,7 +42880,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "unitsPerGroup",
       "read_by": [
@@ -43128,7 +43126,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -43165,7 +43163,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "useMidpoint",
       "read_by": [
@@ -43231,7 +43229,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int[4]",
       "written_by": [
         {
@@ -43248,7 +43246,7 @@
     },
     {
       "evidence": [
-        "Field is outside the focused helper access path; AST alone does not prove model-only versus runtime state"
+        "Field is accessed by a production-reachable function; this is a dataflow role proposal, not a sequential-hardware claim"
       ],
       "field": "vPos",
       "read_by": [
@@ -43344,7 +43342,7 @@
         }
       ],
       "record": "dsc_state_t",
-      "role_proposal": "MODEL_ONLY_OR_RUNTIME_UNKNOWN",
+      "role_proposal": "RUNTIME_STATE_INPUT_CANDIDATE",
       "type": "int",
       "written_by": [
         {
@@ -66865,28 +66863,51 @@
   ],
   "metadata": {
     "analysis_command": [
-      "clang -fsyntax-only over every compile_commands.json entry",
-      "clang LibTooling AST Matchers over facts/compile_commands.json",
-      "frama-c -deps -calldeps -main PROFILE_TARGET (profile-selected targets)",
-      "frama-c -eva -main PROFILE_TARGET (profile-selected targets)",
-      "generate compile_commands.json from public Makefile flags"
+      "Clang LibTooling AST Matchers over every compile_commands.json entry",
+      "Frama-C Eva and From on the top-ranked tool-selected candidates",
+      "deterministic PDF anchors and C model-note links; no LLM calls",
+      "discover local PDF and C model by metadata/source gates",
+      "make -j1 clean then make -j1 and run bittrue C smoke in an isolated copy",
+      "rank production/output-contributing bounded candidates without a function-name allowlist"
     ],
+    "binary_sha256": "1aa30a5c49f7b87bc18c2150f94ad620bc005f3aa935327d63799cb3f674216c",
+    "build_receipt_sha256": "dfaee4a5f1dc607d5a20441f6945f7180b9c0ee48c033b273ffda92ce85fe828",
+    "build_status": "PASS",
+    "candidate_receipt_sha256": "97f6a5455ec94fe9c09f0595dc59e6127f19887d4707b690309ee3732a6c4cba",
+    "candidate_selection": {
+      "boundary_root_usrs": [
+        "c:@F@DSC_Algorithm",
+        "c:@F@DSC_Decode",
+        "c:@F@DSC_Encode"
+      ],
+      "criteria": [
+        "production_reachable",
+        "contributes_to_observable_output",
+        "no_direct_or_transitive_state_write",
+        "no_io_allocation_or_logging",
+        "bounded_computation"
+      ],
+      "entry_symbols": [
+        "main"
+      ],
+      "method": "linked_executable_entry_symbols",
+      "output_sink_usrs": [
+        "c:@F@hdr_dpx_write",
+        "c:@F@write_dpx_ver"
+      ],
+      "root_usrs": [
+        "c:@F@main"
+      ],
+      "top_n": 10
+    },
     "clang_version": "Apple clang version 17.0.0 (clang-1700.6.3.2)",
     "compile_check_sha256": "e77b1146218bd22946a9993887679393ebcbc9cb27bd0165c70b680ce20a6adb",
     "compile_check_status": "PASS",
     "compile_commands_sha256": "56b5e6a919ea0e63fc8c9b8d6068e2d88629e1710ca9f83fbde06e9d433b1ace",
     "compiler_command_count": 11,
     "discovered_function_count": 194,
+    "do_not_edit": true,
     "dsc_source_revision": "f26ecb2afa83aa9f0cc608b5b7c2742901ee9207",
-    "focused_targets": [
-      "Qp2Qlevel",
-      "MapQpToQlevel",
-      "QuantizeResidual",
-      "FindResidualSize",
-      "SampToLineBuf",
-      "MaxResidualSize",
-      "GetQpAdjPredSize"
-    ],
     "frama_c_version": "33.0 (Arsenic)",
     "frama_excluded_sources": [
       "cmd_parse.c",
@@ -66894,13 +66915,26 @@
       "hdr_dpx.c",
       "logging.c"
     ],
+    "frama_targets": [
+      "FindMidpoint",
+      "IsFlatnessInfoSent",
+      "MapQpToQlevel",
+      "PredictSize",
+      "QuantizeResidual",
+      "SampToLineBuf",
+      "SamplePredict",
+      "EscapeCodeSize",
+      "MaxResidualSize",
+      "GetQpAdjPredSize"
+    ],
     "function_discovery": {
       "count": 194,
       "source": "Clang AST functionDecl(isDefinition())"
     },
-    "generated_timestamp": "2026-07-31T12:06:12.902507+00:00",
-    "schema_version": 1,
-    "semantic_hash": "cd6f3be6ca8c10ddf68face39b8812d7a45ec8c4ae2f2ef258bee2eca2be695d",
+    "generated_timestamp": "2026-08-01T14:03:19.965036+00:00",
+    "input_manifest_sha256": "c1cf90cdd06ff4afd38b80de7cfc476944d708d1c15cb0ee9b372e3cc254cb6b",
+    "schema_version": 2,
+    "semantic_hash": "88dec0a2317c112a5cc36ded8319664c5d60ec4f939722210dcff1cc80ff7c44",
     "source_file_hashes": [
       {
         "path": "cmd_parse.c",
@@ -66999,7 +67033,29 @@
         "sha256": "e48d318a5c2d8512d25230cafb74835a135bf8dc89232d1c6ccefcb5ef28ebbc"
       }
     ],
+    "source_git": {
+      "branch": "codex/operator-bittrue-coverage",
+      "commit": "f26ecb2afa83aa9f0cc608b5b7c2742901ee9207",
+      "remote_origin": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port.git",
+      "root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
+      "status_porcelain": ""
+    },
+    "source_hashes_sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+    "spec_pdf_sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
     "status": "OK",
-    "target_profile_sha256": "1e551e958db80751b34fb2cedee3fac4d816486e0d42b3b7414d75d8ba347ade"
+    "traceability_counts": {
+      "comment_count": 343,
+      "exact_count": 0,
+      "heading_anchor_count": 182,
+      "link_count": 59,
+      "model_note_count": 28,
+      "proposed_count": 59,
+      "reviewed_count": 0,
+      "spec_anchor_count": 327,
+      "stale_count": 0,
+      "untraced_production_function_count": 112,
+      "untraced_spec_anchor_count": 153
+    },
+    "traceability_sha256": "f80c37857195e053d85ae0af3be8c425df945a44f631847493d462a34c340116"
   }
 }

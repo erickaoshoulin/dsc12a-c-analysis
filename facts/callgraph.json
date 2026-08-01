@@ -23774,28 +23774,51 @@
   ],
   "metadata": {
     "analysis_command": [
-      "clang -fsyntax-only over every compile_commands.json entry",
-      "clang LibTooling AST Matchers over facts/compile_commands.json",
-      "frama-c -deps -calldeps -main PROFILE_TARGET (profile-selected targets)",
-      "frama-c -eva -main PROFILE_TARGET (profile-selected targets)",
-      "generate compile_commands.json from public Makefile flags"
+      "Clang LibTooling AST Matchers over every compile_commands.json entry",
+      "Frama-C Eva and From on the top-ranked tool-selected candidates",
+      "deterministic PDF anchors and C model-note links; no LLM calls",
+      "discover local PDF and C model by metadata/source gates",
+      "make -j1 clean then make -j1 and run bittrue C smoke in an isolated copy",
+      "rank production/output-contributing bounded candidates without a function-name allowlist"
     ],
+    "binary_sha256": "1aa30a5c49f7b87bc18c2150f94ad620bc005f3aa935327d63799cb3f674216c",
+    "build_receipt_sha256": "dfaee4a5f1dc607d5a20441f6945f7180b9c0ee48c033b273ffda92ce85fe828",
+    "build_status": "PASS",
+    "candidate_receipt_sha256": "97f6a5455ec94fe9c09f0595dc59e6127f19887d4707b690309ee3732a6c4cba",
+    "candidate_selection": {
+      "boundary_root_usrs": [
+        "c:@F@DSC_Algorithm",
+        "c:@F@DSC_Decode",
+        "c:@F@DSC_Encode"
+      ],
+      "criteria": [
+        "production_reachable",
+        "contributes_to_observable_output",
+        "no_direct_or_transitive_state_write",
+        "no_io_allocation_or_logging",
+        "bounded_computation"
+      ],
+      "entry_symbols": [
+        "main"
+      ],
+      "method": "linked_executable_entry_symbols",
+      "output_sink_usrs": [
+        "c:@F@hdr_dpx_write",
+        "c:@F@write_dpx_ver"
+      ],
+      "root_usrs": [
+        "c:@F@main"
+      ],
+      "top_n": 10
+    },
     "clang_version": "Apple clang version 17.0.0 (clang-1700.6.3.2)",
     "compile_check_sha256": "e77b1146218bd22946a9993887679393ebcbc9cb27bd0165c70b680ce20a6adb",
     "compile_check_status": "PASS",
     "compile_commands_sha256": "56b5e6a919ea0e63fc8c9b8d6068e2d88629e1710ca9f83fbde06e9d433b1ace",
     "compiler_command_count": 11,
     "discovered_function_count": 194,
+    "do_not_edit": true,
     "dsc_source_revision": "f26ecb2afa83aa9f0cc608b5b7c2742901ee9207",
-    "focused_targets": [
-      "Qp2Qlevel",
-      "MapQpToQlevel",
-      "QuantizeResidual",
-      "FindResidualSize",
-      "SampToLineBuf",
-      "MaxResidualSize",
-      "GetQpAdjPredSize"
-    ],
     "frama_c_version": "33.0 (Arsenic)",
     "frama_excluded_sources": [
       "cmd_parse.c",
@@ -23803,13 +23826,26 @@
       "hdr_dpx.c",
       "logging.c"
     ],
+    "frama_targets": [
+      "FindMidpoint",
+      "IsFlatnessInfoSent",
+      "MapQpToQlevel",
+      "PredictSize",
+      "QuantizeResidual",
+      "SampToLineBuf",
+      "SamplePredict",
+      "EscapeCodeSize",
+      "MaxResidualSize",
+      "GetQpAdjPredSize"
+    ],
     "function_discovery": {
       "count": 194,
       "source": "Clang AST functionDecl(isDefinition())"
     },
-    "generated_timestamp": "2026-07-31T12:06:12.902507+00:00",
-    "schema_version": 1,
-    "semantic_hash": "cd6f3be6ca8c10ddf68face39b8812d7a45ec8c4ae2f2ef258bee2eca2be695d",
+    "generated_timestamp": "2026-08-01T14:03:19.965036+00:00",
+    "input_manifest_sha256": "c1cf90cdd06ff4afd38b80de7cfc476944d708d1c15cb0ee9b372e3cc254cb6b",
+    "schema_version": 2,
+    "semantic_hash": "88dec0a2317c112a5cc36ded8319664c5d60ec4f939722210dcff1cc80ff7c44",
     "source_file_hashes": [
       {
         "path": "cmd_parse.c",
@@ -23908,1170 +23944,1386 @@
         "sha256": "e48d318a5c2d8512d25230cafb74835a135bf8dc89232d1c6ccefcb5ef28ebbc"
       }
     ],
+    "source_git": {
+      "branch": "codex/operator-bittrue-coverage",
+      "commit": "f26ecb2afa83aa9f0cc608b5b7c2742901ee9207",
+      "remote_origin": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port.git",
+      "root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
+      "status_porcelain": ""
+    },
+    "source_hashes_sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+    "spec_pdf_sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
     "status": "OK",
-    "target_profile_sha256": "1e551e958db80751b34fb2cedee3fac4d816486e0d42b3b7414d75d8ba347ade"
+    "traceability_counts": {
+      "comment_count": 343,
+      "exact_count": 0,
+      "heading_anchor_count": 182,
+      "link_count": 59,
+      "model_note_count": 28,
+      "proposed_count": 59,
+      "reviewed_count": 0,
+      "spec_anchor_count": 327,
+      "stale_count": 0,
+      "untraced_production_function_count": 112,
+      "untraced_spec_anchor_count": 153
+    },
+    "traceability_sha256": "f80c37857195e053d85ae0af3be8c425df945a44f631847493d462a34c340116"
   },
   "nodes": [
     {
       "clang_usr": "c:@F@AddBits",
+      "end_line": 93,
       "line": 89,
       "name": "AddBits",
       "source_file": "multiplex.c"
     },
     {
       "clang_usr": "c:@F@Assert_func",
+      "end_line": 166,
       "line": 155,
       "name": "Assert_func",
       "source_file": "logging.c"
     },
     {
       "clang_usr": "c:@F@BlockPredSearch",
+      "end_line": 1073,
       "line": 924,
       "name": "BlockPredSearch",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@CErr",
+      "end_line": 134,
       "line": 123,
       "name": "CErr",
       "source_file": "logging.c"
     },
     {
       "clang_usr": "c:@F@CalcFullnessOffset",
+      "end_line": 2286,
       "line": 2188,
       "name": "CalcFullnessOffset",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@DSC_Algorithm",
+      "end_line": 3108,
       "line": 2594,
       "name": "DSC_Algorithm",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@DSC_Decode",
+      "end_line": 3132,
       "line": 3129,
       "name": "DSC_Decode",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@DSC_Encode",
+      "end_line": 3121,
       "line": 3118,
       "name": "DSC_Encode",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@Err",
+      "end_line": 105,
       "line": 94,
       "name": "Err",
       "source_file": "logging.c"
     },
     {
       "clang_usr": "c:@F@ErrorHandler",
+      "end_line": 213,
       "line": 171,
       "name": "ErrorHandler",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@EscapeCodeSize",
+      "end_line": 451,
       "line": 443,
       "name": "EscapeCodeSize",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@EstimateBitsForGroup",
+      "end_line": 437,
       "line": 390,
       "name": "EstimateBitsForGroup",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@FindMidpoint",
+      "end_line": 914,
       "line": 906,
       "name": "FindMidpoint",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@FindResidualSize",
+      "end_line": 1109,
       "line": 1078,
       "name": "FindResidualSize",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@FlatnessAdjustment",
+      "end_line": 2583,
       "line": 2510,
       "name": "FlatnessAdjustment",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@GetBits",
+      "end_line": 109,
       "line": 104,
       "name": "GetBits",
       "source_file": "multiplex.c"
     },
     {
       "clang_usr": "c:@F@GetQpAdjPredSize",
+      "end_line": 297,
       "line": 278,
       "name": "GetQpAdjPredSize",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@HistoryLookup",
+      "end_line": 600,
       "line": 543,
       "name": "HistoryLookup",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@IchDecision",
+      "end_line": 533,
       "line": 484,
       "name": "IchDecision",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@InitializeDSCState",
+      "end_line": 2178,
       "line": 2056,
       "name": "InitializeDSCState",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@IsFlatnessInfoSent",
+      "end_line": 1119,
       "line": 1116,
       "name": "IsFlatnessInfoSent",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@IsOrigFlatHIndex",
+      "end_line": 1195,
       "line": 1126,
       "name": "IsOrigFlatHIndex",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@IsOrigWithinQerr",
+      "end_line": 667,
       "line": 611,
       "name": "IsOrigWithinQerr",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@MapQpToQlevel",
+      "end_line": 238,
       "line": 221,
       "name": "MapQpToQlevel",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@MaxResidualSize",
+      "end_line": 270,
       "line": 263,
       "name": "MaxResidualSize",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@PErr",
+      "end_line": 152,
       "line": 140,
       "name": "PErr",
       "source_file": "logging.c"
     },
     {
       "clang_usr": "c:@F@PickBestHistoryValue",
+      "end_line": 777,
       "line": 736,
       "name": "PickBestHistoryValue",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@PopulateOrigLine",
+      "end_line": 2351,
       "line": 2294,
       "name": "PopulateOrigLine",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@PredictSize",
+      "end_line": 1486,
       "line": 1476,
       "name": "PredictSize",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@PredictionLoop",
+      "end_line": 2502,
       "line": 2361,
       "name": "PredictionLoop",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@ProcessGroupDec",
+      "end_line": 176,
       "line": 159,
       "name": "ProcessGroupDec",
       "source_file": "multiplex.c"
     },
     {
       "clang_usr": "c:@F@ProcessGroupEnc",
+      "end_line": 152,
       "line": 116,
       "name": "ProcessGroupEnc",
       "source_file": "multiplex.c"
     },
     {
       "clang_usr": "c:@F@Qp2Qlevel",
+      "end_line": 844,
       "line": 816,
       "name": "Qp2Qlevel",
       "source_file": "codec_main.c"
     },
     {
       "clang_usr": "c:@F@QuantizeResidual",
+      "end_line": 255,
       "line": 245,
       "name": "QuantizeResidual",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@RateControl",
+      "end_line": 1469,
       "line": 1242,
       "name": "RateControl",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@RemoveBitsEncoderBuffer",
+      "end_line": 1231,
       "line": 1201,
       "name": "RemoveBitsEncoderBuffer",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@SampToLineBuf",
+      "end_line": 2049,
       "line": 2036,
       "name": "SampToLineBuf",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@SamplePredict",
+      "end_line": 383,
       "line": 308,
       "name": "SamplePredict",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@UErr",
+      "end_line": 118,
       "line": 110,
       "name": "UErr",
       "source_file": "logging.c"
     },
     {
       "clang_usr": "c:@F@UpdateHistoryElement",
+      "end_line": 726,
       "line": 674,
       "name": "UpdateHistoryElement",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@UpdateICHistory",
+      "end_line": 825,
       "line": 787,
       "name": "UpdateICHistory",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@UpdateMidpoint",
+      "end_line": 899,
       "line": 875,
       "name": "UpdateMidpoint",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@UseICHistory",
+      "end_line": 867,
       "line": 832,
       "name": "UseICHistory",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@UsingMidpoint",
+      "end_line": 476,
       "line": 457,
       "name": "UsingMidpoint",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@VLCGroup",
+      "end_line": 1799,
       "line": 1710,
       "name": "VLCGroup",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@VLCUnit",
+      "end_line": 1703,
       "line": 1494,
       "name": "VLCUnit",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@VLDGroup",
+      "end_line": 2028,
       "line": 1988,
       "name": "VLDGroup",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@VLDUnit",
+      "end_line": 1981,
       "line": 1808,
       "name": "VLDUnit",
       "source_file": "dsc_codec.c"
     },
     {
       "clang_usr": "c:@F@WriteEntryToBitstream",
+      "end_line": 80,
       "line": 60,
       "name": "WriteEntryToBitstream",
       "source_file": "multiplex.c"
     },
     {
       "clang_usr": "c:@F@appendarg",
+      "end_line": 1422,
       "line": 1328,
       "name": "appendarg",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:codec_main.c@F@assign_line",
+      "end_line": 369,
       "line": 358,
       "name": "assign_line",
       "source_file": "codec_main.c"
     },
     {
       "clang_usr": "c:cmd_parse.c@F@assign_val",
+      "end_line": 950,
       "line": 799,
       "name": "assign_val",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@ceil_log2",
+      "end_line": 73,
       "line": 67,
       "name": "ceil_log2",
       "source_file": "dsc_utils.c"
     },
     {
       "clang_usr": "c:@F@change_ext",
+      "end_line": 383,
       "line": 376,
       "name": "change_ext",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@check_qp_for_overflow",
+      "end_line": 892,
       "line": 860,
       "name": "check_qp_for_overflow",
       "source_file": "codec_main.c"
     },
     {
       "clang_usr": "c:@F@chop_dir",
+      "end_line": 156,
       "line": 132,
       "name": "chop_dir",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@chop_ext",
+      "end_line": 122,
       "line": 102,
       "name": "chop_ext",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@compute_and_display_PSNR",
+      "end_line": 197,
       "line": 66,
       "name": "compute_and_display_PSNR",
       "source_file": "psnr.c"
     },
     {
       "clang_usr": "c:@F@compute_offset",
+      "end_line": 641,
       "line": 616,
       "name": "compute_offset",
       "source_file": "codec_main.c"
     },
     {
       "clang_usr": "c:@F@compute_rc_parameters",
+      "end_line": 802,
       "line": 661,
       "name": "compute_rc_parameters",
       "source_file": "codec_main.c"
     },
     {
       "clang_usr": "c:@F@conv",
+      "end_line": 495,
       "line": 470,
       "name": "conv",
       "source_file": "utl.c"
     },
     {
       "clang_usr": "c:@F@convert_rgb_2020_to_709",
+      "end_line": 1677,
       "line": 1644,
       "name": "convert_rgb_2020_to_709",
       "source_file": "utl.c"
     },
     {
       "clang_usr": "c:@F@convertbits",
+      "end_line": 1036,
       "line": 710,
       "name": "convertbits",
       "source_file": "utl.c"
     },
     {
       "clang_usr": "c:dpx.c@F@create_dpx_pic",
+      "end_line": 1471,
       "line": 1420,
       "name": "create_dpx_pic",
       "source_file": "dpx.c"
     },
     {
       "clang_usr": "c:@F@determine_field_format",
+      "end_line": 84,
       "line": 67,
       "name": "determine_field_format",
       "source_file": "dpx.c"
     },
     {
       "clang_usr": "c:cmd_parse.c@F@distinguish_dist",
+      "end_line": 1109,
       "line": 1084,
       "name": "distinguish_dist",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@dpx_read",
+      "end_line": 748,
       "line": 744,
       "name": "dpx_read",
       "source_file": "dpx.c"
     },
     {
       "clang_usr": "c:@F@dpx_read_hl",
+      "end_line": 972,
       "line": 750,
       "name": "dpx_read_hl",
       "source_file": "dpx.c"
     },
     {
       "clang_usr": "c:@F@dpx_write",
+      "end_line": 228,
       "line": 225,
       "name": "dpx_write",
       "source_file": "dpx.c"
     },
     {
       "clang_usr": "c:@F@easy_mkdir",
+      "end_line": 267,
       "line": 220,
       "name": "easy_mkdir",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@ends_in_percentd",
+      "end_line": 100,
       "line": 86,
       "name": "ends_in_percentd",
       "source_file": "dpx.c"
     },
     {
       "clang_usr": "c:cmd_parse.c@F@error_check",
+      "end_line": 1010,
       "line": 952,
       "name": "error_check",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@fifo_clear",
+      "end_line": 61,
       "line": 55,
       "name": "fifo_clear",
       "source_file": "fifo.c"
     },
     {
       "clang_usr": "c:@F@fifo_clone",
+      "end_line": 167,
       "line": 146,
       "name": "fifo_clone",
       "source_file": "fifo.c"
     },
     {
       "clang_usr": "c:@F@fifo_flip_get_bits",
+      "end_line": 210,
       "line": 174,
       "name": "fifo_flip_get_bits",
       "source_file": "fifo.c"
     },
     {
       "clang_usr": "c:@F@fifo_flip_put_bits",
+      "end_line": 247,
       "line": 217,
       "name": "fifo_flip_put_bits",
       "source_file": "fifo.c"
     },
     {
       "clang_usr": "c:@F@fifo_free",
+      "end_line": 69,
       "line": 66,
       "name": "fifo_free",
       "source_file": "fifo.c"
     },
     {
       "clang_usr": "c:@F@fifo_get_bits",
+      "end_line": 108,
       "line": 77,
       "name": "fifo_get_bits",
       "source_file": "fifo.c"
     },
     {
       "clang_usr": "c:@F@fifo_init",
+      "end_line": 51,
       "line": 43,
       "name": "fifo_init",
       "source_file": "fifo.c"
     },
     {
       "clang_usr": "c:@F@fifo_put_bits",
+      "end_line": 140,
       "line": 115,
       "name": "fifo_put_bits",
       "source_file": "fifo.c"
     },
     {
       "clang_usr": "c:@F@file_dir",
+      "end_line": 217,
       "line": 189,
       "name": "file_dir",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@file_ext",
+      "end_line": 179,
       "line": 161,
       "name": "file_ext",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@generate_rc_parameters",
+      "end_line": 1031,
       "line": 904,
       "name": "generate_rc_parameters",
       "source_file": "codec_main.c"
     },
     {
       "clang_usr": "c:dpx.c@F@generate_timecode",
+      "end_line": 723,
       "line": 708,
       "name": "generate_timecode",
       "source_file": "dpx.c"
     },
     {
       "clang_usr": "c:@F@getbits",
+      "end_line": 138,
       "line": 109,
       "name": "getbits",
       "source_file": "dsc_utils.c"
     },
     {
       "clang_usr": "c:@F@gettoken",
+      "end_line": 1066,
       "line": 1038,
       "name": "gettoken",
       "source_file": "utl.c"
     },
     {
       "clang_usr": "c:@F@has_ext",
+      "end_line": 97,
       "line": 84,
       "name": "has_ext",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@hdr_dpx_byte_swap",
+      "end_line": 1512,
       "line": 1445,
       "name": "hdr_dpx_byte_swap",
       "source_file": "hdr_dpx.c"
     },
     {
       "clang_usr": "c:hdr_dpx.c@F@hdr_dpx_check_string",
+      "end_line": 1549,
       "line": 1537,
       "name": "hdr_dpx_check_string",
       "source_file": "hdr_dpx.c"
     },
     {
       "clang_usr": "c:@F@hdr_dpx_compute_offsets",
+      "end_line": 1535,
       "line": 1514,
       "name": "hdr_dpx_compute_offsets",
       "source_file": "hdr_dpx.c"
     },
     {
       "clang_usr": "c:@F@hdr_dpx_create_pic",
+      "end_line": 617,
       "line": 234,
       "name": "hdr_dpx_create_pic",
       "source_file": "hdr_dpx.c"
     },
     {
       "clang_usr": "c:@F@hdr_dpx_determine_file_type",
+      "end_line": 2080,
       "line": 2051,
       "name": "hdr_dpx_determine_file_type",
       "source_file": "hdr_dpx.c"
     },
     {
       "clang_usr": "c:@F@hdr_dpx_fill_core_fields",
+      "end_line": 1743,
       "line": 1551,
       "name": "hdr_dpx_fill_core_fields",
       "source_file": "hdr_dpx.c"
     },
     {
       "clang_usr": "c:@F@hdr_dpx_get_datum",
+      "end_line": 1170,
       "line": 1153,
       "name": "hdr_dpx_get_datum",
       "source_file": "hdr_dpx.c"
     },
     {
       "clang_usr": "c:@F@hdr_dpx_get_pic_data",
+      "end_line": 1442,
       "line": 1172,
       "name": "hdr_dpx_get_pic_data",
       "source_file": "hdr_dpx.c"
     },
     {
       "clang_usr": "c:@F@hdr_dpx_map_datum_to_pic",
+      "end_line": 1075,
       "line": 621,
       "name": "hdr_dpx_map_datum_to_pic",
       "source_file": "hdr_dpx.c"
     },
     {
       "clang_usr": "c:@F@hdr_dpx_pic_to_datum_list",
+      "end_line": 1150,
       "line": 1077,
       "name": "hdr_dpx_pic_to_datum_list",
       "source_file": "hdr_dpx.c"
     },
     {
       "clang_usr": "c:@F@hdr_dpx_read",
+      "end_line": 2049,
       "line": 1966,
       "name": "hdr_dpx_read",
       "source_file": "hdr_dpx.c"
     },
     {
       "clang_usr": "c:@F@hdr_dpx_rle_encode",
+      "end_line": 231,
       "line": 80,
       "name": "hdr_dpx_rle_encode",
       "source_file": "hdr_dpx.c"
     },
     {
       "clang_usr": "c:@F@hdr_dpx_write",
+      "end_line": 1963,
       "line": 1746,
       "name": "hdr_dpx_write",
       "source_file": "hdr_dpx.c"
     },
     {
       "clang_usr": "c:@F@line_to_int",
+      "end_line": 402,
       "line": 382,
       "name": "line_to_int",
       "source_file": "rc_tables.h"
     },
     {
       "clang_usr": "c:@F@lower_case",
+      "end_line": 374,
       "line": 367,
       "name": "lower_case",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@main",
+      "end_line": 2021,
       "line": 1276,
       "name": "main",
       "source_file": "codec_main.c"
     },
     {
       "clang_usr": "c:@F@make_qp_table",
+      "end_line": 412,
       "line": 404,
       "name": "make_qp_table",
       "source_file": "rc_tables.h"
     },
     {
       "clang_usr": "c:@F@make_qp_tables",
+      "end_line": 436,
       "line": 414,
       "name": "make_qp_tables",
       "source_file": "rc_tables.h"
     },
     {
       "clang_usr": "c:@F@merge_cmd_args",
+      "end_line": 1212,
       "line": 1180,
       "name": "merge_cmd_args",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:cmd_parse.c@F@order_cmds",
+      "end_line": 1075,
       "line": 1045,
       "name": "order_cmds",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:cmd_parse.c@F@order_keys",
+      "end_line": 1043,
       "line": 1012,
       "name": "order_keys",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@palloc",
+      "end_line": 80,
       "line": 55,
       "name": "palloc",
       "source_file": "utl.c"
     },
     {
       "clang_usr": "c:codec_main.c@F@parse_cfgfile",
+      "end_line": 343,
       "line": 314,
       "name": "parse_cfgfile",
       "source_file": "codec_main.c"
     },
     {
       "clang_usr": "c:@F@parse_cmd",
+      "end_line": 1304,
       "line": 1255,
       "name": "parse_cmd",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@parse_cmd_strict",
+      "end_line": 1316,
       "line": 1307,
       "name": "parse_cmd_strict",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@parse_cmd_usage",
+      "end_line": 1475,
       "line": 1427,
       "name": "parse_cmd_usage",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@parse_key_usage",
+      "end_line": 1505,
       "line": 1480,
       "name": "parse_key_usage",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:cmd_parse.c@F@parse_kvline",
+      "end_line": 1178,
       "line": 1142,
       "name": "parse_kvline",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@parse_line",
+      "end_line": 1244,
       "line": 1219,
       "name": "parse_line",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@parse_line_strict",
+      "end_line": 1325,
       "line": 1318,
       "name": "parse_line_strict",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@parse_pps",
+      "end_line": 499,
       "line": 404,
       "name": "parse_pps",
       "source_file": "dsc_utils.c"
     },
     {
       "clang_usr": "c:@F@pcopy",
+      "end_line": 1589,
       "line": 1520,
       "name": "pcopy",
       "source_file": "utl.c"
     },
     {
       "clang_usr": "c:@F@pcopy_header",
+      "end_line": 239,
       "line": 225,
       "name": "pcopy_header",
       "source_file": "utl.c"
     },
     {
       "clang_usr": "c:@F@pcreate",
+      "end_line": 142,
       "line": 83,
       "name": "pcreate",
       "source_file": "utl.c"
     },
     {
       "clang_usr": "c:@F@pcreate_ext",
+      "end_line": 223,
       "line": 144,
       "name": "pcreate_ext",
       "source_file": "utl.c"
     },
     {
       "clang_usr": "c:@F@pdestroy",
+      "end_line": 302,
       "line": 241,
       "name": "pdestroy",
       "source_file": "utl.c"
     },
     {
       "clang_usr": "c:@F@populate_pps",
+      "end_line": 1260,
       "line": 1047,
       "name": "populate_pps",
       "source_file": "codec_main.c"
     },
     {
       "clang_usr": "c:@F@ppm_read",
+      "end_line": 1219,
       "line": 1206,
       "name": "ppm_read",
       "source_file": "utl.c"
     },
     {
       "clang_usr": "c:@F@ppm_write",
+      "end_line": 1303,
       "line": 1246,
       "name": "ppm_write",
       "source_file": "utl.c"
     },
     {
       "clang_usr": "c:@F@print_pps",
+      "end_line": 678,
       "line": 609,
       "name": "print_pps",
       "source_file": "dsc_utils.c"
     },
     {
       "clang_usr": "c:@F@print_pps_v2",
+      "end_line": 798,
       "line": 694,
       "name": "print_pps_v2",
       "source_file": "dsc_utils.c"
     },
     {
       "clang_usr": "c:codec_main.c@F@process_args",
+      "end_line": 464,
       "line": 402,
       "name": "process_args",
       "source_file": "codec_main.c"
     },
     {
       "clang_usr": "c:@F@putbits",
+      "end_line": 101,
       "line": 81,
       "name": "putbits",
       "source_file": "dsc_utils.c"
     },
     {
       "clang_usr": "c:@F@read_dpx",
+      "end_line": 742,
       "line": 727,
       "name": "read_dpx",
       "source_file": "dpx.c"
     },
     {
       "clang_usr": "c:dpx.c@F@read_dpx_image_data",
+      "end_line": 1418,
       "line": 981,
       "name": "read_dpx_image_data",
       "source_file": "dpx.c"
     },
     {
       "clang_usr": "c:@F@read_dsc_data",
+      "end_line": 596,
       "line": 568,
       "name": "read_dsc_data",
       "source_file": "codec_main.c"
     },
     {
       "clang_usr": "c:@F@readppm",
+      "end_line": 1204,
       "line": 1068,
       "name": "readppm",
       "source_file": "utl.c"
     },
     {
       "clang_usr": "c:@F@retrieve_cmds_var",
+      "end_line": 1531,
       "line": 1521,
       "name": "retrieve_cmds_var",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@retrieve_keys_var",
+      "end_line": 1518,
       "line": 1508,
       "name": "retrieve_keys_var",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@rgb2ycocg",
+      "end_line": 218,
       "line": 145,
       "name": "rgb2ycocg",
       "source_file": "dsc_utils.c"
     },
     {
       "clang_usr": "c:@F@rgb2yuv",
+      "end_line": 386,
       "line": 305,
       "name": "rgb2yuv",
       "source_file": "utl.c"
     },
     {
       "clang_usr": "c:@F@rgba_read",
+      "end_line": 1635,
       "line": 1592,
       "name": "rgba_read",
       "source_file": "utl.c"
     },
     {
       "clang_usr": "c:@F@set_convertbits_rounding",
+      "end_line": 708,
       "line": 705,
       "name": "set_convertbits_rounding",
       "source_file": "utl.c"
     },
     {
       "clang_usr": "c:@F@set_defaults",
+      "end_line": 300,
       "line": 222,
       "name": "set_defaults",
       "source_file": "codec_main.c"
     },
     {
       "clang_usr": "c:@F@set_dpx_colorspace",
+      "end_line": 1477,
       "line": 1474,
       "name": "set_dpx_colorspace",
       "source_file": "dpx.c"
     },
     {
       "clang_usr": "c:@F@simple422to444",
+      "end_line": 338,
       "line": 306,
       "name": "simple422to444",
       "source_file": "dsc_utils.c"
     },
     {
       "clang_usr": "c:@F@simple444to422",
+      "end_line": 373,
       "line": 344,
       "name": "simple444to422",
       "source_file": "dsc_utils.c"
     },
     {
       "clang_usr": "c:@F@split_base_and_ext",
+      "end_line": 502,
       "line": 481,
       "name": "split_base_and_ext",
       "source_file": "codec_main.c"
     },
     {
       "clang_usr": "c:@F@splitstring",
+      "end_line": 409,
       "line": 392,
       "name": "splitstring",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@splitstring_exact",
+      "end_line": 434,
       "line": 416,
       "name": "splitstring_exact",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@splitstring_exact_strict",
+      "end_line": 446,
       "line": 438,
       "name": "splitstring_exact_strict",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@str2d",
+      "end_line": 575,
       "line": 564,
       "name": "str2d",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@str2dim",
+      "end_line": 616,
       "line": 612,
       "name": "str2dim",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@str2dvect",
+      "end_line": 795,
       "line": 780,
       "name": "str2dvect",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@str2f",
+      "end_line": 560,
       "line": 557,
       "name": "str2f",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@str2fdim",
+      "end_line": 624,
       "line": 620,
       "name": "str2fdim",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@str2frange",
+      "end_line": 600,
       "line": 596,
       "name": "str2frange",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@str2fvect",
+      "end_line": 776,
       "line": 761,
       "name": "str2fvect",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@str2i",
+      "end_line": 460,
       "line": 451,
       "name": "str2i",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@str2ivect",
+      "end_line": 643,
       "line": 628,
       "name": "str2ivect",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@str2l",
+      "end_line": 490,
       "line": 481,
       "name": "str2l",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@str2ll",
+      "end_line": 508,
       "line": 494,
       "name": "str2ll",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@str2llvect",
+      "end_line": 738,
       "line": 723,
       "name": "str2llvect",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@str2lvect",
+      "end_line": 700,
       "line": 685,
       "name": "str2lvect",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@str2p",
+      "end_line": 477,
       "line": 464,
       "name": "str2p",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@str2pdim",
+      "end_line": 608,
       "line": 604,
       "name": "str2pdim",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@str2prange",
+      "end_line": 584,
       "line": 580,
       "name": "str2prange",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@str2pvect",
+      "end_line": 662,
       "line": 647,
       "name": "str2pvect",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@str2range",
+      "end_line": 592,
       "line": 588,
       "name": "str2range",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@str2ui",
+      "end_line": 521,
       "line": 512,
       "name": "str2ui",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@str2uivect",
+      "end_line": 681,
       "line": 666,
       "name": "str2uivect",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@str2ul",
+      "end_line": 534,
       "line": 525,
       "name": "str2ul",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@str2ull",
+      "end_line": 552,
       "line": 538,
       "name": "str2ull",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@str2ullvect",
+      "end_line": 757,
       "line": 742,
       "name": "str2ullvect",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@str2ulvect",
+      "end_line": 719,
       "line": 704,
       "name": "str2ulvect",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@strisdim",
+      "end_line": 362,
       "line": 333,
       "name": "strisdim",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@strisnum",
+      "end_line": 291,
       "line": 273,
       "name": "strisnum",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@strisrange",
+      "end_line": 327,
       "line": 297,
       "name": "strisrange",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:cmd_parse.c@F@test_cmd",
+      "end_line": 1138,
       "line": 1116,
       "name": "test_cmd",
       "source_file": "cmd_parse.c"
     },
     {
       "clang_usr": "c:@F@usage",
+      "end_line": 386,
       "line": 377,
       "name": "usage",
       "source_file": "codec_main.c"
     },
     {
       "clang_usr": "c:@F@uyvy_read",
+      "end_line": 1332,
       "line": 1306,
       "name": "uyvy_read",
       "source_file": "utl.c"
     },
     {
       "clang_usr": "c:@F@uyvy_write",
+      "end_line": 1447,
       "line": 1420,
       "name": "uyvy_write",
       "source_file": "utl.c"
     },
     {
       "clang_usr": "c:@F@write_dpx",
+      "end_line": 233,
       "line": 230,
       "name": "write_dpx",
       "source_file": "dpx.c"
     },
     {
       "clang_usr": "c:@F@write_dpx_ver",
+      "end_line": 705,
       "line": 235,
       "name": "write_dpx_ver",
       "source_file": "dpx.c"
     },
     {
       "clang_usr": "c:@F@write_dsc_data",
+      "end_line": 547,
       "line": 521,
       "name": "write_dsc_data",
       "source_file": "codec_main.c"
     },
     {
       "clang_usr": "c:@F@write_pps",
+      "end_line": 595,
       "line": 514,
       "name": "write_pps",
       "source_file": "dsc_utils.c"
     },
     {
       "clang_usr": "c:@F@writeppm",
+      "end_line": 1243,
       "line": 1222,
       "name": "writeppm",
       "source_file": "utl.c"
     },
     {
       "clang_usr": "c:@F@ycocg2rgb",
+      "end_line": 300,
       "line": 225,
       "name": "ycocg2rgb",
       "source_file": "dsc_utils.c"
     },
     {
       "clang_usr": "c:@F@yuv2rgb",
+      "end_line": 465,
       "line": 389,
       "name": "yuv2rgb",
       "source_file": "utl.c"
     },
     {
       "clang_usr": "c:@F@yuv_420_422",
+      "end_line": 701,
       "line": 671,
       "name": "yuv_420_422",
       "source_file": "utl.c"
     },
     {
       "clang_usr": "c:@F@yuv_422_420",
+      "end_line": 667,
       "line": 615,
       "name": "yuv_422_420",
       "source_file": "utl.c"
     },
     {
       "clang_usr": "c:@F@yuv_422_444",
+      "end_line": 531,
       "line": 503,
       "name": "yuv_422_444",
       "source_file": "utl.c"
     },
     {
       "clang_usr": "c:@F@yuv_422_444_region",
+      "end_line": 379,
       "line": 375,
       "name": "yuv_422_444_region",
       "source_file": "dsc_utils.c"
     },
     {
       "clang_usr": "c:@F@yuv_444_422",
+      "end_line": 609,
       "line": 533,
       "name": "yuv_444_422",
       "source_file": "utl.c"
     },
     {
       "clang_usr": "c:@F@yuv_444_422_region",
+      "end_line": 389,
       "line": 385,
       "name": "yuv_444_422_region",
       "source_file": "dsc_utils.c"
     },
     {
       "clang_usr": "c:@F@yuv_read",
+      "end_line": 1417,
       "line": 1335,
       "name": "yuv_read",
       "source_file": "utl.c"
     },
     {
       "clang_usr": "c:@F@yuv_write",
+      "end_line": 1518,
       "line": 1450,
       "name": "yuv_write",
       "source_file": "utl.c"
