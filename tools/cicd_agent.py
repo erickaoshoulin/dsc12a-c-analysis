@@ -1981,6 +1981,7 @@ class Agent:
                     "callee_usr": site.get("callee_usr") or (pair or {}).get("callee_usr"),
                     "location": site.get("location"),
                     "arguments": site.get("arguments", []),
+                    "result": site.get("result", "return_value"),
                     "transport": "direct argument/result ports",
                 }
                 for site in sites

@@ -114,6 +114,15 @@ class ExecutableCicdTests(unittest.TestCase):
 
     def test_fresh_receipts_prove_real_candidates_and_wrong_callee(self):
         selected = self.selected_contract_state()
+        plan = json.loads((ROOT / "ci" / "plan.json").read_text(encoding="utf-8"))
+        selected_plan = next(item for item in plan["contracts"] if item["contract_id"] == selected["contract_id"])
+        existing_ready = [
+            item for item in plan["contracts"]
+            if item["contract_id"] != selected["contract_id"] and item.get("origin") == "locked_contract" and item.get("ready")
+        ]
+        self.assertTrue(selected_plan["new_work"])
+        self.assertTrue(selected_plan["selected"])
+        self.assertTrue(all(selected_plan["interface_shape"] != item["interface_shape"] for item in existing_ready))
         artifact = ROOT / selected["artifacts"][0]
         generation = json.loads((artifact / "generation.json").read_text(encoding="utf-8"))
         unit = json.loads((artifact / "unit-receipt.json").read_text(encoding="utf-8"))
@@ -129,6 +138,8 @@ class ExecutableCicdTests(unittest.TestCase):
         dependency = json.loads((artifact / "dependency-receipt.json").read_text(encoding="utf-8"))
         self.assertEqual(dependency["status"], "PASS")
         self.assertEqual(len(dependency["dependency_ports"]), 3)
+        self.assertTrue(all(port.get("arguments") for port in dependency["dependency_ports"]))
+        self.assertTrue(all(port.get("result") for port in dependency["dependency_ports"]))
         evidence = dependency["execution_evidence"]
         self.assertTrue(evidence["callee_oracle_compile"])
         self.assertTrue(evidence["callee_candidate_compile"])

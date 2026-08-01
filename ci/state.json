@@ -42,7 +42,7 @@
       "failure_reason": "bounded selection deferred",
       "function": "FindMidpoint",
       "hashes": {
-        "agent": "c3636c6be31dd3fa6c8785ae6eec245bbfbb78479e1c3bf73fd9587fb5ce9d57",
+        "agent": "e9800d5bdd133c61ff87e13424d5a732ba29455d20895c9e8d872653256a3c87",
         "contract": "ddf6b008659477f8b63803b7d5b599f7227e5f363ae460be83a305e5b39d0dea",
         "dependency": "1891d53f1908a01fb0e98ee5a0f36f704f41968cf7f669234fd8d3a766b10fdd",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
@@ -132,7 +132,7 @@
       "failure_reason": "arithmetic_semantics; field:dsc_cfg_t.flatness_max_qp; field:dsc_cfg_t.flatness_min_qp; interface:flatness_max_qp; interface:flatness_min_qp; interface:qp; interface:return_value; no_exact_spec_link; parameter:qp",
       "function": "IsFlatnessInfoSent",
       "hashes": {
-        "agent": "c3636c6be31dd3fa6c8785ae6eec245bbfbb78479e1c3bf73fd9587fb5ce9d57",
+        "agent": "e9800d5bdd133c61ff87e13424d5a732ba29455d20895c9e8d872653256a3c87",
         "contract": "1d9bc596110ec2ebf4b21ff142ebe4b2af3aa65b3c765f87f7cd65348002b945",
         "dependency": "49155ca440c27e1656a93d039885d9f2399cf15e0fbf6773c25c5bc91914c8f1",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
@@ -211,7 +211,7 @@
       "failure_reason": "arithmetic_semantics; field:dsc_cfg_t.dsc_version_minor; field:dsc_cfg_t.native_420; field:dsc_state_t.quantTableChroma; field:dsc_state_t.quantTableLuma; interface:dsc_version_minor; interface:native_420; interface:qp; interface:quantTableChroma; interface:quantTableLuma; interface:return_value; parameter:qp",
       "function": "MapQpToQlevel",
       "hashes": {
-        "agent": "c3636c6be31dd3fa6c8785ae6eec245bbfbb78479e1c3bf73fd9587fb5ce9d57",
+        "agent": "e9800d5bdd133c61ff87e13424d5a732ba29455d20895c9e8d872653256a3c87",
         "contract": "b5d32e96c0ef357adad943e57b6e785389935d2b3a7265a6a709013ecb3e9a9f",
         "dependency": "c2fb87ed47a776f205dfcceb73d42a6191bdd017a16e637a5a98791cb117908b",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
@@ -303,7 +303,7 @@
       "failure_reason": null,
       "function": "QuantizeResidual",
       "hashes": {
-        "agent": "c3636c6be31dd3fa6c8785ae6eec245bbfbb78479e1c3bf73fd9587fb5ce9d57",
+        "agent": "e9800d5bdd133c61ff87e13424d5a732ba29455d20895c9e8d872653256a3c87",
         "contract": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
         "dependency": "9c0a6bc17523a90470b5a5c08efd38b7e73cdb740ff92fd681932484ff71d3e6",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
@@ -414,6 +414,46 @@
           "failure_reason": null,
           "state": "BITSTREAM_PASS",
           "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
         },
         {
           "failure_reason": null,

@@ -125,6 +125,31 @@ bool isDirectTargetReference(ASTContext &Context, const DeclRefExpr *Reference,
   return false;
 }
 
+std::string resultForCall(ASTContext &Context, const CallExpr *Call) {
+  DynTypedNode Current = DynTypedNode::create(*Call);
+  for (unsigned Depth = 0; Depth < 12; ++Depth) {
+    auto Parents = Context.getParents(Current);
+    if (Parents.empty()) return "discarded";
+    bool Advanced = false;
+    for (const DynTypedNode &Parent : Parents) {
+      if (const auto *Assignment = Parent.get<BinaryOperator>()) {
+        if (Assignment->isAssignmentOp()) {
+          return sourceText(Context.getSourceManager(), Context.getLangOpts(), Assignment->getLHS()->getSourceRange());
+        }
+      }
+      if (Parent.get<ReturnStmt>()) return "return_value";
+      if (const auto *Variable = Parent.get<VarDecl>()) return Variable->getNameAsString();
+      if (Parent.get<Stmt>() || Parent.get<Decl>()) {
+        Current = Parent;
+        Advanced = true;
+        break;
+      }
+    }
+    if (!Advanced) return "discarded";
+  }
+  return "discarded";
+}
+
 // Match callbacks need the target options, so this small adapter avoids
 // global mutable selection state while still allowing one callback per tool.
 class CallbackWithTarget : public MatchFinder::MatchCallback {
@@ -195,6 +220,7 @@ class CallbackWithTarget : public MatchFinder::MatchCallback {
           Arguments.push_back(sourceText(SM, Context.getLangOpts(), Argument->getSourceRange()));
         }
         Site["arguments"] = std::move(Arguments);
+        Site["result"] = resultForCall(Context, Call);
         StateValue->callSites.push_back(std::move(Site));
         return;
       }

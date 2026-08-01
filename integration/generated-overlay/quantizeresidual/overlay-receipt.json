@@ -7,7 +7,8 @@
       ],
       "call_text": "QuantizeResidual( err_raw, qlevel )",
       "callee_usr": "c:@F@QuantizeResidual",
-      "location": "<overlay-work>/source/dsc_codec.c:2419:12"
+      "location": "<overlay-work>/source/dsc_codec.c:2419:12",
+      "result": "err_q"
     },
     {
       "arguments": [
@@ -16,7 +17,8 @@
       ],
       "call_text": "QuantizeResidual(err_raw, qlevel)",
       "callee_usr": "c:@F@QuantizeResidual",
-      "location": "<overlay-work>/source/dsc_codec.c:2424:130"
+      "location": "<overlay-work>/source/dsc_codec.c:2424:130",
+      "result": "discarded"
     },
     {
       "arguments": [
@@ -25,7 +27,8 @@
       ],
       "call_text": "QuantizeResidual(err_raw, qlevel)",
       "callee_usr": "c:@F@QuantizeResidual",
-      "location": "<overlay-work>/source/dsc_codec.c:2431:60"
+      "location": "<overlay-work>/source/dsc_codec.c:2431:60",
+      "result": "dsc_state->quantizedResidualMid[unit][residual_index]"
     }
   ],
   "changed_files": [

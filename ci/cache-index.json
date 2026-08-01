@@ -329,6 +329,32 @@
       "updated_at": "2026-08-01T19:12:04Z",
       "valid": false
     },
+    "df664cae2c0362f3f3694dcefcecb1457f1c89f8572a2aa7f86cf607325a7853": {
+      "artifact_dir": "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+      "cache_key": "df664cae2c0362f3f3694dcefcecb1457f1c89f8572a2aa7f86cf607325a7853",
+      "contract_id": "quantizeresidual",
+      "execution_status": "REUSED_VERIFIED_RECEIPT",
+      "hashes": {
+        "agent": "e9800d5bdd133c61ff87e13424d5a732ba29455d20895c9e8d872653256a3c87",
+        "contract": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+        "dependency": "9c0a6bc17523a90470b5a5c08efd38b7e73cdb740ff92fd681932484ff71d3e6",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "52046cde6759294b04e2e32ae56cb5d9873f873c6bd03b84f2e8ea9a7d5db353",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "2"
+      },
+      "model_calls": 0,
+      "schema_version": 2,
+      "state": "PROMOTED",
+      "tokens": 0,
+      "updated_at": "2026-08-01T19:49:46Z",
+      "valid": true
+    },
     "e84f18406f7463f533684f7b58aaa91927b0312461ade85ae0052dc782853d41": {
       "artifact_dir": "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
       "cache_key": "e84f18406f7463f533684f7b58aaa91927b0312461ade85ae0052dc782853d41",
