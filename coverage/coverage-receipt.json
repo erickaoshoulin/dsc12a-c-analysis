@@ -1,0 +1,106 @@
+{
+  "commands": [
+    {
+      "command": [
+        "make",
+        "-j1",
+        "-C",
+        "<coverage-copy>/source",
+        "clean"
+      ],
+      "duration_seconds": 0.015,
+      "output_tail": "rm -f *.o\nrm -f dsc\n",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "make",
+        "-j1",
+        "-C",
+        "<coverage-copy>/source"
+      ],
+      "duration_seconds": 1.418,
+      "output_tail": "/usr/bin/clang -fprofile-instr-generate -std=gnu99 -O1 -gline-tables-only -fprofile-instr-generate -fcoverage-mapping -D_FILE_OFFSET_BITS=64 -c dsc_codec.c -o dsc_codec.o\n/usr/bin/clang -fprofile-instr-generate -std=gnu99 -O1 -gline-tables-only -fprofile-instr-generate -fcoverage-mapping -D_FILE_OFFSET_BITS=64 -c dsc_utils.c -o dsc_utils.o\n/usr/bin/clang -fprofile-instr-generate -std=gnu99 -O1 -gline-tables-only -fprofile-instr-generate -fcoverage-mapping -D_FILE_OFFSET_BITS=64 -c cmd_parse.c -o cmd_parse.o\n/usr/bin/clang -fprofile-instr-generate -std=gnu99 -O1 -gline-tables-only -fprofile-instr-generate -fcoverage-mapping -D_FILE_OFFSET_BITS=64 -c codec_main.c -o codec_main.o\n/usr/bin/clang -fprofile-instr-generate -std=gnu99 -O1 -gline-tables-only -fprofile-instr-generate -fcoverage-mapping -D_FILE_OFFSET_BITS=64 -c dpx.c -o dpx.o\n/usr/bin/clang -fprofile-instr-generate -std=gnu99 -O1 -gline-tables-only -fprofile-instr-generate -fcoverage-mapping -D_FILE_OFFSET_BITS=64 -c fifo.c -o fifo.o\n/usr/bin/clang -fprofile-instr-generate -std=gnu99 -O1 -gline-tables-only -fprofile-instr-generate -fcoverage-mapping -D_FILE_OFFSET_BITS=64 -c hdr_dpx.c -o hdr_dpx.o\nhdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\nhdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n2 warnings generated.\n/usr/bin/clang -fprofile-instr-generate -std=gnu99 -O1 -gline-tables-only -fprofile-instr-generate -fcoverage-mapping -D_FILE_OFFSET_BITS=64 -c logging.c -o logging.o\n/usr/bin/clang -fprofile-instr-generate -std=gnu99 -O1 -gline-tables-only -fprofile-instr-generate -fcoverage-mapping -D_FILE_OFFSET_BITS=64 -c multiplex.c -o multiplex.o\n/usr/bin/clang -fprofile-instr-generate -std=gnu99 -O1 -gline-tables-only -fprofile-instr-generate -fcoverage-mapping -D_FILE_OFFSET_BITS=64 -c psnr.c -o psnr.o\n/usr/bin/clang -fprofile-instr-generate -std=gnu99 -O1 -gline-tables-only -fprofile-instr-generate -fcoverage-mapping -D_FILE_OFFSET_BITS=64 -c utl.c -o utl.o\n/usr/bin/clang -fprofile-instr-generate dsc_codec.o dsc_utils.o cmd_parse.o codec_main.o dpx.o fifo.o hdr_dpx.o logging.o multiplex.o psnr.o utl.o -lm -o dsc\n",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "<coverage-copy>/bittrue_smoke/run_c_baseline.sh"
+      ],
+      "duration_seconds": 2.034,
+      "output_tail": "wrote /private/tmp/dsc12a-c-analysis/tmp/coverage-final/model/bittrue_smoke/simple_192x108.ppm (62223 bytes)\nrm -f *.o\nrm -f dsc\n/usr/bin/clang -fprofile-instr-generate -std=gnu99 -O1 -gline-tables-only -fprofile-instr-generate -fcoverage-mapping -D_FILE_OFFSET_BITS=64 -c dsc_codec.c -o dsc_codec.o\n/usr/bin/clang -fprofile-instr-generate -std=gnu99 -O1 -gline-tables-only -fprofile-instr-generate -fcoverage-mapping -D_FILE_OFFSET_BITS=64 -c dsc_utils.c -o dsc_utils.o\n/usr/bin/clang -fprofile-instr-generate -std=gnu99 -O1 -gline-tables-only -fprofile-instr-generate -fcoverage-mapping -D_FILE_OFFSET_BITS=64 -c cmd_parse.c -o cmd_parse.o\n/usr/bin/clang -fprofile-instr-generate -std=gnu99 -O1 -gline-tables-only -fprofile-instr-generate -fcoverage-mapping -D_FILE_OFFSET_BITS=64 -c codec_main.c -o codec_main.o\n/usr/bin/clang -fprofile-instr-generate -std=gnu99 -O1 -gline-tables-only -fprofile-instr-generate -fcoverage-mapping -D_FILE_OFFSET_BITS=64 -c dpx.c -o dpx.o\n/usr/bin/clang -fprofile-instr-generate -std=gnu99 -O1 -gline-tables-only -fprofile-instr-generate -fcoverage-mapping -D_FILE_OFFSET_BITS=64 -c fifo.c -o fifo.o\n/usr/bin/clang -fprofile-instr-generate -std=gnu99 -O1 -gline-tables-only -fprofile-instr-generate -fcoverage-mapping -D_FILE_OFFSET_BITS=64 -c hdr_dpx.c -o hdr_dpx.o\nhdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\nhdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n2 warnings generated.\n/usr/bin/clang -fprofile-instr-generate -std=gnu99 -O1 -gline-tables-only -fprofile-instr-generate -fcoverage-mapping -D_FILE_OFFSET_BITS=64 -c logging.c -o logging.o\n/usr/bin/clang -fprofile-instr-generate -std=gnu99 -O1 -gline-tables-only -fprofile-instr-generate -fcoverage-mapping -D_FILE_OFFSET_BITS=64 -c multiplex.c -o multiplex.o\n/usr/bin/clang -fprofile-instr-generate -std=gnu99 -O1 -gline-tables-only -fprofile-instr-generate -fcoverage-mapping -D_FILE_OFFSET_BITS=64 -c psnr.c -o psnr.o\n/usr/bin/clang -fprofile-instr-generate -std=gnu99 -O1 -gline-tables-only -fprofile-instr-generate -fcoverage-mapping -D_FILE_OFFSET_BITS=64 -c utl.c -o utl.o\n/usr/bin/clang -fprofile-instr-generate dsc_codec.o dsc_utils.o cmd_parse.o codec_main.o dpx.o fifo.o hdr_dpx.o logging.o multiplex.o psnr.o utl.o -lm -o dsc\nDisplay Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nC baseline OK: 2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797\n",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/llvm/bin/llvm-profdata",
+        "merge",
+        "-sparse",
+        "<coverage-copy>/coverage-profiles/36633.profraw",
+        "-o",
+        "/private/tmp/dsc12a-c-analysis/tmp/coverage-final/merged.profdata"
+      ],
+      "duration_seconds": 0.132,
+      "output_tail": "",
+      "returncode": 0,
+      "status": "PASS"
+    },
+    {
+      "command": [
+        "/opt/homebrew/opt/llvm/bin/llvm-cov",
+        "export",
+        "-format=text",
+        "-instr-profile",
+        "/private/tmp/dsc12a-c-analysis/tmp/coverage-final/merged.profdata",
+        "<coverage-copy>/source/dsc"
+      ],
+      "output_tail": "35,1602,35,0,0,0,0],[1602,40,1603,2,0,0,0,3],[1603,2,1606,3,0,0,0,0],[1606,3,1608,2,0,0,0,3],[1607,1,1607,1,0,0,0,2],[1608,2,1635,2,0,0,0,0],[1611,1,1611,1,0,0,0,2],[1613,14,1613,24,0,0,0,0],[1613,26,1613,29,0,0,0,0],[1613,30,1614,3,0,0,0,3],[1614,3,1631,4,0,0,0,0],[1614,15,1614,25,0,0,0,0],[1614,27,1614,30,0,0,0,0],[1614,31,1615,3,0,0,0,3],[1615,3,1631,4,0,0,0,0],[1617,8,1617,17,0,0,0,0],[1617,18,1617,19,0,0,0,3],[1617,19,1617,60,0,0,0,0],[1619,8,1619,17,0,0,0,0],[1619,18,1619,19,0,0,0,3],[1619,19,1619,60,0,0,0,0],[1621,8,1621,17,0,0,0,0],[1621,18,1621,19,0,0,0,3],[1621,19,1621,60,0,0,0,0],[1622,8,1622,40,0,0,0,0],[1622,41,1622,42,0,0,0,3],[1622,42,1622,86,0,0,0,0],[1622,87,1623,4,0,0,0,3],[1623,4,1631,4,0,0,0,0],[1623,8,1623,40,0,0,0,0],[1623,41,1623,42,0,0,0,3],[1623,42,1623,86,0,0,0,0],[1623,87,1624,4,0,0,0,3],[1624,4,1631,4,0,0,0,0],[1624,8,1624,40,0,0,0,0],[1624,41,1624,42,0,0,0,3],[1624,42,1624,86,0,0,0,0],[1624,87,1625,4,0,0,0,3],[1625,4,1631,4,0,0,0,0],[1625,8,1625,21,0,0,0,0],[1625,22,1626,4,0,0,0,3],[1626,4,1630,5,0,0,0,0],[1628,9,1628,18,0,0,0,0],[1628,19,1628,20,0,0,0,3],[1628,20,1628,61,0,0,0,0],[1629,9,1629,41,0,0,0,0],[1629,42,1629,43,0,0,0,3],[1629,43,1629,87,0,0,0,0],[1631,4,1632,2,0,0,0,3],[1632,2,1633,11,0,0,0,0],[1634,1,1634,1,0,0,0,2]]},{\"branches\":[[1651,6,1651,20,0,0,0,0,4],[1657,14,1657,20,0,0,0,0,4],[1662,6,1662,22,0,0,0,0,4],[1662,26,1662,47,0,0,0,0,4],[1664,6,1664,22,0,0,0,0,4],[1664,26,1664,47,0,0,0,0,4],[1667,14,1667,21,0,0,0,0,4],[1668,15,1668,24,0,0,0,0,4],[47,29,47,38,0,0,1,0,4],[47,50,47,59,0,0,1,0,4],[47,29,47,38,0,0,2,0,4],[47,50,47,59,0,0,2,0,4],[47,29,47,38,0,0,3,0,4],[47,50,47,59,0,0,3,0,4]],\"count\":0,\"filenames\":[\"/private/tmp/dsc12a-c-analysis/tmp/coverage-final/model/source/utl.c\",\"/private/tmp/dsc12a-c-analysis/tmp/coverage-final/model/source/vdo.h\",\"/private/tmp/dsc12a-c-analysis/tmp/coverage-final/model/source/vdo.h\",\"/private/tmp/dsc12a-c-analysis/tmp/coverage-final/model/source/vdo.h\"],\"mcdc_records\":[],\"name\":\"convert_rgb_2020_to_709\",\"regions\":[[1645,1,1677,2,0,0,0,0],[1650,1,1650,1,0,0,0,2],[1651,6,1651,20,0,0,0,0],[1651,21,1652,2,0,0,0,3],[1652,2,1655,3,0,0,0,0],[1655,3,1657,2,0,0,0,3],[1656,1,1656,1,0,0,0,2],[1657,2,1677,2,0,0,0,0],[1657,14,1657,20,0,0,0,0],[1657,22,1657,25,0,0,0,0],[1657,26,1658,3,0,0,0,3],[1658,3,1658,27,0,0,0,0],[1659,1,1659,1,0,0,0,2],[1661,1,1661,1,0,0,0,2],[1662,6,1662,22,0,0,0,0],[1662,6,1662,47,0,0,0,0],[1662,26,1662,47,0,0,0,0],[1662,48,1663,3,0,0,0,3],[1663,3,1663,57,0,0,0,0],[1663,58,1664,2,0,0,0,3],[1664,2,1677,2,0,0,0,0],[1664,6,1664,22,0,0,0,0],[1664,6,1664,47,0,0,0,0],[1664,26,1664,47,0,0,0,0],[1664,48,1665,3,0,0,0,3],[1665,3,1665,58,0,0,0,0],[1665,59,1667,2,0,0,0,3],[1666,1,1666,1,0,0,0,2],[1667,2,1677,2,0,0,0,0],[1667,14,1667,21,0,0,0,0],[1667,23,1667,26,0,0,0,0],[1667,27,1668,3,0,0,0,3],[1668,3,1676,4,0,0,0,0],[1668,15,1668,24,0,0,0,0],[1668,26,1668,29,0,0,0,0],[1668,30,1669,3,0,0,0,3],[1669,3,1676,4,0,0,0,0],[1670,32,1670,37,0,0,1,1],[1672,32,1672,37,0,0,2,1],[1674,32,1674,37,0,0,3,1],[47,28,47,75,0,1,0,0],[47,29,47,38,0,1,0,0],[47,41,47,46,0,1,0,0],[47,49,47,74,0,1,0,0],[47,50,47,59,0,1,0,0],[47,62,47,67,0,1,0,0],[47,70,47,73,0,1,0,0],[47,28,47,75,0,2,0,0],[47,29,47,38,0,2,0,0],[47,41,47,46,0,2,0,0],[47,49,47,74,0,2,0,0],[47,50,47,59,0,2,0,0],[47,62,47,67,0,2,0,0],[47,70,47,73,0,2,0,0],[47,28,47,75,0,3,0,0],[47,29,47,38,0,3,0,0],[47,41,47,46,0,3,0,0],[47,49,47,74,0,3,0,0],[47,50,47,59,0,3,0,0],[47,62,47,67,0,3,0,0],[47,70,47,73,0,3,0,0]]}],\"totals\":{\"branches\":{\"count\":6006,\"covered\":1573,\"notcovered\":4433,\"percent\":26.190476190476193},\"functions\":{\"count\":194,\"covered\":82,\"percent\":42.268041237113401},\"instantiations\":{\"count\":194,\"covered\":82,\"percent\":42.268041237113401},\"lines\":{\"count\":10030,\"covered\":2835,\"percent\":28.265204386839482},\"mcdc\":{\"count\":0,\"covered\":0,\"notcovered\":0,\"percent\":0},\"regions\":{\"count\":10174,\"covered\":2829,\"notcovered\":7345,\"percent\":27.806172596815408}}}],\"type\":\"llvm.coverage.json.export\",\"version\":\"3.1.0\"}",
+      "returncode": 0,
+      "status": "PASS"
+    }
+  ],
+  "copy_excludes": [
+    ".git",
+    "__pycache__",
+    "build",
+    "dsc-rs",
+    "operator_bittrue",
+    "out",
+    "target"
+  ],
+  "do_not_edit": true,
+  "instrumented_binary_sha256": "feff0f810b28bd528f8a009313ca85ee0b842b22998220054950c2106f5aedc3",
+  "model_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
+  "profile_artifacts": {
+    "instrumented_binary_sha256": "feff0f810b28bd528f8a009313ca85ee0b842b22998220054950c2106f5aedc3",
+    "profdata_sha256": "534c5543f17c9758cb7776ac5abeb669944bbaf4ee7f487ac10b32b2c1593348",
+    "profraw_count": 1
+  },
+  "profraw_count": 1,
+  "schema_version": 1,
+  "smoke": {
+    "expected_hash": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+    "mode": "bittrue_smoke/run_c_baseline.sh",
+    "outputs": [
+      {
+        "path": "bittrue_smoke/out/log.txt",
+        "sha256": "cef42f83b1ccbbac96c99fb68106d1a214c2f158057450483a5ad4e84ea44c20",
+        "size_bytes": 199
+      },
+      {
+        "path": "bittrue_smoke/out/simple_192x108.dsc",
+        "sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+        "size_bytes": 31236
+      },
+      {
+        "path": "bittrue_smoke/out/simple_192x108.dsc.sha256",
+        "sha256": "26b099a44b98f3b67e3723597b44c4d88c0f105396599ff44a35b90475b77827",
+        "size_bytes": 159
+      }
+    ]
+  },
+  "status": "PASS"
+}

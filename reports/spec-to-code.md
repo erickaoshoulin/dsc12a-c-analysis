@@ -2,180 +2,183 @@
 
 Generated links are EXACT only when anchored by a direct MN/spec reference; heuristic links remain PROPOSED until human review.
 
-- `PROPOSED` `pdf:section:3.6` page 38 -> `compute_rc_parameters` `codec_main.c:661`
-  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: control, rate
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/codec_main.c#L661-L802
-- `PROPOSED` `pdf:section:6.8.5.2` page 113 -> `MapQpToQlevel` `dsc_codec.c:221`
-  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: qp, quantization
+- `EXACT` `pdf:model-note:MN_MAP_QP_TO_QLEVEL:p113` page 113 -> `MapQpToQlevel` `dsc_codec.c:221`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_MAP_QP_TO_QLEVEL
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L221-L238
-- `PROPOSED` `pdf:section:3.3` page 30 -> `QuantizeResidual` `dsc_codec.c:245`
-  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: quantization
+- `EXACT` `pdf:section:6.8.6` page 113 -> `MapQpToQlevel` `dsc_codec.c:221`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_MAP_QP_TO_QLEVEL
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L221-L238
+- `EXACT` `pdf:model-note:MN_ENC_QUANTIZATION:p083` page 83 -> `QuantizeResidual` `dsc_codec.c:245`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_ENC_QUANTIZATION
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L245-L255
-- `PROPOSED` `pdf:section:3.3` page 30 -> `GetQpAdjPredSize` `dsc_codec.c:278`
-  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: prediction, quantization
+- `EXACT` `pdf:section:6.4.5` page 83 -> `QuantizeResidual` `dsc_codec.c:245`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_ENC_QUANTIZATION
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L245-L255
+- `PROPOSED` `pdf:model-note:MN_FLAT_QP_ADJ:p113` page 113 -> `GetQpAdjPredSize` `dsc_codec.c:278`
+  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: adj, qp, quantization
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L278-L297
-- `PROPOSED` `pdf:figure:6-2` page 78 -> `SamplePredict` `dsc_codec.c:308`
-  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: adaptive, median, mmap, modified, prediction
+- `EXACT` `pdf:model-note:MN_MMAP:p076` page 76 -> `SamplePredict` `dsc_codec.c:308`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_MMAP
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L308-L383
-- `PROPOSED` `pdf:section:3.3.2` page 31 -> `SamplePredict` `dsc_codec.c:308`
-  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: block
+- `EXACT` `pdf:section:6.4.1` page 76 -> `SamplePredict` `dsc_codec.c:308`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_MMAP
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L308-L383
-- `PROPOSED` `pdf:section:6.5.3.2` page 88 -> `IchDecision` `dsc_codec.c:484`
-  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: color, decision, history, indexed, mode
+- `EXACT` `pdf:model-note:MN_MMAP:p078` page 78 -> `SamplePredict` `dsc_codec.c:308`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_MMAP
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L308-L383
+- `EXACT` `pdf:section:6.4.1.1` page 78 -> `SamplePredict` `dsc_codec.c:308`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_MMAP
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L308-L383
+- `EXACT` `pdf:model-note:MN_MMAP:p079` page 79 -> `SamplePredict` `dsc_codec.c:308`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_MMAP
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L308-L383
+- `EXACT` `pdf:section:6.4.1.2` page 79 -> `SamplePredict` `dsc_codec.c:308`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_MMAP
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L308-L383
+- `EXACT` `pdf:model-note:MN_BLOCK_PRED:p079` page 79 -> `SamplePredict` `dsc_codec.c:308`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_BLOCK_PRED
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L308-L383
+- `EXACT` `pdf:section:6.4.2` page 79 -> `SamplePredict` `dsc_codec.c:308`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_BLOCK_PRED
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L308-L383
+- `EXACT` `pdf:model-note:MN_ENC_ICH_MODE_SELECT:p088` page 88 -> `IchDecision` `dsc_codec.c:484`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_ENC_ICH_MODE_SELECT
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L484-L533
-- `PROPOSED` `pdf:section:6.5.3.3` page 91 -> `IsOrigWithinQerr` `dsc_codec.c:611`
-  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: color, history, ich, indexed
+- `EXACT` `pdf:section:6.5.3.2` page 88 -> `IchDecision` `dsc_codec.c:484`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_ENC_ICH_MODE_SELECT
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L484-L533
+- `PROPOSED` `pdf:model-note:MN_ENC_ICH_IDX_SELECT:p088` page 88 -> `IsOrigWithinQerr` `dsc_codec.c:611`
+  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: color, enc, history, ich, indexed
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L611-L667
-- `PROPOSED` `pdf:section:6.5.3.3` page 91 -> `UpdateHistoryElement` `dsc_codec.c:674`
+- `PROPOSED` `pdf:figure:6-6` page 84 -> `UpdateHistoryElement` `dsc_codec.c:674`
   - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: color, history, ich, indexed
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L674-L726
-- `PROPOSED` `pdf:section:6.5.3.3` page 91 -> `PickBestHistoryValue` `dsc_codec.c:736`
-  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: color, history, ich, indexed
+- `EXACT` `pdf:model-note:MN_ENC_ICH_IDX_SELECT:p088` page 88 -> `PickBestHistoryValue` `dsc_codec.c:736`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_ENC_ICH_IDX_SELECT
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L736-L777
-- `PROPOSED` `pdf:section:3.3.3` page 32 -> `FindMidpoint` `dsc_codec.c:906`
-  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: midpoint
+- `EXACT` `pdf:section:6.5.3.1` page 88 -> `PickBestHistoryValue` `dsc_codec.c:736`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_ENC_ICH_IDX_SELECT
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L736-L777
+- `EXACT` `pdf:model-note:MN_MIDPOINT_PRED:p080` page 80 -> `FindMidpoint` `dsc_codec.c:906`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_MIDPOINT_PRED
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L906-L914
-- `PROPOSED` `pdf:figure:3-6` page 32 -> `BlockPredSearch` `dsc_codec.c:924`
-  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: block, prediction, search
+- `EXACT` `pdf:section:6.4.3` page 80 -> `FindMidpoint` `dsc_codec.c:906`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_MIDPOINT_PRED
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L906-L914
+- `EXACT` `pdf:model-note:MN_BP_SEARCH:p080` page 80 -> `BlockPredSearch` `dsc_codec.c:924`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_BP_SEARCH
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L924-L1073
-- `PROPOSED` `pdf:section:3.6` page 38 -> `RateControl` `dsc_codec.c:1242`
-  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: control, rate
+- `EXACT` `pdf:section:6.4.4.1` page 80 -> `BlockPredSearch` `dsc_codec.c:924`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_BP_SEARCH
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L924-L1073
+- `EXACT` `pdf:model-note:MN_RC_XFORM:p103` page 103 -> `RateControl` `dsc_codec.c:1242`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_RC_XFORM
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1242-L1469
-- `PROPOSED` `pdf:figure:6-13` page 98 -> `RateControl` `dsc_codec.c:1242`
-  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: control, long, rate, term
+- `EXACT` `pdf:section:6.8.2` page 103 -> `RateControl` `dsc_codec.c:1242`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_RC_XFORM
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1242-L1469
+- `EXACT` `pdf:model-note:MN_RC_LONG_TERM:p105` page 105 -> `RateControl` `dsc_codec.c:1242`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_RC_LONG_TERM
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1242-L1469
+- `EXACT` `pdf:section:6.8.3` page 105 -> `RateControl` `dsc_codec.c:1242`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_RC_LONG_TERM
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1242-L1469
+- `EXACT` `pdf:model-note:MN_RC_SHORT_TERM:p107` page 107 -> `RateControl` `dsc_codec.c:1242`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_RC_SHORT_TERM
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1242-L1469
+- `EXACT` `pdf:section:6.8.4` page 107 -> `RateControl` `dsc_codec.c:1242`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_RC_SHORT_TERM
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1242-L1469
 - `PROPOSED` `pdf:section:6.6` page 91 -> `VLCUnit` `dsc_codec.c:1494`
   - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: encoder, entropy
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1494-L1703
-- `PROPOSED` `pdf:section:3.3.3` page 32 -> `VLCUnit` `dsc_codec.c:1494`
-  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: midpoint, prediction
+- `EXACT` `pdf:model-note:MN_ENC_MPP_SELECT:p082` page 82 -> `VLCUnit` `dsc_codec.c:1494`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_ENC_MPP_SELECT
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1494-L1703
-- `PROPOSED` `pdf:section:3.3.3` page 32 -> `VLDUnit` `dsc_codec.c:1808`
-  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: midpoint, prediction
+- `EXACT` `pdf:section:6.4.4.2` page 82 -> `VLCUnit` `dsc_codec.c:1494`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_ENC_MPP_SELECT
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1494-L1703
+- `EXACT` `pdf:model-note:MN_DEC_MPP_SELECT:p118` page 118 -> `VLDUnit` `dsc_codec.c:1808`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_DEC_MPP_SELECT
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1808-L1981
-- `PROPOSED` `pdf:section:6.6` page 91 -> `VLDGroup` `dsc_codec.c:1988`
-  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: entropy
+- `EXACT` `pdf:section:7.5.2.2` page 118 -> `VLDUnit` `dsc_codec.c:1808`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_DEC_MPP_SELECT
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1808-L1981
+- `EXACT` `pdf:model-note:MN_DEC_ENTROPY:p116` page 116 -> `VLDGroup` `dsc_codec.c:1988`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_DEC_ENTROPY
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1988-L2028
-- `PROPOSED` `pdf:section:6.3` page 75 -> `SampToLineBuf` `dsc_codec.c:2036`
-  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: line, storage
+- `EXACT` `pdf:section:7.2` page 116 -> `VLDGroup` `dsc_codec.c:1988`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_DEC_ENTROPY
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1988-L2028
+- `EXACT` `pdf:model-note:MN_LINE_STORAGE:p075` page 75 -> `SampToLineBuf` `dsc_codec.c:2036`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_LINE_STORAGE
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L2036-L2049
-- `PROPOSED` `pdf:figure:6-15` page 104 -> `CalcFullnessOffset` `dsc_codec.c:2188`
-  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: offset, scale
+- `EXACT` `pdf:section:6.3` page 75 -> `SampToLineBuf` `dsc_codec.c:2036`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_LINE_STORAGE
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L2036-L2049
+- `EXACT` `pdf:model-note:MN_LINE_STORAGE:p117` page 117 -> `SampToLineBuf` `dsc_codec.c:2036`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_LINE_STORAGE
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L2036-L2049
+- `EXACT` `pdf:section:7.4` page 117 -> `SampToLineBuf` `dsc_codec.c:2036`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_LINE_STORAGE
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L2036-L2049
+- `EXACT` `pdf:model-note:MN_CALC_SCALE_OFFSET:p103` page 103 -> `CalcFullnessOffset` `dsc_codec.c:2188`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_CALC_SCALE_OFFSET
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L2188-L2286
-- `PROPOSED` `pdf:section:6.4.6` page 83 -> `PredictionLoop` `dsc_codec.c:2361`
-  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: inverse, quantization, reconstruction
+- `EXACT` `pdf:section:6.8.2` page 103 -> `CalcFullnessOffset` `dsc_codec.c:2188`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_CALC_SCALE_OFFSET
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L2188-L2286
+- `EXACT` `pdf:model-note:MN_IQ_RECON:p083` page 83 -> `PredictionLoop` `dsc_codec.c:2361`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_IQ_RECON
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L2361-L2502
-- `PROPOSED` `pdf:section:6.8.5.1` page 111 -> `FlatnessAdjustment` `dsc_codec.c:2510`
-  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: decision, flatness
+- `EXACT` `pdf:section:6.4.6` page 83 -> `PredictionLoop` `dsc_codec.c:2361`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_IQ_RECON
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L2361-L2502
+- `EXACT` `pdf:model-note:MN_ENC_FLATNESS_DECISION:p111` page 111 -> `FlatnessAdjustment` `dsc_codec.c:2510`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_ENC_FLATNESS_DECISION
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L2510-L2583
-- `PROPOSED` `pdf:section:6.8.5.2` page 113 -> `FlatnessAdjustment` `dsc_codec.c:2510`
-  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: adjustment, flatness, qp, quantization
+- `EXACT` `pdf:section:6.8.5.1` page 111 -> `FlatnessAdjustment` `dsc_codec.c:2510`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_ENC_FLATNESS_DECISION
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L2510-L2583
-- `PROPOSED` `pdf:section:3.2` page 30 -> `rgb2ycocg` `dsc_utils.c:145`
-  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: color, conversion, space
+- `EXACT` `pdf:model-note:MN_FLAT_QP_ADJ:p113` page 113 -> `FlatnessAdjustment` `dsc_codec.c:2510`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_FLAT_QP_ADJ
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L2510-L2583
+- `EXACT` `pdf:section:6.8.5.2` page 113 -> `FlatnessAdjustment` `dsc_codec.c:2510`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_FLAT_QP_ADJ
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L2510-L2583
+- `EXACT` `pdf:model-note:MN_ENC_CSC:p074` page 74 -> `rgb2ycocg` `dsc_utils.c:145`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_ENC_CSC
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_utils.c#L145-L218
-- `PROPOSED` `pdf:section:3.2` page 30 -> `ycocg2rgb` `dsc_utils.c:225`
-  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: color, conversion, space
+- `EXACT` `pdf:section:6.1` page 74 -> `rgb2ycocg` `dsc_utils.c:145`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_ENC_CSC
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_utils.c#L145-L218
+- `EXACT` `pdf:model-note:MN_DEC_CSC:p120` page 120 -> `ycocg2rgb` `dsc_utils.c:225`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_DEC_CSC
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_utils.c#L225-L300
-- `PROPOSED` `pdf:figure:B-2` page 123 -> `simple422to444` `dsc_utils.c:306`
-  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: simple
+- `EXACT` `pdf:section:7.7` page 120 -> `ycocg2rgb` `dsc_utils.c:225`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_DEC_CSC
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_utils.c#L225-L300
+- `EXACT` `pdf:model-note:MN_SIMPLE_422_444:p123` page 123 -> `simple422to444` `dsc_utils.c:306`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_SIMPLE_422_444
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_utils.c#L306-L338
-- `PROPOSED` `pdf:figure:B-2` page 123 -> `simple444to422` `dsc_utils.c:344`
-  - method: normalized_concept_heuristic; evidence: Shared normalized concept tokens: simple
+- `EXACT` `pdf:section:B` page 123 -> `simple422to444` `dsc_utils.c:306`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_SIMPLE_422_444
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_utils.c#L306-L338
+- `EXACT` `pdf:model-note:MN_SIMPLE_444_422:p123` page 123 -> `simple444to422` `dsc_utils.c:344`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_SIMPLE_444_422
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_utils.c#L344-L373
-- `PROPOSED` `pdf:section:6.6.3` page 94 -> `IsFlatnessInfoSent` `dsc_codec.c:1116`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: flatness
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1116-L1119
-- `PROPOSED` `pdf:table:3-1` page 34 -> `MaxResidualSize` `dsc_codec.c:263`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: residual
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L263-L270
-- `PROPOSED` `pdf:table:3-1` page 34 -> `FindResidualSize` `dsc_codec.c:1078`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: residual
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1078-L1109
-- `PROPOSED` `pdf:section:3.3.3` page 32 -> `UsingMidpoint` `dsc_codec.c:457`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: midpoint
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L457-L476
-- `PROPOSED` `pdf:section:3.3` page 30 -> `Qp2Qlevel` `codec_main.c:816`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: quantization
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/codec_main.c#L816-L844
-- `PROPOSED` `pdf:figure:6-6` page 84 -> `RemoveBitsEncoderBuffer` `dsc_codec.c:1201`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: encoder
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1201-L1231
-- `PROPOSED` `pdf:section:6.5.3.3` page 91 -> `ErrorHandler` `dsc_codec.c:171`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: error
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L171-L213
-- `PROPOSED` `pdf:figure:3-11` page 46 -> `PopulateOrigLine` `dsc_codec.c:2294`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: line
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L2294-L2351
-- `PROPOSED` `pdf:section:3.3.3` page 32 -> `UpdateMidpoint` `dsc_codec.c:875`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: midpoint
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L875-L899
-- `PROPOSED` `pdf:table:3` page 13 -> `HistoryLookup` `dsc_codec.c:543`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: history
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L543-L600
-- `PROPOSED` `pdf:figure:3-12` page 47 -> `ProcessGroupDec` `multiplex.c:159`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: group
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/multiplex.c#L159-L176
-- `PROPOSED` `pdf:figure:3-12` page 47 -> `EstimateBitsForGroup` `dsc_codec.c:390`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: group
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L390-L437
-- `PROPOSED` `pdf:figure:3-12` page 47 -> `ProcessGroupEnc` `multiplex.c:116`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: group
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/multiplex.c#L116-L152
-- `PROPOSED` `pdf:figure:6-12` page 97 -> `DSC_Algorithm` `dsc_codec.c:2594`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: algorithm
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L2594-L3108
-- `PROPOSED` `pdf:figure:3-1` page 25 -> `ends_in_percentd` `dpx.c:86`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: in
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dpx.c#L86-L100
-- `PROPOSED` `pdf:table:E-2` page 130 -> `print_pps` `dsc_utils.c:609`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: pps
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_utils.c#L609-L678
-- `PROPOSED` `pdf:table:A-1` page 122 -> `hdr_dpx_determine_file_type` `hdr_dpx.c:2051`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: file
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/hdr_dpx.c#L2051-L2080
-- `PROPOSED` `pdf:figure:6-15` page 104 -> `compute_offset` `codec_main.c:616`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: offset
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/codec_main.c#L616-L641
-- `PROPOSED` `pdf:section:6.8.5.2` page 113 -> `make_qp_tables` `rc_tables.h:414`
+- `EXACT` `pdf:section:B` page 123 -> `simple444to422` `dsc_utils.c:344`
+  - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_SIMPLE_444_422
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_utils.c#L344-L373
+- `EXACT` `pdf:page:006` page 6 -> `readppm` `utl.c:1068`
+  - method: explicit_c_reference; evidence: C comment explicitly references p6
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/utl.c#L1068-L1204
+- `PROPOSED` `pdf:figure:6-19` page 111 -> `IsOrigFlatHIndex` `dsc_codec.c:1126`
+  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: flat, is
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1126-L1195
+- `PROPOSED` `pdf:figure:6-17` page 107 -> `make_qp_tables` `rc_tables.h:414`
   - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: qp, quantization
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/rc_tables.h#L414-L436
-- `PROPOSED` `pdf:table:E-2` page 130 -> `write_pps` `dsc_utils.c:514`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: pps
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_utils.c#L514-L595
-- `PROPOSED` `pdf:section:6.8.5.2` page 113 -> `check_qp_for_overflow` `codec_main.c:860`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: qp, quantization
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/codec_main.c#L860-L892
-- `PROPOSED` `pdf:section:3.6` page 38 -> `generate_rc_parameters` `codec_main.c:904`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: control, rate
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/codec_main.c#L904-L1031
-- `PROPOSED` `pdf:figure:3-11` page 46 -> `line_to_int` `rc_tables.h:382`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: line
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/rc_tables.h#L382-L402
-- `PROPOSED` `pdf:section:6.8.5.2` page 113 -> `make_qp_table` `rc_tables.h:404`
+- `PROPOSED` `pdf:figure:6-17` page 107 -> `make_qp_table` `rc_tables.h:404`
   - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: qp, quantization
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/rc_tables.h#L404-L412
-- `PROPOSED` `pdf:table:E-2` page 130 -> `parse_pps` `dsc_utils.c:404`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: pps
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_utils.c#L404-L499
-- `PROPOSED` `pdf:figure:3-11` page 46 -> `assign_line` `codec_main.c:358`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: line
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/codec_main.c#L358-L369
-- `PROPOSED` `pdf:section:6.5.3.3` page 91 -> `error_check` `cmd_parse.c:952`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: error
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/cmd_parse.c#L952-L1010
-- `PROPOSED` `pdf:section:1.2` page 16 -> `compute_and_display_PSNR` `psnr.c:66`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: display
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/psnr.c#L66-L197
-- `PROPOSED` `pdf:table:4-7` page 64 -> `determine_field_format` `dpx.c:67`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: field
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dpx.c#L67-L84
-- `PROPOSED` `pdf:table:E-2` page 130 -> `populate_pps` `codec_main.c:1047`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: pps
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/codec_main.c#L1047-L1260
-- `PROPOSED` `pdf:table:E-2` page 130 -> `print_pps_v2` `dsc_utils.c:694`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: pps
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_utils.c#L694-L798
-- `PROPOSED` `pdf:figure:3-11` page 46 -> `parse_line` `cmd_parse.c:1219`
-  - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: line
-  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/cmd_parse.c#L1219-L1244

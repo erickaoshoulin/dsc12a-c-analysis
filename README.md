@@ -3,8 +3,9 @@
 This standalone repository analyzes the local DSC 1.2a C reference model and
 links tool-discovered C facts back to the local PDF specification. It is
 isolated from SVRT and unrelated projects. It does not modify the upstream
-model, copy the PDF, generate RTL, add a handwritten C parser, or call an LLM
-for exact analysis.
+model or copy the PDF. The pipeline also uses LLVM coverage, creates three
+tool-selected contracts, and verifies one small combinational RTL slice; it
+does not generate whole-codec RTL or add sequential hardware.
 
 ## Inputs
 
@@ -52,8 +53,10 @@ and bounded computation. The top 10 (configurable with
 
 ## Specification traceability
 
-The deterministic PDF extractor records page count, headings, tables, figures,
-and short anchors in `spec/anchors.json`; it never stores long PDF text.
+The primary PDF extractor is `pdfinfo` plus `pdftotext -layout`. It records page
+count, headings, tables, figures, short anchors, and same-page nearest-heading
+assignments for `MN_*` model notes in `spec/anchors.json`; it never stores long
+PDF text.
 C comments, `MN_*` model notes, explicit page/section/table references,
 function ranges, constants, tables, USRs, source hashes, and fixed-commit
 permalinks are recorded in `facts/comments.json`.
@@ -62,6 +65,14 @@ permalinks are recorded in `facts/comments.json`.
 `traceability/links.reviewed.yaml` is the human-edited review surface and is
 never overwritten. A reviewed link becomes `STALE` if either input hash
 changes. Reports are bidirectional and retain visible unknowns/orphans.
+
+After C facts are assembled, an instrumented temporary copy runs the existing
+bit-true smoke and is analyzed with `llvm-profdata`/`llvm-cov`. Contracts are
+selected without a function-name allowlist. A selected exact-link contract is
+checked with a generated C oracle, up to four combinational SystemVerilog
+candidates, Verilator, and exhaustive legal-domain enumeration. Deliberate
+signedness, boundary, index, and off-by-one mutations remain visible as
+counterexamples.
 
 ## Outputs
 
@@ -97,6 +108,22 @@ reports/
   field-summary.md
   unresolved.md
 summary.json
+coverage/
+  coverage.json
+  coverage-receipt.json
+contracts/
+  proposed/
+  locked/
+  selection.json
+rtl/
+  candidates/
+  generation-context.json
+verification/
+  <contract>/
+  verification-receipt.json
+reports/
+  contract-review.md
+  progress.md
 ```
 
 All generated JSON includes provenance and semantic hashes. Build/tool/path,
