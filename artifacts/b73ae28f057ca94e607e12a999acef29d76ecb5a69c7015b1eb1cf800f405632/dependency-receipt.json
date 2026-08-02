@@ -122,8 +122,8 @@
             "--Wno-fatal"
           ],
           "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
-          "duration_seconds": 5.589,
-          "output": "%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/generated/candidate_01.sv:8:67: Operator MODDIV expects 32 or 17 bits on the LHS, but LHS's VARREF 'leftRecon' generates 16 bits.\n                                                                                                                                                              : ... note: In instance 'findmidpoint_candidate_01'\n    8 |     assign return_value = ((1 << (cpntBitDepth - 1)) + (leftRecon % (1 << qlevel)));\n      |                                                                   ^\n                      ... For warning description see https://verilator.org/warn/WIDTHEXPAND?v=5.050\n                      ... Use \"/* verilator lint_off WIDTHEXPAND */\" and lint_on around source to disable this message.\nc++  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -Os  -c -o harness.o /private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/candidate-build/candidate_01/harness.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\npython3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vfindmidpoint_candidate_01.cpp Vfindmidpoint_candidate_01___024root__0.cpp Vfindmidpoint_candidate_01___024root__Slow.cpp Vfindmidpoint_candidate_01___024root__0__Slow.cpp Vfindmidpoint_candidate_01__Syms__Slow.cpp > Vfindmidpoint_candidate_01__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o Vfindmidpoint_candidate_01__ALL.o Vfindmidpoint_candidate_01__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++  -Wl,-U,__Z15vl_time_stamp64v,-U,__Z13sc_time_stampv,-U,_vlog_startup_routines   harness.o verilated.o verilated_threads.o Vfindmidpoint_candidate_01__ALL.a    -pthread -lpthread   -o Vfindmidpoint_candidate_01\nrm Vfindmidpoint_candidate_01__ALL.verilator_deplist.tmp\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.031 MB sources in 2 modules, into 0.027 MB in 5 C++ files needing 0.000 MB\n- Verilator: Walltime 5.519 s (elab=0.000, cvt=0.002, bld=5.513); cpu 0.006 s on 1 threads; allocated 9.609 MB\n",
+          "duration_seconds": 5.937,
+          "output": "%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/generated/candidate_01.sv:8:67: Operator MODDIV expects 32 or 17 bits on the LHS, but LHS's VARREF 'leftRecon' generates 16 bits.\n                                                                                                                                                              : ... note: In instance 'findmidpoint_candidate_01'\n    8 |     assign return_value = ((1 << (cpntBitDepth - 1)) + (leftRecon % (1 << qlevel)));\n      |                                                                   ^\n                      ... For warning description see https://verilator.org/warn/WIDTHEXPAND?v=5.050\n                      ... Use \"/* verilator lint_off WIDTHEXPAND */\" and lint_on around source to disable this message.\nc++  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -Os  -c -o harness.o /private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/candidate-build/candidate_01/harness.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\npython3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vfindmidpoint_candidate_01.cpp Vfindmidpoint_candidate_01___024root__0.cpp Vfindmidpoint_candidate_01___024root__Slow.cpp Vfindmidpoint_candidate_01___024root__0__Slow.cpp Vfindmidpoint_candidate_01__Syms__Slow.cpp > Vfindmidpoint_candidate_01__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o Vfindmidpoint_candidate_01__ALL.o Vfindmidpoint_candidate_01__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++  -Wl,-U,__Z15vl_time_stamp64v,-U,__Z13sc_time_stampv,-U,_vlog_startup_routines   harness.o verilated.o verilated_threads.o Vfindmidpoint_candidate_01__ALL.a    -pthread -lpthread   -o Vfindmidpoint_candidate_01\nrm Vfindmidpoint_candidate_01__ALL.verilator_deplist.tmp\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.031 MB sources in 2 modules, into 0.027 MB in 5 C++ files needing 0.000 MB\n- Verilator: Walltime 5.875 s (elab=0.000, cvt=0.002, bld=5.867); cpu 0.008 s on 1 threads; allocated 9.719 MB\n",
           "returncode": 0
         },
         "compile_once": true,
@@ -150,8 +150,8 @@
             "--Wno-fatal"
           ],
           "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
-          "duration_seconds": 5.16,
-          "output": "%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/generated/candidate_02.sv:8:68: Operator MODDIV expects 32 or 17 bits on the LHS, but LHS's VARREF 'leftRecon' generates 16 bits.\n                                                                                                                                                              : ... note: In instance 'findmidpoint_candidate_02'\n    8 |     assign return_value = (((1 << (cpntBitDepth - 1)) + (leftRecon % (1 << qlevel)))) + 1;\n      |                                                                    ^\n                      ... For warning description see https://verilator.org/warn/WIDTHEXPAND?v=5.050\n                      ... Use \"/* verilator lint_off WIDTHEXPAND */\" and lint_on around source to disable this message.\nc++  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -Os  -c -o harness.o /private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/candidate-build/candidate_02/harness.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\npython3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vfindmidpoint_candidate_02.cpp Vfindmidpoint_candidate_02___024root__0.cpp Vfindmidpoint_candidate_02___024root__Slow.cpp Vfindmidpoint_candidate_02___024root__0__Slow.cpp Vfindmidpoint_candidate_02__Syms__Slow.cpp > Vfindmidpoint_candidate_02__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o Vfindmidpoint_candidate_02__ALL.o Vfindmidpoint_candidate_02__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++  -Wl,-U,__Z15vl_time_stamp64v,-U,__Z13sc_time_stampv,-U,_vlog_startup_routines   harness.o verilated.o verilated_threads.o Vfindmidpoint_candidate_02__ALL.a    -pthread -lpthread   -o Vfindmidpoint_candidate_02\nrm Vfindmidpoint_candidate_02__ALL.verilator_deplist.tmp\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.031 MB sources in 2 modules, into 0.027 MB in 5 C++ files needing 0.000 MB\n- Verilator: Walltime 5.080 s (elab=0.001, cvt=0.003, bld=5.070); cpu 0.008 s on 1 threads; allocated 9.422 MB\n",
+          "duration_seconds": 5.997,
+          "output": "%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/generated/candidate_02.sv:8:68: Operator MODDIV expects 32 or 17 bits on the LHS, but LHS's VARREF 'leftRecon' generates 16 bits.\n                                                                                                                                                              : ... note: In instance 'findmidpoint_candidate_02'\n    8 |     assign return_value = (((1 << (cpntBitDepth - 1)) + (leftRecon % (1 << qlevel)))) + 1;\n      |                                                                    ^\n                      ... For warning description see https://verilator.org/warn/WIDTHEXPAND?v=5.050\n                      ... Use \"/* verilator lint_off WIDTHEXPAND */\" and lint_on around source to disable this message.\nc++  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -Os  -c -o harness.o /private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/candidate-build/candidate_02/harness.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\npython3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vfindmidpoint_candidate_02.cpp Vfindmidpoint_candidate_02___024root__0.cpp Vfindmidpoint_candidate_02___024root__Slow.cpp Vfindmidpoint_candidate_02___024root__0__Slow.cpp Vfindmidpoint_candidate_02__Syms__Slow.cpp > Vfindmidpoint_candidate_02__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o Vfindmidpoint_candidate_02__ALL.o Vfindmidpoint_candidate_02__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++  -Wl,-U,__Z15vl_time_stamp64v,-U,__Z13sc_time_stampv,-U,_vlog_startup_routines   harness.o verilated.o verilated_threads.o Vfindmidpoint_candidate_02__ALL.a    -pthread -lpthread   -o Vfindmidpoint_candidate_02\nrm Vfindmidpoint_candidate_02__ALL.verilator_deplist.tmp\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.031 MB sources in 2 modules, into 0.027 MB in 5 C++ files needing 0.000 MB\n- Verilator: Walltime 5.916 s (elab=0.001, cvt=0.003, bld=5.907); cpu 0.008 s on 1 threads; allocated 9.469 MB\n",
           "returncode": 0
         },
         "compile_once": true,
@@ -174,7 +174,7 @@
           "/private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/oracle-build/cmd_parse.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.052,
+        "duration_seconds": 0.055,
         "output": "",
         "returncode": 0
       },
@@ -193,7 +193,7 @@
           "/private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/oracle-build/codec_main.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.062,
+        "duration_seconds": 0.06,
         "output": "",
         "returncode": 0
       },
@@ -229,7 +229,7 @@
           "/private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/oracle-build/dsc_codec.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.082,
+        "duration_seconds": 0.07,
         "output": "",
         "returncode": 0
       },
@@ -247,7 +247,7 @@
           "/private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/oracle-build/dsc_utils.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.051,
+        "duration_seconds": 0.058,
         "output": "",
         "returncode": 0
       },
@@ -265,7 +265,7 @@
           "/private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/oracle-build/fifo.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.043,
+        "duration_seconds": 0.036,
         "output": "",
         "returncode": 0
       },
@@ -283,7 +283,7 @@
           "/private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/oracle-build/hdr_dpx.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.086,
+        "duration_seconds": 0.085,
         "output": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n2 warnings generated.\n",
         "returncode": 0
       },
@@ -301,7 +301,7 @@
           "/private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/oracle-build/logging.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.052,
+        "duration_seconds": 0.051,
         "output": "",
         "returncode": 0
       },
@@ -319,7 +319,7 @@
           "/private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/oracle-build/multiplex.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.05,
+        "duration_seconds": 0.048,
         "output": "",
         "returncode": 0
       },
@@ -337,7 +337,7 @@
           "/private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/oracle-build/psnr.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.049,
+        "duration_seconds": 0.05,
         "output": "",
         "returncode": 0
       },
@@ -355,7 +355,7 @@
           "/private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/oracle-build/utl.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.086,
+        "duration_seconds": 0.093,
         "output": "",
         "returncode": 0
       },
@@ -372,7 +372,7 @@
           "/private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/oracle-build/oracle.o"
         ],
         "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
-        "duration_seconds": 0.039,
+        "duration_seconds": 0.04,
         "output": "",
         "returncode": 0
       },
@@ -396,7 +396,7 @@
           "/private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/oracle-build/oracle.o"
         ],
         "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
-        "duration_seconds": 0.056,
+        "duration_seconds": 0.065,
         "output": "",
         "returncode": 0
       }
@@ -412,7 +412,7 @@
         "formal_proof": {
           "counterexample": null,
           "proof_complete": false,
-          "reason": "formal AST proof is only enabled for reviewed windowed_boundary contracts",
+          "reason": "formal AST proof is only enabled for reviewed windowed_boundary or flatness_window contracts",
           "receipt": null,
           "status": "NOT_APPLICABLE"
         },
@@ -429,7 +429,7 @@
                 "/private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/shards/shard-000.vectors"
               ]
             },
-            "duration_seconds": 5.423,
+            "duration_seconds": 5.758,
             "shard_id": 0,
             "status": "PASS",
             "vectors": 1025920
@@ -445,7 +445,7 @@
                 "/private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/shards/shard-001.vectors"
               ]
             },
-            "duration_seconds": 5.305,
+            "duration_seconds": 5.738,
             "shard_id": 1,
             "status": "PASS",
             "vectors": 1025920
@@ -461,7 +461,7 @@
                 "/private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/shards/shard-002.vectors"
               ]
             },
-            "duration_seconds": 5.691,
+            "duration_seconds": 5.597,
             "shard_id": 2,
             "status": "PASS",
             "vectors": 1025920
@@ -477,7 +477,7 @@
                 "/private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/shards/shard-003.vectors"
               ]
             },
-            "duration_seconds": 5.257,
+            "duration_seconds": 5.354,
             "shard_id": 3,
             "status": "PASS",
             "vectors": 1025920
@@ -493,7 +493,7 @@
                 "/private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/shards/shard-004.vectors"
               ]
             },
-            "duration_seconds": 5.723,
+            "duration_seconds": 5.809,
             "shard_id": 4,
             "status": "PASS",
             "vectors": 1025920
@@ -509,7 +509,7 @@
                 "/private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/shards/shard-005.vectors"
               ]
             },
-            "duration_seconds": 5.612,
+            "duration_seconds": 5.902,
             "shard_id": 5,
             "status": "PASS",
             "vectors": 1025920
@@ -525,7 +525,7 @@
                 "/private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/shards/shard-006.vectors"
               ]
             },
-            "duration_seconds": 5.633,
+            "duration_seconds": 5.848,
             "shard_id": 6,
             "status": "PASS",
             "vectors": 1025920
@@ -541,7 +541,7 @@
                 "/private/tmp/dsc12a-c-analysis/artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/shards/shard-007.vectors"
               ]
             },
-            "duration_seconds": 5.559,
+            "duration_seconds": 5.917,
             "shard_id": 7,
             "status": "PASS",
             "vectors": 1025920
@@ -563,7 +563,7 @@
               "<overlay-work>/bittrue_smoke/simple_8bpc_rgb.cfg"
             ],
             "cwd": "<overlay-work>",
-            "duration_seconds": 0.122,
+            "duration_seconds": 0.14,
             "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
             "returncode": 0
           },
@@ -588,7 +588,7 @@
               "<overlay-work>/bittrue_smoke/simple_10bpc_rgb.cfg"
             ],
             "cwd": "<overlay-work>",
-            "duration_seconds": 0.13,
+            "duration_seconds": 0.125,
             "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
             "returncode": 0
           },
@@ -613,7 +613,7 @@
               "<overlay-work>/bittrue_smoke/native_8bpc_420.cfg"
             ],
             "cwd": "<overlay-work>",
-            "duration_seconds": 0.08,
+            "duration_seconds": 0.07,
             "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
             "returncode": 0
           },
@@ -643,7 +643,7 @@
               "<overlay-work>/bittrue_smoke/simple_8bpc_rgb.cfg"
             ],
             "cwd": "<overlay-work>",
-            "duration_seconds": 0.554,
+            "duration_seconds": 0.371,
             "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
             "returncode": 0
           },
@@ -668,7 +668,7 @@
               "<overlay-work>/bittrue_smoke/simple_10bpc_rgb.cfg"
             ],
             "cwd": "<overlay-work>",
-            "duration_seconds": 0.051,
+            "duration_seconds": 0.05,
             "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
             "returncode": 0
           },
@@ -693,7 +693,7 @@
               "<overlay-work>/bittrue_smoke/native_8bpc_420.cfg"
             ],
             "cwd": "<overlay-work>",
-            "duration_seconds": 0.029,
+            "duration_seconds": 0.026,
             "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
             "returncode": 0
           },

@@ -15,7 +15,7 @@
       "module": "ceil_log2",
       "module_file": "rtl/ceil_log2.sv",
       "module_sha256": "71784bb792966a7e48e98d35cc2e2c3f6052f1c17528ffe1b4256f805c9fda65",
-      "promoted_at": "2026-08-02T19:29:25Z",
+      "promoted_at": "2026-08-02T20:42:32Z",
       "source_file": "dsc_utils.c",
       "spec_links": [
         {
@@ -44,7 +44,7 @@
       "module": "escapecodesize",
       "module_file": "rtl/escapecodesize.sv",
       "module_sha256": "582d5e131e638e5a6aa4f9783cf1755b041f9369f9c8c84e57fb413845272167",
-      "promoted_at": "2026-08-02T19:35:20Z",
+      "promoted_at": "2026-08-02T20:48:28Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -86,7 +86,7 @@
       "module": "findmidpoint",
       "module_file": "rtl/findmidpoint.sv",
       "module_sha256": "95b00b9f217f19697deb92e6926e102faf48b91af79a9fb6331900a7217d480b",
-      "promoted_at": "2026-08-02T19:30:08Z",
+      "promoted_at": "2026-08-02T20:43:13Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -126,7 +126,7 @@
       "module": "findresidualsize",
       "module_file": "rtl/findresidualsize.sv",
       "module_sha256": "a10d4649d371883b4bdfef25fc99448c5a719e937a93425900ddf00b26474073",
-      "promoted_at": "2026-08-02T19:29:32Z",
+      "promoted_at": "2026-08-02T20:42:35Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -162,7 +162,7 @@
       "module": "getqpadjpredsize",
       "module_file": "rtl/getqpadjpredsize.sv",
       "module_sha256": "a8a237d111078f013fa7c15edf430b37d8c58a60595b1082166f16b0334c24b4",
-      "promoted_at": "2026-08-02T19:37:09Z",
+      "promoted_at": "2026-08-02T20:50:25Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -204,7 +204,7 @@
       "module": "isflatnessinfosent",
       "module_file": "rtl/isflatnessinfosent.sv",
       "module_sha256": "0a4b0d5ee2f45598e3ea1859102a42e3fa2ef66aba94e7049fc1d47876a5c07e",
-      "promoted_at": "2026-08-02T19:29:30Z",
+      "promoted_at": "2026-08-02T20:42:25Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -224,7 +224,7 @@
       "verification_file": "verification/isflatnessinfosent.json"
     },
     {
-      "artifact_dir": "artifacts/15e7e4bc9522fa586e9fcf9db6663660e37f2a62d310df0ae5eee7251fcd1c3a",
+      "artifact_dir": "artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
       "authority": "EXACT_SPEC",
       "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
       "c_span": {
@@ -232,13 +232,13 @@
         "start_line": 1126
       },
       "contract_file": "contracts/isorigflathindex.json",
-      "contract_hash": "15e7e4bc9522fa586e9fcf9db6663660e37f2a62d310df0ae5eee7251fcd1c3a",
+      "contract_hash": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
       "contract_id": "isorigflathindex",
       "function": "IsOrigFlatHIndex",
       "module": "isorigflathindex",
       "module_file": "rtl/isorigflathindex.sv",
       "module_sha256": "cfb707d7aa001c86145ecff6476c1fd36b7d2755ecabe5d5af41f817ea22d855",
-      "promoted_at": "2026-08-02T20:31:37Z",
+      "promoted_at": "2026-08-02T20:49:05Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -273,7 +273,7 @@
       "module": "mapqptoqlevel",
       "module_file": "rtl/mapqptoqlevel.sv",
       "module_sha256": "5dda9dc25483193295e7af8abbd927b209f8e9715f2f4791864200f2fc0a3334",
-      "promoted_at": "2026-08-02T19:29:58Z",
+      "promoted_at": "2026-08-02T20:43:13Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -313,7 +313,7 @@
       "module": "maxresidualsize",
       "module_file": "rtl/maxresidualsize.sv",
       "module_sha256": "cfdb54a0936d5bd70d45ddd9bcb20d05d99b73039a3789c1124ed564ae5aa65b",
-      "promoted_at": "2026-08-02T19:35:49Z",
+      "promoted_at": "2026-08-02T20:49:01Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -355,7 +355,7 @@
       "module": "predictsize",
       "module_file": "rtl/predictsize.sv",
       "module_sha256": "861239ab7f41e5c98845588cfa54631e2d4449920afe9cdbde2eae0920b09af7",
-      "promoted_at": "2026-08-02T19:29:30Z",
+      "promoted_at": "2026-08-02T20:42:30Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -389,7 +389,7 @@
       "module": "qp2qlevel",
       "module_file": "rtl/qp2qlevel.sv",
       "module_sha256": "18f078d82f020604fbcae57261373e69e9291f7757f81585163bb47fa1d893df",
-      "promoted_at": "2026-08-02T19:29:30Z",
+      "promoted_at": "2026-08-02T20:42:33Z",
       "source_file": "codec_main.c",
       "spec_links": [
         {
@@ -420,7 +420,7 @@
       "module": "quantizeresidual",
       "module_file": "rtl/quantizeresidual.sv",
       "module_sha256": "7c9d729bbe1ac193b6f355b3d8281a92ab350a9c27a7717145fdea31a863d9cd",
-      "promoted_at": "2026-08-02T19:29:33Z",
+      "promoted_at": "2026-08-02T20:42:34Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -460,7 +460,7 @@
       "module": "samplepredict",
       "module_file": "rtl/samplepredict.sv",
       "module_sha256": "831411aefb7fd14c630f6a71d75191a62320ce17566d6292637fcdab603e2011",
-      "promoted_at": "2026-08-02T19:34:36Z",
+      "promoted_at": "2026-08-02T20:47:42Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -520,7 +520,7 @@
       "module": "samptolinebuf",
       "module_file": "rtl/samptolinebuf.sv",
       "module_sha256": "971e3b07df907a913544145749bc5303b1c4532af69517ce97ab3bc9bed0cae9",
-      "promoted_at": "2026-08-02T19:31:01Z",
+      "promoted_at": "2026-08-02T20:44:10Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -558,5 +558,5 @@
   "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
   "source_policy": "immutable external C model and local DSC 1.2a PDF; no SVRT",
   "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-  "updated_at": "2026-08-02T20:31:37Z"
+  "updated_at": "2026-08-02T20:50:25Z"
 }

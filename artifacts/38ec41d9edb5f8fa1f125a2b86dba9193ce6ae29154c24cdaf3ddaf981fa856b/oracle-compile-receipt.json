@@ -34,7 +34,7 @@
         "/private/tmp/dsc12a-c-analysis/artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b/oracle-build/codec_main.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.093,
+      "duration_seconds": 0.131,
       "output": "",
       "returncode": 0
     },
@@ -52,7 +52,7 @@
         "/private/tmp/dsc12a-c-analysis/artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b/oracle-build/dpx.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.076,
+      "duration_seconds": 0.079,
       "output": "",
       "returncode": 0
     },
@@ -70,7 +70,7 @@
         "/private/tmp/dsc12a-c-analysis/artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b/oracle-build/dsc_codec.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.086,
+      "duration_seconds": 0.115,
       "output": "",
       "returncode": 0
     },
@@ -88,7 +88,7 @@
         "/private/tmp/dsc12a-c-analysis/artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b/oracle-build/dsc_utils.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.064,
+      "duration_seconds": 0.118,
       "output": "",
       "returncode": 0
     },
@@ -106,7 +106,7 @@
         "/private/tmp/dsc12a-c-analysis/artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b/oracle-build/fifo.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.053,
+      "duration_seconds": 0.043,
       "output": "",
       "returncode": 0
     },
@@ -124,7 +124,7 @@
         "/private/tmp/dsc12a-c-analysis/artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b/oracle-build/hdr_dpx.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.122,
+      "duration_seconds": 0.076,
       "output": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n2 warnings generated.\n",
       "returncode": 0
     },
@@ -142,7 +142,7 @@
         "/private/tmp/dsc12a-c-analysis/artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b/oracle-build/logging.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.09,
+      "duration_seconds": 0.108,
       "output": "",
       "returncode": 0
     },
@@ -160,7 +160,7 @@
         "/private/tmp/dsc12a-c-analysis/artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b/oracle-build/multiplex.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.084,
+      "duration_seconds": 0.043,
       "output": "",
       "returncode": 0
     },
@@ -178,7 +178,7 @@
         "/private/tmp/dsc12a-c-analysis/artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b/oracle-build/psnr.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.043,
+      "duration_seconds": 0.039,
       "output": "",
       "returncode": 0
     },
@@ -196,7 +196,7 @@
         "/private/tmp/dsc12a-c-analysis/artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b/oracle-build/utl.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.098,
+      "duration_seconds": 0.069,
       "output": "",
       "returncode": 0
     },
@@ -213,7 +213,7 @@
         "/private/tmp/dsc12a-c-analysis/artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b/oracle-build/oracle.o"
       ],
       "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
-      "duration_seconds": 0.091,
+      "duration_seconds": 0.118,
       "output": "",
       "returncode": 0
     },
@@ -237,7 +237,7 @@
         "/private/tmp/dsc12a-c-analysis/artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b/oracle-build/oracle.o"
       ],
       "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
-      "duration_seconds": 0.091,
+      "duration_seconds": 0.094,
       "output": "",
       "returncode": 0
     }

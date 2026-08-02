@@ -14,7 +14,7 @@
   "formal_proof": {
     "counterexample": null,
     "proof_complete": false,
-    "reason": "formal AST proof is only enabled for reviewed windowed_boundary contracts",
+    "reason": "formal AST proof is only enabled for reviewed windowed_boundary or flatness_window contracts",
     "receipt": null,
     "status": "NOT_APPLICABLE"
   },
@@ -31,7 +31,7 @@
   },
   "module": "escapecodesize",
   "profile": "scale",
-  "promoted_at": "2026-08-02T19:35:20Z",
+  "promoted_at": "2026-08-02T20:48:28Z",
   "rtl_sha256": "582d5e131e638e5a6aa4f9783cf1755b041f9369f9c8c84e57fb413845272167",
   "schema_version": 2,
   "source_gate": {
