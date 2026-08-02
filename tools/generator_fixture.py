@@ -89,6 +89,157 @@ def line_storage_body(interface: dict[str, object], bad: bool) -> str:
     return "\n".join(lines)
 
 
+def qp_mapping_body(interface: dict[str, object], bad: bool) -> str:
+    ports = interface.get("ports", [])
+    names = {
+        normalized_identifier(str(port.get("role", port.get("name")))): str(port.get("name"))
+        for port in ports if isinstance(port, dict)
+    }
+    version_name = names.get("dscversionminor", "dsc_version_minor")
+    native_name = names.get("native420", "native_420")
+    bit_depth_0_name = names.get("cpntbitdepth0", "cpntBitDepth_0")
+    bit_depth_1_name = names.get("cpntbitdepth1", "cpntBitDepth_1")
+    luma_name = names.get("tablelookupluma", "qlevel_luma")
+    chroma_name = names.get("tablelookupchroma", "qlevel_chroma")
+    cpnt_name = names.get("cpnt", "cpnt")
+    out_name = names.get("returnvalue", "return_value")
+    lines = [
+        "    integer signed qlevel_i;",
+        "    always_comb begin",
+        f"        if (({cpnt_name} % 3) == 0) begin",
+        f"            qlevel_i = {luma_name};",
+        f"        end else if (({native_name} != 0) && ({cpnt_name} == 1)) begin",
+        f"            qlevel_i = {luma_name};",
+        "        end else begin",
+        f"            qlevel_i = {chroma_name};",
+        f"            if (({version_name} == 2) && ({bit_depth_0_name} == {bit_depth_1_name}) && (qlevel_i > 0)) begin",
+        "                qlevel_i = qlevel_i - 1;",
+        "            end",
+        "        end",
+        f"        {out_name} = qlevel_i;",
+    ]
+    if bad:
+        lines.append(f"        {out_name} = {out_name} + 1;")
+    lines.append("    end")
+    return "\n".join(lines)
+
+
+def max_residual_size_body(interface: dict[str, object], bad: bool) -> str:
+    ports = interface.get("ports", [])
+    names = {
+        normalized_identifier(str(port.get("role", port.get("name")))): str(port.get("name"))
+        for port in ports if isinstance(port, dict)
+    }
+    version_name = names.get("dscversionminor", "dsc_version_minor")
+    native_name = names.get("native420", "native_420")
+    bit_depth_name = names.get("configselected", "cpntBitDepth_selected")
+    bit_depth_0_name = names.get("cpntbitdepth0", "cpntBitDepth_0")
+    bit_depth_1_name = names.get("cpntbitdepth1", "cpntBitDepth_1")
+    luma_name = names.get("tablelookupluma", "qlevel_luma")
+    chroma_name = names.get("tablelookupchroma", "qlevel_chroma")
+    cpnt_name = names.get("cpnt", "cpnt")
+    out_name = names.get("returnvalue", "return_value")
+    lines = [
+        "    integer signed qlevel_i;",
+        "    integer signed chroma_i;",
+        "    integer signed max_size_i;",
+        "    always_comb begin",
+        f"        max_size_i = {bit_depth_name};",
+        f"        if (({cpnt_name} % 3) == 0) begin",
+        f"            qlevel_i = {luma_name};",
+        f"        end else if (({native_name} != 0) && ({cpnt_name} == 1)) begin",
+        f"            qlevel_i = {luma_name};",
+        "        end else begin",
+        f"            chroma_i = {chroma_name};",
+        f"            if (({version_name} == 2) && ({bit_depth_0_name} == (({cpnt_name} == 1) ? {bit_depth_name} : {bit_depth_1_name}))) begin",
+        "                chroma_i = chroma_i - 1;",
+        "            end",
+        "            qlevel_i = chroma_i < 0 ? 0 : chroma_i;",
+        "        end",
+        f"        max_size_i = max_size_i - qlevel_i;",
+        f"        {out_name} = max_size_i;",
+    ]
+    if bad:
+        lines.append(f"        {out_name} = {out_name} + 1;")
+    lines.append("    end")
+    return "\n".join(lines)
+
+
+def qp_adjusted_pred_size_body(interface: dict[str, object], bad: bool) -> str:
+    ports = interface.get("ports", [])
+    names = {
+        normalized_identifier(str(port.get("role", port.get("name")))): str(port.get("name"))
+        for port in ports if isinstance(port, dict)
+    }
+    version_name = names.get("dscversionminor", "dsc_version_minor")
+    native_name = names.get("native420", "native_420")
+    unit_name = names.get("unit", "unit")
+    cpnt_name = names.get("stateselected", "unit_c_type_selected")
+    pred_size_name = names.get("stateselected", "predicted_size_selected")
+    primary_qp_name = names.get("stateruntime", "primary_qp")
+    prev_qp_name = names.get("stateruntime", "prev_primary_qp")
+    bpc_names = [names.get(f"configstatic", f"cpntBitDepth_{index}") for index in range(4)]
+    luma_new_name = "qlevel_luma_new"
+    chroma_new_name = "qlevel_chroma_new"
+    luma_old_name = "qlevel_luma_old"
+    chroma_old_name = "qlevel_chroma_old"
+    out_name = names.get("returnvalue", "return_value")
+    # Roles are not unique for the four static bit-depth ports and for the two
+    # state-runtime QPs, so use their frozen names when selecting those ports.
+    port_names = {str(port.get("name")): str(port.get("name")) for port in ports if isinstance(port, dict)}
+    cpnt_name = port_names.get("unit_c_type_selected", cpnt_name)
+    pred_size_name = port_names.get("predicted_size_selected", pred_size_name)
+    primary_qp_name = port_names.get("primary_qp", primary_qp_name)
+    prev_qp_name = port_names.get("prev_primary_qp", prev_qp_name)
+    bpc_names = [port_names.get(f"cpntBitDepth_{index}", f"cpntBitDepth_{index}") for index in range(4)]
+    lines = [
+        "    integer signed cpnt_i;",
+        "    integer signed bit_depth_i;",
+        "    integer signed qlevel_new_i;",
+        "    integer signed qlevel_old_i;",
+        "    integer signed pred_size_i;",
+        "    integer signed max_size_i;",
+        "    always_comb begin",
+        f"        cpnt_i = {cpnt_name};",
+        "        case (cpnt_i)",
+    ]
+    for index, bpc_name in enumerate(bpc_names):
+        lines.append(f"            {index}: bit_depth_i = {bpc_name};")
+    lines.extend([
+        f"            default: bit_depth_i = {bpc_names[0]};",
+        "        endcase",
+        f"        if ((cpnt_i % 3) == 0) begin",
+        f"            qlevel_new_i = {luma_new_name};",
+        f"        end else if (({native_name} != 0) && (cpnt_i == 1)) begin",
+        f"            qlevel_new_i = {luma_new_name};",
+        "        end else begin",
+        f"            qlevel_new_i = {chroma_new_name};",
+        f"            if (({version_name} == 2) && ({bpc_names[0]} == {bpc_names[1]}) && (qlevel_new_i > 0)) begin",
+        "                qlevel_new_i = qlevel_new_i - 1;",
+        "            end",
+        "        end",
+        f"        if ((cpnt_i % 3) == 0) begin",
+        f"            qlevel_old_i = {luma_old_name};",
+        f"        end else if (({native_name} != 0) && (cpnt_i == 1)) begin",
+        f"            qlevel_old_i = {luma_old_name};",
+        "        end else begin",
+        f"            qlevel_old_i = {chroma_old_name};",
+        f"            if (({version_name} == 2) && ({bpc_names[0]} == {bpc_names[1]}) && (qlevel_old_i > 0)) begin",
+        "                qlevel_old_i = qlevel_old_i - 1;",
+        "            end",
+        "        end",
+        f"        pred_size_i = {pred_size_name} + qlevel_old_i - qlevel_new_i;",
+        f"        max_size_i = bit_depth_i - qlevel_new_i;",
+        "        if (pred_size_i < 0) pred_size_i = 0;",
+        "        else if (pred_size_i > (max_size_i - 1)) pred_size_i = max_size_i - 1;",
+        f"        {out_name} = pred_size_i;",
+    ])
+    if bad:
+        lines.append(f"        {out_name} = {out_name} + 1;")
+    lines.append("    end")
+    return "\n".join(lines)
+
+
 def generic_body(interface: dict[str, object], semantics: dict[str, object], bad: bool) -> str:
     ports = interface.get("ports", [])
     out = next((p for p in ports if isinstance(p, dict) and p.get("role") == "return_value"), None)
@@ -128,6 +279,12 @@ def render_candidate(contract: dict[str, object], interface: dict[str, object], 
         body = quantization_body(interface, semantics, bad)
     elif kind == "line_storage":
         body = line_storage_body(interface, bad)
+    elif kind == "qp_mapping":
+        body = qp_mapping_body(interface, bad)
+    elif kind == "max_residual_size":
+        body = max_residual_size_body(interface, bad)
+    elif kind == "qp_adjusted_pred_size":
+        body = qp_adjusted_pred_size_body(interface, bad)
     else:
         body = generic_body(interface, semantics if isinstance(semantics, dict) else {}, bad)
     return "module " + module + " (\n" + declarations + "\n);\n" + body + "\nendmodule\n"

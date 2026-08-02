@@ -4,6 +4,44 @@
       "authority": "EXACT_SPEC",
       "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
       "c_span": {
+        "end_line": 451,
+        "start_line": 443
+      },
+      "contract_hash": "a4141acef069f808dd7751bd953805c2d586c0be5c8d4dbf312ef2274ccd0759",
+      "contract_id": "escapecodesize",
+      "function": "EscapeCodeSize",
+      "module": "escapecodesize",
+      "module_file": "rtl/escapecodesize.sv",
+      "module_sha256": "582d5e131e638e5a6aa4f9783cf1755b041f9369f9c8c84e57fb413845272167",
+      "run_id": "20260802T115152Z-scale-b9191e5c",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:section:3.5.1",
+          "page": 34,
+          "section": "3.5.1",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.6.2",
+          "page": 93,
+          "section": "6.6.2",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.8.6",
+          "page": 113,
+          "section": "6.8.6",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/escapecodesize.json"
+    },
+    {
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
         "end_column": 1,
         "end_line": 914,
         "start_column": 5,
@@ -44,6 +82,44 @@
       "authority": "EXACT_SPEC",
       "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
       "c_span": {
+        "end_line": 297,
+        "start_line": 278
+      },
+      "contract_hash": "8b07c0fd527f23cb8db7c5f5ab8bb1c504ea4fbe606febbe118e262ee791e6fe",
+      "contract_id": "getqpadjpredsize",
+      "function": "GetQpAdjPredSize",
+      "module": "getqpadjpredsize",
+      "module_file": "rtl/getqpadjpredsize.sv",
+      "module_sha256": "a8a237d111078f013fa7c15edf430b37d8c58a60595b1082166f16b0334c24b4",
+      "run_id": "20260802T125235Z-scale-31386cb4",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:section:6.8.5.2",
+          "page": 113,
+          "section": "6.8.5.2",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.6.1",
+          "page": 91,
+          "section": "6.6.1",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.8.6",
+          "page": 113,
+          "section": "6.8.6",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/getqpadjpredsize.json"
+    },
+    {
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
         "end_column": 1,
         "end_line": 1119,
         "start_column": 5,
@@ -73,6 +149,84 @@
       ],
       "status": "PASS",
       "verification_file": "verification/isflatnessinfosent.json"
+    },
+    {
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
+        "end_column": 1,
+        "end_line": 238,
+        "start_column": 5,
+        "start_line": 221
+      },
+      "contract_hash": "9dca6ef2ab9731a8e0651276955456e9433b652e6be6714081e97e143c4b30bf",
+      "contract_id": "mapqptoqlevel",
+      "function": "MapQpToQlevel",
+      "module": "mapqptoqlevel",
+      "module_file": "rtl/mapqptoqlevel.sv",
+      "module_sha256": "5dda9dc25483193295e7af8abbd927b209f8e9715f2f4791864200f2fc0a3334",
+      "run_id": "20260802T113444Z-scale-8ac90c28",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:model-note:MN_MAP_QP_TO_QLEVEL:p113",
+          "page": 113,
+          "section": "6.8.6",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.8.6",
+          "page": 113,
+          "section": "6.8.6",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:table:6-2",
+          "page": 114,
+          "section": "6.8.6",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/mapqptoqlevel.json"
+    },
+    {
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
+        "end_line": 270,
+        "start_line": 263
+      },
+      "contract_hash": "c92b2f1510575eb10503e2bf1e5c6a6f6e0828638e642be95a8d1f9bab460529",
+      "contract_id": "maxresidualsize",
+      "function": "MaxResidualSize",
+      "module": "maxresidualsize",
+      "module_file": "rtl/maxresidualsize.sv",
+      "module_sha256": "cfdb54a0936d5bd70d45ddd9bcb20d05d99b73039a3789c1124ed564ae5aa65b",
+      "run_id": "20260802T120730Z-scale-e3f4cdd8",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:section:3.5.1",
+          "page": 34,
+          "section": "3.5.1",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.6.1",
+          "page": 91,
+          "section": "6.6.1",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.8.6",
+          "page": 113,
+          "section": "6.8.6",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/maxresidualsize.json"
     },
     {
       "authority": "EXACT_SPEC",
@@ -197,5 +351,5 @@
   "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
   "source_policy": "immutable external C model and local DSC 1.2a PDF; no SVRT",
   "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-  "updated_at": "2026-08-02T11:19:36Z"
+  "updated_at": "2026-08-02T12:59:50Z"
 }

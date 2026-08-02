@@ -347,6 +347,45 @@ class Agent:
         payload = read_json(self.root / "contracts" / "reviewed-overrides.json", {}) or {}
         return [item for item in payload.get("overrides", []) if item.get("match")]
 
+    def promoted_contract_usrs(self, contracts: list[dict[str, Any]]) -> set[str]:
+        """Return facts identities whose RTL is already in the stable library.
+
+        Composite candidates are allowed to materialize only after every direct
+        callee has a PASS library entry.  This keeps the dependency boundary
+        data-driven while preventing an unproven C call chain from becoming a
+        generation target merely because a reviewed override exists.
+        """
+        manifest = read_json(self.root / "library" / "manifest.json", {}) or {}
+        promoted_ids = {
+            str(item.get("contract_id"))
+            for item in manifest.get("components", [])
+            if item.get("status") == "PASS" and item.get("contract_id")
+        }
+        promoted_usrs = {
+            str(contract_function(contract).get("clang_usr"))
+            for contract in contracts
+            if contract_id(contract) in promoted_ids and contract_function(contract).get("clang_usr")
+        }
+        # Promoted composites are intentionally not copied into contracts/locked;
+        # their durable identity lives in the library manifest.  Resolve the
+        # manifest function name back through tool facts so a newly promoted
+        # dynamic contract can unlock the next tool-discovered composite.
+        facts = read_json(self.root / "facts" / "functions.json", {}) or {}
+        facts_by_name = {
+            str(item.get("name")): str(item.get("clang_usr"))
+            for item in facts.get("functions", [])
+            if item.get("name") and item.get("clang_usr")
+        }
+        for item in manifest.get("components", []):
+            if item.get("status") != "PASS":
+                continue
+            if item.get("clang_usr"):
+                promoted_usrs.add(str(item["clang_usr"]))
+            function_name = str(item.get("function") or "")
+            if function_name in facts_by_name:
+                promoted_usrs.add(facts_by_name[function_name])
+        return promoted_usrs
+
     def tool_candidate_facts(self) -> dict[str, dict[str, Any]]:
         """Return only candidates that the analysis facts marked eligible.
 
@@ -528,6 +567,7 @@ class Agent:
         candidate_facts = self.tool_candidate_facts()
         effective_locked = self.apply_reviewed_overrides()
         known = {str(contract_function(item).get("clang_usr")) for item in effective_locked}
+        promoted_usrs = self.promoted_contract_usrs(effective_locked)
         discovered = []
         for function in facts.get("functions", []):
             usr = str(function.get("clang_usr", ""))
@@ -547,8 +587,18 @@ class Agent:
             reviewed_links = exact.get(usr, []) if override else []
             if override and not reviewed_links:
                 reviewed_links = copy.deepcopy(override.get("spec_links", []))
+            callee_usrs = {
+                str(item.get("clang_usr"))
+                for item in function.get("callees", [])
+                if isinstance(item, dict) and item.get("clang_usr")
+            }
+            # A reviewed override supplies semantics/domain evidence only.  A
+            # composite is eligible when tool facts selected it and every
+            # direct callee is already a PASS component in library/manifest.
+            # The callee gate is intentionally not a function-name selector.
+            dependencies_ready = callee_usrs.issubset(promoted_usrs)
             if (not usr or not candidate or usr in known or not override or not reviewed_links
-                    or not proposal.get("combinational_candidate") or function.get("callees")):
+                    or not proposal.get("combinational_candidate") or not dependencies_ready):
                 continue
             interface = copy.deepcopy(override.get("interface", {}))
             interface["ports"] = self.freeze_ports(interface)
@@ -581,6 +631,7 @@ class Agent:
                     "direct_callees": list(function.get("callees", [])),
                     "read_fields": [item.get("name") for item in function.get("field_reads", []) if isinstance(item, dict)],
                     "unresolved": [],
+                    "promotion_gate": "all direct callees PASS in library/manifest.json" if callee_usrs else None,
                 },
                 "spec_links": copy.deepcopy(override.get("spec_links", reviewed_links)),
                 "reviewed_evidence": override.get("evidence", []),
@@ -1150,9 +1201,26 @@ class Agent:
                     if port.get("name") not in {item.get("field") for item in flattened}
                 )
             assignments = []
+            storage_declarations: list[str] = []
+            storage_names: set[str] = set()
+            input_names = {str(value.get("name")) for value in inputs}
+
+            def resolve_input_index(raw_index: object) -> str:
+                raw = str(raw_index)
+                safe_raw = safe_identifier(raw)
+                if safe_raw in input_names:
+                    return safe_raw
+                normalized_raw = re.sub(r"[^a-z0-9]", "", raw.lower())
+                for value in inputs:
+                    for candidate in (value.get("name"), value.get("role")):
+                        if re.sub(r"[^a-z0-9]", "", str(candidate).lower()) == normalized_raw:
+                            return str(value.get("name"))
+                raise RuntimeError(f"dynamic array index is not an input port: {safe_raw}")
+
             for item in flattened:
                 field = str(item.get("field", ""))
-                port = next((value for value in inputs if value.get("name") == field), None)
+                port_name = safe_identifier(str(item.get("port_name") or field))
+                port = next((value for value in inputs if value.get("name") == port_name), None)
                 if not field or port is None or not re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", field):
                     raise RuntimeError(f"flattened state dependency is not a scalar port: {field}")
                 record_type = str(item.get("record", ""))
@@ -1160,15 +1228,30 @@ class Agent:
                 if not state_name:
                     raise RuntimeError(f"missing record parameter for: {record_type}")
                 c_type = str(item.get("c_type", port.get("c_type", "int")))
-                if "*" in c_type and "[" not in c_type:
+                if "*" in c_type and item.get("index_name"):
+                    index_name = resolve_input_index(item.get("index_name"))
+                    array_length = int(item.get("array_length", 32))
+                    storage_name = f"{safe_identifier(field)}_oracle_storage"
+                    if storage_name not in storage_names:
+                        storage_declarations.append(f"int {storage_name}[{array_length}] = {{0}};")
+                        storage_names.add(storage_name)
+                    assignments.append(f"{storage_name}[{index_name}] = {port_name};")
+                    assignments.append(f"{state_name}.{field} = {storage_name};")
+                elif "*" in c_type and "[" not in c_type:
                     raise RuntimeError(f"flattened pointer table is not a scalar port: {field}")
-                if "[" in c_type and "]" in c_type:
-                    assignments.append(
-                        f"for (size_t i = 0; i < sizeof({state_name}.{field}) / sizeof({state_name}.{field}[0]); ++i) "
-                        f"{state_name}.{field}[i] = {field};"
-                    )
-                else:
-                    assignments.append(f"{state_name}.{field} = {field};")
+                elif "[" in c_type and "]" in c_type and item.get("index_name"):
+                    index_name = resolve_input_index(item.get("index_name"))
+                    assignments.append(f"{state_name}.{field}[{index_name}] = {port_name};")
+                elif "[" in c_type and "]" in c_type:
+                    if item.get("index") is not None:
+                        assignments.append(f"{state_name}.{field}[{int(item.get('index'))}] = {port_name};")
+                    else:
+                        assignments.append(
+                            f"for (size_t i = 0; i < sizeof({state_name}.{field}) / sizeof({state_name}.{field}[0]); ++i) "
+                            f"{state_name}.{field}[i] = {port_name};"
+                        )
+                elif "*" not in c_type or not item.get("index_name"):
+                    assignments.append(f"{state_name}.{field} = {port_name};")
             state_setup = "\n                ".join(assignments)
             if parameters:
                 call = ", ".join(
@@ -1194,6 +1277,8 @@ class Agent:
             record_declarations = "\n                        ".join(
                 f"{record_type} {record_names[record_type]} = {{0}};" for record_type in records
             )
+            if storage_declarations:
+                record_declarations += "\n                        " + "\n                        ".join(storage_declarations)
             return textwrap.dedent(
                 f"""
                 #include <stddef.h>
@@ -1241,6 +1326,120 @@ class Agent:
             """
         ).strip() + "\n"
 
+    def table_lookup_vector_iterator(
+        self,
+        contract: dict[str, Any],
+        input_ports: list[dict[str, Any]],
+        values: list[list[int]],
+        strategy: dict[str, Any],
+    ) -> tuple[Iterable[tuple[int, ...]], dict[str, Any]]:
+        """Enumerate reviewed table/state relations without a false Cartesian product.
+
+        A flattened table lookup port is a selected value, not an independent
+        free variable.  The relation below keeps the frozen scalar interface
+        while deriving the selected qlevel ports from the QP and the reviewed
+        source table for the selected base bit depth.  This is deliberately
+        contract data driven: no function name or hard-coded contract id is
+        consulted here.
+        """
+        names = [str(port.get("name")) for port in input_ports]
+        positions = {name: index for index, name in enumerate(names)}
+        base_port = str(strategy.get("base_bit_depth_port", ""))
+        table_bindings = strategy.get("table_bindings", {}) or {}
+        tables = strategy.get("tables", {}) or {}
+        related_specs = strategy.get("bit_depth_ports", {}) or {}
+        if base_port not in positions or not table_bindings or not tables:
+            raise RuntimeError("incomplete reviewed table-lookup vector strategy")
+
+        qp_ports: set[str] = set()
+        table_ports: set[str] = set()
+        for table_port, binding in table_bindings.items():
+            if table_port not in positions:
+                raise RuntimeError(f"table binding port is not an input port: {table_port}")
+            qp_port = str((binding or {}).get("qp_port", ""))
+            if qp_port not in positions:
+                raise RuntimeError(f"table binding QP is not an input port: {qp_port}")
+            table_kind = str((binding or {}).get("table", ""))
+            if table_kind not in tables:
+                raise RuntimeError(f"table binding references unknown table: {table_kind}")
+            qp_ports.add(qp_port)
+            table_ports.add(table_port)
+
+        related_ports = set(related_specs)
+        if base_port in related_ports or not related_ports.issubset(positions):
+            raise RuntimeError("invalid related bit-depth ports in table-lookup strategy")
+
+        by_name = {name: values[index] for index, name in enumerate(names)}
+        varying_names = {base_port, *related_ports, *qp_ports, *table_ports}
+        fixed_names = [name for name in names if name not in varying_names]
+        fixed_values = [by_name[name] for name in fixed_names]
+        base_values = by_name[base_port]
+
+        def table_for(table_kind: str, bit_depth: int) -> list[int]:
+            table = tables.get(table_kind, {}) or {}
+            raw = table.get(str(bit_depth), table.get(bit_depth))
+            if not isinstance(raw, list) or not raw:
+                raise RuntimeError(
+                    f"reviewed table {table_kind} has no entries for bit depth {bit_depth}"
+                )
+            return [int(value) for value in raw]
+
+        def related_values(port_name: str, bit_depth: int) -> list[int]:
+            spec = related_specs.get(port_name, {}) or {}
+            values_by_base = spec.get("values_by_base")
+            if values_by_base is not None:
+                raw = values_by_base.get(str(bit_depth), values_by_base.get(bit_depth))
+                if raw is None:
+                    raise RuntimeError(
+                        f"related bit-depth port {port_name} has no value for {bit_depth}"
+                    )
+                return [int(value) for value in raw]
+            offsets = spec.get("offsets")
+            if offsets is not None:
+                return [int(bit_depth) + int(offset) for offset in offsets]
+            raise RuntimeError(f"related bit-depth port has no rule: {port_name}")
+
+        def constrained() -> Iterable[tuple[int, ...]]:
+            for fixed in itertools.product(*fixed_values) if fixed_values else [()]:
+                context = dict(zip(fixed_names, fixed))
+                for bit_depth in base_values:
+                    bit_depth = int(bit_depth)
+                    selected_tables = {
+                        kind: table_for(kind, bit_depth) for kind in tables
+                    }
+                    max_qp = min(len(table) for table in selected_tables.values()) - 1
+                    qp_domains = {
+                        qp_port: [int(qp) for qp in by_name[qp_port] if int(qp) <= max_qp]
+                        for qp_port in qp_ports
+                    }
+                    if any(not domain for domain in qp_domains.values()):
+                        continue
+                    related_names = sorted(related_specs)
+                    related_domains = [
+                        related_values(port_name, bit_depth) for port_name in related_names
+                    ]
+                    for related in itertools.product(*related_domains) if related_domains else [()]:
+                        context[base_port] = bit_depth
+                        context.update(dict(zip(related_names, related)))
+                        qp_names = sorted(qp_ports)
+                        qp_domains_ordered = [qp_domains[qp_port] for qp_port in qp_names]
+                        for qps in itertools.product(*qp_domains_ordered) if qp_domains_ordered else [()]:
+                            context.update(dict(zip(qp_names, qps)))
+                            for table_port, binding in table_bindings.items():
+                                table_kind = str(binding["table"])
+                                qp_port = str(binding["qp_port"])
+                                context[table_port] = selected_tables[table_kind][context[qp_port]]
+                            yield tuple(int(context[name]) for name in names)
+
+        return constrained(), {
+            "kind": "table_lookup",
+            "source": "reviewed source table relation",
+            "base_bit_depth_port": base_port,
+            "related_bit_depth_ports": sorted(related_ports),
+            "table_ports": sorted(table_ports),
+            "qp_ports": sorted(qp_ports),
+        }
+
     def legal_vector_iterator(self, contract: dict[str, Any], input_ports: list[dict[str, Any]],
                               values: list[list[int]]) -> tuple[Iterable[tuple[int, ...]], dict[str, Any]]:
         """Return legal vectors, including reviewed conditional domains.
@@ -1251,11 +1450,15 @@ class Agent:
         that relation instead of the invalid Cartesian product.
         """
         names = [str(port.get("name")) for port in input_ports]
+        semantics = contract.get("semantics", {}) or {}
+        table_strategy = semantics.get("legal_vector_strategy") or semantics.get("vector_strategy")
+        if isinstance(table_strategy, dict) and table_strategy.get("kind") == "table_lookup":
+            return self.table_lookup_vector_iterator(contract, input_ports, values, table_strategy)
         normalized = {re.sub(r"[^a-z0-9]", "", name.lower()): name for name in names}
         bit_depth_name = normalized.get("cpntbitdepth")
         qlevel_name = normalized.get("qlevel")
         left_recon_name = normalized.get("leftrecon")
-        qlevel_map = (contract.get("semantics", {}) or {}).get("qlevel_max_by_cpnt_bit_depth", {}) or {}
+        qlevel_map = semantics.get("qlevel_max_by_cpnt_bit_depth", {}) or {}
         if bit_depth_name and qlevel_name and left_recon_name and qlevel_map:
             by_name = {name: values[index] for index, name in enumerate(names)}
             fixed_names = [name for name in names if name not in {bit_depth_name, qlevel_name, left_recon_name}]
@@ -2069,13 +2272,59 @@ class Agent:
                 safe_identifier(str(item.get("port_name") or item.get("field", ""))): item
                 for item in flattened
             }
+
+            def resolve_overlay_index(dependency: dict[str, Any], raw_index: object) -> str:
+                raw = str(raw_index)
+                normalized_raw = re.sub(r"[^a-z0-9]", "", raw.lower())
+                indexed_field = next(
+                    (
+                        item for item in flattened
+                        if re.sub(r"[^a-z0-9]", "", str(item.get("field", "")).lower()) == normalized_raw
+                        and "[" not in str(item.get("c_type", "int"))
+                    ),
+                    None,
+                )
+                if indexed_field:
+                    record_name = record_names.get(str(indexed_field.get("record")))
+                    field_name = str(indexed_field.get("field"))
+                    if record_name and re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", field_name):
+                        return f"{record_name}->{field_name}"
+                for scalar in scalar_inputs:
+                    for candidate in (scalar.get("name"), scalar.get("role")):
+                        if re.sub(r"[^a-z0-9]", "", str(candidate).lower()) == normalized_raw:
+                            return str(scalar.get("name"))
+                return safe_identifier(raw)
+
             for port in inputs:
                 field = str(port.get("name"))
-                if field in flattened_by_port and flattened_by_port[field].get("parameter"):
+                if field in flattened_by_port:
                     dependency = flattened_by_port[field]
-                    parameter = str(dependency.get("parameter"))
-                    index = int(dependency.get("index", 0))
-                    rtl_arguments.append(f"{parameter}[{index}]")
+                    if dependency.get("parameter"):
+                        parameter = str(dependency.get("parameter"))
+                        index = int(dependency.get("index", 0))
+                        rtl_arguments.append(f"{parameter}[{index}]")
+                    else:
+                        record_name = record_names.get(str(dependency.get("record")))
+                        if not record_name:
+                            raise RuntimeError(f"missing record parameter for: {dependency.get('record')}")
+                        dependency_field = str(dependency.get("field"))
+                        c_type = str(dependency.get("c_type", port.get("c_type", "int")))
+                        if dependency.get("index_name"):
+                            index = resolve_overlay_index(dependency, dependency.get("index_name"))
+                            rtl_arguments.append(f"{record_name}->{dependency_field}[{index}]")
+                        elif dependency.get("index") is not None and "[" in c_type:
+                            rtl_arguments.append(
+                                f"{record_name}->{dependency_field}[{int(dependency.get('index'))}]"
+                            )
+                        elif "*" in c_type or ("[" in c_type and "]" in c_type):
+                            match = re.search(
+                                rf"->\s*{re.escape(dependency_field)}\s*\[\s*([A-Za-z_][A-Za-z0-9_]*)\s*\]",
+                                source_body_text,
+                            )
+                            index = match.group(1) if match else index_name
+                            rtl_arguments.append(f"{record_name}->{dependency_field}[{index}]")
+                        else:
+                            rtl_arguments.append(f"{record_name}->{dependency_field}")
                 elif field in flattened_fields:
                     dependency = flattened_by_field[field]
                     record_name = record_names.get(str(dependency.get("record")))

@@ -68,6 +68,28 @@ class CicdAgentUnitTests(unittest.TestCase):
         self.assertEqual(safe_identifier("a.b-c"), "a_b_c")
         self.assertEqual(len(digest({"a": 1})), 64)
 
+    def test_promoted_manifest_resolves_dynamic_contract_usr_from_tool_facts(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            (root / "library").mkdir()
+            (root / "library" / "manifest.json").write_text(json.dumps({
+                "components": [{
+                    "contract_id": "promoted_composite",
+                    "function": "PromotedComposite",
+                    "status": "PASS",
+                }],
+            }), encoding="utf-8")
+            (root / "facts").mkdir()
+            (root / "facts" / "functions.json").write_text(json.dumps({
+                "functions": [{
+                    "name": "PromotedComposite",
+                    "clang_usr": "c:@F@PromotedComposite",
+                }],
+            }), encoding="utf-8")
+            agent = Agent(root, "plan")
+            promoted = agent.promoted_contract_usrs([])
+        self.assertEqual(promoted, {"c:@F@PromotedComposite"})
+
     def test_queue_target_selects_one_discovered_contract_and_refreshes_cache(self):
         contract = {
             "contract_id": "unit_target",
@@ -267,6 +289,120 @@ class CicdAgentUnitTests(unittest.TestCase):
         self.assertIn("dsc_cfg_t dsc_cfg = {0};", oracle)
         self.assertIn("PredictSize(&dsc_cfg, req_size)", oracle)
 
+    def test_oracle_and_overlay_support_dynamic_struct_table_entries(self):
+        contract = {
+            "contract_id": "map_qp_to_qlevel",
+            "function": {
+                "name": "MapQpToQlevel",
+                "parameters": [
+                    {"name": "dsc_cfg", "pointer": True, "type": "dsc_cfg_t *"},
+                    {"name": "dsc_state", "pointer": True, "type": "dsc_state_t *"},
+                    {"name": "qp", "pointer": False, "type": "int"},
+                    {"name": "cpnt", "pointer": False, "type": "int"},
+                ],
+            },
+            "interface": {
+                "inputs": [
+                    {"name": "cpnt", "logical_width": 2, "signed": False},
+                    {"name": "qp", "logical_width": 5, "signed": False},
+                ],
+                "flattened_pointer_dependencies": [
+                    {"record": "dsc_cfg_t", "field": "dsc_version_minor", "port_name": "dsc_version_minor", "c_type": "int"},
+                    {"record": "dsc_state_t", "field": "cpntBitDepth", "port_name": "cpntBitDepth_0", "index": 0, "c_type": "int[4]"},
+                    {"record": "dsc_state_t", "field": "quantTableLuma", "port_name": "qlevel_luma", "index_name": "qp", "array_length": 32, "c_type": "int *"},
+                ],
+                "output": {"name": "return_value", "logical_width": 5, "signed": False},
+            },
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            agent = Agent(root, "test")
+            agent.input_facts = {"source_dir": str(root)}
+            contract["interface"]["ports"] = agent.freeze_ports(contract["interface"])
+            oracle = agent.render_oracle(contract)
+            self.assertIn("quantTableLuma_oracle_storage[qp] = qlevel_luma;", oracle)
+            self.assertIn("dsc_state.quantTableLuma = quantTableLuma_oracle_storage;", oracle)
+            self.assertIn("dsc_state.cpntBitDepth[0] = cpntBitDepth_0;", oracle)
+            agent.write_overlay_sources(contract, root, "map_qp_to_qlevel", root / "candidate.sv")
+            overlay = (root / "dsc_cicd_overlay.c").read_text(encoding="utf-8")
+            self.assertIn("dsc_cfg->dsc_version_minor", overlay)
+            self.assertIn("dsc_state->quantTableLuma[qp]", overlay)
+            self.assertIn("dsc_state->cpntBitDepth[0]", overlay)
+
+    def test_oracle_supports_dynamic_index_into_fixed_struct_array(self):
+        contract = {
+            "contract_id": "selected_component",
+            "function": {
+                "name": "SelectedComponent",
+                "parameters": [
+                    {"name": "dsc_cfg", "pointer": True, "type": "dsc_cfg_t *"},
+                    {"name": "dsc_state", "pointer": True, "type": "dsc_state_t *"},
+                    {"name": "cpnt", "pointer": False, "type": "int"},
+                ],
+            },
+            "interface": {
+                "inputs": [{"name": "cpnt", "logical_width": 2, "signed": False}],
+                "flattened_pointer_dependencies": [
+                    {
+                        "record": "dsc_cfg_t",
+                        "field": "native_420",
+                        "port_name": "native_420",
+                        "c_type": "int",
+                    },
+                    {
+                        "record": "dsc_state_t",
+                        "field": "cpntBitDepth",
+                        "index_name": "cpnt",
+                        "port_name": "cpntBitDepth_selected",
+                        "c_type": "int[4]",
+                    },
+                ],
+                "output": {"name": "return_value", "logical_width": 5, "signed": False},
+            },
+        }
+        agent = Agent(pathlib.Path(tempfile.mkdtemp()), "test")
+        contract["interface"]["ports"] = agent.freeze_ports(contract["interface"])
+        oracle = agent.render_oracle(contract)
+        self.assertIn("dsc_state.cpntBitDepth[cpnt] = cpntBitDepth_selected;", oracle)
+        self.assertNotIn("cpntBitDepth_oracle_storage", oracle)
+
+    def test_oracle_resolves_camel_case_state_index_to_frozen_port(self):
+        contract = {
+            "contract_id": "state_table_alias",
+            "function": {
+                "name": "StateTableAlias",
+                "parameters": [
+                    {"name": "dsc_state", "pointer": True, "type": "dsc_state_t *"},
+                    {"name": "unit", "pointer": False, "type": "int"},
+                ],
+            },
+            "interface": {
+                "inputs": [{"name": "unit", "logical_width": 2, "signed": False}],
+                "flattened_pointer_dependencies": [
+                    {
+                        "record": "dsc_state_t",
+                        "field": "primaryQp",
+                        "port_name": "primary_qp",
+                        "c_type": "int",
+                    },
+                    {
+                        "record": "dsc_state_t",
+                        "field": "quantTableLuma",
+                        "port_name": "qlevel_luma",
+                        "index_name": "primaryQp",
+                        "array_length": 32,
+                        "c_type": "int *",
+                    },
+                ],
+                "output": {"name": "return_value", "logical_width": 5, "signed": False},
+            },
+        }
+        agent = Agent(pathlib.Path(tempfile.mkdtemp()), "test")
+        contract["interface"]["ports"] = agent.freeze_ports(contract["interface"])
+        oracle = agent.render_oracle(contract)
+        self.assertIn("dsc_state.primaryQp = primary_qp;", oracle)
+        self.assertIn("quantTableLuma_oracle_storage[primary_qp] = qlevel_luma;", oracle)
+
     def test_flattened_state_oracle_and_conditional_domain(self):
         contract = {
             "contract_id": "state_leaf",
@@ -298,6 +434,65 @@ class CicdAgentUnitTests(unittest.TestCase):
             result = agent.make_shards(contract, artifact)
             self.assertEqual(result["total_vectors"], 32)
             self.assertEqual(result["vector_strategy"]["kind"], "conditional")
+
+    def test_table_lookup_domain_derives_selected_values_from_qp(self):
+        contract = {
+            "contract_id": "table_relation",
+            "interface": {
+                "ports": [
+                    {"name": "unit", "direction": "input", "legal_domain": {"values": [0, 1]}},
+                    {"name": "cpntBitDepth_0", "direction": "input", "legal_domain": {"values": [8, 10]}},
+                    {"name": "cpntBitDepth_1", "direction": "input", "legal_domain": {"values": [8, 9, 10, 11]}},
+                    {"name": "cpntBitDepth_2", "direction": "input", "legal_domain": {"values": [8, 9, 10, 11]}},
+                    {"name": "cpntBitDepth_3", "direction": "input", "legal_domain": {"values": [8, 10]}},
+                    {"name": "unit_c_type_selected", "direction": "input", "legal_domain": {"values": [0, 1]}},
+                    {"name": "predicted_size_selected", "direction": "input", "legal_domain": {"values": [0, 1]}},
+                    {"name": "primary_qp", "direction": "input", "legal_domain": {"range": [0, 31]}},
+                    {"name": "prev_primary_qp", "direction": "input", "legal_domain": {"range": [0, 31]}},
+                    {"name": "qlevel_luma_new", "direction": "input", "legal_domain": {"range": [0, 16]}},
+                    {"name": "qlevel_chroma_new", "direction": "input", "legal_domain": {"range": [0, 16]}},
+                    {"name": "qlevel_luma_old", "direction": "input", "legal_domain": {"range": [0, 16]}},
+                    {"name": "qlevel_chroma_old", "direction": "input", "legal_domain": {"range": [0, 16]}},
+                    {"name": "return_value", "direction": "output"},
+                ]
+            },
+            "semantics": {
+                "legal_vector_strategy": {
+                    "kind": "table_lookup",
+                    "base_bit_depth_port": "cpntBitDepth_0",
+                    "bit_depth_ports": {
+                        "cpntBitDepth_1": {"values_by_base": {"8": [8, 9], "10": [10]}},
+                        "cpntBitDepth_2": {"values_by_base": {"8": [8], "10": [10]}},
+                        "cpntBitDepth_3": {"values_by_base": {"8": [8], "10": [10]}},
+                    },
+                    "table_bindings": {
+                        "qlevel_luma_new": {"table": "luma", "qp_port": "primary_qp"},
+                        "qlevel_chroma_new": {"table": "chroma", "qp_port": "primary_qp"},
+                        "qlevel_luma_old": {"table": "luma", "qp_port": "prev_primary_qp"},
+                        "qlevel_chroma_old": {"table": "chroma", "qp_port": "prev_primary_qp"},
+                    },
+                    "tables": {
+                        "luma": {"8": [0, 1], "10": [2, 3, 4]},
+                        "chroma": {"8": [5, 6], "10": [7, 8, 9]},
+                    },
+                }
+            },
+        }
+        agent = Agent(pathlib.Path(tempfile.mkdtemp()), "test")
+        with tempfile.TemporaryDirectory() as directory:
+            result = agent.make_shards(contract, pathlib.Path(directory) / "artifact")
+        self.assertEqual(result["vector_strategy"]["kind"], "table_lookup")
+        self.assertEqual(result["total_vectors"], 136)
+        shard_lines = []
+        with tempfile.TemporaryDirectory() as directory:
+            artifact = pathlib.Path(directory) / "artifact"
+            result = agent.make_shards(contract, artifact)
+            for path in sorted((artifact / "shards").glob("*.vectors")):
+                shard_lines.extend(path.read_text(encoding="utf-8").splitlines())
+        rows = [[int(value) for value in line.split()] for line in shard_lines]
+        matching = [row for row in rows if row[1] == 8 and row[7] == 0 and row[8] == 0]
+        self.assertTrue(matching)
+        self.assertTrue(all(row[9:13] == [0, 5, 0, 5] for row in matching))
 
     def test_generator_maps_c_style_semantic_identifiers_to_frozen_ports(self):
         interface = {

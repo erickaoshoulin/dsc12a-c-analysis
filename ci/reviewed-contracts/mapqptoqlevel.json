@@ -1,0 +1,743 @@
+{
+  "arithmetic_semantics": {
+    "overflow": "no signed overflow on the locked legal domain; outside-domain behavior is not contracted",
+    "rounding": "integer division by two truncates toward zero; modulo is C remainder on non-negative operands",
+    "saturation": "none",
+    "shifts": "left shifts have operands in [8,16], qlevel is [0,16], and all shifted values are non-negative",
+    "signedness": "C int operands are signed, but the legal-domain inputs and output are non-negative"
+  },
+  "contract_id": "mapqptoqlevel",
+  "coverage": {
+    "branch_coverage_percent": 41.667,
+    "execution_count": 404099,
+    "line_coverage_percent": 58.824,
+    "production_reachable": true,
+    "status": "EXECUTED"
+  },
+  "dependencies": {
+    "direct_callees": [],
+    "read_fields": [
+      "dsc_cfg_t.dsc_version_minor",
+      "dsc_cfg_t.native_420",
+      "dsc_state_t.cpntBitDepth",
+      "dsc_state_t.quantTableChroma",
+      "dsc_state_t.quantTableLuma"
+    ],
+    "return_dependencies": [],
+    "unresolved": []
+  },
+  "do_not_edit": true,
+  "function": {
+    "clang_usr": "c:@F@MapQpToQlevel",
+    "name": "MapQpToQlevel",
+    "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/dsc_codec.c#L221-L238",
+    "qualified_name": "MapQpToQlevel",
+    "source_body_sha256": "1df142a6789220d42d5b1a4a21a8e44123420067cec2390b8797ceb40d4bce4d",
+    "source_file": "dsc_codec.c",
+    "source_file_sha256": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf",
+    "source_span": {
+      "end_column": 1,
+      "end_line": 238,
+      "start_column": 5,
+      "start_line": 221
+    }
+  },
+  "interface": {
+    "flattened_pointer_dependencies": [
+      {
+        "access": "READ_ONLY",
+        "c_type": "int",
+        "field": "dsc_version_minor",
+        "legal_domain": {
+          "basis": "DSC 1.1/1.2 version branches used by the normative mapping rule",
+          "kind": "set",
+          "range": [
+            0,
+            2
+          ],
+          "values": [
+            0,
+            1,
+            2
+          ]
+        },
+        "logical_width": 2,
+        "port_name": "dsc_version_minor",
+        "record": "dsc_cfg_t",
+        "role": "CONFIG_STATIC",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int",
+        "field": "native_420",
+        "legal_domain": {
+          "basis": "PPS native_420 flag",
+          "kind": "set",
+          "range": [
+            0,
+            1
+          ],
+          "values": [
+            0,
+            1
+          ]
+        },
+        "logical_width": 1,
+        "port_name": "native_420",
+        "record": "dsc_cfg_t",
+        "role": "CONFIG_STATIC",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "field": "cpntBitDepth",
+        "index": 0,
+        "legal_domain": {
+          "basis": "DSC supported component bit depths",
+          "kind": "set",
+          "range": [
+            8,
+            16
+          ],
+          "values": [
+            8,
+            10,
+            12,
+            14,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "port_name": "cpntBitDepth_0",
+        "record": "dsc_state_t",
+        "role": "CONFIG_STATIC",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "field": "cpntBitDepth",
+        "index": 1,
+        "legal_domain": {
+          "basis": "DSC supported component bit depths",
+          "kind": "set",
+          "range": [
+            8,
+            16
+          ],
+          "values": [
+            8,
+            10,
+            12,
+            14,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "port_name": "cpntBitDepth_1",
+        "record": "dsc_state_t",
+        "role": "CONFIG_STATIC",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "array_length": 32,
+        "c_type": "int *",
+        "field": "quantTableLuma",
+        "index_name": "qp",
+        "legal_domain": {
+          "basis": "Table 6-2 qLevelY output domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "port_name": "qlevel_luma",
+        "record": "dsc_state_t",
+        "role": "TABLE_LOOKUP_LUMA",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "array_length": 32,
+        "c_type": "int *",
+        "field": "quantTableChroma",
+        "index_name": "qp",
+        "legal_domain": {
+          "basis": "Table 6-2 qLevelC output domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "port_name": "qlevel_chroma",
+        "record": "dsc_state_t",
+        "role": "TABLE_LOOKUP_CHROMA",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      }
+    ],
+    "input_bit_count": 30,
+    "inputs": [
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "dsc_state_t component index domain",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "logical_width": 2,
+        "name": "cpnt",
+        "pointer": false,
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "Table 6-2 masterQp rows",
+          "kind": "range",
+          "range": [
+            0,
+            31
+          ]
+        },
+        "logical_width": 5,
+        "name": "qp",
+        "pointer": false,
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      }
+    ],
+    "output": {
+      "c_type": "int",
+      "legal_range": [
+        0,
+        16
+      ],
+      "logical_width": 5,
+      "name": "return_value",
+      "signed": false,
+      "unresolved": false,
+      "width_source": "EXACT_SPEC"
+    }
+  },
+  "lock": {
+    "contract_sha256": "0a7293d4f78bf561cfddab335a1ad34546d994dbce759ebff98565333cfa64a1",
+    "do_not_edit": true,
+    "locked_from": "proposed/mapqptoqlevel.yaml"
+  },
+  "lock_status": "LOCKED_GENERATED_REVIEWED",
+  "obligations": [],
+  "origin": "tool_discovered_reviewed_override",
+  "provenance": {
+    "coverage_sha256": "487b3d70a61f2a70b94d953d26ee078df3f8e3f4b2d30b6cdbb508a9548aef62",
+    "source_hashes_sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+    "spec_sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+  },
+  "read_struct_fields": [
+    {
+      "access": "READ_ONLY",
+      "c_type": "int",
+      "field": "dsc_version_minor",
+      "legal_domain": {
+        "kind": "unresolved",
+        "range": null,
+        "values": []
+      },
+      "logical_width": 32,
+      "record": "dsc_cfg_t",
+      "role": "RUNTIME_INPUT",
+      "unresolved": true,
+      "width_source": "C_TYPE_FALLBACK"
+    },
+    {
+      "access": "READ_ONLY",
+      "c_type": "int",
+      "field": "native_420",
+      "legal_domain": {
+        "kind": "unresolved",
+        "range": null,
+        "values": []
+      },
+      "logical_width": 32,
+      "record": "dsc_cfg_t",
+      "role": "RUNTIME_INPUT",
+      "unresolved": true,
+      "width_source": "C_TYPE_FALLBACK"
+    },
+    {
+      "access": "READ_ONLY",
+      "c_type": "int[4]",
+      "conditional": "selected component bit depth; leftRecon range is conditional on this value",
+      "field": "cpntBitDepth",
+      "legal_domain": {
+        "basis": "PPS bits_per_component plus one-bit RGB chroma extension",
+        "kind": "set",
+        "range": [
+          8,
+          16
+        ],
+        "values": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ]
+      },
+      "logical_width": 5,
+      "record": "dsc_state_t",
+      "role": "CONFIG_STATIC",
+      "unresolved": false,
+      "width_source": "NORMATIVE_COMPONENT_BIT_DEPTH_DOMAIN"
+    },
+    {
+      "access": "READ_ONLY",
+      "c_type": "int *",
+      "field": "quantTableChroma",
+      "legal_domain": {
+        "basis": "Table 6-2 masterQp rows; table values remain a dependency obligation",
+        "kind": "table",
+        "range": [
+          0,
+          31
+        ],
+        "values": []
+      },
+      "logical_width": 5,
+      "record": "dsc_state_t",
+      "role": "CONSTANT_TABLE",
+      "unresolved": true,
+      "width_source": "NORMATIVE_TABLE_DOMAIN"
+    },
+    {
+      "access": "READ_ONLY",
+      "c_type": "int *",
+      "field": "quantTableLuma",
+      "legal_domain": {
+        "basis": "Table 6-2 masterQp rows; table values remain a dependency obligation",
+        "kind": "table",
+        "range": [
+          0,
+          31
+        ],
+        "values": []
+      },
+      "logical_width": 5,
+      "record": "dsc_state_t",
+      "role": "CONSTANT_TABLE",
+      "unresolved": true,
+      "width_source": "NORMATIVE_TABLE_DOMAIN"
+    }
+  ],
+  "reviewed_evidence": [
+    {
+      "anchor_id": "pdf:model-note:MN_MAP_QP_TO_QLEVEL:p113",
+      "kind": "EXACT_SPEC",
+      "page": 113,
+      "reason": "DSC 1.2a defines the luma/chroma selection and the v1.2 equal-bit-depth chroma decrement in the normative mapping rule.",
+      "section": "6.8.6"
+    },
+    {
+      "anchor_id": "pdf:table:6-2",
+      "kind": "EXACT_TABLE",
+      "page": 114,
+      "reason": "Table 6-2 supplies the qLevelY/qLevelC values for masterQp 0..31 at 8/10/12/14/16bpc.",
+      "section": "6.8.6"
+    },
+    {
+      "c_span": {
+        "end_line": 238,
+        "start_line": 221
+      },
+      "kind": "SOURCE_SEMANTICS",
+      "reason": "The immutable C leaf reads the selected table entries and read-only configuration fields, performs no calls, and writes no state.",
+      "source_file": "dsc_codec.c"
+    }
+  ],
+  "reviewed_override_applied": {
+    "match": {
+      "exact_anchor_id": "pdf:model-note:MN_MAP_QP_TO_QLEVEL:p113"
+    },
+    "review_status": "REVIEWED",
+    "reviewed_by": "codex"
+  },
+  "schema_version": 1,
+  "selection": {
+    "candidate_rank": 3,
+    "eligible_after_coverage": true,
+    "eligible_static": true,
+    "leaf": true,
+    "rank": 3,
+    "score": 100.0,
+    "selection_basis": "tool-ranked production/output leaf candidate after dynamic coverage join"
+  },
+  "semantics": {
+    "expression": "cpnt%3 == 0 ? quantTableLuma[qp] : ((native_420 && cpnt == 1) ? quantTableLuma[qp] : MAX(0, quantTableChroma[qp] - ((dsc_version_minor == 2 && cpntBitDepth[0] == cpntBitDepth[1]) ? 1 : 0)))",
+    "kind": "qp_mapping",
+    "return_range": [
+      0,
+      16
+    ],
+    "signedness": "All selected qLevel table entries and configuration fields are non-negative normative values.",
+    "table_chroma_by_bpc": {
+      "10": [
+        0,
+        1,
+        2,
+        2,
+        3,
+        3,
+        4,
+        4,
+        5,
+        5,
+        6,
+        6,
+        7,
+        7,
+        8,
+        8,
+        9,
+        10,
+        10,
+        10
+      ],
+      "12": [
+        0,
+        1,
+        2,
+        2,
+        3,
+        3,
+        4,
+        4,
+        5,
+        5,
+        6,
+        6,
+        7,
+        7,
+        8,
+        8,
+        9,
+        9,
+        10,
+        10,
+        11,
+        12,
+        12,
+        12
+      ],
+      "14": [
+        0,
+        1,
+        2,
+        2,
+        3,
+        3,
+        4,
+        4,
+        5,
+        5,
+        6,
+        6,
+        7,
+        7,
+        8,
+        8,
+        9,
+        9,
+        10,
+        10,
+        11,
+        11,
+        12,
+        12,
+        13,
+        14,
+        14,
+        14
+      ],
+      "16": [
+        0,
+        1,
+        2,
+        2,
+        3,
+        3,
+        4,
+        4,
+        5,
+        5,
+        6,
+        6,
+        7,
+        7,
+        8,
+        8,
+        9,
+        9,
+        10,
+        10,
+        11,
+        11,
+        12,
+        12,
+        13,
+        13,
+        14,
+        14,
+        15,
+        16,
+        16,
+        16
+      ],
+      "8": [
+        0,
+        1,
+        2,
+        2,
+        3,
+        3,
+        4,
+        4,
+        5,
+        5,
+        6,
+        6,
+        7,
+        8,
+        8,
+        8
+      ]
+    },
+    "table_entry_domain": [
+      0,
+      16
+    ],
+    "table_luma_by_bpc": {
+      "10": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        2,
+        2,
+        3,
+        3,
+        4,
+        4,
+        5,
+        5,
+        6,
+        6,
+        7,
+        7,
+        7,
+        8,
+        9
+      ],
+      "12": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        2,
+        2,
+        3,
+        3,
+        4,
+        4,
+        5,
+        5,
+        6,
+        6,
+        7,
+        7,
+        8,
+        8,
+        9,
+        9,
+        9,
+        10,
+        11
+      ],
+      "14": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        2,
+        2,
+        3,
+        3,
+        4,
+        4,
+        5,
+        5,
+        6,
+        6,
+        7,
+        7,
+        8,
+        8,
+        9,
+        9,
+        10,
+        10,
+        11,
+        11,
+        11,
+        12,
+        13
+      ],
+      "16": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        2,
+        2,
+        3,
+        3,
+        4,
+        4,
+        5,
+        5,
+        6,
+        6,
+        7,
+        7,
+        8,
+        8,
+        9,
+        9,
+        10,
+        10,
+        11,
+        11,
+        12,
+        12,
+        13,
+        13,
+        13,
+        14,
+        15
+      ],
+      "8": [
+        0,
+        0,
+        0,
+        1,
+        1,
+        2,
+        2,
+        3,
+        3,
+        4,
+        4,
+        5,
+        5,
+        5,
+        6,
+        7
+      ]
+    },
+    "table_max_qp_by_bpc": {
+      "10": 19,
+      "12": 23,
+      "14": 27,
+      "16": 31,
+      "8": 15
+    }
+  },
+  "spec_links": [
+    {
+      "anchor_id": "pdf:model-note:MN_MAP_QP_TO_QLEVEL:p113",
+      "page": 113,
+      "section": "6.8.6",
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:section:6.8.6",
+      "page": 113,
+      "section": "6.8.6",
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:table:6-2",
+      "page": 114,
+      "section": "6.8.6",
+      "status": "EXACT"
+    }
+  ],
+  "static_analysis": {
+    "callees": [],
+    "contributes_to_observable_output": true,
+    "direct_effects": {
+      "allocation": false,
+      "assertion": false,
+      "indirect_call": false,
+      "io": false,
+      "logging": false,
+      "state_write": false,
+      "unknown_facts": []
+    },
+    "globals_read": [],
+    "globals_write": [],
+    "production_reachable": true,
+    "purity": "PURE",
+    "role": "DUT",
+    "timing": "COMBINATIONAL",
+    "transitive_effects": {
+      "allocation": false,
+      "assertion": false,
+      "indirect_call": false,
+      "io": false,
+      "logging": false,
+      "state_write": false,
+      "unknown_facts": []
+    }
+  },
+  "status": "LOCKED",
+  "verification_plan": {
+    "legal_domain": "cpnt in [0,3], cpntBitDepth in {8..16}, qlevel <= table-derived maximum for the selected component depth, leftRecon in [0,(1<<cpntBitDepth)-1]",
+    "mutations": [
+      "signedness",
+      "boundary",
+      "array-index",
+      "off-by-one"
+    ],
+    "oracle": "call the immutable C function through a generated wrapper with flattened state dependencies",
+    "rtl": "at most four generated combinational SystemVerilog candidates",
+    "simulator": "Verilator lint/compile plus exhaustive legal-domain comparison"
+  }
+}

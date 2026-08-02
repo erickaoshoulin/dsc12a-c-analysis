@@ -1,0 +1,246 @@
+{
+  "authority": "EXACT_SPEC",
+  "c_span": {
+    "end_line": 451,
+    "start_line": 443
+  },
+  "contract_hash": "a4141acef069f808dd7751bd953805c2d586c0be5c8d4dbf312ef2274ccd0759",
+  "ports": [
+    {
+      "authority": "EXACT_SPEC",
+      "c_span": {
+        "end_line": 451,
+        "start_line": 443
+      },
+      "contract_hash": "a4141acef069f808dd7751bd953805c2d586c0be5c8d4dbf312ef2274ccd0759",
+      "derivation": "Table 6-2 masterQp rows",
+      "domain": {
+        "basis": "Table 6-2 masterQp rows",
+        "kind": "range",
+        "range": [
+          0,
+          31
+        ]
+      },
+      "name": "qp",
+      "review_status": "REVIEWED",
+      "role": "qp",
+      "signed": false,
+      "spec_pages": [
+        34,
+        93,
+        113
+      ],
+      "spec_sections": [
+        "3.5.1",
+        "6.6.2",
+        "6.8.6"
+      ],
+      "spec_tables": [],
+      "width": 5
+    },
+    {
+      "authority": "EXACT_SPEC",
+      "c_span": {
+        "end_line": 451,
+        "start_line": 443
+      },
+      "contract_hash": "a4141acef069f808dd7751bd953805c2d586c0be5c8d4dbf312ef2274ccd0759",
+      "derivation": "DSC 1.1/1.2 version branches used by the called mapping function",
+      "domain": {
+        "basis": "DSC 1.1/1.2 version branches used by the called mapping function",
+        "kind": "set",
+        "range": [
+          0,
+          2
+        ],
+        "values": [
+          0,
+          1,
+          2
+        ]
+      },
+      "name": "dsc_version_minor",
+      "review_status": "REVIEWED",
+      "role": "CONFIG_STATIC",
+      "signed": false,
+      "spec_pages": [
+        34,
+        93,
+        113
+      ],
+      "spec_sections": [
+        "3.5.1",
+        "6.6.2",
+        "6.8.6"
+      ],
+      "spec_tables": [],
+      "width": 2
+    },
+    {
+      "authority": "EXACT_SPEC",
+      "c_span": {
+        "end_line": 451,
+        "start_line": 443
+      },
+      "contract_hash": "a4141acef069f808dd7751bd953805c2d586c0be5c8d4dbf312ef2274ccd0759",
+      "derivation": "PPS native_420 flag used by the called mapping function",
+      "domain": {
+        "basis": "PPS native_420 flag used by the called mapping function",
+        "kind": "set",
+        "range": [
+          0,
+          1
+        ],
+        "values": [
+          0,
+          1
+        ]
+      },
+      "name": "native_420",
+      "review_status": "REVIEWED",
+      "role": "CONFIG_STATIC",
+      "signed": false,
+      "spec_pages": [
+        34,
+        93,
+        113
+      ],
+      "spec_sections": [
+        "3.5.1",
+        "6.6.2",
+        "6.8.6"
+      ],
+      "spec_tables": [],
+      "width": 1
+    },
+    {
+      "authority": "EXACT_SPEC",
+      "c_span": {
+        "end_line": 451,
+        "start_line": 443
+      },
+      "contract_hash": "a4141acef069f808dd7751bd953805c2d586c0be5c8d4dbf312ef2274ccd0759",
+      "derivation": "DSC supported luma component bit depths",
+      "domain": {
+        "basis": "DSC supported luma component bit depths",
+        "kind": "set",
+        "range": [
+          8,
+          16
+        ],
+        "values": [
+          8,
+          10,
+          12,
+          14,
+          16
+        ]
+      },
+      "name": "cpntBitDepth_0",
+      "review_status": "REVIEWED",
+      "role": "CONFIG_STATIC",
+      "signed": false,
+      "spec_pages": [
+        34,
+        93,
+        113
+      ],
+      "spec_sections": [
+        "3.5.1",
+        "6.6.2",
+        "6.8.6"
+      ],
+      "spec_tables": [],
+      "width": 5
+    },
+    {
+      "authority": "EXACT_SPEC",
+      "c_span": {
+        "end_line": 451,
+        "start_line": 443
+      },
+      "contract_hash": "a4141acef069f808dd7751bd953805c2d586c0be5c8d4dbf312ef2274ccd0759",
+      "derivation": "Table 6-2 qLevelY entry domain",
+      "domain": {
+        "basis": "Table 6-2 qLevelY entry domain",
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "name": "qlevel_luma",
+      "review_status": "REVIEWED",
+      "role": "TABLE_LOOKUP_LUMA",
+      "signed": false,
+      "spec_pages": [
+        34,
+        93,
+        113
+      ],
+      "spec_sections": [
+        "3.5.1",
+        "6.6.2",
+        "6.8.6"
+      ],
+      "spec_tables": [],
+      "width": 5
+    },
+    {
+      "authority": "EXACT_SPEC",
+      "c_span": {
+        "end_line": 451,
+        "start_line": 443
+      },
+      "contract_hash": "a4141acef069f808dd7751bd953805c2d586c0be5c8d4dbf312ef2274ccd0759",
+      "derivation": "locked contract interface",
+      "domain": {
+        "range": [
+          -8,
+          17
+        ]
+      },
+      "name": "return_value",
+      "review_status": "REVIEWED",
+      "role": "return_value",
+      "signed": true,
+      "spec_pages": [
+        34,
+        93,
+        113
+      ],
+      "spec_sections": [
+        "3.5.1",
+        "6.6.2",
+        "6.8.6"
+      ],
+      "spec_tables": [],
+      "width": 6
+    }
+  ],
+  "review_status": "REVIEWED",
+  "source_file": "dsc_codec.c",
+  "source_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
+  "spec_links": [
+    {
+      "anchor_id": "pdf:section:3.5.1",
+      "page": 34,
+      "section": "3.5.1",
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:section:6.6.2",
+      "page": 93,
+      "section": "6.6.2",
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:section:6.8.6",
+      "page": 113,
+      "section": "6.8.6",
+      "status": "EXACT"
+    }
+  ],
+  "spec_pdf": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf"
+}

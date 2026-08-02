@@ -312,6 +312,14 @@ carry domain evidence for a known facts identity, but they cannot materialize
 a function that is absent from the tool-ranked candidate and coverage facts.
 Never add a target list, allowlist, source-file selector, or prompt field that
 supplies a function name.
+
+Composite candidates are also tool-discovered work. A reviewed override may
+resolve a pure, bounded function with direct callees only after every direct
+callee has a PASS entry in `library/manifest.json`; the override supplies
+spec/domain/semantics evidence, never the selection. Keep the immutable C call
+chain as the oracle/reference boundary and promote only the selected
+combinational function after its own C-vs-RTL and frame gates pass. Do not
+flatten stateful callers, host code, or unrelated helpers into the DUT.
 Reject recursive or combinational dependency cycles. A generation authority
 must be `EXACT_SPEC`, `DERIVED`, or `HUMAN_APPROVED`; `AI_PROPOSED` and
 `C_TYPE_FALLBACK` are visible blockers and cannot generate RTL.
@@ -440,11 +448,16 @@ per function, and never duplicate agents on one function.
 
 The `skills/dsc-regression/` skill follows
 `observe → plan → dispatch → verify → update` using durable SMB state rather
-than chat memory. Stop on budget exhaustion, human-review authority,
-repeated failure, infrastructure failure, or pilot completion. Run tests for
-queue claim/recovery, polling, cache reuse, model routing, bad RTL, authority
-traceability, deterministic reports, and the no-function-allowlist invariant
-before committing the service.
+than chat memory. Pilot completion is a checkpoint, not the end of the
+migration: after each PASS promotion, re-read facts/spec/coverage and dispatch
+the next bounded batch of newly eligible leaves or composites. `NO_NEW_WORK`
+means the current frontier is exhausted and must be re-checked after the next
+reviewed contract or dependency promotion; it is not permission to add a
+function-name target. Stop only on explicit cancellation, budget exhaustion,
+human-review authority, repeated failure, or infrastructure failure. Run
+tests for queue claim/recovery, polling, cache reuse, model routing, bad RTL,
+authority traceability, deterministic reports, composite promotion gates, and
+the no-function-allowlist invariant before committing the service.
 
 For this durable service change, commit the service, push the requested
 branch, and open a draft PR titled exactly:
