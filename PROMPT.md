@@ -274,9 +274,13 @@ PDF and upstream C model are immutable external inputs.
    explicitly reviewed `windowed_boundary`/equivalent strategy that records
    `exhaustive: false`. It must still cover every structural mode, exact
    qLevel/component relation, signedness, boundaries, array indices, and
-   pairwise tap interactions. A clean result is `DIFFERENTIAL_PASS`, never a
-   promotion or stable-library proof. Continue iterating from its findings
-   toward a formal proof or a smaller spec-grounded DUT slice.
+   pairwise tap interactions. A multi-group window must declare its padding,
+   samples-per-unit, group offsets, static pointer indices, and per-group
+   pairwise tap sets in reviewed data; the generator and adapter derive the
+   frozen ports from those facts rather than embedding a single sample index.
+   A clean result is `DIFFERENTIAL_PASS`, never a promotion or stable-library
+   proof. Continue iterating from its findings toward a formal proof or a
+   smaller spec-grounded DUT slice.
 
 5. Verify a real dependency. Automatically choose the smallest acyclic direct
    caller-to-callee edge from the callgraph. Prove caller core with callee C,

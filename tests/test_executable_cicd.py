@@ -222,7 +222,7 @@ class ExecutableCicdTests(unittest.TestCase):
             "pred_type_port": "predType",
             "sample_ports": ["tap_a", "tap_b"],
             "residual_ports": ["residual"],
-            "pairwise_ports": ["tap_a", "tap_b"],
+            "pairwise_groups": [["tap_a", "tap_b"]],
             "probe_units": [0, 3],
             "qlevel_max_by_component": {
                 "luma": {"8": 2, "10": 2},
@@ -239,6 +239,7 @@ class ExecutableCicdTests(unittest.TestCase):
         self.assertEqual(len(first), len(ports))
         self.assertFalse(receipt["exhaustive"])
         self.assertEqual(receipt["kind"], "windowed_boundary")
+        self.assertEqual(receipt["pairwise_groups"], [["tap_a", "tap_b"]])
 
     def test_samplepredict_pointer_adapter_binds_state_and_taps(self):
         agent = Agent(ROOT, "test")
@@ -252,10 +253,14 @@ class ExecutableCicdTests(unittest.TestCase):
         contract["interface"] = copy.deepcopy(override["interface"])
         contract["interface"]["ports"] = agent.freeze_ports(contract["interface"])
         oracle = agent.render_oracle(contract)
+        ports = {port["name"]: port for port in contract["interface"]["ports"]}
+        self.assertEqual(ports["hPos"]["width"], 4)
+        self.assertIn(11, ports["hPos"]["legal_domain"]["values"])
+        self.assertIn(9, ports["cpnt_bit_depth"]["legal_domain"]["values"])
         self.assertIn("dsc_state.cpntBitDepth[unit_c_type] = cpnt_bit_depth;", oracle)
         self.assertIn("dsc_state.quantizedResidual[unit][1] = quantized_residual_1;", oracle)
-        self.assertIn("prevLine[8] = prev_8;", oracle)
-        self.assertIn("currLine[6] = curr_6;", oracle)
+        self.assertIn("prevLine[17] = prev_17;", oracle)
+        self.assertIn("currLine[15] = curr_15;", oracle)
         self.assertIn("SamplePredict(&dsc_state, prevLine, currLine", oracle)
 
     def _rewriter_binary(self):

@@ -240,7 +240,9 @@ def qp_adjusted_pred_size_body(interface: dict[str, object], bad: bool) -> str:
     return "\n".join(lines)
 
 
-def windowed_sample_predict_body(interface: dict[str, object], bad: bool) -> str:
+def windowed_sample_predict_body(
+    interface: dict[str, object], semantics: dict[str, object], bad: bool
+) -> str:
     """Emit the deterministic fixture candidate for a flattened sample window.
 
     The production path supplies the same frozen interface to an external
@@ -252,14 +254,96 @@ def windowed_sample_predict_body(interface: dict[str, object], bad: bool) -> str
     names = {str(port.get("name")): str(port.get("name")) for port in ports if isinstance(port, dict)}
     required = [
         "hPos", "predType", "qLevel", "unit", "unit_c_type", "cpnt_bit_depth",
-        "quantized_residual_0", "quantized_residual_1",
-        "prev_3", "prev_4", "prev_5", "prev_6", "prev_7", "prev_8",
-        "curr_0", "curr_1", "curr_2", "curr_3", "curr_4", "curr_5", "curr_6",
-        "return_value",
+        "quantized_residual_0", "quantized_residual_1", "return_value",
     ]
     missing = [name for name in required if name not in names]
     if missing:
         raise ValueError("windowed sample-predict fixture is missing ports: " + ", ".join(missing))
+
+    window = semantics.get("window_spec", {}) if isinstance(semantics, dict) else {}
+    if not isinstance(window, dict):
+        window = {}
+    samples_per_unit = int(window.get("samples_per_unit", 3))
+    padding_left = int(window.get("padding_left", 5))
+    group_h_offsets = [int(value) for value in window.get("group_h_offsets", [])]
+    if not group_h_offsets:
+        group_count = int(window.get("group_count", 1))
+        group_h_offsets = [padding_left + index * samples_per_unit for index in range(group_count)]
+    prev_indices = [int(value) for value in window.get("prev_tap_indices", [])]
+    curr_indices = [int(value) for value in window.get("curr_tap_indices", [])]
+    if not prev_indices:
+        prev_indices = list(range(group_h_offsets[0] - 2, group_h_offsets[0] + 4))
+    if not curr_indices:
+        curr_indices = list(range(0, group_h_offsets[-1] + samples_per_unit + 2))
+    prev_names = {index: f"prev_{index}" for index in prev_indices}
+    curr_names = {index: f"curr_{index}" for index in curr_indices}
+    required_taps = set(prev_names.values()) | set(curr_names.values())
+    missing_taps = sorted(required_taps - set(names))
+    if missing_taps:
+        raise ValueError("windowed sample-predict fixture is missing tap ports: " + ", ".join(missing_taps))
+
+    for h_offset in group_h_offsets:
+        needed_prev = {h_offset - 2, h_offset - 1, h_offset, h_offset + 1, h_offset + 2, h_offset + 3}
+        needed_curr = {h_offset - 1}
+        if not needed_prev.issubset(prev_indices) or not needed_curr.issubset(curr_indices):
+            raise ValueError("windowed sample-predict fixture has an incomplete static group window")
+    block_max_hpos = (len(group_h_offsets) * samples_per_unit) - 1
+    block_indices = {
+        max(block_max_hpos + padding_left - 1 - offset, 0)
+        for offset in range(int(window.get("bp_range", 13)))
+    }
+    if not block_indices.issubset(curr_indices):
+        raise ValueError("windowed sample-predict fixture has an incomplete block-prediction window")
+
+    def port(name: str) -> str:
+        if name not in names:
+            raise ValueError("windowed sample-predict fixture is missing port: " + name)
+        return name
+
+    group_lines: list[str] = [f"        case (hPos / {samples_per_unit})"]
+    for group_index, h_offset in enumerate(group_h_offsets):
+        a_index = h_offset - 1
+        c_index = h_offset - 1
+        b_index = h_offset
+        d_index = h_offset + 1
+        e_index = h_offset + 2
+        filt_c = (h_offset - 2, h_offset - 1, h_offset)
+        filt_b = (h_offset - 1, h_offset, h_offset + 1)
+        filt_d = (h_offset, h_offset + 1, h_offset + 2)
+        filt_e = (h_offset + 1, h_offset + 2, h_offset + 3)
+        group_lines.extend([
+            f"            {group_index}: begin",
+            f"                a_i = {port(curr_names[a_index])};",
+            f"                b_i = {port(prev_names[b_index])};",
+            f"                c_i = {port(prev_names[c_index])};",
+            f"                d_i = {port(prev_names[d_index])};",
+            f"                e_i = {port(prev_names[e_index])};",
+            f"                filt_c_i = ({port(prev_names[filt_c[0]])} + (2 * {port(prev_names[filt_c[1]])}) + {port(prev_names[filt_c[2]])} + 2) >>> 2;",
+            f"                filt_b_i = ({port(prev_names[filt_b[0]])} + (2 * {port(prev_names[filt_b[1]])}) + {port(prev_names[filt_b[2]])} + 2) >>> 2;",
+            f"                filt_d_i = ({port(prev_names[filt_d[0]])} + (2 * {port(prev_names[filt_d[1]])}) + {port(prev_names[filt_d[2]])} + 2) >>> 2;",
+            f"                filt_e_i = ({port(prev_names[filt_e[0]])} + (2 * {port(prev_names[filt_e[1]])}) + {port(prev_names[filt_e[2]])} + 2) >>> 2;",
+            "            end",
+        ])
+    first_h_offset = group_h_offsets[0]
+    group_lines.extend([
+        "            default: begin",
+        f"                a_i = {port(curr_names[first_h_offset - 1])};",
+        f"                b_i = {port(prev_names[first_h_offset])};",
+        f"                c_i = {port(prev_names[first_h_offset - 1])};",
+        f"                d_i = {port(prev_names[first_h_offset + 1])};",
+        f"                e_i = {port(prev_names[first_h_offset + 2])};",
+        f"                filt_c_i = ({port(prev_names[first_h_offset - 2])} + (2 * {port(prev_names[first_h_offset - 1])}) + {port(prev_names[first_h_offset])} + 2) >>> 2;",
+        f"                filt_b_i = ({port(prev_names[first_h_offset - 1])} + (2 * {port(prev_names[first_h_offset])}) + {port(prev_names[first_h_offset + 1])} + 2) >>> 2;",
+        f"                filt_d_i = ({port(prev_names[first_h_offset])} + (2 * {port(prev_names[first_h_offset + 1])}) + {port(prev_names[first_h_offset + 2])} + 2) >>> 2;",
+        f"                filt_e_i = ({port(prev_names[first_h_offset + 1])} + (2 * {port(prev_names[first_h_offset + 2])}) + {port(prev_names[first_h_offset + 3])} + 2) >>> 2;",
+        "            end",
+        "        endcase",
+    ])
+
+    block_lines: list[str] = ["        case (bp_index_i)"]
+    for index in sorted(curr_indices):
+        block_lines.append(f"            {index}: block_value_i = {port(curr_names[index])};")
+    block_lines.extend(["            default: block_value_i = 0;", "        endcase"])
 
     lines = [
         "    integer signed a_i;",
@@ -305,15 +389,7 @@ def windowed_sample_predict_body(interface: dict[str, object], bad: bool) -> str
         "        begin max_i = (left > right) ? left : right; end",
         "    endfunction",
         "    always_comb begin",
-        "        a_i = curr_4;",
-        "        b_i = prev_5;",
-        "        c_i = prev_4;",
-        "        d_i = prev_6;",
-        "        e_i = prev_7;",
-        "        filt_c_i = (prev_3 + (2 * prev_4) + prev_5 + 2) >>> 2;",
-        "        filt_b_i = (prev_4 + (2 * prev_5) + prev_6 + 2) >>> 2;",
-        "        filt_d_i = (prev_5 + (2 * prev_6) + prev_7 + 2) >>> 2;",
-        "        filt_e_i = (prev_6 + (2 * prev_7) + prev_8 + 2) >>> 2;",
+        *group_lines,
         "        qdiv_i = 1 <<< qLevel;",
         "        qhalf_i = qdiv_i / 2;",
         "        cpnt_max_i = (1 <<< cpnt_bit_depth) - 1;",
@@ -326,18 +402,9 @@ def windowed_sample_predict_body(interface: dict[str, object], bad: bool) -> str
         "        blend_e_i = e_i;",
         "        result_i = 0;",
         "        block_value_i = 0;",
-        "        bp_index_i = hPos + 4 - (predType - 2);",
+        f"        bp_index_i = hPos + {padding_left - 1} - (predType - 2);",
         "        if (bp_index_i < 0) bp_index_i = 0;",
-        "        case (bp_index_i)",
-        "            0: block_value_i = curr_0;",
-        "            1: block_value_i = curr_1;",
-        "            2: block_value_i = curr_2;",
-        "            3: block_value_i = curr_3;",
-        "            4: block_value_i = curr_4;",
-        "            5: block_value_i = curr_5;",
-        "            6: block_value_i = curr_6;",
-        "            default: block_value_i = 0;",
-        "        endcase",
+        *block_lines,
         "        diff_i = clamp_i(filt_c_i - c_i, -qhalf_i, qhalf_i);",
         "        blend_c_i = c_i + diff_i;",
         "        diff_i = clamp_i(filt_b_i - b_i, -qhalf_i, qhalf_i);",
@@ -346,17 +413,17 @@ def windowed_sample_predict_body(interface: dict[str, object], bad: bool) -> str
         "        blend_d_i = d_i + diff_i;",
         "        diff_i = clamp_i(filt_e_i - e_i, -qhalf_i, qhalf_i);",
         "        blend_e_i = e_i + diff_i;",
-        "        if ((hPos / 3) == 0) blend_c_i = a_i;",
+        f"        if ((hPos / {samples_per_unit}) == 0) blend_c_i = a_i;",
         "        if (predType == 0) begin",
-        "            if ((hPos % 3) == 0)",
+        f"            if ((hPos % {samples_per_unit}) == 0)",
         "                result_i = clamp_i(a_i + blend_b_i - blend_c_i, min_i(a_i, blend_b_i), max_i(a_i, blend_b_i));",
-        "            else if ((hPos % 3) == 1)",
+        f"            else if ((hPos % {samples_per_unit}) == 1)",
         "                result_i = clamp_i(a_i + blend_d_i - blend_c_i + (qr0_i * qdiv_i), min_i(a_i, min_i(blend_b_i, blend_d_i)), max_i(a_i, max_i(blend_b_i, blend_d_i)));",
         "            else",
         "                result_i = clamp_i(a_i + blend_e_i - blend_c_i + ((qr0_i + qr1_i) * qdiv_i), min_i(a_i, min_i(blend_b_i, min_i(blend_d_i, blend_e_i))), max_i(a_i, max_i(blend_b_i, max_i(blend_d_i, blend_e_i))));",
         "        end else if (predType == 1) begin",
-        "            if ((hPos % 3) == 0) result_i = a_i;",
-        "            else if ((hPos % 3) == 1) result_i = clamp_i(a_i + (qr0_i * qdiv_i), 0, cpnt_max_i);",
+        f"            if ((hPos % {samples_per_unit}) == 0) result_i = a_i;",
+        f"            else if ((hPos % {samples_per_unit}) == 1) result_i = clamp_i(a_i + (qr0_i * qdiv_i), 0, cpnt_max_i);",
         "            else result_i = clamp_i(a_i + ((qr0_i + qr1_i) * qdiv_i), 0, cpnt_max_i);",
         "        end else begin",
         "            result_i = block_value_i;",
@@ -415,7 +482,7 @@ def render_candidate(contract: dict[str, object], interface: dict[str, object], 
     elif kind == "qp_adjusted_pred_size":
         body = qp_adjusted_pred_size_body(interface, bad)
     elif kind == "windowed_sample_predict":
-        body = windowed_sample_predict_body(interface, bad)
+        body = windowed_sample_predict_body(interface, semantics, bad)
     else:
         body = generic_body(interface, semantics if isinstance(semantics, dict) else {}, bad)
     return "module " + module + " (\n" + declarations + "\n);\n" + body + "\nendmodule\n"

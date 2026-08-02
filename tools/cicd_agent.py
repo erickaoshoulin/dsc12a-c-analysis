@@ -1586,7 +1586,19 @@ class Agent:
         sample_ports = [str(name) for name in strategy.get("sample_ports", [])]
         residual_ports = [str(name) for name in strategy.get("residual_ports", [])]
         pairwise_ports = [str(name) for name in strategy.get("pairwise_ports", [])]
-        for port_name in sample_ports + residual_ports + pairwise_ports:
+        raw_pairwise_groups = strategy.get("pairwise_groups", []) or []
+        pairwise_groups: list[list[str]] = []
+        if raw_pairwise_groups:
+            if not isinstance(raw_pairwise_groups, list):
+                raise RuntimeError("windowed boundary pairwise_groups must be a list")
+            for raw_group in raw_pairwise_groups:
+                if not isinstance(raw_group, list) or len(raw_group) < 2:
+                    raise RuntimeError("windowed boundary pairwise group must contain at least two ports")
+                pairwise_groups.append([str(name) for name in raw_group])
+        elif pairwise_ports:
+            pairwise_groups = [pairwise_ports]
+        all_pairwise_ports = sorted({name for group in pairwise_groups for name in group})
+        for port_name in sample_ports + residual_ports + all_pairwise_ports:
             if port_name not in by_name:
                 raise RuntimeError(f"windowed boundary strategy port is missing: {port_name}")
 
@@ -1594,6 +1606,17 @@ class Agent:
         probe_units = [int(value) for value in strategy.get("probe_units", by_name[unit_name])]
         probe_units = [value for value in probe_units if value in by_name[unit_name]] or list(by_name[unit_name])
         probe_qlevels = str(strategy.get("probe_qlevels", "endpoints"))
+
+        bit_depth_values_by_component = strategy.get("bit_depth_values_by_component", {}) or {}
+
+        def bit_depths_for(component: int) -> list[int]:
+            kind = "luma" if int(component) % 3 == 0 else "chroma"
+            raw_values = bit_depth_values_by_component.get(kind)
+            if raw_values is None:
+                return [int(value) for value in by_name[bit_depth_name]]
+            allowed = {int(value) for value in by_name[bit_depth_name]}
+            values_for_kind = [int(value) for value in raw_values if int(value) in allowed]
+            return values_for_kind or [int(value) for value in by_name[bit_depth_name]]
 
         def unique(values_to_check: Iterable[int]) -> list[int]:
             result: list[int] = []
@@ -1656,8 +1679,8 @@ class Agent:
             return tuple(int(context[name]) for name in names)
 
         structural: list[tuple[int, int, int, int, int, int]] = []
-        for bit_depth in by_name[bit_depth_name]:
-            for component in by_name[component_name]:
+        for component in by_name[component_name]:
+            for bit_depth in bit_depths_for(int(component)):
                 for qlevel in qlevels_for(int(bit_depth), int(component)):
                     for unit in by_name[unit_name]:
                         for hpos in by_name[hpos_name]:
@@ -1675,8 +1698,8 @@ class Agent:
 
             # Boundary probes use qLevel endpoints (or all qLevels when the
             # contract asks for it) and both end units to expose index paths.
-            for bit_depth in by_name[bit_depth_name]:
-                for component in by_name[component_name]:
+            for component in by_name[component_name]:
+                for bit_depth in bit_depths_for(int(component)):
                     qlevels = qlevels_for(int(bit_depth), int(component))
                     if probe_qlevels == "all":
                         q_probes = qlevels
@@ -1704,13 +1727,14 @@ class Agent:
                                     # filter/clamp interactions without
                                     # pretending to enumerate every pixel value.
                                     pair_values = [0, (1 << int(bit_depth)) - 1]
-                                    for first, second in itertools.combinations(pairwise_ports, 2):
-                                        for first_value in pair_values:
-                                            for second_value in pair_values:
-                                                case = dict(base)
-                                                case[first] = first_value
-                                                case[second] = second_value
-                                                yield emit(case)
+                                    for pairwise_group in pairwise_groups:
+                                        for first, second in itertools.combinations(pairwise_group, 2):
+                                            for first_value in pair_values:
+                                                for second_value in pair_values:
+                                                    case = dict(base)
+                                                    case[first] = first_value
+                                                    case[second] = second_value
+                                                    yield emit(case)
 
         return vectors(), {
             "kind": "windowed_boundary",
@@ -1720,7 +1744,12 @@ class Agent:
             "structural_cases": len(structural),
             "sample_ports": sample_ports,
             "residual_ports": residual_ports,
-            "pairwise_ports": pairwise_ports,
+            "pairwise_ports": all_pairwise_ports,
+            "pairwise_groups": pairwise_groups,
+            "bit_depth_values_by_component": {
+                str(kind): [int(value) for value in raw_values]
+                for kind, raw_values in bit_depth_values_by_component.items()
+            },
             "legal_relation": "qlevel is constrained by Table 6-2 component class and selected bit depth; residuals use signed n-bit decoded-domain boundaries",
         }
 

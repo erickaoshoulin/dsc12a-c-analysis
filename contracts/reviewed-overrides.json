@@ -1528,9 +1528,9 @@
             "name": "hPos",
             "c_type": "int",
             "role": "RUNTIME_INPUT",
-            "logical_width": 2,
+            "logical_width": 4,
             "signed": false,
-            "legal_domain": {"kind": "set", "values": [0, 1, 2], "range": [0, 2], "basis": "first three samples of the DSC three-sample group; window adapter keeps all taps statically addressable"},
+            "legal_domain": {"kind": "set", "values": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11], "range": [0, 11], "basis": "first four DSC three-sample groups; window adapter keeps all referenced line taps statically addressable"},
             "unresolved": false,
             "width_source": "EXACT_SOURCE_CONSTANTS"
           },
@@ -1576,7 +1576,7 @@
             "role": "CONFIG_STATIC",
             "access": "READ_ONLY",
             "logical_width": 5,
-            "legal_domain": {"kind": "set", "values": [8, 10, 12, 14, 16], "range": [8, 16], "basis": "DSC supported component bit depths; RGB extension is kept for a later component-specific contract"},
+            "legal_domain": {"kind": "set", "values": [8, 9, 10, 11, 12, 13, 14, 15, 16], "range": [8, 16], "basis": "DSC base component bit depths plus the immutable model RGB chroma +1-bit extension"},
             "unresolved": false,
             "width_source": "EXACT_SPEC"
           },
@@ -1630,13 +1630,31 @@
           {"parameter": "prevLine", "c_type": "int *", "field": "prevLine[6]", "index": 6, "port_name": "prev_6", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
           {"parameter": "prevLine", "c_type": "int *", "field": "prevLine[7]", "index": 7, "port_name": "prev_7", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
           {"parameter": "prevLine", "c_type": "int *", "field": "prevLine[8]", "index": 8, "port_name": "prev_8", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
+          {"parameter": "prevLine", "c_type": "int *", "field": "prevLine[9]", "index": 9, "port_name": "prev_9", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
+          {"parameter": "prevLine", "c_type": "int *", "field": "prevLine[10]", "index": 10, "port_name": "prev_10", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
+          {"parameter": "prevLine", "c_type": "int *", "field": "prevLine[11]", "index": 11, "port_name": "prev_11", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
+          {"parameter": "prevLine", "c_type": "int *", "field": "prevLine[12]", "index": 12, "port_name": "prev_12", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
+          {"parameter": "prevLine", "c_type": "int *", "field": "prevLine[13]", "index": 13, "port_name": "prev_13", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
+          {"parameter": "prevLine", "c_type": "int *", "field": "prevLine[14]", "index": 14, "port_name": "prev_14", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
+          {"parameter": "prevLine", "c_type": "int *", "field": "prevLine[15]", "index": 15, "port_name": "prev_15", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
+          {"parameter": "prevLine", "c_type": "int *", "field": "prevLine[16]", "index": 16, "port_name": "prev_16", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
+          {"parameter": "prevLine", "c_type": "int *", "field": "prevLine[17]", "index": 17, "port_name": "prev_17", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
           {"parameter": "currLine", "c_type": "int *", "field": "currLine[0]", "index": 0, "port_name": "curr_0", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
           {"parameter": "currLine", "c_type": "int *", "field": "currLine[1]", "index": 1, "port_name": "curr_1", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
           {"parameter": "currLine", "c_type": "int *", "field": "currLine[2]", "index": 2, "port_name": "curr_2", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
           {"parameter": "currLine", "c_type": "int *", "field": "currLine[3]", "index": 3, "port_name": "curr_3", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
           {"parameter": "currLine", "c_type": "int *", "field": "currLine[4]", "index": 4, "port_name": "curr_4", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
           {"parameter": "currLine", "c_type": "int *", "field": "currLine[5]", "index": 5, "port_name": "curr_5", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
-          {"parameter": "currLine", "c_type": "int *", "field": "currLine[6]", "index": 6, "port_name": "curr_6", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"}
+          {"parameter": "currLine", "c_type": "int *", "field": "currLine[6]", "index": 6, "port_name": "curr_6", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
+          {"parameter": "currLine", "c_type": "int *", "field": "currLine[7]", "index": 7, "port_name": "curr_7", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
+          {"parameter": "currLine", "c_type": "int *", "field": "currLine[8]", "index": 8, "port_name": "curr_8", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
+          {"parameter": "currLine", "c_type": "int *", "field": "currLine[9]", "index": 9, "port_name": "curr_9", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
+          {"parameter": "currLine", "c_type": "int *", "field": "currLine[10]", "index": 10, "port_name": "curr_10", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
+          {"parameter": "currLine", "c_type": "int *", "field": "currLine[11]", "index": 11, "port_name": "curr_11", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
+          {"parameter": "currLine", "c_type": "int *", "field": "currLine[12]", "index": 12, "port_name": "curr_12", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
+          {"parameter": "currLine", "c_type": "int *", "field": "currLine[13]", "index": 13, "port_name": "curr_13", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
+          {"parameter": "currLine", "c_type": "int *", "field": "currLine[14]", "index": 14, "port_name": "curr_14", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"},
+          {"parameter": "currLine", "c_type": "int *", "field": "currLine[15]", "index": 15, "port_name": "curr_15", "role": "RUNTIME_INPUT", "access": "READ_ONLY", "logical_width": 16, "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "reconstructed sample range for 8..16 bpc"}, "unresolved": false, "width_source": "EXACT_SPEC"}
         ],
         "ignored_pointer_dependencies": [
           {"parameter": "dsc_state", "c_type": "dsc_state_t *", "role": "DEPENDENCY", "access": "READ_ONLY", "reason": "state record is initialized by the generated adapter and only selected read fields are frozen"}
@@ -1658,6 +1676,14 @@
         "overflow": "no signed overflow on the reviewed 8..16 bpc differential domain; outside-domain behavior is not contracted",
         "rounding": "FILT3 uses the normative [1,2,1] filter with +2 before arithmetic right shift by two",
         "saturation": "MMAP and left prediction use the C CLAMP bounds; block prediction selects a current-line sample",
+        "window_spec": {
+          "samples_per_unit": 3,
+          "padding_left": 5,
+          "bp_range": 13,
+          "group_h_offsets": [5, 8, 11, 14],
+          "prev_tap_indices": [3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+          "curr_tap_indices": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+        },
         "legal_vector_strategy": {
           "kind": "windowed_boundary",
           "exhaustive": false,
@@ -1670,12 +1696,21 @@
           "pred_type_port": "predType",
           "probe_units": [0, 3],
           "probe_qlevels": "endpoints",
-          "sample_ports": ["prev_3", "prev_4", "prev_5", "prev_6", "prev_7", "prev_8", "curr_0", "curr_1", "curr_2", "curr_3", "curr_4", "curr_5", "curr_6"],
+          "bit_depth_values_by_component": {
+            "luma": [8, 10, 12, 14, 16],
+            "chroma": [8, 9, 10, 11, 12, 13, 14, 15, 16]
+          },
+          "sample_ports": ["prev_3", "prev_4", "prev_5", "prev_6", "prev_7", "prev_8", "prev_9", "prev_10", "prev_11", "prev_12", "prev_13", "prev_14", "prev_15", "prev_16", "prev_17", "curr_0", "curr_1", "curr_2", "curr_3", "curr_4", "curr_5", "curr_6", "curr_7", "curr_8", "curr_9", "curr_10", "curr_11", "curr_12", "curr_13", "curr_14", "curr_15"],
           "residual_ports": ["quantized_residual_0", "quantized_residual_1"],
-          "pairwise_ports": ["prev_3", "prev_4", "prev_5", "prev_6", "prev_7", "prev_8", "curr_4"],
+          "pairwise_groups": [
+            ["prev_3", "prev_4", "prev_5", "prev_6", "prev_7", "prev_8", "curr_4"],
+            ["prev_6", "prev_7", "prev_8", "prev_9", "prev_10", "prev_11", "curr_7"],
+            ["prev_9", "prev_10", "prev_11", "prev_12", "prev_13", "prev_14", "curr_10"],
+            ["prev_12", "prev_13", "prev_14", "prev_15", "prev_16", "prev_17", "curr_13"]
+          ],
           "qlevel_max_by_component": {
-            "luma": {"8": 7, "10": 9, "12": 9, "14": 13, "16": 15},
-            "chroma": {"8": 8, "10": 10, "12": 12, "14": 14, "16": 16}
+            "luma": {"8": 7, "9": 7, "10": 9, "11": 9, "12": 11, "13": 11, "14": 13, "15": 13, "16": 15},
+            "chroma": {"8": 8, "9": 8, "10": 10, "11": 10, "12": 12, "13": 12, "14": 14, "15": 14, "16": 16}
           }
         }
       },

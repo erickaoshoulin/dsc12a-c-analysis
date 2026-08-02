@@ -1,0 +1,1332 @@
+{
+  "candidates": [
+    {
+      "cancellation": {
+        "futures_cancelled": 0,
+        "requested_after_counterexample": false,
+        "worker_count": 8
+      },
+      "candidate": "candidate_01",
+      "module": "samplepredict_candidate_01",
+      "shards": [
+        {
+          "commands": {
+            "oracle": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/c_oracle",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-000.vectors"
+            ],
+            "rtl": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/candidate-build/candidate_01/obj/Vsamplepredict_candidate_01",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-000.vectors"
+            ]
+          },
+          "duration_seconds": 7.618,
+          "shard_id": 0,
+          "status": "PASS",
+          "vectors": 1448100
+        },
+        {
+          "commands": {
+            "oracle": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/c_oracle",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-001.vectors"
+            ],
+            "rtl": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/candidate-build/candidate_01/obj/Vsamplepredict_candidate_01",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-001.vectors"
+            ]
+          },
+          "duration_seconds": 8.025,
+          "shard_id": 1,
+          "status": "PASS",
+          "vectors": 1448100
+        },
+        {
+          "commands": {
+            "oracle": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/c_oracle",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-002.vectors"
+            ],
+            "rtl": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/candidate-build/candidate_01/obj/Vsamplepredict_candidate_01",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-002.vectors"
+            ]
+          },
+          "duration_seconds": 8.0,
+          "shard_id": 2,
+          "status": "PASS",
+          "vectors": 1448100
+        },
+        {
+          "commands": {
+            "oracle": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/c_oracle",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-003.vectors"
+            ],
+            "rtl": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/candidate-build/candidate_01/obj/Vsamplepredict_candidate_01",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-003.vectors"
+            ]
+          },
+          "duration_seconds": 8.18,
+          "shard_id": 3,
+          "status": "PASS",
+          "vectors": 1448100
+        },
+        {
+          "commands": {
+            "oracle": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/c_oracle",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-004.vectors"
+            ],
+            "rtl": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/candidate-build/candidate_01/obj/Vsamplepredict_candidate_01",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-004.vectors"
+            ]
+          },
+          "duration_seconds": 7.169,
+          "shard_id": 4,
+          "status": "PASS",
+          "vectors": 1448100
+        },
+        {
+          "commands": {
+            "oracle": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/c_oracle",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-005.vectors"
+            ],
+            "rtl": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/candidate-build/candidate_01/obj/Vsamplepredict_candidate_01",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-005.vectors"
+            ]
+          },
+          "duration_seconds": 8.204,
+          "shard_id": 5,
+          "status": "PASS",
+          "vectors": 1448100
+        },
+        {
+          "commands": {
+            "oracle": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/c_oracle",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-006.vectors"
+            ],
+            "rtl": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/candidate-build/candidate_01/obj/Vsamplepredict_candidate_01",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-006.vectors"
+            ]
+          },
+          "duration_seconds": 8.086,
+          "shard_id": 6,
+          "status": "PASS",
+          "vectors": 1448100
+        },
+        {
+          "commands": {
+            "oracle": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/c_oracle",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-007.vectors"
+            ],
+            "rtl": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/candidate-build/candidate_01/obj/Vsamplepredict_candidate_01",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-007.vectors"
+            ]
+          },
+          "duration_seconds": 8.057,
+          "shard_id": 7,
+          "status": "PASS",
+          "vectors": 1448100
+        }
+      ],
+      "smallest_counterexample": null,
+      "vectors_executed": 11584800,
+      "verification_status": "DIFFERENTIAL_PASS"
+    },
+    {
+      "cancellation": {
+        "futures_cancelled": 0,
+        "requested_after_counterexample": true,
+        "worker_count": 8
+      },
+      "candidate": "candidate_02",
+      "module": "samplepredict_candidate_02",
+      "shards": [
+        {
+          "commands": {
+            "oracle": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/c_oracle",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-000.vectors"
+            ],
+            "rtl": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/candidate-build/candidate_02/obj/Vsamplepredict_candidate_02",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-000.vectors"
+            ]
+          },
+          "counterexample": {
+            "actual": "128",
+            "expected": "127",
+            "index": 0,
+            "inputs": [
+              0,
+              0,
+              0,
+              0,
+              8,
+              0,
+              0,
+              0,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127
+            ],
+            "shard_id": 0
+          },
+          "duration_seconds": 8.893,
+          "shard_id": 0,
+          "status": "COUNTEREXAMPLE",
+          "vectors": 1448100
+        },
+        {
+          "commands": {
+            "oracle": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/c_oracle",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-001.vectors"
+            ],
+            "rtl": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/candidate-build/candidate_02/obj/Vsamplepredict_candidate_02",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-001.vectors"
+            ]
+          },
+          "counterexample": {
+            "actual": "128",
+            "expected": "127",
+            "index": 0,
+            "inputs": [
+              0,
+              1,
+              0,
+              0,
+              8,
+              0,
+              0,
+              0,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127
+            ],
+            "shard_id": 1
+          },
+          "duration_seconds": 8.51,
+          "shard_id": 1,
+          "status": "COUNTEREXAMPLE",
+          "vectors": 1448100
+        },
+        {
+          "commands": {
+            "oracle": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/c_oracle",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-002.vectors"
+            ],
+            "rtl": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/candidate-build/candidate_02/obj/Vsamplepredict_candidate_02",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-002.vectors"
+            ]
+          },
+          "counterexample": {
+            "actual": "128",
+            "expected": "127",
+            "index": 0,
+            "inputs": [
+              0,
+              2,
+              0,
+              0,
+              8,
+              0,
+              0,
+              0,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127
+            ],
+            "shard_id": 2
+          },
+          "duration_seconds": 9.481,
+          "shard_id": 2,
+          "status": "COUNTEREXAMPLE",
+          "vectors": 1448100
+        },
+        {
+          "commands": {
+            "oracle": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/c_oracle",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-003.vectors"
+            ],
+            "rtl": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/candidate-build/candidate_02/obj/Vsamplepredict_candidate_02",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-003.vectors"
+            ]
+          },
+          "counterexample": {
+            "actual": "128",
+            "expected": "127",
+            "index": 0,
+            "inputs": [
+              0,
+              3,
+              0,
+              0,
+              8,
+              0,
+              0,
+              0,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127
+            ],
+            "shard_id": 3
+          },
+          "duration_seconds": 8.05,
+          "shard_id": 3,
+          "status": "COUNTEREXAMPLE",
+          "vectors": 1448100
+        },
+        {
+          "commands": {
+            "oracle": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/c_oracle",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-004.vectors"
+            ],
+            "rtl": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/candidate-build/candidate_02/obj/Vsamplepredict_candidate_02",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-004.vectors"
+            ]
+          },
+          "counterexample": {
+            "actual": "128",
+            "expected": "127",
+            "index": 0,
+            "inputs": [
+              0,
+              4,
+              0,
+              0,
+              8,
+              0,
+              0,
+              0,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127
+            ],
+            "shard_id": 4
+          },
+          "duration_seconds": 6.857,
+          "shard_id": 4,
+          "status": "COUNTEREXAMPLE",
+          "vectors": 1448100
+        },
+        {
+          "commands": {
+            "oracle": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/c_oracle",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-005.vectors"
+            ],
+            "rtl": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/candidate-build/candidate_02/obj/Vsamplepredict_candidate_02",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-005.vectors"
+            ]
+          },
+          "counterexample": {
+            "actual": "128",
+            "expected": "127",
+            "index": 0,
+            "inputs": [
+              0,
+              5,
+              0,
+              0,
+              8,
+              0,
+              0,
+              0,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127
+            ],
+            "shard_id": 5
+          },
+          "duration_seconds": 7.163,
+          "shard_id": 5,
+          "status": "COUNTEREXAMPLE",
+          "vectors": 1448100
+        },
+        {
+          "commands": {
+            "oracle": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/c_oracle",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-006.vectors"
+            ],
+            "rtl": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/candidate-build/candidate_02/obj/Vsamplepredict_candidate_02",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-006.vectors"
+            ]
+          },
+          "counterexample": {
+            "actual": "128",
+            "expected": "127",
+            "index": 0,
+            "inputs": [
+              0,
+              6,
+              0,
+              0,
+              8,
+              0,
+              0,
+              0,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127
+            ],
+            "shard_id": 6
+          },
+          "duration_seconds": 9.351,
+          "shard_id": 6,
+          "status": "COUNTEREXAMPLE",
+          "vectors": 1448100
+        },
+        {
+          "commands": {
+            "oracle": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/c_oracle",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-007.vectors"
+            ],
+            "rtl": [
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/candidate-build/candidate_02/obj/Vsamplepredict_candidate_02",
+              "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/shards/shard-007.vectors"
+            ]
+          },
+          "counterexample": {
+            "actual": "128",
+            "expected": "127",
+            "index": 0,
+            "inputs": [
+              0,
+              7,
+              0,
+              0,
+              8,
+              0,
+              0,
+              0,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127
+            ],
+            "shard_id": 7
+          },
+          "duration_seconds": 7.674,
+          "shard_id": 7,
+          "status": "COUNTEREXAMPLE",
+          "vectors": 1448100
+        }
+      ],
+      "smallest_counterexample": {
+        "actual": "128",
+        "expected": "127",
+        "index": 0,
+        "inputs": [
+          0,
+          0,
+          0,
+          0,
+          8,
+          0,
+          0,
+          0,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127
+        ],
+        "shard_id": 0
+      },
+      "vectors_executed": 0,
+      "verification_status": "COUNTEREXAMPLE"
+    }
+  ],
+  "compile_once": [
+    {
+      "binary": "candidate-build/candidate_01/obj/Vsamplepredict_candidate_01",
+      "candidate": "candidate_01",
+      "command": {
+        "command": [
+          "/opt/homebrew/bin/verilator",
+          "--cc",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv",
+          "--exe",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/candidate-build/candidate_01/harness.cpp",
+          "--build",
+          "-j",
+          "1",
+          "--Mdir",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/candidate-build/candidate_01/obj",
+          "--top-module",
+          "samplepredict_candidate_01",
+          "--Wno-fatal"
+        ],
+        "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8",
+        "duration_seconds": 2.945,
+        "output": "                                                                                                                                                            : ... note: In instance 'samplepredict_candidate_01'\n  138 |                 filt_b_i = (prev_4 + (2 * prev_5) + prev_6 + 2) >>> 2;\n      |                                                   ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv:139:36: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'prev_5' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_01'\n  139 |                 filt_d_i = (prev_5 + (2 * prev_6) + prev_7 + 2) >>> 2;\n      |                                    ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv:139:51: Operator ADD expects 32 bits on the RHS, but RHS's VARREF 'prev_7' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_01'\n  139 |                 filt_d_i = (prev_5 + (2 * prev_6) + prev_7 + 2) >>> 2;\n      |                                                   ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv:140:36: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'prev_6' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_01'\n  140 |                 filt_e_i = (prev_6 + (2 * prev_7) + prev_8 + 2) >>> 2;\n      |                                    ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv:140:51: Operator ADD expects 32 bits on the RHS, but RHS's VARREF 'prev_8' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_01'\n  140 |                 filt_e_i = (prev_6 + (2 * prev_7) + prev_8 + 2) >>> 2;\n      |                                                   ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv:146:15: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's SIGNED generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_01'\n  146 |         qr0_i = $signed(quantized_residual_0);\n      |               ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv:147:15: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's SIGNED generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_01'\n  147 |         qr1_i = $signed(quantized_residual_1);\n      |               ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv:155:27: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'hPos' generates 4 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_01'\n  155 |         bp_index_i = hPos + 4 - (predType - 2);\n      |                           ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv:155:43: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'predType' generates 4 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_01'\n  155 |         bp_index_i = hPos + 4 - (predType - 2);\n      |                                           ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv:158:30: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_0' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_01'\n  158 |             0: block_value_i = curr_0;\n      |                              ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv:159:30: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_1' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_01'\n  159 |             1: block_value_i = curr_1;\n      |                              ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv:160:30: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_2' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_01'\n  160 |             2: block_value_i = curr_2;\n      |                              ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv:161:30: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_3' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_01'\n  161 |             3: block_value_i = curr_3;\n      |                              ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv:162:30: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_4' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_01'\n  162 |             4: block_value_i = curr_4;\n      |                              ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv:163:30: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_5' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_01'\n  163 |             5: block_value_i = curr_5;\n      |                              ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv:164:30: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_6' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_01'\n  164 |             6: block_value_i = curr_6;\n      |                              ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv:165:30: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_7' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_01'\n  165 |             7: block_value_i = curr_7;\n      |                              ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv:166:30: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_8' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_01'\n  166 |             8: block_value_i = curr_8;\n      |                              ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv:167:30: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_9' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_01'\n  167 |             9: block_value_i = curr_9;\n      |                              ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv:168:31: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_10' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_01'\n  168 |             10: block_value_i = curr_10;\n      |                               ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv:169:31: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_11' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_01'\n  169 |             11: block_value_i = curr_11;\n      |                               ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv:170:31: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_12' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_01'\n  170 |             12: block_value_i = curr_12;\n      |                               ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv:171:31: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_13' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_01'\n  171 |             13: block_value_i = curr_13;\n      |                               ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv:172:31: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_14' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_01'\n  172 |             14: block_value_i = curr_14;\n      |                               ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv:173:31: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_15' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_01'\n  173 |             15: block_value_i = curr_15;\n      |                               ^\n%Warning-WIDTHTRUNC: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_01.sv:199:22: Operator ASSIGN expects 16 bits on the Assign RHS, but Assign RHS's VARREF 'result_i' generates 32 bits.\n                                                                                                                                                               : ... note: In instance 'samplepredict_candidate_01'\n  199 |         return_value = result_i;\n      |                      ^\n                     ... For warning description see https://verilator.org/warn/WIDTHTRUNC?v=5.050\n                     ... Use \"/* verilator lint_off WIDTHTRUNC */\" and lint_on around source to disable this message.\nc++  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -Os  -c -o harness.o /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/candidate-build/candidate_01/harness.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\npython3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vsamplepredict_candidate_01.cpp Vsamplepredict_candidate_01___024root__0.cpp Vsamplepredict_candidate_01___024root__Slow.cpp Vsamplepredict_candidate_01___024root__0__Slow.cpp Vsamplepredict_candidate_01__Syms__Slow.cpp > Vsamplepredict_candidate_01__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o Vsamplepredict_candidate_01__ALL.o Vsamplepredict_candidate_01__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++  -Wl,-U,__Z15vl_time_stamp64v,-U,__Z13sc_time_stampv,-U,_vlog_startup_routines   harness.o verilated.o verilated_threads.o Vsamplepredict_candidate_01__ALL.a    -pthread -lpthread   -o Vsamplepredict_candidate_01\nrm Vsamplepredict_candidate_01__ALL.verilator_deplist.tmp\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.038 MB sources in 2 modules, into 0.109 MB in 5 C++ files needing 0.001 MB\n- Verilator: Walltime 2.875 s (elab=0.007, cvt=0.015, bld=2.844); cpu 0.018 s on 1 threads; allocated 11.516 MB\n",
+        "returncode": 0
+      },
+      "compile_once": true,
+      "module": "samplepredict_candidate_01",
+      "status": "PASS"
+    },
+    {
+      "binary": "candidate-build/candidate_02/obj/Vsamplepredict_candidate_02",
+      "candidate": "candidate_02",
+      "command": {
+        "command": [
+          "/opt/homebrew/bin/verilator",
+          "--cc",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv",
+          "--exe",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/candidate-build/candidate_02/harness.cpp",
+          "--build",
+          "-j",
+          "1",
+          "--Mdir",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/candidate-build/candidate_02/obj",
+          "--top-module",
+          "samplepredict_candidate_02",
+          "--Wno-fatal"
+        ],
+        "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8",
+        "duration_seconds": 2.801,
+        "output": "                                                                                                                                                            : ... note: In instance 'samplepredict_candidate_02'\n  138 |                 filt_b_i = (prev_4 + (2 * prev_5) + prev_6 + 2) >>> 2;\n      |                                                   ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv:139:36: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'prev_5' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_02'\n  139 |                 filt_d_i = (prev_5 + (2 * prev_6) + prev_7 + 2) >>> 2;\n      |                                    ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv:139:51: Operator ADD expects 32 bits on the RHS, but RHS's VARREF 'prev_7' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_02'\n  139 |                 filt_d_i = (prev_5 + (2 * prev_6) + prev_7 + 2) >>> 2;\n      |                                                   ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv:140:36: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'prev_6' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_02'\n  140 |                 filt_e_i = (prev_6 + (2 * prev_7) + prev_8 + 2) >>> 2;\n      |                                    ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv:140:51: Operator ADD expects 32 bits on the RHS, but RHS's VARREF 'prev_8' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_02'\n  140 |                 filt_e_i = (prev_6 + (2 * prev_7) + prev_8 + 2) >>> 2;\n      |                                                   ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv:146:15: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's SIGNED generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_02'\n  146 |         qr0_i = $signed(quantized_residual_0);\n      |               ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv:147:15: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's SIGNED generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_02'\n  147 |         qr1_i = $signed(quantized_residual_1);\n      |               ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv:155:27: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'hPos' generates 4 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_02'\n  155 |         bp_index_i = hPos + 4 - (predType - 2);\n      |                           ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv:155:43: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'predType' generates 4 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_02'\n  155 |         bp_index_i = hPos + 4 - (predType - 2);\n      |                                           ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv:158:30: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_0' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_02'\n  158 |             0: block_value_i = curr_0;\n      |                              ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv:159:30: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_1' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_02'\n  159 |             1: block_value_i = curr_1;\n      |                              ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv:160:30: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_2' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_02'\n  160 |             2: block_value_i = curr_2;\n      |                              ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv:161:30: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_3' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_02'\n  161 |             3: block_value_i = curr_3;\n      |                              ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv:162:30: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_4' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_02'\n  162 |             4: block_value_i = curr_4;\n      |                              ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv:163:30: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_5' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_02'\n  163 |             5: block_value_i = curr_5;\n      |                              ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv:164:30: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_6' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_02'\n  164 |             6: block_value_i = curr_6;\n      |                              ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv:165:30: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_7' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_02'\n  165 |             7: block_value_i = curr_7;\n      |                              ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv:166:30: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_8' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_02'\n  166 |             8: block_value_i = curr_8;\n      |                              ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv:167:30: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_9' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_02'\n  167 |             9: block_value_i = curr_9;\n      |                              ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv:168:31: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_10' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_02'\n  168 |             10: block_value_i = curr_10;\n      |                               ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv:169:31: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_11' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_02'\n  169 |             11: block_value_i = curr_11;\n      |                               ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv:170:31: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_12' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_02'\n  170 |             12: block_value_i = curr_12;\n      |                               ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv:171:31: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_13' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_02'\n  171 |             13: block_value_i = curr_13;\n      |                               ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv:172:31: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_14' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_02'\n  172 |             14: block_value_i = curr_14;\n      |                               ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv:173:31: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'curr_15' generates 16 bits.\n                                                                                                                                                                : ... note: In instance 'samplepredict_candidate_02'\n  173 |             15: block_value_i = curr_15;\n      |                               ^\n%Warning-WIDTHTRUNC: /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/generated/candidate_02.sv:199:22: Operator ASSIGN expects 16 bits on the Assign RHS, but Assign RHS's VARREF 'result_i' generates 32 bits.\n                                                                                                                                                               : ... note: In instance 'samplepredict_candidate_02'\n  199 |         return_value = result_i;\n      |                      ^\n                     ... For warning description see https://verilator.org/warn/WIDTHTRUNC?v=5.050\n                     ... Use \"/* verilator lint_off WIDTHTRUNC */\" and lint_on around source to disable this message.\nc++  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -Os  -c -o harness.o /private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/candidate-build/candidate_02/harness.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\npython3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vsamplepredict_candidate_02.cpp Vsamplepredict_candidate_02___024root__0.cpp Vsamplepredict_candidate_02___024root__Slow.cpp Vsamplepredict_candidate_02___024root__0__Slow.cpp Vsamplepredict_candidate_02__Syms__Slow.cpp > Vsamplepredict_candidate_02__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o Vsamplepredict_candidate_02__ALL.o Vsamplepredict_candidate_02__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++  -Wl,-U,__Z15vl_time_stamp64v,-U,__Z13sc_time_stampv,-U,_vlog_startup_routines   harness.o verilated.o verilated_threads.o Vsamplepredict_candidate_02__ALL.a    -pthread -lpthread   -o Vsamplepredict_candidate_02\nrm Vsamplepredict_candidate_02__ALL.verilator_deplist.tmp\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.038 MB sources in 2 modules, into 0.109 MB in 5 C++ files needing 0.001 MB\n- Verilator: Walltime 2.742 s (elab=0.003, cvt=0.008, bld=2.726); cpu 0.015 s on 1 threads; allocated 11.547 MB\n",
+        "returncode": 0
+      },
+      "compile_once": true,
+      "module": "samplepredict_candidate_02",
+      "status": "PASS"
+    }
+  ],
+  "contract_id": "samplepredict",
+  "domain": {
+    "complete": true,
+    "input_ports": [
+      "hPos",
+      "predType",
+      "qLevel",
+      "unit",
+      "cpnt_bit_depth",
+      "unit_c_type",
+      "quantized_residual_0",
+      "quantized_residual_1",
+      "prev_3",
+      "prev_4",
+      "prev_5",
+      "prev_6",
+      "prev_7",
+      "prev_8",
+      "prev_9",
+      "prev_10",
+      "prev_11",
+      "prev_12",
+      "prev_13",
+      "prev_14",
+      "prev_15",
+      "prev_16",
+      "prev_17",
+      "curr_0",
+      "curr_1",
+      "curr_2",
+      "curr_3",
+      "curr_4",
+      "curr_5",
+      "curr_6",
+      "curr_7",
+      "curr_8",
+      "curr_9",
+      "curr_10",
+      "curr_11",
+      "curr_12",
+      "curr_13",
+      "curr_14",
+      "curr_15"
+    ],
+    "proof_complete": false,
+    "shard_count": 8,
+    "shards": [
+      {
+        "path": "shards/shard-000.vectors",
+        "shard_id": 0,
+        "vectors": 1448100
+      },
+      {
+        "path": "shards/shard-001.vectors",
+        "shard_id": 1,
+        "vectors": 1448100
+      },
+      {
+        "path": "shards/shard-002.vectors",
+        "shard_id": 2,
+        "vectors": 1448100
+      },
+      {
+        "path": "shards/shard-003.vectors",
+        "shard_id": 3,
+        "vectors": 1448100
+      },
+      {
+        "path": "shards/shard-004.vectors",
+        "shard_id": 4,
+        "vectors": 1448100
+      },
+      {
+        "path": "shards/shard-005.vectors",
+        "shard_id": 5,
+        "vectors": 1448100
+      },
+      {
+        "path": "shards/shard-006.vectors",
+        "shard_id": 6,
+        "vectors": 1448100
+      },
+      {
+        "path": "shards/shard-007.vectors",
+        "shard_id": 7,
+        "vectors": 1448100
+      }
+    ],
+    "total_vectors": 11584800,
+    "vector_strategy": {
+      "bit_depth_values_by_component": {
+        "chroma": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ],
+        "luma": [
+          8,
+          10,
+          12,
+          14,
+          16
+        ]
+      },
+      "coverage_mode": "STRUCTURAL_PLUS_BOUNDARY_AND_PAIRWISE",
+      "exhaustive": false,
+      "kind": "windowed_boundary",
+      "legal_relation": "qlevel is constrained by Table 6-2 component class and selected bit depth; residuals use signed n-bit decoded-domain boundaries",
+      "pairwise_groups": [
+        [
+          "prev_3",
+          "prev_4",
+          "prev_5",
+          "prev_6",
+          "prev_7",
+          "prev_8",
+          "curr_4"
+        ],
+        [
+          "prev_6",
+          "prev_7",
+          "prev_8",
+          "prev_9",
+          "prev_10",
+          "prev_11",
+          "curr_7"
+        ],
+        [
+          "prev_9",
+          "prev_10",
+          "prev_11",
+          "prev_12",
+          "prev_13",
+          "prev_14",
+          "curr_10"
+        ],
+        [
+          "prev_12",
+          "prev_13",
+          "prev_14",
+          "prev_15",
+          "prev_16",
+          "prev_17",
+          "curr_13"
+        ]
+      ],
+      "pairwise_ports": [
+        "curr_10",
+        "curr_13",
+        "curr_4",
+        "curr_7",
+        "prev_10",
+        "prev_11",
+        "prev_12",
+        "prev_13",
+        "prev_14",
+        "prev_15",
+        "prev_16",
+        "prev_17",
+        "prev_3",
+        "prev_4",
+        "prev_5",
+        "prev_6",
+        "prev_7",
+        "prev_8",
+        "prev_9"
+      ],
+      "residual_ports": [
+        "quantized_residual_0",
+        "quantized_residual_1"
+      ],
+      "sample_ports": [
+        "prev_3",
+        "prev_4",
+        "prev_5",
+        "prev_6",
+        "prev_7",
+        "prev_8",
+        "prev_9",
+        "prev_10",
+        "prev_11",
+        "prev_12",
+        "prev_13",
+        "prev_14",
+        "prev_15",
+        "prev_16",
+        "prev_17",
+        "curr_0",
+        "curr_1",
+        "curr_2",
+        "curr_3",
+        "curr_4",
+        "curr_5",
+        "curr_6",
+        "curr_7",
+        "curr_8",
+        "curr_9",
+        "curr_10",
+        "curr_11",
+        "curr_12",
+        "curr_13",
+        "curr_14",
+        "curr_15"
+      ],
+      "source": "DSC 1.2a sections 6.4.1, 6.4.1.1, 6.4.1.2, and 6.4.2 plus immutable source constants",
+      "structural_cases": 249120
+    }
+  },
+  "duration_seconds": 83.486,
+  "execution_status": "EXECUTED_NOW",
+  "oracle_compile": {
+    "binary": "oracle-build/c_oracle",
+    "commands": [
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c99",
+          "-O0",
+          "-g",
+          "-I",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+          "-c",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/cmd_parse.c",
+          "-o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/cmd_parse.o"
+        ],
+        "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "duration_seconds": 0.2,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c99",
+          "-O0",
+          "-g",
+          "-I",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+          "-c",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dpx.c",
+          "-o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/dpx.o"
+        ],
+        "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "duration_seconds": 0.052,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c99",
+          "-O0",
+          "-g",
+          "-I",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+          "-c",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c",
+          "-o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/dsc_codec.o"
+        ],
+        "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "duration_seconds": 0.063,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c99",
+          "-O0",
+          "-g",
+          "-I",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+          "-c",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_utils.c",
+          "-o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/dsc_utils.o"
+        ],
+        "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "duration_seconds": 0.041,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c99",
+          "-O0",
+          "-g",
+          "-I",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+          "-c",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/fifo.c",
+          "-o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/fifo.o"
+        ],
+        "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "duration_seconds": 0.029,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c99",
+          "-O0",
+          "-g",
+          "-I",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+          "-c",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c",
+          "-o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/hdr_dpx.o"
+        ],
+        "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "duration_seconds": 0.063,
+        "output": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n2 warnings generated.\n",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c99",
+          "-O0",
+          "-g",
+          "-I",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+          "-c",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/logging.c",
+          "-o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/logging.o"
+        ],
+        "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "duration_seconds": 0.04,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c99",
+          "-O0",
+          "-g",
+          "-I",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+          "-c",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/multiplex.c",
+          "-o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/multiplex.o"
+        ],
+        "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "duration_seconds": 0.033,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c99",
+          "-O0",
+          "-g",
+          "-I",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+          "-c",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/psnr.c",
+          "-o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/psnr.o"
+        ],
+        "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "duration_seconds": 0.03,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c99",
+          "-O0",
+          "-g",
+          "-I",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+          "-c",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/utl.c",
+          "-o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/utl.o"
+        ],
+        "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "duration_seconds": 0.058,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c99",
+          "-O0",
+          "-I",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+          "-c",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle.c",
+          "-o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/oracle.o"
+        ],
+        "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8",
+        "duration_seconds": 0.025,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-O0",
+          "-o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/c_oracle",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/cmd_parse.o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/dpx.o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/dsc_codec.o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/dsc_utils.o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/fifo.o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/hdr_dpx.o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/logging.o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/multiplex.o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/psnr.o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/utl.o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/oracle-build/oracle.o"
+        ],
+        "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8",
+        "duration_seconds": 0.04,
+        "output": "",
+        "returncode": 0
+      }
+    ],
+    "compiled_translation_units": [
+      "cmd_parse.c",
+      "dpx.c",
+      "dsc_codec.c",
+      "dsc_utils.c",
+      "fifo.c",
+      "hdr_dpx.c",
+      "logging.c",
+      "multiplex.c",
+      "psnr.c",
+      "utl.c"
+    ],
+    "status": "PASS"
+  },
+  "promoted_candidate": null,
+  "rejected_candidates": [
+    {
+      "bitstream_gate": "FAIL",
+      "candidate": "candidate_02",
+      "composition_gate": "FAIL",
+      "counterexample": {
+        "actual": "128",
+        "expected": "127",
+        "index": 0,
+        "inputs": [
+          0,
+          0,
+          0,
+          0,
+          8,
+          0,
+          0,
+          0,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127
+        ],
+        "shard_id": 0
+      },
+      "expected_rejection": true,
+      "matrix_status": "INFRASTRUCTURE_FAILURE",
+      "receipt": "artifacts/e7095d17e58206f007e7d9a28c7832ca724b33ebabcdea37b2c690ffb31c64f8/rejected/candidate_02/rejection-receipt.json",
+      "status": "EXPECTED_REJECTION",
+      "unit_gate": "FAIL",
+      "unit_verification_status": "COUNTEREXAMPLE"
+    }
+  ],
+  "schema_version": 2,
+  "smallest_counterexample": {
+    "actual": "128",
+    "expected": "127",
+    "index": 0,
+    "inputs": [
+      0,
+      0,
+      0,
+      0,
+      8,
+      0,
+      0,
+      0,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127
+    ],
+    "shard_id": 0
+  },
+  "verification_status": "COUNTEREXAMPLE"
+}
