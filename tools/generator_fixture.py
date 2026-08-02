@@ -21,6 +21,10 @@ def safe(value: str) -> str:
     return value if value and not value[0].isdigit() else "c_" + value
 
 
+def normalized_identifier(value: object) -> str:
+    return re.sub(r"[^a-z0-9]", "", str(value).lower())
+
+
 def port_decl(port: dict[str, object]) -> str:
     width = int(port.get("width", 1))
     signed = " signed" if port.get("signed") else ""
@@ -61,7 +65,24 @@ def generic_body(interface: dict[str, object], semantics: dict[str, object], bad
     ports = interface.get("ports", [])
     out = next((p for p in ports if isinstance(p, dict) and p.get("role") == "return_value"), None)
     out_name = str(out.get("name", "return_value")) if isinstance(out, dict) else "return_value"
-    expression = str(semantics.get("verilog_expression", "0"))
+    expression = str(semantics.get("verilog_expression") or semantics.get("expression") or "0")
+    identifiers = {}
+    for port in ports:
+        if not isinstance(port, dict) or port.get("direction") != "input":
+            continue
+        name = str(port.get("name"))
+        identifiers[normalized_identifier(name)] = name
+        if port.get("role"):
+            identifiers[normalized_identifier(port.get("role"))] = name
+
+    def replace_identifier(match: re.Match[str]) -> str:
+        token = match.group(0)
+        return identifiers.get(normalized_identifier(token), token)
+
+    # Semantic expressions are authored in a C-style vocabulary (for example
+    # left_recon/cpnt_bit_depth). Rewrite only identifiers that are present in
+    # the frozen interface; operators and literals remain untouched.
+    expression = re.sub(r"[A-Za-z_][A-Za-z0-9_]*", replace_identifier, expression)
     value = f"({expression})"
     if bad:
         value = f"({value}) + 1"

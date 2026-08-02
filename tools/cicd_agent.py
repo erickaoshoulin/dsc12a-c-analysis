@@ -584,7 +584,8 @@ class Agent:
             is_ready, reasons = self.ready(contract)
             entry = self.cache_entry(key)
             stale = [name for name, value in hashes.items() if self.prior_contract(cid).get("hashes", {}).get(name) not in (None, value)]
-            cache_hit = self.cache_valid(entry, key)
+            force_regenerate = os.environ.get("DSC_CICD_FORCE_REGENERATE", "").lower() in {"1", "true", "yes"}
+            cache_hit = self.cache_valid(entry, key) and not force_regenerate
             item = {
                 "contract_id": cid,
                 "function": contract_function(contract).get("name"),
@@ -609,13 +610,24 @@ class Agent:
                 ready.append(cid)
             else:
                 blocked.append({"contract_id": cid, "function": item["function"], "reasons": reasons})
-        selected = [item["contract_id"] for item in entries if item["ready"] and item["new_work"] and (not prior_shapes or item["interface_shape"] not in prior_shapes.values())]
-        if not selected:
-            selected = [item["contract_id"] for item in entries if item["ready"] and not item["cache_hit"]][:1]
-        selected = sorted(selected[:max(1, int(os.environ.get("DSC_CICD_MAX_NEW", "1")))])
+        target_contract = str(os.environ.get("DSC_CICD_TARGET_CONTRACT", "")).strip().lower()
+        target_item = next((item for item in entries if item["contract_id"].lower() == target_contract), None)
+        force_regenerate = os.environ.get("DSC_CICD_FORCE_REGENERATE", "").lower() in {"1", "true", "yes"}
+        if target_item and target_item["ready"]:
+            # The queue supplies a discovered contract id for this independent
+            # batch. It is not a source-level function allowlist. A refresh can
+            # deliberately rerun a verified leaf to search for a better pass.
+            selected = [target_item["contract_id"]]
+        else:
+            selected = [item["contract_id"] for item in entries if item["ready"] and item["new_work"] and (not prior_shapes or item["interface_shape"] not in prior_shapes.values())]
+            if not selected:
+                selected = [item["contract_id"] for item in entries if item["ready"] and not item["cache_hit"]][:1]
+            selected = sorted(selected[:max(1, int(os.environ.get("DSC_CICD_MAX_NEW", "1")))])
         for item in entries:
             item["selected"] = item["contract_id"] in selected
             item["deferred"] = bool(item["ready"] and not item["selected"])
+            item["targeted"] = item["contract_id"] == (target_item or {}).get("contract_id")
+            item["force_regenerate"] = force_regenerate and item["targeted"]
         self.plan = {
             "schema_version": 2,
             "agent": "executable-generic-c-to-rtl-cicd",
@@ -627,6 +639,8 @@ class Agent:
             "contracts": entries,
             "batches": [selected] if selected else [],
             "dependency_pair": self.choose_dependency_pair(selected),
+            "target_contract": target_item["contract_id"] if target_item else None,
+            "force_regenerate": force_regenerate,
             "generator_hook": os.environ.get("DSC_CICD_GENERATOR_CMD"),
             "input_errors": self.input_facts.get("errors", []),
         }
@@ -834,6 +848,7 @@ class Agent:
     def render_oracle(self, contract: dict[str, Any]) -> str:
         function = contract_function(contract)
         name = str(function.get("name"))
+        interface = contract.get("interface", {}) or {}
         inputs = [
             port for port in contract.get("interface", {}).get("ports", [])
             if port.get("direction") == "input"
@@ -850,6 +865,68 @@ class Agent:
              if port.get("direction") == "output"),
             "return_value",
         ))
+        flattened = list(interface.get("flattened_pointer_dependencies", []) or [])
+        records = sorted({str(item.get("record")) for item in flattened if item.get("record")})
+        if records:
+            if len(records) != 1:
+                raise RuntimeError("oracle supports one flattened record dependency at a time")
+            record_type = records[0]
+            # The C source uses the conventional parameter name dsc_state for
+            # dsc_state_t.  The flattened contract ports are selected scalar
+            # values; populate every element because the DUT indexes the array
+            # with the independent cpnt input.
+            state_name = re.sub(r"_t$", "", record_type)
+            if not re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", state_name):
+                state_name = "state"
+            assignments = []
+            for item in flattened:
+                field = str(item.get("field", ""))
+                port = next((value for value in inputs if value.get("name") == field), None)
+                if not field or port is None or not re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", field):
+                    raise RuntimeError(f"flattened state dependency is not a scalar port: {field}")
+                assignments.append(
+                    f"for (size_t i = 0; i < sizeof({state_name}.{field}) / sizeof({state_name}.{field}[0]); ++i) "
+                    f"{state_name}.{field}[i] = {field};"
+                )
+            state_setup = "\n                ".join(assignments)
+            declaration = f"{record_type} *{state_name}"
+            call = ", ".join([f"&{state_name}"] + [str(port["name"]) for port in inputs if port.get("name") not in {item.get("field") for item in flattened}])
+            # The flattened fields are dependencies of the state pointer, not
+            # original C parameters.  Keep the original scalar parameters in
+            # their frozen interface order after the reconstructed state.
+            scalar_inputs = [
+                port for port in inputs
+                if port.get("name") not in {item.get("field") for item in flattened}
+            ]
+            declarations = ", ".join([declaration] + [f"int {port['name']}" for port in scalar_inputs])
+            local_declarations = ", ".join(str(port["name"]) for port in inputs)
+            arguments = ", ".join(f"&{port['name']}" for port in inputs)
+            format_string = " ".join(["%d"] * len(inputs))
+            return textwrap.dedent(
+                f"""
+                #include <stddef.h>
+                #include <stdio.h>
+                #include "dsc_types.h"
+                extern int {name}({declarations});
+                int main(int argc, char **argv) {{
+                    FILE *input = stdin;
+                    if (argc > 1) {{
+                        input = fopen(argv[1], "rb");
+                        if (!input) return 2;
+                    }}
+                    int {local_declarations};
+                    int {output};
+                    while (fscanf(input, "{format_string}", {arguments}) == {len(inputs)}) {{
+                        {record_type} {state_name} = {{0}};
+                        {state_setup}
+                        {output} = {name}({call});
+                        printf("%d\\n", {output});
+                    }}
+                    if (input != stdin) fclose(input);
+                    return 0;
+                }}
+                """
+            ).strip() + "\n"
         return textwrap.dedent(
             f"""
             #include <stdio.h>
@@ -871,6 +948,59 @@ class Agent:
             }}
             """
         ).strip() + "\n"
+
+    def legal_vector_iterator(self, contract: dict[str, Any], input_ports: list[dict[str, Any]],
+                              values: list[list[int]]) -> tuple[Iterable[tuple[int, ...]], dict[str, Any]]:
+        """Return legal vectors, including reviewed conditional domains.
+
+        Flattened state dependencies are represented as selected scalar values
+        in the frozen interface.  When the contract supplies a reviewed
+        qlevel-by-bit-depth map and a conditional leftRecon domain, enumerate
+        that relation instead of the invalid Cartesian product.
+        """
+        names = [str(port.get("name")) for port in input_ports]
+        normalized = {re.sub(r"[^a-z0-9]", "", name.lower()): name for name in names}
+        bit_depth_name = normalized.get("cpntbitdepth")
+        qlevel_name = normalized.get("qlevel")
+        left_recon_name = normalized.get("leftrecon")
+        qlevel_map = (contract.get("semantics", {}) or {}).get("qlevel_max_by_cpnt_bit_depth", {}) or {}
+        if bit_depth_name and qlevel_name and left_recon_name and qlevel_map:
+            by_name = {name: values[index] for index, name in enumerate(names)}
+            fixed_names = [name for name in names if name not in {bit_depth_name, qlevel_name, left_recon_name}]
+            fixed_values = [by_name[name] for name in fixed_names]
+            q_domain = by_name[qlevel_name]
+            left_domain = by_name[left_recon_name]
+
+            def constrained() -> Iterable[tuple[int, ...]]:
+                for fixed in itertools.product(*fixed_values) if fixed_values else [()]:
+                    context = dict(zip(fixed_names, fixed))
+                    for bit_depth in by_name[bit_depth_name]:
+                        max_qlevel = int(qlevel_map.get(str(bit_depth), qlevel_map.get(bit_depth, max(q_domain))))
+                        for qlevel in q_domain:
+                            if int(qlevel) > max_qlevel:
+                                continue
+                            for left_recon in left_domain:
+                                if int(left_recon) >= (1 << int(bit_depth)):
+                                    continue
+                                context.update({
+                                    bit_depth_name: int(bit_depth),
+                                    qlevel_name: int(qlevel),
+                                    left_recon_name: int(left_recon),
+                                })
+                                yield tuple(int(context[name]) for name in names)
+
+            return constrained(), {
+                "kind": "conditional",
+                "constraint": "qlevel <= qlevel_max_by_cpnt_bit_depth and leftRecon < (1 << cpntBitDepth)",
+                "qlevel_max_by_cpnt_bit_depth": {str(key): int(value) for key, value in qlevel_map.items()},
+                "source": "locked contract semantics",
+                "ports": [bit_depth_name, qlevel_name, left_recon_name],
+            }
+
+        return itertools.product(*values), {
+            "kind": "cartesian",
+            "source": "frozen per-port legal domains",
+        }
 
     def render_harness(self, contract: dict[str, Any], module: str) -> str:
         ports = contract.get("interface", {}).get("ports", [])
@@ -1100,8 +1230,9 @@ class Agent:
         paths = [shard_dir / f"shard-{index:03d}.vectors" for index in range(shard_count)]
         handles = [path.open("w", encoding="utf-8") for path in paths]
         count = 0
+        vector_iterator, vector_strategy = self.legal_vector_iterator(contract, inputs, values)
         try:
-            for vector in itertools.product(*values):
+            for vector in vector_iterator:
                 handles[count % shard_count].write(" ".join(str(value) for value in vector) + "\n")
                 count += 1
         finally:
@@ -1111,7 +1242,7 @@ class Agent:
             {
                 "shard_id": index,
                 "path": str(path.relative_to(artifact)),
-                "vectors": sum(1 for _ in path.open("r", encoding="utf-8")),
+                "vectors": self.count_lines(path),
             }
             for index, path in enumerate(paths)
         ]
@@ -1121,7 +1252,13 @@ class Agent:
             "total_vectors": count,
             "shard_count": shard_count,
             "shards": shards,
+            "vector_strategy": vector_strategy,
         }
+
+    @staticmethod
+    def count_lines(path: pathlib.Path) -> int:
+        with path.open("r", encoding="utf-8") as handle:
+            return sum(1 for _ in handle)
 
     def compile_c_oracle(self, contract: dict[str, Any], artifact: pathlib.Path) -> dict[str, Any]:
         build_dir = artifact / "oracle-build"
@@ -1564,15 +1701,66 @@ class Agent:
             port for port in contract.get("interface", {}).get("ports", [])
             if port.get("direction") == "output"
         )
+        interface = contract.get("interface", {}) or {}
+        flattened = list(interface.get("flattened_pointer_dependencies", []) or [])
+        flattened_fields = {str(item.get("field")) for item in flattened if item.get("field")}
         function = contract_function(contract)
         original = str(function.get("name")) + "_original"
         input_declarations = ", ".join(f"int {port['name']}" for port in inputs)
         input_call = ", ".join(str(port["name"]) for port in inputs)
+        caller_declarations = input_declarations
+        caller_call = input_call
+        rtl_call = input_call
+        header_prefix = ""
+        if flattened:
+            records = sorted({str(item.get("record")) for item in flattened if item.get("record")})
+            if len(records) != 1:
+                raise RuntimeError("overlay supports one flattened record dependency at a time")
+            record_type = records[0]
+            state_name = re.sub(r"_t$", "", record_type)
+            if not re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", state_name):
+                state_name = "state"
+            scalar_inputs = [port for port in inputs if str(port.get("name")) not in flattened_fields]
+            caller_declarations = ", ".join(
+                [f"{record_type} *{state_name}"] + [f"int {port['name']}" for port in scalar_inputs]
+            )
+            caller_call = ", ".join([f"{state_name}"] + [str(port["name"]) for port in scalar_inputs])
+            source_body_text = ""
+            try:
+                _, source_body_text, _ = source_body(
+                    contract,
+                    pathlib.Path(str(self.input_facts.get("source_dir", source_dir))),
+                )
+            except (OSError, RuntimeError):
+                pass
+            index_name = next(
+                (
+                    str(port.get("name"))
+                    for port in scalar_inputs
+                    if re.sub(r"[^a-z0-9]", "", str(port.get("role", port.get("name"))).lower()) == "cpnt"
+                ),
+                "0",
+            )
+            rtl_arguments = []
+            for port in inputs:
+                field = str(port.get("name"))
+                if field in flattened_fields:
+                    match = re.search(
+                        rf"->\s*{re.escape(field)}\s*\[\s*([A-Za-z_][A-Za-z0-9_]*)\s*\]",
+                        source_body_text,
+                    )
+                    index = match.group(1) if match else index_name
+                    rtl_arguments.append(f"{state_name}->{field}[{index}]")
+                else:
+                    rtl_arguments.append(field)
+            rtl_call = ", ".join(rtl_arguments)
+            header_prefix = '#include "dsc_types.h"\n'
         header = source_dir / "dsc_cicd_overlay.h"
         header.write_text(
             "#ifndef DSC_CICD_OVERLAY_H\n"
             "#define DSC_CICD_OVERLAY_H\n"
-            f"int dsc_cicd_invoke({input_declarations});\n"
+            + header_prefix
+            + f"int dsc_cicd_invoke({caller_declarations});\n"
             "#endif\n",
             encoding="utf-8",
         )
@@ -1582,7 +1770,7 @@ class Agent:
             "#include <stdlib.h>\n"
             "#include <string.h>\n"
             "#include \"dsc_cicd_overlay.h\"\n"
-            f"extern int {original}({input_declarations});\n"
+            f"extern int {original}({caller_declarations});\n"
             f"extern int dsc_cicd_rtl({input_declarations});\n"
             "static int dsc_cicd_mode(void) {\n"
             "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
@@ -1591,11 +1779,11 @@ class Agent:
             "    return 0;\n"
             "}\n"
             "static unsigned long dsc_cicd_mismatches;\n"
-            f"int dsc_cicd_invoke({input_declarations}) {{\n"
-            f"    int c_value = {original}({input_call});\n"
+            f"int dsc_cicd_invoke({caller_declarations}) {{\n"
+            f"    int c_value = {original}({caller_call});\n"
             "    int mode = dsc_cicd_mode();\n"
             "    if (mode == 0) return c_value;\n"
-            f"    int rtl_value = dsc_cicd_rtl({input_call});\n"
+            f"    int rtl_value = dsc_cicd_rtl({rtl_call});\n"
             "    if (rtl_value != c_value) {\n"
             "        ++dsc_cicd_mismatches;\n"
             "        fprintf(stderr, \"C/RTL mismatch: c=%d rtl=%d\\n\", c_value, rtl_value);\n"
@@ -1955,6 +2143,25 @@ class Agent:
                           artifact: pathlib.Path, unit: dict[str, Any],
                           matrix: dict[str, Any]) -> dict[str, Any]:
         pair = self.plan.get("dependency_pair")
+        if not pair:
+            receipt = {
+                "schema_version": 2,
+                "execution_status": "EXECUTED_NOW",
+                "status": "NOT_APPLICABLE",
+                "pair": None,
+                "checks": {},
+                "dependency_ports": [],
+                "call_sites_from_callgraph": [],
+                "counterexample": unit.get("smallest_counterexample"),
+                "execution_evidence": {
+                    "callee_oracle_compile": unit.get("oracle_compile", {}).get("commands", []),
+                    "callee_candidate_compile": unit.get("compile_once", []),
+                    "vectors": unit.get("domain", {}),
+                },
+                "failure_reason": None,
+            }
+            write_json(artifact / "dependency-receipt.json", receipt)
+            return receipt
         sites = []
         overlay = matrix.get("overlay", {}) if isinstance(matrix, dict) else {}
         sites.extend(overlay.get("call_sites", []) if isinstance(overlay, dict) else [])

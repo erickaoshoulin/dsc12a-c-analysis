@@ -2,8 +2,10 @@ import json
 import pathlib
 import tempfile
 import unittest
+from unittest import mock
 
 from tools.cicd_agent import Agent, STATE_ORDER, contract_exact_links, digest, safe_identifier
+from tools.generator_fixture import generic_body
 
 
 class CicdAgentUnitTests(unittest.TestCase):
@@ -65,6 +67,80 @@ class CicdAgentUnitTests(unittest.TestCase):
     def test_generated_identifiers_are_safe(self):
         self.assertEqual(safe_identifier("a.b-c"), "a_b_c")
         self.assertEqual(len(digest({"a": 1})), 64)
+
+    def test_queue_target_selects_one_discovered_contract_and_refreshes_cache(self):
+        contract = {
+            "contract_id": "unit_target",
+            "status": "LOCKED",
+            "function": {"name": "TargetLeaf", "clang_usr": "c:@F@TargetLeaf"},
+            "spec_links": [{"status": "EXACT", "anchor_id": "pdf:section:unit"}],
+            "obligations": [],
+            "dependencies": {"unresolved": []},
+            "interface": {"ports": [
+                {"name": "value", "direction": "input", "width": 8, "signed": False},
+                {"name": "return_value", "direction": "output", "width": 8, "signed": False},
+            ]},
+            "semantics": {"kind": "pure_expression"},
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            agent = Agent(root, "plan")
+            agent.contracts = [contract]
+            agent.dependency_info = {"cycles": [], "adjacency": {"unit_target": []}, "call_sites": [], "all_call_sites": [], "dependency_hashes": {}}
+            with mock.patch.dict("os.environ", {"DSC_CICD_TARGET_CONTRACT": "unit_target", "DSC_CICD_FORCE_REGENERATE": "1"}, clear=False):
+                plan = agent.build_plan()
+        self.assertEqual(plan["selected_contracts"], ["unit_target"])
+        self.assertEqual(plan["target_contract"], "unit_target")
+        self.assertTrue(plan["force_regenerate"])
+        self.assertTrue(plan["contracts"][0]["targeted"])
+        self.assertTrue(plan["contracts"][0]["force_regenerate"])
+
+    def test_flattened_state_oracle_and_conditional_domain(self):
+        contract = {
+            "contract_id": "state_leaf",
+            "status": "LOCKED",
+            "function": {"name": "StateLeaf"},
+            "spec_links": [{"status": "EXACT", "anchor_id": "pdf:section:unit"}],
+            "interface": {
+                "flattened_pointer_dependencies": [
+                    {"record": "dsc_state_t", "field": "cpntBitDepth"},
+                    {"record": "dsc_state_t", "field": "leftRecon"},
+                ],
+                "ports": [
+                    {"name": "cpnt", "direction": "input", "width": 1, "signed": False, "legal_domain": {"range": [0, 0]}},
+                    {"name": "qlevel", "direction": "input", "width": 2, "signed": False, "legal_domain": {"range": [0, 3]}},
+                    {"name": "cpntBitDepth", "direction": "input", "width": 2, "signed": False, "legal_domain": {"values": [2, 3]}},
+                    {"name": "leftRecon", "direction": "input", "width": 3, "signed": False, "legal_domain": {"range": [0, 7]}},
+                    {"name": "return_value", "direction": "output", "width": 4, "signed": False},
+                ],
+            },
+            "semantics": {"qlevel_max_by_cpnt_bit_depth": {"2": 1, "3": 2}},
+        }
+        agent = Agent(pathlib.Path(tempfile.mkdtemp()), "test")
+        oracle = agent.render_oracle(contract)
+        self.assertIn("dsc_state_t *dsc_state", oracle)
+        self.assertIn("dsc_state.cpntBitDepth[i] = cpntBitDepth", oracle)
+        self.assertIn("StateLeaf(&dsc_state, cpnt, qlevel)", oracle)
+        with tempfile.TemporaryDirectory() as directory:
+            artifact = pathlib.Path(directory) / "artifact"
+            result = agent.make_shards(contract, artifact)
+            self.assertEqual(result["total_vectors"], 32)
+            self.assertEqual(result["vector_strategy"]["kind"], "conditional")
+
+    def test_generator_maps_c_style_semantic_identifiers_to_frozen_ports(self):
+        interface = {
+            "ports": [
+                {"name": "cpntBitDepth", "role": "cpntBitDepth", "direction": "input"},
+                {"name": "leftRecon", "role": "leftRecon", "direction": "input"},
+                {"name": "qlevel", "role": "qlevel", "direction": "input"},
+                {"name": "return_value", "role": "return_value", "direction": "output"},
+            ]
+        }
+        body = generic_body(interface, {"expression": "(1 << (cpnt_bit_depth - 1)) + (left_recon % (1 << qlevel))"}, False)
+        self.assertIn("cpntBitDepth", body)
+        self.assertIn("leftRecon", body)
+        self.assertIn("qlevel", body)
+        self.assertNotIn("cpnt_bit_depth", body)
 
 
 if __name__ == "__main__":

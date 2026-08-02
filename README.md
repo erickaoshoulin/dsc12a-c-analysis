@@ -215,9 +215,24 @@ python3 tools/regression.py report <run-id>
 
 The pilot is capped at four functions and two candidates per function. A
 passing pilot writes a `PLANNED_NOT_STARTED` scale plan without enqueuing the
-full corpus. The static dashboard is at `<root>/dashboard/index.html` and
-refreshes from `latest.json`; receipts retain candidate/frame rates, exact PDF
-links, C spans, port traceability, artifact links, and blockers. See
+full corpus. Start a deliberate scale batch only after reviewing that plan:
+
+```sh
+DSC_REGRESSION_ROOT=<share-root> python3 tools/regression.py scale <pilot-run-id> --refresh
+DSC_REGRESSION_ROOT=<share-root> python3 tools/regression.py worker --jobs 4
+DSC_REGRESSION_ROOT=<share-root> python3 tools/regression.py promote <scale-run-id>
+```
+
+Scale jobs use independent per-contract flow worktrees and queue-discovered
+contract IDs; no source-level function allowlist is used. `--refresh` forces a
+new generator/verification attempt for the selected leaf while preserving old
+receipts. Promotion copies only PASS, spec-reviewed, purely combinational DUT
+RTL into `library/rtl/` with compact traceability and verification manifests.
+Stateful callers, unresolved table/pointer dependencies, and non-DUT C code
+remain in the immutable C reference and are not promoted. The static dashboard
+is at `<root>/dashboard/index.html` and refreshes from `latest.json`; receipts
+retain candidate/frame rates, exact PDF links, C spans, port traceability,
+artifact links, and blockers. See
 [`PROMPT.md`](PROMPT.md) and [`skills/dsc-regression/SKILL.md`](skills/dsc-regression/SKILL.md)
 for the execution contract and durable workflow.
 

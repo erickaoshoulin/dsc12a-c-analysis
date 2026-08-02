@@ -973,14 +973,24 @@ def compact_frames(bitstream: dict[str, Any], selected_frames: list[dict[str, An
 
 
 class FlowRunner:
-    def __init__(self, store: DurableStore, run_id: str, repo: Path = REPO_ROOT):
+    def __init__(
+        self,
+        store: DurableStore,
+        run_id: str,
+        contract_id: str | None = None,
+        repo: Path = REPO_ROOT,
+        *,
+        refresh: bool = False,
+    ):
         self.store = store
         self.run_id = run_id
+        self.contract_id = safe_id(contract_id) if contract_id else "shared"
+        self.refresh = refresh
         self.repo = repo
-        self.directory = store.cache / "flow" / safe_id(run_id)
+        self.directory = store.cache / "flow" / safe_id(run_id) / self.contract_id
         self.worktree = self.directory / "repo"
         self.receipt_path = self.directory / "flow-receipt.json"
-        self.lock = store.locks / "current-flow.lock"
+        self.lock = store.locks / f"flow-{safe_id(run_id)}-{self.contract_id}.lock"
 
     def run_once(self) -> dict[str, Any]:
         existing = read_json(self.receipt_path, {}) or {}
@@ -1023,10 +1033,13 @@ class FlowRunner:
             env = os.environ.copy()
             env.update({
                 "DSC_CICD_GENERATOR_CMD": os.environ.get("DSC_CICD_GENERATOR_CMD", "python3 tools/generator_fixture.py"),
-                "DSC_CICD_MODEL": f"regression-{safe_id(self.run_id)}",
+                "DSC_CICD_MODEL": f"regression-{safe_id(self.run_id)}-{self.contract_id}",
                 "DSC_CICD_SHARDS": os.environ.get("DSC_CICD_SHARDS", "4"),
                 "DSC_CICD_WORKERS": os.environ.get("DSC_CICD_WORKERS", "2"),
+                "DSC_CICD_TARGET_CONTRACT": self.contract_id,
             })
+            if self.refresh:
+                env["DSC_CICD_FORCE_REGENERATE"] = "1"
             started = epoch_now()
             with log_path.open("w", encoding="utf-8") as log:
                 log.write(json.dumps({"command": command, "cwd": str(self.worktree), "started_at": utc_now()}) + "\n")
@@ -1043,6 +1056,7 @@ class FlowRunner:
             receipt = {
                 "schema_version": 1,
                 "run_id": self.run_id,
+                "contract_id": self.contract_id,
                 "status": "PASS" if process.returncode == 0 else "FAIL",
                 "execution_status": "EXECUTED_NOW",
                 "command": command,
@@ -1053,11 +1067,21 @@ class FlowRunner:
                 "started_at": utc_now(),
                 "generator": env.get("DSC_CICD_GENERATOR_CMD"),
                 "model_name_source": "DSC_CICD_MODEL",
+                "target_contract_source": "queue-discovered-contract-id",
+                "refresh": self.refresh,
             }
             atomic_write_json(self.receipt_path, redact(receipt))
             return receipt
         except (OSError, subprocess.SubprocessError, TimeoutError) as error:
-            receipt = {"schema_version": 1, "run_id": self.run_id, "status": "INFRASTRUCTURE_FAILURE", "execution_status": "EXECUTED_NOW", "last_error": str(error)}
+            receipt = {
+                "schema_version": 1,
+                "run_id": self.run_id,
+                "contract_id": self.contract_id,
+                "status": "INFRASTRUCTURE_FAILURE",
+                "execution_status": "EXECUTED_NOW",
+                "refresh": self.refresh,
+                "last_error": str(error),
+            }
             atomic_write_json(self.receipt_path, redact(receipt))
             return receipt
         finally:
@@ -1217,7 +1241,13 @@ class RegressionService:
             flow: dict[str, Any] | None = None
             if not job.get("cached_control"):
                 self.set_stage(directory, STAGES[1], 1, total)
-                flow = FlowRunner(self.store, run_id, self.repo).run_once()
+                flow = FlowRunner(
+                    self.store,
+                    run_id,
+                    cid,
+                    self.repo,
+                    refresh=bool(job.get("refresh")),
+                ).run_once()
                 if flow.get("status") != "PASS":
                     raise InfrastructureFailure(f"current C-to-RTL flow failed: {flow.get('last_error') or flow.get('status')}")
             else:
@@ -1403,6 +1433,272 @@ class RegressionService:
                     },
                 )
 
+    def start_scale(self, pilot_run_id: str, *, refresh: bool = False) -> dict[str, Any]:
+        """Start one explicit scale batch from a passing pilot plan.
+
+        Scale is intentionally a separate run so its receipts never overwrite
+        pilot evidence.  Each queued function receives its discovered contract
+        id and gets an independent flow worktree; this permits parallel fresh
+        generator/model passes without introducing a source-level allowlist.
+        """
+        pilot_dir = self.store.run_dir(pilot_run_id)
+        if not pilot_dir.is_dir():
+            raise FileNotFoundError(pilot_run_id)
+        pilot = read_json(pilot_dir / "run.json", {}) or {}
+        if pilot.get("profile") != "pilot":
+            raise InfrastructureFailure(f"scale parent is not a pilot run: {pilot_run_id}")
+        scale_path = pilot_dir / "scale-plan.json"
+        scale = read_json(scale_path, {}) or {}
+        if not scale:
+            raise InfrastructureFailure(f"pilot has no scale plan: {pilot_run_id}")
+        started_run_id = scale.get("started_run_id")
+        if scale.get("status") == "STARTED" and started_run_id:
+            existing = self.store.run_dir(str(started_run_id))
+            if existing.is_dir():
+                return read_json(existing / "run.json", {}) or {"run_id": started_run_id}
+        if scale.get("status") not in {"PLANNED_NOT_STARTED", "STARTED"}:
+            raise InfrastructureFailure(f"scale plan is not startable: {scale.get('status')}")
+
+        pilot_functions = [
+            read_json(path / "receipt.json", {}) or {}
+            for path in (pilot_dir / "functions").iterdir()
+            if path.is_dir()
+        ] if (pilot_dir / "functions").is_dir() else []
+        if not pilot_functions or not all(item.get("status") == "PASS" for item in pilot_functions):
+            raise InfrastructureFailure("scale requires every pilot function receipt to be PASS")
+        context = LocalContext(self.repo)
+        source_gate = context.source_gate()
+        if source_gate["status"] != "PASS":
+            raise InfrastructureFailure("C/PDF input gate blocked: " + ", ".join(source_gate["blockers"]))
+        functions = list(scale.get("functions", []))
+        if not functions:
+            raise InfrastructureFailure("scale plan has no GENERATION_READY functions")
+        frames = list(scale.get("frames") or context.frame_matrix())
+        valid_cached = set(context.valid_cached_ids())
+        discovered_pair = context.dependency_pair()
+        run_id = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime()) + "-scale-" + uuid.uuid4().hex[:8]
+        run_functions: list[dict[str, Any]] = []
+        for item in functions:
+            cid = safe_id(str(item.get("contract_id")))
+            cached_control = cid in valid_cached and not refresh
+            run_functions.append({
+                "contract_id": cid,
+                "function": item.get("function"),
+                "kind": item.get("kind", "leaf"),
+                "selection_reason": "explicit scale batch from facts-driven GENERATION_READY plan",
+                "cached_control": cached_control,
+                "refresh": refresh,
+                "candidate_limit": int(scale.get("candidate_limit", 4)),
+                "model_tier": item.get("model_tier") or self.router.route(str(item.get("kind", "leaf")))["tier"],
+                "contract_hash": item.get("contract_hash"),
+            })
+        run = {
+            "schema_version": 1,
+            "run_id": run_id,
+            "profile": "scale",
+            "parent_run_id": pilot_run_id,
+            "status": "QUEUED",
+            "created_at": utc_now(),
+            "candidate_limit": int(scale.get("candidate_limit", 4)),
+            "max_functions": len(run_functions),
+            "frames": frames,
+            "functions": run_functions,
+            "source_hash": context.manifest.get("source", {}).get("source_hashes_sha256"),
+            "spec_hash": context.manifest.get("spec", {}).get("sha256"),
+            "source_gate": source_gate,
+            "refresh": refresh,
+            "strategy": "explicit scale batch; independent contract flow worktrees; no SVRT",
+        }
+        run_dir = self.store.run_dir(run_id)
+        (run_dir / "functions").mkdir(parents=True, exist_ok=False)
+        atomic_write_json(run_dir / "run.json", redact(run))
+        for function in run_functions:
+            cid = safe_id(str(function["contract_id"]))
+            function_dir = run_dir / "functions" / cid
+            function_dir.mkdir(parents=True, exist_ok=True)
+            atomic_write_json(function_dir / "plan.json", redact(function))
+            self.store.enqueue({
+                "job_id": f"{run_id}--{cid}",
+                "run_id": run_id,
+                "contract_id": cid,
+                "function": function.get("function"),
+                "kind": function.get("kind"),
+                "candidate_limit": function.get("candidate_limit", 4),
+                "frames": frames,
+                "model_tier": function.get("model_tier"),
+                "cached_control": function.get("cached_control", False),
+                "refresh": function.get("refresh", False),
+                "dependency_pair": discovered_pair if discovered_pair and discovered_pair.get("callee_contract") == cid else None,
+            })
+        scale.update({
+            "status": "STARTED",
+            "started_at": utc_now(),
+            "started_run_id": run_id,
+            "refresh": refresh,
+            "jobs_enqueued": len(run_functions),
+        })
+        atomic_write_json(scale_path, redact(scale))
+        atomic_write_json(self.store.root / "scale-plan.json", redact(scale))
+        append_jsonl(
+            pilot_dir / "strategy.jsonl",
+            {
+                "event": "scale_started",
+                "decision": "enqueue",
+                "run_id": run_id,
+                "refresh": refresh,
+                "jobs": [item["contract_id"] for item in run_functions],
+                "rationale": "user-authorized large-scale batch; each discovered contract has an independent flow worktree",
+            },
+        )
+        self.refresh_dashboard()
+        return run
+
+    @staticmethod
+    def _library_rtl_blockers(source: str) -> list[str]:
+        scrubbed = re.sub(r"//.*|/\*.*?\*/", "", source, flags=re.S)
+        forbidden = (
+            (r"\balways_ff\b", "sequential always_ff"),
+            (r"\balways_latch\b", "latch always_latch"),
+            (r"\bposedge\b|\bnegedge\b", "clock edge"),
+            (r"\binitial\b|\bwait\s*\(", "testbench timing"),
+            (r"\bfork\b|\bjoin\b", "parallel procedural block"),
+        )
+        blockers = [label for pattern, label in forbidden if re.search(pattern, scrubbed, flags=re.I)]
+        modules = re.findall(r"\bmodule\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(", scrubbed)
+        if not modules:
+            blockers.append("missing module")
+        elif len(modules) != 1:
+            blockers.append("multiple modules")
+        if not re.search(r"\bendmodule\b", scrubbed):
+            blockers.append("missing endmodule")
+        return sorted(set(blockers))
+
+    @staticmethod
+    def _canonical_library_source(source: str, contract_id: str) -> tuple[str, str | None]:
+        """Give a verified single-module leaf a stable contract-based name."""
+        pattern = re.compile(r"(\bmodule\s+)([A-Za-z_][A-Za-z0-9_]*)(\s*\()")
+        matches = list(pattern.finditer(source))
+        if len(matches) != 1:
+            return source, None
+        module = re.sub(r"[^A-Za-z0-9_]", "_", str(contract_id))
+        if not module or module[0].isdigit():
+            module = "c_" + module
+        match = matches[0]
+        canonical_source = source[:match.start(2)] + module + source[match.end(2):]
+        return canonical_source, module
+
+    def promote_library(self, run_id: str) -> dict[str, Any]:
+        """Promote only PASS, spec-traceable leaf RTL into the designer library."""
+        run_dir = self.store.run_dir(run_id)
+        if not run_dir.is_dir():
+            raise FileNotFoundError(run_id)
+        run = read_json(run_dir / "run.json", {}) or {}
+        library = self.repo / "library"
+        rtl_root = library / "rtl"
+        receipt_root = library / "verification"
+        contract_root = library / "contracts"
+        archive_root = library / "archive"
+        for path in (rtl_root, receipt_root, contract_root, archive_root):
+            path.mkdir(parents=True, exist_ok=True)
+        manifest_path = library / "manifest.json"
+        manifest = read_json(manifest_path, {}) or {}
+        components = {str(item.get("contract_id")): item for item in manifest.get("components", [])}
+        promoted: list[dict[str, Any]] = []
+        skipped: list[dict[str, Any]] = []
+        function_root = run_dir / "functions"
+        for function_dir in sorted(function_root.iterdir() if function_root.is_dir() else []):
+            if not function_dir.is_dir():
+                continue
+            receipt = read_json(function_dir / "receipt.json", {}) or {}
+            cid = str(receipt.get("contract_id") or function_dir.name)
+            if receipt.get("status") != "PASS":
+                skipped.append({"contract_id": cid, "reason": "receipt_not_pass"})
+                continue
+            trace = receipt.get("traceability", {}) or {}
+            if trace.get("review_status") != "REVIEWED" or trace.get("authority") in {"AI_PROPOSED", "C_TYPE_FALLBACK"}:
+                skipped.append({"contract_id": cid, "reason": "traceability_not_promotable"})
+                continue
+            bad_ports = [
+                str(port.get("name"))
+                for port in trace.get("ports", [])
+                if port.get("authority") in {"AI_PROPOSED", "C_TYPE_FALLBACK"}
+            ]
+            if bad_ports:
+                skipped.append({"contract_id": cid, "reason": "port_authority_blocked", "ports": bad_ports})
+                continue
+            accepted = Path(str(receipt.get("accepted_rtl", "")))
+            if not accepted.is_file():
+                skipped.append({"contract_id": cid, "reason": "accepted_rtl_missing"})
+                continue
+            source = accepted.read_text(encoding="utf-8", errors="replace")
+            canonical_source, module_name = self._canonical_library_source(source, cid)
+            rtl_blockers = self._library_rtl_blockers(canonical_source)
+            if module_name is None:
+                rtl_blockers.append("stable single-module name unavailable")
+            if rtl_blockers:
+                skipped.append({"contract_id": cid, "reason": "rtl_boundary_blocked", "blockers": rtl_blockers})
+                continue
+            destination = rtl_root / f"{safe_id(cid)}.sv"
+            old_hash = file_hash(destination)
+            canonical_bytes = canonical_source.encode("utf-8")
+            canonical_hash = hashlib.sha256(canonical_bytes).hexdigest()
+            if old_hash and old_hash != canonical_hash:
+                archive = archive_root / safe_id(cid) / f"{safe_id(run_id)}.sv"
+                atomic_write_bytes(archive, destination.read_bytes())
+            atomic_write_bytes(destination, canonical_bytes)
+            compact = {
+                "schema_version": 1,
+                "run_id": run_id,
+                "profile": run.get("profile"),
+                "parent_run_id": run.get("parent_run_id"),
+                "contract_id": cid,
+                "function": receipt.get("function"),
+                "kind": receipt.get("kind"),
+                "status": "PASS",
+                "execution_status": receipt.get("execution_status"),
+                "candidate": Path(str(receipt.get("accepted_rtl"))).stem,
+                "module": module_name,
+                "rtl_sha256": file_hash(destination),
+                "contract_hash": receipt.get("contract_hash"),
+                "source_gate": receipt.get("source_gate"),
+                "traceability": trace,
+                "candidate_pass_rate": receipt.get("candidate_pass_rate"),
+                "frame_pass_rate": receipt.get("frame_pass_rate"),
+                "stages": {key: value.get("status") for key, value in (receipt.get("stages", {}) or {}).items()},
+                "promoted_at": utc_now(),
+            }
+            atomic_write_json(contract_root / f"{safe_id(cid)}.json", redact(trace))
+            atomic_write_json(receipt_root / f"{safe_id(cid)}.json", redact(compact))
+            components[cid] = {
+                "contract_id": cid,
+                "function": receipt.get("function"),
+                "module_file": str(destination.relative_to(library)),
+                "module": module_name,
+                "module_sha256": file_hash(destination),
+                "verification_file": str((receipt_root / f"{safe_id(cid)}.json").relative_to(library)),
+                "contract_hash": receipt.get("contract_hash"),
+                "source_file": trace.get("source_file"),
+                "c_span": trace.get("c_span"),
+                "spec_links": trace.get("spec_links", []),
+                "authority": trace.get("authority"),
+                "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+                "run_id": run_id,
+                "status": "PASS",
+            }
+            promoted.append(components[cid])
+        manifest = {
+            "schema_version": 1,
+            "library": "dsc-verilog-library",
+            "policy": "Only spec-traceable PASS leaf RTL is canonical; stateful callers remain C until separately contracted and verified.",
+            "source_policy": "immutable external C model and local DSC 1.2a PDF; no SVRT",
+            "spec_hash": run.get("spec_hash"),
+            "source_hash": run.get("source_hash"),
+            "updated_at": utc_now(),
+            "components": sorted(components.values(), key=lambda item: str(item.get("contract_id"))),
+        }
+        atomic_write_json(manifest_path, redact(manifest))
+        return {"status": "PASS" if promoted else "NO_PROMOTION", "run_id": run_id, "promoted": promoted, "skipped": skipped, "manifest": str(manifest_path)}
+
     def _href_for_path(self, path: Path) -> str:
         """Prefer dashboard-relative links for SMB artifacts, else a local file URI."""
         try:
@@ -1573,6 +1869,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     resume.add_argument("run_id")
     report = sub.add_parser("report")
     report.add_argument("run_id")
+    scale = sub.add_parser("scale")
+    scale.add_argument("run_id")
+    scale.add_argument("--refresh", action="store_true", help="force a fresh generator/model pass even when a verified cache exists")
+    promote = sub.add_parser("promote")
+    promote.add_argument("run_id")
     return parser.parse_args(argv)
 
 
@@ -1636,6 +1937,11 @@ def main(argv: list[str] | None = None) -> int:
                             shutil.rmtree(claim)
                         service.store.write_status(failed, status="queued", stage="resumed", last_error=None, progress={"completed": 0, "total": len(STAGES), "unit": "stages"})
                         service.store.record_strategy(args.run_id, {"event": "resume", "decision": "requeue", "job_id": job.get("job_id"), "attempt": job["attempt"], "rationale": "manual resume after inspecting failed receipt"})
+                        # Remove the per-job resume lock before moving the
+                        # directory.  Otherwise a worker that fails again
+                        # carries the lock into queue/failed and blocks the
+                        # next deliberate resume forever.
+                        resume_lock.rmdir()
                         os.replace(failed, target)
                         resumed.append(job.get("job_id"))
                     finally:
@@ -1647,6 +1953,12 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         if args.command == "report":
             print_json(service.report(args.run_id))
+            return 0
+        if args.command == "scale":
+            print_json(service.start_scale(args.run_id, refresh=args.refresh))
+            return 0
+        if args.command == "promote":
+            print_json(service.promote_library(args.run_id))
             return 0
         raise ValueError(args.command)
     except (InfrastructureFailure, FileNotFoundError, OSError, ValueError) as error:

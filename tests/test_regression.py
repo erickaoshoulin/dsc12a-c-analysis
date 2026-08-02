@@ -155,6 +155,53 @@ class RegressionServiceTests(unittest.TestCase):
             second = service.refresh_dashboard()
             self.assertEqual(first["counts"], second["counts"])
 
+    def test_library_promotion_requires_pass_and_preserves_traceability(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            store = DurableStore(root / "state", validate=False)
+            service = RegressionService(store, root)
+            rtl = root / "accepted.sv"
+            rtl.write_text(
+                "module synthetic_candidate_01(input logic [7:0] value, output logic [7:0] return_value);\n"
+                "assign return_value = value + 8'd1;\nendmodule\n",
+                encoding="utf-8",
+            )
+            run = store.run_dir("run-a")
+            function = run / "functions" / "synthetic"
+            function.mkdir(parents=True)
+            (run / "run.json").write_text(json.dumps({"run_id": "run-a", "profile": "scale"}), encoding="utf-8")
+            receipt = {
+                "status": "PASS",
+                "run_id": "run-a",
+                "contract_id": "synthetic",
+                "function": "Synthetic",
+                "kind": "arithmetic",
+                "execution_status": "EXECUTED_NOW",
+                "accepted_rtl": str(rtl),
+                "contract_hash": "contract-hash",
+                "candidate_pass_rate": "1/2",
+                "frame_pass_rate": "3/3",
+                "source_gate": {"status": "PASS"},
+                "traceability": {
+                    "authority": "EXACT_SPEC",
+                    "review_status": "REVIEWED",
+                    "source_file": "model.c",
+                    "c_span": {"start_line": 1, "end_line": 1},
+                    "spec_links": [{"status": "EXACT", "page": 1, "section": "1"}],
+                    "ports": [{"name": "value", "authority": "EXACT_SPEC"}, {"name": "return_value", "authority": "EXACT_SPEC"}],
+                },
+                "stages": {stage: {"status": "PASS"} for stage in ("width_spec_gate", "generator_cache", "verilator_lint_build", "shards_mutations", "dependency_composition", "model_matrix", "frame_compare")},
+            }
+            (function / "receipt.json").write_text(json.dumps(receipt), encoding="utf-8")
+            result = service.promote_library("run-a")
+            self.assertEqual(result["status"], "PASS")
+            manifest = read_json(root / "library" / "manifest.json", {})
+            self.assertEqual(manifest["components"][0]["contract_id"], "synthetic")
+            self.assertEqual(manifest["components"][0]["module"], "synthetic")
+            self.assertTrue((root / "library" / "rtl" / "synthetic.sv").is_file())
+            self.assertIn("module synthetic(", (root / "library" / "rtl" / "synthetic.sv").read_text(encoding="utf-8"))
+            self.assertTrue((root / "library" / "verification" / "synthetic.json").is_file())
+
 
 if __name__ == "__main__":
     unittest.main()

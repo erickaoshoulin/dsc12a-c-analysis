@@ -1,0 +1,129 @@
+{
+  "authority": "EXACT_SPEC",
+  "c_span": {
+    "end_column": 1,
+    "end_line": 914,
+    "start_column": 5,
+    "start_line": 906
+  },
+  "contract_hash": "7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda",
+  "ports": [
+    {
+      "authority": "EXACT_SPEC",
+      "c_span": {
+        "end_column": 1,
+        "end_line": 914,
+        "start_column": 5,
+        "start_line": 906
+      },
+      "contract_hash": "7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda",
+      "derivation": "dsc_state_t component arrays have extent 4",
+      "domain": {
+        "basis": "dsc_state_t component arrays have extent 4",
+        "kind": "range",
+        "range": [
+          0,
+          3
+        ],
+        "values": []
+      },
+      "name": "cpnt",
+      "review_status": "REVIEWED",
+      "role": "cpnt",
+      "signed": null,
+      "spec_pages": [
+        80
+      ],
+      "spec_sections": [
+        "6.4.3"
+      ],
+      "spec_tables": [],
+      "width": 2
+    },
+    {
+      "authority": "EXACT_SPEC",
+      "c_span": {
+        "end_column": 1,
+        "end_line": 914,
+        "start_column": 5,
+        "start_line": 906
+      },
+      "contract_hash": "7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda",
+      "derivation": "Table 6-2 qLevel columns",
+      "domain": {
+        "basis": "Table 6-2 qLevel columns",
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ],
+        "values": []
+      },
+      "name": "qlevel",
+      "review_status": "REVIEWED",
+      "role": "qlevel",
+      "signed": null,
+      "spec_pages": [
+        80
+      ],
+      "spec_sections": [
+        "6.4.3"
+      ],
+      "spec_tables": [],
+      "width": 5
+    },
+    {
+      "authority": "EXACT_SPEC",
+      "c_span": {
+        "end_column": 1,
+        "end_line": 914,
+        "start_column": 5,
+        "start_line": 906
+      },
+      "contract_hash": "7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda",
+      "derivation": "locked contract interface",
+      "domain": {
+        "range": [
+          128,
+          131071
+        ]
+      },
+      "name": "return_value",
+      "review_status": "REVIEWED",
+      "role": "return_value",
+      "signed": false,
+      "spec_pages": [
+        80
+      ],
+      "spec_sections": [
+        "6.4.3"
+      ],
+      "spec_tables": [],
+      "width": 17
+    }
+  ],
+  "review_status": "REVIEWED",
+  "source_file": "dsc_codec.c",
+  "source_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
+  "spec_links": [
+    {
+      "anchor_id": "pdf:model-note:MN_MIDPOINT_PRED:p080",
+      "evidence": "C comment and PDF anchor both contain MN_MIDPOINT_PRED",
+      "method": "exact_mn_id",
+      "page": 80,
+      "section": "6.4.3",
+      "short_anchor": "6.4.3 Midpoint Prediction; model note: MN_MIDPOINT_PRED in dsc_codec.c",
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:section:6.4.3",
+      "evidence": "C comment and PDF anchor both contain MN_MIDPOINT_PRED",
+      "method": "exact_mn_id",
+      "page": 80,
+      "section": "6.4.3",
+      "short_anchor": "6.4.3 Midpoint Prediction",
+      "status": "EXACT"
+    }
+  ],
+  "spec_pdf": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf"
+}

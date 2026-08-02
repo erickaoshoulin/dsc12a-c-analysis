@@ -1,0 +1,117 @@
+{
+  "authority": "EXACT_SPEC",
+  "c_span": {
+    "end_line": 255,
+    "start_line": 245
+  },
+  "contract_hash": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+  "ports": [
+    {
+      "authority": "DERIVED",
+      "c_span": {
+        "end_line": 255,
+        "start_line": 245
+      },
+      "contract_hash": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+      "derivation": "runtime sample-domain evidence for 16bpc residuals",
+      "domain": {
+        "basis": "runtime sample-domain evidence for 16bpc residuals",
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "name": "e",
+      "review_status": "REVIEWED",
+      "role": "e",
+      "signed": true,
+      "spec_pages": [
+        83
+      ],
+      "spec_sections": [
+        "6.4.5"
+      ],
+      "spec_tables": [],
+      "width": 17
+    },
+    {
+      "authority": "EXACT_SPEC",
+      "c_span": {
+        "end_line": 255,
+        "start_line": 245
+      },
+      "contract_hash": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+      "derivation": "EXACT Table 6-2 qLevel domain",
+      "domain": {
+        "basis": "EXACT Table 6-2 qLevel domain",
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "name": "qlevel",
+      "review_status": "REVIEWED",
+      "role": "qlevel",
+      "signed": false,
+      "spec_pages": [
+        83
+      ],
+      "spec_sections": [
+        "6.4.5"
+      ],
+      "spec_tables": [],
+      "width": 5
+    },
+    {
+      "authority": "EXACT_SPEC",
+      "c_span": {
+        "end_line": 255,
+        "start_line": 245
+      },
+      "contract_hash": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+      "derivation": "locked contract interface",
+      "domain": {
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "name": "return_value",
+      "review_status": "REVIEWED",
+      "role": "return_value",
+      "signed": true,
+      "spec_pages": [
+        83
+      ],
+      "spec_sections": [
+        "6.4.5"
+      ],
+      "spec_tables": [],
+      "width": 17
+    }
+  ],
+  "review_status": "REVIEWED",
+  "source_file": "dsc_codec.c",
+  "source_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
+  "spec_links": [
+    {
+      "anchor_id": "pdf:model-note:MN_ENC_QUANTIZATION:p083",
+      "evidence": "C comment and PDF anchor both contain MN_ENC_QUANTIZATION",
+      "page": 83,
+      "section": "6.4.5",
+      "short_anchor": "pdf:model-note:MN_ENC_QUANTIZATION:p083",
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:section:6.4.5",
+      "evidence": "C comment and PDF anchor both contain MN_ENC_QUANTIZATION",
+      "page": 83,
+      "section": "6.4.5",
+      "short_anchor": "pdf:section:6.4.5",
+      "status": "EXACT"
+    }
+  ],
+  "spec_pdf": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf"
+}

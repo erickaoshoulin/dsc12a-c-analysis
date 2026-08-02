@@ -1,6 +1,6 @@
 ---
 name: dsc-regression
-description: Durable SMB-backed per-function regression orchestration for this C-to-RTL repository. Use when Codex must initialize the regression share, select a bounded facts-driven pilot, submit or resume queue jobs, run workers, inspect polling/heartbeats, verify C/RTL receipts, route model tiers, or update the static traceability dashboard without starting the full corpus.
+description: Durable SMB-backed per-function regression orchestration for this C-to-RTL repository. Use when Codex must initialize the regression share, select a bounded facts-driven pilot, explicitly dispatch a reviewed scale batch, submit or resume queue jobs, run workers, inspect polling/heartbeats, verify C/RTL receipts, promote proven DUT leaves, route model tiers, or update the static traceability dashboard.
 ---
 
 # DSC Regression
@@ -48,23 +48,33 @@ automatic scale dispatch.
    python3 tools/regression.py submit --profile pilot
    ```
 
-3. Dispatch at most the requested worker count. The first fresh leaf worker
-   runs the existing C-to-RTL flow in an SMB worktree under `cache/flow`; other
-   jobs reuse that flow result through a durable lock. Large logs, builds, and
-   vectors remain there. Cached controls retain
+3. Dispatch at most the requested worker count. Each fresh leaf worker runs the
+   existing C-to-RTL flow in its own per-contract SMB worktree under
+   `cache/flow/<run>/<contract>`, so independent contracts can run in parallel.
+   Large logs, builds, and vectors remain there. Cached controls retain
    `REUSED_VERIFIED_RECEIPT` and make zero model calls.
 
    ```sh
    python3 tools/regression.py worker --jobs 4
    ```
 
-4. Verify every function receipt. Require width/spec authority, generator or
+4. After a passing pilot, dispatch scale only by an explicit command. The
+   scale plan is still facts-driven and names remain queue routing data, not a
+   source-level function allowlist. Use `--refresh` to deliberately rerun
+   verified leaves while preserving their old receipts.
+
+   ```sh
+   python3 tools/regression.py scale <pilot-run-id> --refresh
+   python3 tools/regression.py worker --jobs 4
+   ```
+
+5. Verify every function receipt. Require width/spec authority, generator or
    cache status, Verilator compile/lint, real shard completion and reduction,
    mutation/counterexample evidence, dependency composition, C_ONLY/SHADOW/
    RTL_RETURN, and selected frame SHA/byte equality. Reject bad candidates;
    do not turn a partial or metadata-only result into PASS.
 
-5. Update the dashboard and strategy log after each worker result. Poll once
+6. Update the dashboard and strategy log after each worker result. Poll once
    for automation or watch for a bounded period. Report ETA only when a
    completed duration sample exists:
 
@@ -73,13 +83,22 @@ automatic scale dispatch.
    python3 tools/regression.py report <run-id>
    ```
 
+7. Promote only PASS, exact-spec-reviewed, purely combinational DUT leaves to
+   the designer-facing library. Keep stateful callers, unresolved table or
+   pointer dependencies, and non-DUT C code in the immutable C reference.
+
+   ```sh
+   python3 tools/regression.py promote <scale-run-id>
+   ```
+
 ## Stop conditions
 
-Stop dispatch and leave a durable blocker on budget exhaustion, a human-review
-authority (`AI_PROPOSED`/`C_TYPE_FALLBACK`), repeated candidate failure, SMB
-infrastructure failure, stale/recovery uncertainty, or pilot completion.
-Use `resume <run-id>` only after inspecting failed receipts and blockers. Never
-enqueue the scale plan automatically.
+Stop the current batch and leave a durable blocker on budget exhaustion, a
+human-review authority (`AI_PROPOSED`/`C_TYPE_FALLBACK`), repeated candidate
+failure, SMB infrastructure failure, or stale/recovery uncertainty. Pilot
+completion pauses before scale but is not a failure; dispatch scale only after
+reviewing the plan. Use `resume <run-id>` only after inspecting failed
+receipts and blockers. Never enqueue the scale plan automatically.
 
 ## Model routing
 

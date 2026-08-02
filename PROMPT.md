@@ -356,6 +356,46 @@ every pilot function passes, write a scale plan for every current
 `GENERATION_READY` contract with four candidates and the discovered frame
 matrix, but leave it `PLANNED_NOT_STARTED` and do not enqueue it automatically.
 
+### Explicit scale and library loop
+
+After reviewing a passing pilot, start scale deliberately with:
+
+```sh
+DSC_REGRESSION_ROOT=<share-root> python3 tools/regression.py scale <pilot-run-id> --refresh
+DSC_REGRESSION_ROOT=<share-root> python3 tools/regression.py worker --jobs 4
+DSC_REGRESSION_ROOT=<share-root> python3 tools/regression.py promote <scale-run-id>
+```
+
+The scale command expands only the current facts-driven
+`GENERATION_READY` set in the pilot's scale plan. Each contract gets an
+independent flow worktree, generator invocation, C oracle, Verilator build,
+parallel shard set, caller composition check, and frame matrix. The queue
+passes the discovered contract ID to the flow as routing metadata; this is not
+a source-level function allowlist, prompt-supplied target, or hardcoded
+function-name selector. `--refresh` intentionally bypasses a valid leaf cache
+for a new generation/verification attempt, while preserving the previous
+receipt and accepted RTL for audit and rollback.
+
+Run the loop continuously in bounded batches:
+
+```text
+facts/spec review → scale dispatch → parallel generate → C oracle + Verilator
+→ exhaustive/legal-domain shards → smallest counterexample or PASS
+→ caller/frame gates → promote PASS leaves → inspect blockers → next batch
+```
+
+On a counterexample, retain the receipt and feed the smallest failing vector
+back into the next generator/repair attempt. On an infrastructure failure,
+repair the tool/domain/oracle gate and resume only the affected queue job.
+Never promote a candidate because it compiles alone. Promotion requires all
+unit, dependency, C_ONLY/SHADOW/RTL_RETURN, frame byte/SHA, exact PDF
+traceability, and reviewed-port gates. `tools/regression.py promote` writes
+only stable, purely combinational DUT leaves to `library/rtl/`, together with
+`library/contracts/`, `library/verification/`, and `library/manifest.json`.
+The library is an incremental designer-facing RTL set, not a whole-codec
+rewrite: keep stateful callers, unresolved pointer/table dependencies, and
+non-DUT code in C until their contracts are independently proven.
+
 Each function job must produce evidence for the ordered gates:
 
 ```text
