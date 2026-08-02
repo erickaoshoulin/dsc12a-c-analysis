@@ -10,10 +10,12 @@ Build a deterministic, rerunnable pipeline that discovers the local DSC 1.2a
 PDF and C model, proves the C model can clean-build and smoke-run, discovers
 combinational DUT candidates from tool facts rather than hardcoded names,
 generates bidirectional PDF <-> C traceability, joins dynamic LLVM coverage,
-creates a bounded machine-selected contract set, and verifies one exhaustive
-combinational RTL slice against the immutable C model. This project is not
-SVRT and must not grow SVRT integration, whole-codec RTL generation, an LLM
-runtime, C/Rust parsing, or sequential-hardware behavior.
+and incrementally grows a stable designer-facing Verilog library. Every new
+leaf is first exercised through the immutable C oracle, real Verilator builds,
+and parallel shards; only a complete legal-domain proof may enter the stable
+library. This project is not SVRT and must not grow SVRT integration,
+whole-codec RTL generation, an LLM runtime, C/Rust parsing, or
+sequential-hardware behavior.
 
 ## Input discovery
 
@@ -258,12 +260,23 @@ PDF and upstream C model are immutable external inputs.
    with zero generator/model calls.
 
 4. Verify executable candidates. Freeze direct scalar argument/result ports,
-   legal domains, packing, C oracle, harness, and mutation cases. Reject
-   clocks, resets, latches, delays, `initial`, stateful memory, and testbench
-   logic. Compile each candidate once with Verilator. Run every candidate over
-   the complete legal domain as real parallel input-shard processes, cancel
-   after mismatch, reduce deterministically, and retain the smallest
-   counterexample. Only complete coverage is `EXHAUSTIVE_EQUIVALENT`.
+   legal domains, packing, C oracle, harness, and mutation cases. A reviewed
+   pointer/window leaf may flatten only the read-only taps that the C body and
+   spec actually use; stateful callers, line-buffer storage, and unrelated
+   helpers remain C boundaries. Reject clocks, resets, latches, delays,
+   `initial`, stateful memory, and testbench logic. Compile each candidate once
+   with Verilator. Run every candidate over the complete legal domain as real
+   parallel input-shard processes, cancel after mismatch, reduce
+   deterministically, and retain the smallest counterexample. Only complete
+   coverage is `EXHAUSTIVE_EQUIVALENT`.
+
+   If the legal value space is too large for concrete enumeration, use an
+   explicitly reviewed `windowed_boundary`/equivalent strategy that records
+   `exhaustive: false`. It must still cover every structural mode, exact
+   qLevel/component relation, signedness, boundaries, array indices, and
+   pairwise tap interactions. A clean result is `DIFFERENTIAL_PASS`, never a
+   promotion or stable-library proof. Continue iterating from its findings
+   toward a formal proof or a smaller spec-grounded DUT slice.
 
 5. Verify a real dependency. Automatically choose the smallest acyclic direct
    caller-to-callee edge from the callgraph. Prove caller core with callee C,
@@ -423,11 +436,13 @@ are treated as verified boundaries. Each contract still compiles its C oracle
 and Verilator candidate once and runs its input shards in parallel under the
 separate shard worker limit.
 
-Run the loop continuously in bounded batches:
+Run the loop continuously in bounded batches, keeping the immutable C model as
+the oracle while replacing only proven DUT leaves:
 
 ```text
 facts/spec review → scale dispatch → parallel generate → C oracle + Verilator
-→ exhaustive/legal-domain shards → smallest counterexample or PASS
+→ exhaustive/legal-domain or explicitly bounded differential shards
+→ smallest counterexample / DIFFERENTIAL_PASS / EXHAUSTIVE_EQUIVALENT
 → caller/frame gates → promote PASS leaves → inspect blockers → next batch
 ```
 

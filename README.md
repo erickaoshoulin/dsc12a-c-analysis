@@ -201,6 +201,15 @@ sampling scenarios; promotion requires all byte/SHA bitstream gates. A second
 run exercises the valid cache and reports `REUSED_VERIFIED_RECEIPT` with zero
 generator/model calls.
 
+Windowed/pointer-heavy DUTs use a reviewed scalar-tap adapter only for the
+read-only values consumed by the C body. The `windowed_boundary` strategy
+currently drives all structural modes plus deterministic boundary and
+pairwise tap cases. Its result is `DIFFERENTIAL_PASS` when every generated
+vector matches; it is deliberately not `EXHAUSTIVE_EQUIVALENT` and cannot be
+promoted until a complete legal-domain proof or a smaller spec-grounded slice
+is available. This keeps the designer-facing library combinational and stable
+while stateful line storage and non-DUT C logic remain reference boundaries.
+
 ## Durable regression queue
 
 The per-function regression service is independent of SVRT and discovers its

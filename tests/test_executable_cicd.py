@@ -1,3 +1,4 @@
+import copy
 import json
 import pathlib
 import shutil
@@ -196,6 +197,66 @@ class ExecutableCicdTests(unittest.TestCase):
         self.assertEqual(receipt["matrix"]["modes"]["C_ONLY"]["status"], "PASS")
         self.assertEqual(receipt["matrix"]["modes"]["SHADOW"]["status"], "FAIL")
         self.assertEqual(receipt["matrix"]["modes"]["RTL_RETURN"]["status"], "FAIL")
+
+    def test_windowed_boundary_strategy_never_claims_exhaustive(self):
+        agent = Agent(ROOT, "test")
+        ports = [
+            {"name": "hPos", "direction": "input", "width": 2, "legal_domain": {"values": [0, 1, 2]}},
+            {"name": "predType", "direction": "input", "width": 2, "legal_domain": {"values": [0, 1, 2]}},
+            {"name": "qLevel", "direction": "input", "width": 2, "legal_domain": {"range": [0, 2]}},
+            {"name": "unit", "direction": "input", "width": 2, "legal_domain": {"values": [0, 3]}},
+            {"name": "cpnt_bit_depth", "direction": "input", "width": 5, "legal_domain": {"values": [8, 10]}},
+            {"name": "unit_c_type", "direction": "input", "width": 2, "legal_domain": {"values": [0, 1]}},
+            {"name": "tap_a", "direction": "input", "width": 16, "legal_domain": {"range": [0, 65535]}},
+            {"name": "tap_b", "direction": "input", "width": 16, "legal_domain": {"range": [0, 65535]}},
+            {"name": "residual", "direction": "input", "width": 16, "signed": True, "legal_domain": {"range": [-32768, 32767]}},
+        ]
+        strategy = {
+            "kind": "windowed_boundary",
+            "exhaustive": False,
+            "bit_depth_port": "cpnt_bit_depth",
+            "component_type_port": "unit_c_type",
+            "qlevel_port": "qLevel",
+            "unit_port": "unit",
+            "hpos_port": "hPos",
+            "pred_type_port": "predType",
+            "sample_ports": ["tap_a", "tap_b"],
+            "residual_ports": ["residual"],
+            "pairwise_ports": ["tap_a", "tap_b"],
+            "probe_units": [0, 3],
+            "qlevel_max_by_component": {
+                "luma": {"8": 2, "10": 2},
+                "chroma": {"8": 2, "10": 2},
+            },
+        }
+        contract = {"interface": {"ports": ports}, "semantics": {"legal_vector_strategy": strategy}}
+        vectors, receipt = agent.legal_vector_iterator(
+            contract,
+            ports,
+            [agent.port_domain(port) for port in ports],
+        )
+        first = next(iter(vectors))
+        self.assertEqual(len(first), len(ports))
+        self.assertFalse(receipt["exhaustive"])
+        self.assertEqual(receipt["kind"], "windowed_boundary")
+
+    def test_samplepredict_pointer_adapter_binds_state_and_taps(self):
+        agent = Agent(ROOT, "test")
+        agent.input_facts = {
+            "source_dir": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        }
+        locked = json.loads((ROOT / "contracts" / "locked" / "samplepredict.json").read_text(encoding="utf-8"))
+        overrides = json.loads((ROOT / "contracts" / "reviewed-overrides.json").read_text(encoding="utf-8"))["overrides"]
+        override = next(item for item in overrides if item.get("match", {}).get("clang_usr") == "c:@F@SamplePredict")
+        contract = copy.deepcopy(locked)
+        contract["interface"] = copy.deepcopy(override["interface"])
+        contract["interface"]["ports"] = agent.freeze_ports(contract["interface"])
+        oracle = agent.render_oracle(contract)
+        self.assertIn("dsc_state.cpntBitDepth[unit_c_type] = cpnt_bit_depth;", oracle)
+        self.assertIn("dsc_state.quantizedResidual[unit][1] = quantized_residual_1;", oracle)
+        self.assertIn("prevLine[8] = prev_8;", oracle)
+        self.assertIn("currLine[6] = curr_6;", oracle)
+        self.assertIn("SamplePredict(&dsc_state, prevLine, currLine", oracle)
 
     def _rewriter_binary(self):
         binary = ROOT / "tmp" / "cicd-clang-rewriter" / "dsc-clang-rewrite"

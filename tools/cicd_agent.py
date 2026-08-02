@@ -1122,11 +1122,65 @@ class Agent:
         ignored_by_parameter = {
             str(item.get("parameter")): item for item in ignored if item.get("parameter")
         }
+        record_parameters: dict[str, str] = {}
+        for parameter in parameters:
+            if not parameter.get("pointer"):
+                continue
+            parameter_name = str(parameter.get("name", ""))
+            record_type = re.sub(r"\s*\*.*$", "", str(parameter.get("type", ""))).strip()
+            if parameter_name and record_type:
+                record_parameters[record_type] = parameter_name
         declarations: list[str] = []
         call_arguments: list[str] = []
         local_setup: list[str] = []
         local_dependencies: list[str] = []
+        state_setup: list[str] = []
         known_ports = {str(port.get("name")) for port in inputs}
+
+        def resolve_index(raw_index: object) -> str:
+            raw = str(raw_index)
+            if re.fullmatch(r"-?\d+", raw):
+                return raw
+            if raw in known_ports:
+                return raw
+            normalized_raw = re.sub(r"[^a-z0-9]", "", raw.lower())
+            for port in inputs:
+                for candidate in (port.get("name"), port.get("role")):
+                    if re.sub(r"[^a-z0-9]", "", str(candidate).lower()) == normalized_raw:
+                        return str(port.get("name"))
+            raise RuntimeError(f"dynamic array index is not an input port or literal: {raw}")
+
+        # A pointer-array contract may freeze both pointer-array taps and
+        # selected fields of a pointed-to state record.  Keep the adapter
+        # data-driven: the contract supplies the field/index binding and the
+        # original Clang facts supply the record parameter.
+        for item in flattened:
+            record_type = str(item.get("record", ""))
+            field = str(item.get("field", ""))
+            if not record_type or not field:
+                continue
+            state_name = record_parameters.get(record_type)
+            if not state_name or not re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", field):
+                raise RuntimeError(f"missing state record binding for flattened field: {field}")
+            port_name = safe_identifier(str(item.get("port_name") or field))
+            if port_name not in known_ports:
+                raise RuntimeError(f"flattened state field is not an input port: {port_name}")
+            indices: list[object] = []
+            if item.get("index_names") is not None:
+                raw_indices = item.get("index_names")
+                if not isinstance(raw_indices, list) or not raw_indices:
+                    raise RuntimeError(f"invalid index_names for flattened field: {field}")
+                indices.extend(raw_indices)
+            elif item.get("index_name") is not None:
+                indices.append(item.get("index_name"))
+            elif item.get("index") is not None:
+                indices.append(item.get("index"))
+            if not indices and "[" in str(item.get("c_type", "")):
+                raise RuntimeError(f"array state field requires a frozen index: {field}")
+            lhs = f"{state_name}.{field}"
+            for index in indices:
+                lhs += f"[{resolve_index(index)}]"
+            state_setup.append(f"{lhs} = {port_name};")
         for parameter in parameters:
             parameter_name = str(parameter.get("name", ""))
             parameter_type = str(parameter.get("type", "int")).strip()
@@ -1159,8 +1213,8 @@ class Agent:
         local_names = ", ".join(str(port["name"]) for port in inputs)
         input_arguments = ", ".join(f"&{port['name']}" for port in inputs)
         format_string = " ".join(["%d"] * len(inputs))
-        include_types = any("_t" in str(item.get("c_type", "")) for item in ignored)
-        setup = "\n                        ".join(local_setup)
+        include_types = bool(record_parameters) or any("_t" in str(item.get("c_type", "")) for item in ignored)
+        setup = "\n                        ".join(local_setup + state_setup)
         dependency_declarations = "\n                        ".join(local_dependencies)
         include_block = '#include "dsc_types.h"\n' if include_types else ""
         return textwrap.dedent(
@@ -1497,6 +1551,179 @@ class Agent:
             "qp_ports": sorted(qp_ports),
         }
 
+    def windowed_boundary_vector_iterator(
+        self,
+        contract: dict[str, Any],
+        input_ports: list[dict[str, Any]],
+        values: list[list[int]],
+        strategy: dict[str, Any],
+    ) -> tuple[Iterable[tuple[int, ...]], dict[str, Any]]:
+        """Generate a deterministic large differential suite for windowed DUTs.
+
+        A windowed leaf can have a finite scalar interface after pointer
+        flattening while still having a huge sample-value domain.  This
+        strategy exercises every structural mode, all legal qLevels for the
+        selected component class, one-factor boundary probes, and pairwise
+        tap interactions.  It is explicitly *not* an exhaustive proof; the
+        receipt must remain DIFFERENTIAL_PASS until a separate proof or a
+        tractable exact domain exists.
+        """
+        names = [str(port.get("name")) for port in input_ports]
+        by_name = {name: values[index] for index, name in enumerate(names)}
+
+        def require_port(key: str) -> str:
+            name = str(strategy.get(key, ""))
+            if name not in by_name:
+                raise RuntimeError(f"windowed boundary strategy port is missing: {name}")
+            return name
+
+        bit_depth_name = require_port("bit_depth_port")
+        component_name = require_port("component_type_port")
+        qlevel_name = require_port("qlevel_port")
+        unit_name = require_port("unit_port")
+        hpos_name = require_port("hpos_port")
+        pred_type_name = require_port("pred_type_port")
+        sample_ports = [str(name) for name in strategy.get("sample_ports", [])]
+        residual_ports = [str(name) for name in strategy.get("residual_ports", [])]
+        pairwise_ports = [str(name) for name in strategy.get("pairwise_ports", [])]
+        for port_name in sample_ports + residual_ports + pairwise_ports:
+            if port_name not in by_name:
+                raise RuntimeError(f"windowed boundary strategy port is missing: {port_name}")
+
+        max_qlevel_by_component = strategy.get("qlevel_max_by_component", {}) or {}
+        probe_units = [int(value) for value in strategy.get("probe_units", by_name[unit_name])]
+        probe_units = [value for value in probe_units if value in by_name[unit_name]] or list(by_name[unit_name])
+        probe_qlevels = str(strategy.get("probe_qlevels", "endpoints"))
+
+        def unique(values_to_check: Iterable[int]) -> list[int]:
+            result: list[int] = []
+            seen: set[int] = set()
+            for value in values_to_check:
+                value = int(value)
+                if value not in seen:
+                    seen.add(value)
+                    result.append(value)
+            return result
+
+        def sample_boundaries(bit_depth: int) -> list[int]:
+            maximum = (1 << int(bit_depth)) - 1
+            midpoint = maximum // 2
+            return unique([0, 1, midpoint - 1, midpoint, midpoint + 1, maximum - 1, maximum])
+
+        def residual_boundaries(bit_depth: int, qlevel: int) -> list[int]:
+            width = int(bit_depth) - int(qlevel)
+            if width <= 0:
+                return [0]
+            lower = -(1 << (width - 1))
+            upper = (1 << (width - 1)) - 1
+            return unique([lower, lower + 1, -1, 0, 1, upper - 1, upper])
+
+        def qlevels_for(bit_depth: int, component: int) -> list[int]:
+            kind = "luma" if int(component) % 3 == 0 else "chroma"
+            raw_max = max_qlevel_by_component.get(kind, {}).get(str(bit_depth))
+            max_qlevel = int(raw_max) if raw_max is not None else max(by_name[qlevel_name])
+            return [int(value) for value in by_name[qlevel_name] if int(value) <= max_qlevel]
+
+        def baseline(
+            bit_depth: int,
+            component: int,
+            qlevel: int,
+            unit: int,
+            hpos: int,
+            pred_type: int,
+        ) -> dict[str, int]:
+            context = {
+                name: int(domain[len(domain) // 2])
+                for name, domain in by_name.items()
+                if domain
+            }
+            context.update({
+                bit_depth_name: int(bit_depth),
+                component_name: int(component),
+                qlevel_name: int(qlevel),
+                unit_name: int(unit),
+                hpos_name: int(hpos),
+                pred_type_name: int(pred_type),
+            })
+            midpoint = ((1 << int(bit_depth)) - 1) // 2
+            for port_name in sample_ports:
+                context[port_name] = midpoint
+            for port_name in residual_ports:
+                context[port_name] = 0
+            return context
+
+        def emit(context: dict[str, int]) -> tuple[int, ...]:
+            return tuple(int(context[name]) for name in names)
+
+        structural: list[tuple[int, int, int, int, int, int]] = []
+        for bit_depth in by_name[bit_depth_name]:
+            for component in by_name[component_name]:
+                for qlevel in qlevels_for(int(bit_depth), int(component)):
+                    for unit in by_name[unit_name]:
+                        for hpos in by_name[hpos_name]:
+                            for pred_type in by_name[pred_type_name]:
+                                structural.append((
+                                    int(bit_depth), int(component), int(qlevel),
+                                    int(unit), int(hpos), int(pred_type),
+                                ))
+
+        def vectors() -> Iterable[tuple[int, ...]]:
+            # First cover every legal structural mode with a stable midpoint
+            # line and zero residual baseline.
+            for bit_depth, component, qlevel, unit, hpos, pred_type in structural:
+                yield emit(baseline(bit_depth, component, qlevel, unit, hpos, pred_type))
+
+            # Boundary probes use qLevel endpoints (or all qLevels when the
+            # contract asks for it) and both end units to expose index paths.
+            for bit_depth in by_name[bit_depth_name]:
+                for component in by_name[component_name]:
+                    qlevels = qlevels_for(int(bit_depth), int(component))
+                    if probe_qlevels == "all":
+                        q_probes = qlevels
+                    else:
+                        q_probes = unique([qlevels[0], qlevels[-1]]) if qlevels else []
+                    for qlevel in q_probes:
+                        for unit in probe_units:
+                            for hpos in by_name[hpos_name]:
+                                for pred_type in by_name[pred_type_name]:
+                                    base = baseline(int(bit_depth), int(component), qlevel, unit, int(hpos), int(pred_type))
+                                    boundaries = sample_boundaries(int(bit_depth))
+                                    for port_name in sample_ports:
+                                        for value in boundaries:
+                                            case = dict(base)
+                                            case[port_name] = value
+                                            yield emit(case)
+                                    residuals = residual_boundaries(int(bit_depth), qlevel)
+                                    for port_name in residual_ports:
+                                        for value in residuals:
+                                            case = dict(base)
+                                            case[port_name] = value
+                                            yield emit(case)
+
+                                    # Pairwise endpoints cover the principal
+                                    # filter/clamp interactions without
+                                    # pretending to enumerate every pixel value.
+                                    pair_values = [0, (1 << int(bit_depth)) - 1]
+                                    for first, second in itertools.combinations(pairwise_ports, 2):
+                                        for first_value in pair_values:
+                                            for second_value in pair_values:
+                                                case = dict(base)
+                                                case[first] = first_value
+                                                case[second] = second_value
+                                                yield emit(case)
+
+        return vectors(), {
+            "kind": "windowed_boundary",
+            "exhaustive": False,
+            "coverage_mode": "STRUCTURAL_PLUS_BOUNDARY_AND_PAIRWISE",
+            "source": strategy.get("source", "reviewed spec-domain differential plan"),
+            "structural_cases": len(structural),
+            "sample_ports": sample_ports,
+            "residual_ports": residual_ports,
+            "pairwise_ports": pairwise_ports,
+            "legal_relation": "qlevel is constrained by Table 6-2 component class and selected bit depth; residuals use signed n-bit decoded-domain boundaries",
+        }
+
     def legal_vector_iterator(self, contract: dict[str, Any], input_ports: list[dict[str, Any]],
                               values: list[list[int]]) -> tuple[Iterable[tuple[int, ...]], dict[str, Any]]:
         """Return legal vectors, including reviewed conditional domains.
@@ -1511,6 +1738,8 @@ class Agent:
         table_strategy = semantics.get("legal_vector_strategy") or semantics.get("vector_strategy")
         if isinstance(table_strategy, dict) and table_strategy.get("kind") == "table_lookup":
             return self.table_lookup_vector_iterator(contract, input_ports, values, table_strategy)
+        if isinstance(table_strategy, dict) and table_strategy.get("kind") == "windowed_boundary":
+            return self.windowed_boundary_vector_iterator(contract, input_ports, values, table_strategy)
         normalized = {re.sub(r"[^a-z0-9]", "", name.lower()): name for name in names}
         bit_depth_name = normalized.get("cpntbitdepth")
         qlevel_name = normalized.get("qlevel")
@@ -1631,11 +1860,15 @@ class Agent:
             if not domain and port.get("role") == "return_value":
                 domain = {"kind": "range", "range": contract.get("interface", {}).get("output", {}).get("legal_range", [])}
             domains.append({"port": port.get("name"), "role": port.get("role"), "domain": domain})
+        vector_strategy = (contract.get("semantics", {}) or {}).get("legal_vector_strategy") or (contract.get("semantics", {}) or {}).get("vector_strategy") or {}
         write_json(artifact / "legal-domain.json", {
             "schema_version": 1,
-            "complete": all(item["domain"].get("range") or item["domain"].get("values") for item in domains if item["role"] != "return_value"),
+            "complete": bool(vector_strategy.get("exhaustive", True)) and all(
+                item["domain"].get("range") or item["domain"].get("values")
+                for item in domains if item["role"] != "return_value"
+            ),
             "ports": domains,
-            "proof_basis": "exact spec/table plus reviewed runtime range override",
+            "proof_basis": "exact spec/table plus reviewed runtime range override" if vector_strategy.get("exhaustive", True) else "reviewed spec-domain differential strategy; not a legal-domain proof",
         })
         write_json(artifact / "mutations.json", {
             "schema_version": 1,
@@ -1802,6 +2035,7 @@ class Agent:
         ]
         return {
             "complete": count > 0 and all(item["vectors"] > 0 for item in shards),
+            "proof_complete": bool(vector_strategy.get("exhaustive", True)),
             "input_ports": [port.get("name") for port in inputs],
             "total_vectors": count,
             "shard_count": shard_count,
@@ -2091,7 +2325,11 @@ class Agent:
             elif infra:
                 status = "INFRASTRUCTURE_FAILURE"
             elif executed_vectors == shard_info["total_vectors"]:
-                status = "EXHAUSTIVE_EQUIVALENT"
+                status = (
+                    "EXHAUSTIVE_EQUIVALENT"
+                    if shard_info.get("vector_strategy", {}).get("exhaustive", True)
+                    else "DIFFERENTIAL_PASS"
+                )
             else:
                 status = "UNPROVED"
             candidate_result = {
@@ -2116,6 +2354,10 @@ class Agent:
         )
         unit_receipt["verification_status"] = "EXHAUSTIVE_EQUIVALENT" if promoted else (
             "COUNTEREXAMPLE" if any(item["verification_status"] == "COUNTEREXAMPLE" for item in unit_receipt["candidates"])
+            else "DIFFERENTIAL_PASS" if unit_receipt["candidates"] and all(
+                item["verification_status"] == "DIFFERENTIAL_PASS"
+                for item in unit_receipt["candidates"]
+            )
             else "UNPROVED"
         )
         unit_receipt["promoted_candidate"] = promoted.get("candidate") if promoted else None
@@ -2718,7 +2960,7 @@ class Agent:
         results: list[dict[str, Any]] = []
         for candidate_result in unit.get("candidates", []):
             unit_status = str(candidate_result.get("verification_status", "UNPROVED"))
-            if unit_status == "EXHAUSTIVE_EQUIVALENT":
+            if unit_status in {"EXHAUSTIVE_EQUIVALENT", "DIFFERENTIAL_PASS"}:
                 continue
             name = str(candidate_result.get("candidate", "candidate"))
             candidate = generated.get(name, {})
@@ -3079,6 +3321,8 @@ class Agent:
                 },
                 "executed_shards": domain.get("shard_count", 0),
                 "executed_vectors": domain.get("total_vectors", 0),
+                "domain_proof_complete": domain.get("proof_complete", True),
+                "vector_strategy": domain.get("vector_strategy", {}).get("kind"),
                 "shard_durations_seconds": [
                     shard.get("duration_seconds")
                     for shard in promoted.get("shards", [])
@@ -3120,6 +3364,7 @@ class Agent:
                 "fresh_run": "EXECUTED_NOW",
                 "cache_hit": "REUSED_VERIFIED_RECEIPT",
                 "complete_domain_pass": "EXHAUSTIVE_EQUIVALENT",
+                "bounded_differential_pass": "DIFFERENTIAL_PASS; never a promotion gate",
             },
         }
         write_json(self.root / "summary.json", report)
@@ -3144,7 +3389,8 @@ class Agent:
             lines.append(f"- {value['contract_id']}: {value['status']} ({value['execution_status']}); unit={value['unit_status']}; dependency={value['dependency_status']}; matrix={value['matrix_status']}")
             lines.append(
                 f"  - executed vectors/shards: {value['executed_vectors']}/{value['executed_shards']}; "
-                f"shard seconds: {value['shard_durations_seconds']}"
+                f"shard seconds: {value['shard_durations_seconds']}; "
+                f"proof_complete={value['domain_proof_complete']}; strategy={value['vector_strategy']}"
             )
             lines.append(f"  - matrix modes: {json.dumps(value['matrix_modes'], sort_keys=True)}")
             lines.append(f"  - dependency evidence: {json.dumps(value['dependency_evidence'], sort_keys=True)}")
