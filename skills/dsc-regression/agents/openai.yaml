@@ -1,0 +1,4 @@
+interface:
+  display_name: "DSC Regression"
+  short_description: "Run durable SMB-backed per-function DSC regressions"
+  default_prompt: "Use $dsc-regression to observe durable SMB state, run a bounded pilot, verify receipts, and update the traceability dashboard."

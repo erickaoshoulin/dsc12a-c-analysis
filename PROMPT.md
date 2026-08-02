@@ -284,3 +284,120 @@ PDF and upstream C model are immutable external inputs.
 ```text
 feat: execute generic RTL generation and dependency composition
 ```
+
+## Durable per-function regression service v1
+
+This repository remains a standalone DSC C-model analysis project. The
+regression service is an orchestration layer for the existing generic
+C-to-RTL flow; it is not SVRT integration, a whole-codec RTL generator, a
+sequential-hardware project, or an LLM runtime. Do not add SVRT dependencies,
+SVRT configuration, C/Rust parsers, or hardcoded function-name targets.
+
+Before submitting any regression job, re-check the immutable local inputs from
+the manifest. The PDF must pass the DSC 1.2a metadata/page gate. The C model
+must pass the front-end compile database check, a clean isolated
+`make -j1 clean` followed by `make -j1`, produce `source/dsc`, and pass the
+discovered bit-true smoke/golden-hash check. Any missing tool, changed source
+or PDF hash, compiler failure, smoke mismatch, timeout, or path failure is an
+`INFRASTRUCTURE_FAILURE`; do not invoke a generator to repair it. Keep the PDF
+and upstream C source outside this repository and read-only.
+
+Function selection is facts-driven. Discover functions through the existing
+Clang/facts/contracts/callgraph/coverage/cache artifacts and preserve the
+function names only as discovered data in receipts. Never add a target list,
+allowlist, source-file selector, or prompt field that supplies a function name.
+Reject recursive or combinational dependency cycles. A generation authority
+must be `EXACT_SPEC`, `DERIVED`, or `HUMAN_APPROVED`; `AI_PROPOSED` and
+`C_TYPE_FALLBACK` are visible blockers and cannot generate RTL.
+
+The durable service is `tools/regression.py` and stores mutable state only
+under `DSC_REGRESSION_ROOT` on the requested SMB share
+`//kslin@192.168.68.52/homes`. Discover the mountpoint with `mount` and `df`;
+the default configured root is `/Volumes/homes/dsc12a-regression`. A local
+mountpoint may differ, so use an explicit `DSC_REGRESSION_ROOT` only when it is
+under the discovered requested share. Require a write probe and at least the
+configured free-space floor. Never store or print credentials. A missing,
+unwritable, low-space, or ambiguous mount is an infrastructure failure.
+
+Use this layout and no SQLite:
+
+```text
+<root>/queue/{pending,running,done,failed}/
+<root>/runs/<run-id>/functions/<contract-id>/
+<root>/cache/
+<root>/dashboard/
+```
+
+Queue directories are published with same-directory temporary-file plus
+`os.replace` writes. Claim pending jobs by an atomic `.claim` directory and a
+rename to `running`. Running jobs update a heartbeat containing host, PID,
+stage, progress, elapsed time, and last error. Recover only stale heartbeats
+under a recovery lock, increment the attempt, requeue safely, and append the
+decision and rationale to `strategy.jsonl`.
+
+The supported commands are:
+
+```sh
+python3 tools/regression.py init
+python3 tools/regression.py submit --profile pilot
+python3 tools/regression.py worker --jobs 4
+python3 tools/regression.py poll --once
+python3 tools/regression.py poll --watch 300
+python3 tools/regression.py resume <run-id>
+python3 tools/regression.py report <run-id>
+```
+
+The pilot is bounded to at most four unique contracts and two candidates per
+function: one valid cached promoted control, one new `GENERATION_READY`
+arithmetic leaf, one ready table/config leaf when facts support it, and the
+smallest acyclic dependency pair when available. Use the discovered default,
+alternate bit-depth, and alternate sampling frame scripts when present. After
+every pilot function passes, write a scale plan for every current
+`GENERATION_READY` contract with four candidates and the discovered frame
+matrix, but leave it `PLANNED_NOT_STARTED` and do not enqueue it automatically.
+
+Each function job must produce evidence for the ordered gates:
+
+```text
+width/spec
+→ generator/cache
+→ Verilator lint/build once
+→ real parallel shards
+→ deterministic reduction/mutations
+→ dependency composition
+→ C_ONLY/SHADOW/RTL_RETURN
+→ frame byte/SHA-256 comparison
+```
+
+Large logs, build trees, vectors, and flow worktrees stay on SMB. Compact
+receipts, traceability, accepted RTL, and dashboard metadata are the handoff.
+Receipts must include candidate and frame pass rates, shard/vector counts,
+counterexamples, blockers, cache/execution status, model tier/call budget,
+artifact links, and the C/PDF source gate. The static dashboard is
+self-contained, uses only `latest.json` for auto-refresh, exposes overview,
+progress, failure buckets, filters, per-function details, artifact links, and
+PDF/spec-to-C cross-links. For every port/intermediate retain width,
+signedness, domain, role, authority, derivation, review status, exact PDF
+page/section/table, C span, and contract hash.
+
+Read `model-policy.yaml` for routing. Discovery, contracts, testbench,
+verification, and dashboard work are deterministic. Cheap models handle only
+repetitive classification/syntax/local repair; strong models handle only
+ambiguous spec, boundary, or complex dependency work. Resolve model names
+from environment variables, allow at most one initial and one escalation call
+per function, and never duplicate agents on one function.
+
+The `skills/dsc-regression/` skill follows
+`observe → plan → dispatch → verify → update` using durable SMB state rather
+than chat memory. Stop on budget exhaustion, human-review authority,
+repeated failure, infrastructure failure, or pilot completion. Run tests for
+queue claim/recovery, polling, cache reuse, model routing, bad RTL, authority
+traceability, deterministic reports, and the no-function-allowlist invariant
+before committing the service.
+
+For this durable service change, commit the service, push the requested
+branch, and open a draft PR titled exactly:
+
+```text
+feat: add SMB regression queue and traceability dashboard
+```

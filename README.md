@@ -191,6 +191,36 @@ sampling scenarios; promotion requires all byte/SHA bitstream gates. A second
 run exercises the valid cache and reports `REUSED_VERIFIED_RECEIPT` with zero
 generator/model calls.
 
+## Durable regression queue
+
+The per-function regression service is independent of SVRT and discovers its
+work from the existing facts, contracts, callgraph, frame scripts, and valid
+cache receipts. It does not contain a function-name allowlist. Before a pilot,
+it requires the manifest PDF gate, C front-end compile receipt, isolated clean
+C build, and bit-true smoke/golden hash to be `PASS`.
+
+The service stores queue state, flow worktrees, builds, vectors, and large logs
+on the requested SMB share `//kslin@192.168.68.52/homes`. The default root is
+`/Volumes/homes/dsc12a-regression`; if macOS exposes the share at a different
+mountpoint, set `DSC_REGRESSION_ROOT` to a directory below that discovered
+mountpoint. Credentials are never stored or printed.
+
+```sh
+python3 tools/regression.py init
+python3 tools/regression.py submit --profile pilot
+python3 tools/regression.py worker --jobs 4
+python3 tools/regression.py poll --once
+python3 tools/regression.py report <run-id>
+```
+
+The pilot is capped at four functions and two candidates per function. A
+passing pilot writes a `PLANNED_NOT_STARTED` scale plan without enqueuing the
+full corpus. The static dashboard is at `<root>/dashboard/index.html` and
+refreshes from `latest.json`; receipts retain candidate/frame rates, exact PDF
+links, C spans, port traceability, artifact links, and blockers. See
+[`PROMPT.md`](PROMPT.md) and [`skills/dsc-regression/SKILL.md`](skills/dsc-regression/SKILL.md)
+for the execution contract and durable workflow.
+
 ## Environment
 
 Set `DSC_ANALYSIS_TIMEOUT_SECONDS` for compiler/Clang/Frama-C commands,

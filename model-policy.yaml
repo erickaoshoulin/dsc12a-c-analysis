@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "policy": "YAML 1.2 JSON subset; model names are resolved only from environment variables",
+  "routes": {
+    "deterministic": {
+      "model_env": null,
+      "initial_calls": 0,
+      "escalation_calls": 0,
+      "stages": ["discovery", "contracts", "testbench", "verification", "dashboard"]
+    },
+    "cheap": {
+      "model_env": "DSC_REGRESSION_CHEAP_MODEL",
+      "initial_calls": 1,
+      "escalation_calls": 1,
+      "stages": ["classification", "syntax_repair", "localized_repair"]
+    },
+    "strong": {
+      "model_env": "DSC_REGRESSION_STRONG_MODEL",
+      "initial_calls": 1,
+      "escalation_calls": 1,
+      "stages": ["ambiguous_spec", "boundary_extraction", "complex_dependency_refactor"]
+    }
+  },
+  "limits": {
+    "initial_calls_per_function": 1,
+    "escalation_calls_per_function": 1,
+    "parallel_agents_per_function": 1,
+    "duplicate_agents_per_function": 0
+  }
+}
