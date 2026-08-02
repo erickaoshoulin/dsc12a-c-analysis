@@ -1,0 +1,480 @@
+{
+  "arithmetic_semantics": {
+    "overflow": "no signed overflow on the locked legal domain; outside-domain behavior is not contracted",
+    "rounding": "integer division by two truncates toward zero; modulo is C remainder on non-negative operands",
+    "saturation": "none",
+    "shifts": "left shifts have operands in [8,16], qlevel is [0,16], and all shifted values are non-negative",
+    "signedness": "C int operands are signed, but the legal-domain inputs and output are non-negative"
+  },
+  "contract_id": "samplepredict",
+  "coverage": {
+    "branch_coverage_percent": 96.825,
+    "execution_count": 15870816,
+    "line_coverage_percent": 77.358,
+    "production_reachable": true,
+    "status": "EXECUTED"
+  },
+  "dependencies": {
+    "direct_callees": [],
+    "read_fields": [
+      "dsc_state_t.cpntBitDepth",
+      "dsc_state_t.quantizedResidual",
+      "dsc_state_t.unitCType"
+    ],
+    "return_dependencies": [],
+    "unresolved": [
+      "parameter:hPos",
+      "parameter:predType",
+      "parameter:qLevel",
+      "parameter:unit",
+      "field:dsc_state_t.quantizedResidual",
+      "field:dsc_state_t.unitCType"
+    ]
+  },
+  "do_not_edit": true,
+  "function": {
+    "clang_usr": "c:@F@SamplePredict",
+    "name": "SamplePredict",
+    "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/dsc_codec.c#L308-L383",
+    "qualified_name": "SamplePredict",
+    "source_body_sha256": "7768bd4e161fdec9757a0205141e0dcbfb372b5a259ca152ae5c056c428e4993",
+    "source_file": "dsc_codec.c",
+    "source_file_sha256": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf",
+    "source_span": {
+      "end_column": 1,
+      "end_line": 383,
+      "start_column": 5,
+      "start_line": 308
+    }
+  },
+  "interface": {
+    "flattened_pointer_dependencies": [
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "conditional": "selected component bit depth; leftRecon range is conditional on this value",
+        "field": "cpntBitDepth",
+        "legal_domain": {
+          "basis": "PPS bits_per_component plus one-bit RGB chroma extension",
+          "kind": "set",
+          "range": [
+            8,
+            16
+          ],
+          "values": [
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "record": "dsc_state_t",
+        "role": "CONFIG_STATIC",
+        "unresolved": false,
+        "width_source": "NORMATIVE_COMPONENT_BIT_DEPTH_DOMAIN"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4][3]",
+        "field": "quantizedResidual",
+        "legal_domain": {
+          "kind": "unresolved",
+          "range": null,
+          "values": []
+        },
+        "logical_width": 32,
+        "record": "dsc_state_t",
+        "role": "RUNTIME_INPUT",
+        "unresolved": true,
+        "width_source": "C_TYPE_FALLBACK"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "field": "unitCType",
+        "legal_domain": {
+          "kind": "unresolved",
+          "range": null,
+          "values": []
+        },
+        "logical_width": 32,
+        "record": "dsc_state_t",
+        "role": "RUNTIME_INPUT",
+        "unresolved": true,
+        "width_source": "C_TYPE_FALLBACK"
+      }
+    ],
+    "input_bit_count": 165,
+    "inputs": [
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "kind": "unresolved",
+          "range": null,
+          "values": []
+        },
+        "logical_width": 32,
+        "name": "hPos",
+        "pointer": false,
+        "role": "RUNTIME_INPUT",
+        "unresolved": true,
+        "width_source": "C_TYPE_FALLBACK"
+      },
+      {
+        "c_type": "PRED_TYPE",
+        "legal_domain": {
+          "kind": "unresolved",
+          "range": null,
+          "values": []
+        },
+        "logical_width": null,
+        "name": "predType",
+        "pointer": false,
+        "role": "RUNTIME_INPUT",
+        "unresolved": true,
+        "width_source": "UNRESOLVED"
+      },
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "kind": "unresolved",
+          "range": null,
+          "values": []
+        },
+        "logical_width": 32,
+        "name": "qLevel",
+        "pointer": false,
+        "role": "RUNTIME_INPUT",
+        "unresolved": true,
+        "width_source": "C_TYPE_FALLBACK"
+      },
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "kind": "unresolved",
+          "range": null,
+          "values": []
+        },
+        "logical_width": 32,
+        "name": "unit",
+        "pointer": false,
+        "role": "RUNTIME_INPUT",
+        "unresolved": true,
+        "width_source": "C_TYPE_FALLBACK"
+      }
+    ],
+    "output": {
+      "c_type": "int",
+      "legal_range": null,
+      "logical_width": 32,
+      "name": "return_value",
+      "signed": true,
+      "unresolved": true,
+      "width_source": "C_TYPE_FALLBACK"
+    }
+  },
+  "lock_status": "LOCKED_GENERATED",
+  "obligations": [
+    "parameter:hPos",
+    "parameter:predType",
+    "parameter:qLevel",
+    "parameter:unit",
+    "field:dsc_state_t.quantizedResidual",
+    "field:dsc_state_t.unitCType"
+  ],
+  "provenance": {
+    "coverage_sha256": "f7faaab37dc4ca79a6f811ab817435cec4dae8dad8bf457a371dc62e786a7892",
+    "source_hashes_sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+    "spec_sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+  },
+  "read_struct_fields": [
+    {
+      "access": "READ_ONLY",
+      "c_type": "int[4]",
+      "conditional": "selected component bit depth; leftRecon range is conditional on this value",
+      "field": "cpntBitDepth",
+      "legal_domain": {
+        "basis": "PPS bits_per_component plus one-bit RGB chroma extension",
+        "kind": "set",
+        "range": [
+          8,
+          16
+        ],
+        "values": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ]
+      },
+      "logical_width": 5,
+      "record": "dsc_state_t",
+      "role": "CONFIG_STATIC",
+      "unresolved": false,
+      "width_source": "NORMATIVE_COMPONENT_BIT_DEPTH_DOMAIN"
+    },
+    {
+      "access": "READ_ONLY",
+      "c_type": "int[4][3]",
+      "field": "quantizedResidual",
+      "legal_domain": {
+        "kind": "unresolved",
+        "range": null,
+        "values": []
+      },
+      "logical_width": 32,
+      "record": "dsc_state_t",
+      "role": "RUNTIME_INPUT",
+      "unresolved": true,
+      "width_source": "C_TYPE_FALLBACK"
+    },
+    {
+      "access": "READ_ONLY",
+      "c_type": "int[4]",
+      "field": "unitCType",
+      "legal_domain": {
+        "kind": "unresolved",
+        "range": null,
+        "values": []
+      },
+      "logical_width": 32,
+      "record": "dsc_state_t",
+      "role": "RUNTIME_INPUT",
+      "unresolved": true,
+      "width_source": "C_TYPE_FALLBACK"
+    }
+  ],
+  "schema_version": 1,
+  "selection": {
+    "candidate_rank": 7,
+    "eligible_after_coverage": true,
+    "eligible_static": true,
+    "leaf": true,
+    "rank": 7,
+    "score": 100.0,
+    "selection_basis": "tool-ranked production/output leaf candidate after dynamic coverage join"
+  },
+  "spec_links": [
+    {
+      "anchor_id": "pdf:model-note:MN_MMAP:p076",
+      "evidence": "C comment and PDF anchor both contain MN_MMAP",
+      "method": "exact_mn_id",
+      "page": 76,
+      "section": "6.4.1",
+      "short_anchor": "6.4.1 Modified Median-Adaptive Prediction; model note: MN_MMAP in dsc_codec.c",
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:section:6.4.1",
+      "evidence": "C comment and PDF anchor both contain MN_MMAP",
+      "method": "exact_mn_id",
+      "page": 76,
+      "section": "6.4.1",
+      "short_anchor": "6.4.1 Modified Median-Adaptive Prediction",
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:model-note:MN_MMAP:p078",
+      "evidence": "C comment and PDF anchor both contain MN_MMAP",
+      "method": "exact_mn_id",
+      "page": 78,
+      "section": "6.4.1.1",
+      "short_anchor": "6.4.1.1 MMAP in Native 4:2:2 Mode; model note: MN_MMAP in dsc_codec.c",
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:section:6.4.1.1",
+      "evidence": "C comment and PDF anchor both contain MN_MMAP",
+      "method": "exact_mn_id",
+      "page": 78,
+      "section": "6.4.1.1",
+      "short_anchor": "6.4.1.1 MMAP in Native 4:2:2 Mode",
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:model-note:MN_BLOCK_PRED:p079",
+      "evidence": "C comment and PDF anchor both contain MN_BLOCK_PRED",
+      "method": "exact_mn_id",
+      "page": 79,
+      "section": "6.4.2",
+      "short_anchor": "6.4.2 Block Prediction; model note: MN_BLOCK_PRED in dsc_codec.c",
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:model-note:MN_MMAP:p079",
+      "evidence": "C comment and PDF anchor both contain MN_MMAP",
+      "method": "exact_mn_id",
+      "page": 79,
+      "section": "6.4.1.2",
+      "short_anchor": "6.4.1.2 MMAP in Native 4:2:0 Mode; model note: MN_MMAP in dsc_codec.c",
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:section:6.4.1.2",
+      "evidence": "C comment and PDF anchor both contain MN_MMAP",
+      "method": "exact_mn_id",
+      "page": 79,
+      "section": "6.4.1.2",
+      "short_anchor": "6.4.1.2 MMAP in Native 4:2:0 Mode",
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:section:6.4.2",
+      "evidence": "C comment and PDF anchor both contain MN_BLOCK_PRED",
+      "method": "exact_mn_id",
+      "page": 79,
+      "section": "6.4.2",
+      "short_anchor": "6.4.2 Block Prediction",
+      "status": "EXACT"
+    }
+  ],
+  "static_analysis": {
+    "callees": [],
+    "contributes_to_observable_output": true,
+    "direct_effects": {
+      "allocation": false,
+      "assertion": false,
+      "indirect_call": false,
+      "io": false,
+      "logging": false,
+      "state_write": false,
+      "unknown_facts": []
+    },
+    "globals_read": [
+      {
+        "context": "expression",
+        "location": {
+          "column": 10,
+          "file": "dsc_codec.c",
+          "line": 345
+        },
+        "name": "QuantDivisor",
+        "record": "",
+        "role": "READ",
+        "type": "const int[17]"
+      },
+      {
+        "context": "expression",
+        "location": {
+          "column": 10,
+          "file": "dsc_codec.c",
+          "line": 347
+        },
+        "name": "QuantDivisor",
+        "record": "",
+        "role": "READ",
+        "type": "const int[17]"
+      },
+      {
+        "context": "expression",
+        "location": {
+          "column": 10,
+          "file": "dsc_codec.c",
+          "line": 349
+        },
+        "name": "QuantDivisor",
+        "record": "",
+        "role": "READ",
+        "type": "const int[17]"
+      },
+      {
+        "context": "expression",
+        "location": {
+          "column": 10,
+          "file": "dsc_codec.c",
+          "line": 351
+        },
+        "name": "QuantDivisor",
+        "record": "",
+        "role": "READ",
+        "type": "const int[17]"
+      },
+      {
+        "context": "expression",
+        "location": {
+          "column": 8,
+          "file": "dsc_codec.c",
+          "line": 361
+        },
+        "name": "QuantDivisor",
+        "record": "",
+        "role": "READ",
+        "type": "const int[17]"
+      },
+      {
+        "context": "expression",
+        "location": {
+          "column": 8,
+          "file": "dsc_codec.c",
+          "line": 364
+        },
+        "name": "QuantDivisor",
+        "record": "",
+        "role": "READ",
+        "type": "const int[17]"
+      },
+      {
+        "context": "expression",
+        "location": {
+          "column": 8,
+          "file": "dsc_codec.c",
+          "line": 370
+        },
+        "name": "QuantDivisor",
+        "record": "",
+        "role": "READ",
+        "type": "const int[17]"
+      },
+      {
+        "context": "expression",
+        "location": {
+          "column": 8,
+          "file": "dsc_codec.c",
+          "line": 372
+        },
+        "name": "QuantDivisor",
+        "record": "",
+        "role": "READ",
+        "type": "const int[17]"
+      }
+    ],
+    "globals_write": [],
+    "production_reachable": true,
+    "purity": "PURE",
+    "role": "DUT",
+    "timing": "COMBINATIONAL",
+    "transitive_effects": {
+      "allocation": false,
+      "assertion": false,
+      "indirect_call": false,
+      "io": false,
+      "logging": false,
+      "state_write": false,
+      "unknown_facts": []
+    }
+  },
+  "status": "PROPOSED",
+  "verification_plan": {
+    "legal_domain": "cpnt in [0,3], cpntBitDepth in {8..16}, qlevel <= table-derived maximum for the selected component depth, leftRecon in [0,(1<<cpntBitDepth)-1]",
+    "mutations": [
+      "signedness",
+      "boundary",
+      "array-index",
+      "off-by-one"
+    ],
+    "oracle": "call the immutable C function through a generated wrapper with flattened state dependencies",
+    "rtl": "at most four generated combinational SystemVerilog candidates",
+    "simulator": "Verilator lint/compile plus exhaustive legal-domain comparison"
+  }
+}

@@ -66,13 +66,15 @@ permalinks are recorded in `facts/comments.json`.
 never overwritten. A reviewed link becomes `STALE` if either input hash
 changes. Reports are bidirectional and retain visible unknowns/orphans.
 
-After C facts are assembled, an instrumented temporary copy runs the existing
-bit-true smoke and is analyzed with `llvm-profdata`/`llvm-cov`. Contracts are
-selected without a function-name allowlist. A selected exact-link contract is
-checked with a generated C oracle, up to four combinational SystemVerilog
-candidates, Verilator, and exhaustive legal-domain enumeration. Deliberate
-signedness, boundary, index, and off-by-one mutations remain visible as
-counterexamples.
+After C facts are assembled, an instrumented temporary copy automatically
+discovers and runs every `bittrue_smoke/run_c_baseline*.sh` profile, retaining a
+separate LLVM profile prefix and expected-output receipt for each script. Set
+`DSC_COVERAGE_SCRIPTS=default` only for a deliberately bounded smoke run.
+Contracts are selected without a function-name allowlist. A selected exact-link
+contract is checked with a generated C oracle, up to four combinational
+SystemVerilog candidates, Verilator, and exhaustive legal-domain enumeration.
+Deliberate signedness, boundary, index, and off-by-one mutations remain
+visible as counterexamples.
 
 ## Outputs
 

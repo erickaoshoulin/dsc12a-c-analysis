@@ -355,6 +355,7 @@ if ! "$PYTHON" "$SCRIPT_DIR/tools/run_coverage.py" \
     --output-dir "$OUTPUT_DIR/coverage" \
     --work-dir "$WORK_DIR/coverage" \
     --timeout "$BUILD_TIMEOUT_SECONDS" \
+    --coverage-scripts "${DSC_COVERAGE_SCRIPTS:-all}" \
     --functions "$OUTPUT_DIR/facts/functions.json" \
     --candidates "$OUTPUT_DIR/facts/candidates.json" \
     --build-receipt "$OUTPUT_DIR/build/build-receipt.json"; then

@@ -106,8 +106,13 @@ code, DPX, logging, PSNR, or other non-codec plumbing.
 ## Dynamic coverage contract
 
 Copy the discovered model to a temporary directory and rebuild the copy with
-`-fprofile-instr-generate -fcoverage-mapping`. Run the existing bit-true smoke
-flow, merge `*.profraw` using `llvm-profdata`, and export machine-readable
+`-fprofile-instr-generate -fcoverage-mapping`. Automatically discover every
+existing `bittrue_smoke/run_c_baseline*.sh` script and run them sequentially
+against that instrumented copy; do not maintain a function or script-name
+allowlist. Each script must retain its own profile prefix, expected hash, and
+output receipt. The default analysis uses every discovered script; set
+`DSC_COVERAGE_SCRIPTS=default` only for an explicitly bounded smoke run. Merge
+all `*.profraw` files using `llvm-profdata`, and export machine-readable
 function/line/branch data with `llvm-cov export`. For every Clang-discovered
 function record execution count when available, line and branch coverage,
 production reachability, direct effects, and transitive effects.
@@ -119,10 +124,12 @@ as a selection allowlist.
 
 ## Contract and RTL-slice contract
 
-Select the top N eligible leaf functions from tool facts (default N=10; the
-bounded batch may be changed only with `DSC_ANALYSIS_TOP_N`) and write. Any
-reviewed domain override may enrich a tool-selected candidate, but it must not
-select a function or bypass `facts/candidates.json` and `coverage/coverage.json`:
+Select up to the top N eligible leaf functions from tool facts (default N=10;
+the bounded batch may be changed only with `DSC_ANALYSIS_TOP_N`). A smaller
+selection is valid when leaf/dependency/spec filters leave fewer than N
+candidates. Any reviewed domain override may enrich a tool-selected candidate,
+but it must not select a function or bypass `facts/candidates.json` and
+`coverage/coverage.json`:
 
 - `contracts/proposed/<id>.yaml`
 - `contracts/locked/<id>.json`

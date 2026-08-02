@@ -346,6 +346,7 @@ def markdown_report(contracts: list[dict[str, Any]], coverage: dict[str, Any], t
         f"- Coverage executed functions: {coverage.get('executed_function_count')}",
         f"- Static-but-uncovered functions: {coverage.get('static_but_uncovered_function_count')}",
         f"- Exact PDF/C links: {traceability.get('counts', {}).get('exact_count')}",
+        f"- Selection cap: {coverage.get('_selection_top_n')}; selected: {len(contracts)}",
         "",
     ]
     for contract in contracts:
@@ -376,6 +377,7 @@ def main() -> int:
     candidates_payload = json.loads(args.candidates.resolve().read_text(encoding="utf-8"))
     coverage = json.loads(args.coverage.resolve().read_text(encoding="utf-8"))
     coverage["_path"] = str(args.coverage.resolve())
+    coverage["_selection_top_n"] = args.top_n
     traceability = json.loads(args.traceability.resolve().read_text(encoding="utf-8"))
     anchors_payload = json.loads(args.anchors.resolve().read_text(encoding="utf-8"))
     anchors = {item.get("anchor_id"): item for item in anchors_payload.get("anchors", [])}
@@ -426,11 +428,23 @@ def main() -> int:
     (output / "../reports/contract-review.md").resolve().parent.mkdir(parents=True, exist_ok=True)
     (output / "../reports/contract-review.md").resolve().write_text(report, encoding="utf-8")
     output.joinpath("selection.json").write_text(
-        json.dumps({"schema_version": 1, "do_not_edit": True, "contract_ids": [item["contract_id"] for item in contracts]}, indent=2) + "\n",
+        json.dumps(
+            {
+                "schema_version": 1,
+                "do_not_edit": True,
+                "requested_top_n": args.top_n,
+                "selected_count": len(contracts),
+                "contract_ids": [item["contract_id"] for item in contracts],
+            },
+            indent=2,
+        ) + "\n",
         encoding="utf-8",
     )
     print("contracts generated: " + ", ".join(item["contract_id"] for item in contracts))
-    return 0 if len(contracts) == args.top_n else 1
+    # N is an upper bound: leaf/state/dependency filters can legitimately
+    # leave fewer than N tool-selected contracts. An empty selection remains
+    # a failure because the downstream RTL-slice stage has no work item.
+    return 0 if contracts else 1
 
 
 if __name__ == "__main__":

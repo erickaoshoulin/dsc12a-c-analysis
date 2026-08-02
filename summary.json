@@ -2,6 +2,1279 @@
   "agent": "executable-generic-c-to-rtl-cicd",
   "blocked_contracts": [],
   "blockers": [],
+  "contracts": {
+    "count": 7,
+    "exact_link_counts": {
+      "findmidpoint": 2,
+      "isflatnessinfosent": 0,
+      "mapqptoqlevel": 2,
+      "predictsize": 0,
+      "quantizeresidual": 2,
+      "samplepredict": 8,
+      "samptolinebuf": 4
+    },
+    "functions": [
+      "FindMidpoint",
+      "IsFlatnessInfoSent",
+      "MapQpToQlevel",
+      "PredictSize",
+      "QuantizeResidual",
+      "SamplePredict",
+      "SampToLineBuf"
+    ],
+    "ids": [
+      "findmidpoint",
+      "isflatnessinfosent",
+      "mapqptoqlevel",
+      "predictsize",
+      "quantizeresidual",
+      "samplepredict",
+      "samptolinebuf"
+    ]
+  },
+  "coverage": {
+    "eligible_after_coverage_count": 10,
+    "executed_function_count": 78,
+    "function_count": 194,
+    "no_coverage_data_function_count": 14,
+    "profile_artifacts": {
+      "instrumented_binary_sha256": "9c8e2a19d111153c2b94bbda9dfaca2246f7114124988d169bf31c67aeda62b3",
+      "profdata_sha256": "238b59caef1f777204476a5ba94f58e3df5bd16514bb141a12b504a1aca16922",
+      "profraw_count": 22
+    },
+    "rankings": {
+      "after": [
+        {
+          "clang_usr": "c:@F@FindMidpoint",
+          "name": "FindMidpoint",
+          "rank": 1,
+          "score": 100.0
+        },
+        {
+          "clang_usr": "c:@F@IsFlatnessInfoSent",
+          "name": "IsFlatnessInfoSent",
+          "rank": 2,
+          "score": 100.0
+        },
+        {
+          "clang_usr": "c:@F@MapQpToQlevel",
+          "name": "MapQpToQlevel",
+          "rank": 3,
+          "score": 100.0
+        },
+        {
+          "clang_usr": "c:@F@PredictSize",
+          "name": "PredictSize",
+          "rank": 4,
+          "score": 100.0
+        },
+        {
+          "clang_usr": "c:@F@QuantizeResidual",
+          "name": "QuantizeResidual",
+          "rank": 5,
+          "score": 100.0
+        },
+        {
+          "clang_usr": "c:@F@SampToLineBuf",
+          "name": "SampToLineBuf",
+          "rank": 6,
+          "score": 100.0
+        },
+        {
+          "clang_usr": "c:@F@SamplePredict",
+          "name": "SamplePredict",
+          "rank": 7,
+          "score": 100.0
+        },
+        {
+          "clang_usr": "c:@F@EscapeCodeSize",
+          "name": "EscapeCodeSize",
+          "rank": 8,
+          "score": 99.95
+        },
+        {
+          "clang_usr": "c:@F@MaxResidualSize",
+          "name": "MaxResidualSize",
+          "rank": 9,
+          "score": 99.95
+        },
+        {
+          "clang_usr": "c:@F@GetQpAdjPredSize",
+          "name": "GetQpAdjPredSize",
+          "rank": 10,
+          "score": 99.9
+        }
+      ],
+      "before": [
+        {
+          "clang_usr": "c:@F@FindMidpoint",
+          "name": "FindMidpoint",
+          "rank": 1,
+          "score": 100.0
+        },
+        {
+          "clang_usr": "c:@F@IsFlatnessInfoSent",
+          "name": "IsFlatnessInfoSent",
+          "rank": 2,
+          "score": 100.0
+        },
+        {
+          "clang_usr": "c:@F@MapQpToQlevel",
+          "name": "MapQpToQlevel",
+          "rank": 3,
+          "score": 100.0
+        },
+        {
+          "clang_usr": "c:@F@PredictSize",
+          "name": "PredictSize",
+          "rank": 4,
+          "score": 100.0
+        },
+        {
+          "clang_usr": "c:@F@QuantizeResidual",
+          "name": "QuantizeResidual",
+          "rank": 5,
+          "score": 100.0
+        },
+        {
+          "clang_usr": "c:@F@SampToLineBuf",
+          "name": "SampToLineBuf",
+          "rank": 6,
+          "score": 100.0
+        },
+        {
+          "clang_usr": "c:@F@SamplePredict",
+          "name": "SamplePredict",
+          "rank": 7,
+          "score": 100.0
+        },
+        {
+          "clang_usr": "c:@F@EscapeCodeSize",
+          "name": "EscapeCodeSize",
+          "rank": 8,
+          "score": 99.95
+        },
+        {
+          "clang_usr": "c:@F@MaxResidualSize",
+          "name": "MaxResidualSize",
+          "rank": 9,
+          "score": 99.95
+        },
+        {
+          "clang_usr": "c:@F@GetQpAdjPredSize",
+          "name": "GetQpAdjPredSize",
+          "rank": 10,
+          "score": 99.9
+        },
+        {
+          "clang_usr": "c:@F@ceil_log2",
+          "name": "ceil_log2",
+          "rank": 11,
+          "score": 80.0
+        },
+        {
+          "clang_usr": "c:@F@getbits",
+          "name": "getbits",
+          "rank": 12,
+          "score": 80.0
+        },
+        {
+          "clang_usr": "c:@F@FindResidualSize",
+          "name": "FindResidualSize",
+          "rank": 13,
+          "score": 79.95
+        },
+        {
+          "clang_usr": "c:@F@IsOrigFlatHIndex",
+          "name": "IsOrigFlatHIndex",
+          "rank": 14,
+          "score": 79.95
+        },
+        {
+          "clang_usr": "c:@F@fifo_free",
+          "name": "fifo_free",
+          "rank": 15,
+          "score": 79.95
+        },
+        {
+          "clang_usr": "c:@F@UsingMidpoint",
+          "name": "UsingMidpoint",
+          "rank": 16,
+          "score": 79.9
+        },
+        {
+          "clang_usr": "c:@F@yuv_422_444_region",
+          "name": "yuv_422_444_region",
+          "rank": 17,
+          "score": 79.9
+        },
+        {
+          "clang_usr": "c:@F@yuv_444_422_region",
+          "name": "yuv_444_422_region",
+          "rank": 18,
+          "score": 79.9
+        },
+        {
+          "clang_usr": "c:@F@Qp2Qlevel",
+          "name": "Qp2Qlevel",
+          "rank": 19,
+          "score": 70.0
+        },
+        {
+          "clang_usr": "c:dpx.c@F@generate_timecode",
+          "name": "generate_timecode",
+          "rank": 20,
+          "score": 70.0
+        },
+        {
+          "clang_usr": "c:@F@hdr_dpx_byte_swap",
+          "name": "hdr_dpx_byte_swap",
+          "rank": 21,
+          "score": 70.0
+        },
+        {
+          "clang_usr": "c:@F@splitstring_exact",
+          "name": "splitstring_exact",
+          "rank": 22,
+          "score": 69.9
+        },
+        {
+          "clang_usr": "c:@F@CalcFullnessOffset",
+          "name": "CalcFullnessOffset",
+          "rank": 23,
+          "score": 65.0
+        },
+        {
+          "clang_usr": "c:@F@RemoveBitsEncoderBuffer",
+          "name": "RemoveBitsEncoderBuffer",
+          "rank": 24,
+          "score": 65.0
+        },
+        {
+          "clang_usr": "c:@F@fifo_init",
+          "name": "fifo_init",
+          "rank": 25,
+          "score": 64.95
+        },
+        {
+          "clang_usr": "c:@F@ErrorHandler",
+          "name": "ErrorHandler",
+          "rank": 26,
+          "score": 60.0
+        },
+        {
+          "clang_usr": "c:@F@PopulateOrigLine",
+          "name": "PopulateOrigLine",
+          "rank": 27,
+          "score": 60.0
+        },
+        {
+          "clang_usr": "c:@F@UpdateMidpoint",
+          "name": "UpdateMidpoint",
+          "rank": 28,
+          "score": 60.0
+        },
+        {
+          "clang_usr": "c:@F@AddBits",
+          "name": "AddBits",
+          "rank": 29,
+          "score": 59.95
+        },
+        {
+          "clang_usr": "c:@F@BlockPredSearch",
+          "name": "BlockPredSearch",
+          "rank": 30,
+          "score": 59.95
+        },
+        {
+          "clang_usr": "c:@F@DSC_Decode",
+          "name": "DSC_Decode",
+          "rank": 31,
+          "score": 59.95
+        },
+        {
+          "clang_usr": "c:@F@DSC_Encode",
+          "name": "DSC_Encode",
+          "rank": 32,
+          "score": 59.95
+        },
+        {
+          "clang_usr": "c:@F@GetBits",
+          "name": "GetBits",
+          "rank": 33,
+          "score": 59.95
+        },
+        {
+          "clang_usr": "c:@F@UpdateHistoryElement",
+          "name": "UpdateHistoryElement",
+          "rank": 34,
+          "score": 59.95
+        },
+        {
+          "clang_usr": "c:@F@UpdateICHistory",
+          "name": "UpdateICHistory",
+          "rank": 35,
+          "score": 59.95
+        },
+        {
+          "clang_usr": "c:@F@UseICHistory",
+          "name": "UseICHistory",
+          "rank": 36,
+          "score": 59.95
+        },
+        {
+          "clang_usr": "c:@F@dpx_write",
+          "name": "dpx_write",
+          "rank": 37,
+          "score": 59.95
+        },
+        {
+          "clang_usr": "c:@F@putbits",
+          "name": "putbits",
+          "rank": 38,
+          "score": 59.95
+        },
+        {
+          "clang_usr": "c:@F@FlatnessAdjustment",
+          "name": "FlatnessAdjustment",
+          "rank": 39,
+          "score": 59.9
+        },
+        {
+          "clang_usr": "c:@F@HistoryLookup",
+          "name": "HistoryLookup",
+          "rank": 40,
+          "score": 59.9
+        },
+        {
+          "clang_usr": "c:@F@ProcessGroupDec",
+          "name": "ProcessGroupDec",
+          "rank": 41,
+          "score": 59.9
+        },
+        {
+          "clang_usr": "c:@F@fifo_get_bits",
+          "name": "fifo_get_bits",
+          "rank": 42,
+          "score": 59.9
+        },
+        {
+          "clang_usr": "c:@F@fifo_put_bits",
+          "name": "fifo_put_bits",
+          "rank": 43,
+          "score": 59.9
+        },
+        {
+          "clang_usr": "c:@F@rgb2ycocg",
+          "name": "rgb2ycocg",
+          "rank": 44,
+          "score": 59.9
+        },
+        {
+          "clang_usr": "c:@F@ycocg2rgb",
+          "name": "ycocg2rgb",
+          "rank": 45,
+          "score": 59.9
+        },
+        {
+          "clang_usr": "c:@F@EstimateBitsForGroup",
+          "name": "EstimateBitsForGroup",
+          "rank": 46,
+          "score": 59.85
+        },
+        {
+          "clang_usr": "c:@F@IsOrigWithinQerr",
+          "name": "IsOrigWithinQerr",
+          "rank": 47,
+          "score": 59.85
+        },
+        {
+          "clang_usr": "c:@F@PickBestHistoryValue",
+          "name": "PickBestHistoryValue",
+          "rank": 48,
+          "score": 59.85
+        },
+        {
+          "clang_usr": "c:@F@VLDGroup",
+          "name": "VLDGroup",
+          "rank": 49,
+          "score": 59.85
+        },
+        {
+          "clang_usr": "c:@F@IchDecision",
+          "name": "IchDecision",
+          "rank": 50,
+          "score": 59.8
+        },
+        {
+          "clang_usr": "c:@F@ProcessGroupEnc",
+          "name": "ProcessGroupEnc",
+          "rank": 51,
+          "score": 59.8
+        },
+        {
+          "clang_usr": "c:@F@RateControl",
+          "name": "RateControl",
+          "rank": 52,
+          "score": 59.8
+        },
+        {
+          "clang_usr": "c:@F@VLCGroup",
+          "name": "VLCGroup",
+          "rank": 53,
+          "score": 59.75
+        },
+        {
+          "clang_usr": "c:@F@InitializeDSCState",
+          "name": "InitializeDSCState",
+          "rank": 54,
+          "score": 59.7
+        },
+        {
+          "clang_usr": "c:@F@VLDUnit",
+          "name": "VLDUnit",
+          "rank": 55,
+          "score": 59.55
+        },
+        {
+          "clang_usr": "c:@F@PredictionLoop",
+          "name": "PredictionLoop",
+          "rank": 56,
+          "score": 59.5
+        },
+        {
+          "clang_usr": "c:@F@VLCUnit",
+          "name": "VLCUnit",
+          "rank": 57,
+          "score": 59.4
+        },
+        {
+          "clang_usr": "c:@F@write_dpx_ver",
+          "name": "write_dpx_ver",
+          "rank": 58,
+          "score": 59.2
+        },
+        {
+          "clang_usr": "c:@F@DSC_Algorithm",
+          "name": "DSC_Algorithm",
+          "rank": 59,
+          "score": 59.0
+        },
+        {
+          "clang_usr": "c:@F@hdr_dpx_write",
+          "name": "hdr_dpx_write",
+          "rank": 60,
+          "score": 59.0
+        },
+        {
+          "clang_usr": "c:@F@main",
+          "name": "main",
+          "rank": 61,
+          "score": 59.0
+        },
+        {
+          "clang_usr": "c:@F@conv",
+          "name": "conv",
+          "rank": 62,
+          "score": 50.0
+        },
+        {
+          "clang_usr": "c:@F@ends_in_percentd",
+          "name": "ends_in_percentd",
+          "rank": 63,
+          "score": 50.0
+        },
+        {
+          "clang_usr": "c:@F@lower_case",
+          "name": "lower_case",
+          "rank": 64,
+          "score": 49.95
+        },
+        {
+          "clang_usr": "c:@F@print_pps",
+          "name": "print_pps",
+          "rank": 65,
+          "score": 49.95
+        },
+        {
+          "clang_usr": "c:@F@str2f",
+          "name": "str2f",
+          "rank": 66,
+          "score": 49.95
+        },
+        {
+          "clang_usr": "c:@F@str2l",
+          "name": "str2l",
+          "rank": 67,
+          "score": 49.95
+        },
+        {
+          "clang_usr": "c:@F@str2ul",
+          "name": "str2ul",
+          "rank": 68,
+          "score": 49.95
+        },
+        {
+          "clang_usr": "c:@F@Assert_func",
+          "name": "Assert_func",
+          "rank": 69,
+          "score": 49.9
+        },
+        {
+          "clang_usr": "c:@F@splitstring_exact_strict",
+          "name": "splitstring_exact_strict",
+          "rank": 70,
+          "score": 49.9
+        },
+        {
+          "clang_usr": "c:@F@str2d",
+          "name": "str2d",
+          "rank": 71,
+          "score": 49.9
+        },
+        {
+          "clang_usr": "c:@F@str2i",
+          "name": "str2i",
+          "rank": 72,
+          "score": 49.9
+        },
+        {
+          "clang_usr": "c:@F@str2p",
+          "name": "str2p",
+          "rank": 73,
+          "score": 49.9
+        },
+        {
+          "clang_usr": "c:@F@str2ui",
+          "name": "str2ui",
+          "rank": 74,
+          "score": 49.9
+        },
+        {
+          "clang_usr": "c:@F@usage",
+          "name": "usage",
+          "rank": 75,
+          "score": 49.9
+        },
+        {
+          "clang_usr": "c:@F@str2ll",
+          "name": "str2ll",
+          "rank": 76,
+          "score": 49.85
+        },
+        {
+          "clang_usr": "c:@F@str2ull",
+          "name": "str2ull",
+          "rank": 77,
+          "score": 49.85
+        },
+        {
+          "clang_usr": "c:@F@CErr",
+          "name": "CErr",
+          "rank": 78,
+          "score": 49.75
+        },
+        {
+          "clang_usr": "c:@F@Err",
+          "name": "Err",
+          "rank": 79,
+          "score": 49.75
+        },
+        {
+          "clang_usr": "c:@F@UErr",
+          "name": "UErr",
+          "rank": 80,
+          "score": 49.75
+        },
+        {
+          "clang_usr": "c:@F@hdr_dpx_determine_file_type",
+          "name": "hdr_dpx_determine_file_type",
+          "rank": 81,
+          "score": 49.75
+        },
+        {
+          "clang_usr": "c:@F@PErr",
+          "name": "PErr",
+          "rank": 82,
+          "score": 49.7
+        },
+        {
+          "clang_usr": "c:@F@chop_ext",
+          "name": "chop_ext",
+          "rank": 83,
+          "score": 49.7
+        },
+        {
+          "clang_usr": "c:@F@appendarg",
+          "name": "appendarg",
+          "rank": 84,
+          "score": 39.9
+        },
+        {
+          "clang_usr": "c:@F@has_ext",
+          "name": "has_ext",
+          "rank": 85,
+          "score": 39.9
+        },
+        {
+          "clang_usr": "c:@F@fifo_clear",
+          "name": "fifo_clear",
+          "rank": 86,
+          "score": 35.0
+        },
+        {
+          "clang_usr": "c:@F@pcopy_header",
+          "name": "pcopy_header",
+          "rank": 87,
+          "score": 35.0
+        },
+        {
+          "clang_usr": "c:@F@set_convertbits_rounding",
+          "name": "set_convertbits_rounding",
+          "rank": 88,
+          "score": 35.0
+        },
+        {
+          "clang_usr": "c:@F@compute_offset",
+          "name": "compute_offset",
+          "rank": 89,
+          "score": 34.95
+        },
+        {
+          "clang_usr": "c:@F@hdr_dpx_compute_offsets",
+          "name": "hdr_dpx_compute_offsets",
+          "rank": 90,
+          "score": 34.95
+        },
+        {
+          "clang_usr": "c:@F@set_defaults",
+          "name": "set_defaults",
+          "rank": 91,
+          "score": 34.9
+        },
+        {
+          "clang_usr": "c:@F@splitstring",
+          "name": "splitstring",
+          "rank": 92,
+          "score": 34.9
+        },
+        {
+          "clang_usr": "c:@F@str2frange",
+          "name": "str2frange",
+          "rank": 93,
+          "score": 34.9
+        },
+        {
+          "clang_usr": "c:@F@str2prange",
+          "name": "str2prange",
+          "rank": 94,
+          "score": 34.9
+        },
+        {
+          "clang_usr": "c:@F@str2range",
+          "name": "str2range",
+          "rank": 95,
+          "score": 34.9
+        },
+        {
+          "clang_usr": "c:cmd_parse.c@F@parse_kvline",
+          "name": "parse_kvline",
+          "rank": 96,
+          "score": 34.75
+        },
+        {
+          "clang_usr": "c:hdr_dpx.c@F@hdr_dpx_check_string",
+          "name": "hdr_dpx_check_string",
+          "rank": 97,
+          "score": 30.0
+        },
+        {
+          "clang_usr": "c:cmd_parse.c@F@test_cmd",
+          "name": "test_cmd",
+          "rank": 98,
+          "score": 30.0
+        },
+        {
+          "clang_usr": "c:dpx.c@F@create_dpx_pic",
+          "name": "create_dpx_pic",
+          "rank": 99,
+          "score": 29.95
+        },
+        {
+          "clang_usr": "c:@F@dpx_read",
+          "name": "dpx_read",
+          "rank": 100,
+          "score": 29.95
+        },
+        {
+          "clang_usr": "c:@F@gettoken",
+          "name": "gettoken",
+          "rank": 101,
+          "score": 29.95
+        },
+        {
+          "clang_usr": "c:@F@hdr_dpx_map_datum_to_pic",
+          "name": "hdr_dpx_map_datum_to_pic",
+          "rank": 102,
+          "score": 29.95
+        },
+        {
+          "clang_usr": "c:@F@make_qp_tables",
+          "name": "make_qp_tables",
+          "rank": 103,
+          "score": 29.95
+        },
+        {
+          "clang_usr": "c:@F@pdestroy",
+          "name": "pdestroy",
+          "rank": 104,
+          "score": 29.95
+        },
+        {
+          "clang_usr": "c:@F@write_pps",
+          "name": "write_pps",
+          "rank": 105,
+          "score": 29.95
+        },
+        {
+          "clang_usr": "c:@F@yuv_420_422",
+          "name": "yuv_420_422",
+          "rank": 106,
+          "score": 29.95
+        },
+        {
+          "clang_usr": "c:@F@yuv_422_444",
+          "name": "yuv_422_444",
+          "rank": 107,
+          "score": 29.95
+        },
+        {
+          "clang_usr": "c:@F@check_qp_for_overflow",
+          "name": "check_qp_for_overflow",
+          "rank": 108,
+          "score": 29.9
+        },
+        {
+          "clang_usr": "c:@F@fifo_flip_get_bits",
+          "name": "fifo_flip_get_bits",
+          "rank": 109,
+          "score": 29.9
+        },
+        {
+          "clang_usr": "c:@F@fifo_flip_put_bits",
+          "name": "fifo_flip_put_bits",
+          "rank": 110,
+          "score": 29.9
+        },
+        {
+          "clang_usr": "c:@F@generate_rc_parameters",
+          "name": "generate_rc_parameters",
+          "rank": 111,
+          "score": 29.9
+        },
+        {
+          "clang_usr": "c:@F@hdr_dpx_get_datum",
+          "name": "hdr_dpx_get_datum",
+          "rank": 112,
+          "score": 29.9
+        },
+        {
+          "clang_usr": "c:@F@line_to_int",
+          "name": "line_to_int",
+          "rank": 113,
+          "score": 29.9
+        },
+        {
+          "clang_usr": "c:@F@make_qp_table",
+          "name": "make_qp_table",
+          "rank": 114,
+          "score": 29.9
+        },
+        {
+          "clang_usr": "c:@F@parse_pps",
+          "name": "parse_pps",
+          "rank": 115,
+          "score": 29.9
+        },
+        {
+          "clang_usr": "c:@F@uyvy_read",
+          "name": "uyvy_read",
+          "rank": 116,
+          "score": 29.9
+        },
+        {
+          "clang_usr": "c:@F@uyvy_write",
+          "name": "uyvy_write",
+          "rank": 117,
+          "score": 29.9
+        },
+        {
+          "clang_usr": "c:@F@writeppm",
+          "name": "writeppm",
+          "rank": 118,
+          "score": 29.9
+        },
+        {
+          "clang_usr": "c:codec_main.c@F@assign_line",
+          "name": "assign_line",
+          "rank": 119,
+          "score": 29.85
+        },
+        {
+          "clang_usr": "c:cmd_parse.c@F@distinguish_dist",
+          "name": "distinguish_dist",
+          "rank": 120,
+          "score": 29.85
+        },
+        {
+          "clang_usr": "c:cmd_parse.c@F@error_check",
+          "name": "error_check",
+          "rank": 121,
+          "score": 29.85
+        },
+        {
+          "clang_usr": "c:@F@hdr_dpx_create_pic",
+          "name": "hdr_dpx_create_pic",
+          "rank": 122,
+          "score": 29.85
+        },
+        {
+          "clang_usr": "c:cmd_parse.c@F@order_cmds",
+          "name": "order_cmds",
+          "rank": 123,
+          "score": 29.85
+        },
+        {
+          "clang_usr": "c:@F@ppm_read",
+          "name": "ppm_read",
+          "rank": 124,
+          "score": 29.85
+        },
+        {
+          "clang_usr": "c:@F@read_dsc_data",
+          "name": "read_dsc_data",
+          "rank": 125,
+          "score": 29.85
+        },
+        {
+          "clang_usr": "c:@F@rgb2yuv",
+          "name": "rgb2yuv",
+          "rank": 126,
+          "score": 29.85
+        },
+        {
+          "clang_usr": "c:@F@simple422to444",
+          "name": "simple422to444",
+          "rank": 127,
+          "score": 29.85
+        },
+        {
+          "clang_usr": "c:@F@simple444to422",
+          "name": "simple444to422",
+          "rank": 128,
+          "score": 29.85
+        },
+        {
+          "clang_usr": "c:@F@str2dim",
+          "name": "str2dim",
+          "rank": 129,
+          "score": 29.85
+        },
+        {
+          "clang_usr": "c:@F@str2dvect",
+          "name": "str2dvect",
+          "rank": 130,
+          "score": 29.85
+        },
+        {
+          "clang_usr": "c:@F@str2fdim",
+          "name": "str2fdim",
+          "rank": 131,
+          "score": 29.85
+        },
+        {
+          "clang_usr": "c:@F@str2fvect",
+          "name": "str2fvect",
+          "rank": 132,
+          "score": 29.85
+        },
+        {
+          "clang_usr": "c:@F@str2ivect",
+          "name": "str2ivect",
+          "rank": 133,
+          "score": 29.85
+        },
+        {
+          "clang_usr": "c:@F@str2llvect",
+          "name": "str2llvect",
+          "rank": 134,
+          "score": 29.85
+        },
+        {
+          "clang_usr": "c:@F@str2lvect",
+          "name": "str2lvect",
+          "rank": 135,
+          "score": 29.85
+        },
+        {
+          "clang_usr": "c:@F@str2pdim",
+          "name": "str2pdim",
+          "rank": 136,
+          "score": 29.85
+        },
+        {
+          "clang_usr": "c:@F@str2pvect",
+          "name": "str2pvect",
+          "rank": 137,
+          "score": 29.85
+        },
+        {
+          "clang_usr": "c:@F@str2uivect",
+          "name": "str2uivect",
+          "rank": 138,
+          "score": 29.85
+        },
+        {
+          "clang_usr": "c:@F@str2ullvect",
+          "name": "str2ullvect",
+          "rank": 139,
+          "score": 29.85
+        },
+        {
+          "clang_usr": "c:@F@str2ulvect",
+          "name": "str2ulvect",
+          "rank": 140,
+          "score": 29.85
+        },
+        {
+          "clang_usr": "c:@F@write_dsc_data",
+          "name": "write_dsc_data",
+          "rank": 141,
+          "score": 29.85
+        },
+        {
+          "clang_usr": "c:@F@yuv2rgb",
+          "name": "yuv2rgb",
+          "rank": 142,
+          "score": 29.85
+        },
+        {
+          "clang_usr": "c:@F@compute_and_display_PSNR",
+          "name": "compute_and_display_PSNR",
+          "rank": 143,
+          "score": 29.8
+        },
+        {
+          "clang_usr": "c:@F@compute_rc_parameters",
+          "name": "compute_rc_parameters",
+          "rank": 144,
+          "score": 29.8
+        },
+        {
+          "clang_usr": "c:@F@determine_field_format",
+          "name": "determine_field_format",
+          "rank": 145,
+          "score": 29.8
+        },
+        {
+          "clang_usr": "c:@F@hdr_dpx_pic_to_datum_list",
+          "name": "hdr_dpx_pic_to_datum_list",
+          "rank": 146,
+          "score": 29.8
+        },
+        {
+          "clang_usr": "c:@F@pcreate_ext",
+          "name": "pcreate_ext",
+          "rank": 147,
+          "score": 29.8
+        },
+        {
+          "clang_usr": "c:@F@yuv_422_420",
+          "name": "yuv_422_420",
+          "rank": 148,
+          "score": 29.8
+        },
+        {
+          "clang_usr": "c:@F@yuv_444_422",
+          "name": "yuv_444_422",
+          "rank": 149,
+          "score": 29.8
+        },
+        {
+          "clang_usr": "c:@F@convertbits",
+          "name": "convertbits",
+          "rank": 150,
+          "score": 29.75
+        },
+        {
+          "clang_usr": "c:@F@hdr_dpx_fill_core_fields",
+          "name": "hdr_dpx_fill_core_fields",
+          "rank": 151,
+          "score": 29.75
+        },
+        {
+          "clang_usr": "c:@F@hdr_dpx_rle_encode",
+          "name": "hdr_dpx_rle_encode",
+          "rank": 152,
+          "score": 29.75
+        },
+        {
+          "clang_usr": "c:@F@palloc",
+          "name": "palloc",
+          "rank": 153,
+          "score": 29.75
+        },
+        {
+          "clang_usr": "c:@F@populate_pps",
+          "name": "populate_pps",
+          "rank": 154,
+          "score": 29.75
+        },
+        {
+          "clang_usr": "c:@F@print_pps_v2",
+          "name": "print_pps_v2",
+          "rank": 155,
+          "score": 29.75
+        },
+        {
+          "clang_usr": "c:@F@split_base_and_ext",
+          "name": "split_base_and_ext",
+          "rank": 156,
+          "score": 29.75
+        },
+        {
+          "clang_usr": "c:@F@parse_line",
+          "name": "parse_line",
+          "rank": 157,
+          "score": 29.7
+        },
+        {
+          "clang_usr": "c:@F@yuv_write",
+          "name": "yuv_write",
+          "rank": 158,
+          "score": 29.7
+        },
+        {
+          "clang_usr": "c:codec_main.c@F@parse_cfgfile",
+          "name": "parse_cfgfile",
+          "rank": 159,
+          "score": 29.65
+        },
+        {
+          "clang_usr": "c:codec_main.c@F@process_args",
+          "name": "process_args",
+          "rank": 160,
+          "score": 29.65
+        },
+        {
+          "clang_usr": "c:dpx.c@F@read_dpx_image_data",
+          "name": "read_dpx_image_data",
+          "rank": 161,
+          "score": 29.65
+        },
+        {
+          "clang_usr": "c:@F@yuv_read",
+          "name": "yuv_read",
+          "rank": 162,
+          "score": 29.6
+        },
+        {
+          "clang_usr": "c:@F@parse_cmd",
+          "name": "parse_cmd",
+          "rank": 163,
+          "score": 29.55
+        },
+        {
+          "clang_usr": "c:@F@ppm_write",
+          "name": "ppm_write",
+          "rank": 164,
+          "score": 29.55
+        },
+        {
+          "clang_usr": "c:@F@readppm",
+          "name": "readppm",
+          "rank": 165,
+          "score": 29.45
+        },
+        {
+          "clang_usr": "c:@F@hdr_dpx_get_pic_data",
+          "name": "hdr_dpx_get_pic_data",
+          "rank": 166,
+          "score": 29.4
+        },
+        {
+          "clang_usr": "c:@F@hdr_dpx_read",
+          "name": "hdr_dpx_read",
+          "rank": 167,
+          "score": 29.35
+        },
+        {
+          "clang_usr": "c:@F@dpx_read_hl",
+          "name": "dpx_read_hl",
+          "rank": 168,
+          "score": 29.25
+        },
+        {
+          "clang_usr": "c:cmd_parse.c@F@assign_val",
+          "name": "assign_val",
+          "rank": 169,
+          "score": 29.0
+        },
+        {
+          "clang_usr": "c:@F@change_ext",
+          "name": "change_ext",
+          "rank": 170,
+          "score": 19.9
+        },
+        {
+          "clang_usr": "c:@F@strisdim",
+          "name": "strisdim",
+          "rank": 171,
+          "score": 19.9
+        },
+        {
+          "clang_usr": "c:@F@strisnum",
+          "name": "strisnum",
+          "rank": 172,
+          "score": 19.9
+        },
+        {
+          "clang_usr": "c:@F@strisrange",
+          "name": "strisrange",
+          "rank": 173,
+          "score": 19.9
+        },
+        {
+          "clang_usr": "c:@F@chop_dir",
+          "name": "chop_dir",
+          "rank": 174,
+          "score": 19.75
+        },
+        {
+          "clang_usr": "c:@F@file_ext",
+          "name": "file_ext",
+          "rank": 175,
+          "score": 19.75
+        },
+        {
+          "clang_usr": "c:@F@file_dir",
+          "name": "file_dir",
+          "rank": 176,
+          "score": 19.7
+        },
+        {
+          "clang_usr": "c:@F@easy_mkdir",
+          "name": "easy_mkdir",
+          "rank": 177,
+          "score": 19.55
+        },
+        {
+          "clang_usr": "c:@F@set_dpx_colorspace",
+          "name": "set_dpx_colorspace",
+          "rank": 178,
+          "score": 5.0
+        },
+        {
+          "clang_usr": "c:@F@merge_cmd_args",
+          "name": "merge_cmd_args",
+          "rank": 179,
+          "score": -0.05
+        },
+        {
+          "clang_usr": "c:@F@read_dpx",
+          "name": "read_dpx",
+          "rank": 180,
+          "score": -0.05
+        },
+        {
+          "clang_usr": "c:@F@write_dpx",
+          "name": "write_dpx",
+          "rank": 181,
+          "score": -0.05
+        },
+        {
+          "clang_usr": "c:@F@pcopy",
+          "name": "pcopy",
+          "rank": 182,
+          "score": -0.1
+        },
+        {
+          "clang_usr": "c:@F@retrieve_cmds_var",
+          "name": "retrieve_cmds_var",
+          "rank": 183,
+          "score": -0.1
+        },
+        {
+          "clang_usr": "c:@F@retrieve_keys_var",
+          "name": "retrieve_keys_var",
+          "rank": 184,
+          "score": -0.1
+        },
+        {
+          "clang_usr": "c:@F@WriteEntryToBitstream",
+          "name": "WriteEntryToBitstream",
+          "rank": 185,
+          "score": -0.15
+        },
+        {
+          "clang_usr": "c:@F@convert_rgb_2020_to_709",
+          "name": "convert_rgb_2020_to_709",
+          "rank": 186,
+          "score": -0.15
+        },
+        {
+          "clang_usr": "c:cmd_parse.c@F@order_keys",
+          "name": "order_keys",
+          "rank": 187,
+          "score": -0.15
+        },
+        {
+          "clang_usr": "c:@F@fifo_clone",
+          "name": "fifo_clone",
+          "rank": 188,
+          "score": -0.2
+        },
+        {
+          "clang_usr": "c:@F@parse_cmd_strict",
+          "name": "parse_cmd_strict",
+          "rank": 189,
+          "score": -0.2
+        },
+        {
+          "clang_usr": "c:@F@parse_line_strict",
+          "name": "parse_line_strict",
+          "rank": 190,
+          "score": -0.2
+        },
+        {
+          "clang_usr": "c:@F@pcreate",
+          "name": "pcreate",
+          "rank": 191,
+          "score": -0.2
+        },
+        {
+          "clang_usr": "c:@F@rgba_read",
+          "name": "rgba_read",
+          "rank": 192,
+          "score": -0.3
+        },
+        {
+          "clang_usr": "c:@F@parse_cmd_usage",
+          "name": "parse_cmd_usage",
+          "rank": 193,
+          "score": -0.45
+        },
+        {
+          "clang_usr": "c:@F@parse_key_usage",
+          "name": "parse_key_usage",
+          "rank": 194,
+          "score": -0.45
+        }
+      ]
+    },
+    "static_but_uncovered_function_count": 102,
+    "status": "PASS"
+  },
   "dependency_pair": {
     "call_sites": [
       {
@@ -120,6 +1393,167 @@
       "unit_status": "EXHAUSTIVE_EQUIVALENT"
     }
   ],
+  "rtl_slice": {
+    "candidate_results": [
+      {
+        "build": {
+          "duration_seconds": 2.716,
+          "output_tail": "c++  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension    -I/private/tmp/dsc12a-slice.x2MKww/source-include   -Os  -c -o harness_01.o /private/tmp/dsc12a-c-analysis/verification/findmidpoint/harness_01.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension    -I/private/tmp/dsc12a-slice.x2MKww/source-include   -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension    -I/private/tmp/dsc12a-slice.x2MKww/source-include   -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\npython3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vfindmidpoint_candidate_01.cpp Vfindmidpoint_candidate_01___024root__0.cpp Vfindmidpoint_candidate_01___024root__Slow.cpp Vfindmidpoint_candidate_01___024root__0__Slow.cpp Vfindmidpoint_candidate_01__Syms__Slow.cpp > Vfindmidpoint_candidate_01__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension    -I/private/tmp/dsc12a-slice.x2MKww/source-include   -c -o Vfindmidpoint_candidate_01__ALL.o Vfindmidpoint_candidate_01__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++  -Wl,-U,__Z15vl_time_stamp64v,-U,__Z13sc_time_stampv,-U,_vlog_startup_routines   harness_01.o verilated.o verilated_threads.o Vfindmidpoint_candidate_01__ALL.a   /private/tmp/dsc12a-slice.x2MKww/oracle/oracle.o /private/tmp/dsc12a-slice.x2MKww/oracle/cmd_parse.o /private/tmp/dsc12a-slice.x2MKww/oracle/dpx.o /private/tmp/dsc12a-slice.x2MKww/oracle/dsc_codec.o /private/tmp/dsc12a-slice.x2MKww/oracle/dsc_utils.o /private/tmp/dsc12a-slice.x2MKww/oracle/fifo.o /private/tmp/dsc12a-slice.x2MKww/oracle/hdr_dpx.o /private/tmp/dsc12a-slice.x2MKww/oracle/logging.o /private/tmp/dsc12a-slice.x2MKww/oracle/multiplex.o /private/tmp/dsc12a-slice.x2MKww/oracle/psnr.o /private/tmp/dsc12a-slice.x2MKww/oracle/utl.o -lm  -pthread -lpthread   -o Vfindmidpoint_candidate_01\nrm Vfindmidpoint_candidate_01__ALL.verilator_deplist.tmp\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.032 MB sources in 2 modules, into 0.027 MB in 5 C++ files needing 0.000 MB\n- Verilator: Walltime 2.675 s (elab=0.000, cvt=0.003, bld=2.669); cpu 0.006 s on 1 threads; allocated 9.406 MB\n",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        "candidate": "candidate_01",
+        "lint": {
+          "duration_seconds": 0.069,
+          "output_tail": "- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.034 MB sources in 2 modules, into 0.014 MB in 3 C++ files needing 0.000 MB\n- Verilator: Walltime 0.015 s (elab=0.004, cvt=0.005, bld=0.000); cpu 0.007 s on 1 threads; allocated 9.500 MB\n",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        "mismatches": 0,
+        "module": "findmidpoint_candidate_01",
+        "returncode": 0,
+        "status": "EXHAUSTIVE_EQUIVALENT",
+        "variant": "reference",
+        "vectors": 8207360,
+        "verification_status": "EXHAUSTIVE_EQUIVALENT"
+      },
+      {
+        "actual": 32767,
+        "build": {
+          "duration_seconds": 2.624,
+          "output_tail": "c++  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension    -I/private/tmp/dsc12a-slice.x2MKww/source-include   -Os  -c -o harness_02.o /private/tmp/dsc12a-c-analysis/verification/findmidpoint/harness_02.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension    -I/private/tmp/dsc12a-slice.x2MKww/source-include   -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension    -I/private/tmp/dsc12a-slice.x2MKww/source-include   -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\npython3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vfindmidpoint_candidate_02.cpp Vfindmidpoint_candidate_02___024root__0.cpp Vfindmidpoint_candidate_02___024root__Slow.cpp Vfindmidpoint_candidate_02___024root__0__Slow.cpp Vfindmidpoint_candidate_02__Syms__Slow.cpp > Vfindmidpoint_candidate_02__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension    -I/private/tmp/dsc12a-slice.x2MKww/source-include   -c -o Vfindmidpoint_candidate_02__ALL.o Vfindmidpoint_candidate_02__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++  -Wl,-U,__Z15vl_time_stamp64v,-U,__Z13sc_time_stampv,-U,_vlog_startup_routines   harness_02.o verilated.o verilated_threads.o Vfindmidpoint_candidate_02__ALL.a   /private/tmp/dsc12a-slice.x2MKww/oracle/oracle.o /private/tmp/dsc12a-slice.x2MKww/oracle/cmd_parse.o /private/tmp/dsc12a-slice.x2MKww/oracle/dpx.o /private/tmp/dsc12a-slice.x2MKww/oracle/dsc_codec.o /private/tmp/dsc12a-slice.x2MKww/oracle/dsc_utils.o /private/tmp/dsc12a-slice.x2MKww/oracle/fifo.o /private/tmp/dsc12a-slice.x2MKww/oracle/hdr_dpx.o /private/tmp/dsc12a-slice.x2MKww/oracle/logging.o /private/tmp/dsc12a-slice.x2MKww/oracle/multiplex.o /private/tmp/dsc12a-slice.x2MKww/oracle/psnr.o /private/tmp/dsc12a-slice.x2MKww/oracle/utl.o -lm  -pthread -lpthread   -o Vfindmidpoint_candidate_02\nrm Vfindmidpoint_candidate_02__ALL.verilator_deplist.tmp\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.032 MB sources in 2 modules, into 0.028 MB in 5 C++ files needing 0.000 MB\n- Verilator: Walltime 2.584 s (elab=0.000, cvt=0.002, bld=2.578); cpu 0.005 s on 1 threads; allocated 9.625 MB\n",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        "candidate": "candidate_02",
+        "cpnt": 0,
+        "cpnt_bit_depth": 16,
+        "expected": 32769,
+        "left_recon": 32769,
+        "lint": {
+          "duration_seconds": 0.046,
+          "output_tail": "- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.034 MB sources in 2 modules, into 0.014 MB in 3 C++ files needing 0.000 MB\n- Verilator: Walltime 0.004 s (elab=0.000, cvt=0.001, bld=0.000); cpu 0.004 s on 1 threads; allocated 9.500 MB\n",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        "mismatches": 1,
+        "module": "findmidpoint_candidate_02",
+        "qlevel": 1,
+        "returncode": 1,
+        "smallest_counterexample": {
+          "actual": 32767,
+          "cpnt": 0,
+          "cpnt_bit_depth": 16,
+          "expected": 32769,
+          "left_recon": 32769,
+          "qlevel": 1
+        },
+        "status": "COUNTEREXAMPLE",
+        "variant": "signedness",
+        "vectors": 3849218,
+        "verification_status": "COUNTEREXAMPLE"
+      },
+      {
+        "actual": 128,
+        "build": {
+          "duration_seconds": 2.604,
+          "output_tail": "c++  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension    -I/private/tmp/dsc12a-slice.x2MKww/source-include   -Os  -c -o harness_03.o /private/tmp/dsc12a-c-analysis/verification/findmidpoint/harness_03.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension    -I/private/tmp/dsc12a-slice.x2MKww/source-include   -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension    -I/private/tmp/dsc12a-slice.x2MKww/source-include   -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\npython3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vfindmidpoint_candidate_03.cpp Vfindmidpoint_candidate_03___024root__0.cpp Vfindmidpoint_candidate_03___024root__Slow.cpp Vfindmidpoint_candidate_03___024root__0__Slow.cpp Vfindmidpoint_candidate_03__Syms__Slow.cpp > Vfindmidpoint_candidate_03__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension    -I/private/tmp/dsc12a-slice.x2MKww/source-include   -c -o Vfindmidpoint_candidate_03__ALL.o Vfindmidpoint_candidate_03__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++  -Wl,-U,__Z15vl_time_stamp64v,-U,__Z13sc_time_stampv,-U,_vlog_startup_routines   harness_03.o verilated.o verilated_threads.o Vfindmidpoint_candidate_03__ALL.a   /private/tmp/dsc12a-slice.x2MKww/oracle/oracle.o /private/tmp/dsc12a-slice.x2MKww/oracle/cmd_parse.o /private/tmp/dsc12a-slice.x2MKww/oracle/dpx.o /private/tmp/dsc12a-slice.x2MKww/oracle/dsc_codec.o /private/tmp/dsc12a-slice.x2MKww/oracle/dsc_utils.o /private/tmp/dsc12a-slice.x2MKww/oracle/fifo.o /private/tmp/dsc12a-slice.x2MKww/oracle/hdr_dpx.o /private/tmp/dsc12a-slice.x2MKww/oracle/logging.o /private/tmp/dsc12a-slice.x2MKww/oracle/multiplex.o /private/tmp/dsc12a-slice.x2MKww/oracle/psnr.o /private/tmp/dsc12a-slice.x2MKww/oracle/utl.o -lm  -pthread -lpthread   -o Vfindmidpoint_candidate_03\nrm Vfindmidpoint_candidate_03__ALL.verilator_deplist.tmp\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.032 MB sources in 2 modules, into 0.028 MB in 5 C++ files needing 0.000 MB\n- Verilator: Walltime 2.564 s (elab=0.000, cvt=0.002, bld=2.559); cpu 0.005 s on 1 threads; allocated 9.469 MB\n",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        "candidate": "candidate_03",
+        "cpnt": 0,
+        "cpnt_bit_depth": 8,
+        "expected": 129,
+        "left_recon": 1,
+        "lint": {
+          "duration_seconds": 0.045,
+          "output_tail": "- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.034 MB sources in 2 modules, into 0.014 MB in 3 C++ files needing 0.000 MB\n- Verilator: Walltime 0.004 s (elab=0.000, cvt=0.001, bld=0.000); cpu 0.004 s on 1 threads; allocated 9.453 MB\n",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        "mismatches": 1,
+        "module": "findmidpoint_candidate_03",
+        "qlevel": 1,
+        "returncode": 1,
+        "smallest_counterexample": {
+          "actual": 128,
+          "cpnt": 0,
+          "cpnt_bit_depth": 8,
+          "expected": 129,
+          "left_recon": 1,
+          "qlevel": 1
+        },
+        "status": "COUNTEREXAMPLE",
+        "variant": "boundary",
+        "vectors": 258,
+        "verification_status": "COUNTEREXAMPLE"
+      },
+      {
+        "actual": 129,
+        "build": {
+          "duration_seconds": 2.647,
+          "output_tail": "c++  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension    -I/private/tmp/dsc12a-slice.x2MKww/source-include   -Os  -c -o harness_04.o /private/tmp/dsc12a-c-analysis/verification/findmidpoint/harness_04.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension    -I/private/tmp/dsc12a-slice.x2MKww/source-include   -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension    -I/private/tmp/dsc12a-slice.x2MKww/source-include   -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\npython3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vfindmidpoint_candidate_04.cpp Vfindmidpoint_candidate_04___024root__0.cpp Vfindmidpoint_candidate_04___024root__Slow.cpp Vfindmidpoint_candidate_04___024root__0__Slow.cpp Vfindmidpoint_candidate_04__Syms__Slow.cpp > Vfindmidpoint_candidate_04__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension    -I/private/tmp/dsc12a-slice.x2MKww/source-include   -c -o Vfindmidpoint_candidate_04__ALL.o Vfindmidpoint_candidate_04__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++  -Wl,-U,__Z15vl_time_stamp64v,-U,__Z13sc_time_stampv,-U,_vlog_startup_routines   harness_04.o verilated.o verilated_threads.o Vfindmidpoint_candidate_04__ALL.a   /private/tmp/dsc12a-slice.x2MKww/oracle/oracle.o /private/tmp/dsc12a-slice.x2MKww/oracle/cmd_parse.o /private/tmp/dsc12a-slice.x2MKww/oracle/dpx.o /private/tmp/dsc12a-slice.x2MKww/oracle/dsc_codec.o /private/tmp/dsc12a-slice.x2MKww/oracle/dsc_utils.o /private/tmp/dsc12a-slice.x2MKww/oracle/fifo.o /private/tmp/dsc12a-slice.x2MKww/oracle/hdr_dpx.o /private/tmp/dsc12a-slice.x2MKww/oracle/logging.o /private/tmp/dsc12a-slice.x2MKww/oracle/multiplex.o /private/tmp/dsc12a-slice.x2MKww/oracle/psnr.o /private/tmp/dsc12a-slice.x2MKww/oracle/utl.o -lm  -pthread -lpthread   -o Vfindmidpoint_candidate_04\nrm Vfindmidpoint_candidate_04__ALL.verilator_deplist.tmp\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.032 MB sources in 2 modules, into 0.028 MB in 5 C++ files needing 0.000 MB\n- Verilator: Walltime 2.605 s (elab=0.000, cvt=0.002, bld=2.600); cpu 0.005 s on 1 threads; allocated 9.578 MB\n",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        "candidate": "candidate_04",
+        "cpnt": 0,
+        "cpnt_bit_depth": 8,
+        "expected": 128,
+        "left_recon": 1,
+        "lint": {
+          "duration_seconds": 0.067,
+          "output_tail": "- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.034 MB sources in 2 modules, into 0.014 MB in 3 C++ files needing 0.000 MB\n- Verilator: Walltime 0.005 s (elab=0.001, cvt=0.002, bld=0.000); cpu 0.005 s on 1 threads; allocated 9.469 MB\n",
+          "returncode": 0,
+          "status": "PASS"
+        },
+        "mismatches": 1,
+        "module": "findmidpoint_candidate_04",
+        "qlevel": 0,
+        "returncode": 1,
+        "smallest_counterexample": {
+          "actual": 129,
+          "cpnt": 0,
+          "cpnt_bit_depth": 8,
+          "expected": 128,
+          "left_recon": 1,
+          "qlevel": 0
+        },
+        "status": "COUNTEREXAMPLE",
+        "variant": "off_by_one",
+        "vectors": 2,
+        "verification_status": "COUNTEREXAMPLE"
+      }
+    ],
+    "contract_id": "findmidpoint",
+    "function": "FindMidpoint",
+    "mutation_results": [
+      {
+        "actual": 256,
+        "cpnt": 1,
+        "cpnt_bit_depth": 8,
+        "expected": 128,
+        "left_recon": 0,
+        "mismatches": 1,
+        "mutation": "array-index",
+        "qlevel": 0,
+        "returncode": 1,
+        "smallest_counterexample": {
+          "actual": 256,
+          "cpnt": 1,
+          "cpnt_bit_depth": 8,
+          "expected": 128,
+          "left_recon": 0,
+          "qlevel": 0
+        },
+        "status": "COUNTEREXAMPLE",
+        "vectors": 2305,
+        "verification_status": "COUNTEREXAMPLE"
+      }
+    ],
+    "status": "PASS"
+  },
   "schema_version": 2,
   "selected_new_work": [
     "escapecodesize"
@@ -127,5 +1561,226 @@
   "shards": [
     4
   ],
-  "tokens": 1696
+  "source_integrity": {
+    "pdf_copied_into_repo": false,
+    "upstream_c_model_modified": false
+  },
+  "tokens": 1696,
+  "traceability_before_after": {
+    "after": {
+      "c_model_note_ids": [
+        "MN_BLOCK_PRED",
+        "MN_BP_SEARCH",
+        "MN_CALC_SCALE_OFFSET",
+        "MN_DEC_CSC",
+        "MN_DEC_ENTROPY",
+        "MN_DEC_MPP_SELECT",
+        "MN_DSU_SIZE_PREDICTION",
+        "MN_ENC_CSC",
+        "MN_ENC_FLATNESS_DECISION",
+        "MN_ENC_ICH_IDX_SELECT",
+        "MN_ENC_ICH_MODE_SELECT",
+        "MN_ENC_ICH_PIXEL_CHECK_QERR",
+        "MN_ENC_MPP_SELECT",
+        "MN_ENC_QUANTIZATION",
+        "MN_ENC_VLC_UNIT",
+        "MN_FLAT_QP_ADJ",
+        "MN_ICH_UPDATE",
+        "MN_IQ_RECON",
+        "MN_LINE_STORAGE",
+        "MN_MAP_QP_TO_QLEVEL",
+        "MN_MIDPOINT_PRED",
+        "MN_MMAP",
+        "MN_RC_LONG_TERM",
+        "MN_RC_SHORT_TERM",
+        "MN_RC_XFORM",
+        "MN_SIMPLE_422_444",
+        "MN_SIMPLE_444_422"
+      ],
+      "comment_count": 311,
+      "exact_count": 53,
+      "heading_anchor_count": 186,
+      "link_count": 60,
+      "model_note_anchor_count": 27,
+      "model_note_count": 27,
+      "pdf_model_note_ids": [
+        "MN_BLOCK_PRED",
+        "MN_BP_SEARCH",
+        "MN_CALC_SCALE_OFFSET",
+        "MN_DEC_CSC",
+        "MN_DEC_ENTROPY",
+        "MN_DEC_MPP_SELECT",
+        "MN_ENC_CSC",
+        "MN_ENC_FLATNESS_DECISION",
+        "MN_ENC_ICH_IDX_SELECT",
+        "MN_ENC_ICH_MODE_SELECT",
+        "MN_ENC_MPP_SELECT",
+        "MN_ENC_QUANTIZATION",
+        "MN_FLAT_QP_ADJ",
+        "MN_IQ_RECON",
+        "MN_LINE_STORAGE",
+        "MN_MAP_QP_TO_QLEVEL",
+        "MN_MIDPOINT_PRED",
+        "MN_MIN_RBS",
+        "MN_MMAP",
+        "MN_RC_LONG_TERM",
+        "MN_RC_SHORT_TERM",
+        "MN_RC_XFORM",
+        "MN_SIMPLE_422_444",
+        "MN_SIMPLE_444_422"
+      ],
+      "proposed_count": 7,
+      "reviewed_count": 0,
+      "shared_model_note_count": 23,
+      "shared_model_note_ids": [
+        "MN_BLOCK_PRED",
+        "MN_BP_SEARCH",
+        "MN_CALC_SCALE_OFFSET",
+        "MN_DEC_CSC",
+        "MN_DEC_ENTROPY",
+        "MN_DEC_MPP_SELECT",
+        "MN_ENC_CSC",
+        "MN_ENC_FLATNESS_DECISION",
+        "MN_ENC_ICH_IDX_SELECT",
+        "MN_ENC_ICH_MODE_SELECT",
+        "MN_ENC_MPP_SELECT",
+        "MN_ENC_QUANTIZATION",
+        "MN_FLAT_QP_ADJ",
+        "MN_IQ_RECON",
+        "MN_LINE_STORAGE",
+        "MN_MAP_QP_TO_QLEVEL",
+        "MN_MIDPOINT_PRED",
+        "MN_MMAP",
+        "MN_RC_LONG_TERM",
+        "MN_RC_SHORT_TERM",
+        "MN_RC_XFORM",
+        "MN_SIMPLE_422_444",
+        "MN_SIMPLE_444_422"
+      ],
+      "spec_anchor_count": 358,
+      "stale_count": 0,
+      "untraced_production_function_count": 61,
+      "untraced_spec_anchor_count": 159
+    },
+    "before": {
+      "c_model_note_ids": [
+        "MN_BLOCK_PRED",
+        "MN_BP_SEARCH",
+        "MN_CALC_SCALE_OFFSET",
+        "MN_DEC_CSC",
+        "MN_DEC_ENTROPY",
+        "MN_DEC_MPP_SELECT",
+        "MN_DSU_SIZE_PREDICTION",
+        "MN_ENC_CSC",
+        "MN_ENC_FLATNESS_DECISION",
+        "MN_ENC_ICH_IDX_SELECT",
+        "MN_ENC_ICH_MODE_SELECT",
+        "MN_ENC_ICH_PIXEL_CHECK_QERR",
+        "MN_ENC_MPP_SELECT",
+        "MN_ENC_QUANTIZATION",
+        "MN_ENC_VLC_UNIT",
+        "MN_FLAT_QP_ADJ",
+        "MN_ICH_UPDATE",
+        "MN_IQ_RECON",
+        "MN_LINE_STORAGE",
+        "MN_MAP_QP_TO_QLEVEL",
+        "MN_MIDPOINT_PRED",
+        "MN_MMAP",
+        "MN_RC_LONG_TERM",
+        "MN_RC_SHORT_TERM",
+        "MN_RC_XFORM",
+        "MN_SIMPLE_422_444",
+        "MN_SIMPLE_444_422"
+      ],
+      "comment_count": 311,
+      "exact_count": 53,
+      "heading_anchor_count": 186,
+      "link_count": 60,
+      "model_note_anchor_count": 27,
+      "model_note_count": 27,
+      "pdf_model_note_ids": [
+        "MN_BLOCK_PRED",
+        "MN_BP_SEARCH",
+        "MN_CALC_SCALE_OFFSET",
+        "MN_DEC_CSC",
+        "MN_DEC_ENTROPY",
+        "MN_DEC_MPP_SELECT",
+        "MN_ENC_CSC",
+        "MN_ENC_FLATNESS_DECISION",
+        "MN_ENC_ICH_IDX_SELECT",
+        "MN_ENC_ICH_MODE_SELECT",
+        "MN_ENC_MPP_SELECT",
+        "MN_ENC_QUANTIZATION",
+        "MN_FLAT_QP_ADJ",
+        "MN_IQ_RECON",
+        "MN_LINE_STORAGE",
+        "MN_MAP_QP_TO_QLEVEL",
+        "MN_MIDPOINT_PRED",
+        "MN_MIN_RBS",
+        "MN_MMAP",
+        "MN_RC_LONG_TERM",
+        "MN_RC_SHORT_TERM",
+        "MN_RC_XFORM",
+        "MN_SIMPLE_422_444",
+        "MN_SIMPLE_444_422"
+      ],
+      "proposed_count": 7,
+      "reviewed_count": 0,
+      "shared_model_note_count": 23,
+      "shared_model_note_ids": [
+        "MN_BLOCK_PRED",
+        "MN_BP_SEARCH",
+        "MN_CALC_SCALE_OFFSET",
+        "MN_DEC_CSC",
+        "MN_DEC_ENTROPY",
+        "MN_DEC_MPP_SELECT",
+        "MN_ENC_CSC",
+        "MN_ENC_FLATNESS_DECISION",
+        "MN_ENC_ICH_IDX_SELECT",
+        "MN_ENC_ICH_MODE_SELECT",
+        "MN_ENC_MPP_SELECT",
+        "MN_ENC_QUANTIZATION",
+        "MN_FLAT_QP_ADJ",
+        "MN_IQ_RECON",
+        "MN_LINE_STORAGE",
+        "MN_MAP_QP_TO_QLEVEL",
+        "MN_MIDPOINT_PRED",
+        "MN_MMAP",
+        "MN_RC_LONG_TERM",
+        "MN_RC_SHORT_TERM",
+        "MN_RC_XFORM",
+        "MN_SIMPLE_422_444",
+        "MN_SIMPLE_444_422"
+      ],
+      "spec_anchor_count": 358,
+      "stale_count": 0,
+      "untraced_production_function_count": 61,
+      "untraced_spec_anchor_count": 159
+    },
+    "shared_model_note_ids": [
+      "MN_BLOCK_PRED",
+      "MN_BP_SEARCH",
+      "MN_CALC_SCALE_OFFSET",
+      "MN_DEC_CSC",
+      "MN_DEC_ENTROPY",
+      "MN_DEC_MPP_SELECT",
+      "MN_ENC_CSC",
+      "MN_ENC_FLATNESS_DECISION",
+      "MN_ENC_ICH_IDX_SELECT",
+      "MN_ENC_ICH_MODE_SELECT",
+      "MN_ENC_MPP_SELECT",
+      "MN_ENC_QUANTIZATION",
+      "MN_FLAT_QP_ADJ",
+      "MN_IQ_RECON",
+      "MN_LINE_STORAGE",
+      "MN_MAP_QP_TO_QLEVEL",
+      "MN_MIDPOINT_PRED",
+      "MN_MMAP",
+      "MN_RC_LONG_TERM",
+      "MN_RC_SHORT_TERM",
+      "MN_RC_XFORM",
+      "MN_SIMPLE_422_444",
+      "MN_SIMPLE_444_422"
+    ]
+  }
 }
