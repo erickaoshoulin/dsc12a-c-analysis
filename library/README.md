@@ -21,3 +21,7 @@ composition evidence. This library is independent of SVRT.
 `verification/` contains compact promotion receipts, `contracts/` contains
 traceability, and `archive/` preserves an older canonical module when a later
 verified iteration replaces it.
+
+`samplepredict` is the first production-domain relative-window leaf: its C
+line-buffer state remains at the caller boundary, while the RTL consumes the
+reviewed MMAP/left/block predictor taps.

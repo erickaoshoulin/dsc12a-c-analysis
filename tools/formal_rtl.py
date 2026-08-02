@@ -188,10 +188,10 @@ class AstInterpreter:
         if kind == "FUNCREF":
             name = str(node.get("name"))
             args = [self.expr(first(argument.get("exprp")), env) for argument in as_list(node.get("argsp"))]
-            return self.call(name, args)
+            return self.call(name, args, env)
         raise FormalError(f"unsupported AST expression node: {kind}")
 
-    def call(self, name: str, args: list[Any]) -> Any:
+    def call(self, name: str, args: list[Any], parent_env: dict[str, Any]) -> Any:
         function = self.functions.get(name)
         if function is None:
             raise FormalError(f"AST calls unknown function {name}")
@@ -206,7 +206,15 @@ class AstInterpreter:
             raise FormalError(f"function {name} argument count mismatch")
         output = next((str(node.get("name")) for node in as_list(function.get("fvarp"))
                        if isinstance(node, dict) and node.get("isFuncReturn")), name)
-        local = {str(parameter.get("name")): value for parameter, value in zip(parameters, args)}
+        # Verilog functions declared inside a module may read module-scope
+        # input ports in addition to their explicit arguments.  Preserve the
+        # caller environment so a parsed selector/helper function is evaluated
+        # with the same frozen DUT inputs as the enclosing always block.
+        local = dict(parent_env)
+        local.update({
+            str(parameter.get("name")): value
+            for parameter, value in zip(parameters, args)
+        })
         local[output] = z3.IntVal(0)
         self.exec_nodes(as_list(function.get("stmtsp")), local)
         return local[output]
@@ -382,6 +390,100 @@ def contract_expression(contract: dict[str, Any], variables: dict[str, Any]) -> 
     pred = variables[str(strategy.get("pred_type_port"))]
     q = variables[str(strategy.get("qlevel_port"))]
     bpc = variables[str(strategy.get("bit_depth_port"))]
+    dynamic = window.get("dynamic_line_window")
+    if isinstance(dynamic, dict) and dynamic:
+        prev_names = [str(value) for value in dynamic.get("prev_window_ports", [])]
+        curr_names = [str(value) for value in dynamic.get("curr_window_ports", [])]
+        if len(prev_names) != 6 or len(curr_names) != 13:
+            raise FormalError("dynamic window proof requires six previous and thirteen current taps")
+        if any(name not in variables for name in prev_names + curr_names):
+            raise FormalError("dynamic window proof references a missing frozen tap")
+        samples_per_unit = int(dynamic.get("samples_per_unit", 3))
+        padding_left = int(dynamic.get("padding_left", 5))
+        current_window_left = int(dynamic.get("current_window_left", 8))
+        window_start = z3.If(
+            h > current_window_left,
+            h - current_window_left,
+            z3.IntVal(0),
+        )
+        group_a_global = (h / samples_per_unit) * samples_per_unit + padding_left - 1
+        group_a_index = group_a_global - window_start
+
+        def current_at(index: Any) -> Any:
+            return sum_expr([
+                z3.If(index == slot, variables[name], z3.IntVal(0))
+                for slot, name in enumerate(curr_names)
+            ])
+
+        a = current_at(group_a_index)
+        b = variables[prev_names[2]]
+        c = variables[prev_names[1]]
+        d = variables[prev_names[3]]
+        e = variables[prev_names[4]]
+        filt_c = (
+            variables[prev_names[0]]
+            + 2 * variables[prev_names[1]]
+            + variables[prev_names[2]]
+            + 2
+        ) / 4
+        filt_b = (
+            variables[prev_names[1]]
+            + 2 * variables[prev_names[2]]
+            + variables[prev_names[3]]
+            + 2
+        ) / 4
+        filt_d = (
+            variables[prev_names[2]]
+            + 2 * variables[prev_names[3]]
+            + variables[prev_names[4]]
+            + 2
+        ) / 4
+        filt_e = (
+            variables[prev_names[3]]
+            + 2 * variables[prev_names[4]]
+            + variables[prev_names[5]]
+            + 2
+        ) / 4
+        qdiv = pow2_expr(q, 0, 16)
+        qhalf = qdiv / 2
+        blend_c = c + clamp(filt_c - c, -qhalf, qhalf)
+        blend_b = b + clamp(filt_b - b, -qhalf, qhalf)
+        blend_d = d + clamp(filt_d - d, -qhalf, qhalf)
+        blend_e = e + clamp(filt_e - e, -qhalf, qhalf)
+        blend_c = z3.If((h / samples_per_unit) == 0, a, blend_c)
+        qr0 = variables[str(strategy.get("residual_ports")[0])]
+        qr1 = variables[str(strategy.get("residual_ports")[1])]
+        mmap = z3.If(
+            h % samples_per_unit == 0,
+            clamp(a + blend_b - blend_c, minimum(a, blend_b), maximum(a, blend_b)),
+            z3.If(
+                h % samples_per_unit == 1,
+                clamp(
+                    a + blend_d - blend_c + qr0 * qdiv,
+                    minimum(a, minimum(blend_b, blend_d)),
+                    maximum(a, maximum(blend_b, blend_d)),
+                ),
+                clamp(
+                    a + blend_e - blend_c + (qr0 + qr1) * qdiv,
+                    minimum(a, minimum(blend_b, minimum(blend_d, blend_e))),
+                    maximum(a, maximum(blend_b, maximum(blend_d, blend_e))),
+                ),
+            ),
+        )
+        left = z3.If(
+            h % samples_per_unit == 0,
+            a,
+            z3.If(
+                h % samples_per_unit == 1,
+                clamp(a + qr0 * qdiv, 0, pow2_expr(bpc, 8, 16) - 1),
+                clamp(a + (qr0 + qr1) * qdiv, 0, pow2_expr(bpc, 8, 16) - 1),
+            ),
+        )
+        block_global = h + padding_left - 1 - (pred - 2)
+        block_global = z3.If(block_global < 0, 0, block_global)
+        block = current_at(block_global - window_start)
+        return z3.If(pred == 0, mmap, z3.If(pred == 1, left, block))
+
     sample_ports = {int(name.split("_", 1)[1]): variables[name]
                     for name in strategy.get("sample_ports", []) if str(name).startswith("curr_")}
     prev_ports = {int(name.split("_", 1)[1]): variables[name]
@@ -444,6 +546,158 @@ def contract_expression(contract: dict[str, Any], variables: dict[str, Any]) -> 
     return z3.If(pred == 0, mmap, z3.If(pred == 1, left, block))
 
 
+def dynamic_structural_partitions(
+    contract: dict[str, Any],
+    variables: dict[str, Any],
+) -> list[dict[str, Any]]:
+    """Return a complete, solver-friendly partition of a dynamic hPos domain.
+
+    The relative window is piecewise by the early/late line-buffer boundary,
+    hPos modulo SAMPLES_PER_UNIT, and predType.  MMAP has the heaviest
+    arithmetic branch structure, so its legal bit-depth/qLevel combinations
+    are split as well.  The union of these cases is exactly the reviewed
+    input domain; no concrete sample tap is fixed by this partition.
+    """
+    semantics = contract.get("semantics", {}) or {}
+    window = semantics.get("window_spec", {}) or {}
+    dynamic = window.get("dynamic_line_window")
+    if not isinstance(dynamic, dict) or not dynamic:
+        return []
+    strategy = semantics.get("legal_vector_strategy") or {}
+    h_name = str(strategy.get("hpos_port"))
+    pred_name = str(strategy.get("pred_type_port"))
+    bpc_name = str(strategy.get("bit_depth_port"))
+    q_name = str(strategy.get("qlevel_port"))
+    if not all(name in variables for name in (h_name, pred_name, bpc_name, q_name)):
+        raise FormalError("dynamic formal partition references a missing control port")
+
+    def values_for(name: str) -> list[int]:
+        port = next(
+            (
+                item for item in contract.get("interface", {}).get("ports", [])
+                if str(item.get("name")) == name
+            ),
+            None,
+        )
+        if not isinstance(port, dict):
+            raise FormalError(f"dynamic formal partition cannot find port: {name}")
+        values = domain_values(port.get("legal_domain") or {})
+        if not values:
+            raise FormalError(f"dynamic formal partition needs a finite domain: {name}")
+        return values
+
+    h_values = values_for(h_name)
+    pred_values = values_for(pred_name)
+    bpc_values = values_for(bpc_name)
+    q_values = values_for(q_name)
+    h = variables[h_name]
+    pred = variables[pred_name]
+    bpc = variables[bpc_name]
+    q = variables[q_name]
+    h_min = min(h_values)
+    h_max = max(h_values)
+    samples_per_unit = int(dynamic.get("samples_per_unit", 3))
+    boundary = int(dynamic.get("current_window_left", 8))
+    regions: list[tuple[str, Any]] = []
+    if h_min <= boundary:
+        regions.append(("EARLY", h <= boundary))
+    if h_max > boundary:
+        regions.append(("LATE", h > boundary))
+
+    partitions: list[dict[str, Any]] = []
+    for region_name, region_constraint in regions:
+        for remainder in range(samples_per_unit):
+            residue_constraint = h % samples_per_unit == remainder
+            for pred_value in pred_values:
+                controls: list[Any] = [
+                    region_constraint,
+                    residue_constraint,
+                    pred == pred_value,
+                ]
+                if pred_value == 0:
+                    for bpc_value in bpc_values:
+                        for q_value in q_values:
+                            partitions.append({
+                                "region": region_name,
+                                "hpos_remainder": remainder,
+                                "predType": pred_value,
+                                "cpnt_bit_depth": bpc_value,
+                                "qLevel": q_value,
+                                "constraints": controls + [bpc == bpc_value, q == q_value],
+                            })
+                else:
+                    partitions.append({
+                        "region": region_name,
+                        "hpos_remainder": remainder,
+                        "predType": pred_value,
+                        "constraints": controls,
+                    })
+    return partitions
+
+
+def run_partitioned_proof(
+    contract: dict[str, Any],
+    variables: dict[str, Any],
+    c_model: Any,
+    rtl: Any,
+    partitions: list[dict[str, Any]],
+    timeout_ms: int,
+) -> dict[str, Any]:
+    """Check every structural partition while preserving full symbolic taps."""
+    per_partition_timeout = min(max(int(timeout_ms), 1000), 10000)
+    total_constraints = 0
+    checked = 0
+    for partition in partitions:
+        solver = z3.Solver()
+        solver.set(timeout=per_partition_timeout)
+        add_domain_constraints(solver, contract, variables)
+        solver.add(*partition["constraints"])
+        solver.add(c_model != rtl)
+        total_constraints += len(solver.assertions())
+        checked += 1
+        result = solver.check()
+        if result == z3.sat:
+            model = solver.model()
+            return {
+                "status": "COUNTEREXAMPLE",
+                "proof_complete": False,
+                "constraint_count": total_constraints,
+                "partition_count": len(partitions),
+                "partitions_checked": checked,
+                "proof_strategy": "STRUCTURAL_HPOS_RESIDUE_PARTITION",
+                "counterexample": {
+                    name: model.eval(value, model_completion=True).as_long()
+                    for name, value in variables.items()
+                },
+                "expected": model.eval(c_model, model_completion=True).as_long(),
+                "actual": model.eval(rtl, model_completion=True).as_long(),
+                "partition": {
+                    key: value for key, value in partition.items() if key != "constraints"
+                },
+            }
+        if result == z3.unknown:
+            return {
+                "status": "UNKNOWN",
+                "proof_complete": False,
+                "constraint_count": total_constraints,
+                "partition_count": len(partitions),
+                "partitions_checked": checked,
+                "proof_strategy": "STRUCTURAL_HPOS_RESIDUE_PARTITION",
+                "reason": solver.reason_unknown(),
+                "partition": {
+                    key: value for key, value in partition.items() if key != "constraints"
+                },
+            }
+    return {
+        "status": "PASS",
+        "proof_complete": True,
+        "constraint_count": total_constraints,
+        "partition_count": len(partitions),
+        "partitions_checked": checked,
+        "proof_strategy": "STRUCTURAL_HPOS_RESIDUE_PARTITION",
+    }
+
+
 def load_candidate_module(path: Path, verilator: str) -> dict[str, Any]:
     with tempfile.TemporaryDirectory(prefix="dsc-formal-") as directory:
         output = Path(directory) / "candidate.json"
@@ -486,6 +740,29 @@ def run_proof(contract_path: Path, candidate_path: Path, verilator: str, timeout
     module = load_candidate_module(candidate_path, verilator)
     rtl = AstInterpreter(module).output_expression(variables, str(output.get("name")))
     c_model = contract_expression(contract, variables)
+    partitions = dynamic_structural_partitions(contract, variables)
+    if partitions:
+        partitioned = run_partitioned_proof(
+            contract,
+            variables,
+            c_model,
+            rtl,
+            partitions,
+            timeout_ms,
+        )
+        partitioned.update({
+            "schema_version": 1,
+            "contract_id": contract.get("contract_id"),
+            "contract_sha256": file_digest(contract_path),
+            "candidate": candidate_path.name,
+            "candidate_path": str(candidate_path),
+            "candidate_sha256": file_digest(candidate_path),
+            "solver": "z3",
+            "ast_frontend": "verilator --json-only",
+            "proof_basis": "locked exact spec-linked window equations versus parsed combinational RTL AST",
+            "timeout_ms": int(timeout_ms),
+        })
+        return partitioned
     solver.add(c_model != rtl)
     result = solver.check()
     receipt: dict[str, Any] = {

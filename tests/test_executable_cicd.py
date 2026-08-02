@@ -137,6 +137,15 @@ class ExecutableCicdTests(unittest.TestCase):
         self.assertEqual(formal["status"], "PASS")
         self.assertTrue(formal["proof_complete"])
         self.assertEqual(formal["ast_frontend"], "verilator --json-only")
+        self.assertEqual(formal["proof_strategy"], "STRUCTURAL_HPOS_RESIDUE_PARTITION")
+        self.assertEqual(formal["partitions_checked"], formal["partition_count"])
+        self.assertGreater(formal["partition_count"], 0)
+        self.assertEqual(unit["domain"]["execution_status"], "REUSED_VERIFIED_SHARDS")
+
+        oracle = (artifact / "oracle.c").read_text(encoding="utf-8")
+        self.assertIn("static int prevLine[65541]", oracle)
+        self.assertIn("prevLine[((hPos / 3) * 3 + 5 + -2) + 0]", oracle)
+        self.assertIn("currLine[((hPos > 8) ? (hPos - 8) : 0) + 0]", oracle)
 
         agent = Agent(ROOT, "test")
         agent.load_inputs()
@@ -178,7 +187,7 @@ class ExecutableCicdTests(unittest.TestCase):
         self.assertEqual(unit["execution_status"], "EXECUTED_NOW")
         self.assertGreater(unit["domain"]["total_vectors"], 0)
         statuses = {item["candidate"]: item["verification_status"] for item in unit["candidates"]}
-        self.assertEqual(statuses["candidate_01"], "EXHAUSTIVE_EQUIVALENT")
+        self.assertEqual(statuses["candidate_01"], "FORMAL_EQUIVALENT")
         self.assertEqual(statuses["candidate_02"], "COUNTEREXAMPLE")
         self.assertEqual(
             len(unit["smallest_counterexample"]["inputs"]),
@@ -204,11 +213,26 @@ class ExecutableCicdTests(unittest.TestCase):
         self.assertEqual(bitstream["status"], "PASS")
         self.assertTrue(all(bitstream["modes"][mode]["status"] == "PASS" for mode in ("C_ONLY", "SHADOW", "RTL_RETURN")))
 
+    def test_samplepredict_is_in_stable_library_after_all_gates(self):
+        manifest = json.loads((ROOT / "library" / "manifest.json").read_text(encoding="utf-8"))
+        entry = next(item for item in manifest["components"] if item.get("contract_id") == "samplepredict")
+        self.assertEqual(entry["status"], "PASS")
+        self.assertEqual(entry["module"], "samplepredict")
+        self.assertTrue((ROOT / "library" / "rtl" / "samplepredict.sv").is_file())
+        verification = json.loads((ROOT / "library" / "verification" / "samplepredict.json").read_text(encoding="utf-8"))
+        self.assertEqual(verification["status"], "PASS")
+        self.assertEqual(verification["stages"]["formal_rtl_equivalence"], "PASS")
+        self.assertEqual(verification["stages"]["formal_partitions"], 1002)
+
     def test_cache_hit_is_zero_call_and_reuses_verified_receipt(self):
         selected = self.selected_contract_state()
         summary = json.loads((ROOT / "summary.json").read_text(encoding="utf-8"))
         cache = json.loads((ROOT / "ci" / "cache-index.json").read_text(encoding="utf-8"))
-        entry = next(item for item in cache["entries"].values() if item.get("contract_id") == selected["contract_id"])
+        entry = next(
+            item
+            for item in cache["entries"].values()
+            if item.get("contract_id") == selected["contract_id"] and item.get("valid")
+        )
         self.assertTrue(entry.get("valid"))
         if selected["status"] == "CACHE_REUSED":
             self.assertEqual(summary["generator_invocations"], 0)
@@ -289,16 +313,17 @@ class ExecutableCicdTests(unittest.TestCase):
         override = next(item for item in overrides if item.get("match", {}).get("clang_usr") == "c:@F@SamplePredict")
         contract = copy.deepcopy(locked)
         contract["interface"] = copy.deepcopy(override["interface"])
+        contract["semantics"] = copy.deepcopy(override["semantics"])
         contract["interface"]["ports"] = agent.freeze_ports(contract["interface"])
         oracle = agent.render_oracle(contract)
         ports = {port["name"]: port for port in contract["interface"]["ports"]}
-        self.assertEqual(ports["hPos"]["width"], 4)
-        self.assertIn(11, ports["hPos"]["legal_domain"]["values"])
+        self.assertEqual(ports["hPos"]["width"], 16)
+        self.assertEqual(ports["hPos"]["legal_domain"]["range"], [0, 65534])
         self.assertIn(9, ports["cpnt_bit_depth"]["legal_domain"]["values"])
         self.assertIn("dsc_state.cpntBitDepth[unit_c_type] = cpnt_bit_depth;", oracle)
         self.assertIn("dsc_state.quantizedResidual[unit][1] = quantized_residual_1;", oracle)
-        self.assertIn("prevLine[17] = prev_17;", oracle)
-        self.assertIn("currLine[15] = curr_15;", oracle)
+        self.assertIn("prevLine[((hPos / 3) * 3 + 5 + -2) + 0] = prev_3;", oracle)
+        self.assertIn("currLine[((hPos > 8) ? (hPos - 8) : 0) + 12] = curr_12;", oracle)
         self.assertIn("SamplePredict(&dsc_state, prevLine, currLine", oracle)
 
     def _rewriter_binary(self):

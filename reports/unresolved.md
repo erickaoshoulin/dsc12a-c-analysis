@@ -31,7 +31,7 @@ Unknown means the selected tools did not prove the property; it is not a negativ
 - `Qp2Qlevel`: Eva result unavailable; From result unavailable
 - `RateControl`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
 - `RemoveBitsEncoderBuffer`: Eva result unavailable; From result unavailable
-- `SamplePredict`: From result unavailable
+- `SamplePredict`: From result unavailable; RTL promotion is independently closed by the reviewed C/source boundary and executable C/RTL/formal gates
 - `UErr`: Eva result unavailable; From result unavailable
 - `UpdateHistoryElement`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations
 - `UpdateICHistory`: Eva result unavailable; From result unavailable; at least one loop trip count is not proven fixed; loop has a potential read/write dependency across iterations

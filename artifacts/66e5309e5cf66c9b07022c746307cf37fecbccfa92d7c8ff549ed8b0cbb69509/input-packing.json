@@ -1,0 +1,326 @@
+{
+  "bit_order": "little-endian integer text to packed Verilator port",
+  "ports": [
+    {
+      "direction": "input",
+      "name": "hPos",
+      "packing": "bits[15:0]",
+      "role": "hPos",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "predType",
+      "packing": "bits[3:0]",
+      "role": "predType",
+      "signed": false,
+      "width": 4
+    },
+    {
+      "direction": "input",
+      "name": "qLevel",
+      "packing": "bits[4:0]",
+      "role": "qLevel",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "unit",
+      "packing": "bits[1:0]",
+      "role": "unit",
+      "signed": false,
+      "width": 2
+    },
+    {
+      "direction": "input",
+      "name": "cpnt_bit_depth",
+      "packing": "bits[4:0]",
+      "role": "CONFIG_STATIC",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "unit_c_type",
+      "packing": "bits[1:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 2
+    },
+    {
+      "direction": "input",
+      "name": "quantized_residual_0",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": true,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "quantized_residual_1",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": true,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "prev_3",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "prev_4",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "prev_5",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "prev_6",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "prev_7",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "prev_8",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "prev_9",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "prev_10",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "prev_11",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "prev_12",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "prev_13",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "prev_14",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "prev_15",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "prev_16",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "prev_17",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "curr_0",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "curr_1",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "curr_2",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "curr_3",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "curr_4",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "curr_5",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "curr_6",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "curr_7",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "curr_8",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "curr_9",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "curr_10",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "curr_11",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "curr_12",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "curr_13",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "curr_14",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "curr_15",
+      "packing": "bits[15:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "output",
+      "name": "return_value",
+      "packing": "bits[15:0]",
+      "role": "return_value",
+      "signed": false,
+      "width": 16
+    }
+  ],
+  "schema_version": 1
+}

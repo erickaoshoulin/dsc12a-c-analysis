@@ -1,0 +1,514 @@
+{
+  "complete": false,
+  "ports": [
+    {
+      "domain": {
+        "basis": "hPos is the production slice-relative position; source bounds slice_width to 1..65535 and SamplePredict is called for hPos < sliceWidth",
+        "kind": "range",
+        "range": [
+          0,
+          65534
+        ]
+      },
+      "port": "hPos",
+      "role": "hPos"
+    },
+    {
+      "domain": {
+        "basis": "PT_MAP/PT_LEFT plus NUM_PRED_TYPES from dsc_types.h; BP_RANGE=13",
+        "kind": "set",
+        "range": [
+          0,
+          14
+        ],
+        "values": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14
+        ]
+      },
+      "port": "predType",
+      "role": "predType"
+    },
+    {
+      "domain": {
+        "basis": "QuantDivisor[17] and Table 6-2 qLevel output domain",
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "qLevel",
+      "role": "qLevel"
+    },
+    {
+      "domain": {
+        "basis": "MAX_UNITS_PER_GROUP=4",
+        "kind": "range",
+        "range": [
+          0,
+          3
+        ]
+      },
+      "port": "unit",
+      "role": "unit"
+    },
+    {
+      "domain": {
+        "basis": "DSC base component bit depths plus the immutable model RGB chroma +1-bit extension",
+        "kind": "set",
+        "range": [
+          8,
+          16
+        ],
+        "values": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ]
+      },
+      "port": "cpnt_bit_depth",
+      "role": "CONFIG_STATIC"
+    },
+    {
+      "domain": {
+        "basis": "dsc_state_t.unitCType component-index domain",
+        "kind": "range",
+        "range": [
+          0,
+          3
+        ]
+      },
+      "port": "unit_c_type",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "signed decoded residual envelope; vector strategy narrows to cpntBitDepth-qLevel signed n-bit boundaries",
+        "kind": "range",
+        "range": [
+          -32768,
+          32767
+        ]
+      },
+      "port": "quantized_residual_0",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "signed decoded residual envelope; vector strategy narrows to cpntBitDepth-qLevel signed n-bit boundaries",
+        "kind": "range",
+        "range": [
+          -32768,
+          32767
+        ]
+      },
+      "port": "quantized_residual_1",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "prev_3",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "prev_4",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "prev_5",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "prev_6",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "prev_7",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "prev_8",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "prev_9",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "prev_10",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "prev_11",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "prev_12",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "prev_13",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "prev_14",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "prev_15",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "prev_16",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "prev_17",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "curr_0",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "curr_1",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "curr_2",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "curr_3",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "curr_4",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "curr_5",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "curr_6",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "curr_7",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "curr_8",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "curr_9",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "curr_10",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "curr_11",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "curr_12",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "curr_13",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "curr_14",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "reconstructed sample range for 8..16 bpc",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "curr_15",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "return_value",
+      "role": "return_value"
+    }
+  ],
+  "proof_basis": "reviewed spec-domain differential strategy; not a legal-domain proof",
+  "schema_version": 1
+}

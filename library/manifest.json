@@ -343,6 +343,34 @@
       ],
       "status": "PASS",
       "verification_file": "verification/samptolinebuf.json"
+    },
+    {
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational predictor leaf; C_ONLY remains rollback/reference; line-buffer state stays at caller boundary",
+      "c_span": {
+        "end_column": 1,
+        "end_line": 383,
+        "start_column": 5,
+        "start_line": 308
+      },
+      "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+      "contract_id": "samplepredict",
+      "function": "SamplePredict",
+      "module": "samplepredict",
+      "module_file": "rtl/samplepredict.sv",
+      "module_sha256": "831411aefb7fd14c630f6a71d75191a62320ce17566d6292637fcdab603e2011",
+      "run_id": "20260802T170315Z-samplepredict-production-window",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {"anchor_id": "pdf:model-note:MN_MMAP:p076", "page": 76, "section": "6.4.1", "status": "EXACT"},
+        {"anchor_id": "pdf:section:6.4.1", "page": 76, "section": "6.4.1", "status": "EXACT"},
+        {"anchor_id": "pdf:model-note:MN_MMAP:p078", "page": 78, "section": "6.4.1.1", "status": "EXACT"},
+        {"anchor_id": "pdf:model-note:MN_MMAP:p079", "page": 79, "section": "6.4.1.2", "status": "EXACT"},
+        {"anchor_id": "pdf:model-note:MN_BLOCK_PRED:p079", "page": 79, "section": "6.4.2", "status": "EXACT"},
+        {"anchor_id": "pdf:section:6.4.2", "page": 79, "section": "6.4.2", "status": "EXACT"}
+      ],
+      "status": "PASS",
+      "verification_file": "verification/samplepredict.json"
     }
   ],
   "library": "dsc-verilog-library",

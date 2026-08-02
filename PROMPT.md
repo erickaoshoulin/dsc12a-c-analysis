@@ -279,7 +279,9 @@ PDF and upstream C model are immutable external inputs.
    pairwise tap sets in reviewed data; the generator and adapter derive the
    frozen ports from those facts rather than embedding a single sample index.
    A clean concrete result is `DIFFERENTIAL_PASS`, never a promotion or
-   stable-library proof. For a reviewed window contract, run the independent
+   stable-library proof. For a reviewed production-domain relative-window
+   contract, keep the complete C line-buffer state at the caller boundary and
+   give the DUT only the exact spec-defined read-only taps. Run the independent
    `tools/formal_rtl.py` gate: it must parse the candidate with Verilator's
    AST, compare the AST to the locked spec-linked equations, and prove the
    complete reviewed legal relation with Z3. Only that independent receipt
@@ -287,8 +289,9 @@ PDF and upstream C model are immutable external inputs.
    function-name check, or concrete sample count is not a proof. Continue
    iterating from counterexamples and proof gaps toward a formal proof or a
    smaller spec-grounded DUT slice. `FORMAL_EQUIVALENT` proves only the
-   declared reviewed window; production frame, dependency, and source gates
-   still decide whether the leaf can enter `library/manifest.json`.
+   declared reviewed window; require `proof_complete=true`, and treat a proof
+   timeout as `UNPROVED`. Production frame, dependency, and source gates still
+   decide whether the leaf can enter `library/manifest.json`.
 
 5. Verify a real dependency. Automatically choose the smallest acyclic direct
    caller-to-callee edge from the callgraph. Prove caller core with callee C,
@@ -366,76 +369,49 @@ Reject recursive or combinational dependency cycles. A generation authority
 must be `EXACT_SPEC`, `DERIVED`, or `HUMAN_APPROVED`; `AI_PROPOSED` and
 `C_TYPE_FALLBACK` are visible blockers and cannot generate RTL.
 
-The durable service is `tools/regression.py` and stores mutable state only
-under `DSC_REGRESSION_ROOT` on the requested SMB share
-`//kslin@192.168.68.52/homes`. Discover the mountpoint with `mount` and `df`;
-the default configured root is `/Volumes/homes/dsc12a-regression`. A local
-mountpoint may differ, so use an explicit `DSC_REGRESSION_ROOT` only when it is
-under the discovered requested share. Require a write probe and at least the
-configured free-space floor. Never store or print credentials. A missing,
-unwritable, low-space, or ambiguous mount is an infrastructure failure.
-
-Use this layout and no SQLite:
-
-```text
-<root>/queue/{pending,running,done,failed}/
-<root>/runs/<run-id>/functions/<contract-id>/
-<root>/cache/
-<root>/dashboard/
-```
-
-Queue directories are published with same-directory temporary-file plus
-`os.replace` writes. Claim pending jobs by an atomic `.claim` directory and a
-rename to `running`. Running jobs update a heartbeat containing host, PID,
-stage, progress, elapsed time, and last error. Recover only stale heartbeats
-under a recovery lock, increment the attempt, requeue safely, and append the
-decision and rationale to `strategy.jsonl`.
+The durable service is `tools/cicd_agent.py` and stores mutable state only in
+the repository's JSON receipts under `ci/`, `artifacts/`, and `integration/`.
+Do not add a network share, SQLite queue, SVRT state, or a second orchestration
+service. Publish each receipt atomically, preserve prior receipts for audit,
+and treat missing PDF/source/tools, stale hashes, low disk, or timeout as
+infrastructure failures. `plan` consumes tool-discovered facts and reviewed
+contracts; a target ID is routing metadata and never a source-level function
+allowlist.
 
 The supported commands are:
 
 ```sh
-python3 tools/regression.py init
-python3 tools/regression.py submit --profile pilot
-python3 tools/regression.py worker --jobs 4
-python3 tools/regression.py poll --once
-python3 tools/regression.py poll --watch 300
-python3 tools/regression.py resume <run-id>
-python3 tools/regression.py report <run-id>
+python3 tools/cicd_agent.py plan
+python3 tools/cicd_agent.py run
+python3 tools/cicd_agent.py resume
+python3 tools/cicd_agent.py status
 ```
 
-The pilot is bounded to at most four unique contracts and two candidates per
-function: one valid cached promoted control, one new `GENERATION_READY`
-arithmetic leaf, one ready table/config leaf when facts support it, and the
-smallest acyclic dependency pair when available. Use the discovered default,
-alternate bit-depth, and alternate sampling frame scripts when present. After
-every pilot function passes, write a scale plan for every current
-`GENERATION_READY` contract with four candidates and the discovered frame
-matrix, but leave it `PLANNED_NOT_STARTED` and do not enqueue it automatically.
+Each bounded batch may generate at most four candidates per selected contract.
+Independent contracts run in stable parallel workers. Preserve the immutable
+C model as oracle/reference, run the real C/Verilator shards, and promote only
+after unit, formal-or-exhaustive, dependency, C_ONLY/SHADOW/RTL_RETURN, and
+frame byte/SHA-256 gates pass.
 
-### Explicit scale and library loop
+### Continuous scale and library loop
 
-After reviewing a passing pilot, start scale deliberately with:
+Use the executable agent directly for bounded iterative batches:
 
 ```sh
-DSC_REGRESSION_ROOT=<share-root> python3 tools/regression.py scale <pilot-run-id> --refresh
-DSC_REGRESSION_ROOT=<share-root> python3 tools/regression.py worker --jobs 4
-DSC_REGRESSION_ROOT=<share-root> python3 tools/regression.py promote <scale-run-id>
+python3 tools/cicd_agent.py plan
+python3 tools/cicd_agent.py run
+python3 tools/cicd_agent.py status
 ```
 
-The scale command reads the current facts/spec plan at every dispatch. The
-first call starts the pilot's first scale batch; later calls, after the latest
-batch is terminal, create another independent batch for ready contracts that
-do not already have a PASS scale receipt. A reviewed contract that becomes
-`GENERATION_READY` later can therefore enter the next batch without editing a
-function allowlist. Each contract gets an independent flow worktree, generator
+Each run reads the current facts/spec plan at dispatch. A reviewed contract
+that becomes eligible later enters a subsequent batch without editing a
+function allowlist. Each selected contract gets an independent generator
 invocation, C oracle, Verilator build, parallel shard set, caller composition
-check, and frame matrix. The queue passes the discovered contract ID to the
-flow as routing metadata; this is not a source-level function allowlist,
-prompt-supplied target, or hardcoded function-name selector. `--refresh`
-intentionally bypasses a valid leaf cache for the selected batch while
-preserving previous receipts and accepted RTL for audit and rollback. If no
-unproven ready contract exists, scale returns `NO_NEW_WORK` and does not
-enqueue a duplicate batch.
+check, and frame matrix. A target contract is queue routing metadata only; it
+is never a source-level function selector. A refresh intentionally bypasses a
+valid leaf cache while preserving prior receipts and accepted RTL for audit
+and rollback. If no unproven ready contract exists, the run reports no new
+work and does not enqueue a duplicate batch.
 
 For an explicit refresh, the scale function set is the union of the current
 facts/spec-ready plan and PASS components already recorded in
@@ -466,7 +442,7 @@ back into the next generator/repair attempt. On an infrastructure failure,
 repair the tool/domain/oracle gate and resume only the affected queue job.
 Never promote a candidate because it compiles alone. Promotion requires all
 unit, dependency, C_ONLY/SHADOW/RTL_RETURN, frame byte/SHA, exact PDF
-traceability, and reviewed-port gates. `tools/regression.py promote` writes
+traceability, and reviewed-port gates. The promotion stage writes
 only stable, purely combinational DUT leaves to `library/rtl/`, together with
 `library/contracts/`, `library/verification/`, and `library/manifest.json`.
 The library is an incremental designer-facing RTL set, not a whole-codec
@@ -486,40 +462,34 @@ width/spec
 → frame byte/SHA-256 comparison
 ```
 
-Large logs, build trees, vectors, and flow worktrees stay on SMB. Compact
-receipts, traceability, accepted RTL, and dashboard metadata are the handoff.
+Large logs, build trees, vectors, and flow worktrees stay outside the handoff.
+Compact receipts, traceability, accepted RTL, and pipeline metadata are the
+handoff. Verified shards may be reused only after the current contract input
+order, vector strategy, and every shard line count match the prior receipt.
 Receipts must include candidate and frame pass rates, shard/vector counts,
 counterexamples, blockers, cache/execution status, model tier/call budget,
-artifact links, and the C/PDF source gate. The static dashboard is
-self-contained, uses only `latest.json` for auto-refresh, exposes overview,
-progress, failure buckets, filters, per-function details, artifact links, and
+artifact links, and the C/PDF source gate. Pipeline reports expose overview,
+progress, failure buckets, per-function details, artifact links, and
 PDF/spec-to-C cross-links. For every port/intermediate retain width,
 signedness, domain, role, authority, derivation, review status, exact PDF
 page/section/table, C span, and contract hash.
 
-Read `model-policy.yaml` for routing. Discovery, contracts, testbench,
-verification, and dashboard work are deterministic. Cheap models handle only
+Read `model-policy.yaml` for routing. Discovery, contracts, testbench, and
+verification work are deterministic. Cheap models handle only
 repetitive classification/syntax/local repair; strong models handle only
 ambiguous spec, boundary, or complex dependency work. Resolve model names
 from environment variables, allow at most one initial and one escalation call
 per function, and never duplicate agents on one function.
 
-The `skills/dsc-regression/` skill follows
-`observe → plan → dispatch → verify → update` using durable SMB state rather
-than chat memory. Pilot completion is a checkpoint, not the end of the
-migration: after each PASS promotion, re-read facts/spec/coverage and dispatch
-the next bounded batch of newly eligible leaves or composites. `NO_NEW_WORK`
-means the current frontier is exhausted and must be re-checked after the next
-reviewed contract or dependency promotion; it is not permission to add a
-function-name target. Stop only on explicit cancellation, budget exhaustion,
-human-review authority, repeated failure, or infrastructure failure. Run
-tests for queue claim/recovery, polling, cache reuse, model routing, bad RTL,
-authority traceability, deterministic reports, composite promotion gates, and
-the no-function-allowlist invariant before committing the service.
-
-For this durable service change, commit the service, push the requested
-branch, and open a draft PR titled exactly:
-
-```text
-feat: add SMB regression queue and traceability dashboard
-```
+The executable loop follows `observe → plan → dispatch → verify → update`
+using durable JSON receipts under `ci/`, `artifacts/`, and `integration/`, not
+chat memory. Passing a batch is a checkpoint, not the end of the migration:
+after each promotion, re-read facts/spec/coverage and dispatch the next
+bounded batch of newly eligible leaves or composites. `NO_NEW_WORK` means the
+current frontier is exhausted and must be re-checked after the next reviewed
+contract or dependency promotion; it is not permission to add a function-name
+target. Run tests for cache reuse, bad RTL, authority traceability,
+deterministic reports, composite promotion gates, and the no-function-allowlist
+invariant before publishing a flow change. Commit with a scope-specific title,
+push the requested branch, and update the existing draft PR rather than
+creating a duplicate.

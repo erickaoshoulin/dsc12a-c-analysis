@@ -873,7 +873,669 @@
       "signed": false,
       "unresolved": false,
       "width_source": "EXACT_SPEC_SAMPLE_DOMAIN"
-    }
+    },
+    "ports": [
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "hPos is the production slice-relative position; source bounds slice_width to 1..65535 and SamplePredict is called for hPos < sliceWidth",
+          "kind": "range",
+          "range": [
+            0,
+            65534
+          ]
+        },
+        "name": "hPos",
+        "role": "hPos",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "PRED_TYPE",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "PT_MAP/PT_LEFT plus NUM_PRED_TYPES from dsc_types.h; BP_RANGE=13",
+          "kind": "set",
+          "range": [
+            0,
+            14
+          ],
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14
+          ]
+        },
+        "name": "predType",
+        "role": "predType",
+        "signed": false,
+        "width": 4
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "QuantDivisor[17] and Table 6-2 qLevel output domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "qLevel",
+        "role": "qLevel",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "MAX_UNITS_PER_GROUP=4",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "name": "unit",
+        "role": "unit",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "c_type": "int[4]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC base component bit depths plus the immutable model RGB chroma +1-bit extension",
+          "kind": "set",
+          "range": [
+            8,
+            16
+          ],
+          "values": [
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16
+          ]
+        },
+        "name": "cpnt_bit_depth",
+        "role": "CONFIG_STATIC",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int[4]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "dsc_state_t.unitCType component-index domain",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "name": "unit_c_type",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "c_type": "int[4][3]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "signed decoded residual envelope; vector strategy narrows to cpntBitDepth-qLevel signed n-bit boundaries",
+          "kind": "range",
+          "range": [
+            -32768,
+            32767
+          ]
+        },
+        "name": "quantized_residual_0",
+        "role": "RUNTIME_INPUT",
+        "signed": true,
+        "width": 16
+      },
+      {
+        "c_type": "int[4][3]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "signed decoded residual envelope; vector strategy narrows to cpntBitDepth-qLevel signed n-bit boundaries",
+          "kind": "range",
+          "range": [
+            -32768,
+            32767
+          ]
+        },
+        "name": "quantized_residual_1",
+        "role": "RUNTIME_INPUT",
+        "signed": true,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "prev_3",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "prev_4",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "prev_5",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "prev_6",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "prev_7",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "prev_8",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "prev_9",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "prev_10",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "prev_11",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "prev_12",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "prev_13",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "prev_14",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "prev_15",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "prev_16",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "prev_17",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "curr_0",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "curr_1",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "curr_2",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "curr_3",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "curr_4",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "curr_5",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "curr_6",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "curr_7",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "curr_8",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "curr_9",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "curr_10",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "curr_11",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "curr_12",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "curr_13",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "curr_14",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "curr_15",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "output",
+        "name": "return_value",
+        "role": "return_value",
+        "signed": false,
+        "width": 16
+      }
+    ]
   },
   "lock": {
     "contract_sha256": "cf35191099cb52e65bd5ca84a7f36d0f132ef6400c379c01db93a01cfc51a058",

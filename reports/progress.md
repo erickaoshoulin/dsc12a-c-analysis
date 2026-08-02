@@ -66,9 +66,16 @@ This handoff is isolated from SVRT. The local PDF and upstream C model were read
 - `candidate_04` (off_by_one): `COUNTEREXAMPLE`; smallest counterexample `{'actual': 129, 'cpnt': 0, 'cpnt_bit_depth': 8, 'expected': 128, 'left_recon': 1, 'qlevel': 0}`
 - mutation `array-index`: `COUNTEREXAMPLE`; smallest counterexample `{'actual': 256, 'cpnt': 1, 'cpnt_bit_depth': 8, 'expected': 128, 'left_recon': 0, 'qlevel': 0}`
 
+## Production-domain promotion
+
+- `samplepredict` / `SamplePredict` is now the tenth stable library leaf.
+- The reviewed boundary keeps the C line-buffer state at the caller and exposes only the exact relative taps required by MMAP, left prediction, and block prediction.
+- C/RTL differential coverage passed `25,960,080` legal-domain vectors across `8` shards; the structural formal gate passed `1,002/1,002` partitions with `proof_complete=true`.
+- The deliberate mutation remains rejected with a differential and formal counterexample; the stable RTL and compact promotion receipt are in `library/`.
+
 ## Recommendation
 
-Resolve the remaining obligations in `isflatnessinfosent`, `mapqptoqlevel`, `quantizeresidual`, `samplepredict`, `samptolinebuf`, then repeat the same C-oracle/Verilator exhaustive flow. The selected `FindMidpoint` reference candidate is the promoted result; all deliberate negative variants remain visible as counterexamples.
+Continue with the next tool-selected production leaf (`isflatnessinfosent`, `mapqptoqlevel`, `quantizeresidual`, or `samptolinebuf`) and repeat the same C-oracle/Verilator/formal flow. `SamplePredict` is no longer an unresolved promotion target; its static Eva/From result remains unavailable as recorded separately, but the RTL library contract is closed by the reviewed source/spec boundary and executable gates. The selected `FindMidpoint` and `SamplePredict` reference candidates remain promoted, while deliberate negative variants stay visible as counterexamples.
 
 ## Receipts
 

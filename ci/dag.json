@@ -44,7 +44,7 @@
       "source": "facts/callgraph.json"
     },
     {
-      "callee_contract": null,
+      "callee_contract": "samplepredict",
       "callee_function": "SamplePredict",
       "callee_usr": "c:@F@SamplePredict",
       "caller_contract": null,
@@ -1195,7 +1195,7 @@
       "callee_contract": "mapqptoqlevel",
       "callee_function": "MapQpToQlevel",
       "callee_usr": "c:@F@MapQpToQlevel",
-      "caller_contract": "escapecodesize",
+      "caller_contract": null,
       "caller_function": "EscapeCodeSize",
       "caller_usr": "c:@F@EscapeCodeSize",
       "location": {
@@ -2200,7 +2200,7 @@
       "source": "facts/callgraph.json"
     },
     {
-      "callee_contract": null,
+      "callee_contract": "samplepredict",
       "callee_function": "SamplePredict",
       "callee_usr": "c:@F@SamplePredict",
       "caller_contract": null,
@@ -2214,7 +2214,7 @@
       "source": "facts/callgraph.json"
     },
     {
-      "callee_contract": null,
+      "callee_contract": "samplepredict",
       "callee_function": "SamplePredict",
       "callee_usr": "c:@F@SamplePredict",
       "caller_contract": null,
@@ -2228,7 +2228,7 @@
       "source": "facts/callgraph.json"
     },
     {
-      "callee_contract": null,
+      "callee_contract": "samplepredict",
       "callee_function": "SamplePredict",
       "callee_usr": "c:@F@SamplePredict",
       "caller_contract": null,
@@ -2242,7 +2242,7 @@
       "source": "facts/callgraph.json"
     },
     {
-      "callee_contract": null,
+      "callee_contract": "samplepredict",
       "callee_function": "SamplePredict",
       "callee_usr": "c:@F@SamplePredict",
       "caller_contract": null,
@@ -3334,7 +3334,7 @@
       "source": "facts/callgraph.json"
     },
     {
-      "callee_contract": "escapecodesize",
+      "callee_contract": null,
       "callee_function": "EscapeCodeSize",
       "callee_usr": "c:@F@EscapeCodeSize",
       "caller_contract": null,
@@ -3740,7 +3740,7 @@
       "source": "facts/callgraph.json"
     },
     {
-      "callee_contract": "escapecodesize",
+      "callee_contract": null,
       "callee_function": "EscapeCodeSize",
       "callee_usr": "c:@F@EscapeCodeSize",
       "caller_contract": null,
@@ -30258,38 +30258,6 @@
   ],
   "edges": [
     {
-      "from": "escapecodesize:DISCOVERED",
-      "to": "escapecodesize:CONTRACT_LOCKED"
-    },
-    {
-      "from": "escapecodesize:CONTRACT_LOCKED",
-      "to": "escapecodesize:RTL_GENERATED"
-    },
-    {
-      "from": "escapecodesize:RTL_GENERATED",
-      "to": "escapecodesize:UNIT_VERIFIED"
-    },
-    {
-      "from": "escapecodesize:UNIT_VERIFIED",
-      "to": "escapecodesize:DEPENDENCIES_VERIFIED"
-    },
-    {
-      "from": "escapecodesize:DEPENDENCIES_VERIFIED",
-      "to": "escapecodesize:SHADOW_PASS"
-    },
-    {
-      "from": "escapecodesize:SHADOW_PASS",
-      "to": "escapecodesize:RTL_RETURN_PASS"
-    },
-    {
-      "from": "escapecodesize:RTL_RETURN_PASS",
-      "to": "escapecodesize:BITSTREAM_PASS"
-    },
-    {
-      "from": "escapecodesize:BITSTREAM_PASS",
-      "to": "escapecodesize:PROMOTED"
-    },
-    {
       "from": "findmidpoint:DISCOVERED",
       "to": "findmidpoint:CONTRACT_LOCKED"
     },
@@ -30450,6 +30418,38 @@
       "to": "quantizeresidual:PROMOTED"
     },
     {
+      "from": "samplepredict:DISCOVERED",
+      "to": "samplepredict:CONTRACT_LOCKED"
+    },
+    {
+      "from": "samplepredict:CONTRACT_LOCKED",
+      "to": "samplepredict:RTL_GENERATED"
+    },
+    {
+      "from": "samplepredict:RTL_GENERATED",
+      "to": "samplepredict:UNIT_VERIFIED"
+    },
+    {
+      "from": "samplepredict:UNIT_VERIFIED",
+      "to": "samplepredict:DEPENDENCIES_VERIFIED"
+    },
+    {
+      "from": "samplepredict:DEPENDENCIES_VERIFIED",
+      "to": "samplepredict:SHADOW_PASS"
+    },
+    {
+      "from": "samplepredict:SHADOW_PASS",
+      "to": "samplepredict:RTL_RETURN_PASS"
+    },
+    {
+      "from": "samplepredict:RTL_RETURN_PASS",
+      "to": "samplepredict:BITSTREAM_PASS"
+    },
+    {
+      "from": "samplepredict:BITSTREAM_PASS",
+      "to": "samplepredict:PROMOTED"
+    },
+    {
       "from": "samptolinebuf:DISCOVERED",
       "to": "samptolinebuf:CONTRACT_LOCKED"
     },
@@ -30482,146 +30482,11 @@
       "to": "samptolinebuf:PROMOTED"
     },
     {
-      "from": "escapecodesize:PROMOTED",
-      "to": "VLCUnit:COMPOSITION"
+      "from": "samplepredict:PROMOTED",
+      "to": "BlockPredSearch:COMPOSITION"
     }
   ],
   "nodes": [
-    {
-      "artifacts": [
-        "artifacts/480f0f8595c56a062af62c4eabd3f0adc50bf08788abc6865dd1b1143b61e5f7",
-        "artifacts/57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69"
-      ],
-      "contract_hash": "57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69",
-      "contract_id": "escapecodesize",
-      "dependency_hash": "37327a43dbf90bda24136728c52398f8af9f16319444985526f1260ec5eef69d",
-      "failure_reason": null,
-      "node_id": "escapecodesize:discover",
-      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
-      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-      "stage": "DISCOVERED",
-      "status": "PASS"
-    },
-    {
-      "artifacts": [
-        "artifacts/480f0f8595c56a062af62c4eabd3f0adc50bf08788abc6865dd1b1143b61e5f7",
-        "artifacts/57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69"
-      ],
-      "contract_hash": "57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69",
-      "contract_id": "escapecodesize",
-      "dependency_hash": "37327a43dbf90bda24136728c52398f8af9f16319444985526f1260ec5eef69d",
-      "failure_reason": null,
-      "node_id": "escapecodesize:contract",
-      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
-      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-      "stage": "CONTRACT_LOCKED",
-      "status": "PASS"
-    },
-    {
-      "artifacts": [
-        "artifacts/480f0f8595c56a062af62c4eabd3f0adc50bf08788abc6865dd1b1143b61e5f7",
-        "artifacts/57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69"
-      ],
-      "contract_hash": "57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69",
-      "contract_id": "escapecodesize",
-      "dependency_hash": "37327a43dbf90bda24136728c52398f8af9f16319444985526f1260ec5eef69d",
-      "failure_reason": null,
-      "node_id": "escapecodesize:rtl",
-      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
-      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-      "stage": "RTL_GENERATED",
-      "status": "PASS"
-    },
-    {
-      "artifacts": [
-        "artifacts/480f0f8595c56a062af62c4eabd3f0adc50bf08788abc6865dd1b1143b61e5f7",
-        "artifacts/57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69"
-      ],
-      "contract_hash": "57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69",
-      "contract_id": "escapecodesize",
-      "dependency_hash": "37327a43dbf90bda24136728c52398f8af9f16319444985526f1260ec5eef69d",
-      "failure_reason": null,
-      "node_id": "escapecodesize:unit",
-      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
-      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-      "stage": "UNIT_VERIFIED",
-      "status": "PASS"
-    },
-    {
-      "artifacts": [
-        "artifacts/480f0f8595c56a062af62c4eabd3f0adc50bf08788abc6865dd1b1143b61e5f7",
-        "artifacts/57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69"
-      ],
-      "contract_hash": "57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69",
-      "contract_id": "escapecodesize",
-      "dependency_hash": "37327a43dbf90bda24136728c52398f8af9f16319444985526f1260ec5eef69d",
-      "failure_reason": null,
-      "node_id": "escapecodesize:dependencies",
-      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
-      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-      "stage": "DEPENDENCIES_VERIFIED",
-      "status": "PASS"
-    },
-    {
-      "artifacts": [
-        "artifacts/480f0f8595c56a062af62c4eabd3f0adc50bf08788abc6865dd1b1143b61e5f7",
-        "artifacts/57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69"
-      ],
-      "contract_hash": "57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69",
-      "contract_id": "escapecodesize",
-      "dependency_hash": "37327a43dbf90bda24136728c52398f8af9f16319444985526f1260ec5eef69d",
-      "failure_reason": null,
-      "node_id": "escapecodesize:shadow",
-      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
-      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-      "stage": "SHADOW_PASS",
-      "status": "PASS"
-    },
-    {
-      "artifacts": [
-        "artifacts/480f0f8595c56a062af62c4eabd3f0adc50bf08788abc6865dd1b1143b61e5f7",
-        "artifacts/57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69"
-      ],
-      "contract_hash": "57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69",
-      "contract_id": "escapecodesize",
-      "dependency_hash": "37327a43dbf90bda24136728c52398f8af9f16319444985526f1260ec5eef69d",
-      "failure_reason": null,
-      "node_id": "escapecodesize:rtl_return",
-      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
-      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-      "stage": "RTL_RETURN_PASS",
-      "status": "PASS"
-    },
-    {
-      "artifacts": [
-        "artifacts/480f0f8595c56a062af62c4eabd3f0adc50bf08788abc6865dd1b1143b61e5f7",
-        "artifacts/57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69"
-      ],
-      "contract_hash": "57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69",
-      "contract_id": "escapecodesize",
-      "dependency_hash": "37327a43dbf90bda24136728c52398f8af9f16319444985526f1260ec5eef69d",
-      "failure_reason": null,
-      "node_id": "escapecodesize:bitstream",
-      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
-      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-      "stage": "BITSTREAM_PASS",
-      "status": "PASS"
-    },
-    {
-      "artifacts": [
-        "artifacts/480f0f8595c56a062af62c4eabd3f0adc50bf08788abc6865dd1b1143b61e5f7",
-        "artifacts/57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69"
-      ],
-      "contract_hash": "57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69",
-      "contract_id": "escapecodesize",
-      "dependency_hash": "37327a43dbf90bda24136728c52398f8af9f16319444985526f1260ec5eef69d",
-      "failure_reason": null,
-      "node_id": "escapecodesize:promote",
-      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
-      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-      "stage": "PROMOTED",
-      "status": "PROMOTED"
-    },
     {
       "artifacts": [
         "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/artifact-manifest.json",
@@ -30658,9 +30523,9 @@
         "integration/generated-overlay/findmidpoint/rtl_bridge.cpp",
         "integration/generated-overlay/findmidpoint/shadow.json"
       ],
-      "contract_hash": "4770cb54a401eb81b550fbb5dd3ede2af3c3a4d85ec2f92548125dbd638592cf",
+      "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
-      "dependency_hash": "0ed98a466b17d637ab53543e1ae6197aea910344aecd0723da0a44d6772147aa",
+      "dependency_hash": "7b6fc56cf6e86de06b71c7a1fed999f25e69337d65236e4336048c586bf26ee6",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "findmidpoint:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -30704,9 +30569,9 @@
         "integration/generated-overlay/findmidpoint/rtl_bridge.cpp",
         "integration/generated-overlay/findmidpoint/shadow.json"
       ],
-      "contract_hash": "4770cb54a401eb81b550fbb5dd3ede2af3c3a4d85ec2f92548125dbd638592cf",
+      "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
-      "dependency_hash": "0ed98a466b17d637ab53543e1ae6197aea910344aecd0723da0a44d6772147aa",
+      "dependency_hash": "7b6fc56cf6e86de06b71c7a1fed999f25e69337d65236e4336048c586bf26ee6",
       "failure_reason": "bounded selection deferred",
       "node_id": "findmidpoint:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -30750,9 +30615,9 @@
         "integration/generated-overlay/findmidpoint/rtl_bridge.cpp",
         "integration/generated-overlay/findmidpoint/shadow.json"
       ],
-      "contract_hash": "4770cb54a401eb81b550fbb5dd3ede2af3c3a4d85ec2f92548125dbd638592cf",
+      "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
-      "dependency_hash": "0ed98a466b17d637ab53543e1ae6197aea910344aecd0723da0a44d6772147aa",
+      "dependency_hash": "7b6fc56cf6e86de06b71c7a1fed999f25e69337d65236e4336048c586bf26ee6",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "findmidpoint:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -30796,9 +30661,9 @@
         "integration/generated-overlay/findmidpoint/rtl_bridge.cpp",
         "integration/generated-overlay/findmidpoint/shadow.json"
       ],
-      "contract_hash": "4770cb54a401eb81b550fbb5dd3ede2af3c3a4d85ec2f92548125dbd638592cf",
+      "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
-      "dependency_hash": "0ed98a466b17d637ab53543e1ae6197aea910344aecd0723da0a44d6772147aa",
+      "dependency_hash": "7b6fc56cf6e86de06b71c7a1fed999f25e69337d65236e4336048c586bf26ee6",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "findmidpoint:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -30842,9 +30707,9 @@
         "integration/generated-overlay/findmidpoint/rtl_bridge.cpp",
         "integration/generated-overlay/findmidpoint/shadow.json"
       ],
-      "contract_hash": "4770cb54a401eb81b550fbb5dd3ede2af3c3a4d85ec2f92548125dbd638592cf",
+      "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
-      "dependency_hash": "0ed98a466b17d637ab53543e1ae6197aea910344aecd0723da0a44d6772147aa",
+      "dependency_hash": "7b6fc56cf6e86de06b71c7a1fed999f25e69337d65236e4336048c586bf26ee6",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "findmidpoint:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -30888,9 +30753,9 @@
         "integration/generated-overlay/findmidpoint/rtl_bridge.cpp",
         "integration/generated-overlay/findmidpoint/shadow.json"
       ],
-      "contract_hash": "4770cb54a401eb81b550fbb5dd3ede2af3c3a4d85ec2f92548125dbd638592cf",
+      "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
-      "dependency_hash": "0ed98a466b17d637ab53543e1ae6197aea910344aecd0723da0a44d6772147aa",
+      "dependency_hash": "7b6fc56cf6e86de06b71c7a1fed999f25e69337d65236e4336048c586bf26ee6",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "findmidpoint:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -30934,9 +30799,9 @@
         "integration/generated-overlay/findmidpoint/rtl_bridge.cpp",
         "integration/generated-overlay/findmidpoint/shadow.json"
       ],
-      "contract_hash": "4770cb54a401eb81b550fbb5dd3ede2af3c3a4d85ec2f92548125dbd638592cf",
+      "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
-      "dependency_hash": "0ed98a466b17d637ab53543e1ae6197aea910344aecd0723da0a44d6772147aa",
+      "dependency_hash": "7b6fc56cf6e86de06b71c7a1fed999f25e69337d65236e4336048c586bf26ee6",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "findmidpoint:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -30980,9 +30845,9 @@
         "integration/generated-overlay/findmidpoint/rtl_bridge.cpp",
         "integration/generated-overlay/findmidpoint/shadow.json"
       ],
-      "contract_hash": "4770cb54a401eb81b550fbb5dd3ede2af3c3a4d85ec2f92548125dbd638592cf",
+      "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
-      "dependency_hash": "0ed98a466b17d637ab53543e1ae6197aea910344aecd0723da0a44d6772147aa",
+      "dependency_hash": "7b6fc56cf6e86de06b71c7a1fed999f25e69337d65236e4336048c586bf26ee6",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "findmidpoint:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31026,9 +30891,9 @@
         "integration/generated-overlay/findmidpoint/rtl_bridge.cpp",
         "integration/generated-overlay/findmidpoint/shadow.json"
       ],
-      "contract_hash": "4770cb54a401eb81b550fbb5dd3ede2af3c3a4d85ec2f92548125dbd638592cf",
+      "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
-      "dependency_hash": "0ed98a466b17d637ab53543e1ae6197aea910344aecd0723da0a44d6772147aa",
+      "dependency_hash": "7b6fc56cf6e86de06b71c7a1fed999f25e69337d65236e4336048c586bf26ee6",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "findmidpoint:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31053,9 +30918,9 @@
         "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/vector_generator.py",
         "artifacts/60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2"
       ],
-      "contract_hash": "f079152437dbf9eea9e1ff9463e03ead04fd354570a45c8df03ce99dd49ee4f6",
+      "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
-      "dependency_hash": "5dc4e856c4fca6864b8566497113b6dc5fad569feec3c0ae55921b5aa6f70bbb",
+      "dependency_hash": "69eca8e62d4af75675064065d1ba0278fe43dc581508d639fbd88ca2b5c338b3",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "isflatnessinfosent:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31080,9 +30945,9 @@
         "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/vector_generator.py",
         "artifacts/60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2"
       ],
-      "contract_hash": "f079152437dbf9eea9e1ff9463e03ead04fd354570a45c8df03ce99dd49ee4f6",
+      "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
-      "dependency_hash": "5dc4e856c4fca6864b8566497113b6dc5fad569feec3c0ae55921b5aa6f70bbb",
+      "dependency_hash": "69eca8e62d4af75675064065d1ba0278fe43dc581508d639fbd88ca2b5c338b3",
       "failure_reason": "bounded selection deferred",
       "node_id": "isflatnessinfosent:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31107,9 +30972,9 @@
         "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/vector_generator.py",
         "artifacts/60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2"
       ],
-      "contract_hash": "f079152437dbf9eea9e1ff9463e03ead04fd354570a45c8df03ce99dd49ee4f6",
+      "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
-      "dependency_hash": "5dc4e856c4fca6864b8566497113b6dc5fad569feec3c0ae55921b5aa6f70bbb",
+      "dependency_hash": "69eca8e62d4af75675064065d1ba0278fe43dc581508d639fbd88ca2b5c338b3",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "isflatnessinfosent:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31134,9 +30999,9 @@
         "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/vector_generator.py",
         "artifacts/60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2"
       ],
-      "contract_hash": "f079152437dbf9eea9e1ff9463e03ead04fd354570a45c8df03ce99dd49ee4f6",
+      "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
-      "dependency_hash": "5dc4e856c4fca6864b8566497113b6dc5fad569feec3c0ae55921b5aa6f70bbb",
+      "dependency_hash": "69eca8e62d4af75675064065d1ba0278fe43dc581508d639fbd88ca2b5c338b3",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "isflatnessinfosent:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31161,9 +31026,9 @@
         "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/vector_generator.py",
         "artifacts/60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2"
       ],
-      "contract_hash": "f079152437dbf9eea9e1ff9463e03ead04fd354570a45c8df03ce99dd49ee4f6",
+      "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
-      "dependency_hash": "5dc4e856c4fca6864b8566497113b6dc5fad569feec3c0ae55921b5aa6f70bbb",
+      "dependency_hash": "69eca8e62d4af75675064065d1ba0278fe43dc581508d639fbd88ca2b5c338b3",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "isflatnessinfosent:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31188,9 +31053,9 @@
         "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/vector_generator.py",
         "artifacts/60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2"
       ],
-      "contract_hash": "f079152437dbf9eea9e1ff9463e03ead04fd354570a45c8df03ce99dd49ee4f6",
+      "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
-      "dependency_hash": "5dc4e856c4fca6864b8566497113b6dc5fad569feec3c0ae55921b5aa6f70bbb",
+      "dependency_hash": "69eca8e62d4af75675064065d1ba0278fe43dc581508d639fbd88ca2b5c338b3",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "isflatnessinfosent:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31215,9 +31080,9 @@
         "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/vector_generator.py",
         "artifacts/60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2"
       ],
-      "contract_hash": "f079152437dbf9eea9e1ff9463e03ead04fd354570a45c8df03ce99dd49ee4f6",
+      "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
-      "dependency_hash": "5dc4e856c4fca6864b8566497113b6dc5fad569feec3c0ae55921b5aa6f70bbb",
+      "dependency_hash": "69eca8e62d4af75675064065d1ba0278fe43dc581508d639fbd88ca2b5c338b3",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "isflatnessinfosent:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31242,9 +31107,9 @@
         "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/vector_generator.py",
         "artifacts/60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2"
       ],
-      "contract_hash": "f079152437dbf9eea9e1ff9463e03ead04fd354570a45c8df03ce99dd49ee4f6",
+      "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
-      "dependency_hash": "5dc4e856c4fca6864b8566497113b6dc5fad569feec3c0ae55921b5aa6f70bbb",
+      "dependency_hash": "69eca8e62d4af75675064065d1ba0278fe43dc581508d639fbd88ca2b5c338b3",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "isflatnessinfosent:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31269,9 +31134,9 @@
         "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/vector_generator.py",
         "artifacts/60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2"
       ],
-      "contract_hash": "f079152437dbf9eea9e1ff9463e03ead04fd354570a45c8df03ce99dd49ee4f6",
+      "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
-      "dependency_hash": "5dc4e856c4fca6864b8566497113b6dc5fad569feec3c0ae55921b5aa6f70bbb",
+      "dependency_hash": "69eca8e62d4af75675064065d1ba0278fe43dc581508d639fbd88ca2b5c338b3",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "isflatnessinfosent:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31295,9 +31160,9 @@
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/shadow_replacement_wrapper.c",
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/vector_generator.py"
       ],
-      "contract_hash": "9dca6ef2ab9731a8e0651276955456e9433b652e6be6714081e97e143c4b30bf",
+      "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
-      "dependency_hash": "fd1a2ba65d9277aad6286d988d7d4141ece545ee43ffa7442bb729f345cf3d07",
+      "dependency_hash": "6c0c133027c15fdfa1562d2491430815b1d9124c1f57119b27528ce4bc62833c",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "mapqptoqlevel:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31321,9 +31186,9 @@
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/shadow_replacement_wrapper.c",
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/vector_generator.py"
       ],
-      "contract_hash": "9dca6ef2ab9731a8e0651276955456e9433b652e6be6714081e97e143c4b30bf",
+      "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
-      "dependency_hash": "fd1a2ba65d9277aad6286d988d7d4141ece545ee43ffa7442bb729f345cf3d07",
+      "dependency_hash": "6c0c133027c15fdfa1562d2491430815b1d9124c1f57119b27528ce4bc62833c",
       "failure_reason": "bounded selection deferred",
       "node_id": "mapqptoqlevel:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31347,9 +31212,9 @@
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/shadow_replacement_wrapper.c",
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/vector_generator.py"
       ],
-      "contract_hash": "9dca6ef2ab9731a8e0651276955456e9433b652e6be6714081e97e143c4b30bf",
+      "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
-      "dependency_hash": "fd1a2ba65d9277aad6286d988d7d4141ece545ee43ffa7442bb729f345cf3d07",
+      "dependency_hash": "6c0c133027c15fdfa1562d2491430815b1d9124c1f57119b27528ce4bc62833c",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "mapqptoqlevel:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31373,9 +31238,9 @@
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/shadow_replacement_wrapper.c",
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/vector_generator.py"
       ],
-      "contract_hash": "9dca6ef2ab9731a8e0651276955456e9433b652e6be6714081e97e143c4b30bf",
+      "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
-      "dependency_hash": "fd1a2ba65d9277aad6286d988d7d4141ece545ee43ffa7442bb729f345cf3d07",
+      "dependency_hash": "6c0c133027c15fdfa1562d2491430815b1d9124c1f57119b27528ce4bc62833c",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "mapqptoqlevel:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31399,9 +31264,9 @@
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/shadow_replacement_wrapper.c",
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/vector_generator.py"
       ],
-      "contract_hash": "9dca6ef2ab9731a8e0651276955456e9433b652e6be6714081e97e143c4b30bf",
+      "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
-      "dependency_hash": "fd1a2ba65d9277aad6286d988d7d4141ece545ee43ffa7442bb729f345cf3d07",
+      "dependency_hash": "6c0c133027c15fdfa1562d2491430815b1d9124c1f57119b27528ce4bc62833c",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "mapqptoqlevel:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31425,9 +31290,9 @@
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/shadow_replacement_wrapper.c",
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/vector_generator.py"
       ],
-      "contract_hash": "9dca6ef2ab9731a8e0651276955456e9433b652e6be6714081e97e143c4b30bf",
+      "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
-      "dependency_hash": "fd1a2ba65d9277aad6286d988d7d4141ece545ee43ffa7442bb729f345cf3d07",
+      "dependency_hash": "6c0c133027c15fdfa1562d2491430815b1d9124c1f57119b27528ce4bc62833c",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "mapqptoqlevel:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31451,9 +31316,9 @@
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/shadow_replacement_wrapper.c",
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/vector_generator.py"
       ],
-      "contract_hash": "9dca6ef2ab9731a8e0651276955456e9433b652e6be6714081e97e143c4b30bf",
+      "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
-      "dependency_hash": "fd1a2ba65d9277aad6286d988d7d4141ece545ee43ffa7442bb729f345cf3d07",
+      "dependency_hash": "6c0c133027c15fdfa1562d2491430815b1d9124c1f57119b27528ce4bc62833c",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "mapqptoqlevel:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31477,9 +31342,9 @@
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/shadow_replacement_wrapper.c",
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/vector_generator.py"
       ],
-      "contract_hash": "9dca6ef2ab9731a8e0651276955456e9433b652e6be6714081e97e143c4b30bf",
+      "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
-      "dependency_hash": "fd1a2ba65d9277aad6286d988d7d4141ece545ee43ffa7442bb729f345cf3d07",
+      "dependency_hash": "6c0c133027c15fdfa1562d2491430815b1d9124c1f57119b27528ce4bc62833c",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "mapqptoqlevel:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31503,9 +31368,9 @@
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/shadow_replacement_wrapper.c",
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/vector_generator.py"
       ],
-      "contract_hash": "9dca6ef2ab9731a8e0651276955456e9433b652e6be6714081e97e143c4b30bf",
+      "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
-      "dependency_hash": "fd1a2ba65d9277aad6286d988d7d4141ece545ee43ffa7442bb729f345cf3d07",
+      "dependency_hash": "6c0c133027c15fdfa1562d2491430815b1d9124c1f57119b27528ce4bc62833c",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "mapqptoqlevel:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31515,9 +31380,9 @@
     },
     {
       "artifacts": [],
-      "contract_hash": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
+      "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
-      "dependency_hash": "914df6beca4a8f89ea185ee1ce47bc73c706a1bc1a5bf1c3b73b69ef4d4b1cb3",
+      "dependency_hash": "69de596137f6702b564ed6436d48ecb862c2675fb684f1fad2c05aedb012c316",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "predictsize:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31527,9 +31392,9 @@
     },
     {
       "artifacts": [],
-      "contract_hash": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
+      "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
-      "dependency_hash": "914df6beca4a8f89ea185ee1ce47bc73c706a1bc1a5bf1c3b73b69ef4d4b1cb3",
+      "dependency_hash": "69de596137f6702b564ed6436d48ecb862c2675fb684f1fad2c05aedb012c316",
       "failure_reason": "bounded selection deferred",
       "node_id": "predictsize:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31539,9 +31404,9 @@
     },
     {
       "artifacts": [],
-      "contract_hash": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
+      "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
-      "dependency_hash": "914df6beca4a8f89ea185ee1ce47bc73c706a1bc1a5bf1c3b73b69ef4d4b1cb3",
+      "dependency_hash": "69de596137f6702b564ed6436d48ecb862c2675fb684f1fad2c05aedb012c316",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "predictsize:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31551,9 +31416,9 @@
     },
     {
       "artifacts": [],
-      "contract_hash": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
+      "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
-      "dependency_hash": "914df6beca4a8f89ea185ee1ce47bc73c706a1bc1a5bf1c3b73b69ef4d4b1cb3",
+      "dependency_hash": "69de596137f6702b564ed6436d48ecb862c2675fb684f1fad2c05aedb012c316",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "predictsize:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31563,9 +31428,9 @@
     },
     {
       "artifacts": [],
-      "contract_hash": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
+      "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
-      "dependency_hash": "914df6beca4a8f89ea185ee1ce47bc73c706a1bc1a5bf1c3b73b69ef4d4b1cb3",
+      "dependency_hash": "69de596137f6702b564ed6436d48ecb862c2675fb684f1fad2c05aedb012c316",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "predictsize:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31575,9 +31440,9 @@
     },
     {
       "artifacts": [],
-      "contract_hash": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
+      "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
-      "dependency_hash": "914df6beca4a8f89ea185ee1ce47bc73c706a1bc1a5bf1c3b73b69ef4d4b1cb3",
+      "dependency_hash": "69de596137f6702b564ed6436d48ecb862c2675fb684f1fad2c05aedb012c316",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "predictsize:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31587,9 +31452,9 @@
     },
     {
       "artifacts": [],
-      "contract_hash": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
+      "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
-      "dependency_hash": "914df6beca4a8f89ea185ee1ce47bc73c706a1bc1a5bf1c3b73b69ef4d4b1cb3",
+      "dependency_hash": "69de596137f6702b564ed6436d48ecb862c2675fb684f1fad2c05aedb012c316",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "predictsize:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31599,9 +31464,9 @@
     },
     {
       "artifacts": [],
-      "contract_hash": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
+      "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
-      "dependency_hash": "914df6beca4a8f89ea185ee1ce47bc73c706a1bc1a5bf1c3b73b69ef4d4b1cb3",
+      "dependency_hash": "69de596137f6702b564ed6436d48ecb862c2675fb684f1fad2c05aedb012c316",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "predictsize:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31611,9 +31476,9 @@
     },
     {
       "artifacts": [],
-      "contract_hash": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
+      "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
-      "dependency_hash": "914df6beca4a8f89ea185ee1ce47bc73c706a1bc1a5bf1c3b73b69ef4d4b1cb3",
+      "dependency_hash": "69de596137f6702b564ed6436d48ecb862c2675fb684f1fad2c05aedb012c316",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "predictsize:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31625,9 +31490,9 @@
       "artifacts": [
         "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2"
       ],
-      "contract_hash": "bd7cac692d0064753250d5ae92776ee7718d8cb222ea52561893438c52e6e30d",
+      "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
       "contract_id": "quantizeresidual",
-      "dependency_hash": "a3f401df0ddba81554e3f977a3f1cfcb7cb312cbf0ddf6d4590b3e885034181d",
+      "dependency_hash": "7745ee3080f86b81570ed1952bf6de4f560b1542d8feeb22cfca764dc8fbfc10",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "quantizeresidual:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31639,9 +31504,9 @@
       "artifacts": [
         "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2"
       ],
-      "contract_hash": "bd7cac692d0064753250d5ae92776ee7718d8cb222ea52561893438c52e6e30d",
+      "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
       "contract_id": "quantizeresidual",
-      "dependency_hash": "a3f401df0ddba81554e3f977a3f1cfcb7cb312cbf0ddf6d4590b3e885034181d",
+      "dependency_hash": "7745ee3080f86b81570ed1952bf6de4f560b1542d8feeb22cfca764dc8fbfc10",
       "failure_reason": "bounded selection deferred",
       "node_id": "quantizeresidual:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31653,9 +31518,9 @@
       "artifacts": [
         "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2"
       ],
-      "contract_hash": "bd7cac692d0064753250d5ae92776ee7718d8cb222ea52561893438c52e6e30d",
+      "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
       "contract_id": "quantizeresidual",
-      "dependency_hash": "a3f401df0ddba81554e3f977a3f1cfcb7cb312cbf0ddf6d4590b3e885034181d",
+      "dependency_hash": "7745ee3080f86b81570ed1952bf6de4f560b1542d8feeb22cfca764dc8fbfc10",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "quantizeresidual:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31667,9 +31532,9 @@
       "artifacts": [
         "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2"
       ],
-      "contract_hash": "bd7cac692d0064753250d5ae92776ee7718d8cb222ea52561893438c52e6e30d",
+      "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
       "contract_id": "quantizeresidual",
-      "dependency_hash": "a3f401df0ddba81554e3f977a3f1cfcb7cb312cbf0ddf6d4590b3e885034181d",
+      "dependency_hash": "7745ee3080f86b81570ed1952bf6de4f560b1542d8feeb22cfca764dc8fbfc10",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "quantizeresidual:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31681,9 +31546,9 @@
       "artifacts": [
         "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2"
       ],
-      "contract_hash": "bd7cac692d0064753250d5ae92776ee7718d8cb222ea52561893438c52e6e30d",
+      "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
       "contract_id": "quantizeresidual",
-      "dependency_hash": "a3f401df0ddba81554e3f977a3f1cfcb7cb312cbf0ddf6d4590b3e885034181d",
+      "dependency_hash": "7745ee3080f86b81570ed1952bf6de4f560b1542d8feeb22cfca764dc8fbfc10",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "quantizeresidual:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31695,9 +31560,9 @@
       "artifacts": [
         "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2"
       ],
-      "contract_hash": "bd7cac692d0064753250d5ae92776ee7718d8cb222ea52561893438c52e6e30d",
+      "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
       "contract_id": "quantizeresidual",
-      "dependency_hash": "a3f401df0ddba81554e3f977a3f1cfcb7cb312cbf0ddf6d4590b3e885034181d",
+      "dependency_hash": "7745ee3080f86b81570ed1952bf6de4f560b1542d8feeb22cfca764dc8fbfc10",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "quantizeresidual:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31709,9 +31574,9 @@
       "artifacts": [
         "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2"
       ],
-      "contract_hash": "bd7cac692d0064753250d5ae92776ee7718d8cb222ea52561893438c52e6e30d",
+      "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
       "contract_id": "quantizeresidual",
-      "dependency_hash": "a3f401df0ddba81554e3f977a3f1cfcb7cb312cbf0ddf6d4590b3e885034181d",
+      "dependency_hash": "7745ee3080f86b81570ed1952bf6de4f560b1542d8feeb22cfca764dc8fbfc10",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "quantizeresidual:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31723,9 +31588,9 @@
       "artifacts": [
         "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2"
       ],
-      "contract_hash": "bd7cac692d0064753250d5ae92776ee7718d8cb222ea52561893438c52e6e30d",
+      "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
       "contract_id": "quantizeresidual",
-      "dependency_hash": "a3f401df0ddba81554e3f977a3f1cfcb7cb312cbf0ddf6d4590b3e885034181d",
+      "dependency_hash": "7745ee3080f86b81570ed1952bf6de4f560b1542d8feeb22cfca764dc8fbfc10",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "quantizeresidual:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31737,9 +31602,9 @@
       "artifacts": [
         "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2"
       ],
-      "contract_hash": "bd7cac692d0064753250d5ae92776ee7718d8cb222ea52561893438c52e6e30d",
+      "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
       "contract_id": "quantizeresidual",
-      "dependency_hash": "a3f401df0ddba81554e3f977a3f1cfcb7cb312cbf0ddf6d4590b3e885034181d",
+      "dependency_hash": "7745ee3080f86b81570ed1952bf6de4f560b1542d8feeb22cfca764dc8fbfc10",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "quantizeresidual:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31748,10 +31613,136 @@
       "status": "PENDING"
     },
     {
+      "artifacts": [
+        "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509"
+      ],
+      "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+      "contract_id": "samplepredict",
+      "dependency_hash": "d908b967b94e50bb66c526b5895082f8c645ff30f152e97011818642fe3fc0d0",
+      "failure_reason": null,
+      "node_id": "samplepredict:discover",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "DISCOVERED",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [
+        "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509"
+      ],
+      "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+      "contract_id": "samplepredict",
+      "dependency_hash": "d908b967b94e50bb66c526b5895082f8c645ff30f152e97011818642fe3fc0d0",
+      "failure_reason": null,
+      "node_id": "samplepredict:contract",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "CONTRACT_LOCKED",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [
+        "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509"
+      ],
+      "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+      "contract_id": "samplepredict",
+      "dependency_hash": "d908b967b94e50bb66c526b5895082f8c645ff30f152e97011818642fe3fc0d0",
+      "failure_reason": null,
+      "node_id": "samplepredict:rtl",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "RTL_GENERATED",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [
+        "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509"
+      ],
+      "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+      "contract_id": "samplepredict",
+      "dependency_hash": "d908b967b94e50bb66c526b5895082f8c645ff30f152e97011818642fe3fc0d0",
+      "failure_reason": null,
+      "node_id": "samplepredict:unit",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "UNIT_VERIFIED",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [
+        "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509"
+      ],
+      "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+      "contract_id": "samplepredict",
+      "dependency_hash": "d908b967b94e50bb66c526b5895082f8c645ff30f152e97011818642fe3fc0d0",
+      "failure_reason": null,
+      "node_id": "samplepredict:dependencies",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "DEPENDENCIES_VERIFIED",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [
+        "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509"
+      ],
+      "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+      "contract_id": "samplepredict",
+      "dependency_hash": "d908b967b94e50bb66c526b5895082f8c645ff30f152e97011818642fe3fc0d0",
+      "failure_reason": null,
+      "node_id": "samplepredict:shadow",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "SHADOW_PASS",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [
+        "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509"
+      ],
+      "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+      "contract_id": "samplepredict",
+      "dependency_hash": "d908b967b94e50bb66c526b5895082f8c645ff30f152e97011818642fe3fc0d0",
+      "failure_reason": null,
+      "node_id": "samplepredict:rtl_return",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "RTL_RETURN_PASS",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [
+        "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509"
+      ],
+      "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+      "contract_id": "samplepredict",
+      "dependency_hash": "d908b967b94e50bb66c526b5895082f8c645ff30f152e97011818642fe3fc0d0",
+      "failure_reason": null,
+      "node_id": "samplepredict:bitstream",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "BITSTREAM_PASS",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [
+        "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509"
+      ],
+      "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+      "contract_id": "samplepredict",
+      "dependency_hash": "d908b967b94e50bb66c526b5895082f8c645ff30f152e97011818642fe3fc0d0",
+      "failure_reason": null,
+      "node_id": "samplepredict:promote",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "PROMOTED",
+      "status": "PROMOTED"
+    },
+    {
       "artifacts": [],
-      "contract_hash": "05bcff80920baf0d36d0cfceb95053d2385b1d939a15a173f0e253b27a18900d",
+      "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
       "contract_id": "samptolinebuf",
-      "dependency_hash": "04d90b97e37f480b54d872efbc39ab16c1874e817def115117da9f87d78853d9",
+      "dependency_hash": "387edc77a99ea0783123b2050e0dfc0c646e7c8462f10e4aba8cd906e92b5b50",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "samptolinebuf:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31761,9 +31752,9 @@
     },
     {
       "artifacts": [],
-      "contract_hash": "05bcff80920baf0d36d0cfceb95053d2385b1d939a15a173f0e253b27a18900d",
+      "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
       "contract_id": "samptolinebuf",
-      "dependency_hash": "04d90b97e37f480b54d872efbc39ab16c1874e817def115117da9f87d78853d9",
+      "dependency_hash": "387edc77a99ea0783123b2050e0dfc0c646e7c8462f10e4aba8cd906e92b5b50",
       "failure_reason": "bounded selection deferred",
       "node_id": "samptolinebuf:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31773,9 +31764,9 @@
     },
     {
       "artifacts": [],
-      "contract_hash": "05bcff80920baf0d36d0cfceb95053d2385b1d939a15a173f0e253b27a18900d",
+      "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
       "contract_id": "samptolinebuf",
-      "dependency_hash": "04d90b97e37f480b54d872efbc39ab16c1874e817def115117da9f87d78853d9",
+      "dependency_hash": "387edc77a99ea0783123b2050e0dfc0c646e7c8462f10e4aba8cd906e92b5b50",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "samptolinebuf:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31785,9 +31776,9 @@
     },
     {
       "artifacts": [],
-      "contract_hash": "05bcff80920baf0d36d0cfceb95053d2385b1d939a15a173f0e253b27a18900d",
+      "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
       "contract_id": "samptolinebuf",
-      "dependency_hash": "04d90b97e37f480b54d872efbc39ab16c1874e817def115117da9f87d78853d9",
+      "dependency_hash": "387edc77a99ea0783123b2050e0dfc0c646e7c8462f10e4aba8cd906e92b5b50",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "samptolinebuf:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31797,9 +31788,9 @@
     },
     {
       "artifacts": [],
-      "contract_hash": "05bcff80920baf0d36d0cfceb95053d2385b1d939a15a173f0e253b27a18900d",
+      "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
       "contract_id": "samptolinebuf",
-      "dependency_hash": "04d90b97e37f480b54d872efbc39ab16c1874e817def115117da9f87d78853d9",
+      "dependency_hash": "387edc77a99ea0783123b2050e0dfc0c646e7c8462f10e4aba8cd906e92b5b50",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "samptolinebuf:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31809,9 +31800,9 @@
     },
     {
       "artifacts": [],
-      "contract_hash": "05bcff80920baf0d36d0cfceb95053d2385b1d939a15a173f0e253b27a18900d",
+      "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
       "contract_id": "samptolinebuf",
-      "dependency_hash": "04d90b97e37f480b54d872efbc39ab16c1874e817def115117da9f87d78853d9",
+      "dependency_hash": "387edc77a99ea0783123b2050e0dfc0c646e7c8462f10e4aba8cd906e92b5b50",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "samptolinebuf:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31821,9 +31812,9 @@
     },
     {
       "artifacts": [],
-      "contract_hash": "05bcff80920baf0d36d0cfceb95053d2385b1d939a15a173f0e253b27a18900d",
+      "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
       "contract_id": "samptolinebuf",
-      "dependency_hash": "04d90b97e37f480b54d872efbc39ab16c1874e817def115117da9f87d78853d9",
+      "dependency_hash": "387edc77a99ea0783123b2050e0dfc0c646e7c8462f10e4aba8cd906e92b5b50",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "samptolinebuf:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31833,9 +31824,9 @@
     },
     {
       "artifacts": [],
-      "contract_hash": "05bcff80920baf0d36d0cfceb95053d2385b1d939a15a173f0e253b27a18900d",
+      "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
       "contract_id": "samptolinebuf",
-      "dependency_hash": "04d90b97e37f480b54d872efbc39ab16c1874e817def115117da9f87d78853d9",
+      "dependency_hash": "387edc77a99ea0783123b2050e0dfc0c646e7c8462f10e4aba8cd906e92b5b50",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "samptolinebuf:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31845,9 +31836,9 @@
     },
     {
       "artifacts": [],
-      "contract_hash": "05bcff80920baf0d36d0cfceb95053d2385b1d939a15a173f0e253b27a18900d",
+      "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
       "contract_id": "samptolinebuf",
-      "dependency_hash": "04d90b97e37f480b54d872efbc39ab16c1874e817def115117da9f87d78853d9",
+      "dependency_hash": "387edc77a99ea0783123b2050e0dfc0c646e7c8462f10e4aba8cd906e92b5b50",
       "failure_reason": "ready but outside bounded new-work selection",
       "node_id": "samptolinebuf:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
@@ -31859,9 +31850,9 @@
       "artifacts": [],
       "contract_hash": null,
       "contract_id": null,
-      "dependency_hash": "aede013a57f6387431ce150d82c66325650399c348e883a25bfb94528cd2c333",
+      "dependency_hash": "8855abcc2fccbedce5d1c96bda431ade6adf640f9fec4ec37f9848e840a0669d",
       "failure_reason": null,
-      "node_id": "VLCUnit:COMPOSITION",
+      "node_id": "BlockPredSearch:COMPOSITION",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "COMPOSITION",

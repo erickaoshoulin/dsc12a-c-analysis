@@ -436,6 +436,173 @@ def windowed_sample_predict_body(
     return "\n".join(lines)
 
 
+def dynamic_window_sample_predict_body(
+    interface: dict[str, object], semantics: dict[str, object], bad: bool
+) -> str:
+    """Emit a production-domain candidate with a relative line-buffer window.
+
+    The C overlay supplies the six previous-line MMAP taps and a thirteen
+    sample current-line window for the current hPos.  The line-buffer storage
+    remains outside the DUT; the RTL only evaluates the spec-defined
+    predictor over that read-only window.
+    """
+    ports = interface.get("ports", [])
+    names = {
+        str(port.get("name")): str(port.get("name"))
+        for port in ports
+        if isinstance(port, dict)
+    }
+    strategy = semantics.get("legal_vector_strategy", {})
+    window = semantics.get("window_spec", {})
+    dynamic = window.get("dynamic_line_window", {}) if isinstance(window, dict) else {}
+    if not isinstance(strategy, dict) or not isinstance(dynamic, dict):
+        raise ValueError("dynamic sample-predict fixture is missing reviewed strategy metadata")
+
+    hpos_name = str(strategy.get("hpos_port", "hPos"))
+    pred_name = str(strategy.get("pred_type_port", "predType"))
+    qlevel_name = str(strategy.get("qlevel_port", "qLevel"))
+    bit_depth_name = str(strategy.get("bit_depth_port", "cpnt_bit_depth"))
+    residual_ports = [str(value) for value in strategy.get("residual_ports", [])]
+    prev_ports = [str(value) for value in dynamic.get("prev_window_ports", [])]
+    curr_ports = [str(value) for value in dynamic.get("curr_window_ports", [])]
+    if len(prev_ports) != 6:
+        raise ValueError("dynamic sample-predict fixture requires six previous-line window ports")
+    if len(curr_ports) != 13:
+        raise ValueError("dynamic sample-predict fixture requires thirteen current-line window ports")
+    required = [
+        hpos_name,
+        pred_name,
+        qlevel_name,
+        bit_depth_name,
+        *residual_ports,
+        *prev_ports,
+        *curr_ports,
+        "return_value",
+    ]
+    missing = [name for name in required if name not in names]
+    if missing:
+        raise ValueError("dynamic sample-predict fixture is missing ports: " + ", ".join(missing))
+
+    samples_per_unit = int(dynamic.get("samples_per_unit", 3))
+    padding_left = int(dynamic.get("padding_left", 5))
+    current_window_left = int(dynamic.get("current_window_left", 8))
+
+    lines = [
+        "    integer signed a_i;",
+        "    integer signed b_i;",
+        "    integer signed c_i;",
+        "    integer signed d_i;",
+        "    integer signed e_i;",
+        "    integer signed filt_c_i;",
+        "    integer signed filt_b_i;",
+        "    integer signed filt_d_i;",
+        "    integer signed filt_e_i;",
+        "    integer signed blend_b_i;",
+        "    integer signed blend_c_i;",
+        "    integer signed blend_d_i;",
+        "    integer signed blend_e_i;",
+        "    integer signed diff_i;",
+        "    integer signed qdiv_i;",
+        "    integer signed qhalf_i;",
+        "    integer signed cpnt_max_i;",
+        "    integer signed window_start_i;",
+        "    integer signed group_a_index_i;",
+        "    integer signed block_global_index_i;",
+        "    integer signed block_window_index_i;",
+        "    integer signed result_i;",
+        "    integer signed qr0_i;",
+        "    integer signed qr1_i;",
+        "    integer signed block_value_i;",
+        "    function automatic integer current_at_i;",
+        "        input integer index;",
+        "        begin",
+        "            case (index)",
+    ]
+    for index, port_name in enumerate(curr_ports):
+        lines.append(f"                {index}: current_at_i = {port_name};")
+    lines.extend([
+        "                default: current_at_i = 0;",
+        "            endcase",
+        "        end",
+        "    endfunction",
+        "    function automatic integer clamp_i;",
+        "        input integer value;",
+        "        input integer lower;",
+        "        input integer upper;",
+        "        begin",
+        "            if (value < lower) clamp_i = lower;",
+        "            else if (value > upper) clamp_i = upper;",
+        "            else clamp_i = value;",
+        "        end",
+        "    endfunction",
+        "    function automatic integer min_i;",
+        "        input integer left;",
+        "        input integer right;",
+        "        begin min_i = (left < right) ? left : right; end",
+        "    endfunction",
+        "    function automatic integer max_i;",
+        "        input integer left;",
+        "        input integer right;",
+        "        begin max_i = (left > right) ? left : right; end",
+        "    endfunction",
+        "    always_comb begin",
+        f"        window_start_i = ({hpos_name} > {current_window_left}) ? ({hpos_name} - {current_window_left}) : 0;",
+        f"        group_a_index_i = (({hpos_name} / {samples_per_unit}) * {samples_per_unit}) + {padding_left} - 1 - window_start_i;",
+        "        a_i = current_at_i(group_a_index_i);",
+        f"        b_i = {prev_ports[2]};",
+        f"        c_i = {prev_ports[1]};",
+        f"        d_i = {prev_ports[3]};",
+        f"        e_i = {prev_ports[4]};",
+        f"        filt_c_i = ({prev_ports[0]} + (2 * {prev_ports[1]}) + {prev_ports[2]} + 2) >>> 2;",
+        f"        filt_b_i = ({prev_ports[1]} + (2 * {prev_ports[2]}) + {prev_ports[3]} + 2) >>> 2;",
+        f"        filt_d_i = ({prev_ports[2]} + (2 * {prev_ports[3]}) + {prev_ports[4]} + 2) >>> 2;",
+        f"        filt_e_i = ({prev_ports[3]} + (2 * {prev_ports[4]}) + {prev_ports[5]} + 2) >>> 2;",
+        f"        block_global_index_i = {hpos_name} + {padding_left} - 1 - ({pred_name} - 2);",
+        "        if (block_global_index_i < 0) block_global_index_i = 0;",
+        "        block_window_index_i = block_global_index_i - window_start_i;",
+        "        block_value_i = current_at_i(block_window_index_i);",
+        f"        qdiv_i = 1 <<< {qlevel_name};",
+        "        qhalf_i = qdiv_i / 2;",
+        f"        cpnt_max_i = (1 <<< {bit_depth_name}) - 1;",
+        f"        qr0_i = $signed({residual_ports[0]});",
+        f"        qr1_i = $signed({residual_ports[1]});",
+        "        diff_i = 0;",
+        "        blend_b_i = b_i;",
+        "        blend_c_i = c_i;",
+        "        blend_d_i = d_i;",
+        "        blend_e_i = e_i;",
+        "        result_i = 0;",
+        f"        diff_i = clamp_i(filt_c_i - c_i, -qhalf_i, qhalf_i);",
+        "        blend_c_i = c_i + diff_i;",
+        f"        diff_i = clamp_i(filt_b_i - b_i, -qhalf_i, qhalf_i);",
+        "        blend_b_i = b_i + diff_i;",
+        f"        diff_i = clamp_i(filt_d_i - d_i, -qhalf_i, qhalf_i);",
+        "        blend_d_i = d_i + diff_i;",
+        f"        diff_i = clamp_i(filt_e_i - e_i, -qhalf_i, qhalf_i);",
+        "        blend_e_i = e_i + diff_i;",
+        f"        if (({hpos_name} / {samples_per_unit}) == 0) blend_c_i = a_i;",
+        f"        if ({pred_name} == 0) begin",
+        f"            if (({hpos_name} % {samples_per_unit}) == 0)",
+        "                result_i = clamp_i(a_i + blend_b_i - blend_c_i, min_i(a_i, blend_b_i), max_i(a_i, blend_b_i));",
+        f"            else if (({hpos_name} % {samples_per_unit}) == 1)",
+        "                result_i = clamp_i(a_i + blend_d_i - blend_c_i + (qr0_i * qdiv_i), min_i(a_i, min_i(blend_b_i, blend_d_i)), max_i(a_i, max_i(blend_b_i, blend_d_i)));",
+        "            else",
+        "                result_i = clamp_i(a_i + blend_e_i - blend_c_i + ((qr0_i + qr1_i) * qdiv_i), min_i(a_i, min_i(blend_b_i, min_i(blend_d_i, blend_e_i))), max_i(a_i, max_i(blend_b_i, max_i(blend_d_i, blend_e_i))));",
+        f"        end else if ({pred_name} == 1) begin",
+        f"            if (({hpos_name} % {samples_per_unit}) == 0) result_i = a_i;",
+        f"            else if (({hpos_name} % {samples_per_unit}) == 1) result_i = clamp_i(a_i + (qr0_i * qdiv_i), 0, cpnt_max_i);",
+        "            else result_i = clamp_i(a_i + ((qr0_i + qr1_i) * qdiv_i), 0, cpnt_max_i);",
+        "        end else begin",
+        "            result_i = block_value_i;",
+        "        end",
+        "        return_value = result_i;",
+    ])
+    if bad:
+        lines.append("        return_value = return_value + 1;")
+    lines.append("    end")
+    return "\n".join(lines)
+
+
 def generic_body(interface: dict[str, object], semantics: dict[str, object], bad: bool) -> str:
     ports = interface.get("ports", [])
     out = next((p for p in ports if isinstance(p, dict) and p.get("role") == "return_value"), None)
@@ -481,6 +648,12 @@ def render_candidate(contract: dict[str, object], interface: dict[str, object], 
         body = max_residual_size_body(interface, bad)
     elif kind == "qp_adjusted_pred_size":
         body = qp_adjusted_pred_size_body(interface, bad)
+    elif kind == "windowed_sample_predict" and (
+        isinstance(semantics, dict)
+        and isinstance(semantics.get("window_spec"), dict)
+        and semantics["window_spec"].get("dynamic_line_window")
+    ):
+        body = dynamic_window_sample_predict_body(interface, semantics, bad)
     elif kind == "windowed_sample_predict":
         body = windowed_sample_predict_body(interface, semantics, bad)
     else:

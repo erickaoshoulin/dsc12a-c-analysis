@@ -5,26 +5,26 @@
   "dependency_pair": {
     "call_sites": [
       {
-        "callee_contract": "escapecodesize",
-        "callee_function": "EscapeCodeSize",
-        "callee_usr": "c:@F@EscapeCodeSize",
+        "callee_contract": "samplepredict",
+        "callee_function": "SamplePredict",
+        "callee_usr": "c:@F@SamplePredict",
         "caller_contract": null,
-        "caller_function": "VLCUnit",
-        "caller_usr": "c:@F@VLCUnit",
+        "caller_function": "BlockPredSearch",
+        "caller_usr": "c:@F@BlockPredSearch",
         "location": {
-          "column": 26,
+          "column": 13,
           "file": "dsc_codec.c",
-          "line": 1614
+          "line": 1002
         },
         "source": "facts/callgraph.json"
       }
     ],
-    "callee_contract": "escapecodesize",
-    "callee_function": "EscapeCodeSize",
-    "callee_usr": "c:@F@EscapeCodeSize",
+    "callee_contract": "samplepredict",
+    "callee_function": "SamplePredict",
+    "callee_usr": "c:@F@SamplePredict",
     "caller_contract": null,
-    "caller_function": "VLCUnit",
-    "caller_usr": "c:@F@VLCUnit",
+    "caller_function": "BlockPredSearch",
+    "caller_usr": "c:@F@BlockPredSearch",
     "selection_basis": "smallest acyclic direct call site from facts/callgraph.json"
   },
   "generator_invocations": 1,
@@ -33,49 +33,88 @@
   "matrix_scripts_discovered": 22,
   "model_calls": 1,
   "new_candidates": [
-    "escapecodesize"
+    "samplepredict"
   ],
   "ready_contracts": [
-    "escapecodesize",
     "findmidpoint",
     "isflatnessinfosent",
     "mapqptoqlevel",
     "predictsize",
     "quantizeresidual",
+    "samplepredict",
     "samptolinebuf"
   ],
   "receipt_policy": {
+    "bounded_differential_pass": "DIFFERENTIAL_PASS; never a promotion gate",
     "cache_hit": "REUSED_VERIFIED_RECEIPT",
     "complete_domain_pass": "EXHAUSTIVE_EQUIVALENT",
+    "formal_window_pass": "FORMAL_EQUIVALENT; requires an independent parsed-RTL proof",
     "fresh_run": "EXECUTED_NOW"
   },
   "results": [
     {
-      "contract_id": "escapecodesize",
+      "contract_id": "samplepredict",
       "counterexample": {
-        "actual": "10",
-        "expected": "9",
+        "actual": "128",
+        "expected": "127",
         "index": 0,
         "inputs": [
           0,
           0,
           0,
+          0,
           8,
-          0
+          0,
+          0,
+          0,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          32768,
+          32768,
+          32768,
+          32768,
+          32768,
+          32768,
+          32768,
+          32768,
+          32768,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          32768,
+          32768,
+          32768
         ],
         "shard_id": 0
       },
       "dependency_evidence": {
-        "call_sites": 2,
+        "call_sites": 5,
         "compile_commands": true,
-        "direct_call_sites": 2,
+        "direct_call_sites": 5,
         "matrix_commands": true,
         "vectors": true
       },
       "dependency_status": "PASS",
-      "executed_shards": 4,
-      "executed_vectors": 16320,
+      "domain_proof_complete": false,
+      "executed_shards": 8,
+      "executed_vectors": 25960080,
       "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": true,
+      "formal_proof_status": "PASS",
       "matrix_modes": {
         "C_ONLY": "PASS",
         "RTL_RETURN": "PASS",
@@ -89,43 +128,82 @@
           "candidate": "candidate_02",
           "composition_gate": "FAIL",
           "counterexample": {
-            "actual": "10",
-            "expected": "9",
+            "actual": "128",
+            "expected": "127",
             "index": 0,
             "inputs": [
               0,
               0,
               0,
+              0,
               8,
-              0
+              0,
+              0,
+              0,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              32768,
+              32768,
+              32768,
+              32768,
+              32768,
+              32768,
+              32768,
+              32768,
+              32768,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              32768,
+              32768,
+              32768
             ],
             "shard_id": 0
           },
           "expected_rejection": true,
           "matrix_status": "FAIL",
-          "receipt": "artifacts/57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69/rejected/candidate_02/rejection-receipt.json",
+          "receipt": "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509/rejected/candidate_02/rejection-receipt.json",
           "status": "EXPECTED_REJECTION",
           "unit_gate": "FAIL",
           "unit_verification_status": "COUNTEREXAMPLE"
         }
       ],
       "shard_durations_seconds": [
-        0.862,
-        0.864,
-        0.864,
-        0.858
+        17.584,
+        17.037,
+        17.986,
+        17.787,
+        18.116,
+        17.88,
+        17.684,
+        18.051
       ],
       "status": "PROMOTED",
-      "tokens": 1696,
-      "unit_status": "EXHAUSTIVE_EQUIVALENT"
+      "tokens": 12302,
+      "unit_status": "FORMAL_EQUIVALENT",
+      "vector_strategy": "windowed_boundary"
     }
   ],
   "schema_version": 2,
   "selected_new_work": [
-    "escapecodesize"
+    "samplepredict"
   ],
   "shards": [
-    4
+    8
   ],
-  "tokens": 1696
+  "tokens": 12302
 }

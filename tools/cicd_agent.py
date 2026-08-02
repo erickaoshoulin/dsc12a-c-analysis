@@ -1262,6 +1262,16 @@ class Agent:
              if port.get("direction") == "output"),
             "return_value",
         ))
+        dynamic_window = ((contract.get("semantics", {}) or {}).get("window_spec", {}) or {}).get(
+            "dynamic_line_window"
+        )
+        if isinstance(dynamic_window, dict) and dynamic_window:
+            return self.render_dynamic_window_oracle(
+                contract,
+                inputs,
+                output,
+                dynamic_window,
+            )
         flattened = list(interface.get("flattened_pointer_dependencies", []) or [])
         ignored = list(interface.get("ignored_pointer_dependencies", []) or [])
         pointer_array_dependencies = [
@@ -1438,6 +1448,178 @@ class Agent:
             """
         ).strip() + "\n"
 
+    def render_dynamic_window_oracle(
+        self,
+        contract: dict[str, Any],
+        inputs: list[dict[str, Any]],
+        output: str,
+        dynamic_window: dict[str, Any],
+    ) -> str:
+        """Render a C adapter for a reviewed relative line-buffer window.
+
+        The frozen RTL interface carries only the relative taps required by
+        the reviewed function.  The immutable C function still receives its
+        native line-buffer pointers, so this adapter reconstructs those
+        physical offsets for each vector.  It is driven by window metadata,
+        not by a function-name allowlist.
+        """
+        function = contract_function(contract)
+        name = str(function.get("name"))
+        parameters = self.function_parameters(contract)
+        if not parameters:
+            raise RuntimeError("dynamic-window oracle requires original C parameter facts")
+
+        input_names = {str(port.get("name")) for port in inputs}
+        prev_parameter = str(dynamic_window.get("prev_parameter", ""))
+        curr_parameter = str(dynamic_window.get("curr_parameter", ""))
+        hpos_parameter = str(dynamic_window.get("hpos_parameter", ""))
+        prev_ports = [str(value) for value in dynamic_window.get("prev_window_ports", [])]
+        curr_ports = [str(value) for value in dynamic_window.get("curr_window_ports", [])]
+        if not prev_parameter or not curr_parameter or not hpos_parameter:
+            raise RuntimeError("dynamic-window oracle is missing pointer/position bindings")
+        if hpos_parameter not in input_names:
+            raise RuntimeError(f"dynamic-window hPos binding is not an input port: {hpos_parameter}")
+        if not prev_ports or not curr_ports or any(
+            port not in input_names for port in prev_ports + curr_ports
+        ):
+            raise RuntimeError("dynamic-window oracle references missing frozen tap ports")
+
+        def index_expression(raw_index: object) -> str:
+            raw = str(raw_index)
+            if re.fullmatch(r"-?\d+", raw):
+                return raw
+            if raw in input_names:
+                return raw
+            normalized = re.sub(r"[^a-z0-9]", "", raw.lower())
+            for port in inputs:
+                for candidate in (port.get("name"), port.get("role")):
+                    if re.sub(r"[^a-z0-9]", "", str(candidate).lower()) == normalized:
+                        return str(port.get("name"))
+            raise RuntimeError(f"dynamic-window state index is not an input port or literal: {raw}")
+
+        parameter_declarations: list[str] = []
+        call_arguments: list[str] = []
+        state_name = ""
+        state_type = ""
+        for parameter in parameters:
+            parameter_name = str(parameter.get("name", ""))
+            parameter_type = str(parameter.get("type", "int")).strip()
+            if not parameter_name or not re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", parameter_name):
+                raise RuntimeError(f"invalid C parameter name: {parameter_name}")
+            parameter_declarations.append(f"{parameter_type} {parameter_name}")
+            if not parameter.get("pointer"):
+                if parameter_name not in input_names:
+                    raise RuntimeError(f"dynamic-window scalar parameter is not an input port: {parameter_name}")
+                call_arguments.append(parameter_name)
+                continue
+            if parameter_name in {prev_parameter, curr_parameter}:
+                call_arguments.append(parameter_name)
+                continue
+            if state_name:
+                raise RuntimeError("dynamic-window oracle has multiple non-line-buffer pointer parameters")
+            state_type = re.sub(r"\s*\*.*$", "", parameter_type).strip()
+            state_name = parameter_name
+            call_arguments.append(f"&{state_name}")
+        if not state_name or not state_type:
+            raise RuntimeError("dynamic-window oracle has no state record pointer")
+
+        flattened = list((contract.get("interface", {}) or {}).get("flattened_pointer_dependencies", []) or [])
+        state_setup: list[str] = []
+        for item in flattened:
+            if str(item.get("parameter", "")) != state_name:
+                continue
+            field = str(item.get("field", ""))
+            port_name = safe_identifier(str(item.get("port_name") or ""))
+            if not field or port_name not in input_names:
+                continue
+            field_name = field.split("[", 1)[0]
+            if not re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", field_name):
+                continue
+            indices: list[object] = []
+            if isinstance(item.get("index_names"), list):
+                indices.extend(item.get("index_names") or [])
+            elif item.get("index_name") is not None:
+                indices.append(item.get("index_name"))
+            elif item.get("index") is not None:
+                indices.append(item.get("index"))
+            lhs = f"{state_name}.{field_name}"
+            for index in indices:
+                lhs += f"[{index_expression(index)}]"
+            state_setup.append(f"{lhs} = {port_name};")
+
+        def hpos_upper_bound() -> int:
+            hpos_port = next(port for port in inputs if str(port.get("name")) == hpos_parameter)
+            domain = hpos_port.get("legal_domain", {}) or {}
+            values = domain.get("values")
+            if isinstance(values, list) and values:
+                return max(int(value) for value in values)
+            bounds = domain.get("range")
+            if isinstance(bounds, list) and len(bounds) == 2:
+                return int(bounds[1])
+            raise RuntimeError("dynamic-window oracle needs a finite hPos upper bound")
+
+        samples_per_unit = int(dynamic_window.get("samples_per_unit", 3))
+        padding_left = int(dynamic_window.get("padding_left", 5))
+        prev_first_offset = int(dynamic_window.get("prev_window_first_offset", 0))
+        current_window_left = int(dynamic_window.get("current_window_left", 0))
+        hpos_max = hpos_upper_bound()
+        prev_last = (
+            (hpos_max // samples_per_unit) * samples_per_unit
+            + padding_left
+            + prev_first_offset
+            + len(prev_ports)
+            - 1
+        )
+        curr_last = max(hpos_max - current_window_left, 0) + len(curr_ports) - 1
+        line_capacity = max(1, prev_last + 1, curr_last + 1)
+        prev_window_base = (
+            f"(({hpos_parameter} / {samples_per_unit}) * {samples_per_unit}"
+            f" + {padding_left} + {prev_first_offset})"
+        )
+        curr_window_base = (
+            f"(({hpos_parameter} > {current_window_left})"
+            f" ? ({hpos_parameter} - {current_window_left}) : 0)"
+        )
+        prev_assignments = "\n                        ".join(
+            f"prevLine[{prev_window_base} + {index}] = {port};"
+            for index, port in enumerate(prev_ports)
+        )
+        curr_assignments = "\n                        ".join(
+            f"currLine[{curr_window_base} + {index}] = {port};"
+            for index, port in enumerate(curr_ports)
+        )
+        input_declarations = ", ".join(str(port["name"]) for port in inputs)
+        input_arguments = ", ".join(f"&{port['name']}" for port in inputs)
+        format_string = " ".join(["%d"] * len(inputs))
+        setup = "\n                        ".join(
+            state_setup + [prev_assignments, curr_assignments]
+        )
+        return textwrap.dedent(
+            f"""
+            #include <stdio.h>
+            #include "dsc_types.h"
+            extern int {name}({', '.join(parameter_declarations)});
+            int main(int argc, char **argv) {{
+                FILE *input = stdin;
+                if (argc > 1) {{
+                    input = fopen(argv[1], "rb");
+                    if (!input) return 2;
+                }}
+                int {input_declarations};
+                static int prevLine[{line_capacity}] = {{0}};
+                static int currLine[{line_capacity}] = {{0}};
+                while (fscanf(input, "{format_string}", {input_arguments}) == {len(inputs)}) {{
+                    {state_type} {state_name} = {{0}};
+                    {setup}
+                    int {output} = {name}({', '.join(call_arguments)});
+                    printf("%d\\n", {output});
+                }}
+                if (input != stdin) fclose(input);
+                return 0;
+            }}
+            """
+        ).strip() + "\n"
+
     def table_lookup_vector_iterator(
         self,
         contract: dict[str, Any],
@@ -1571,6 +1753,61 @@ class Agent:
         """
         names = [str(port.get("name")) for port in input_ports]
         by_name = {name: values[index] for index, name in enumerate(names)}
+        window = (contract.get("semantics", {}) or {}).get("window_spec", {}) or {}
+        dynamic_window = window.get("dynamic_line_window") if isinstance(window, dict) else None
+        if dynamic_window and not strategy.get("_dynamic_hpos_probed"):
+            hpos_name = str(strategy.get("hpos_port", ""))
+            if hpos_name in by_name and len(by_name[hpos_name]) > 64:
+                legal_hpos = [int(value) for value in by_name[hpos_name]]
+                hpos_min = min(legal_hpos)
+                hpos_max = max(legal_hpos)
+                raw_probes = dynamic_window.get("hpos_probe_values", []) if isinstance(dynamic_window, dict) else []
+                probes = {
+                    int(value) for value in raw_probes
+                    if int(value) in set(legal_hpos)
+                }
+                probes.update(
+                    value for value in (
+                        hpos_min,
+                        hpos_min + 1,
+                        hpos_min + 2,
+                        hpos_min + 3,
+                        hpos_min + 4,
+                        hpos_min + 8,
+                        hpos_min + 9,
+                        hpos_min + 10,
+                        hpos_min + 11,
+                        hpos_min + 12,
+                        hpos_min + 13,
+                        hpos_min + 14,
+                        hpos_min + 15,
+                        hpos_max // 2 - 1,
+                        hpos_max // 2,
+                        hpos_max // 2 + 1,
+                        hpos_max - 4,
+                        hpos_max - 3,
+                        hpos_max - 2,
+                        hpos_max - 1,
+                        hpos_max,
+                    )
+                    if hpos_min <= value <= hpos_max
+                )
+                adjusted_values = [list(value) for value in values]
+                hpos_index = names.index(hpos_name)
+                adjusted_values[hpos_index] = sorted(probes)
+                adjusted_strategy = dict(strategy)
+                adjusted_strategy["_dynamic_hpos_probed"] = True
+                iterator, details = self.windowed_boundary_vector_iterator(
+                    contract,
+                    input_ports,
+                    adjusted_values,
+                    adjusted_strategy,
+                )
+                details["coverage_mode"] = "DYNAMIC_RELATIVE_WINDOW_PROBES"
+                details["hpos_domain"] = [hpos_min, hpos_max]
+                details["hpos_probe_values"] = sorted(probes)
+                details["formal_required"] = True
+                return iterator, details
 
         def require_port(key: str) -> str:
             name = str(strategy.get(key, ""))
@@ -2079,6 +2316,57 @@ class Agent:
         with path.open("r", encoding="utf-8") as handle:
             return sum(1 for _ in handle)
 
+    def reuse_existing_shards(
+        self,
+        contract: dict[str, Any],
+        artifact: pathlib.Path,
+    ) -> dict[str, Any] | None:
+        """Reuse a verified vector partition during proof-only iterations.
+
+        This is opt-in because a normal run should materialize its own
+        vectors.  When enabled, the prior domain receipt, input-port order,
+        strategy, and every shard line count must match the current contract
+        before any C/RTL process consumes the files.
+        """
+        enabled = os.environ.get("DSC_CICD_REUSE_SHARDS", "").lower() in {"1", "true", "yes"}
+        if not enabled:
+            return None
+        prior = read_json(artifact / "unit-receipt.json", {}) or {}
+        domain = prior.get("domain") if isinstance(prior, dict) else None
+        if not isinstance(domain, dict) or not domain.get("shards"):
+            return None
+        inputs = [
+            port for port in contract.get("interface", {}).get("ports", [])
+            if port.get("direction") == "input"
+        ]
+        input_names = [str(port.get("name")) for port in inputs]
+        if domain.get("input_ports") != input_names:
+            return None
+        values = [self.port_domain(port) for port in inputs]
+        _, current_strategy = self.legal_vector_iterator(contract, inputs, values)
+        if canonical(domain.get("vector_strategy", {})) != canonical(current_strategy):
+            return None
+        shards: list[dict[str, Any]] = []
+        total = 0
+        for prior_shard in domain.get("shards", []):
+            path = artifact / str(prior_shard.get("path", ""))
+            if not path.is_file():
+                return None
+            count = self.count_lines(path)
+            if count <= 0 or count != int(prior_shard.get("vectors", -1)):
+                return None
+            shard = copy.deepcopy(prior_shard)
+            shard["vectors"] = count
+            shards.append(shard)
+            total += count
+        if total != int(domain.get("total_vectors", -1)):
+            return None
+        reused = copy.deepcopy(domain)
+        reused["shards"] = shards
+        reused["total_vectors"] = total
+        reused["execution_status"] = "REUSED_VERIFIED_SHARDS"
+        return reused
+
     def compile_c_oracle(self, contract: dict[str, Any], artifact: pathlib.Path) -> dict[str, Any]:
         build_dir = artifact / "oracle-build"
         if build_dir.exists():
@@ -2348,7 +2636,7 @@ class Agent:
 
     def unit_verify(self, contract: dict[str, Any], artifact: pathlib.Path) -> dict[str, Any]:
         started = time.time()
-        shard_info = self.make_shards(contract, artifact)
+        shard_info = self.reuse_existing_shards(contract, artifact) or self.make_shards(contract, artifact)
         oracle_receipt = self.compile_c_oracle(contract, artifact)
         unit_receipt: dict[str, Any] = {
             "schema_version": 2,
@@ -2703,6 +2991,66 @@ class Agent:
                 safe_identifier(str(item.get("port_name") or item.get("field", ""))): item
                 for item in flattened
             }
+            semantics = contract.get("semantics", {}) or {}
+            window_spec = semantics.get("window_spec", {}) if isinstance(semantics, dict) else {}
+            dynamic_window = window_spec.get("dynamic_line_window", {}) if isinstance(window_spec, dict) else {}
+            if not isinstance(dynamic_window, dict):
+                dynamic_window = {}
+            dynamic_prev_ports = [
+                str(value) for value in dynamic_window.get("prev_window_ports", [])
+            ]
+            dynamic_curr_ports = [
+                str(value) for value in dynamic_window.get("curr_window_ports", [])
+            ]
+            dynamic_hpos = str(
+                dynamic_window.get("hpos_parameter")
+                or (semantics.get("legal_vector_strategy", {}) or {}).get("hpos_port", "hPos")
+            )
+            dynamic_prev_parameter = str(
+                dynamic_window.get("prev_parameter")
+                or next(
+                    (
+                        item.get("parameter")
+                        for item in flattened
+                        if str(item.get("parameter", "")) and str(item.get("parameter", "")).lower().startswith("prev")
+                    ),
+                    "prevLine",
+                )
+            )
+            dynamic_curr_parameter = str(
+                dynamic_window.get("curr_parameter")
+                or next(
+                    (
+                        item.get("parameter")
+                        for item in flattened
+                        if str(item.get("parameter", "")) and str(item.get("parameter", "")).lower().startswith("curr")
+                    ),
+                    "currLine",
+                )
+            )
+
+            def dynamic_line_argument(port_name: str) -> str | None:
+                if not dynamic_prev_ports and not dynamic_curr_ports:
+                    return None
+                if port_name in dynamic_prev_ports:
+                    slot = dynamic_prev_ports.index(port_name)
+                    samples = int(dynamic_window.get("samples_per_unit", 3))
+                    padding = int(dynamic_window.get("padding_left", 5))
+                    first_offset = int(dynamic_window.get("prev_window_first_offset", -2))
+                    index = (
+                        f"((({dynamic_hpos} / {samples}) * {samples}) + "
+                        f"{padding} + {first_offset + slot})"
+                    )
+                    return f"{dynamic_prev_parameter}[{index}]"
+                if port_name in dynamic_curr_ports:
+                    slot = dynamic_curr_ports.index(port_name)
+                    left = int(dynamic_window.get("current_window_left", 8))
+                    window_start = (
+                        f"(({dynamic_hpos} > {left}) ? "
+                        f"({dynamic_hpos} - {left}) : 0)"
+                    )
+                    return f"{dynamic_curr_parameter}[({window_start}) + {slot}]"
+                return None
 
             def resolve_overlay_index(dependency: dict[str, Any], raw_index: object) -> str:
                 raw = str(raw_index)
@@ -2758,6 +3106,10 @@ class Agent:
 
             for port in inputs:
                 field = str(port.get("name"))
+                dynamic_argument = dynamic_line_argument(field)
+                if dynamic_argument is not None:
+                    rtl_arguments.append(dynamic_argument)
+                    continue
                 if field in flattened_by_port:
                     dependency = flattened_by_port[field]
                     # A flattened record field also carries its original
