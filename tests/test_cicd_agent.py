@@ -1,6 +1,8 @@
 import json
 import pathlib
 import tempfile
+import threading
+import time
 import unittest
 from unittest import mock
 
@@ -116,6 +118,60 @@ class CicdAgentUnitTests(unittest.TestCase):
         self.assertTrue(plan["force_regenerate"])
         self.assertTrue(plan["contracts"][0]["targeted"])
         self.assertTrue(plan["contracts"][0]["force_regenerate"])
+
+    def test_independent_selected_contracts_run_in_parallel_batches(self):
+        with tempfile.TemporaryDirectory() as directory:
+            agent = Agent(pathlib.Path(directory), "run")
+            agent.plan = {
+                "contracts": [
+                    {"contract_id": "alpha", "selected": True},
+                    {"contract_id": "beta", "selected": True},
+                ]
+            }
+            agent.dependency_info = {"adjacency": {"alpha": [], "beta": []}}
+            active = 0
+            peak = 0
+            guard = threading.Lock()
+
+            def fake_run(item):
+                nonlocal active, peak
+                with guard:
+                    active += 1
+                    peak = max(peak, active)
+                time.sleep(0.03)
+                with guard:
+                    active -= 1
+                result = {"contract_id": item["contract_id"], "status": "PROMOTED"}
+                agent.append_result(result)
+                return result
+
+            with mock.patch.object(agent, "run_contract", side_effect=fake_run):
+                with mock.patch.dict("os.environ", {"DSC_CICD_CONTRACT_WORKERS": "2"}, clear=False):
+                    agent.run_selected_batches()
+        self.assertEqual(peak, 2)
+        self.assertEqual([item["contract_id"] for item in agent.run_results], ["alpha", "beta"])
+
+    def test_selected_callee_finishes_before_selected_caller(self):
+        with tempfile.TemporaryDirectory() as directory:
+            agent = Agent(pathlib.Path(directory), "run")
+            agent.plan = {
+                "contracts": [
+                    {"contract_id": "caller", "selected": True},
+                    {"contract_id": "callee", "selected": True},
+                ]
+            }
+            agent.dependency_info = {"adjacency": {"caller": ["callee"], "callee": []}}
+            order = []
+
+            def fake_run(item):
+                order.append(item["contract_id"])
+                result = {"contract_id": item["contract_id"], "status": "PROMOTED"}
+                agent.append_result(result)
+                return result
+
+            with mock.patch.object(agent, "run_contract", side_effect=fake_run):
+                agent.run_selected_batches()
+        self.assertEqual(order, ["callee", "caller"])
 
     def test_reviewed_override_resolves_locked_leaf_without_editing_lock(self):
         contract = {

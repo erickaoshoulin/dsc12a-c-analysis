@@ -313,6 +313,14 @@ a function that is absent from the tool-ranked candidate and coverage facts.
 Never add a target list, allowlist, source-file selector, or prompt field that
 supplies a function name.
 
+An explicit `STATIC_BUT_UNCOVERED` review may admit a statically eligible
+candidate only when the override carries exact PDF authority and a complete
+finite legal domain. A bounded exploratory subset is
+`DIFFERENTIAL_PASS`/`UNPROVED`, never a stable-library promotion. A function
+already recorded as PASS in `library/manifest.json` is not new work and is
+excluded from ordinary queue planning; it may be re-run only when the durable
+queue explicitly requests a refresh or dependency composition.
+
 Composite candidates are also tool-discovered work. A reviewed override may
 resolve a pure, bounded function with direct callees only after every direct
 callee has a PASS entry in `library/manifest.json`; the override supplies
@@ -394,6 +402,19 @@ intentionally bypasses a valid leaf cache for the selected batch while
 preserving previous receipts and accepted RTL for audit and rollback. If no
 unproven ready contract exists, scale returns `NO_NEW_WORK` and does not
 enqueue a duplicate batch.
+
+For an explicit refresh, the scale function set is the union of the current
+facts/spec-ready plan and PASS components already recorded in
+`library/manifest.json`, rechecked through the current exact width/spec gate.
+This keeps verified leaves in the regression surface without turning the
+manifest into a source-level function allowlist.
+
+Within one executable CI/CD run, independent selected contracts execute in
+stable dependency-aware parallel batches (`DSC_CICD_CONTRACT_WORKERS`); a
+selected caller waits for selected callees, while already-promoted callees
+are treated as verified boundaries. Each contract still compiles its C oracle
+and Verilator candidate once and runs its input shards in parallel under the
+separate shard worker limit.
 
 Run the loop continuously in bounded batches:
 

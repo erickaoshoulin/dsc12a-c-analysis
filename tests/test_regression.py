@@ -107,6 +107,14 @@ class RegressionServiceTests(unittest.TestCase):
         self.assertTrue(pilot)
         self.assertTrue({item["contract_id"] for item in pilot} <= plan_ids)
         self.assertTrue(any(item["kind"] == "arithmetic" for item in pilot))
+        scale = context.scale_plan(ModelRouter(ROOT / "model-policy.yaml"))
+        verified_ids = {
+            str(item.get("contract_id"))
+            for item in json.loads((ROOT / "library" / "manifest.json").read_text(encoding="utf-8")).get("components", [])
+            if item.get("status") == "PASS" and item.get("contract_id")
+        }
+        scale_ids = {str(item.get("contract_id")) for item in scale.get("functions", [])}
+        self.assertTrue(verified_ids <= scale_ids)
         service_source = (ROOT / "tools" / "regression.py").read_text(encoding="utf-8").lower()
         for item in context.plan.get("contracts", []):
             self.assertNotIn(str(item.get("contract_id", "")).lower(), service_source)

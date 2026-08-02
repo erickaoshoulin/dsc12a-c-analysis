@@ -1,7 +1,7 @@
 {
   "candidate": "candidate_01",
   "candidate_pass_rate": "1/2",
-  "contract_hash": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+  "contract_hash": "bd7cac692d0064753250d5ae92776ee7718d8cb222ea52561893438c52e6e30d",
   "contract_id": "quantizeresidual",
   "execution_status": "EXECUTED_NOW",
   "frame_pass_rate": "3/3",
@@ -10,9 +10,9 @@
   "module": "quantizeresidual",
   "parent_run_id": "20260802T062208Z-0ad45a41",
   "profile": "scale",
-  "promoted_at": "2026-08-02T10:09:29Z",
+  "promoted_at": "2026-08-02T13:59:42Z",
   "rtl_sha256": "7c9d729bbe1ac193b6f355b3d8281a92ab350a9c27a7717145fdea31a863d9cd",
-  "run_id": "20260802T093510Z-scale-22275ebc",
+  "run_id": "20260802T133447Z-scale-4b440064",
   "schema_version": 1,
   "source_gate": {
     "blockers": [],
@@ -51,7 +51,7 @@
     "status": "PASS"
   },
   "stages": {
-    "dependency_composition": "PASS",
+    "dependency_composition": "NOT_APPLICABLE",
     "frame_compare": "PASS",
     "generator_cache": "PASS",
     "model_matrix": "PASS",
@@ -66,7 +66,7 @@
       "end_line": 255,
       "start_line": 245
     },
-    "contract_hash": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+    "contract_hash": "bd7cac692d0064753250d5ae92776ee7718d8cb222ea52561893438c52e6e30d",
     "ports": [
       {
         "authority": "DERIVED",
@@ -74,7 +74,7 @@
           "end_line": 255,
           "start_line": 245
         },
-        "contract_hash": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+        "contract_hash": "bd7cac692d0064753250d5ae92776ee7718d8cb222ea52561893438c52e6e30d",
         "derivation": "runtime sample-domain evidence for 16bpc residuals",
         "domain": {
           "basis": "runtime sample-domain evidence for 16bpc residuals",
@@ -103,7 +103,7 @@
           "end_line": 255,
           "start_line": 245
         },
-        "contract_hash": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+        "contract_hash": "bd7cac692d0064753250d5ae92776ee7718d8cb222ea52561893438c52e6e30d",
         "derivation": "EXACT Table 6-2 qLevel domain",
         "domain": {
           "basis": "EXACT Table 6-2 qLevel domain",
@@ -132,7 +132,7 @@
           "end_line": 255,
           "start_line": 245
         },
-        "contract_hash": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+        "contract_hash": "bd7cac692d0064753250d5ae92776ee7718d8cb222ea52561893438c52e6e30d",
         "derivation": "locked contract interface",
         "domain": {
           "range": [

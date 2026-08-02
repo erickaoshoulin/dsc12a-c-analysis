@@ -3,6 +3,159 @@
   "contracts": [
     {
       "artifacts": [
+        "artifacts/480f0f8595c56a062af62c4eabd3f0adc50bf08788abc6865dd1b1143b61e5f7",
+        "artifacts/57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69"
+      ],
+      "contract_id": "escapecodesize",
+      "current_state": "PROMOTED",
+      "failure_reason": null,
+      "function": "EscapeCodeSize",
+      "hashes": {
+        "agent": "a1efa2a05fdf4e49ac14af4bd0d395bed788a107a8143cb456bb47ed09dc8bcd",
+        "contract": "57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69",
+        "dependency": "37327a43dbf90bda24136728c52398f8af9f16319444985526f1260ec5eef69d",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "66e97b1fd7dbf8a1ab35e82b8833220d82c8085c02b3b78dd6737e9616843cd3",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "4"
+      },
+      "history": [
+        {
+          "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        }
+      ],
+      "interface_shape": [
+        [
+          "input",
+          "cpntBitDepth_0",
+          5,
+          false
+        ],
+        [
+          "input",
+          "dsc_version_minor",
+          2,
+          false
+        ],
+        [
+          "input",
+          "native_420",
+          1,
+          false
+        ],
+        [
+          "input",
+          "qlevel_luma",
+          5,
+          false
+        ],
+        [
+          "input",
+          "qp",
+          5,
+          false
+        ],
+        [
+          "output",
+          "return_value",
+          6,
+          true
+        ]
+      ],
+      "model_calls": 1,
+      "origin": "tool_discovered_reviewed_override",
+      "selected": true,
+      "status": "PROMOTED",
+      "token_count": 1696,
+      "unit_receipt": "EXECUTED_NOW"
+    },
+    {
+      "artifacts": [
         "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/artifact-manifest.json",
         "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/bitstream-receipt.json",
         "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/dependency-receipt.json",
@@ -42,18 +195,18 @@
       "failure_reason": "bounded selection deferred",
       "function": "FindMidpoint",
       "hashes": {
-        "agent": "32054109c01602b9239cbe49327b34cae26ebeeadae946d0d4da4ffe6efc9c2a",
-        "contract": "ddf6b008659477f8b63803b7d5b599f7227e5f363ae460be83a305e5b39d0dea",
-        "dependency": "fae6fba4c45b4a77b34f3e209851239acb540748180b881a568e349856559d98",
+        "agent": "a1efa2a05fdf4e49ac14af4bd0d395bed788a107a8143cb456bb47ed09dc8bcd",
+        "contract": "4770cb54a401eb81b550fbb5dd3ede2af3c3a4d85ec2f92548125dbd638592cf",
+        "dependency": "0ed98a466b17d637ab53543e1ae6197aea910344aecd0723da0a44d6772147aa",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "0d4f176060a66741d0c0abe2c3f3b1cfcbb0fe7c278f3a2394bdd7b22b918027",
+        "prompt": "66e97b1fd7dbf8a1ab35e82b8833220d82c8085c02b3b78dd6737e9616843cd3",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "2"
+        "workers": "4"
       },
       "history": [
         {
@@ -129,22 +282,22 @@
         "artifacts/60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2"
       ],
       "contract_id": "isflatnessinfosent",
-      "current_state": "PROMOTED",
-      "failure_reason": null,
+      "current_state": "CONTRACT_LOCKED",
+      "failure_reason": "bounded selection deferred",
       "function": "IsFlatnessInfoSent",
       "hashes": {
-        "agent": "32054109c01602b9239cbe49327b34cae26ebeeadae946d0d4da4ffe6efc9c2a",
-        "contract": "60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2",
-        "dependency": "8fe59255ed677a74d364b2e5bd5b6be2e942ef2b0ca388eea4a57ac29395b6a4",
+        "agent": "a1efa2a05fdf4e49ac14af4bd0d395bed788a107a8143cb456bb47ed09dc8bcd",
+        "contract": "f079152437dbf9eea9e1ff9463e03ead04fd354570a45c8df03ce99dd49ee4f6",
+        "dependency": "5dc4e856c4fca6864b8566497113b6dc5fad569feec3c0ae55921b5aa6f70bbb",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "0d4f176060a66741d0c0abe2c3f3b1cfcbb0fe7c278f3a2394bdd7b22b918027",
+        "prompt": "66e97b1fd7dbf8a1ab35e82b8833220d82c8085c02b3b78dd6737e9616843cd3",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "2"
+        "workers": "4"
       },
       "history": [
         {
@@ -212,6 +365,11 @@
           "failure_reason": null,
           "state": "PROMOTED",
           "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
         }
       ],
       "interface_shape": [
@@ -240,12 +398,11 @@
           false
         ]
       ],
-      "model_calls": 1,
+      "model_calls": 0,
       "origin": "tool_discovered_reviewed_override",
-      "selected": true,
-      "status": "PROMOTED",
-      "token_count": 2013,
-      "unit_receipt": "EXECUTED_NOW"
+      "selected": false,
+      "status": "DEFERRED",
+      "token_count": 0
     },
     {
       "artifacts": [
@@ -264,22 +421,22 @@
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/vector_generator.py"
       ],
       "contract_id": "mapqptoqlevel",
-      "current_state": "DISCOVERED",
-      "failure_reason": "arithmetic_semantics; field:dsc_cfg_t.dsc_version_minor; field:dsc_cfg_t.native_420; field:dsc_state_t.quantTableChroma; field:dsc_state_t.quantTableLuma; interface:dsc_version_minor; interface:native_420; interface:qp; interface:quantTableChroma; interface:quantTableLuma; interface:return_value; parameter:qp",
+      "current_state": "CONTRACT_LOCKED",
+      "failure_reason": "bounded selection deferred",
       "function": "MapQpToQlevel",
       "hashes": {
-        "agent": "32054109c01602b9239cbe49327b34cae26ebeeadae946d0d4da4ffe6efc9c2a",
-        "contract": "b5d32e96c0ef357adad943e57b6e785389935d2b3a7265a6a709013ecb3e9a9f",
-        "dependency": "17f152849d93c23b2e4b3a99393c87b468f587f6a952c9136b5c17e9573740cb",
+        "agent": "a1efa2a05fdf4e49ac14af4bd0d395bed788a107a8143cb456bb47ed09dc8bcd",
+        "contract": "9dca6ef2ab9731a8e0651276955456e9433b652e6be6714081e97e143c4b30bf",
+        "dependency": "fd1a2ba65d9277aad6286d988d7d4141ece545ee43ffa7442bb729f345cf3d07",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "0d4f176060a66741d0c0abe2c3f3b1cfcbb0fe7c278f3a2394bdd7b22b918027",
+        "prompt": "66e97b1fd7dbf8a1ab35e82b8833220d82c8085c02b3b78dd6737e9616843cd3",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "2"
+        "workers": "4"
       },
       "history": [
         {
@@ -292,6 +449,11 @@
           "failure_reason": "arithmetic_semantics; field:dsc_cfg_t.dsc_version_minor; field:dsc_cfg_t.native_420; field:dsc_state_t.quantTableChroma; field:dsc_state_t.quantTableLuma; interface:dsc_version_minor; interface:native_420; interface:qp; interface:quantTableChroma; interface:quantTableLuma; interface:return_value; parameter:qp",
           "state": "DISCOVERED",
           "status": "BLOCKED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
         }
       ],
       "interface_shape": [
@@ -303,51 +465,119 @@
         ],
         [
           "input",
-          "cpntBitDepth",
+          "cpntBitDepth_0",
+          5,
+          false
+        ],
+        [
+          "input",
+          "cpntBitDepth_1",
           5,
           false
         ],
         [
           "input",
           "dsc_version_minor",
-          32,
+          2,
           false
         ],
         [
           "input",
           "native_420",
-          32,
+          1,
           false
         ],
         [
           "input",
-          "qp",
-          32,
-          false
-        ],
-        [
-          "input",
-          "quantTableChroma",
+          "qlevel_chroma",
           5,
           false
         ],
         [
           "input",
-          "quantTableLuma",
+          "qlevel_luma",
+          5,
+          false
+        ],
+        [
+          "input",
+          "qp",
           5,
           false
         ],
         [
           "output",
           "return_value",
-          32,
-          true
+          5,
+          false
         ]
       ],
       "model_calls": 0,
-      "origin": "locked_contract",
+      "origin": "tool_discovered_reviewed_override",
       "selected": false,
-      "status": "BLOCKED",
+      "status": "DEFERRED",
+      "token_count": 0
+    },
+    {
+      "artifacts": [],
+      "contract_id": "predictsize",
+      "current_state": "CONTRACT_LOCKED",
+      "failure_reason": "bounded selection deferred",
+      "function": "PredictSize",
+      "hashes": {
+        "agent": "a1efa2a05fdf4e49ac14af4bd0d395bed788a107a8143cb456bb47ed09dc8bcd",
+        "contract": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
+        "dependency": "914df6beca4a8f89ea185ee1ce47bc73c706a1bc1a5bf1c3b73b69ef4d4b1cb3",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "66e97b1fd7dbf8a1ab35e82b8833220d82c8085c02b3b78dd6737e9616843cd3",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "4"
+      },
+      "history": [
+        {
+          "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        }
+      ],
+      "interface_shape": [
+        [
+          "input",
+          "req_size_0",
+          5,
+          false
+        ],
+        [
+          "input",
+          "req_size_1",
+          5,
+          false
+        ],
+        [
+          "input",
+          "req_size_2",
+          5,
+          false
+        ],
+        [
+          "output",
+          "return_value",
+          5,
+          false
+        ]
+      ],
+      "model_calls": 0,
+      "origin": "tool_discovered_reviewed_override",
+      "selected": false,
+      "status": "DEFERRED",
       "token_count": 0
     },
     {
@@ -359,18 +589,18 @@
       "failure_reason": "bounded selection deferred",
       "function": "QuantizeResidual",
       "hashes": {
-        "agent": "32054109c01602b9239cbe49327b34cae26ebeeadae946d0d4da4ffe6efc9c2a",
-        "contract": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
-        "dependency": "78f45614e09a87d9b5425de67052bcc241d5785b1cc4e364766e118669083e76",
+        "agent": "a1efa2a05fdf4e49ac14af4bd0d395bed788a107a8143cb456bb47ed09dc8bcd",
+        "contract": "bd7cac692d0064753250d5ae92776ee7718d8cb222ea52561893438c52e6e30d",
+        "dependency": "a3f401df0ddba81554e3f977a3f1cfcb7cb312cbf0ddf6d4590b3e885034181d",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "0d4f176060a66741d0c0abe2c3f3b1cfcbb0fe7c278f3a2394bdd7b22b918027",
+        "prompt": "66e97b1fd7dbf8a1ab35e82b8833220d82c8085c02b3b78dd6737e9616843cd3",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "2"
+        "workers": "4"
       },
       "history": [
         {
@@ -742,45 +972,99 @@
       "selected": false,
       "status": "DEFERRED",
       "token_count": 0
+    },
+    {
+      "artifacts": [],
+      "contract_id": "samptolinebuf",
+      "current_state": "CONTRACT_LOCKED",
+      "failure_reason": "bounded selection deferred",
+      "function": "SampToLineBuf",
+      "hashes": {
+        "agent": "a1efa2a05fdf4e49ac14af4bd0d395bed788a107a8143cb456bb47ed09dc8bcd",
+        "contract": "05bcff80920baf0d36d0cfceb95053d2385b1d939a15a173f0e253b27a18900d",
+        "dependency": "04d90b97e37f480b54d872efbc39ab16c1874e817def115117da9f87d78853d9",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "66e97b1fd7dbf8a1ab35e82b8833220d82c8085c02b3b78dd6737e9616843cd3",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "4"
+      },
+      "history": [
+        {
+          "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        }
+      ],
+      "interface_shape": [
+        [
+          "input",
+          "cpnt",
+          2,
+          false
+        ],
+        [
+          "input",
+          "cpntBitDepth",
+          5,
+          false
+        ],
+        [
+          "input",
+          "linebuf_depth",
+          4,
+          false
+        ],
+        [
+          "input",
+          "x",
+          16,
+          false
+        ],
+        [
+          "output",
+          "return_value",
+          16,
+          false
+        ]
+      ],
+      "model_calls": 0,
+      "origin": "tool_discovered_reviewed_override",
+      "selected": false,
+      "status": "DEFERRED",
+      "token_count": 0
     }
   ],
   "dependency_pair": {
     "call_sites": [
       {
-        "callee_contract": "isflatnessinfosent",
-        "callee_function": "IsFlatnessInfoSent",
-        "callee_usr": "c:@F@IsFlatnessInfoSent",
+        "callee_contract": "escapecodesize",
+        "callee_function": "EscapeCodeSize",
+        "callee_usr": "c:@F@EscapeCodeSize",
         "caller_contract": null,
-        "caller_function": "FlatnessAdjustment",
-        "caller_usr": "c:@F@FlatnessAdjustment",
+        "caller_function": "VLCUnit",
+        "caller_usr": "c:@F@VLCUnit",
         "location": {
-          "column": 15,
+          "column": 26,
           "file": "dsc_codec.c",
-          "line": 2537
-        },
-        "source": "facts/callgraph.json"
-      },
-      {
-        "callee_contract": "isflatnessinfosent",
-        "callee_function": "IsFlatnessInfoSent",
-        "callee_usr": "c:@F@IsFlatnessInfoSent",
-        "caller_contract": null,
-        "caller_function": "FlatnessAdjustment",
-        "caller_usr": "c:@F@FlatnessAdjustment",
-        "location": {
-          "column": 7,
-          "file": "dsc_codec.c",
-          "line": 2516
+          "line": 1614
         },
         "source": "facts/callgraph.json"
       }
     ],
-    "callee_contract": "isflatnessinfosent",
-    "callee_function": "IsFlatnessInfoSent",
-    "callee_usr": "c:@F@IsFlatnessInfoSent",
+    "callee_contract": "escapecodesize",
+    "callee_function": "EscapeCodeSize",
+    "callee_usr": "c:@F@EscapeCodeSize",
     "caller_contract": null,
-    "caller_function": "FlatnessAdjustment",
-    "caller_usr": "c:@F@FlatnessAdjustment",
+    "caller_function": "VLCUnit",
+    "caller_usr": "c:@F@VLCUnit",
     "selection_basis": "smallest acyclic direct call site from facts/callgraph.json"
   },
   "generator_invocations": 1,
@@ -788,7 +1072,7 @@
   "rollback_mode": "C_ONLY",
   "schema_version": 2,
   "selected_contracts": [
-    "isflatnessinfosent"
+    "escapecodesize"
   ],
   "state_order": [
     "DISCOVERED",
@@ -801,5 +1085,5 @@
     "BITSTREAM_PASS",
     "PROMOTED"
   ],
-  "token_count": 2013
+  "token_count": 1696
 }

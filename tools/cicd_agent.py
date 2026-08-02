@@ -262,6 +262,10 @@ class Agent:
         self.run_results: list[dict[str, Any]] = []
         self.generator_invocations = 0
         self.generator_tokens = 0
+        # Contract-level batches can run concurrently.  Keep durable state and
+        # generator telemetry serialized while allowing each contract to use
+        # its own isolated artifact directory and Verilator build.
+        self.state_lock = threading.RLock()
 
     def load_inputs(self) -> dict[str, Any]:
         errors: list[str] = []
@@ -401,21 +405,43 @@ class Agent:
             for item in coverage_payload.get("functions", [])
             if item.get("clang_usr")
         }
+        overrides = self.reviewed_overrides()
+        exact = self.exact_links_by_usr()
         result: dict[str, dict[str, Any]] = {}
         for rank, candidate in enumerate(candidates_payload.get("ranked_candidates", []), start=1):
             usr = str(candidate.get("clang_usr", ""))
             coverage = coverage_by_usr.get(usr, {})
-            if (
-                not usr
-                or candidate.get("eligible") is not True
-                or coverage.get("eligible_after_coverage") is not True
-            ):
+            if not usr or candidate.get("eligible") is not True:
+                continue
+            coverage_override = next(
+                (
+                    item for item in overrides
+                    if item.get("review_status") == "REVIEWED"
+                    and self.reviewed_override_matches(
+                        {"function": {"clang_usr": usr}}, item, exact
+                    )
+                    and str((item.get("coverage") or {}).get("status", ""))
+                    == "STATIC_BUT_UNCOVERED"
+                    and item.get("interface")
+                    and item.get("semantics")
+                ),
+                None,
+            )
+            dynamically_eligible = coverage.get("eligible_after_coverage") is True
+            reviewed_static_eligible = bool(
+                coverage_override
+                and coverage.get("static_eligible") is True
+                and coverage.get("coverage_status") in {"STATIC_BUT_UNCOVERED", "NO_COVERAGE_DATA"}
+            )
+            if not dynamically_eligible and not reviewed_static_eligible:
                 continue
             result[usr] = {
                 "rank": rank,
                 "score": candidate.get("score"),
                 "candidate": copy.deepcopy(candidate),
                 "coverage": copy.deepcopy(coverage),
+                "coverage_override": copy.deepcopy(coverage_override) if coverage_override else None,
+                "coverage_basis": "reviewed_static_but_uncovered" if reviewed_static_eligible else "dynamic_execution",
             }
         return result
 
@@ -568,6 +594,7 @@ class Agent:
         effective_locked = self.apply_reviewed_overrides()
         known = {str(contract_function(item).get("clang_usr")) for item in effective_locked}
         promoted_usrs = self.promoted_contract_usrs(effective_locked)
+        target_contract = safe_identifier(os.environ.get("DSC_CICD_TARGET_CONTRACT", "")).lower()
         discovered = []
         for function in facts.get("functions", []):
             usr = str(function.get("clang_usr", ""))
@@ -604,6 +631,14 @@ class Agent:
             interface["ports"] = self.freeze_ports(interface)
             name = str(function.get("name", "candidate"))
             cid = safe_identifier(name).lower()
+            # A promoted composite is not new work.  It is materialized only
+            # when the durable queue explicitly asks for that contract (for a
+            # refresh or a dependency composition run); ordinary planning must
+            # not regenerate the stable library forever.
+            promoted_existing = usr in promoted_usrs
+            if promoted_existing and cid != target_contract:
+                continue
+            targeted_refresh = cid == target_contract
             source_path = source_path_for(function, pathlib.Path(str(self.input_facts["source_dir"])))
             try:
                 body, span = extract_function_body(source_path, name, function.get("line"))
@@ -636,13 +671,15 @@ class Agent:
                 "spec_links": copy.deepcopy(override.get("spec_links", reviewed_links)),
                 "reviewed_evidence": override.get("evidence", []),
                 "selection": {
-                    "new_work": True,
+                    "new_work": (not promoted_existing) or targeted_refresh,
                     "basis": "tool-ranked candidate and coverage facts + exact traceability + reviewed domain evidence",
                     "candidate_rank": candidate.get("rank"),
                     "candidate_score": candidate.get("score"),
                     "fact_source": "facts/functions.json",
                     "candidate_source": "facts/candidates.json",
                     "coverage_source": "coverage/coverage.json",
+                    "coverage_basis": candidate.get("coverage_basis"),
+                    "promoted_existing": promoted_existing,
                 },
             }
             write_json(self.root / "ci" / "discovered-contracts" / f"{cid}.json", contract)
@@ -775,6 +812,12 @@ class Agent:
         ready = []
         blocked = []
         discovered = {contract_id(item) for item in self.contracts if item.get("origin") == "tool_discovered_reviewed_override"}
+        manifest = read_json(self.root / "library" / "manifest.json", {}) or {}
+        stable_ids = {
+            str(value.get("contract_id"))
+            for value in manifest.get("components", [])
+            if value.get("status") == "PASS" and value.get("contract_id")
+        }
         prior_shapes = {str(item.get("contract_id")): item.get("interface_shape", []) for item in self.previous_state.get("contracts", []) if item.get("current_state") == "PROMOTED"}
         for contract in sorted(self.contracts, key=contract_id):
             if not contract.get("interface", {}).get("ports"):
@@ -791,7 +834,11 @@ class Agent:
                 "function": contract_function(contract).get("name"),
                 "clang_usr": contract_function(contract).get("clang_usr"),
                 "origin": contract.get("origin", "locked_contract"),
-                "new_work": cid in discovered,
+                "new_work": bool(
+                    (contract.get("selection") or {}).get(
+                        "new_work", cid in discovered and cid not in stable_ids
+                    )
+                ),
                 "contract_hash": hashes["contract"],
                 "cache_key": key,
                 "hashes": hashes,
@@ -821,7 +868,11 @@ class Agent:
         else:
             selected = [item["contract_id"] for item in entries if item["ready"] and item["new_work"] and (not prior_shapes or item["interface_shape"] not in prior_shapes.values())]
             if not selected:
-                selected = [item["contract_id"] for item in entries if item["ready"] and not item["cache_hit"]][:1]
+                selected = [
+                    item["contract_id"]
+                    for item in entries
+                    if item["ready"] and not item["cache_hit"] and item["contract_id"] not in stable_ids
+                ][:1]
             selected = sorted(selected[:max(1, int(os.environ.get("DSC_CICD_MAX_NEW", "1")))])
         for item in entries:
             item["selected"] = item["contract_id"] in selected
@@ -937,22 +988,28 @@ class Agent:
         self.write_state()
 
     def write_state(self) -> None:
-        write_json(self.ci / "state.json", self.state)
+        with self.state_lock:
+            write_json(self.ci / "state.json", self.state)
 
     def state_item(self, cid: str) -> dict[str, Any]:
         return next(item for item in self.state.get("contracts", []) if item.get("contract_id") == cid)
 
     def update_state(self, cid: str, state_name: str, status: str, artifacts: Iterable[str] = (), failure: str | None = None, extra: dict[str, Any] | None = None) -> None:
-        item = self.state_item(cid)
-        item["current_state"] = state_name
-        item["status"] = status
-        item["failure_reason"] = failure
-        item["artifacts"] = sorted(set(item.get("artifacts", [])).union(str(value) for value in artifacts))
-        if not item.get("history") or item["history"][-1].get("state") != state_name:
-            item.setdefault("history", []).append({"state": state_name, "status": status, "failure_reason": failure})
-        if extra:
-            item.update(extra)
-        self.write_state()
+        with self.state_lock:
+            item = self.state_item(cid)
+            item["current_state"] = state_name
+            item["status"] = status
+            item["failure_reason"] = failure
+            item["artifacts"] = sorted(set(item.get("artifacts", [])).union(str(value) for value in artifacts))
+            if not item.get("history") or item["history"][-1].get("state") != state_name:
+                item.setdefault("history", []).append({"state": state_name, "status": status, "failure_reason": failure})
+            if extra:
+                item.update(extra)
+            self.write_state()
+
+    def append_result(self, result: dict[str, Any]) -> None:
+        with self.state_lock:
+            self.run_results.append(result)
 
     def artifact_dir(self, item: dict[str, Any]) -> pathlib.Path:
         return self.artifacts / str(item["contract_hash"])
@@ -1672,9 +1729,11 @@ class Agent:
             cwd=self.root,
             timeout=int(os.environ.get("DSC_CICD_GENERATOR_TIMEOUT", "600")),
         )
-        self.generator_invocations += 1
+        with self.state_lock:
+            self.generator_invocations += 1
         telemetry = read_json(output_dir / "telemetry.json", {}) or {}
-        self.generator_tokens += int(telemetry.get("tokens_in", 0)) + int(telemetry.get("tokens_out", 0))
+        with self.state_lock:
+            self.generator_tokens += int(telemetry.get("tokens_in", 0)) + int(telemetry.get("tokens_out", 0))
         candidates = []
         if result["returncode"] == 0:
             for path in sorted(output_dir.glob("*.sv")):
@@ -2834,7 +2893,7 @@ class Agent:
                 "rejected_candidates": cached_unit.get("rejected_candidates", []),
                 "cache_entry": cache_entry,
             }
-            self.run_results.append(result)
+            self.append_result(result)
             return result
         try:
             self.update_state(cid, "CONTRACT_LOCKED", "EXECUTING")
@@ -2845,7 +2904,7 @@ class Agent:
             })
             if generation.get("status") != "PASS":
                 result = {"contract_id": cid, "status": generation.get("status", "GENERATION_FAILED"), "generation": generation}
-                self.run_results.append(result)
+                self.append_result(result)
                 return result
             unit = self.unit_verify(contract, artifact)
             unit_status = "PASS" if unit.get("promoted_candidate") else unit.get("verification_status", "UNPROVED")
@@ -2863,7 +2922,7 @@ class Agent:
                     "unit": unit,
                     "rejected_candidates": rejected_candidates,
                 }
-                self.run_results.append(result)
+                self.append_result(result)
                 return result
             candidate = next(item for item in generation.get("candidates", []) if item.get("candidate") == unit["promoted_candidate"])
             matrix = self.run_matrix(contract, artifact, candidate)
@@ -2886,7 +2945,7 @@ class Agent:
                 "dependency": dependency,
                 "rejected_candidates": rejected_candidates,
             }
-            self.run_results.append(result)
+            self.append_result(result)
             for name in ("shards", "shard-results", "oracle-build", "candidate-build", "generated"):
                 path = artifact / name
                 if path.is_dir() and name != "generated":
@@ -2895,7 +2954,7 @@ class Agent:
         except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as error:
             self.update_state(cid, "DISCOVERED", "INFRASTRUCTURE_FAILURE", artifacts=[str(artifact.relative_to(self.root))], failure=str(error))
             result = {"contract_id": cid, "status": "INFRASTRUCTURE_FAILURE", "reason": str(error)}
-            self.run_results.append(result)
+            self.append_result(result)
             return result
     def write_cache_index(self) -> None:
         entries = self.cache.get("entries", {}) if isinstance(self.cache, dict) else {}
@@ -3101,6 +3160,49 @@ class Agent:
         (self.root / "reports" / "pipeline-summary.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
         write_json(self.integration / "pipeline-receipt.json", report)
 
+    def run_selected_batches(self) -> None:
+        """Execute independent selected contracts in deterministic batches.
+
+        Each contract owns a unique artifact directory, so generation, C
+        oracle compilation, Verilator builds, and shard processes can run in
+        parallel.  A selected caller waits for any selected callee; callers
+        whose callees are already promoted are independent and can start in
+        the same batch.  The function identities come only from the plan and
+        callgraph facts.
+        """
+        selected = [
+            item for item in self.plan.get("contracts", []) if item.get("selected")
+        ]
+        selected_by_id = {str(item["contract_id"]): item for item in selected}
+        remaining = set(selected_by_id)
+        adjacency = self.dependency_info.get("adjacency", {}) or {}
+        contract_workers = max(
+            1,
+            int(os.environ.get("DSC_CICD_CONTRACT_WORKERS", os.environ.get("DSC_CICD_WORKERS", "2"))),
+        )
+        while remaining:
+            ready_ids = sorted(
+                cid for cid in remaining
+                if not any(str(dep) in remaining for dep in adjacency.get(cid, []))
+            )
+            if not ready_ids:
+                # The plan normally rejects cycles.  Keep a deterministic
+                # fail-closed escape if a malformed external plan slips in.
+                ready_ids = [sorted(remaining)[0]]
+            batch = [selected_by_id[cid] for cid in ready_ids]
+            with concurrent.futures.ThreadPoolExecutor(
+                max_workers=min(contract_workers, len(batch)),
+                thread_name_prefix="cicd-contract",
+            ) as executor:
+                futures = [executor.submit(self.run_contract, item) for item in batch]
+                # Consume futures in plan order so an exception cannot be
+                # silently discarded and receipts remain deterministic.
+                for future in futures:
+                    future.result()
+            remaining.difference_update(ready_ids)
+        with self.state_lock:
+            self.run_results.sort(key=lambda item: str(item.get("contract_id", "")))
+
     def run_command(self) -> int:
         self.load_inputs()
         self.materialize_new_contracts()
@@ -3110,7 +3212,9 @@ class Agent:
         self.initialize_state()
         if not self.input_facts.get("errors"):
             for item in self.plan.get("contracts", []):
-                self.run_contract(item)
+                if not item.get("selected"):
+                    self.run_contract(item)
+            self.run_selected_batches()
         else:
             for item in self.state.get("contracts", []):
                 if item.get("status") != "BLOCKED":

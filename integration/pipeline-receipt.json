@@ -1,76 +1,30 @@
 {
   "agent": "executable-generic-c-to-rtl-cicd",
-  "blocked_contracts": [
-    {
-      "contract_id": "mapqptoqlevel",
-      "function": "MapQpToQlevel",
-      "reasons": [
-        "arithmetic_semantics",
-        "field:dsc_cfg_t.dsc_version_minor",
-        "field:dsc_cfg_t.native_420",
-        "field:dsc_state_t.quantTableChroma",
-        "field:dsc_state_t.quantTableLuma",
-        "interface:dsc_version_minor",
-        "interface:native_420",
-        "interface:qp",
-        "interface:quantTableChroma",
-        "interface:quantTableLuma",
-        "interface:return_value",
-        "parameter:qp"
-      ]
-    }
-  ],
-  "blockers": [
-    "arithmetic_semantics",
-    "field:dsc_cfg_t.dsc_version_minor",
-    "field:dsc_cfg_t.native_420",
-    "field:dsc_state_t.quantTableChroma",
-    "field:dsc_state_t.quantTableLuma",
-    "interface:dsc_version_minor",
-    "interface:native_420",
-    "interface:qp",
-    "interface:quantTableChroma",
-    "interface:quantTableLuma",
-    "interface:return_value",
-    "parameter:qp"
-  ],
+  "blocked_contracts": [],
+  "blockers": [],
   "dependency_pair": {
     "call_sites": [
       {
-        "callee_contract": "isflatnessinfosent",
-        "callee_function": "IsFlatnessInfoSent",
-        "callee_usr": "c:@F@IsFlatnessInfoSent",
+        "callee_contract": "escapecodesize",
+        "callee_function": "EscapeCodeSize",
+        "callee_usr": "c:@F@EscapeCodeSize",
         "caller_contract": null,
-        "caller_function": "FlatnessAdjustment",
-        "caller_usr": "c:@F@FlatnessAdjustment",
+        "caller_function": "VLCUnit",
+        "caller_usr": "c:@F@VLCUnit",
         "location": {
-          "column": 15,
+          "column": 26,
           "file": "dsc_codec.c",
-          "line": 2537
-        },
-        "source": "facts/callgraph.json"
-      },
-      {
-        "callee_contract": "isflatnessinfosent",
-        "callee_function": "IsFlatnessInfoSent",
-        "callee_usr": "c:@F@IsFlatnessInfoSent",
-        "caller_contract": null,
-        "caller_function": "FlatnessAdjustment",
-        "caller_usr": "c:@F@FlatnessAdjustment",
-        "location": {
-          "column": 7,
-          "file": "dsc_codec.c",
-          "line": 2516
+          "line": 1614
         },
         "source": "facts/callgraph.json"
       }
     ],
-    "callee_contract": "isflatnessinfosent",
-    "callee_function": "IsFlatnessInfoSent",
-    "callee_usr": "c:@F@IsFlatnessInfoSent",
+    "callee_contract": "escapecodesize",
+    "callee_function": "EscapeCodeSize",
+    "callee_usr": "c:@F@EscapeCodeSize",
     "caller_contract": null,
-    "caller_function": "FlatnessAdjustment",
-    "caller_usr": "c:@F@FlatnessAdjustment",
+    "caller_function": "VLCUnit",
+    "caller_usr": "c:@F@VLCUnit",
     "selection_basis": "smallest acyclic direct call site from facts/callgraph.json"
   },
   "generator_invocations": 1,
@@ -79,13 +33,16 @@
   "matrix_scripts_discovered": 22,
   "model_calls": 1,
   "new_candidates": [
-    "isflatnessinfosent",
-    "quantizeresidual"
+    "escapecodesize"
   ],
   "ready_contracts": [
+    "escapecodesize",
     "findmidpoint",
     "isflatnessinfosent",
-    "quantizeresidual"
+    "mapqptoqlevel",
+    "predictsize",
+    "quantizeresidual",
+    "samptolinebuf"
   ],
   "receipt_policy": {
     "cache_hit": "REUSED_VERIFIED_RECEIPT",
@@ -94,28 +51,30 @@
   },
   "results": [
     {
-      "contract_id": "isflatnessinfosent",
+      "contract_id": "escapecodesize",
       "counterexample": {
-        "actual": "0",
-        "expected": "1",
+        "actual": "10",
+        "expected": "9",
         "index": 0,
         "inputs": [
           0,
           0,
+          0,
+          8,
           0
         ],
         "shard_id": 0
       },
       "dependency_evidence": {
-        "call_sites": 4,
+        "call_sites": 2,
         "compile_commands": true,
-        "direct_call_sites": 4,
+        "direct_call_sites": 2,
         "matrix_commands": true,
         "vectors": true
       },
       "dependency_status": "PASS",
       "executed_shards": 4,
-      "executed_vectors": 32768,
+      "executed_vectors": 16320,
       "execution_status": "EXECUTED_NOW",
       "matrix_modes": {
         "C_ONLY": "PASS",
@@ -130,41 +89,43 @@
           "candidate": "candidate_02",
           "composition_gate": "FAIL",
           "counterexample": {
-            "actual": "0",
-            "expected": "1",
+            "actual": "10",
+            "expected": "9",
             "index": 0,
             "inputs": [
               0,
               0,
+              0,
+              8,
               0
             ],
             "shard_id": 0
           },
           "expected_rejection": true,
           "matrix_status": "FAIL",
-          "receipt": "artifacts/60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2/rejected/candidate_02/rejection-receipt.json",
+          "receipt": "artifacts/57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69/rejected/candidate_02/rejection-receipt.json",
           "status": "EXPECTED_REJECTION",
           "unit_gate": "FAIL",
           "unit_verification_status": "COUNTEREXAMPLE"
         }
       ],
       "shard_durations_seconds": [
-        0.852,
-        0.866,
-        0.032,
-        0.032
+        0.862,
+        0.864,
+        0.864,
+        0.858
       ],
       "status": "PROMOTED",
-      "tokens": 2013,
+      "tokens": 1696,
       "unit_status": "EXHAUSTIVE_EQUIVALENT"
     }
   ],
   "schema_version": 2,
   "selected_new_work": [
-    "isflatnessinfosent"
+    "escapecodesize"
   ],
   "shards": [
     4
   ],
-  "tokens": 2013
+  "tokens": 1696
 }

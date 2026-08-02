@@ -824,9 +824,14 @@ class LocalContext:
             if entry:
                 add(entry, "one cached promoted control", cached=True)
                 break
-        arithmetic = [entry for entry in entries if entry.get("ready") and entry.get("new_work") and self.classify(entry) == "arithmetic"]
+        arithmetic = [entry for entry in entries if entry.get("ready") and self.classify(entry) == "arithmetic"]
         for entry in sorted(arithmetic, key=lambda item: str(item.get("contract_id"))):
-            add(entry, "one newly GENERATION_READY arithmetic leaf")
+            reason = (
+                "one newly GENERATION_READY arithmetic leaf"
+                if entry.get("new_work")
+                else "one verified arithmetic control for bounded refresh"
+            )
+            add(entry, reason, cached=entry.get("contract_id") in self.valid_cached_ids())
             break
         table = [entry for entry in entries if entry.get("ready") and self.classify(entry) == "table_config"]
         for entry in sorted(table, key=lambda item: str(item.get("contract_id"))):
@@ -849,17 +854,50 @@ class LocalContext:
         return selected[:4]
 
     def scale_plan(self, model_router: "ModelRouter") -> dict[str, Any]:
-        ready = [
-            {
-                "contract_id": item.get("contract_id"),
-                "function": item.get("function"),
-                "kind": self.classify(item),
-                "contract_hash": self.contract_hash(str(item.get("contract_id"))),
-                "model_tier": model_router.route(self.classify(item))["tier"],
-            }
+        planned = {
+            str(item.get("contract_id")): item
             for item in self.plan.get("contracts", [])
-            if item.get("ready")
-        ]
+            if item.get("contract_id")
+        }
+        # A refresh is allowed to revalidate verified library leaves even when
+        # the normal new-work queue correctly excludes them.  The manifest is
+        # evidence, not a function-name selector: only PASS components with a
+        # matching contract and a still-valid exact width/spec gate enter the
+        # refresh plan.
+        library_manifest = read_json(self.repo / "library" / "manifest.json", {}) or {}
+        verified_ids = {
+            str(item.get("contract_id"))
+            for item in library_manifest.get("components", [])
+            if item.get("status") == "PASS" and item.get("contract_id")
+        }
+        ready = []
+        for cid in sorted(set(planned) | verified_ids):
+            item = planned.get(cid)
+            if item and not item.get("ready"):
+                if cid not in verified_ids:
+                    continue
+                # A previously promoted component may have been removed from
+                # the ordinary plan by coverage policy; re-check its current
+                # contract facts before admitting it to refresh.
+                if self.width_spec_gate(cid).get("status") != "PASS":
+                    continue
+            if not item:
+                contract = self.contracts.get(cid, {})
+                if not contract or self.width_spec_gate(cid).get("status") != "PASS":
+                    continue
+                item = {
+                    "contract_id": cid,
+                    "function": (contract.get("function") or {}).get("name"),
+                    "ready": True,
+                }
+            kind = self.classify(item)
+            ready.append({
+                "contract_id": cid,
+                "function": item.get("function"),
+                "kind": kind,
+                "contract_hash": self.contract_hash(cid),
+                "model_tier": model_router.route(kind)["tier"],
+            })
         return {
             "schema_version": 1,
             "status": "PLANNED_NOT_STARTED",

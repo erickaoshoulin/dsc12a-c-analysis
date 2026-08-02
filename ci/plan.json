@@ -2,10 +2,7 @@
   "agent": "executable-generic-c-to-rtl-cicd",
   "batches": [
     [
-      "escapecodesize",
-      "getqpadjpredsize",
-      "isflatnessinfosent",
-      "mapqptoqlevel"
+      "escapecodesize"
     ]
   ],
   "blocked_contracts": [],
@@ -13,7 +10,7 @@
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "1f9fda891892c3a62b3ff77077468cb32c8910d0517ee787723984996276e0c9",
+      "cache_key": "f6af8ae53dde94c8bf490279e80c95ce9c579f9e23bddade7f3298d6a8669843",
       "call_sites": [
         {
           "callee_contract": "mapqptoqlevel",
@@ -31,27 +28,27 @@
         }
       ],
       "clang_usr": "c:@F@EscapeCodeSize",
-      "contract_hash": "a4141acef069f808dd7751bd953805c2d586c0be5c8d4dbf312ef2274ccd0759",
+      "contract_hash": "57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69",
       "contract_id": "escapecodesize",
       "deferred": false,
       "dependencies": [
         "mapqptoqlevel"
       ],
-      "force_regenerate": false,
+      "force_regenerate": true,
       "function": "EscapeCodeSize",
       "hashes": {
-        "agent": "7a1d2c26b00e89d2431a09c4317d990395a8c29b8434d4367f2514efe23bd0a0",
-        "contract": "a4141acef069f808dd7751bd953805c2d586c0be5c8d4dbf312ef2274ccd0759",
-        "dependency": "386dd9a67df3076a18b7b32191c058e967c61bfdc18a3286dab683bdc16c5d2f",
-        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "agent": "a1efa2a05fdf4e49ac14af4bd0d395bed788a107a8143cb456bb47ed09dc8bcd",
+        "contract": "57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69",
+        "dependency": "37327a43dbf90bda24136728c52398f8af9f16319444985526f1260ec5eef69d",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "11d0a55dbb814080ab72cafd7c3be061708311ba3fd7dd49b97225a485933274",
+        "prompt": "66e97b1fd7dbf8a1ab35e82b8833220d82c8085c02b3b78dd6737e9616843cd3",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "2"
+        "workers": "4"
       },
       "initial_state": "CONTRACT_LOCKED",
       "interface_shape": [
@@ -96,14 +93,18 @@
       "origin": "tool_discovered_reviewed_override",
       "ready": true,
       "selected": true,
-      "stale": false,
-      "stale_reasons": [],
-      "targeted": false
+      "stale": true,
+      "stale_reasons": [
+        "agent",
+        "contract",
+        "dependency"
+      ],
+      "targeted": true
     },
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "d3df1bf06ab0cdc2ec0d9d123b5a7e3ce01dd864d9e9492f835e117e6347cc04",
+      "cache_key": "a8775759c79ac2b296985e0f90b1eca4c876e372381dc596de0bf5e668768adb",
       "call_sites": [],
       "clang_usr": "c:@F@FindMidpoint",
       "contract_hash": "4770cb54a401eb81b550fbb5dd3ede2af3c3a4d85ec2f92548125dbd638592cf",
@@ -113,18 +114,18 @@
       "force_regenerate": false,
       "function": "FindMidpoint",
       "hashes": {
-        "agent": "7a1d2c26b00e89d2431a09c4317d990395a8c29b8434d4367f2514efe23bd0a0",
+        "agent": "a1efa2a05fdf4e49ac14af4bd0d395bed788a107a8143cb456bb47ed09dc8bcd",
         "contract": "4770cb54a401eb81b550fbb5dd3ede2af3c3a4d85ec2f92548125dbd638592cf",
-        "dependency": "e4158ba0d1f9440c187aeacc864af824844ed32356f83664644d001f5b0ac9e7",
-        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "dependency": "0ed98a466b17d637ab53543e1ae6197aea910344aecd0723da0a44d6772147aa",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "11d0a55dbb814080ab72cafd7c3be061708311ba3fd7dd49b97225a485933274",
+        "prompt": "66e97b1fd7dbf8a1ab35e82b8833220d82c8085c02b3b78dd6737e9616843cd3",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "2"
+        "workers": "4"
       },
       "initial_state": "CONTRACT_LOCKED",
       "interface_shape": [
@@ -166,217 +167,35 @@
       "stale": true,
       "stale_reasons": [
         "agent",
-        "contract",
-        "dependency",
-        "prompt",
-        "generator"
+        "dependency"
       ],
       "targeted": false
     },
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "4dd72299c54c51cbba33adb73a8b910a65abe60a98333ee6a5d5292746aa645a",
-      "call_sites": [
-        {
-          "callee_contract": "mapqptoqlevel",
-          "callee_function": "MapQpToQlevel",
-          "callee_usr": "c:@F@MapQpToQlevel",
-          "caller_contract": "getqpadjpredsize",
-          "caller_function": "GetQpAdjPredSize",
-          "caller_usr": "c:@F@GetQpAdjPredSize",
-          "location": {
-            "column": 15,
-            "file": "dsc_codec.c",
-            "line": 285
-          },
-          "source": "facts/callgraph.json"
-        },
-        {
-          "callee_contract": "mapqptoqlevel",
-          "callee_function": "MapQpToQlevel",
-          "callee_usr": "c:@F@MapQpToQlevel",
-          "caller_contract": "getqpadjpredsize",
-          "caller_function": "GetQpAdjPredSize",
-          "caller_usr": "c:@F@GetQpAdjPredSize",
-          "location": {
-            "column": 15,
-            "file": "dsc_codec.c",
-            "line": 290
-          },
-          "source": "facts/callgraph.json"
-        },
-        {
-          "callee_contract": "maxresidualsize",
-          "callee_function": "MaxResidualSize",
-          "callee_usr": "c:@F@MaxResidualSize",
-          "caller_contract": "getqpadjpredsize",
-          "caller_function": "GetQpAdjPredSize",
-          "caller_usr": "c:@F@GetQpAdjPredSize",
-          "location": {
-            "column": 13,
-            "file": "dsc_codec.c",
-            "line": 293
-          },
-          "source": "facts/callgraph.json"
-        }
-      ],
-      "clang_usr": "c:@F@GetQpAdjPredSize",
-      "contract_hash": "8b07c0fd527f23cb8db7c5f5ab8bb1c504ea4fbe606febbe118e262ee791e6fe",
-      "contract_id": "getqpadjpredsize",
-      "deferred": false,
-      "dependencies": [
-        "mapqptoqlevel",
-        "maxresidualsize"
-      ],
-      "force_regenerate": false,
-      "function": "GetQpAdjPredSize",
-      "hashes": {
-        "agent": "7a1d2c26b00e89d2431a09c4317d990395a8c29b8434d4367f2514efe23bd0a0",
-        "contract": "8b07c0fd527f23cb8db7c5f5ab8bb1c504ea4fbe606febbe118e262ee791e6fe",
-        "dependency": "d4ff9fdd844f6c13b1159a3080551f15902a014616434d41a630cdd95aaf2876",
-        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
-        "model": "external-generator-hook",
-        "pipeline": "executable-cicd-v2",
-        "prompt": "11d0a55dbb814080ab72cafd7c3be061708311ba3fd7dd49b97225a485933274",
-        "shards": "4",
-        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
-        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "2"
-      },
-      "initial_state": "CONTRACT_LOCKED",
-      "interface_shape": [
-        [
-          "input",
-          "cpntBitDepth_0",
-          5,
-          false
-        ],
-        [
-          "input",
-          "cpntBitDepth_1",
-          5,
-          false
-        ],
-        [
-          "input",
-          "cpntBitDepth_2",
-          5,
-          false
-        ],
-        [
-          "input",
-          "cpntBitDepth_3",
-          5,
-          false
-        ],
-        [
-          "input",
-          "dsc_version_minor",
-          2,
-          false
-        ],
-        [
-          "input",
-          "native_420",
-          1,
-          false
-        ],
-        [
-          "input",
-          "predicted_size_selected",
-          5,
-          false
-        ],
-        [
-          "input",
-          "prev_primary_qp",
-          5,
-          false
-        ],
-        [
-          "input",
-          "primary_qp",
-          5,
-          false
-        ],
-        [
-          "input",
-          "qlevel_chroma_new",
-          5,
-          false
-        ],
-        [
-          "input",
-          "qlevel_chroma_old",
-          5,
-          false
-        ],
-        [
-          "input",
-          "qlevel_luma_new",
-          5,
-          false
-        ],
-        [
-          "input",
-          "qlevel_luma_old",
-          5,
-          false
-        ],
-        [
-          "input",
-          "unit",
-          2,
-          false
-        ],
-        [
-          "input",
-          "unit_c_type_selected",
-          2,
-          false
-        ],
-        [
-          "output",
-          "return_value",
-          5,
-          true
-        ]
-      ],
-      "new_work": true,
-      "origin": "tool_discovered_reviewed_override",
-      "ready": true,
-      "selected": true,
-      "stale": false,
-      "stale_reasons": [],
-      "targeted": false
-    },
-    {
-      "blocked_reasons": [],
-      "cache_hit": false,
-      "cache_key": "616fdf7a42e2eeff742db6c1fb9afb945a3db3bbd2b8099685ce8ff1921ddd87",
+      "cache_key": "2a78f69ac6ef21d293456703d244c6dedf77f4ab646cd9f67ca7afef957eea0e",
       "call_sites": [],
       "clang_usr": "c:@F@IsFlatnessInfoSent",
       "contract_hash": "f079152437dbf9eea9e1ff9463e03ead04fd354570a45c8df03ce99dd49ee4f6",
       "contract_id": "isflatnessinfosent",
-      "deferred": false,
+      "deferred": true,
       "dependencies": [],
       "force_regenerate": false,
       "function": "IsFlatnessInfoSent",
       "hashes": {
-        "agent": "7a1d2c26b00e89d2431a09c4317d990395a8c29b8434d4367f2514efe23bd0a0",
+        "agent": "a1efa2a05fdf4e49ac14af4bd0d395bed788a107a8143cb456bb47ed09dc8bcd",
         "contract": "f079152437dbf9eea9e1ff9463e03ead04fd354570a45c8df03ce99dd49ee4f6",
-        "dependency": "8a4f520f268093e232bf13cd915b6995cee35c2f5d8d9efe343bd8895d358fe5",
-        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "dependency": "5dc4e856c4fca6864b8566497113b6dc5fad569feec3c0ae55921b5aa6f70bbb",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "11d0a55dbb814080ab72cafd7c3be061708311ba3fd7dd49b97225a485933274",
+        "prompt": "66e97b1fd7dbf8a1ab35e82b8833220d82c8085c02b3b78dd6737e9616843cd3",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "2"
+        "workers": "4"
       },
       "initial_state": "CONTRACT_LOCKED",
       "interface_shape": [
@@ -405,45 +224,42 @@
           false
         ]
       ],
-      "new_work": true,
+      "new_work": false,
       "origin": "tool_discovered_reviewed_override",
       "ready": true,
-      "selected": true,
+      "selected": false,
       "stale": true,
       "stale_reasons": [
         "agent",
-        "contract",
-        "dependency",
-        "prompt",
-        "generator"
+        "dependency"
       ],
       "targeted": false
     },
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "9cc6bdaddd9028c312e1d12f67f989d2a1c044380e963ca21d422fdc0657fa9f",
+      "cache_key": "2ca6da10833aa99637af510c835ff86492c216534250006ce610e709cb6b3b98",
       "call_sites": [],
       "clang_usr": "c:@F@MapQpToQlevel",
       "contract_hash": "9dca6ef2ab9731a8e0651276955456e9433b652e6be6714081e97e143c4b30bf",
       "contract_id": "mapqptoqlevel",
-      "deferred": false,
+      "deferred": true,
       "dependencies": [],
       "force_regenerate": false,
       "function": "MapQpToQlevel",
       "hashes": {
-        "agent": "7a1d2c26b00e89d2431a09c4317d990395a8c29b8434d4367f2514efe23bd0a0",
+        "agent": "a1efa2a05fdf4e49ac14af4bd0d395bed788a107a8143cb456bb47ed09dc8bcd",
         "contract": "9dca6ef2ab9731a8e0651276955456e9433b652e6be6714081e97e143c4b30bf",
-        "dependency": "3b3871f0c0790eeed2c72b1b1539dd2a9784ce9b6f6c06b404e22d7240303fe8",
-        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "dependency": "fd1a2ba65d9277aad6286d988d7d4141ece545ee43ffa7442bb729f345cf3d07",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "11d0a55dbb814080ab72cafd7c3be061708311ba3fd7dd49b97225a485933274",
+        "prompt": "66e97b1fd7dbf8a1ab35e82b8833220d82c8085c02b3b78dd6737e9616843cd3",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "2"
+        "workers": "4"
       },
       "initial_state": "CONTRACT_LOCKED",
       "interface_shape": [
@@ -502,138 +318,21 @@
           false
         ]
       ],
-      "new_work": true,
-      "origin": "tool_discovered_reviewed_override",
-      "ready": true,
-      "selected": true,
-      "stale": true,
-      "stale_reasons": [
-        "agent",
-        "contract",
-        "dependency",
-        "prompt",
-        "generator"
-      ],
-      "targeted": false
-    },
-    {
-      "blocked_reasons": [],
-      "cache_hit": false,
-      "cache_key": "2ab97ad733535fefbe229c52442fcb730a4d1d9f8258bd2c5b63e35e20d9d279",
-      "call_sites": [
-        {
-          "callee_contract": "mapqptoqlevel",
-          "callee_function": "MapQpToQlevel",
-          "callee_usr": "c:@F@MapQpToQlevel",
-          "caller_contract": "maxresidualsize",
-          "caller_function": "MaxResidualSize",
-          "caller_usr": "c:@F@MaxResidualSize",
-          "location": {
-            "column": 11,
-            "file": "dsc_codec.c",
-            "line": 267
-          },
-          "source": "facts/callgraph.json"
-        }
-      ],
-      "clang_usr": "c:@F@MaxResidualSize",
-      "contract_hash": "c92b2f1510575eb10503e2bf1e5c6a6f6e0828638e642be95a8d1f9bab460529",
-      "contract_id": "maxresidualsize",
-      "deferred": true,
-      "dependencies": [
-        "mapqptoqlevel"
-      ],
-      "force_regenerate": false,
-      "function": "MaxResidualSize",
-      "hashes": {
-        "agent": "7a1d2c26b00e89d2431a09c4317d990395a8c29b8434d4367f2514efe23bd0a0",
-        "contract": "c92b2f1510575eb10503e2bf1e5c6a6f6e0828638e642be95a8d1f9bab460529",
-        "dependency": "0c7a52453feb5e39847830b6b0ebc59be5cc51ff255a8fc0c37bb350fd961b4e",
-        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
-        "model": "external-generator-hook",
-        "pipeline": "executable-cicd-v2",
-        "prompt": "11d0a55dbb814080ab72cafd7c3be061708311ba3fd7dd49b97225a485933274",
-        "shards": "4",
-        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
-        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "2"
-      },
-      "initial_state": "CONTRACT_LOCKED",
-      "interface_shape": [
-        [
-          "input",
-          "cpnt",
-          2,
-          false
-        ],
-        [
-          "input",
-          "cpntBitDepth_0",
-          5,
-          false
-        ],
-        [
-          "input",
-          "cpntBitDepth_1",
-          5,
-          false
-        ],
-        [
-          "input",
-          "cpntBitDepth_selected",
-          5,
-          false
-        ],
-        [
-          "input",
-          "dsc_version_minor",
-          2,
-          false
-        ],
-        [
-          "input",
-          "native_420",
-          1,
-          false
-        ],
-        [
-          "input",
-          "qlevel_chroma",
-          5,
-          false
-        ],
-        [
-          "input",
-          "qlevel_luma",
-          5,
-          false
-        ],
-        [
-          "input",
-          "qp",
-          5,
-          false
-        ],
-        [
-          "output",
-          "return_value",
-          6,
-          true
-        ]
-      ],
-      "new_work": true,
+      "new_work": false,
       "origin": "tool_discovered_reviewed_override",
       "ready": true,
       "selected": false,
-      "stale": false,
-      "stale_reasons": [],
+      "stale": true,
+      "stale_reasons": [
+        "agent",
+        "dependency"
+      ],
       "targeted": false
     },
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "def31deaf4d0d20c504c029fb44249b50939559c8b1ecc8ef93d901a910db3f4",
+      "cache_key": "f045a70f71ab43e0a8c527c2d1fbc309df0ed68eb2bb9d17c441e9d4c8afc634",
       "call_sites": [],
       "clang_usr": "c:@F@PredictSize",
       "contract_hash": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
@@ -643,18 +342,18 @@
       "force_regenerate": false,
       "function": "PredictSize",
       "hashes": {
-        "agent": "7a1d2c26b00e89d2431a09c4317d990395a8c29b8434d4367f2514efe23bd0a0",
+        "agent": "a1efa2a05fdf4e49ac14af4bd0d395bed788a107a8143cb456bb47ed09dc8bcd",
         "contract": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
-        "dependency": "99bc38c26e90ed29f71cc720433148ab3ffcfbb69ca2f9d320a2ae2a158341ce",
-        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "dependency": "914df6beca4a8f89ea185ee1ce47bc73c706a1bc1a5bf1c3b73b69ef4d4b1cb3",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "11d0a55dbb814080ab72cafd7c3be061708311ba3fd7dd49b97225a485933274",
+        "prompt": "66e97b1fd7dbf8a1ab35e82b8833220d82c8085c02b3b78dd6737e9616843cd3",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "2"
+        "workers": "4"
       },
       "initial_state": "CONTRACT_LOCKED",
       "interface_shape": [
@@ -683,18 +382,21 @@
           false
         ]
       ],
-      "new_work": true,
+      "new_work": false,
       "origin": "tool_discovered_reviewed_override",
       "ready": true,
       "selected": false,
-      "stale": false,
-      "stale_reasons": [],
+      "stale": true,
+      "stale_reasons": [
+        "agent",
+        "dependency"
+      ],
       "targeted": false
     },
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "4d279e2635841c1442263703a0d06cf3e0c0de83da8e18b76df1d1997376d375",
+      "cache_key": "ca28ee0a689ea8f2a55e3359206e247fc94826dd123d785db2a3244f224a982a",
       "call_sites": [],
       "clang_usr": "c:@F@QuantizeResidual",
       "contract_hash": "bd7cac692d0064753250d5ae92776ee7718d8cb222ea52561893438c52e6e30d",
@@ -704,18 +406,18 @@
       "force_regenerate": false,
       "function": "QuantizeResidual",
       "hashes": {
-        "agent": "7a1d2c26b00e89d2431a09c4317d990395a8c29b8434d4367f2514efe23bd0a0",
+        "agent": "a1efa2a05fdf4e49ac14af4bd0d395bed788a107a8143cb456bb47ed09dc8bcd",
         "contract": "bd7cac692d0064753250d5ae92776ee7718d8cb222ea52561893438c52e6e30d",
-        "dependency": "7af056fe4041f677fb8f024852792f0b1175b4cf18f22d568afd6c6e1fc0eaed",
-        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "dependency": "a3f401df0ddba81554e3f977a3f1cfcb7cb312cbf0ddf6d4590b3e885034181d",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "11d0a55dbb814080ab72cafd7c3be061708311ba3fd7dd49b97225a485933274",
+        "prompt": "66e97b1fd7dbf8a1ab35e82b8833220d82c8085c02b3b78dd6737e9616843cd3",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "2"
+        "workers": "4"
       },
       "initial_state": "CONTRACT_LOCKED",
       "interface_shape": [
@@ -738,24 +440,21 @@
           true
         ]
       ],
-      "new_work": true,
+      "new_work": false,
       "origin": "tool_discovered_reviewed_override",
       "ready": true,
       "selected": false,
       "stale": true,
       "stale_reasons": [
         "agent",
-        "contract",
-        "dependency",
-        "prompt",
-        "generator"
+        "dependency"
       ],
       "targeted": false
     },
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "d81c7b52c62612bda539eb0b1f02dfa151ba044c1bbe73edb54801dc1bc50478",
+      "cache_key": "beb1a55689a050e518a655abf8279200a0d3a4318cf1396c262397fdd9542ace",
       "call_sites": [],
       "clang_usr": "c:@F@SampToLineBuf",
       "contract_hash": "05bcff80920baf0d36d0cfceb95053d2385b1d939a15a173f0e253b27a18900d",
@@ -765,18 +464,18 @@
       "force_regenerate": false,
       "function": "SampToLineBuf",
       "hashes": {
-        "agent": "7a1d2c26b00e89d2431a09c4317d990395a8c29b8434d4367f2514efe23bd0a0",
+        "agent": "a1efa2a05fdf4e49ac14af4bd0d395bed788a107a8143cb456bb47ed09dc8bcd",
         "contract": "05bcff80920baf0d36d0cfceb95053d2385b1d939a15a173f0e253b27a18900d",
-        "dependency": "839eaeeb8185c39c013b25ade5ef80113ca652ca10012308fc92ed62d7de2561",
-        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "dependency": "04d90b97e37f480b54d872efbc39ab16c1874e817def115117da9f87d78853d9",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "11d0a55dbb814080ab72cafd7c3be061708311ba3fd7dd49b97225a485933274",
+        "prompt": "66e97b1fd7dbf8a1ab35e82b8833220d82c8085c02b3b78dd6737e9616843cd3",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "2"
+        "workers": "4"
       },
       "initial_state": "CONTRACT_LOCKED",
       "interface_shape": [
@@ -811,18 +510,22 @@
           false
         ]
       ],
-      "new_work": true,
+      "new_work": false,
       "origin": "tool_discovered_reviewed_override",
       "ready": true,
       "selected": false,
-      "stale": false,
-      "stale_reasons": [],
+      "stale": true,
+      "stale_reasons": [
+        "agent",
+        "dependency"
+      ],
       "targeted": false
     }
   ],
   "deferred_ready_contracts": [
     "findmidpoint",
-    "maxresidualsize",
+    "isflatnessinfosent",
+    "mapqptoqlevel",
     "predictsize",
     "quantizeresidual",
     "samptolinebuf"
@@ -852,36 +555,24 @@
     "caller_usr": "c:@F@VLCUnit",
     "selection_basis": "smallest acyclic direct call site from facts/callgraph.json"
   },
-  "force_regenerate": false,
-  "generator_hook": null,
+  "force_regenerate": true,
+  "generator_hook": "python3 tools/generator_fixture.py",
   "input_errors": [],
   "new_candidates": [
-    "escapecodesize",
-    "getqpadjpredsize",
-    "isflatnessinfosent",
-    "mapqptoqlevel",
-    "maxresidualsize",
-    "predictsize",
-    "quantizeresidual",
-    "samptolinebuf"
+    "escapecodesize"
   ],
   "ready_contracts": [
     "escapecodesize",
     "findmidpoint",
-    "getqpadjpredsize",
     "isflatnessinfosent",
     "mapqptoqlevel",
-    "maxresidualsize",
     "predictsize",
     "quantizeresidual",
     "samptolinebuf"
   ],
   "schema_version": 2,
   "selected_contracts": [
-    "escapecodesize",
-    "getqpadjpredsize",
-    "isflatnessinfosent",
-    "mapqptoqlevel"
+    "escapecodesize"
   ],
-  "target_contract": null
+  "target_contract": "escapecodesize"
 }
