@@ -1794,6 +1794,7 @@ class RegressionService:
                 "contract_id": cid,
                 "function": receipt.get("function"),
                 "kind": receipt.get("kind"),
+                "run_kind": receipt.get("kind"),
                 "status": "PASS",
                 "execution_status": receipt.get("execution_status"),
                 "candidate": Path(str(receipt.get("accepted_rtl"))).stem,
@@ -1823,6 +1824,13 @@ class RegressionService:
                     int(previous_verification.get("schema_version", 1)),
                     int(compact["schema_version"]),
                 )
+                if previous_verification.get("kind"):
+                    # ``kind`` is the semantic contract kind owned by the
+                    # reviewed contract.  The durable runner's job kind is
+                    # intentionally kept separately in ``run_kind`` so a
+                    # revalidation cannot turn e.g. ``using_midpoint`` into
+                    # the generic queue category ``arithmetic``.
+                    merged_verification["kind"] = previous_verification["kind"]
                 if previous_verification.get("promoted_at"):
                     merged_verification["promoted_at"] = previous_verification["promoted_at"]
                 merged_verification["stages"] = merged_stages

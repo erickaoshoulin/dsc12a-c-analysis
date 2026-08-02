@@ -280,6 +280,7 @@ class RegressionServiceTests(unittest.TestCase):
                 json.dumps({
                     "schema_version": 2,
                     "artifact_dir": "artifacts/old-artifact",
+                    "kind": "using_midpoint",
                     "formal_proof": {"status": "PASS"},
                     "dependency": {"status": "PASS"},
                     "stages": {"formal": "PASS"},
@@ -329,6 +330,8 @@ class RegressionServiceTests(unittest.TestCase):
             verification = read_json(library / "verification" / "synthetic.json", {})
             self.assertEqual(verification["schema_version"], 2)
             self.assertEqual(verification["artifact_dir"], "artifacts/old-artifact")
+            self.assertEqual(verification["kind"], "using_midpoint")
+            self.assertEqual(verification["run_kind"], "arithmetic")
             self.assertEqual(verification["formal_proof"]["status"], "PASS")
             self.assertEqual(verification["last_verified_run_id"], "run-a")
             self.assertTrue(read_json(library / "contracts" / "synthetic.json", {}).get("do_not_edit"))
