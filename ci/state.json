@@ -42,13 +42,13 @@
       "failure_reason": "bounded selection deferred",
       "function": "FindMidpoint",
       "hashes": {
-        "agent": "e9800d5bdd133c61ff87e13424d5a732ba29455d20895c9e8d872653256a3c87",
+        "agent": "32054109c01602b9239cbe49327b34cae26ebeeadae946d0d4da4ffe6efc9c2a",
         "contract": "ddf6b008659477f8b63803b7d5b599f7227e5f363ae460be83a305e5b39d0dea",
-        "dependency": "1891d53f1908a01fb0e98ee5a0f36f704f41968cf7f669234fd8d3a766b10fdd",
+        "dependency": "fae6fba4c45b4a77b34f3e209851239acb540748180b881a568e349856559d98",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "52046cde6759294b04e2e32ae56cb5d9873f873c6bd03b84f2e8ea9a7d5db353",
+        "prompt": "0d4f176060a66741d0c0abe2c3f3b1cfcbb0fe7c278f3a2394bdd7b22b918027",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -125,20 +125,21 @@
         "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/receipt-schema.json",
         "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/rtl/candidate_01.sv",
         "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/shadow_replacement_wrapper.c",
-        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/vector_generator.py"
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/vector_generator.py",
+        "artifacts/60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2"
       ],
       "contract_id": "isflatnessinfosent",
-      "current_state": "DISCOVERED",
-      "failure_reason": "arithmetic_semantics; field:dsc_cfg_t.flatness_max_qp; field:dsc_cfg_t.flatness_min_qp; interface:flatness_max_qp; interface:flatness_min_qp; interface:qp; interface:return_value; no_exact_spec_link; parameter:qp",
+      "current_state": "PROMOTED",
+      "failure_reason": null,
       "function": "IsFlatnessInfoSent",
       "hashes": {
-        "agent": "e9800d5bdd133c61ff87e13424d5a732ba29455d20895c9e8d872653256a3c87",
-        "contract": "1d9bc596110ec2ebf4b21ff142ebe4b2af3aa65b3c765f87f7cd65348002b945",
-        "dependency": "49155ca440c27e1656a93d039885d9f2399cf15e0fbf6773c25c5bc91914c8f1",
+        "agent": "32054109c01602b9239cbe49327b34cae26ebeeadae946d0d4da4ffe6efc9c2a",
+        "contract": "60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2",
+        "dependency": "8fe59255ed677a74d364b2e5bd5b6be2e942ef2b0ca388eea4a57ac29395b6a4",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "52046cde6759294b04e2e32ae56cb5d9873f873c6bd03b84f2e8ea9a7d5db353",
+        "prompt": "0d4f176060a66741d0c0abe2c3f3b1cfcbb0fe7c278f3a2394bdd7b22b918027",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -156,39 +157,95 @@
           "failure_reason": "arithmetic_semantics; field:dsc_cfg_t.flatness_max_qp; field:dsc_cfg_t.flatness_min_qp; interface:flatness_max_qp; interface:flatness_min_qp; interface:qp; interface:return_value; no_exact_spec_link; parameter:qp",
           "state": "DISCOVERED",
           "status": "BLOCKED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "INFRASTRUCTURE_FAILURE"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
         }
       ],
       "interface_shape": [
         [
           "input",
           "flatness_max_qp",
-          32,
+          5,
           false
         ],
         [
           "input",
           "flatness_min_qp",
-          32,
+          5,
           false
         ],
         [
           "input",
           "qp",
-          32,
+          5,
           false
         ],
         [
           "output",
           "return_value",
-          32,
-          true
+          1,
+          false
         ]
       ],
-      "model_calls": 0,
-      "origin": "locked_contract",
-      "selected": false,
-      "status": "BLOCKED",
-      "token_count": 0
+      "model_calls": 1,
+      "origin": "tool_discovered_reviewed_override",
+      "selected": true,
+      "status": "PROMOTED",
+      "token_count": 2013,
+      "unit_receipt": "EXECUTED_NOW"
     },
     {
       "artifacts": [
@@ -211,13 +268,13 @@
       "failure_reason": "arithmetic_semantics; field:dsc_cfg_t.dsc_version_minor; field:dsc_cfg_t.native_420; field:dsc_state_t.quantTableChroma; field:dsc_state_t.quantTableLuma; interface:dsc_version_minor; interface:native_420; interface:qp; interface:quantTableChroma; interface:quantTableLuma; interface:return_value; parameter:qp",
       "function": "MapQpToQlevel",
       "hashes": {
-        "agent": "e9800d5bdd133c61ff87e13424d5a732ba29455d20895c9e8d872653256a3c87",
+        "agent": "32054109c01602b9239cbe49327b34cae26ebeeadae946d0d4da4ffe6efc9c2a",
         "contract": "b5d32e96c0ef357adad943e57b6e785389935d2b3a7265a6a709013ecb3e9a9f",
-        "dependency": "c2fb87ed47a776f205dfcceb73d42a6191bdd017a16e637a5a98791cb117908b",
+        "dependency": "17f152849d93c23b2e4b3a99393c87b468f587f6a952c9136b5c17e9573740cb",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "52046cde6759294b04e2e32ae56cb5d9873f873c6bd03b84f2e8ea9a7d5db353",
+        "prompt": "0d4f176060a66741d0c0abe2c3f3b1cfcbb0fe7c278f3a2394bdd7b22b918027",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -297,19 +354,18 @@
       "artifacts": [
         "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2"
       ],
-      "cache": "REUSED_VERIFIED_RECEIPT",
       "contract_id": "quantizeresidual",
-      "current_state": "PROMOTED",
-      "failure_reason": null,
+      "current_state": "CONTRACT_LOCKED",
+      "failure_reason": "bounded selection deferred",
       "function": "QuantizeResidual",
       "hashes": {
-        "agent": "e9800d5bdd133c61ff87e13424d5a732ba29455d20895c9e8d872653256a3c87",
+        "agent": "32054109c01602b9239cbe49327b34cae26ebeeadae946d0d4da4ffe6efc9c2a",
         "contract": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
-        "dependency": "9c0a6bc17523a90470b5a5c08efd38b7e73cdb740ff92fd681932484ff71d3e6",
+        "dependency": "78f45614e09a87d9b5425de67052bcc241d5785b1cc4e364766e118669083e76",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "52046cde6759294b04e2e32ae56cb5d9873f873c6bd03b84f2e8ea9a7d5db353",
+        "prompt": "0d4f176060a66741d0c0abe2c3f3b1cfcbb0fe7c278f3a2394bdd7b22b918027",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -654,6 +710,11 @@
           "failure_reason": null,
           "state": "PROMOTED",
           "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
         }
       ],
       "interface_shape": [
@@ -678,70 +739,56 @@
       ],
       "model_calls": 0,
       "origin": "tool_discovered_reviewed_override",
-      "selected": true,
-      "status": "CACHE_REUSED",
+      "selected": false,
+      "status": "DEFERRED",
       "token_count": 0
     }
   ],
   "dependency_pair": {
     "call_sites": [
       {
-        "callee_contract": "quantizeresidual",
-        "callee_function": "QuantizeResidual",
-        "callee_usr": "c:@F@QuantizeResidual",
+        "callee_contract": "isflatnessinfosent",
+        "callee_function": "IsFlatnessInfoSent",
+        "callee_usr": "c:@F@IsFlatnessInfoSent",
         "caller_contract": null,
-        "caller_function": "PredictionLoop",
-        "caller_usr": "c:@F@PredictionLoop",
+        "caller_function": "FlatnessAdjustment",
+        "caller_usr": "c:@F@FlatnessAdjustment",
         "location": {
-          "column": 12,
+          "column": 15,
           "file": "dsc_codec.c",
-          "line": 2419
+          "line": 2537
         },
         "source": "facts/callgraph.json"
       },
       {
-        "callee_contract": "quantizeresidual",
-        "callee_function": "QuantizeResidual",
-        "callee_usr": "c:@F@QuantizeResidual",
+        "callee_contract": "isflatnessinfosent",
+        "callee_function": "IsFlatnessInfoSent",
+        "callee_usr": "c:@F@IsFlatnessInfoSent",
         "caller_contract": null,
-        "caller_function": "PredictionLoop",
-        "caller_usr": "c:@F@PredictionLoop",
+        "caller_function": "FlatnessAdjustment",
+        "caller_usr": "c:@F@FlatnessAdjustment",
         "location": {
-          "column": 130,
+          "column": 7,
           "file": "dsc_codec.c",
-          "line": 2424
-        },
-        "source": "facts/callgraph.json"
-      },
-      {
-        "callee_contract": "quantizeresidual",
-        "callee_function": "QuantizeResidual",
-        "callee_usr": "c:@F@QuantizeResidual",
-        "caller_contract": null,
-        "caller_function": "PredictionLoop",
-        "caller_usr": "c:@F@PredictionLoop",
-        "location": {
-          "column": 60,
-          "file": "dsc_codec.c",
-          "line": 2431
+          "line": 2516
         },
         "source": "facts/callgraph.json"
       }
     ],
-    "callee_contract": "quantizeresidual",
-    "callee_function": "QuantizeResidual",
-    "callee_usr": "c:@F@QuantizeResidual",
+    "callee_contract": "isflatnessinfosent",
+    "callee_function": "IsFlatnessInfoSent",
+    "callee_usr": "c:@F@IsFlatnessInfoSent",
     "caller_contract": null,
-    "caller_function": "PredictionLoop",
-    "caller_usr": "c:@F@PredictionLoop",
+    "caller_function": "FlatnessAdjustment",
+    "caller_usr": "c:@F@FlatnessAdjustment",
     "selection_basis": "smallest acyclic direct call site from facts/callgraph.json"
   },
-  "generator_invocations": 0,
-  "model_calls": 0,
+  "generator_invocations": 1,
+  "model_calls": 1,
   "rollback_mode": "C_ONLY",
   "schema_version": 2,
   "selected_contracts": [
-    "quantizeresidual"
+    "isflatnessinfosent"
   ],
   "state_order": [
     "DISCOVERED",
@@ -754,5 +801,5 @@
     "BITSTREAM_PASS",
     "PROMOTED"
   ],
-  "token_count": 0
+  "token_count": 2013
 }

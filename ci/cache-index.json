@@ -1,5 +1,31 @@
 {
   "entries": {
+    "02fb666b67c6d374a751b1cab14f9b602d080d2485fa8b653e95e64198fc3997": {
+      "artifact_dir": "artifacts/60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2",
+      "cache_key": "02fb666b67c6d374a751b1cab14f9b602d080d2485fa8b653e95e64198fc3997",
+      "contract_id": "isflatnessinfosent",
+      "execution_status": "EXECUTED_NOW",
+      "hashes": {
+        "agent": "32054109c01602b9239cbe49327b34cae26ebeeadae946d0d4da4ffe6efc9c2a",
+        "contract": "60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2",
+        "dependency": "8fe59255ed677a74d364b2e5bd5b6be2e942ef2b0ca388eea4a57ac29395b6a4",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "0d4f176060a66741d0c0abe2c3f3b1cfcbb0fe7c278f3a2394bdd7b22b918027",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "2"
+      },
+      "model_calls": 1,
+      "schema_version": 2,
+      "state": "PROMOTED",
+      "tokens": 2013,
+      "updated_at": "2026-08-02T10:25:26Z",
+      "valid": true
+    },
     "2b5352ba6b1faa514bbb4c61741413c15bc99122b6c6a0ce7d99be419700aa76": {
       "artifact_dir": "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
       "cache_key": "2b5352ba6b1faa514bbb4c61741413c15bc99122b6c6a0ce7d99be419700aa76",
@@ -109,6 +135,32 @@
       "state": "UNPROVED",
       "tokens": 1386,
       "updated_at": "2026-08-01T19:12:34Z",
+      "valid": false
+    },
+    "51f17b55e7482e0da46a0aa772ce047487614159fe6c505238b9976bbf916c5c": {
+      "artifact_dir": "artifacts/60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2",
+      "cache_key": "51f17b55e7482e0da46a0aa772ce047487614159fe6c505238b9976bbf916c5c",
+      "contract_id": "isflatnessinfosent",
+      "execution_status": "EXECUTED_NOW",
+      "hashes": {
+        "agent": "e15afe4fd55bb753f158864b8e182fcf2a26e6956088b2bc185d273a45e47e86",
+        "contract": "60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2",
+        "dependency": "8fe59255ed677a74d364b2e5bd5b6be2e942ef2b0ca388eea4a57ac29395b6a4",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "0d4f176060a66741d0c0abe2c3f3b1cfcbb0fe7c278f3a2394bdd7b22b918027",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "2"
+      },
+      "model_calls": 1,
+      "schema_version": 2,
+      "state": "INFRASTRUCTURE_FAILURE",
+      "tokens": 2013,
+      "updated_at": "2026-08-02T10:23:43Z",
       "valid": false
     },
     "528fa35badc97370b8ea46f021925777dc42376e02bd69e73f5b815f3de2ed92": {

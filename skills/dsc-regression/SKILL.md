@@ -58,10 +58,13 @@ automatic scale dispatch.
    python3 tools/regression.py worker --jobs 4
    ```
 
-4. After a passing pilot, dispatch scale only by an explicit command. The
-   scale plan is still facts-driven and names remain queue routing data, not a
-   source-level function allowlist. Use `--refresh` to deliberately rerun
-   verified leaves while preserving their old receipts.
+4. After a passing pilot, dispatch scale only by an explicit command. Each
+   dispatch re-reads the current facts/spec plan. The first dispatch starts
+   the first scale batch; after a terminal batch, the next dispatch creates a
+   new batch only for ready contracts without a prior PASS scale receipt.
+   Names remain queue routing data, not a source-level function allowlist.
+   Use `--refresh` to deliberately rerun the selected batch while preserving
+   old receipts; `NO_NEW_WORK` means no duplicate jobs were enqueued.
 
    ```sh
    python3 tools/regression.py scale <pilot-run-id> --refresh

@@ -95,6 +95,39 @@ class CicdAgentUnitTests(unittest.TestCase):
         self.assertTrue(plan["contracts"][0]["targeted"])
         self.assertTrue(plan["contracts"][0]["force_regenerate"])
 
+    def test_reviewed_override_resolves_locked_leaf_without_editing_lock(self):
+        contract = {
+            "contract_id": "locked_leaf",
+            "status": "LOCKED",
+            "function": {"name": "LockedLeaf", "clang_usr": "c:@F@LockedLeaf"},
+            "interface": {"inputs": [], "output": {"unresolved": True}},
+            "dependencies": {"unresolved": ["field:unknown"]},
+        }
+        override = {
+            "match": {"clang_usr": "c:@F@LockedLeaf", "spec_anchor_id": "pdf:section:test"},
+            "review_status": "REVIEWED",
+            "interface": {
+                "inputs": [{"name": "value", "logical_width": 4, "unresolved": False}],
+                "output": {"name": "return_value", "logical_width": 1, "unresolved": False},
+            },
+            "semantics": {"expression": "value >= 3"},
+            "spec_links": [{"anchor_id": "pdf:section:test", "status": "EXACT"}],
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            (root / "contracts").mkdir()
+            (root / "contracts" / "reviewed-overrides.json").write_text(
+                json.dumps({"overrides": [override]}), encoding="utf-8"
+            )
+            agent = Agent(root, "plan")
+            agent.locked_contracts = [contract]
+            effective = agent.apply_reviewed_overrides()
+            self.assertEqual(effective[0]["origin"], "tool_discovered_reviewed_override")
+            self.assertEqual(effective[0]["spec_links"][0]["status"], "EXACT")
+            self.assertEqual(effective[0]["semantics"]["expression"], "value >= 3")
+            self.assertEqual(effective[0]["dependencies"]["unresolved"], [])
+            self.assertTrue((root / "ci" / "reviewed-contracts" / "locked_leaf.json").is_file())
+
     def test_flattened_state_oracle_and_conditional_domain(self):
         contract = {
             "contract_id": "state_leaf",
@@ -103,8 +136,8 @@ class CicdAgentUnitTests(unittest.TestCase):
             "spec_links": [{"status": "EXACT", "anchor_id": "pdf:section:unit"}],
             "interface": {
                 "flattened_pointer_dependencies": [
-                    {"record": "dsc_state_t", "field": "cpntBitDepth"},
-                    {"record": "dsc_state_t", "field": "leftRecon"},
+                    {"record": "dsc_state_t", "field": "cpntBitDepth", "c_type": "int[4]"},
+                    {"record": "dsc_state_t", "field": "leftRecon", "c_type": "int[4]"},
                 ],
                 "ports": [
                     {"name": "cpnt", "direction": "input", "width": 1, "signed": False, "legal_domain": {"range": [0, 0]}},

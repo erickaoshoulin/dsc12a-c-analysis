@@ -9,6 +9,7 @@ All verification receipts are produced by commands executed in this run.
 from __future__ import annotations
 
 import argparse
+import copy
 import concurrent.futures
 import hashlib
 import itertools
@@ -346,6 +347,85 @@ class Agent:
         payload = read_json(self.root / "contracts" / "reviewed-overrides.json", {}) or {}
         return [item for item in payload.get("overrides", []) if item.get("match")]
 
+    @staticmethod
+    def reviewed_override_matches(
+        contract: dict[str, Any],
+        override: dict[str, Any],
+        exact_links: dict[str, list[dict[str, Any]]],
+    ) -> bool:
+        """Match reviewed evidence by facts identity, never by selection order."""
+        match = override.get("match", {}) or {}
+        if not match:
+            return False
+        usr = str(contract_function(contract).get("clang_usr", ""))
+        if match.get("clang_usr") and str(match.get("clang_usr")) != usr:
+            return False
+        if match.get("code_anchor_id") and str(match.get("code_anchor_id")) != f"code:function:{usr}":
+            return False
+        links = exact_links.get(usr, [])
+        link_ids = {str(link.get("anchor_id")) for link in links}
+        if match.get("exact_anchor_id") and str(match.get("exact_anchor_id")) not in link_ids:
+            return False
+        if match.get("spec_anchor_id"):
+            requested = str(match.get("spec_anchor_id"))
+            override_ids = {
+                str(link.get("anchor_id"))
+                for link in override.get("spec_links", [])
+                if isinstance(link, dict)
+            }
+            if requested not in link_ids and requested not in override_ids:
+                return False
+        return bool(match.get("clang_usr") or match.get("code_anchor_id") or match.get("exact_anchor_id"))
+
+    def apply_reviewed_overrides(self) -> list[dict[str, Any]]:
+        """Build effective contracts without editing generated locked JSON.
+
+        A reviewed override is evidence-driven data.  It can resolve an
+        existing locked leaf only when it names the facts identity and carries
+        its own exact PDF anchor, while the immutable locked contract remains
+        untouched for audit and rollback.
+        """
+        exact = self.exact_links_by_usr()
+        overrides = self.reviewed_overrides()
+        effective: list[dict[str, Any]] = []
+        reviewed_root = self.ci / "reviewed-contracts"
+        for original in self.locked_contracts:
+            contract = copy.deepcopy(original)
+            override = next(
+                (
+                    item for item in overrides
+                    if item.get("review_status") == "REVIEWED"
+                    and self.reviewed_override_matches(contract, item, exact)
+                    and item.get("interface")
+                    and item.get("semantics")
+                    and item.get("spec_links")
+                ),
+                None,
+            )
+            if not override:
+                effective.append(contract)
+                continue
+            contract["interface"] = copy.deepcopy(override["interface"])
+            contract["semantics"] = copy.deepcopy(override["semantics"])
+            contract["spec_links"] = copy.deepcopy(override["spec_links"])
+            contract["obligations"] = list(override.get("obligations", []))
+            dependencies = copy.deepcopy(contract.get("dependencies", {}) or {})
+            dependencies.update(copy.deepcopy(override.get("dependencies", {}) or {}))
+            dependencies["unresolved"] = list((override.get("dependencies", {}) or {}).get("unresolved", []))
+            contract["dependencies"] = dependencies
+            contract["reviewed_evidence"] = copy.deepcopy(override.get("evidence", []))
+            contract["reviewed_override_applied"] = {
+                "match": copy.deepcopy(override.get("match", {})),
+                "review_status": override.get("review_status"),
+                "reviewed_by": override.get("reviewed_by"),
+            }
+            contract["origin"] = "tool_discovered_reviewed_override"
+            contract["status"] = "LOCKED"
+            contract["lock_status"] = "LOCKED_GENERATED_REVIEWED"
+            effective.append(contract)
+            write_json(reviewed_root / f"{contract_id(contract)}.json", contract)
+        return effective
+
     def freeze_ports(self, interface: dict[str, Any]) -> list[dict[str, Any]]:
         if interface.get("ports"):
             return list(interface["ports"])
@@ -387,7 +467,8 @@ class Agent:
         facts = read_json(self.root / "facts" / "functions.json", {}) or {}
         exact = self.exact_links_by_usr()
         overrides = self.reviewed_overrides()
-        known = {str(contract_function(item).get("clang_usr")) for item in self.locked_contracts}
+        effective_locked = self.apply_reviewed_overrides()
+        known = {str(contract_function(item).get("clang_usr")) for item in effective_locked}
         discovered = []
         for function in facts.get("functions", []):
             usr = str(function.get("clang_usr", ""))
@@ -447,7 +528,7 @@ class Agent:
             }
             write_json(self.root / "ci" / "discovered-contracts" / f"{cid}.json", contract)
             discovered.append(contract)
-        self.contracts = self.locked_contracts + discovered
+        self.contracts = effective_locked + discovered
         return discovered
 
     def dependency_graph(self) -> dict[str, Any]:
@@ -872,9 +953,9 @@ class Agent:
                 raise RuntimeError("oracle supports one flattened record dependency at a time")
             record_type = records[0]
             # The C source uses the conventional parameter name dsc_state for
-            # dsc_state_t.  The flattened contract ports are selected scalar
-            # values; populate every element because the DUT indexes the array
-            # with the independent cpnt input.
+            # dsc_state_t.  Flattened fields may be scalar members or bounded
+            # arrays.  Preserve that distinction instead of subscripting every
+            # field; the immutable C type is the authority here.
             state_name = re.sub(r"_t$", "", record_type)
             if not re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", state_name):
                 state_name = "state"
@@ -884,10 +965,16 @@ class Agent:
                 port = next((value for value in inputs if value.get("name") == field), None)
                 if not field or port is None or not re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", field):
                     raise RuntimeError(f"flattened state dependency is not a scalar port: {field}")
-                assignments.append(
-                    f"for (size_t i = 0; i < sizeof({state_name}.{field}) / sizeof({state_name}.{field}[0]); ++i) "
-                    f"{state_name}.{field}[i] = {field};"
-                )
+                c_type = str(item.get("c_type", port.get("c_type", "int")))
+                if "*" in c_type and "[" not in c_type:
+                    raise RuntimeError(f"flattened pointer table is not a scalar port: {field}")
+                if "[" in c_type and "]" in c_type:
+                    assignments.append(
+                        f"for (size_t i = 0; i < sizeof({state_name}.{field}) / sizeof({state_name}.{field}[0]); ++i) "
+                        f"{state_name}.{field}[i] = {field};"
+                    )
+                else:
+                    assignments.append(f"{state_name}.{field} = {field};")
             state_setup = "\n                ".join(assignments)
             declaration = f"{record_type} *{state_name}"
             call = ", ".join([f"&{state_name}"] + [str(port["name"]) for port in inputs if port.get("name") not in {item.get("field") for item in flattened}])
@@ -1742,15 +1829,21 @@ class Agent:
                 "0",
             )
             rtl_arguments = []
+            flattened_by_field = {str(item.get("field")): item for item in flattened}
             for port in inputs:
                 field = str(port.get("name"))
                 if field in flattened_fields:
-                    match = re.search(
-                        rf"->\s*{re.escape(field)}\s*\[\s*([A-Za-z_][A-Za-z0-9_]*)\s*\]",
-                        source_body_text,
-                    )
-                    index = match.group(1) if match else index_name
-                    rtl_arguments.append(f"{state_name}->{field}[{index}]")
+                    dependency = flattened_by_field[field]
+                    c_type = str(dependency.get("c_type", port.get("c_type", "int")))
+                    if "*" in c_type or ("[" in c_type and "]" in c_type):
+                        match = re.search(
+                            rf"->\s*{re.escape(field)}\s*\[\s*([A-Za-z_][A-Za-z0-9_]*)\s*\]",
+                            source_body_text,
+                        )
+                        index = match.group(1) if match else index_name
+                        rtl_arguments.append(f"{state_name}->{field}[{index}]")
+                    else:
+                        rtl_arguments.append(f"{state_name}->{field}")
                 else:
                     rtl_arguments.append(field)
             rtl_call = ", ".join(rtl_arguments)

@@ -523,6 +523,12 @@ class LocalContext:
             payload = read_json(path, {}) or {}
             if payload.get("contract_id"):
                 self.contracts[str(payload["contract_id"])] = payload
+        # Reviewed effective contracts supersede the immutable generated lock
+        # for orchestration.  The lock itself remains available for audit.
+        for path in sorted((repo / "ci" / "reviewed-contracts").glob("*.json")):
+            payload = read_json(path, {}) or {}
+            if payload.get("contract_id"):
+                self.contracts[str(payload["contract_id"])] = payload
         for path in sorted((repo / "ci" / "discovered-contracts").glob("*.json")):
             payload = read_json(path, {}) or {}
             if payload.get("contract_id"):
@@ -566,6 +572,9 @@ class LocalContext:
         return None
 
     def contract_hash(self, contract_id: str) -> str:
+        planned = self.plan_item(contract_id)
+        if planned.get("contract_hash"):
+            return str(planned["contract_hash"])
         return digest(self.contracts.get(contract_id, {"contract_id": contract_id}))
 
     def exact_links(self, contract: dict[str, Any]) -> list[dict[str, Any]]:
@@ -1469,6 +1478,24 @@ class RegressionService:
                     },
                 )
 
+    def _successful_scale_contracts(self) -> set[str]:
+        """Return contracts already proven by a completed scale batch."""
+        passed: set[str] = set()
+        for run_dir in sorted(self.store.runs.iterdir() if self.store.runs.exists() else []):
+            if not run_dir.is_dir():
+                continue
+            run = read_json(run_dir / "run.json", {}) or {}
+            if run.get("profile") != "scale":
+                continue
+            for function_dir in sorted((run_dir / "functions").iterdir() if (run_dir / "functions").is_dir() else []):
+                if not function_dir.is_dir():
+                    continue
+                receipt = read_json(function_dir / "receipt.json", {}) or {}
+                if receipt.get("status") == "PASS":
+                    cid = receipt.get("contract_id") or function_dir.name
+                    passed.add(safe_id(str(cid)))
+        return passed
+
     def start_scale(self, pilot_run_id: str, *, refresh: bool = False) -> dict[str, Any]:
         """Start one explicit scale batch from a passing pilot plan.
 
@@ -1487,11 +1514,13 @@ class RegressionService:
         scale = read_json(scale_path, {}) or {}
         if not scale:
             raise InfrastructureFailure(f"pilot has no scale plan: {pilot_run_id}")
-        started_run_id = scale.get("started_run_id")
-        if scale.get("status") == "STARTED" and started_run_id:
-            existing = self.store.run_dir(str(started_run_id))
+        latest_started_run_id = scale.get("latest_started_run_id") or scale.get("started_run_id")
+        if scale.get("status") == "STARTED" and latest_started_run_id:
+            existing = self.store.run_dir(str(latest_started_run_id))
             if existing.is_dir():
-                return read_json(existing / "run.json", {}) or {"run_id": started_run_id}
+                existing_run = self.refresh_run_status(str(latest_started_run_id))
+                if existing_run.get("status") in {"QUEUED", "RUNNING"}:
+                    return existing_run
         if scale.get("status") not in {"PLANNED_NOT_STARTED", "STARTED"}:
             raise InfrastructureFailure(f"scale plan is not startable: {scale.get('status')}")
 
@@ -1506,17 +1535,37 @@ class RegressionService:
         source_gate = context.source_gate()
         if source_gate["status"] != "PASS":
             raise InfrastructureFailure("C/PDF input gate blocked: " + ", ".join(source_gate["blockers"]))
-        functions = list(scale.get("functions", []))
+        current_plan = context.scale_plan(self.router)
+        available_functions = list(current_plan.get("functions", []))
+        previously_passed = self._successful_scale_contracts()
+        if scale.get("status") == "STARTED" and not refresh:
+            functions = [
+                item for item in available_functions
+                if safe_id(str(item.get("contract_id"))) not in previously_passed
+            ]
+        else:
+            functions = available_functions
         if not functions:
-            raise InfrastructureFailure("scale plan has no GENERATION_READY functions")
-        frames = list(scale.get("frames") or context.frame_matrix())
-        valid_cached = set(context.valid_cached_ids())
+            return {
+                "status": "NO_NEW_WORK",
+                "parent_run_id": pilot_run_id,
+                "latest_started_run_id": latest_started_run_id,
+                "available_functions": [item.get("contract_id") for item in available_functions],
+                "previously_passed": sorted(previously_passed),
+                "rationale": "current facts/spec plan has no unproven GENERATION_READY contract",
+            }
+        frames = list(current_plan.get("frames") or context.frame_matrix())
         discovered_pair = context.dependency_pair()
         run_id = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime()) + "-scale-" + uuid.uuid4().hex[:8]
+        batch_number = len(scale.get("batches", [])) + 1
         run_functions: list[dict[str, Any]] = []
         for item in functions:
             cid = safe_id(str(item.get("contract_id")))
-            cached_control = cid in valid_cached and not refresh
+            # A contract entering a new scale batch is unproven by the
+            # durable regression queue, even if the local CI checkout has a
+            # valid exploratory receipt.  Run the independent flow so the
+            # batch gets its own C/Verilator/model evidence.
+            cached_control = False
             run_functions.append({
                 "contract_id": cid,
                 "function": item.get("function"),
@@ -1533,6 +1582,7 @@ class RegressionService:
             "run_id": run_id,
             "profile": "scale",
             "parent_run_id": pilot_run_id,
+            "batch_number": batch_number,
             "status": "QUEUED",
             "created_at": utc_now(),
             "candidate_limit": int(scale.get("candidate_limit", 4)),
@@ -1543,7 +1593,7 @@ class RegressionService:
             "spec_hash": context.manifest.get("spec", {}).get("sha256"),
             "source_gate": source_gate,
             "refresh": refresh,
-            "strategy": "explicit scale batch; independent contract flow worktrees; no SVRT",
+            "strategy": "explicit scale batch; current facts/spec plan; independent contract flow worktrees; no SVRT",
         }
         run_dir = self.store.run_dir(run_id)
         (run_dir / "functions").mkdir(parents=True, exist_ok=False)
@@ -1566,12 +1616,23 @@ class RegressionService:
                 "refresh": function.get("refresh", False),
                 "dependency_pair": discovered_pair if discovered_pair and discovered_pair.get("callee_contract") == cid else None,
             })
+        scale.setdefault("batches", [])
+        scale["batches"].append({
+            "batch_number": batch_number,
+            "run_id": run_id,
+            "started_at": utc_now(),
+            "refresh": refresh,
+            "functions": [item["contract_id"] for item in run_functions],
+            "jobs_enqueued": len(run_functions),
+        })
         scale.update({
             "status": "STARTED",
-            "started_at": utc_now(),
-            "started_run_id": run_id,
+            "started_at": scale.get("started_at") or utc_now(),
+            "started_run_id": scale.get("started_run_id") or run_id,
+            "latest_started_run_id": run_id,
             "refresh": refresh,
             "jobs_enqueued": len(run_functions),
+            "available_functions": [item.get("contract_id") for item in available_functions],
         })
         atomic_write_json(scale_path, redact(scale))
         atomic_write_json(self.store.root / "scale-plan.json", redact(scale))

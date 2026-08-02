@@ -148,7 +148,9 @@ bitstream baseline; hashes source/spec/contract/dependency/prompt/model/tool
 inputs; detects cycles; and schedules every locked contract whose semantics
 are resolved. Independent ready contracts use stable parallel batches.
 `resume` reuses a valid cache entry with zero model calls. Stale hashes are
-visible in `ci/plan.json` and cannot silently reuse old artifacts.
+visible in `ci/plan.json` and cannot silently reuse old artifacts. Reviewed
+domain evidence can produce an effective contract under
+`ci/reviewed-contracts/` without editing the immutable generated lock.
 
 The state machine is recorded in `ci/dag.json` and `ci/state.json`. Each
 contract hash gets an artifact bundle containing its frozen interface, C
@@ -162,6 +164,11 @@ Generated CI outputs are under `ci/`, `artifacts/<contract-hash>/`,
 `integration/generated-overlay/`, `integration/replacement-plan.yaml`,
 `integration/bitstream-receipts/`, and
 `reports/pipeline-summary.md`. The upstream C model and PDF are never edited.
+
+Scale dispatch is incremental: after a terminal batch, another `scale
+<pilot-run-id>` call re-reads the current facts/spec plan and enqueues only
+ready contracts without a prior PASS scale receipt. It returns `NO_NEW_WORK`
+when the current ready frontier is already proven.
 
 ### Executable generator contract
 

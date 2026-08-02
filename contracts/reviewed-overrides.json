@@ -65,6 +65,118 @@
         "signedness": "C signed int arithmetic; legal residual and result ranges fit signed 17 bits",
         "quant_offset": [0, 0, 1, 3, 7, 15, 31, 63, 127, 255, 511, 1023, 2047, 4095, 8191, 16383, 32767]
       }
+    },
+    {
+      "match": {
+        "clang_usr": "c:@F@IsFlatnessInfoSent",
+        "spec_anchor_id": "pdf:section:6.6.3"
+      },
+      "review_status": "REVIEWED",
+      "reviewed_by": "codex",
+      "evidence": [
+        {
+          "kind": "EXACT_SPEC",
+          "anchor_id": "pdf:section:4.3",
+          "page": 54,
+          "section": "4.3",
+          "reason": "PPS36/PPS37 define flatness_min_qp and flatness_max_qp as unsigned 5-bit fields."
+        },
+        {
+          "kind": "EXACT_SPEC",
+          "anchor_id": "pdf:section:6.6.3",
+          "page": 93,
+          "section": "6.6.3",
+          "reason": "next_flatness_flag is present when masterQp is between flatness_min_qp and flatness_max_qp, inclusive."
+        },
+        {
+          "kind": "SOURCE_SEMANTICS",
+          "source_file": "dsc_codec.c",
+          "c_span": {"start_line": 1116, "end_line": 1119},
+          "reason": "The immutable C leaf is a pure inclusive interval predicate with no calls or state writes."
+        }
+      ],
+      "spec_links": [
+        {
+          "anchor_id": "pdf:section:4.3",
+          "page": 54,
+          "section": "4.3",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.6.3",
+          "page": 93,
+          "section": "6.6.3",
+          "status": "EXACT"
+        }
+      ],
+      "interface": {
+        "flattened_pointer_dependencies": [
+          {
+            "access": "READ_ONLY",
+            "c_type": "int",
+            "field": "flatness_min_qp",
+            "legal_domain": {
+              "basis": "PPS36[4:0] unsigned field",
+              "kind": "range",
+              "range": [0, 31]
+            },
+            "logical_width": 5,
+            "record": "dsc_cfg_t",
+            "role": "CONFIG_STATIC",
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "access": "READ_ONLY",
+            "c_type": "int",
+            "field": "flatness_max_qp",
+            "legal_domain": {
+              "basis": "PPS37[4:0] unsigned field",
+              "kind": "range",
+              "range": [0, 31]
+            },
+            "logical_width": 5,
+            "record": "dsc_cfg_t",
+            "role": "CONFIG_STATIC",
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          }
+        ],
+        "inputs": [
+          {
+            "c_type": "int",
+            "legal_domain": {
+              "basis": "Table 6-2 masterQp rows",
+              "kind": "range",
+              "range": [0, 31]
+            },
+            "logical_width": 5,
+            "name": "qp",
+            "pointer": false,
+            "role": "RUNTIME_INPUT",
+            "signed": false,
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          }
+        ],
+        "input_bit_count": 15,
+        "output": {
+          "c_type": "int",
+          "legal_range": [0, 1],
+          "logical_width": 1,
+          "name": "return_value",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        }
+      },
+      "semantics": {
+        "kind": "predicate",
+        "expression": "(qp >= flatness_min_qp) && (qp <= flatness_max_qp)",
+        "verilog_expression": "(qp >= flatness_min_qp) && (qp <= flatness_max_qp)",
+        "return_range": [0, 1],
+        "signedness": "All three inputs are unsigned 5-bit normative QP fields; the C int result is exactly 0 or 1."
+      }
     }
   ]
 }

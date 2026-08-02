@@ -366,15 +366,20 @@ DSC_REGRESSION_ROOT=<share-root> python3 tools/regression.py worker --jobs 4
 DSC_REGRESSION_ROOT=<share-root> python3 tools/regression.py promote <scale-run-id>
 ```
 
-The scale command expands only the current facts-driven
-`GENERATION_READY` set in the pilot's scale plan. Each contract gets an
-independent flow worktree, generator invocation, C oracle, Verilator build,
-parallel shard set, caller composition check, and frame matrix. The queue
-passes the discovered contract ID to the flow as routing metadata; this is not
-a source-level function allowlist, prompt-supplied target, or hardcoded
-function-name selector. `--refresh` intentionally bypasses a valid leaf cache
-for a new generation/verification attempt, while preserving the previous
-receipt and accepted RTL for audit and rollback.
+The scale command reads the current facts/spec plan at every dispatch. The
+first call starts the pilot's first scale batch; later calls, after the latest
+batch is terminal, create another independent batch for ready contracts that
+do not already have a PASS scale receipt. A reviewed contract that becomes
+`GENERATION_READY` later can therefore enter the next batch without editing a
+function allowlist. Each contract gets an independent flow worktree, generator
+invocation, C oracle, Verilator build, parallel shard set, caller composition
+check, and frame matrix. The queue passes the discovered contract ID to the
+flow as routing metadata; this is not a source-level function allowlist,
+prompt-supplied target, or hardcoded function-name selector. `--refresh`
+intentionally bypasses a valid leaf cache for the selected batch while
+preserving previous receipts and accepted RTL for audit and rollback. If no
+unproven ready contract exists, scale returns `NO_NEW_WORK` and does not
+enqueue a duplicate batch.
 
 Run the loop continuously in bounded batches:
 
