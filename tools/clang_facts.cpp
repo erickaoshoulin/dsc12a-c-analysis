@@ -355,7 +355,11 @@ bool isWriteExpr(const Expr *expr, ASTContext &context) {
     if (const auto *unary = parent.get<UnaryOperator>()) {
       if (unary->isIncrementDecrementOp())
         return true;
-      return false;
+      // A pointer write is often wrapped in a dereference (for example
+      // `(*bit_count)++`). Keep walking through non-mutating unary
+      // operators so the enclosing assignment/increment is still visible.
+      current = unary;
+      continue;
     }
     if (const auto *compound = parent.get<CompoundAssignOperator>()) {
       if (rangeContains(sm, compound->getLHS()->getSourceRange(),

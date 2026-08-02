@@ -27,7 +27,7 @@
               "/private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/shards/shard-000.vectors"
             ]
           },
-          "duration_seconds": 9.446,
+          "duration_seconds": 8.925,
           "shard_id": 0,
           "status": "PASS",
           "vectors": 2654208
@@ -43,7 +43,7 @@
               "/private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/shards/shard-001.vectors"
             ]
           },
-          "duration_seconds": 9.584,
+          "duration_seconds": 9.264,
           "shard_id": 1,
           "status": "PASS",
           "vectors": 2654208
@@ -59,7 +59,7 @@
               "/private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/shards/shard-002.vectors"
             ]
           },
-          "duration_seconds": 9.515,
+          "duration_seconds": 8.724,
           "shard_id": 2,
           "status": "PASS",
           "vectors": 2654208
@@ -75,7 +75,7 @@
               "/private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/shards/shard-003.vectors"
             ]
           },
-          "duration_seconds": 8.749,
+          "duration_seconds": 8.806,
           "shard_id": 3,
           "status": "PASS",
           "vectors": 2654208
@@ -91,7 +91,7 @@
               "/private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/shards/shard-004.vectors"
             ]
           },
-          "duration_seconds": 9.274,
+          "duration_seconds": 9.283,
           "shard_id": 4,
           "status": "PASS",
           "vectors": 2654208
@@ -107,7 +107,7 @@
               "/private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/shards/shard-005.vectors"
             ]
           },
-          "duration_seconds": 9.124,
+          "duration_seconds": 9.154,
           "shard_id": 5,
           "status": "PASS",
           "vectors": 2654208
@@ -123,7 +123,7 @@
               "/private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/shards/shard-006.vectors"
             ]
           },
-          "duration_seconds": 9.315,
+          "duration_seconds": 9.067,
           "shard_id": 6,
           "status": "PASS",
           "vectors": 2654208
@@ -139,7 +139,7 @@
               "/private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/shards/shard-007.vectors"
             ]
           },
-          "duration_seconds": 8.604,
+          "duration_seconds": 8.575,
           "shard_id": 7,
           "status": "PASS",
           "vectors": 2654208
@@ -188,7 +188,7 @@
             ],
             "shard_id": 0
           },
-          "duration_seconds": 6.667,
+          "duration_seconds": 6.351,
           "shard_id": 0,
           "status": "COUNTEREXAMPLE",
           "vectors": 2654208
@@ -216,7 +216,7 @@
             ],
             "shard_id": 1
           },
-          "duration_seconds": 5.288,
+          "duration_seconds": 6.461,
           "shard_id": 1,
           "status": "COUNTEREXAMPLE",
           "vectors": 2654208
@@ -244,7 +244,7 @@
             ],
             "shard_id": 2
           },
-          "duration_seconds": 6.093,
+          "duration_seconds": 6.99,
           "shard_id": 2,
           "status": "COUNTEREXAMPLE",
           "vectors": 2654208
@@ -272,7 +272,7 @@
             ],
             "shard_id": 3
           },
-          "duration_seconds": 6.896,
+          "duration_seconds": 6.701,
           "shard_id": 3,
           "status": "COUNTEREXAMPLE",
           "vectors": 2654208
@@ -300,7 +300,7 @@
             ],
             "shard_id": 4
           },
-          "duration_seconds": 5.623,
+          "duration_seconds": 7.172,
           "shard_id": 4,
           "status": "COUNTEREXAMPLE",
           "vectors": 2654208
@@ -328,7 +328,7 @@
             ],
             "shard_id": 5
           },
-          "duration_seconds": 6.985,
+          "duration_seconds": 7.081,
           "shard_id": 5,
           "status": "COUNTEREXAMPLE",
           "vectors": 2654208
@@ -356,7 +356,7 @@
             ],
             "shard_id": 6
           },
-          "duration_seconds": 7.118,
+          "duration_seconds": 6.08,
           "shard_id": 6,
           "status": "COUNTEREXAMPLE",
           "vectors": 2654208
@@ -384,7 +384,7 @@
             ],
             "shard_id": 7
           },
-          "duration_seconds": 6.338,
+          "duration_seconds": 5.657,
           "shard_id": 7,
           "status": "COUNTEREXAMPLE",
           "vectors": 2654208
@@ -427,8 +427,8 @@
           "--Wno-fatal"
         ],
         "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
-        "duration_seconds": 3.043,
-        "output": "%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/generated/candidate_01.sv:12:39: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'cpntBitDepth' generates 5 bits.\n                                                                                                                                                               : ... note: In instance 'samptolinebuf_candidate_01'\n   12 |         shift_amount_i = cpntBitDepth - linebuf_depth;\n      |                                       ^\n                      ... For warning description see https://verilator.org/warn/WIDTHEXPAND?v=5.050\n                      ... Use \"/* verilator lint_off WIDTHEXPAND */\" and lint_on around source to disable this message.\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/generated/candidate_01.sv:12:39: Operator SUB expects 32 bits on the RHS, but RHS's VARREF 'linebuf_depth' generates 4 bits.\n                                                                                                                                                               : ... note: In instance 'samptolinebuf_candidate_01'\n   12 |         shift_amount_i = cpntBitDepth - linebuf_depth;\n      |                                       ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/generated/candidate_01.sv:15:30: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'x' generates 16 bits.\n                                                                                                                                                               : ... note: In instance 'samptolinebuf_candidate_01'\n   15 |         stored_sample_i = (x + round_i) >>> shift_amount_i;\n      |                              ^\n%Warning-WIDTHTRUNC: /private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/generated/candidate_01.sv:17:22: Operator ASSIGN expects 16 bits on the Assign RHS, but Assign RHS's SHIFTL generates 32 bits.\n                                                                                                                                                              : ... note: In instance 'samptolinebuf_candidate_01'\n   17 |         return_value = stored_sample_i <<< shift_amount_i;\n      |                      ^\n                     ... For warning description see https://verilator.org/warn/WIDTHTRUNC?v=5.050\n                     ... Use \"/* verilator lint_off WIDTHTRUNC */\" and lint_on around source to disable this message.\nc++  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -Os  -c -o harness.o /private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/candidate-build/candidate_01/harness.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\npython3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vsamptolinebuf_candidate_01.cpp Vsamptolinebuf_candidate_01___024root__0.cpp Vsamptolinebuf_candidate_01___024root__Slow.cpp Vsamptolinebuf_candidate_01___024root__0__Slow.cpp Vsamptolinebuf_candidate_01__Syms__Slow.cpp > Vsamptolinebuf_candidate_01__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o Vsamptolinebuf_candidate_01__ALL.o Vsamptolinebuf_candidate_01__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++  -Wl,-U,__Z15vl_time_stamp64v,-U,__Z13sc_time_stampv,-U,_vlog_startup_routines   harness.o verilated.o verilated_threads.o Vsamptolinebuf_candidate_01__ALL.a    -pthread -lpthread   -o Vsamptolinebuf_candidate_01\nrm Vsamptolinebuf_candidate_01__ALL.verilator_deplist.tmp\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.032 MB sources in 2 modules, into 0.032 MB in 5 C++ files needing 0.000 MB\n- Verilator: Walltime 2.968 s (elab=0.001, cvt=0.003, bld=2.960); cpu 0.007 s on 1 threads; allocated 9.547 MB\n",
+        "duration_seconds": 2.82,
+        "output": "%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/generated/candidate_01.sv:12:39: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'cpntBitDepth' generates 5 bits.\n                                                                                                                                                               : ... note: In instance 'samptolinebuf_candidate_01'\n   12 |         shift_amount_i = cpntBitDepth - linebuf_depth;\n      |                                       ^\n                      ... For warning description see https://verilator.org/warn/WIDTHEXPAND?v=5.050\n                      ... Use \"/* verilator lint_off WIDTHEXPAND */\" and lint_on around source to disable this message.\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/generated/candidate_01.sv:12:39: Operator SUB expects 32 bits on the RHS, but RHS's VARREF 'linebuf_depth' generates 4 bits.\n                                                                                                                                                               : ... note: In instance 'samptolinebuf_candidate_01'\n   12 |         shift_amount_i = cpntBitDepth - linebuf_depth;\n      |                                       ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/generated/candidate_01.sv:15:30: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'x' generates 16 bits.\n                                                                                                                                                               : ... note: In instance 'samptolinebuf_candidate_01'\n   15 |         stored_sample_i = (x + round_i) >>> shift_amount_i;\n      |                              ^\n%Warning-WIDTHTRUNC: /private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/generated/candidate_01.sv:17:22: Operator ASSIGN expects 16 bits on the Assign RHS, but Assign RHS's SHIFTL generates 32 bits.\n                                                                                                                                                              : ... note: In instance 'samptolinebuf_candidate_01'\n   17 |         return_value = stored_sample_i <<< shift_amount_i;\n      |                      ^\n                     ... For warning description see https://verilator.org/warn/WIDTHTRUNC?v=5.050\n                     ... Use \"/* verilator lint_off WIDTHTRUNC */\" and lint_on around source to disable this message.\nc++  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -Os  -c -o harness.o /private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/candidate-build/candidate_01/harness.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\npython3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vsamptolinebuf_candidate_01.cpp Vsamptolinebuf_candidate_01___024root__0.cpp Vsamptolinebuf_candidate_01___024root__Slow.cpp Vsamptolinebuf_candidate_01___024root__0__Slow.cpp Vsamptolinebuf_candidate_01__Syms__Slow.cpp > Vsamptolinebuf_candidate_01__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o Vsamptolinebuf_candidate_01__ALL.o Vsamptolinebuf_candidate_01__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++  -Wl,-U,__Z15vl_time_stamp64v,-U,__Z13sc_time_stampv,-U,_vlog_startup_routines   harness.o verilated.o verilated_threads.o Vsamptolinebuf_candidate_01__ALL.a    -pthread -lpthread   -o Vsamptolinebuf_candidate_01\nrm Vsamptolinebuf_candidate_01__ALL.verilator_deplist.tmp\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.032 MB sources in 2 modules, into 0.032 MB in 5 C++ files needing 0.000 MB\n- Verilator: Walltime 2.757 s (elab=0.001, cvt=0.003, bld=2.750); cpu 0.007 s on 1 threads; allocated 9.656 MB\n",
         "returncode": 0
       },
       "compile_once": true,
@@ -455,8 +455,8 @@
           "--Wno-fatal"
         ],
         "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
-        "duration_seconds": 2.951,
-        "output": "%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/generated/candidate_02.sv:12:39: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'cpntBitDepth' generates 5 bits.\n                                                                                                                                                               : ... note: In instance 'samptolinebuf_candidate_02'\n   12 |         shift_amount_i = cpntBitDepth - linebuf_depth;\n      |                                       ^\n                      ... For warning description see https://verilator.org/warn/WIDTHEXPAND?v=5.050\n                      ... Use \"/* verilator lint_off WIDTHEXPAND */\" and lint_on around source to disable this message.\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/generated/candidate_02.sv:12:39: Operator SUB expects 32 bits on the RHS, but RHS's VARREF 'linebuf_depth' generates 4 bits.\n                                                                                                                                                               : ... note: In instance 'samptolinebuf_candidate_02'\n   12 |         shift_amount_i = cpntBitDepth - linebuf_depth;\n      |                                       ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/generated/candidate_02.sv:15:30: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'x' generates 16 bits.\n                                                                                                                                                               : ... note: In instance 'samptolinebuf_candidate_02'\n   15 |         stored_sample_i = (x + round_i) >>> shift_amount_i;\n      |                              ^\n%Warning-WIDTHTRUNC: /private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/generated/candidate_02.sv:17:22: Operator ASSIGN expects 16 bits on the Assign RHS, but Assign RHS's SHIFTL generates 32 bits.\n                                                                                                                                                              : ... note: In instance 'samptolinebuf_candidate_02'\n   17 |         return_value = stored_sample_i <<< shift_amount_i;\n      |                      ^\n                     ... For warning description see https://verilator.org/warn/WIDTHTRUNC?v=5.050\n                     ... Use \"/* verilator lint_off WIDTHTRUNC */\" and lint_on around source to disable this message.\nc++  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -Os  -c -o harness.o /private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/candidate-build/candidate_02/harness.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\npython3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vsamptolinebuf_candidate_02.cpp Vsamptolinebuf_candidate_02___024root__0.cpp Vsamptolinebuf_candidate_02___024root__Slow.cpp Vsamptolinebuf_candidate_02___024root__0__Slow.cpp Vsamptolinebuf_candidate_02__Syms__Slow.cpp > Vsamptolinebuf_candidate_02__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o Vsamptolinebuf_candidate_02__ALL.o Vsamptolinebuf_candidate_02__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++  -Wl,-U,__Z15vl_time_stamp64v,-U,__Z13sc_time_stampv,-U,_vlog_startup_routines   harness.o verilated.o verilated_threads.o Vsamptolinebuf_candidate_02__ALL.a    -pthread -lpthread   -o Vsamptolinebuf_candidate_02\nrm Vsamptolinebuf_candidate_02__ALL.verilator_deplist.tmp\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.032 MB sources in 2 modules, into 0.032 MB in 5 C++ files needing 0.000 MB\n- Verilator: Walltime 2.891 s (elab=0.001, cvt=0.003, bld=2.883); cpu 0.007 s on 1 threads; allocated 9.672 MB\n",
+        "duration_seconds": 2.998,
+        "output": "%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/generated/candidate_02.sv:12:39: Operator SUB expects 32 bits on the LHS, but LHS's VARREF 'cpntBitDepth' generates 5 bits.\n                                                                                                                                                               : ... note: In instance 'samptolinebuf_candidate_02'\n   12 |         shift_amount_i = cpntBitDepth - linebuf_depth;\n      |                                       ^\n                      ... For warning description see https://verilator.org/warn/WIDTHEXPAND?v=5.050\n                      ... Use \"/* verilator lint_off WIDTHEXPAND */\" and lint_on around source to disable this message.\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/generated/candidate_02.sv:12:39: Operator SUB expects 32 bits on the RHS, but RHS's VARREF 'linebuf_depth' generates 4 bits.\n                                                                                                                                                               : ... note: In instance 'samptolinebuf_candidate_02'\n   12 |         shift_amount_i = cpntBitDepth - linebuf_depth;\n      |                                       ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/generated/candidate_02.sv:15:30: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'x' generates 16 bits.\n                                                                                                                                                               : ... note: In instance 'samptolinebuf_candidate_02'\n   15 |         stored_sample_i = (x + round_i) >>> shift_amount_i;\n      |                              ^\n%Warning-WIDTHTRUNC: /private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/generated/candidate_02.sv:17:22: Operator ASSIGN expects 16 bits on the Assign RHS, but Assign RHS's SHIFTL generates 32 bits.\n                                                                                                                                                              : ... note: In instance 'samptolinebuf_candidate_02'\n   17 |         return_value = stored_sample_i <<< shift_amount_i;\n      |                      ^\n                     ... For warning description see https://verilator.org/warn/WIDTHTRUNC?v=5.050\n                     ... Use \"/* verilator lint_off WIDTHTRUNC */\" and lint_on around source to disable this message.\nc++  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -Os  -c -o harness.o /private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/candidate-build/candidate_02/harness.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\npython3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vsamptolinebuf_candidate_02.cpp Vsamptolinebuf_candidate_02___024root__0.cpp Vsamptolinebuf_candidate_02___024root__Slow.cpp Vsamptolinebuf_candidate_02___024root__0__Slow.cpp Vsamptolinebuf_candidate_02__Syms__Slow.cpp > Vsamptolinebuf_candidate_02__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o Vsamptolinebuf_candidate_02__ALL.o Vsamptolinebuf_candidate_02__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++  -Wl,-U,__Z15vl_time_stamp64v,-U,__Z13sc_time_stampv,-U,_vlog_startup_routines   harness.o verilated.o verilated_threads.o Vsamptolinebuf_candidate_02__ALL.a    -pthread -lpthread   -o Vsamptolinebuf_candidate_02\nrm Vsamptolinebuf_candidate_02__ALL.verilator_deplist.tmp\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.032 MB sources in 2 modules, into 0.032 MB in 5 C++ files needing 0.000 MB\n- Verilator: Walltime 2.899 s (elab=0.005, cvt=0.006, bld=2.880); cpu 0.011 s on 1 threads; allocated 9.547 MB\n",
         "returncode": 0
       },
       "compile_once": true,
@@ -523,7 +523,7 @@
       "source": "frozen per-port legal domains"
     }
   },
-  "duration_seconds": 48.108,
+  "duration_seconds": 46.43,
   "execution_status": "EXECUTED_NOW",
   "formal_proofs": [
     {
@@ -556,7 +556,7 @@
           "/private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/oracle-build/cmd_parse.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.056,
+        "duration_seconds": 0.057,
         "output": "",
         "returncode": 0
       },
@@ -575,7 +575,7 @@
           "/private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/oracle-build/codec_main.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.083,
+        "duration_seconds": 0.076,
         "output": "",
         "returncode": 0
       },
@@ -593,7 +593,7 @@
           "/private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/oracle-build/dpx.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.057,
+        "duration_seconds": 0.059,
         "output": "",
         "returncode": 0
       },
@@ -611,7 +611,7 @@
           "/private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/oracle-build/dsc_codec.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.09,
+        "duration_seconds": 0.102,
         "output": "",
         "returncode": 0
       },
@@ -629,7 +629,7 @@
           "/private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/oracle-build/dsc_utils.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.06,
+        "duration_seconds": 0.055,
         "output": "",
         "returncode": 0
       },
@@ -647,7 +647,7 @@
           "/private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/oracle-build/fifo.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.058,
+        "duration_seconds": 0.046,
         "output": "",
         "returncode": 0
       },
@@ -665,7 +665,7 @@
           "/private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/oracle-build/hdr_dpx.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.087,
+        "duration_seconds": 0.067,
         "output": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n2 warnings generated.\n",
         "returncode": 0
       },
@@ -683,7 +683,7 @@
           "/private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/oracle-build/logging.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.056,
+        "duration_seconds": 0.045,
         "output": "",
         "returncode": 0
       },
@@ -701,7 +701,7 @@
           "/private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/oracle-build/multiplex.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.041,
+        "duration_seconds": 0.063,
         "output": "",
         "returncode": 0
       },
@@ -719,7 +719,7 @@
           "/private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/oracle-build/psnr.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.049,
+        "duration_seconds": 0.058,
         "output": "",
         "returncode": 0
       },
@@ -737,7 +737,7 @@
           "/private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/oracle-build/utl.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.07,
+        "duration_seconds": 0.072,
         "output": "",
         "returncode": 0
       },
@@ -754,7 +754,7 @@
           "/private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/oracle-build/oracle.o"
         ],
         "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
-        "duration_seconds": 0.044,
+        "duration_seconds": 0.041,
         "output": "",
         "returncode": 0
       },
@@ -778,7 +778,7 @@
           "/private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/oracle-build/oracle.o"
         ],
         "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
-        "duration_seconds": 0.047,
+        "duration_seconds": 0.045,
         "output": "",
         "returncode": 0
       }
