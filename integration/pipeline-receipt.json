@@ -5,40 +5,41 @@
   "dependency_pair": {
     "call_sites": [
       {
-        "callee_contract": "samplepredict",
-        "callee_function": "SamplePredict",
-        "callee_usr": "c:@F@SamplePredict",
+        "callee_contract": "escapecodesize",
+        "callee_function": "EscapeCodeSize",
+        "callee_usr": "c:@F@EscapeCodeSize",
         "caller_contract": null,
-        "caller_function": "BlockPredSearch",
-        "caller_usr": "c:@F@BlockPredSearch",
+        "caller_function": "VLCUnit",
+        "caller_usr": "c:@F@VLCUnit",
         "location": {
-          "column": 13,
+          "column": 26,
           "file": "dsc_codec.c",
-          "line": 1002
+          "line": 1614
         },
         "source": "facts/callgraph.json"
       }
     ],
-    "callee_contract": "samplepredict",
-    "callee_function": "SamplePredict",
-    "callee_usr": "c:@F@SamplePredict",
+    "callee_contract": "escapecodesize",
+    "callee_function": "EscapeCodeSize",
+    "callee_usr": "c:@F@EscapeCodeSize",
     "caller_contract": null,
-    "caller_function": "BlockPredSearch",
-    "caller_usr": "c:@F@BlockPredSearch",
+    "caller_function": "VLCUnit",
+    "caller_usr": "c:@F@VLCUnit",
     "selection_basis": "smallest acyclic direct call site from facts/callgraph.json"
   },
-  "generator_invocations": 1,
+  "generator_invocations": 10,
   "input_pdf": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf",
   "input_source_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
   "matrix_scripts_discovered": 22,
-  "model_calls": 1,
-  "new_candidates": [
-    "samplepredict"
-  ],
+  "model_calls": 10,
+  "new_candidates": [],
   "ready_contracts": [
+    "escapecodesize",
     "findmidpoint",
+    "getqpadjpredsize",
     "isflatnessinfosent",
     "mapqptoqlevel",
+    "maxresidualsize",
     "predictsize",
     "quantizeresidual",
     "samplepredict",
@@ -52,6 +53,736 @@
     "fresh_run": "EXECUTED_NOW"
   },
   "results": [
+    {
+      "contract_id": "escapecodesize",
+      "counterexample": {
+        "actual": "10",
+        "expected": "9",
+        "index": 0,
+        "inputs": [
+          0,
+          0,
+          0,
+          8,
+          0
+        ],
+        "shard_id": 0
+      },
+      "dependency_evidence": {
+        "call_sites": 2,
+        "compile_commands": true,
+        "direct_call_sites": 2,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": true,
+      "executed_shards": 8,
+      "executed_vectors": 16320,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": false,
+      "formal_proof_status": "NOT_APPLICABLE",
+      "library_promotion": {
+        "archived_previous": null,
+        "artifact_dir": "artifacts/480f0f8595c56a062af62c4eabd3f0adc50bf08788abc6865dd1b1143b61e5f7",
+        "contract_file": "library/contracts/escapecodesize.json",
+        "contract_hash": "480f0f8595c56a062af62c4eabd3f0adc50bf08788abc6865dd1b1143b61e5f7",
+        "contract_id": "escapecodesize",
+        "module": "escapecodesize",
+        "module_file": "library/rtl/escapecodesize.sv",
+        "rtl_sha256": "582d5e131e638e5a6aa4f9783cf1755b041f9369f9c8c84e57fb413845272167",
+        "status": "PASS",
+        "verification_file": "library/verification/escapecodesize.json"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 1,
+      "rejected_candidates": [
+        {
+          "bitstream_gate": "FAIL",
+          "candidate": "candidate_02",
+          "composition_gate": "FAIL",
+          "counterexample": {
+            "actual": "10",
+            "expected": "9",
+            "index": 0,
+            "inputs": [
+              0,
+              0,
+              0,
+              8,
+              0
+            ],
+            "shard_id": 0
+          },
+          "expected_rejection": true,
+          "matrix_status": "FAIL",
+          "receipt": "artifacts/480f0f8595c56a062af62c4eabd3f0adc50bf08788abc6865dd1b1143b61e5f7/rejected/candidate_02/rejection-receipt.json",
+          "status": "EXPECTED_REJECTION",
+          "unit_gate": "FAIL",
+          "unit_verification_status": "COUNTEREXAMPLE"
+        }
+      ],
+      "shard_durations_seconds": [
+        0.774,
+        0.775,
+        0.783,
+        0.783,
+        0.774,
+        0.774,
+        0.775,
+        0.78
+      ],
+      "status": "PROMOTED",
+      "tokens": 1697,
+      "unit_status": "EXHAUSTIVE_EQUIVALENT",
+      "vector_strategy": "cartesian"
+    },
+    {
+      "contract_id": "findmidpoint",
+      "counterexample": {
+        "actual": "129",
+        "expected": "128",
+        "index": 0,
+        "inputs": [
+          0,
+          0,
+          8,
+          0
+        ],
+        "shard_id": 0
+      },
+      "dependency_evidence": {
+        "call_sites": 3,
+        "compile_commands": true,
+        "direct_call_sites": 3,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": true,
+      "executed_shards": 8,
+      "executed_vectors": 8207360,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": false,
+      "formal_proof_status": "NOT_APPLICABLE",
+      "library_promotion": {
+        "archived_previous": null,
+        "artifact_dir": "artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+        "contract_file": "library/contracts/findmidpoint.json",
+        "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+        "contract_id": "findmidpoint",
+        "module": "findmidpoint",
+        "module_file": "library/rtl/findmidpoint.sv",
+        "rtl_sha256": "95b00b9f217f19697deb92e6926e102faf48b91af79a9fb6331900a7217d480b",
+        "status": "PASS",
+        "verification_file": "library/verification/findmidpoint.json"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 1,
+      "rejected_candidates": [
+        {
+          "bitstream_gate": "FAIL",
+          "candidate": "candidate_02",
+          "composition_gate": "FAIL",
+          "counterexample": {
+            "actual": "129",
+            "expected": "128",
+            "index": 0,
+            "inputs": [
+              0,
+              0,
+              8,
+              0
+            ],
+            "shard_id": 0
+          },
+          "expected_rejection": true,
+          "matrix_status": "FAIL",
+          "receipt": "artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/rejected/candidate_02/rejection-receipt.json",
+          "status": "EXPECTED_REJECTION",
+          "unit_gate": "FAIL",
+          "unit_verification_status": "COUNTEREXAMPLE"
+        }
+      ],
+      "shard_durations_seconds": [
+        2.996,
+        2.565,
+        3.071,
+        3.316,
+        2.788,
+        3.214,
+        3.128,
+        3.103
+      ],
+      "status": "PROMOTED",
+      "tokens": 2264,
+      "unit_status": "EXHAUSTIVE_EQUIVALENT",
+      "vector_strategy": "conditional"
+    },
+    {
+      "contract_id": "getqpadjpredsize",
+      "counterexample": {
+        "actual": "1",
+        "expected": "0",
+        "index": 0,
+        "inputs": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          8,
+          8,
+          8,
+          8,
+          0,
+          0,
+          0,
+          0
+        ],
+        "shard_id": 0
+      },
+      "dependency_evidence": {
+        "call_sites": 3,
+        "compile_commands": true,
+        "direct_call_sites": 3,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": true,
+      "executed_shards": 8,
+      "executed_vectors": 14831616,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": false,
+      "formal_proof_status": "NOT_APPLICABLE",
+      "library_promotion": {
+        "archived_previous": null,
+        "artifact_dir": "artifacts/5f5aca8e104da0024c8af97f48a06bbb5420a37964a8bd9237fb8b005e59d6c1",
+        "contract_file": "library/contracts/getqpadjpredsize.json",
+        "contract_hash": "5f5aca8e104da0024c8af97f48a06bbb5420a37964a8bd9237fb8b005e59d6c1",
+        "contract_id": "getqpadjpredsize",
+        "module": "getqpadjpredsize",
+        "module_file": "library/rtl/getqpadjpredsize.sv",
+        "rtl_sha256": "a8a237d111078f013fa7c15edf430b37d8c58a60595b1082166f16b0334c24b4",
+        "status": "PASS",
+        "verification_file": "library/verification/getqpadjpredsize.json"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 1,
+      "rejected_candidates": [
+        {
+          "bitstream_gate": "FAIL",
+          "candidate": "candidate_02",
+          "composition_gate": "FAIL",
+          "counterexample": {
+            "actual": "1",
+            "expected": "0",
+            "index": 0,
+            "inputs": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              8,
+              8,
+              8,
+              8,
+              0,
+              0,
+              0,
+              0
+            ],
+            "shard_id": 0
+          },
+          "expected_rejection": true,
+          "matrix_status": "FAIL",
+          "receipt": "artifacts/5f5aca8e104da0024c8af97f48a06bbb5420a37964a8bd9237fb8b005e59d6c1/rejected/candidate_02/rejection-receipt.json",
+          "status": "EXPECTED_REJECTION",
+          "unit_gate": "FAIL",
+          "unit_verification_status": "COUNTEREXAMPLE"
+        }
+      ],
+      "shard_durations_seconds": [
+        5.719,
+        5.631,
+        5.327,
+        5.396,
+        5.443,
+        5.59,
+        5.708,
+        5.766
+      ],
+      "status": "PROMOTED",
+      "tokens": 4915,
+      "unit_status": "EXHAUSTIVE_EQUIVALENT",
+      "vector_strategy": "table_lookup"
+    },
+    {
+      "contract_id": "isflatnessinfosent",
+      "counterexample": {
+        "actual": "0",
+        "expected": "1",
+        "index": 0,
+        "inputs": [
+          0,
+          0,
+          0
+        ],
+        "shard_id": 0
+      },
+      "dependency_evidence": {
+        "call_sites": 4,
+        "compile_commands": true,
+        "direct_call_sites": 4,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": true,
+      "executed_shards": 8,
+      "executed_vectors": 32768,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": false,
+      "formal_proof_status": "NOT_APPLICABLE",
+      "library_promotion": {
+        "archived_previous": null,
+        "artifact_dir": "artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
+        "contract_file": "library/contracts/isflatnessinfosent.json",
+        "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
+        "contract_id": "isflatnessinfosent",
+        "module": "isflatnessinfosent",
+        "module_file": "library/rtl/isflatnessinfosent.sv",
+        "rtl_sha256": "0a4b0d5ee2f45598e3ea1859102a42e3fa2ef66aba94e7049fc1d47876a5c07e",
+        "status": "PASS",
+        "verification_file": "library/verification/isflatnessinfosent.json"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 1,
+      "rejected_candidates": [
+        {
+          "bitstream_gate": "FAIL",
+          "candidate": "candidate_02",
+          "composition_gate": "FAIL",
+          "counterexample": {
+            "actual": "0",
+            "expected": "1",
+            "index": 0,
+            "inputs": [
+              0,
+              0,
+              0
+            ],
+            "shard_id": 0
+          },
+          "expected_rejection": true,
+          "matrix_status": "FAIL",
+          "receipt": "artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/rejected/candidate_02/rejection-receipt.json",
+          "status": "EXPECTED_REJECTION",
+          "unit_gate": "FAIL",
+          "unit_verification_status": "COUNTEREXAMPLE"
+        }
+      ],
+      "shard_durations_seconds": [
+        1.205,
+        1.252,
+        1.046,
+        1.019,
+        0.999,
+        1.023,
+        0.981,
+        0.988
+      ],
+      "status": "PROMOTED",
+      "tokens": 2012,
+      "unit_status": "EXHAUSTIVE_EQUIVALENT",
+      "vector_strategy": "cartesian"
+    },
+    {
+      "contract_id": "mapqptoqlevel",
+      "counterexample": {
+        "actual": "1",
+        "expected": "0",
+        "index": 0,
+        "inputs": [
+          0,
+          0,
+          0,
+          0,
+          8,
+          8,
+          0,
+          0
+        ],
+        "shard_id": 0
+      },
+      "dependency_evidence": {
+        "call_sites": 12,
+        "compile_commands": true,
+        "direct_call_sites": 12,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": true,
+      "executed_shards": 8,
+      "executed_vectors": 5548800,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": false,
+      "formal_proof_status": "NOT_APPLICABLE",
+      "library_promotion": {
+        "archived_previous": null,
+        "artifact_dir": "artifacts/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+        "contract_file": "library/contracts/mapqptoqlevel.json",
+        "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+        "contract_id": "mapqptoqlevel",
+        "module": "mapqptoqlevel",
+        "module_file": "library/rtl/mapqptoqlevel.sv",
+        "rtl_sha256": "5dda9dc25483193295e7af8abbd927b209f8e9715f2f4791864200f2fc0a3334",
+        "status": "PASS",
+        "verification_file": "library/verification/mapqptoqlevel.json"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 1,
+      "rejected_candidates": [
+        {
+          "bitstream_gate": "FAIL",
+          "candidate": "candidate_02",
+          "composition_gate": "FAIL",
+          "counterexample": {
+            "actual": "1",
+            "expected": "0",
+            "index": 0,
+            "inputs": [
+              0,
+              0,
+              0,
+              0,
+              8,
+              8,
+              0,
+              0
+            ],
+            "shard_id": 0
+          },
+          "expected_rejection": true,
+          "matrix_status": "FAIL",
+          "receipt": "artifacts/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371/rejected/candidate_02/rejection-receipt.json",
+          "status": "EXPECTED_REJECTION",
+          "unit_gate": "FAIL",
+          "unit_verification_status": "COUNTEREXAMPLE"
+        }
+      ],
+      "shard_durations_seconds": [
+        2.487,
+        2.615,
+        2.455,
+        2.571,
+        2.618,
+        2.51,
+        2.448,
+        2.556
+      ],
+      "status": "PROMOTED",
+      "tokens": 3697,
+      "unit_status": "EXHAUSTIVE_EQUIVALENT",
+      "vector_strategy": "cartesian"
+    },
+    {
+      "contract_id": "maxresidualsize",
+      "counterexample": {
+        "actual": "9",
+        "expected": "8",
+        "index": 0,
+        "inputs": [
+          0,
+          0,
+          0,
+          0,
+          8,
+          8,
+          8,
+          0,
+          0
+        ],
+        "shard_id": 0
+      },
+      "dependency_evidence": {
+        "call_sites": 8,
+        "compile_commands": true,
+        "direct_call_sites": 8,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": true,
+      "executed_shards": 8,
+      "executed_vectors": 27744000,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": false,
+      "formal_proof_status": "NOT_APPLICABLE",
+      "library_promotion": {
+        "archived_previous": null,
+        "artifact_dir": "artifacts/068017b8a23d03a9d7d16aac74ab5358cfea6ea0c1d2c2e2dc53361421d7f34d",
+        "contract_file": "library/contracts/maxresidualsize.json",
+        "contract_hash": "068017b8a23d03a9d7d16aac74ab5358cfea6ea0c1d2c2e2dc53361421d7f34d",
+        "contract_id": "maxresidualsize",
+        "module": "maxresidualsize",
+        "module_file": "library/rtl/maxresidualsize.sv",
+        "rtl_sha256": "cfdb54a0936d5bd70d45ddd9bcb20d05d99b73039a3789c1124ed564ae5aa65b",
+        "status": "PASS",
+        "verification_file": "library/verification/maxresidualsize.json"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 1,
+      "rejected_candidates": [
+        {
+          "bitstream_gate": "FAIL",
+          "candidate": "candidate_02",
+          "composition_gate": "FAIL",
+          "counterexample": {
+            "actual": "9",
+            "expected": "8",
+            "index": 0,
+            "inputs": [
+              0,
+              0,
+              0,
+              0,
+              8,
+              8,
+              8,
+              0,
+              0
+            ],
+            "shard_id": 0
+          },
+          "expected_rejection": true,
+          "matrix_status": "FAIL",
+          "receipt": "artifacts/068017b8a23d03a9d7d16aac74ab5358cfea6ea0c1d2c2e2dc53361421d7f34d/rejected/candidate_02/rejection-receipt.json",
+          "status": "EXPECTED_REJECTION",
+          "unit_gate": "FAIL",
+          "unit_verification_status": "COUNTEREXAMPLE"
+        }
+      ],
+      "shard_durations_seconds": [
+        8.762,
+        9.574,
+        8.873,
+        9.54,
+        9.507,
+        9.404,
+        9.149,
+        9.473
+      ],
+      "status": "PROMOTED",
+      "tokens": 2766,
+      "unit_status": "EXHAUSTIVE_EQUIVALENT",
+      "vector_strategy": "cartesian"
+    },
+    {
+      "contract_id": "predictsize",
+      "counterexample": {
+        "actual": "1",
+        "expected": "0",
+        "index": 0,
+        "inputs": [
+          0,
+          0,
+          0
+        ],
+        "shard_id": 0
+      },
+      "dependency_evidence": {
+        "call_sites": 2,
+        "compile_commands": true,
+        "direct_call_sites": 2,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": true,
+      "executed_shards": 8,
+      "executed_vectors": 4913,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": false,
+      "formal_proof_status": "NOT_APPLICABLE",
+      "library_promotion": {
+        "archived_previous": null,
+        "artifact_dir": "artifacts/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
+        "contract_file": "library/contracts/predictsize.json",
+        "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
+        "contract_id": "predictsize",
+        "module": "predictsize",
+        "module_file": "library/rtl/predictsize.sv",
+        "rtl_sha256": "861239ab7f41e5c98845588cfa54631e2d4449920afe9cdbde2eae0920b09af7",
+        "status": "PASS",
+        "verification_file": "library/verification/predictsize.json"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 1,
+      "rejected_candidates": [
+        {
+          "bitstream_gate": "FAIL",
+          "candidate": "candidate_02",
+          "composition_gate": "FAIL",
+          "counterexample": {
+            "actual": "1",
+            "expected": "0",
+            "index": 0,
+            "inputs": [
+              0,
+              0,
+              0
+            ],
+            "shard_id": 0
+          },
+          "expected_rejection": true,
+          "matrix_status": "FAIL",
+          "receipt": "artifacts/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d/rejected/candidate_02/rejection-receipt.json",
+          "status": "EXPECTED_REJECTION",
+          "unit_gate": "FAIL",
+          "unit_verification_status": "COUNTEREXAMPLE"
+        }
+      ],
+      "shard_durations_seconds": [
+        1.065,
+        0.997,
+        1.074,
+        1.116,
+        1.108,
+        0.954,
+        0.914,
+        0.96
+      ],
+      "status": "PROMOTED",
+      "tokens": 1954,
+      "unit_status": "EXHAUSTIVE_EQUIVALENT",
+      "vector_strategy": "cartesian"
+    },
+    {
+      "contract_id": "quantizeresidual",
+      "counterexample": {
+        "actual": "-65534",
+        "expected": "-65535",
+        "index": 0,
+        "inputs": [
+          -65535,
+          0
+        ],
+        "shard_id": 0
+      },
+      "dependency_evidence": {
+        "call_sites": 3,
+        "compile_commands": true,
+        "direct_call_sites": 3,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": true,
+      "executed_shards": 8,
+      "executed_vectors": 2228207,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": false,
+      "formal_proof_status": "NOT_APPLICABLE",
+      "library_promotion": {
+        "archived_previous": null,
+        "artifact_dir": "artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
+        "contract_file": "library/contracts/quantizeresidual.json",
+        "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
+        "contract_id": "quantizeresidual",
+        "module": "quantizeresidual",
+        "module_file": "library/rtl/quantizeresidual.sv",
+        "rtl_sha256": "7c9d729bbe1ac193b6f355b3d8281a92ab350a9c27a7717145fdea31a863d9cd",
+        "status": "PASS",
+        "verification_file": "library/verification/quantizeresidual.json"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 1,
+      "rejected_candidates": [
+        {
+          "bitstream_gate": "FAIL",
+          "candidate": "candidate_02",
+          "composition_gate": "FAIL",
+          "counterexample": {
+            "actual": "-65534",
+            "expected": "-65535",
+            "index": 0,
+            "inputs": [
+              -65535,
+              0
+            ],
+            "shard_id": 0
+          },
+          "expected_rejection": true,
+          "matrix_status": "FAIL",
+          "receipt": "artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a/rejected/candidate_02/rejection-receipt.json",
+          "status": "EXPECTED_REJECTION",
+          "unit_gate": "FAIL",
+          "unit_verification_status": "COUNTEREXAMPLE"
+        }
+      ],
+      "shard_durations_seconds": [
+        1.616,
+        1.802,
+        1.833,
+        1.69,
+        1.759,
+        1.488,
+        1.676,
+        1.511
+      ],
+      "status": "PROMOTED",
+      "tokens": 2108,
+      "unit_status": "EXHAUSTIVE_EQUIVALENT",
+      "vector_strategy": "cartesian"
+    },
     {
       "contract_id": "samplepredict",
       "counterexample": {
@@ -115,6 +846,18 @@
       "execution_status": "EXECUTED_NOW",
       "formal_proof_complete": true,
       "formal_proof_status": "PASS",
+      "library_promotion": {
+        "archived_previous": null,
+        "artifact_dir": "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+        "contract_file": "library/contracts/samplepredict.json",
+        "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+        "contract_id": "samplepredict",
+        "module": "samplepredict",
+        "module_file": "library/rtl/samplepredict.sv",
+        "rtl_sha256": "831411aefb7fd14c630f6a71d75191a62320ce17566d6292637fcdab603e2011",
+        "status": "PASS",
+        "verification_file": "library/verification/samplepredict.json"
+      },
       "matrix_modes": {
         "C_ONLY": "PASS",
         "RTL_RETURN": "PASS",
@@ -183,27 +926,133 @@
         }
       ],
       "shard_durations_seconds": [
-        17.584,
-        17.037,
-        17.986,
-        17.787,
-        18.116,
-        17.88,
-        17.684,
-        18.051
+        18.007,
+        17.894,
+        17.831,
+        17.524,
+        17.778,
+        17.691,
+        16.274,
+        17.585
       ],
       "status": "PROMOTED",
       "tokens": 12302,
       "unit_status": "FORMAL_EQUIVALENT",
       "vector_strategy": "windowed_boundary"
+    },
+    {
+      "contract_id": "samptolinebuf",
+      "counterexample": {
+        "actual": "1",
+        "expected": "0",
+        "index": 0,
+        "inputs": [
+          0,
+          0,
+          8,
+          8
+        ],
+        "shard_id": 0
+      },
+      "dependency_evidence": {
+        "call_sites": 2,
+        "compile_commands": true,
+        "direct_call_sites": 2,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": true,
+      "executed_shards": 8,
+      "executed_vectors": 21233664,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": false,
+      "formal_proof_status": "NOT_APPLICABLE",
+      "library_promotion": {
+        "archived_previous": null,
+        "artifact_dir": "artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
+        "contract_file": "library/contracts/samptolinebuf.json",
+        "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
+        "contract_id": "samptolinebuf",
+        "module": "samptolinebuf",
+        "module_file": "library/rtl/samptolinebuf.sv",
+        "rtl_sha256": "971e3b07df907a913544145749bc5303b1c4532af69517ce97ab3bc9bed0cae9",
+        "status": "PASS",
+        "verification_file": "library/verification/samptolinebuf.json"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 1,
+      "rejected_candidates": [
+        {
+          "bitstream_gate": "FAIL",
+          "candidate": "candidate_02",
+          "composition_gate": "FAIL",
+          "counterexample": {
+            "actual": "1",
+            "expected": "0",
+            "index": 0,
+            "inputs": [
+              0,
+              0,
+              8,
+              8
+            ],
+            "shard_id": 0
+          },
+          "expected_rejection": true,
+          "matrix_status": "FAIL",
+          "receipt": "artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/rejected/candidate_02/rejection-receipt.json",
+          "status": "EXPECTED_REJECTION",
+          "unit_gate": "FAIL",
+          "unit_verification_status": "COUNTEREXAMPLE"
+        }
+      ],
+      "shard_durations_seconds": [
+        10.877,
+        10.601,
+        10.993,
+        11.054,
+        10.406,
+        10.668,
+        10.738,
+        9.885
+      ],
+      "status": "PROMOTED",
+      "tokens": 2719,
+      "unit_status": "EXHAUSTIVE_EQUIVALENT",
+      "vector_strategy": "cartesian"
     }
   ],
   "schema_version": 2,
-  "selected_new_work": [
-    "samplepredict"
+  "selected_contracts": [
+    "escapecodesize",
+    "findmidpoint",
+    "getqpadjpredsize",
+    "isflatnessinfosent",
+    "mapqptoqlevel",
+    "maxresidualsize",
+    "predictsize",
+    "quantizeresidual",
+    "samplepredict",
+    "samptolinebuf"
   ],
+  "selected_new_work": [],
   "shards": [
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
+    8,
     8
   ],
-  "tokens": 12302
+  "tokens": 36434
 }

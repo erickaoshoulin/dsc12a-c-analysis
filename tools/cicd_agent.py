@@ -267,6 +267,10 @@ class Agent:
         # generator telemetry serialized while allowing each contract to use
         # its own isolated artifact directory and Verilator build.
         self.state_lock = threading.RLock()
+        # Promotion updates a shared designer library while contract jobs run
+        # in parallel.  Keep the stable manifest and archive writes atomic at
+        # the agent level without serializing generation or verification.
+        self.library_lock = threading.RLock()
 
     def load_inputs(self) -> dict[str, Any]:
         errors: list[str] = []
@@ -596,6 +600,7 @@ class Agent:
         known = {str(contract_function(item).get("clang_usr")) for item in effective_locked}
         promoted_usrs = self.promoted_contract_usrs(effective_locked)
         target_contract = safe_identifier(os.environ.get("DSC_CICD_TARGET_CONTRACT", "")).lower()
+        refresh_stable = os.environ.get("DSC_CICD_REFRESH_STABLE", "").lower() in {"1", "true", "yes"}
         discovered = []
         for function in facts.get("functions", []):
             usr = str(function.get("clang_usr", ""))
@@ -637,7 +642,7 @@ class Agent:
             # refresh or a dependency composition run); ordinary planning must
             # not regenerate the stable library forever.
             promoted_existing = usr in promoted_usrs
-            if promoted_existing and cid != target_contract:
+            if promoted_existing and cid != target_contract and not refresh_stable:
                 continue
             targeted_refresh = cid == target_contract
             source_path = source_path_for(function, pathlib.Path(str(self.input_facts["source_dir"])))
@@ -819,6 +824,11 @@ class Agent:
             for value in manifest.get("components", [])
             if value.get("status") == "PASS" and value.get("contract_id")
         }
+        refresh_stable = os.environ.get("DSC_CICD_REFRESH_STABLE", "").lower() in {"1", "true", "yes"}
+        force_regenerate = (
+            os.environ.get("DSC_CICD_FORCE_REGENERATE", "").lower() in {"1", "true", "yes"}
+            or refresh_stable
+        )
         prior_shapes = {str(item.get("contract_id")): item.get("interface_shape", []) for item in self.previous_state.get("contracts", []) if item.get("current_state") == "PROMOTED"}
         for contract in sorted(self.contracts, key=contract_id):
             if not contract.get("interface", {}).get("ports"):
@@ -828,7 +838,6 @@ class Agent:
             is_ready, reasons = self.ready(contract)
             entry = self.cache_entry(key)
             stale = [name for name, value in hashes.items() if self.prior_contract(cid).get("hashes", {}).get(name) not in (None, value)]
-            force_regenerate = os.environ.get("DSC_CICD_FORCE_REGENERATE", "").lower() in {"1", "true", "yes"}
             cache_hit = self.cache_valid(entry, key) and not force_regenerate
             item = {
                 "contract_id": cid,
@@ -860,12 +869,22 @@ class Agent:
                 blocked.append({"contract_id": cid, "function": item["function"], "reasons": reasons})
         target_contract = str(os.environ.get("DSC_CICD_TARGET_CONTRACT", "")).strip().lower()
         target_item = next((item for item in entries if item["contract_id"].lower() == target_contract), None)
-        force_regenerate = os.environ.get("DSC_CICD_FORCE_REGENERATE", "").lower() in {"1", "true", "yes"}
         if target_item and target_item["ready"]:
             # The queue supplies a discovered contract id for this independent
             # batch. It is not a source-level function allowlist. A refresh can
             # deliberately rerun a verified leaf to search for a better pass.
             selected = [target_item["contract_id"]]
+        elif refresh_stable:
+            # A scale refresh rechecks the current reviewed stable frontier. The
+            # manifest contributes only promotion state; the actual contracts
+            # still come from the current tool/spec-ready plan. This is routing
+            # metadata, not a source-level function selector.
+            selected = [
+                item["contract_id"]
+                for item in entries
+                if item["ready"] and (item["contract_id"] in stable_ids or item["new_work"])
+            ]
+            selected = sorted(selected[:max(1, int(os.environ.get("DSC_CICD_MAX_NEW", "1")))])
         else:
             selected = [item["contract_id"] for item in entries if item["ready"] and item["new_work"] and (not prior_shapes or item["interface_shape"] not in prior_shapes.values())]
             if not selected:
@@ -879,7 +898,7 @@ class Agent:
             item["selected"] = item["contract_id"] in selected
             item["deferred"] = bool(item["ready"] and not item["selected"])
             item["targeted"] = item["contract_id"] == (target_item or {}).get("contract_id")
-            item["force_regenerate"] = force_regenerate and item["targeted"]
+            item["force_regenerate"] = force_regenerate and item["selected"]
         self.plan = {
             "schema_version": 2,
             "agent": "executable-generic-c-to-rtl-cicd",
@@ -893,6 +912,7 @@ class Agent:
             "dependency_pair": self.choose_dependency_pair(selected),
             "target_contract": target_item["contract_id"] if target_item else None,
             "force_regenerate": force_regenerate,
+            "refresh_stable": refresh_stable,
             "generator_hook": os.environ.get("DSC_CICD_GENERATOR_CMD"),
             "input_errors": self.input_facts.get("errors", []),
         }
@@ -1044,6 +1064,219 @@ class Agent:
             if not re.search(r"\b" + re.escape(str(port["name"])) + r"\b", scrubbed):
                 reasons.append("missing_port:" + str(port["name"]))
         return sorted(set(reasons))
+
+    def promote_library_component(
+        self,
+        contract: dict[str, Any],
+        item: dict[str, Any],
+        artifact: pathlib.Path,
+        result: dict[str, Any],
+    ) -> dict[str, Any]:
+        """Materialize one fully verified leaf into the stable RTL library.
+
+        The C oracle and receipts are the authority for a promotion.  This
+        method only runs after the unit, dependency, shadow, RTL_RETURN, and
+        frame gates pass; it rechecks exact links and the RTL boundary before
+        writing.  A lock protects the shared manifest while independent
+        contract jobs retain parallel generation and verification.
+        """
+        cid = contract_id(contract)
+        if result.get("status") not in {"PROMOTED", "CACHE_REUSED"}:
+            raise RuntimeError(f"library promotion requires PROMOTED result: {cid}")
+        if not contract_exact_links(contract):
+            raise RuntimeError(f"library promotion requires exact PDF links: {cid}")
+        unit = result.get("unit", {}) or {}
+        matrix = result.get("matrix", {}) or {}
+        dependency = result.get("dependency", {}) or {}
+        if not unit.get("promoted_candidate"):
+            raise RuntimeError(f"library promotion missing accepted candidate: {cid}")
+        if dependency.get("status") != "PASS" or matrix.get("status") != "PASS":
+            raise RuntimeError(f"library promotion gates are not PASS: {cid}")
+        required_modes = ("C_ONLY", "SHADOW", "RTL_RETURN")
+        if any((matrix.get("modes", {}).get(mode, {}) or {}).get("status") != "PASS" for mode in required_modes):
+            raise RuntimeError(f"library promotion matrix modes are not PASS: {cid}")
+        candidate_name = str(unit["promoted_candidate"])
+        candidate_path = artifact / "generated" / f"{candidate_name}.sv"
+        if not candidate_path.is_file():
+            raise RuntimeError(f"library promotion candidate missing: {candidate_path}")
+        source = candidate_path.read_text(encoding="utf-8", errors="replace")
+        scrubbed = re.sub(r"//.*|/\*.*?\*/", "", source, flags=re.S)
+        modules = list(re.finditer(r"\bmodule\s+([A-Za-z_][A-Za-z0-9_]*)", scrubbed))
+        if len(modules) != 1 or len(re.findall(r"\bendmodule\b", scrubbed)) != 1:
+            raise RuntimeError(f"library promotion requires one RTL module: {cid}")
+        ports = self.freeze_ports(contract.get("interface", {}) or {})
+        rtl_blockers = self.validate_rtl(source, ports)
+        if rtl_blockers:
+            raise RuntimeError(f"library promotion RTL boundary failed for {cid}: {rtl_blockers}")
+        module_name = safe_identifier(cid).lower()
+        match = re.search(r"\bmodule\s+([A-Za-z_][A-Za-z0-9_]*)", source)
+        if not match:
+            raise RuntimeError(f"library promotion module name missing: {cid}")
+        canonical_source = source[:match.start(1)] + module_name + source[match.end(1):]
+        if not canonical_source.endswith("\n"):
+            canonical_source += "\n"
+        canonical_bytes = canonical_source.encode("utf-8")
+        rtl_sha256 = hashlib.sha256(canonical_bytes).hexdigest()
+        contract_hash = str(item.get("contract_hash") or artifact.name)
+        artifact_relative = str(artifact.relative_to(self.root))
+        promoted_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
+        library = self.root / "library"
+        rtl_root = library / "rtl"
+        verification_root = library / "verification"
+        contract_root = library / "contracts"
+        archive_root = library / "archive" / safe_identifier(cid).lower()
+        with self.library_lock:
+            for directory in (rtl_root, verification_root, contract_root, archive_root):
+                directory.mkdir(parents=True, exist_ok=True)
+            destination = rtl_root / f"{safe_identifier(cid).lower()}.sv"
+            archived = None
+            if destination.is_file():
+                old_hash = file_hash(destination)
+                if old_hash != rtl_sha256:
+                    archive_path = archive_root / f"{artifact.name}.sv"
+                    if not archive_path.exists():
+                        archive_path.write_bytes(destination.read_bytes())
+                    archived = str(archive_path.relative_to(library))
+            destination.write_bytes(canonical_bytes)
+
+            formal_candidate = next(
+                (
+                    candidate for candidate in unit.get("candidates", [])
+                    if candidate.get("candidate") == candidate_name
+                ),
+                {},
+            )
+            formal = formal_candidate.get("formal_proof", {}) or {}
+            formal_receipt = read_json(artifact / str(formal.get("receipt", "")), {}) or {}
+            source_gate = {
+                "status": "PASS",
+                "pdf_sha256": self.input_facts.get("spec_hash"),
+                "source_sha256": self.input_facts.get("source_hash"),
+                "baseline_sha256": self.input_facts.get("baseline_hash"),
+            }
+            verification_path = verification_root / f"{safe_identifier(cid).lower()}.json"
+            prior_verification = read_json(verification_path, {}) or {}
+            verification = {
+                "schema_version": 2,
+                "contract_id": cid,
+                "function": contract_function(contract).get("name"),
+                "kind": (contract.get("semantics", {}) or {}).get("kind"),
+                "status": "PASS",
+                "execution_status": result.get("execution_status", "EXECUTED_NOW"),
+                "candidate": candidate_name,
+                "module": module_name,
+                "rtl_sha256": rtl_sha256,
+                "contract_hash": contract_hash,
+                "artifact_dir": artifact_relative,
+                "source_gate": source_gate,
+                "traceability": {
+                    "authority": "EXACT_SPEC",
+                    "review_status": "REVIEWED",
+                    "source_file": contract_function(contract).get("source_file"),
+                    "c_span": contract_function(contract).get("source_span"),
+                    "spec_links": contract_exact_links(contract),
+                },
+                "stages": {
+                    "generator": (result.get("generation", {}) or {}).get("status", "PASS"),
+                    "verilator_lint_build": "PASS",
+                    "unit_equivalence": unit.get("verification_status"),
+                    "formal": formal.get("status", "NOT_APPLICABLE"),
+                    "formal_rtl_equivalence": formal.get("status", "NOT_APPLICABLE"),
+                    "formal_partitions": formal_receipt.get("partition_count"),
+                    "shards_mutations": "PASS" if unit.get("promoted_candidate") else "FAIL",
+                    "width_spec_gate": "PASS",
+                    "dependency_composition": dependency.get("status"),
+                    "model_matrix": matrix.get("status"),
+                    "frame_compare": matrix.get("status"),
+                },
+                "unit_vectors": (unit.get("domain", {}) or {}).get("total_vectors", 0),
+                "formal_proof": formal,
+                "formal_partitions": formal_receipt.get("partition_count"),
+                "dependency": {
+                    "status": dependency.get("status"),
+                    "call_sites": len(dependency.get("call_sites_from_callgraph", [])),
+                    "dependency_ports": len(dependency.get("dependency_ports", [])),
+                    "vectors": (dependency.get("execution_evidence", {}) or {}).get("vectors", {}).get("total_vectors", 0),
+                },
+                "matrix": {
+                    "status": matrix.get("status"),
+                    "modes": {
+                        mode: (matrix.get("modes", {}).get(mode, {}) or {}).get("status")
+                        for mode in ("C_ONLY", "SHADOW", "RTL_RETURN")
+                    },
+                    "scripts_discovered": matrix.get("matrix_scripts_discovered"),
+                },
+                "promoted_at": promoted_at,
+            }
+            # Preserve reviewed window metadata only when it still describes
+            # the exact same canonical RTL bytes; never carry stale proof data
+            # across a changed candidate.
+            if prior_verification.get("rtl_sha256") == rtl_sha256:
+                for key in ("profile", "window", "formal_partitions"):
+                    if key in prior_verification and not verification.get(key):
+                        verification[key] = prior_verification[key]
+            write_json(verification_path, verification)
+
+            contract_path = contract_root / f"{safe_identifier(cid).lower()}.json"
+            library_contract = copy.deepcopy(contract)
+            library_contract["do_not_edit"] = True
+            library_contract["library_promotion"] = {
+                "status": "PASS",
+                "artifact_dir": artifact_relative,
+                "module": module_name,
+                "rtl_sha256": rtl_sha256,
+                "promoted_at": promoted_at,
+            }
+            write_json(contract_path, library_contract)
+
+            manifest = read_json(library / "manifest.json", {}) or {}
+            components = {
+                str(value.get("contract_id")): value
+                for value in manifest.get("components", [])
+                if value.get("contract_id")
+            }
+            function = contract_function(contract)
+            components[cid] = {
+                "contract_id": cid,
+                "function": function.get("name"),
+                "module": module_name,
+                "module_file": str(destination.relative_to(library)),
+                "module_sha256": rtl_sha256,
+                "verification_file": str(verification_path.relative_to(library)),
+                "contract_file": str(contract_path.relative_to(library)),
+                "contract_hash": contract_hash,
+                "source_file": function.get("source_file"),
+                "c_span": function.get("source_span"),
+                "spec_links": contract_exact_links(contract),
+                "authority": "EXACT_SPEC",
+                "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+                "artifact_dir": artifact_relative,
+                "status": "PASS",
+                "promoted_at": promoted_at,
+            }
+            manifest.update({
+                "schema_version": max(2, int(manifest.get("schema_version", 1))),
+                "library": manifest.get("library", "dsc-verilog-library"),
+                "policy": manifest.get("policy", "Only spec-traceable PASS leaf RTL is canonical; stateful callers remain C until separately contracted and verified."),
+                "source_policy": manifest.get("source_policy", "immutable external C model and local DSC 1.2a PDF; no SVRT"),
+                "spec_hash": self.input_facts.get("spec_hash") or manifest.get("spec_hash"),
+                "source_hash": self.input_facts.get("source_hash") or manifest.get("source_hash"),
+                "updated_at": promoted_at,
+                "components": sorted(components.values(), key=lambda value: str(value.get("contract_id"))),
+            })
+            write_json(library / "manifest.json", manifest)
+        return {
+            "status": "PASS",
+            "contract_id": cid,
+            "module": module_name,
+            "module_file": str(destination.relative_to(self.root)),
+            "verification_file": str(verification_path.relative_to(self.root)),
+            "contract_file": str(contract_path.relative_to(self.root)),
+            "artifact_dir": artifact_relative,
+            "rtl_sha256": rtl_sha256,
+            "contract_hash": contract_hash,
+            "archived_previous": archived,
+        }
 
     def run_process(self, command: list[str], cwd: pathlib.Path | None = None,
                     env: dict[str, str] | None = None, timeout: int = 600) -> dict[str, Any]:
@@ -3665,25 +3898,33 @@ class Agent:
         artifact = self.artifact_dir(item)
         cache_entry = self.cache_entry(item["cache_key"])
         if item.get("cache_hit"):
-            cached_unit = read_json(artifact / "unit-receipt.json", {}) or {}
-            cached_bitstream = read_json(artifact / "bitstream-receipt.json", {}) or {}
-            self.update_state(cid, "PROMOTED", "CACHE_REUSED", artifacts=[str(artifact.relative_to(self.root))], extra={
-                "model_calls": 0,
-                "token_count": 0,
-                "cache": "REUSED_VERIFIED_RECEIPT",
-            })
-            result = {
-                "contract_id": cid,
-                "status": "CACHE_REUSED",
-                "execution_status": "REUSED_VERIFIED_RECEIPT",
-                "unit": cached_unit,
-                "matrix": cached_bitstream,
-                "dependency": read_json(artifact / "dependency-receipt.json", {}) or {},
-                "rejected_candidates": cached_unit.get("rejected_candidates", []),
-                "cache_entry": cache_entry,
-            }
-            self.append_result(result)
-            return result
+            try:
+                cached_unit = read_json(artifact / "unit-receipt.json", {}) or {}
+                cached_bitstream = read_json(artifact / "bitstream-receipt.json", {}) or {}
+                self.update_state(cid, "PROMOTED", "CACHE_REUSED", artifacts=[str(artifact.relative_to(self.root))], extra={
+                    "model_calls": 0,
+                    "token_count": 0,
+                    "cache": "REUSED_VERIFIED_RECEIPT",
+                })
+                result = {
+                    "contract_id": cid,
+                    "status": "CACHE_REUSED",
+                    "execution_status": "REUSED_VERIFIED_RECEIPT",
+                    "generation": read_json(artifact / "generation.json", {}) or {},
+                    "unit": cached_unit,
+                    "matrix": cached_bitstream,
+                    "dependency": read_json(artifact / "dependency-receipt.json", {}) or {},
+                    "rejected_candidates": cached_unit.get("rejected_candidates", []),
+                    "cache_entry": cache_entry,
+                }
+                result["library_promotion"] = self.promote_library_component(contract, item, artifact, result)
+                self.append_result(result)
+                return result
+            except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as error:
+                self.update_state(cid, "DISCOVERED", "INFRASTRUCTURE_FAILURE", artifacts=[str(artifact.relative_to(self.root))], failure=str(error))
+                result = {"contract_id": cid, "status": "INFRASTRUCTURE_FAILURE", "reason": str(error)}
+                self.append_result(result)
+                return result
         try:
             self.update_state(cid, "CONTRACT_LOCKED", "EXECUTING")
             generation = self.generate_artifacts(contract, item, artifact)
@@ -3734,6 +3975,8 @@ class Agent:
                 "dependency": dependency,
                 "rejected_candidates": rejected_candidates,
             }
+            if final == "PROMOTED":
+                result["library_promotion"] = self.promote_library_component(contract, item, artifact, result)
             self.append_result(result)
             for name in ("shards", "shard-results", "oracle-build", "candidate-build", "generated"):
                 path = artifact / name
@@ -3884,6 +4127,7 @@ class Agent:
                     "matrix_commands": bool(dependency.get("execution_evidence", {}).get("caller_core_with_callee_c", {}).get("scenarios")),
                     "vectors": bool(dependency.get("execution_evidence", {}).get("vectors")),
                 },
+                "library_promotion": result.get("library_promotion", {}),
                 "rejected_candidates": result.get("rejected_candidates", []),
                 "counterexample": unit.get("smallest_counterexample"),
             })
@@ -3892,7 +4136,12 @@ class Agent:
             "agent": "executable-generic-c-to-rtl-cicd",
             "input_pdf": self.input_facts.get("spec_path"),
             "input_source_root": self.input_facts.get("source_root"),
-            "selected_new_work": selected,
+            "selected_contracts": selected,
+            "selected_new_work": [
+                item["contract_id"]
+                for item in self.plan.get("contracts", [])
+                if item.get("selected") and item.get("new_work")
+            ],
             "new_candidates": self.plan.get("new_candidates", []),
             "ready_contracts": self.plan.get("ready_contracts", []),
             "blocked_contracts": self.plan.get("blocked_contracts", []),
@@ -3925,7 +4174,8 @@ class Agent:
             "",
             f"- PDF: {self.input_facts.get('spec_path')} ({self.input_facts.get('spec_hash')})",
             f"- C source root: {self.input_facts.get('source_root')} ({self.input_facts.get('source_hash')})",
-            f"- selected new work: {', '.join(selected) or 'none'}",
+            f"- selected contracts: {', '.join(selected) or 'none'}",
+            f"- selected new work: {', '.join(report['selected_new_work']) or 'none'}",
             f"- generator invocations: {self.generator_invocations}",
             f"- model calls: {self.state.get('model_calls', 0)}",
             f"- token count: {self.state.get('token_count', 0)}",
@@ -3936,7 +4186,7 @@ class Agent:
             "",
         ]
         for value in result_lines:
-            lines.append(f"- {value['contract_id']}: {value['status']} ({value['execution_status']}); unit={value['unit_status']}; dependency={value['dependency_status']}; matrix={value['matrix_status']}")
+            lines.append(f"- {value['contract_id']}: {value['status']} ({value['execution_status']}); unit={value['unit_status']}; dependency={value['dependency_status']}; matrix={value['matrix_status']}; library={value['library_promotion'].get('status', 'NOT_ATTEMPTED')}")
             lines.append(
                 f"  - executed vectors/shards: {value['executed_vectors']}/{value['executed_shards']}; "
                 f"shard seconds: {value['shard_durations_seconds']}; "

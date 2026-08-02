@@ -1,61 +1,55 @@
 {
+  "artifact_dir": "artifacts/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
   "candidate": "candidate_01",
-  "candidate_pass_rate": "1/2",
-  "contract_hash": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
+  "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
   "contract_id": "predictsize",
+  "dependency": {
+    "call_sites": 2,
+    "dependency_ports": 2,
+    "status": "PASS",
+    "vectors": 4913
+  },
   "execution_status": "EXECUTED_NOW",
-  "frame_pass_rate": "3/3",
+  "formal_partitions": null,
+  "formal_proof": {
+    "counterexample": null,
+    "proof_complete": false,
+    "reason": "formal AST proof is only enabled for reviewed windowed_boundary contracts",
+    "receipt": null,
+    "status": "NOT_APPLICABLE"
+  },
   "function": "PredictSize",
-  "kind": "leaf",
+  "kind": "pure_expression",
+  "matrix": {
+    "modes": {
+      "C_ONLY": "PASS",
+      "RTL_RETURN": "PASS",
+      "SHADOW": "PASS"
+    },
+    "scripts_discovered": 22,
+    "status": "PASS"
+  },
   "module": "predictsize",
-  "parent_run_id": "20260802T062208Z-0ad45a41",
   "profile": "scale",
-  "promoted_at": "2026-08-02T13:59:42Z",
+  "promoted_at": "2026-08-02T18:08:49Z",
   "rtl_sha256": "861239ab7f41e5c98845588cfa54631e2d4449920afe9cdbde2eae0920b09af7",
-  "run_id": "20260802T133447Z-scale-4b440064",
-  "schema_version": 1,
+  "schema_version": 2,
   "source_gate": {
-    "blockers": [],
-    "build": {
-      "binary": {
-        "path": "source/dsc",
-        "sha256": "1aa30a5c49f7b87bc18c2150f94ad620bc005f3aa935327d63799cb3f674216c",
-        "size_bytes": 246352
-      },
-      "smoke": {
-        "expected_hash": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
-        "matching_outputs": [
-          {
-            "path": "bittrue_smoke/out/simple_192x108.dsc",
-            "sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
-            "size_bytes": 31236
-          }
-        ],
-        "mode": "bittrue_smoke/run_c_baseline.sh"
-      },
-      "status": "PASS"
-    },
-    "compile_check": {
-      "status": "PASS",
-      "translation_units": 11
-    },
-    "pdf": {
-      "pages": 145,
-      "path": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf",
-      "sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
-    },
-    "source": {
-      "path": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf"
-    },
+    "baseline_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+    "pdf_sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+    "source_sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
     "status": "PASS"
   },
   "stages": {
-    "dependency_composition": "NOT_APPLICABLE",
+    "dependency_composition": "PASS",
+    "formal": "NOT_APPLICABLE",
+    "formal_partitions": null,
+    "formal_rtl_equivalence": "NOT_APPLICABLE",
     "frame_compare": "PASS",
-    "generator_cache": "PASS",
+    "generator": "PASS",
     "model_matrix": "PASS",
     "shards_mutations": "PASS",
+    "unit_equivalence": "EXHAUSTIVE_EQUIVALENT",
     "verilator_lint_build": "PASS",
     "width_spec_gate": "PASS"
   },
@@ -68,43 +62,8 @@
       "start_column": 5,
       "start_line": 1476
     },
-    "contract_hash": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
-    "ports": [
-      {
-        "authority": "EXACT_SPEC",
-        "c_span": {
-          "end_column": 1,
-          "end_line": 1486,
-          "start_column": 5,
-          "start_line": 1476
-        },
-        "contract_hash": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
-        "derivation": "locked contract interface",
-        "domain": {
-          "range": [
-            0,
-            16
-          ]
-        },
-        "name": "return_value",
-        "review_status": "REVIEWED",
-        "role": "return_value",
-        "signed": false,
-        "spec_pages": [
-          83,
-          91
-        ],
-        "spec_sections": [
-          "6.4.5",
-          "6.6.1"
-        ],
-        "spec_tables": [],
-        "width": 5
-      }
-    ],
     "review_status": "REVIEWED",
     "source_file": "dsc_codec.c",
-    "source_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
     "spec_links": [
       {
         "anchor_id": "pdf:section:6.6.1",
@@ -118,7 +77,7 @@
         "section": "6.4.5",
         "status": "EXACT"
       }
-    ],
-    "spec_pdf": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf"
-  }
+    ]
+  },
+  "unit_vectors": 4913
 }

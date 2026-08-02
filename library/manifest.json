@@ -1,19 +1,21 @@
 {
   "components": [
     {
+      "artifact_dir": "artifacts/480f0f8595c56a062af62c4eabd3f0adc50bf08788abc6865dd1b1143b61e5f7",
       "authority": "EXACT_SPEC",
       "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
       "c_span": {
         "end_line": 451,
         "start_line": 443
       },
-      "contract_hash": "57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69",
+      "contract_file": "contracts/escapecodesize.json",
+      "contract_hash": "480f0f8595c56a062af62c4eabd3f0adc50bf08788abc6865dd1b1143b61e5f7",
       "contract_id": "escapecodesize",
       "function": "EscapeCodeSize",
       "module": "escapecodesize",
       "module_file": "rtl/escapecodesize.sv",
       "module_sha256": "582d5e131e638e5a6aa4f9783cf1755b041f9369f9c8c84e57fb413845272167",
-      "run_id": "20260802T133447Z-scale-4b440064",
+      "promoted_at": "2026-08-02T18:08:49Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -39,6 +41,7 @@
       "verification_file": "verification/escapecodesize.json"
     },
     {
+      "artifact_dir": "artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "authority": "EXACT_SPEC",
       "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
       "c_span": {
@@ -47,13 +50,14 @@
         "start_column": 5,
         "start_line": 906
       },
-      "contract_hash": "4770cb54a401eb81b550fbb5dd3ede2af3c3a4d85ec2f92548125dbd638592cf",
+      "contract_file": "contracts/findmidpoint.json",
+      "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "function": "FindMidpoint",
       "module": "findmidpoint",
       "module_file": "rtl/findmidpoint.sv",
       "module_sha256": "95b00b9f217f19697deb92e6926e102faf48b91af79a9fb6331900a7217d480b",
-      "run_id": "20260802T133447Z-scale-4b440064",
+      "promoted_at": "2026-08-02T18:08:49Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -79,19 +83,21 @@
       "verification_file": "verification/findmidpoint.json"
     },
     {
+      "artifact_dir": "artifacts/5f5aca8e104da0024c8af97f48a06bbb5420a37964a8bd9237fb8b005e59d6c1",
       "authority": "EXACT_SPEC",
       "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
       "c_span": {
         "end_line": 297,
         "start_line": 278
       },
-      "contract_hash": "8b07c0fd527f23cb8db7c5f5ab8bb1c504ea4fbe606febbe118e262ee791e6fe",
+      "contract_file": "contracts/getqpadjpredsize.json",
+      "contract_hash": "5f5aca8e104da0024c8af97f48a06bbb5420a37964a8bd9237fb8b005e59d6c1",
       "contract_id": "getqpadjpredsize",
       "function": "GetQpAdjPredSize",
       "module": "getqpadjpredsize",
       "module_file": "rtl/getqpadjpredsize.sv",
       "module_sha256": "a8a237d111078f013fa7c15edf430b37d8c58a60595b1082166f16b0334c24b4",
-      "run_id": "20260802T133447Z-scale-4b440064",
+      "promoted_at": "2026-08-02T18:08:49Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -117,6 +123,7 @@
       "verification_file": "verification/getqpadjpredsize.json"
     },
     {
+      "artifact_dir": "artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "authority": "EXACT_SPEC",
       "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
       "c_span": {
@@ -125,13 +132,14 @@
         "start_column": 5,
         "start_line": 1116
       },
-      "contract_hash": "f079152437dbf9eea9e1ff9463e03ead04fd354570a45c8df03ce99dd49ee4f6",
+      "contract_file": "contracts/isflatnessinfosent.json",
+      "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
       "function": "IsFlatnessInfoSent",
       "module": "isflatnessinfosent",
       "module_file": "rtl/isflatnessinfosent.sv",
       "module_sha256": "0a4b0d5ee2f45598e3ea1859102a42e3fa2ef66aba94e7049fc1d47876a5c07e",
-      "run_id": "20260802T133447Z-scale-4b440064",
+      "promoted_at": "2026-08-02T18:08:49Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -151,6 +159,7 @@
       "verification_file": "verification/isflatnessinfosent.json"
     },
     {
+      "artifact_dir": "artifacts/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "authority": "EXACT_SPEC",
       "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
       "c_span": {
@@ -159,13 +168,14 @@
         "start_column": 5,
         "start_line": 221
       },
-      "contract_hash": "9dca6ef2ab9731a8e0651276955456e9433b652e6be6714081e97e143c4b30bf",
+      "contract_file": "contracts/mapqptoqlevel.json",
+      "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
       "function": "MapQpToQlevel",
       "module": "mapqptoqlevel",
       "module_file": "rtl/mapqptoqlevel.sv",
       "module_sha256": "5dda9dc25483193295e7af8abbd927b209f8e9715f2f4791864200f2fc0a3334",
-      "run_id": "20260802T133447Z-scale-4b440064",
+      "promoted_at": "2026-08-02T18:08:49Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -191,19 +201,21 @@
       "verification_file": "verification/mapqptoqlevel.json"
     },
     {
+      "artifact_dir": "artifacts/068017b8a23d03a9d7d16aac74ab5358cfea6ea0c1d2c2e2dc53361421d7f34d",
       "authority": "EXACT_SPEC",
       "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
       "c_span": {
         "end_line": 270,
         "start_line": 263
       },
-      "contract_hash": "c92b2f1510575eb10503e2bf1e5c6a6f6e0828638e642be95a8d1f9bab460529",
+      "contract_file": "contracts/maxresidualsize.json",
+      "contract_hash": "068017b8a23d03a9d7d16aac74ab5358cfea6ea0c1d2c2e2dc53361421d7f34d",
       "contract_id": "maxresidualsize",
       "function": "MaxResidualSize",
       "module": "maxresidualsize",
       "module_file": "rtl/maxresidualsize.sv",
       "module_sha256": "cfdb54a0936d5bd70d45ddd9bcb20d05d99b73039a3789c1124ed564ae5aa65b",
-      "run_id": "20260802T133447Z-scale-4b440064",
+      "promoted_at": "2026-08-02T18:08:49Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -229,6 +241,7 @@
       "verification_file": "verification/maxresidualsize.json"
     },
     {
+      "artifact_dir": "artifacts/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "authority": "EXACT_SPEC",
       "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
       "c_span": {
@@ -237,13 +250,14 @@
         "start_column": 5,
         "start_line": 1476
       },
-      "contract_hash": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
+      "contract_file": "contracts/predictsize.json",
+      "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
       "function": "PredictSize",
       "module": "predictsize",
       "module_file": "rtl/predictsize.sv",
       "module_sha256": "861239ab7f41e5c98845588cfa54631e2d4449920afe9cdbde2eae0920b09af7",
-      "run_id": "20260802T133447Z-scale-4b440064",
+      "promoted_at": "2026-08-02T18:08:49Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -263,19 +277,23 @@
       "verification_file": "verification/predictsize.json"
     },
     {
+      "artifact_dir": "artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
       "authority": "EXACT_SPEC",
       "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
       "c_span": {
+        "end_column": 1,
         "end_line": 255,
+        "start_column": 5,
         "start_line": 245
       },
-      "contract_hash": "bd7cac692d0064753250d5ae92776ee7718d8cb222ea52561893438c52e6e30d",
+      "contract_file": "contracts/quantizeresidual.json",
+      "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
       "contract_id": "quantizeresidual",
       "function": "QuantizeResidual",
       "module": "quantizeresidual",
       "module_file": "rtl/quantizeresidual.sv",
       "module_sha256": "7c9d729bbe1ac193b6f355b3d8281a92ab350a9c27a7717145fdea31a863d9cd",
-      "run_id": "20260802T133447Z-scale-4b440064",
+      "promoted_at": "2026-08-02T18:08:49Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -299,6 +317,67 @@
       "verification_file": "verification/quantizeresidual.json"
     },
     {
+      "artifact_dir": "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
+        "end_column": 1,
+        "end_line": 383,
+        "start_column": 5,
+        "start_line": 308
+      },
+      "contract_file": "contracts/samplepredict.json",
+      "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+      "contract_id": "samplepredict",
+      "function": "SamplePredict",
+      "module": "samplepredict",
+      "module_file": "rtl/samplepredict.sv",
+      "module_sha256": "831411aefb7fd14c630f6a71d75191a62320ce17566d6292637fcdab603e2011",
+      "promoted_at": "2026-08-02T18:08:49Z",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:model-note:MN_MMAP:p076",
+          "page": 76,
+          "section": "6.4.1",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.4.1",
+          "page": 76,
+          "section": "6.4.1",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:model-note:MN_MMAP:p078",
+          "page": 78,
+          "section": "6.4.1.1",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:model-note:MN_MMAP:p079",
+          "page": 79,
+          "section": "6.4.1.2",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:model-note:MN_BLOCK_PRED:p079",
+          "page": 79,
+          "section": "6.4.2",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.4.2",
+          "page": 79,
+          "section": "6.4.2",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/samplepredict.json"
+    },
+    {
+      "artifact_dir": "artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
       "authority": "EXACT_SPEC",
       "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
       "c_span": {
@@ -307,13 +386,14 @@
         "start_column": 5,
         "start_line": 2036
       },
-      "contract_hash": "05bcff80920baf0d36d0cfceb95053d2385b1d939a15a173f0e253b27a18900d",
+      "contract_file": "contracts/samptolinebuf.json",
+      "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
       "contract_id": "samptolinebuf",
       "function": "SampToLineBuf",
       "module": "samptolinebuf",
       "module_file": "rtl/samptolinebuf.sv",
       "module_sha256": "971e3b07df907a913544145749bc5303b1c4532af69517ce97ab3bc9bed0cae9",
-      "run_id": "20260802T133447Z-scale-4b440064",
+      "promoted_at": "2026-08-02T18:08:49Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -343,41 +423,13 @@
       ],
       "status": "PASS",
       "verification_file": "verification/samptolinebuf.json"
-    },
-    {
-      "authority": "EXACT_SPEC",
-      "boundary": "verified combinational predictor leaf; C_ONLY remains rollback/reference; line-buffer state stays at caller boundary",
-      "c_span": {
-        "end_column": 1,
-        "end_line": 383,
-        "start_column": 5,
-        "start_line": 308
-      },
-      "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
-      "contract_id": "samplepredict",
-      "function": "SamplePredict",
-      "module": "samplepredict",
-      "module_file": "rtl/samplepredict.sv",
-      "module_sha256": "831411aefb7fd14c630f6a71d75191a62320ce17566d6292637fcdab603e2011",
-      "run_id": "20260802T170315Z-samplepredict-production-window",
-      "source_file": "dsc_codec.c",
-      "spec_links": [
-        {"anchor_id": "pdf:model-note:MN_MMAP:p076", "page": 76, "section": "6.4.1", "status": "EXACT"},
-        {"anchor_id": "pdf:section:6.4.1", "page": 76, "section": "6.4.1", "status": "EXACT"},
-        {"anchor_id": "pdf:model-note:MN_MMAP:p078", "page": 78, "section": "6.4.1.1", "status": "EXACT"},
-        {"anchor_id": "pdf:model-note:MN_MMAP:p079", "page": 79, "section": "6.4.1.2", "status": "EXACT"},
-        {"anchor_id": "pdf:model-note:MN_BLOCK_PRED:p079", "page": 79, "section": "6.4.2", "status": "EXACT"},
-        {"anchor_id": "pdf:section:6.4.2", "page": 79, "section": "6.4.2", "status": "EXACT"}
-      ],
-      "status": "PASS",
-      "verification_file": "verification/samplepredict.json"
     }
   ],
   "library": "dsc-verilog-library",
   "policy": "Only spec-traceable PASS leaf RTL is canonical; stateful callers remain C until separately contracted and verified.",
-  "schema_version": 1,
+  "schema_version": 2,
   "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
   "source_policy": "immutable external C model and local DSC 1.2a PDF; no SVRT",
   "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-  "updated_at": "2026-08-02T13:59:42Z"
+  "updated_at": "2026-08-02T18:08:49Z"
 }

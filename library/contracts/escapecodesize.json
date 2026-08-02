@@ -1,227 +1,342 @@
 {
-  "authority": "EXACT_SPEC",
-  "c_span": {
-    "end_line": 451,
-    "start_line": 443
+  "contract_id": "escapecodesize",
+  "dependencies": {
+    "direct_callees": [
+      {
+        "clang_usr": "c:@F@MapQpToQlevel",
+        "name": "MapQpToQlevel"
+      }
+    ],
+    "promotion_gate": "all direct callees PASS in library/manifest.json",
+    "read_fields": [],
+    "unresolved": []
   },
-  "contract_hash": "57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69",
-  "ports": [
-    {
-      "authority": "EXACT_SPEC",
-      "c_span": {
-        "end_line": 451,
-        "start_line": 443
+  "do_not_edit": true,
+  "function": {
+    "clang_usr": "c:@F@EscapeCodeSize",
+    "name": "EscapeCodeSize",
+    "parameters": [
+      {
+        "name": "dsc_cfg",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_cfg_t *"
       },
-      "contract_hash": "57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69",
-      "derivation": "Table 6-2 masterQp rows",
-      "domain": {
-        "basis": "Table 6-2 masterQp rows",
-        "kind": "range",
-        "range": [
-          0,
-          31
-        ]
+      {
+        "name": "dsc_state",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_state_t *"
       },
-      "name": "qp",
-      "review_status": "REVIEWED",
-      "role": "qp",
-      "signed": false,
-      "spec_pages": [
-        34,
-        93,
-        113
+      {
+        "name": "qp",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      }
+    ],
+    "qualified_name": "EscapeCodeSize",
+    "return_type": "int",
+    "source_body_sha256": "011b6d7d93e1de53554d1750d692b3351c0c2232d21a3d40f2f79da2645a803a",
+    "source_file": "dsc_codec.c",
+    "source_span": {
+      "end_line": 451,
+      "start_line": 443
+    }
+  },
+  "interface": {
+    "flattened_pointer_dependencies": [
+      {
+        "access": "READ_ONLY",
+        "c_type": "int",
+        "field": "dsc_version_minor",
+        "legal_domain": {
+          "basis": "DSC 1.1/1.2 version branches used by the called mapping function",
+          "kind": "set",
+          "range": [
+            0,
+            2
+          ],
+          "values": [
+            0,
+            1,
+            2
+          ]
+        },
+        "logical_width": 2,
+        "port_name": "dsc_version_minor",
+        "record": "dsc_cfg_t",
+        "role": "CONFIG_STATIC",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int",
+        "field": "native_420",
+        "legal_domain": {
+          "basis": "PPS native_420 flag used by the called mapping function",
+          "kind": "set",
+          "range": [
+            0,
+            1
+          ],
+          "values": [
+            0,
+            1
+          ]
+        },
+        "logical_width": 1,
+        "port_name": "native_420",
+        "record": "dsc_cfg_t",
+        "role": "CONFIG_STATIC",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "field": "cpntBitDepth",
+        "index": 0,
+        "legal_domain": {
+          "basis": "DSC supported luma component bit depths",
+          "kind": "set",
+          "range": [
+            8,
+            16
+          ],
+          "values": [
+            8,
+            10,
+            12,
+            14,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "port_name": "cpntBitDepth_0",
+        "record": "dsc_state_t",
+        "role": "CONFIG_STATIC",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "array_length": 32,
+        "c_type": "int *",
+        "field": "quantTableLuma",
+        "index_name": "qp",
+        "legal_domain": {
+          "basis": "Table 6-2 qLevelY entry domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "port_name": "qlevel_luma",
+        "record": "dsc_state_t",
+        "role": "TABLE_LOOKUP_LUMA",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      }
+    ],
+    "input_bit_count": 18,
+    "inputs": [
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "Table 6-2 masterQp rows",
+          "kind": "range",
+          "range": [
+            0,
+            31
+          ]
+        },
+        "logical_width": 5,
+        "name": "qp",
+        "pointer": false,
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      }
+    ],
+    "output": {
+      "c_type": "int",
+      "legal_range": [
+        -8,
+        17
       ],
-      "spec_sections": [
-        "3.5.1",
-        "6.6.2",
-        "6.8.6"
-      ],
-      "spec_tables": [],
-      "width": 5
-    },
-    {
-      "authority": "EXACT_SPEC",
-      "c_span": {
-        "end_line": 451,
-        "start_line": 443
-      },
-      "contract_hash": "57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69",
-      "derivation": "DSC 1.1/1.2 version branches used by the called mapping function",
-      "domain": {
-        "basis": "DSC 1.1/1.2 version branches used by the called mapping function",
-        "kind": "set",
-        "range": [
-          0,
-          2
-        ],
-        "values": [
-          0,
-          1,
-          2
-        ]
-      },
-      "name": "dsc_version_minor",
-      "review_status": "REVIEWED",
-      "role": "CONFIG_STATIC",
-      "signed": false,
-      "spec_pages": [
-        34,
-        93,
-        113
-      ],
-      "spec_sections": [
-        "3.5.1",
-        "6.6.2",
-        "6.8.6"
-      ],
-      "spec_tables": [],
-      "width": 2
-    },
-    {
-      "authority": "EXACT_SPEC",
-      "c_span": {
-        "end_line": 451,
-        "start_line": 443
-      },
-      "contract_hash": "57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69",
-      "derivation": "PPS native_420 flag used by the called mapping function",
-      "domain": {
-        "basis": "PPS native_420 flag used by the called mapping function",
-        "kind": "set",
-        "range": [
-          0,
-          1
-        ],
-        "values": [
-          0,
-          1
-        ]
-      },
-      "name": "native_420",
-      "review_status": "REVIEWED",
-      "role": "CONFIG_STATIC",
-      "signed": false,
-      "spec_pages": [
-        34,
-        93,
-        113
-      ],
-      "spec_sections": [
-        "3.5.1",
-        "6.6.2",
-        "6.8.6"
-      ],
-      "spec_tables": [],
-      "width": 1
-    },
-    {
-      "authority": "EXACT_SPEC",
-      "c_span": {
-        "end_line": 451,
-        "start_line": 443
-      },
-      "contract_hash": "57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69",
-      "derivation": "DSC supported luma component bit depths",
-      "domain": {
-        "basis": "DSC supported luma component bit depths",
-        "kind": "set",
-        "range": [
-          8,
-          16
-        ],
-        "values": [
-          8,
-          10,
-          12,
-          14,
-          16
-        ]
-      },
-      "name": "cpntBitDepth_0",
-      "review_status": "REVIEWED",
-      "role": "CONFIG_STATIC",
-      "signed": false,
-      "spec_pages": [
-        34,
-        93,
-        113
-      ],
-      "spec_sections": [
-        "3.5.1",
-        "6.6.2",
-        "6.8.6"
-      ],
-      "spec_tables": [],
-      "width": 5
-    },
-    {
-      "authority": "EXACT_SPEC",
-      "c_span": {
-        "end_line": 451,
-        "start_line": 443
-      },
-      "contract_hash": "57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69",
-      "derivation": "Table 6-2 qLevelY entry domain",
-      "domain": {
-        "basis": "Table 6-2 qLevelY entry domain",
-        "kind": "range",
-        "range": [
-          0,
-          16
-        ]
-      },
-      "name": "qlevel_luma",
-      "review_status": "REVIEWED",
-      "role": "TABLE_LOOKUP_LUMA",
-      "signed": false,
-      "spec_pages": [
-        34,
-        93,
-        113
-      ],
-      "spec_sections": [
-        "3.5.1",
-        "6.6.2",
-        "6.8.6"
-      ],
-      "spec_tables": [],
-      "width": 5
-    },
-    {
-      "authority": "EXACT_SPEC",
-      "c_span": {
-        "end_line": 451,
-        "start_line": 443
-      },
-      "contract_hash": "57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69",
-      "derivation": "locked contract interface",
-      "domain": {
-        "range": [
-          -8,
-          17
-        ]
-      },
+      "logical_width": 6,
       "name": "return_value",
-      "review_status": "REVIEWED",
-      "role": "return_value",
       "signed": true,
-      "spec_pages": [
-        34,
-        93,
-        113
-      ],
-      "spec_sections": [
-        "3.5.1",
-        "6.6.2",
-        "6.8.6"
-      ],
-      "spec_tables": [],
-      "width": 6
+      "unresolved": false,
+      "width_source": "DERIVED_SPEC_DOMAIN"
+    },
+    "ports": [
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "Table 6-2 masterQp rows",
+          "kind": "range",
+          "range": [
+            0,
+            31
+          ]
+        },
+        "name": "qp",
+        "role": "qp",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC 1.1/1.2 version branches used by the called mapping function",
+          "kind": "set",
+          "range": [
+            0,
+            2
+          ],
+          "values": [
+            0,
+            1,
+            2
+          ]
+        },
+        "name": "dsc_version_minor",
+        "role": "CONFIG_STATIC",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "PPS native_420 flag used by the called mapping function",
+          "kind": "set",
+          "range": [
+            0,
+            1
+          ],
+          "values": [
+            0,
+            1
+          ]
+        },
+        "name": "native_420",
+        "role": "CONFIG_STATIC",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "c_type": "int[4]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC supported luma component bit depths",
+          "kind": "set",
+          "range": [
+            8,
+            16
+          ],
+          "values": [
+            8,
+            10,
+            12,
+            14,
+            16
+          ]
+        },
+        "name": "cpntBitDepth_0",
+        "role": "CONFIG_STATIC",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "Table 6-2 qLevelY entry domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "qlevel_luma",
+        "role": "TABLE_LOOKUP_LUMA",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "output",
+        "name": "return_value",
+        "role": "return_value",
+        "signed": true,
+        "width": 6
+      }
+    ]
+  },
+  "library_promotion": {
+    "artifact_dir": "artifacts/480f0f8595c56a062af62c4eabd3f0adc50bf08788abc6865dd1b1143b61e5f7",
+    "module": "escapecodesize",
+    "promoted_at": "2026-08-02T18:08:49Z",
+    "rtl_sha256": "582d5e131e638e5a6aa4f9783cf1755b041f9369f9c8c84e57fb413845272167",
+    "status": "PASS"
+  },
+  "obligations": [],
+  "origin": "tool_discovered_reviewed_override",
+  "reviewed_evidence": [
+    {
+      "anchor_id": "pdf:section:3.5.1",
+      "kind": "EXACT_SPEC",
+      "page": 34,
+      "reason": "The DSC bitstream description defines the ICH transition escape size as one greater than the maximum possible luma residual size.",
+      "section": "3.5.1"
+    },
+    {
+      "anchor_id": "pdf:section:6.6.2",
+      "kind": "EXACT_SPEC",
+      "page": 93,
+      "reason": "The normative ICH coding rule gives the escape prefix size as bits_per_component - qLevelY + 1.",
+      "section": "6.6.2"
+    },
+    {
+      "c_span": {
+        "end_line": 451,
+        "start_line": 443
+      },
+      "kind": "SOURCE_SEMANTICS",
+      "reason": "The immutable C composite maps luma QP through the already-promoted MapQpToQlevel leaf and returns component bit depth plus one minus qLevel.",
+      "source_file": "dsc_codec.c"
     }
   ],
-  "review_status": "REVIEWED",
-  "source_file": "dsc_codec.c",
-  "source_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
+  "schema_version": 2,
+  "selection": {
+    "basis": "tool-ranked candidate and coverage facts + exact traceability + reviewed domain evidence",
+    "candidate_rank": 8,
+    "candidate_score": 99.95,
+    "candidate_source": "facts/candidates.json",
+    "coverage_basis": "dynamic_execution",
+    "coverage_source": "coverage/coverage.json",
+    "fact_source": "facts/functions.json",
+    "new_work": false,
+    "promoted_existing": true
+  },
+  "semantics": {
+    "expression": "cpntBitDepth_0 + 1 - qlevel_luma",
+    "kind": "pure_expression",
+    "return_range": [
+      -8,
+      17
+    ],
+    "signedness": "Supported component depth is [8,16] and the Table 6-2 qLevelY entry domain is [0,16], so the signed 6-bit result covers the reviewed input domain."
+  },
   "spec_links": [
     {
       "anchor_id": "pdf:section:3.5.1",
@@ -242,5 +357,5 @@
       "status": "EXACT"
     }
   ],
-  "spec_pdf": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf"
+  "status": "LOCKED"
 }

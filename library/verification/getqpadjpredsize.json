@@ -1,61 +1,55 @@
 {
+  "artifact_dir": "artifacts/5f5aca8e104da0024c8af97f48a06bbb5420a37964a8bd9237fb8b005e59d6c1",
   "candidate": "candidate_01",
-  "candidate_pass_rate": "1/2",
-  "contract_hash": "8b07c0fd527f23cb8db7c5f5ab8bb1c504ea4fbe606febbe118e262ee791e6fe",
+  "contract_hash": "5f5aca8e104da0024c8af97f48a06bbb5420a37964a8bd9237fb8b005e59d6c1",
   "contract_id": "getqpadjpredsize",
+  "dependency": {
+    "call_sites": 3,
+    "dependency_ports": 3,
+    "status": "PASS",
+    "vectors": 14831616
+  },
   "execution_status": "EXECUTED_NOW",
-  "frame_pass_rate": "3/3",
+  "formal_partitions": null,
+  "formal_proof": {
+    "counterexample": null,
+    "proof_complete": false,
+    "reason": "formal AST proof is only enabled for reviewed windowed_boundary contracts",
+    "receipt": null,
+    "status": "NOT_APPLICABLE"
+  },
   "function": "GetQpAdjPredSize",
-  "kind": "table_config",
+  "kind": "qp_adjusted_pred_size",
+  "matrix": {
+    "modes": {
+      "C_ONLY": "PASS",
+      "RTL_RETURN": "PASS",
+      "SHADOW": "PASS"
+    },
+    "scripts_discovered": 22,
+    "status": "PASS"
+  },
   "module": "getqpadjpredsize",
-  "parent_run_id": "20260802T062208Z-0ad45a41",
   "profile": "scale",
-  "promoted_at": "2026-08-02T13:59:42Z",
+  "promoted_at": "2026-08-02T18:08:49Z",
   "rtl_sha256": "a8a237d111078f013fa7c15edf430b37d8c58a60595b1082166f16b0334c24b4",
-  "run_id": "20260802T133447Z-scale-4b440064",
-  "schema_version": 1,
+  "schema_version": 2,
   "source_gate": {
-    "blockers": [],
-    "build": {
-      "binary": {
-        "path": "source/dsc",
-        "sha256": "1aa30a5c49f7b87bc18c2150f94ad620bc005f3aa935327d63799cb3f674216c",
-        "size_bytes": 246352
-      },
-      "smoke": {
-        "expected_hash": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
-        "matching_outputs": [
-          {
-            "path": "bittrue_smoke/out/simple_192x108.dsc",
-            "sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
-            "size_bytes": 31236
-          }
-        ],
-        "mode": "bittrue_smoke/run_c_baseline.sh"
-      },
-      "status": "PASS"
-    },
-    "compile_check": {
-      "status": "PASS",
-      "translation_units": 11
-    },
-    "pdf": {
-      "pages": 145,
-      "path": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf",
-      "sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
-    },
-    "source": {
-      "path": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf"
-    },
+    "baseline_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+    "pdf_sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+    "source_sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
     "status": "PASS"
   },
   "stages": {
-    "dependency_composition": "NOT_APPLICABLE",
+    "dependency_composition": "PASS",
+    "formal": "NOT_APPLICABLE",
+    "formal_partitions": null,
+    "formal_rtl_equivalence": "NOT_APPLICABLE",
     "frame_compare": "PASS",
-    "generator_cache": "PASS",
+    "generator": "PASS",
     "model_matrix": "PASS",
     "shards_mutations": "PASS",
+    "unit_equivalence": "EXHAUSTIVE_EQUIVALENT",
     "verilator_lint_build": "PASS",
     "width_spec_gate": "PASS"
   },
@@ -66,559 +60,8 @@
       "end_line": 297,
       "start_line": 278
     },
-    "contract_hash": "8b07c0fd527f23cb8db7c5f5ab8bb1c504ea4fbe606febbe118e262ee791e6fe",
-    "ports": [
-      {
-        "authority": "EXACT_SPEC",
-        "c_span": {
-          "end_line": 297,
-          "start_line": 278
-        },
-        "contract_hash": "8b07c0fd527f23cb8db7c5f5ab8bb1c504ea4fbe606febbe118e262ee791e6fe",
-        "derivation": "MAX_UNITS_PER_GROUP",
-        "domain": {
-          "basis": "MAX_UNITS_PER_GROUP",
-          "kind": "range",
-          "range": [
-            0,
-            3
-          ]
-        },
-        "name": "unit",
-        "review_status": "REVIEWED",
-        "role": "unit",
-        "signed": false,
-        "spec_pages": [
-          91,
-          113
-        ],
-        "spec_sections": [
-          "6.6.1",
-          "6.8.5.2",
-          "6.8.6"
-        ],
-        "spec_tables": [],
-        "width": 2
-      },
-      {
-        "authority": "EXACT_SPEC",
-        "c_span": {
-          "end_line": 297,
-          "start_line": 278
-        },
-        "contract_hash": "8b07c0fd527f23cb8db7c5f5ab8bb1c504ea4fbe606febbe118e262ee791e6fe",
-        "derivation": "DSC 1.1/1.2 version branches used by the called mapping functions",
-        "domain": {
-          "basis": "DSC 1.1/1.2 version branches used by the called mapping functions",
-          "kind": "set",
-          "range": [
-            0,
-            2
-          ],
-          "values": [
-            0,
-            1,
-            2
-          ]
-        },
-        "name": "dsc_version_minor",
-        "review_status": "REVIEWED",
-        "role": "CONFIG_STATIC",
-        "signed": false,
-        "spec_pages": [
-          91,
-          113
-        ],
-        "spec_sections": [
-          "6.6.1",
-          "6.8.5.2",
-          "6.8.6"
-        ],
-        "spec_tables": [],
-        "width": 2
-      },
-      {
-        "authority": "EXACT_SPEC",
-        "c_span": {
-          "end_line": 297,
-          "start_line": 278
-        },
-        "contract_hash": "8b07c0fd527f23cb8db7c5f5ab8bb1c504ea4fbe606febbe118e262ee791e6fe",
-        "derivation": "PPS native_420 flag used by the called mapping functions",
-        "domain": {
-          "basis": "PPS native_420 flag used by the called mapping functions",
-          "kind": "set",
-          "range": [
-            0,
-            1
-          ],
-          "values": [
-            0,
-            1
-          ]
-        },
-        "name": "native_420",
-        "review_status": "REVIEWED",
-        "role": "CONFIG_STATIC",
-        "signed": false,
-        "spec_pages": [
-          91,
-          113
-        ],
-        "spec_sections": [
-          "6.6.1",
-          "6.8.5.2",
-          "6.8.6"
-        ],
-        "spec_tables": [],
-        "width": 1
-      },
-      {
-        "authority": "EXACT_SPEC",
-        "c_span": {
-          "end_line": 297,
-          "start_line": 278
-        },
-        "contract_hash": "8b07c0fd527f23cb8db7c5f5ab8bb1c504ea4fbe606febbe118e262ee791e6fe",
-        "derivation": "dsc_state_t unit-to-component mapping domain",
-        "domain": {
-          "basis": "dsc_state_t unit-to-component mapping domain",
-          "kind": "range",
-          "range": [
-            0,
-            3
-          ]
-        },
-        "name": "unit_c_type_selected",
-        "review_status": "REVIEWED",
-        "role": "STATE_SELECTED",
-        "signed": false,
-        "spec_pages": [
-          91,
-          113
-        ],
-        "spec_sections": [
-          "6.6.1",
-          "6.8.5.2",
-          "6.8.6"
-        ],
-        "spec_tables": [],
-        "width": 2
-      },
-      {
-        "authority": "EXACT_SPEC",
-        "c_span": {
-          "end_line": 297,
-          "start_line": 278
-        },
-        "contract_hash": "8b07c0fd527f23cb8db7c5f5ab8bb1c504ea4fbe606febbe118e262ee791e6fe",
-        "derivation": "PredictSize output domain for one unit",
-        "domain": {
-          "basis": "PredictSize output domain for one unit",
-          "kind": "range",
-          "range": [
-            0,
-            16
-          ]
-        },
-        "name": "predicted_size_selected",
-        "review_status": "REVIEWED",
-        "role": "STATE_SELECTED",
-        "signed": false,
-        "spec_pages": [
-          91,
-          113
-        ],
-        "spec_sections": [
-          "6.6.1",
-          "6.8.5.2",
-          "6.8.6"
-        ],
-        "spec_tables": [],
-        "width": 5
-      },
-      {
-        "authority": "EXACT_SPEC",
-        "c_span": {
-          "end_line": 297,
-          "start_line": 278
-        },
-        "contract_hash": "8b07c0fd527f23cb8db7c5f5ab8bb1c504ea4fbe606febbe118e262ee791e6fe",
-        "derivation": "Table 6-2 masterQp rows",
-        "domain": {
-          "basis": "Table 6-2 masterQp rows",
-          "kind": "range",
-          "range": [
-            0,
-            31
-          ]
-        },
-        "name": "primary_qp",
-        "review_status": "REVIEWED",
-        "role": "STATE_RUNTIME",
-        "signed": false,
-        "spec_pages": [
-          91,
-          113
-        ],
-        "spec_sections": [
-          "6.6.1",
-          "6.8.5.2",
-          "6.8.6"
-        ],
-        "spec_tables": [],
-        "width": 5
-      },
-      {
-        "authority": "EXACT_SPEC",
-        "c_span": {
-          "end_line": 297,
-          "start_line": 278
-        },
-        "contract_hash": "8b07c0fd527f23cb8db7c5f5ab8bb1c504ea4fbe606febbe118e262ee791e6fe",
-        "derivation": "Table 6-2 masterQp rows",
-        "domain": {
-          "basis": "Table 6-2 masterQp rows",
-          "kind": "range",
-          "range": [
-            0,
-            31
-          ]
-        },
-        "name": "prev_primary_qp",
-        "review_status": "REVIEWED",
-        "role": "STATE_RUNTIME",
-        "signed": false,
-        "spec_pages": [
-          91,
-          113
-        ],
-        "spec_sections": [
-          "6.6.1",
-          "6.8.5.2",
-          "6.8.6"
-        ],
-        "spec_tables": [],
-        "width": 5
-      },
-      {
-        "authority": "EXACT_SPEC",
-        "c_span": {
-          "end_line": 297,
-          "start_line": 278
-        },
-        "contract_hash": "8b07c0fd527f23cb8db7c5f5ab8bb1c504ea4fbe606febbe118e262ee791e6fe",
-        "derivation": "DSC supported component bit depths",
-        "domain": {
-          "basis": "DSC supported component bit depths",
-          "kind": "set",
-          "range": [
-            8,
-            16
-          ],
-          "values": [
-            8,
-            10,
-            12,
-            14,
-            16
-          ]
-        },
-        "name": "cpntBitDepth_0",
-        "review_status": "REVIEWED",
-        "role": "CONFIG_STATIC",
-        "signed": false,
-        "spec_pages": [
-          91,
-          113
-        ],
-        "spec_sections": [
-          "6.6.1",
-          "6.8.5.2",
-          "6.8.6"
-        ],
-        "spec_tables": [],
-        "width": 5
-      },
-      {
-        "authority": "EXACT_SPEC",
-        "c_span": {
-          "end_line": 297,
-          "start_line": 278
-        },
-        "contract_hash": "8b07c0fd527f23cb8db7c5f5ab8bb1c504ea4fbe606febbe118e262ee791e6fe",
-        "derivation": "DSC supported component bit depths",
-        "domain": {
-          "basis": "DSC supported component bit depths",
-          "kind": "set",
-          "range": [
-            8,
-            16
-          ],
-          "values": [
-            8,
-            10,
-            12,
-            14,
-            16
-          ]
-        },
-        "name": "cpntBitDepth_1",
-        "review_status": "REVIEWED",
-        "role": "CONFIG_STATIC",
-        "signed": false,
-        "spec_pages": [
-          91,
-          113
-        ],
-        "spec_sections": [
-          "6.6.1",
-          "6.8.5.2",
-          "6.8.6"
-        ],
-        "spec_tables": [],
-        "width": 5
-      },
-      {
-        "authority": "EXACT_SPEC",
-        "c_span": {
-          "end_line": 297,
-          "start_line": 278
-        },
-        "contract_hash": "8b07c0fd527f23cb8db7c5f5ab8bb1c504ea4fbe606febbe118e262ee791e6fe",
-        "derivation": "DSC supported component bit depths",
-        "domain": {
-          "basis": "DSC supported component bit depths",
-          "kind": "set",
-          "range": [
-            8,
-            16
-          ],
-          "values": [
-            8,
-            10,
-            12,
-            14,
-            16
-          ]
-        },
-        "name": "cpntBitDepth_2",
-        "review_status": "REVIEWED",
-        "role": "CONFIG_STATIC",
-        "signed": false,
-        "spec_pages": [
-          91,
-          113
-        ],
-        "spec_sections": [
-          "6.6.1",
-          "6.8.5.2",
-          "6.8.6"
-        ],
-        "spec_tables": [],
-        "width": 5
-      },
-      {
-        "authority": "EXACT_SPEC",
-        "c_span": {
-          "end_line": 297,
-          "start_line": 278
-        },
-        "contract_hash": "8b07c0fd527f23cb8db7c5f5ab8bb1c504ea4fbe606febbe118e262ee791e6fe",
-        "derivation": "DSC supported component bit depths",
-        "domain": {
-          "basis": "DSC supported component bit depths",
-          "kind": "set",
-          "range": [
-            8,
-            16
-          ],
-          "values": [
-            8,
-            10,
-            12,
-            14,
-            16
-          ]
-        },
-        "name": "cpntBitDepth_3",
-        "review_status": "REVIEWED",
-        "role": "CONFIG_STATIC",
-        "signed": false,
-        "spec_pages": [
-          91,
-          113
-        ],
-        "spec_sections": [
-          "6.6.1",
-          "6.8.5.2",
-          "6.8.6"
-        ],
-        "spec_tables": [],
-        "width": 5
-      },
-      {
-        "authority": "EXACT_SPEC",
-        "c_span": {
-          "end_line": 297,
-          "start_line": 278
-        },
-        "contract_hash": "8b07c0fd527f23cb8db7c5f5ab8bb1c504ea4fbe606febbe118e262ee791e6fe",
-        "derivation": "Table 6-2 qLevelY entry domain",
-        "domain": {
-          "basis": "Table 6-2 qLevelY entry domain",
-          "kind": "range",
-          "range": [
-            0,
-            16
-          ]
-        },
-        "name": "qlevel_luma_new",
-        "review_status": "REVIEWED",
-        "role": "TABLE_LOOKUP_LUMA",
-        "signed": false,
-        "spec_pages": [
-          91,
-          113
-        ],
-        "spec_sections": [
-          "6.6.1",
-          "6.8.5.2",
-          "6.8.6"
-        ],
-        "spec_tables": [],
-        "width": 5
-      },
-      {
-        "authority": "EXACT_SPEC",
-        "c_span": {
-          "end_line": 297,
-          "start_line": 278
-        },
-        "contract_hash": "8b07c0fd527f23cb8db7c5f5ab8bb1c504ea4fbe606febbe118e262ee791e6fe",
-        "derivation": "Table 6-2 qLevelC entry domain",
-        "domain": {
-          "basis": "Table 6-2 qLevelC entry domain",
-          "kind": "range",
-          "range": [
-            0,
-            16
-          ]
-        },
-        "name": "qlevel_chroma_new",
-        "review_status": "REVIEWED",
-        "role": "TABLE_LOOKUP_CHROMA",
-        "signed": false,
-        "spec_pages": [
-          91,
-          113
-        ],
-        "spec_sections": [
-          "6.6.1",
-          "6.8.5.2",
-          "6.8.6"
-        ],
-        "spec_tables": [],
-        "width": 5
-      },
-      {
-        "authority": "EXACT_SPEC",
-        "c_span": {
-          "end_line": 297,
-          "start_line": 278
-        },
-        "contract_hash": "8b07c0fd527f23cb8db7c5f5ab8bb1c504ea4fbe606febbe118e262ee791e6fe",
-        "derivation": "Table 6-2 qLevelY entry domain",
-        "domain": {
-          "basis": "Table 6-2 qLevelY entry domain",
-          "kind": "range",
-          "range": [
-            0,
-            16
-          ]
-        },
-        "name": "qlevel_luma_old",
-        "review_status": "REVIEWED",
-        "role": "TABLE_LOOKUP_LUMA",
-        "signed": false,
-        "spec_pages": [
-          91,
-          113
-        ],
-        "spec_sections": [
-          "6.6.1",
-          "6.8.5.2",
-          "6.8.6"
-        ],
-        "spec_tables": [],
-        "width": 5
-      },
-      {
-        "authority": "EXACT_SPEC",
-        "c_span": {
-          "end_line": 297,
-          "start_line": 278
-        },
-        "contract_hash": "8b07c0fd527f23cb8db7c5f5ab8bb1c504ea4fbe606febbe118e262ee791e6fe",
-        "derivation": "Table 6-2 qLevelC entry domain",
-        "domain": {
-          "basis": "Table 6-2 qLevelC entry domain",
-          "kind": "range",
-          "range": [
-            0,
-            16
-          ]
-        },
-        "name": "qlevel_chroma_old",
-        "review_status": "REVIEWED",
-        "role": "TABLE_LOOKUP_CHROMA",
-        "signed": false,
-        "spec_pages": [
-          91,
-          113
-        ],
-        "spec_sections": [
-          "6.6.1",
-          "6.8.5.2",
-          "6.8.6"
-        ],
-        "spec_tables": [],
-        "width": 5
-      },
-      {
-        "authority": "EXACT_SPEC",
-        "c_span": {
-          "end_line": 297,
-          "start_line": 278
-        },
-        "contract_hash": "8b07c0fd527f23cb8db7c5f5ab8bb1c504ea4fbe606febbe118e262ee791e6fe",
-        "derivation": "locked contract interface",
-        "domain": {
-          "range": [
-            -1,
-            15
-          ]
-        },
-        "name": "return_value",
-        "review_status": "REVIEWED",
-        "role": "return_value",
-        "signed": true,
-        "spec_pages": [
-          91,
-          113
-        ],
-        "spec_sections": [
-          "6.6.1",
-          "6.8.5.2",
-          "6.8.6"
-        ],
-        "spec_tables": [],
-        "width": 5
-      }
-    ],
     "review_status": "REVIEWED",
     "source_file": "dsc_codec.c",
-    "source_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
     "spec_links": [
       {
         "anchor_id": "pdf:section:6.8.5.2",
@@ -638,7 +81,7 @@
         "section": "6.8.6",
         "status": "EXACT"
       }
-    ],
-    "spec_pdf": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf"
-  }
+    ]
+  },
+  "unit_vectors": 14831616
 }

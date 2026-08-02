@@ -73,9 +73,17 @@ This handoff is isolated from SVRT. The local PDF and upstream C model were read
 - C/RTL differential coverage passed `25,960,080` legal-domain vectors across `8` shards; the structural formal gate passed `1,002/1,002` partitions with `proof_complete=true`.
 - The deliberate mutation remains rejected with a differential and formal counterexample; the stable RTL and compact promotion receipt are in `library/`.
 
+## Ten-leaf parallel refresh
+
+- The tool/spec-ready stable frontier was refreshed in one bounded parallel run with `10` selected contracts and `8` vector shards per leaf.
+- All ten leaves returned `PROMOTED`: nine `EXHAUSTIVE_EQUIVALENT` leaves plus the reviewed `SamplePredict` `FORMAL_EQUIVALENT` leaf.
+- The run executed `105,807,728` C/RTL vectors in total; every leaf passed dependency composition, `C_ONLY`, `SHADOW`, `RTL_RETURN`, frame/SHA, and source gates, and each deliberate `candidate_02` was retained as an expected rejection.
+- The refresh also materialized the three stable manifest leaves that were not present in `contracts/locked`, using their tool facts and reviewed PDF/source overrides rather than a hardcoded target list.
+- The executable promotion stage materialized all ten canonical RTL modules, contracts, verification receipts, and manifest entries under a library write lock; each result records `library_promotion: PASS` and any replaced RTL is archived.
+
 ## Recommendation
 
-Continue with the next tool-selected production leaf (`isflatnessinfosent`, `mapqptoqlevel`, `quantizeresidual`, or `samptolinebuf`) and repeat the same C-oracle/Verilator/formal flow. `SamplePredict` is no longer an unresolved promotion target; its static Eva/From result remains unavailable as recorded separately, but the RTL library contract is closed by the reviewed source/spec boundary and executable gates. The selected `FindMidpoint` and `SamplePredict` reference candidates remain promoted, while deliberate negative variants stay visible as counterexamples.
+Continue by re-reading the tool-ranked frontier for a new reviewed leaf or composite whose direct callees are already PASS, then repeat the same C-oracle/Verilator/formal flow. The current ten-leaf stable frontier is revalidated; its static Eva/From limitations remain recorded separately and do not weaken the executable RTL gates. Deliberate negative variants stay visible as counterexamples.
 
 ## Receipts
 

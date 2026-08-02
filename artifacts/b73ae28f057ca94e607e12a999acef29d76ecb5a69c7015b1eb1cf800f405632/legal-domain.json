@@ -1,0 +1,79 @@
+{
+  "complete": true,
+  "ports": [
+    {
+      "domain": {
+        "basis": "dsc_state_t component arrays have extent 4",
+        "kind": "range",
+        "range": [
+          0,
+          3
+        ],
+        "values": []
+      },
+      "port": "cpnt",
+      "role": "cpnt"
+    },
+    {
+      "domain": {
+        "basis": "Table 6-2 qLevel columns",
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ],
+        "values": []
+      },
+      "port": "qlevel",
+      "role": "qlevel"
+    },
+    {
+      "domain": {
+        "basis": "PPS bits_per_component plus one-bit RGB chroma extension",
+        "kind": "set",
+        "range": [
+          8,
+          16
+        ],
+        "values": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ]
+      },
+      "port": "cpntBitDepth",
+      "role": "CONFIG_STATIC"
+    },
+    {
+      "domain": {
+        "basis": "0 <= leftRecon < (1 << cpntBitDepth)",
+        "kind": "conditional_range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "leftRecon",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          128,
+          131071
+        ]
+      },
+      "port": "return_value",
+      "role": "return_value"
+    }
+  ],
+  "proof_basis": "exact spec/table plus reviewed runtime range override",
+  "schema_version": 1
+}

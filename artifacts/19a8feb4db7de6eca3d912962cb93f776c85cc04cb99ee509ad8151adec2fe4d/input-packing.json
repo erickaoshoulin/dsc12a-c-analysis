@@ -1,0 +1,38 @@
+{
+  "bit_order": "little-endian integer text to packed Verilator port",
+  "ports": [
+    {
+      "direction": "input",
+      "name": "req_size_0",
+      "packing": "bits[4:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "req_size_1",
+      "packing": "bits[4:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "req_size_2",
+      "packing": "bits[4:0]",
+      "role": "RUNTIME_INPUT",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "output",
+      "name": "return_value",
+      "packing": "bits[4:0]",
+      "role": "return_value",
+      "signed": false,
+      "width": 5
+    }
+  ],
+  "schema_version": 1
+}

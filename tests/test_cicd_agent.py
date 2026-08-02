@@ -119,6 +119,120 @@ class CicdAgentUnitTests(unittest.TestCase):
         self.assertTrue(plan["contracts"][0]["targeted"])
         self.assertTrue(plan["contracts"][0]["force_regenerate"])
 
+    def test_refresh_stable_selects_tool_ready_manifest_frontier_in_parallel_batch(self):
+        def contract(contract_id):
+            return {
+                "contract_id": contract_id,
+                "status": "LOCKED",
+                "function": {"name": contract_id, "clang_usr": f"c:@F@{contract_id}"},
+                "spec_links": [{"status": "EXACT", "anchor_id": f"pdf:section:{contract_id}"}],
+                "obligations": [],
+                "dependencies": {"unresolved": []},
+                "interface": {"ports": [
+                    {"name": "value", "direction": "input", "width": 8, "signed": False},
+                    {"name": "return_value", "direction": "output", "width": 8, "signed": False},
+                ]},
+                "semantics": {"kind": "pure_expression"},
+            }
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            (root / "library").mkdir()
+            (root / "library" / "manifest.json").write_text(json.dumps({
+                "components": [
+                    {"contract_id": "unit_alpha", "status": "PASS"},
+                    {"contract_id": "unit_beta", "status": "PASS"},
+                ],
+            }), encoding="utf-8")
+            agent = Agent(root, "plan")
+            agent.contracts = [contract("unit_alpha"), contract("unit_beta")]
+            agent.dependency_info = {
+                "cycles": [],
+                "adjacency": {"unit_alpha": [], "unit_beta": []},
+                "call_sites": [],
+                "all_call_sites": [],
+                "dependency_hashes": {},
+            }
+            with mock.patch.dict("os.environ", {
+                "DSC_CICD_TARGET_CONTRACT": "",
+                "DSC_CICD_REFRESH_STABLE": "1",
+                "DSC_CICD_MAX_NEW": "2",
+            }, clear=False):
+                plan = agent.build_plan()
+        self.assertEqual(plan["selected_contracts"], ["unit_alpha", "unit_beta"])
+        self.assertTrue(plan["refresh_stable"])
+        self.assertTrue(plan["force_regenerate"])
+        self.assertTrue(all(item["force_regenerate"] for item in plan["contracts"]))
+
+    def test_promoted_candidate_materializes_stable_library_and_archives_replacement(self):
+        contract = {
+            "contract_id": "fixture_leaf",
+            "status": "LOCKED",
+            "function": {
+                "name": "FixtureLeaf",
+                "clang_usr": "c:@F@FixtureLeaf",
+                "source_file": "dsc_codec.c",
+                "source_span": {"start_line": 10, "end_line": 12},
+            },
+            "interface": {"ports": [
+                {"name": "value", "direction": "input", "width": 8, "signed": False},
+                {"name": "return_value", "direction": "output", "width": 8, "signed": False},
+            ]},
+            "semantics": {"kind": "pure_expression"},
+            "obligations": [],
+            "dependencies": {"unresolved": []},
+            "spec_links": [{"status": "EXACT", "anchor_id": "pdf:section:fixture"}],
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory).resolve()
+            artifact = root / "artifacts" / "fixture-hash"
+            (artifact / "generated").mkdir(parents=True)
+            (artifact / "generated" / "candidate_01.sv").write_text(
+                "module fixture_leaf_candidate_01(input logic [7:0] value, output logic [7:0] return_value);\n"
+                "  assign return_value = value;\n"
+                "endmodule\n",
+                encoding="utf-8",
+            )
+            (root / "library" / "rtl").mkdir(parents=True)
+            (root / "library" / "rtl" / "fixture_leaf.sv").write_text(
+                "module fixture_leaf(input logic [7:0] value, output logic [7:0] return_value); assign return_value = 0; endmodule\n",
+                encoding="utf-8",
+            )
+            (root / "library" / "manifest.json").write_text(json.dumps({"components": []}), encoding="utf-8")
+            agent = Agent(root, "run")
+            agent.input_facts = {"spec_hash": "pdf-hash", "source_hash": "source-hash", "baseline_hash": "baseline-hash"}
+            result = {
+                "status": "PROMOTED",
+                "execution_status": "EXECUTED_NOW",
+                "generation": {"status": "PASS"},
+                "unit": {
+                    "promoted_candidate": "candidate_01",
+                    "verification_status": "EXHAUSTIVE_EQUIVALENT",
+                    "domain": {"total_vectors": 4},
+                    "candidates": [{"candidate": "candidate_01", "formal_proof": {"status": "NOT_APPLICABLE"}}],
+                },
+                "dependency": {"status": "PASS"},
+                "matrix": {"status": "PASS", "modes": {"C_ONLY": {"status": "PASS"}, "SHADOW": {"status": "PASS"}, "RTL_RETURN": {"status": "PASS"}}},
+            }
+            promotion = agent.promote_library_component(
+                contract,
+                {"contract_id": "fixture_leaf", "contract_hash": "fixture-hash"},
+                artifact,
+                result,
+            )
+            stable = (root / "library" / "rtl" / "fixture_leaf.sv").read_text(encoding="utf-8")
+            manifest = json.loads((root / "library" / "manifest.json").read_text(encoding="utf-8"))
+            verification = json.loads((root / "library" / "verification" / "fixture_leaf.json").read_text(encoding="utf-8"))
+            promoted_contract = json.loads((root / "library" / "contracts" / "fixture_leaf.json").read_text(encoding="utf-8"))
+        self.assertEqual(promotion["status"], "PASS")
+        self.assertIn("module fixture_leaf(", stable)
+        self.assertNotIn("candidate_01", stable)
+        self.assertTrue(promotion["archived_previous"])
+        self.assertEqual(manifest["components"][0]["status"], "PASS")
+        self.assertEqual(manifest["components"][0]["module_sha256"], promotion["rtl_sha256"])
+        self.assertEqual(verification["status"], "PASS")
+        self.assertTrue(promoted_contract["do_not_edit"])
+
     def test_independent_selected_contracts_run_in_parallel_batches(self):
         with tempfile.TemporaryDirectory() as directory:
             agent = Agent(pathlib.Path(directory), "run")

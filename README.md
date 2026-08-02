@@ -3,9 +3,10 @@
 This standalone repository analyzes the local DSC 1.2a C reference model and
 links tool-discovered C facts back to the local PDF specification. It is
 isolated from SVRT and unrelated projects. It does not modify the upstream
-model or copy the PDF. The pipeline also uses LLVM coverage, creates a bounded
-tool-selected contract set, and verifies one small combinational RTL slice; it
-does not generate whole-codec RTL or add sequential hardware.
+model or copy the PDF. The pipeline uses LLVM coverage, creates bounded
+tool-selected contract batches, and incrementally verifies a designer-facing
+combinational RTL library; it does not generate whole-codec RTL or add
+sequential hardware.
 
 ## Inputs
 
@@ -212,50 +213,40 @@ must pass before promotion. This keeps the designer-facing library
 combinational and stable while stateful line storage and non-DUT C logic
 remain reference boundaries.
 
-## Durable regression queue
+## Continuous CI/CD library loop
 
-The per-function regression service is independent of SVRT and discovers its
-work from the existing facts, contracts, callgraph, frame scripts, and valid
-cache receipts. It does not contain a function-name allowlist. Before a pilot,
-it requires the manifest PDF gate, C front-end compile receipt, isolated clean
-C build, and bit-true smoke/golden hash to be `PASS`.
-
-The service stores queue state, flow worktrees, builds, vectors, and large logs
-on the requested SMB share `//kslin@192.168.68.52/homes`. The default root is
-`/Volumes/homes/dsc12a-regression`; if macOS exposes the share at a different
-mountpoint, set `DSC_REGRESSION_ROOT` to a directory below that discovered
-mountpoint. Credentials are never stored or printed.
+The executable migration agent discovers work from facts, contracts, callgraph,
+frame scripts, reviewed PDF/source evidence, and valid cache receipts. It has
+no function-name allowlist and does not use SVRT, an SMB share, a second
+orchestrator, or a durable external service. Receipts stay in `ci/`,
+`artifacts/`, `integration/`, and `reports/`; large vector shards are temporary.
 
 ```sh
-python3 tools/regression.py init
-python3 tools/regression.py submit --profile pilot
-python3 tools/regression.py worker --jobs 4
-python3 tools/regression.py poll --once
-python3 tools/regression.py report <run-id>
+python3 tools/cicd_agent.py plan
+python3 tools/cicd_agent.py run
+python3 tools/cicd_agent.py status
 ```
 
-The pilot is capped at four functions and two candidates per function. A
-passing pilot writes a `PLANNED_NOT_STARTED` scale plan without enqueuing the
-full corpus. Start a deliberate scale batch only after reviewing that plan:
+For a bounded parallel refresh of the currently reviewed stable frontier, use
+routing metadata only; the contract IDs still come from the tool-selected
+ready plan:
 
 ```sh
-DSC_REGRESSION_ROOT=<share-root> python3 tools/regression.py scale <pilot-run-id> --refresh
-DSC_REGRESSION_ROOT=<share-root> python3 tools/regression.py worker --jobs 4
-DSC_REGRESSION_ROOT=<share-root> python3 tools/regression.py promote <scale-run-id>
+DSC_CICD_REFRESH_STABLE=1 DSC_CICD_MAX_NEW=4 \
+DSC_CICD_CONTRACT_WORKERS=4 DSC_CICD_WORKERS=8 \
+DSC_CICD_SHARDS=8 DSC_CICD_GENERATOR_CMD='python3 tools/generator_fixture.py' \
+python3 tools/cicd_agent.py run
 ```
 
-Scale jobs use independent per-contract flow worktrees and queue-discovered
-contract IDs; no source-level function allowlist is used. `--refresh` forces a
-new generator/verification attempt for the selected leaf while preserving old
-receipts. Promotion copies only PASS, spec-reviewed, purely combinational DUT
-RTL into `library/rtl/` with compact traceability and verification manifests.
-Stateful callers, unresolved table/pointer dependencies, and non-DUT C code
-remain in the immutable C reference and are not promoted. The static dashboard
-is at `<root>/dashboard/index.html` and refreshes from `latest.json`; receipts
-retain candidate/frame rates, exact PDF links, C spans, port traceability,
-artifact links, and blockers. See
-[`PROMPT.md`](PROMPT.md) and [`skills/dsc-regression/SKILL.md`](skills/dsc-regression/SKILL.md)
-for the execution contract and durable workflow.
+Each selected contract gets its own generator invocation, C oracle, Verilator
+candidate build, parallel differential shards, caller composition check, and
+frame matrix. Promotion requires unit, formal-or-exhaustive, dependency,
+`C_ONLY`/`SHADOW`/`RTL_RETURN`, source, and exact spec gates. Only stable,
+purely combinational DUT leaves are promoted into `library/rtl/` with their
+locked contract and verification receipt. The agent canonicalizes the module,
+archives replacements, and updates the manifest under a library write lock;
+stateful callers, line storage, and other non-DUT C logic remain reference
+boundaries.
 
 ## Environment
 

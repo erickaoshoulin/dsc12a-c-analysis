@@ -1,48 +1,259 @@
 {
-  "authority": "EXACT_SPEC",
-  "c_span": {
-    "end_column": 1,
-    "end_line": 1486,
-    "start_column": 5,
-    "start_line": 1476
+  "arithmetic_semantics": {
+    "overflow": "no signed overflow on the locked legal domain; outside-domain behavior is not contracted",
+    "rounding": "integer division by two truncates toward zero; modulo is C remainder on non-negative operands",
+    "saturation": "none",
+    "shifts": "left shifts have operands in [8,16], qlevel is [0,16], and all shifted values are non-negative",
+    "signedness": "C int operands are signed, but the legal-domain inputs and output are non-negative"
   },
-  "contract_hash": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
-  "ports": [
+  "contract_id": "predictsize",
+  "coverage": {
+    "branch_coverage_percent": 100.0,
+    "execution_count": 367218,
+    "line_coverage_percent": 33.333,
+    "production_reachable": true,
+    "status": "EXECUTED"
+  },
+  "dependencies": {
+    "direct_callees": [],
+    "read_fields": [],
+    "return_dependencies": [],
+    "unresolved": []
+  },
+  "do_not_edit": true,
+  "function": {
+    "clang_usr": "c:@F@PredictSize",
+    "name": "PredictSize",
+    "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/dsc_codec.c#L1476-L1486",
+    "qualified_name": "PredictSize",
+    "source_body_sha256": "73a981800c52a26cf1726c952a4be2e8867dddb42c423c5bf88db0ac71f12954",
+    "source_file": "dsc_codec.c",
+    "source_file_sha256": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf",
+    "source_span": {
+      "end_column": 1,
+      "end_line": 1486,
+      "start_column": 5,
+      "start_line": 1476
+    }
+  },
+  "interface": {
+    "flattened_pointer_dependencies": [
+      {
+        "access": "READ_ONLY",
+        "c_type": "int *",
+        "field": "req_size[0]",
+        "index": 0,
+        "legal_domain": {
+          "basis": "requiredSize is a non-negative residual size bounded by maxSize <= 16",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "parameter": "req_size",
+        "port_name": "req_size_0",
+        "role": "RUNTIME_INPUT",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int *",
+        "field": "req_size[1]",
+        "index": 1,
+        "legal_domain": {
+          "basis": "requiredSize is a non-negative residual size bounded by maxSize <= 16",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "parameter": "req_size",
+        "port_name": "req_size_1",
+        "role": "RUNTIME_INPUT",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int *",
+        "field": "req_size[2]",
+        "index": 2,
+        "legal_domain": {
+          "basis": "requiredSize is a non-negative residual size bounded by maxSize <= 16",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "parameter": "req_size",
+        "port_name": "req_size_2",
+        "role": "RUNTIME_INPUT",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      }
+    ],
+    "ignored_pointer_dependencies": [
+      {
+        "access": "READ_ONLY",
+        "c_type": "dsc_cfg_t *",
+        "parameter": "dsc_cfg",
+        "reason": "C signature compatibility only; PredictSize reads no dsc_cfg fields",
+        "role": "UNUSED_DEPENDENCY",
+        "unresolved": false
+      }
+    ],
+    "input_bit_count": 15,
+    "output": {
+      "c_type": "int",
+      "legal_range": [
+        0,
+        16
+      ],
+      "logical_width": 5,
+      "name": "return_value",
+      "signed": false,
+      "unresolved": false,
+      "width_source": "EXACT_SPEC"
+    },
+    "ports": [
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "requiredSize is a non-negative residual size bounded by maxSize <= 16",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "req_size_0",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "requiredSize is a non-negative residual size bounded by maxSize <= 16",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "req_size_1",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "requiredSize is a non-negative residual size bounded by maxSize <= 16",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "req_size_2",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "output",
+        "name": "return_value",
+        "role": "return_value",
+        "signed": false,
+        "width": 5
+      }
+    ]
+  },
+  "library_promotion": {
+    "artifact_dir": "artifacts/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
+    "module": "predictsize",
+    "promoted_at": "2026-08-02T18:08:49Z",
+    "rtl_sha256": "861239ab7f41e5c98845588cfa54631e2d4449920afe9cdbde2eae0920b09af7",
+    "status": "PASS"
+  },
+  "lock": {
+    "contract_sha256": "3ec410c7fe381d05b2787a3fd9c1024eb34a21c8b09a56d7f7fa5b1c6335b564",
+    "do_not_edit": true,
+    "locked_from": "proposed/predictsize.yaml"
+  },
+  "lock_status": "LOCKED_GENERATED_REVIEWED",
+  "obligations": [],
+  "origin": "tool_discovered_reviewed_override",
+  "provenance": {
+    "coverage_sha256": "f7faaab37dc4ca79a6f811ab817435cec4dae8dad8bf457a371dc62e786a7892",
+    "source_hashes_sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+    "spec_sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+  },
+  "read_struct_fields": [],
+  "reviewed_evidence": [
     {
-      "authority": "EXACT_SPEC",
+      "anchor_id": "pdf:section:6.6.1",
+      "kind": "EXACT_SPEC",
+      "page": 91,
+      "reason": "DSC 1.2a gives predictedSize = (requiredSize[0] + requiredSize[1] + 2 * requiredSize[2] + 2) >> 2.",
+      "section": "6.6.1"
+    },
+    {
+      "anchor_id": "pdf:section:6.4.5",
+      "kind": "EXACT_SPEC",
+      "page": 83,
+      "reason": "The required residual size is bounded by the component residual-size domain; for DSC 1.2a the maximum component depth is 16, so each requiredSize element is in [0,16].",
+      "section": "6.4.5"
+    },
+    {
       "c_span": {
-        "end_column": 1,
         "end_line": 1486,
-        "start_column": 5,
         "start_line": 1476
       },
-      "contract_hash": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
-      "derivation": "locked contract interface",
-      "domain": {
-        "range": [
-          0,
-          16
-        ]
-      },
-      "name": "return_value",
-      "review_status": "REVIEWED",
-      "role": "return_value",
-      "signed": false,
-      "spec_pages": [
-        83,
-        91
-      ],
-      "spec_sections": [
-        "6.4.5",
-        "6.6.1"
-      ],
-      "spec_tables": [],
-      "width": 5
+      "kind": "SOURCE_SEMANTICS",
+      "reason": "The immutable C leaf reads three req_size elements, performs the exact rounded average, and does not read dsc_cfg or write state.",
+      "source_file": "dsc_codec.c"
     }
   ],
-  "review_status": "REVIEWED",
-  "source_file": "dsc_codec.c",
-  "source_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
+  "reviewed_override_applied": {
+    "match": {
+      "clang_usr": "c:@F@PredictSize",
+      "spec_anchor_id": "pdf:section:6.6.1"
+    },
+    "review_status": "REVIEWED",
+    "reviewed_by": "codex"
+  },
+  "schema_version": 1,
+  "selection": {
+    "candidate_rank": 4,
+    "eligible_after_coverage": true,
+    "eligible_static": true,
+    "leaf": true,
+    "rank": 4,
+    "score": 100.0,
+    "selection_basis": "tool-ranked production/output leaf candidate after dynamic coverage join"
+  },
+  "semantics": {
+    "expression": "(req_size_0 + req_size_1 + (2 * req_size_2) + 2) >> 2",
+    "kind": "pure_expression",
+    "return_range": [
+      0,
+      16
+    ],
+    "signedness": "All requiredSize inputs are non-negative 5-bit normative residual sizes; the rounded average is non-negative and at most 16."
+  },
   "spec_links": [
     {
       "anchor_id": "pdf:section:6.6.1",
@@ -57,5 +268,45 @@
       "status": "EXACT"
     }
   ],
-  "spec_pdf": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf"
+  "static_analysis": {
+    "callees": [],
+    "contributes_to_observable_output": true,
+    "direct_effects": {
+      "allocation": false,
+      "assertion": false,
+      "indirect_call": false,
+      "io": false,
+      "logging": false,
+      "state_write": false,
+      "unknown_facts": []
+    },
+    "globals_read": [],
+    "globals_write": [],
+    "production_reachable": true,
+    "purity": "PURE",
+    "role": "DUT",
+    "timing": "COMBINATIONAL",
+    "transitive_effects": {
+      "allocation": false,
+      "assertion": false,
+      "indirect_call": false,
+      "io": false,
+      "logging": false,
+      "state_write": false,
+      "unknown_facts": []
+    }
+  },
+  "status": "LOCKED",
+  "verification_plan": {
+    "legal_domain": "cpnt in [0,3], cpntBitDepth in {8..16}, qlevel <= table-derived maximum for the selected component depth, leftRecon in [0,(1<<cpntBitDepth)-1]",
+    "mutations": [
+      "signedness",
+      "boundary",
+      "array-index",
+      "off-by-one"
+    ],
+    "oracle": "call the immutable C function through a generated wrapper with flattened state dependencies",
+    "rtl": "at most four generated combinational SystemVerilog candidates",
+    "simulator": "Verilator lint/compile plus exhaustive legal-domain comparison"
+  }
 }

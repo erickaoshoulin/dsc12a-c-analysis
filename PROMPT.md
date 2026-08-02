@@ -387,6 +387,14 @@ python3 tools/cicd_agent.py resume
 python3 tools/cicd_agent.py status
 ```
 
+For a bounded regression refresh of already promoted leaves, the queue may use
+`DSC_CICD_REFRESH_STABLE=1` together with `DSC_CICD_MAX_NEW` and
+`DSC_CICD_CONTRACT_WORKERS`. This refresh selects the current PASS components
+from `library/manifest.json` only after re-reading the tool/spec-ready contract
+frontier; those variables are routing and parallelism metadata, never a
+function-name allowlist. `DSC_CICD_FORCE_REGENERATE=1` remains the explicit
+single-contract refresh route through `DSC_CICD_TARGET_CONTRACT`.
+
 Each bounded batch may generate at most four candidates per selected contract.
 Independent contracts run in stable parallel workers. Preserve the immutable
 C model as oracle/reference, run the real C/Verilator shards, and promote only
@@ -413,11 +421,13 @@ valid leaf cache while preserving prior receipts and accepted RTL for audit
 and rollback. If no unproven ready contract exists, the run reports no new
 work and does not enqueue a duplicate batch.
 
-For an explicit refresh, the scale function set is the union of the current
-facts/spec-ready plan and PASS components already recorded in
+For an explicit stable refresh, the scale function set is the union of the
+current facts/spec-ready plan and PASS components already recorded in
 `library/manifest.json`, rechecked through the current exact width/spec gate.
-This keeps verified leaves in the regression surface without turning the
-manifest into a source-level function allowlist.
+Stable components that need to be rematerialized from reviewed overrides are
+discovered by their tool facts identity during that refresh. This keeps every
+verified leaf in the regression surface without turning the manifest into a
+source-level function allowlist.
 
 Within one executable CI/CD run, independent selected contracts execute in
 stable dependency-aware parallel batches (`DSC_CICD_CONTRACT_WORKERS`); a
@@ -445,6 +455,10 @@ unit, dependency, C_ONLY/SHADOW/RTL_RETURN, frame byte/SHA, exact PDF
 traceability, and reviewed-port gates. The promotion stage writes
 only stable, purely combinational DUT leaves to `library/rtl/`, together with
 `library/contracts/`, `library/verification/`, and `library/manifest.json`.
+The executable agent performs that materialization automatically under a
+library write lock after a `PROMOTED` result, canonicalizes the module name,
+archives a replaced RTL file, and records `library_promotion: PASS`. A receipt
+that only passes unit or differential comparison is never materialized.
 The library is an incremental designer-facing RTL set, not a whole-codec
 rewrite: keep stateful callers, unresolved pointer/table dependencies, and
 non-DUT code in C until their contracts are independently proven.

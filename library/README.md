@@ -22,6 +22,10 @@ composition evidence. This library is independent of SVRT.
 traceability, and `archive/` preserves an older canonical module when a later
 verified iteration replaces it.
 
+The executable CI/CD agent writes these stable entries automatically only
+after all promotion gates pass, using a library write lock and recording the
+source artifact directory in the manifest and receipt.
+
 `samplepredict` is the first production-domain relative-window leaf: its C
 line-buffer state remains at the caller boundary, while the RTL consumes the
 reviewed MMAP/left/block predictor taps.

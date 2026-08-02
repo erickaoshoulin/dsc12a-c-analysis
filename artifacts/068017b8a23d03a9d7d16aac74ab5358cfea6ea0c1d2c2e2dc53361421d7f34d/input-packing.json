@@ -1,0 +1,86 @@
+{
+  "bit_order": "little-endian integer text to packed Verilator port",
+  "ports": [
+    {
+      "direction": "input",
+      "name": "cpnt",
+      "packing": "bits[1:0]",
+      "role": "cpnt",
+      "signed": false,
+      "width": 2
+    },
+    {
+      "direction": "input",
+      "name": "qp",
+      "packing": "bits[4:0]",
+      "role": "qp",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "dsc_version_minor",
+      "packing": "bits[1:0]",
+      "role": "CONFIG_STATIC",
+      "signed": false,
+      "width": 2
+    },
+    {
+      "direction": "input",
+      "name": "native_420",
+      "packing": "bits[0:0]",
+      "role": "CONFIG_STATIC",
+      "signed": false,
+      "width": 1
+    },
+    {
+      "direction": "input",
+      "name": "cpntBitDepth_0",
+      "packing": "bits[4:0]",
+      "role": "CONFIG_STATIC",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "cpntBitDepth_1",
+      "packing": "bits[4:0]",
+      "role": "CONFIG_STATIC",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "cpntBitDepth_selected",
+      "packing": "bits[4:0]",
+      "role": "CONFIG_SELECTED",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "qlevel_luma",
+      "packing": "bits[4:0]",
+      "role": "TABLE_LOOKUP_LUMA",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "qlevel_chroma",
+      "packing": "bits[4:0]",
+      "role": "TABLE_LOOKUP_CHROMA",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "output",
+      "name": "return_value",
+      "packing": "bits[5:0]",
+      "role": "return_value",
+      "signed": true,
+      "width": 6
+    }
+  ],
+  "schema_version": 1
+}

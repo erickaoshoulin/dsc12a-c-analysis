@@ -1,0 +1,54 @@
+{
+  "complete": true,
+  "ports": [
+    {
+      "domain": {
+        "basis": "Table 6-2 masterQp rows",
+        "kind": "range",
+        "range": [
+          0,
+          31
+        ]
+      },
+      "port": "qp",
+      "role": "qp"
+    },
+    {
+      "domain": {
+        "basis": "PPS36[4:0] unsigned field",
+        "kind": "range",
+        "range": [
+          0,
+          31
+        ]
+      },
+      "port": "flatness_min_qp",
+      "role": "CONFIG_STATIC"
+    },
+    {
+      "domain": {
+        "basis": "PPS37[4:0] unsigned field",
+        "kind": "range",
+        "range": [
+          0,
+          31
+        ]
+      },
+      "port": "flatness_max_qp",
+      "role": "CONFIG_STATIC"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          1
+        ]
+      },
+      "port": "return_value",
+      "role": "return_value"
+    }
+  ],
+  "proof_basis": "exact spec/table plus reviewed runtime range override",
+  "schema_version": 1
+}
