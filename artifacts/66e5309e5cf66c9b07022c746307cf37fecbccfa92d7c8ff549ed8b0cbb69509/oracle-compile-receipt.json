@@ -15,7 +15,26 @@
         "/private/tmp/dsc12a-c-analysis/artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509/oracle-build/cmd_parse.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.086,
+      "duration_seconds": 0.094,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=c99",
+        "-O0",
+        "-g",
+        "-I",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "-Dmain=dsc_cicd_original_main",
+        "-c",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c",
+        "-o",
+        "/private/tmp/dsc12a-c-analysis/artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509/oracle-build/codec_main.o"
+      ],
+      "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+      "duration_seconds": 0.057,
       "output": "",
       "returncode": 0
     },
@@ -69,7 +88,7 @@
         "/private/tmp/dsc12a-c-analysis/artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509/oracle-build/dsc_utils.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.042,
+      "duration_seconds": 0.041,
       "output": "",
       "returncode": 0
     },
@@ -87,7 +106,7 @@
         "/private/tmp/dsc12a-c-analysis/artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509/oracle-build/fifo.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.029,
+      "duration_seconds": 0.028,
       "output": "",
       "returncode": 0
     },
@@ -159,7 +178,7 @@
         "/private/tmp/dsc12a-c-analysis/artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509/oracle-build/psnr.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.029,
+      "duration_seconds": 0.03,
       "output": "",
       "returncode": 0
     },
@@ -177,7 +196,7 @@
         "/private/tmp/dsc12a-c-analysis/artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509/oracle-build/utl.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.055,
+      "duration_seconds": 0.056,
       "output": "",
       "returncode": 0
     },
@@ -194,7 +213,7 @@
         "/private/tmp/dsc12a-c-analysis/artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509/oracle-build/oracle.o"
       ],
       "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
-      "duration_seconds": 0.025,
+      "duration_seconds": 0.026,
       "output": "",
       "returncode": 0
     },
@@ -205,6 +224,7 @@
         "-o",
         "/private/tmp/dsc12a-c-analysis/artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509/oracle-build/c_oracle",
         "/private/tmp/dsc12a-c-analysis/artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509/oracle-build/cmd_parse.o",
+        "/private/tmp/dsc12a-c-analysis/artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509/oracle-build/codec_main.o",
         "/private/tmp/dsc12a-c-analysis/artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509/oracle-build/dpx.o",
         "/private/tmp/dsc12a-c-analysis/artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509/oracle-build/dsc_codec.o",
         "/private/tmp/dsc12a-c-analysis/artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509/oracle-build/dsc_utils.o",
@@ -217,13 +237,14 @@
         "/private/tmp/dsc12a-c-analysis/artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509/oracle-build/oracle.o"
       ],
       "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
-      "duration_seconds": 0.038,
+      "duration_seconds": 0.04,
       "output": "",
       "returncode": 0
     }
   ],
   "compiled_translation_units": [
     "cmd_parse.c",
+    "codec_main.c",
     "dpx.c",
     "dsc_codec.c",
     "dsc_utils.c",

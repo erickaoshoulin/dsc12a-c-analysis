@@ -1,0 +1,75 @@
+{
+  "artifact_dir": "artifacts/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+  "candidate": "candidate_01",
+  "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+  "contract_id": "qp2qlevel",
+  "dependency": {
+    "call_sites": 2,
+    "dependency_ports": 2,
+    "status": "PASS",
+    "vectors": 5760
+  },
+  "execution_status": "EXECUTED_NOW",
+  "formal_partitions": null,
+  "formal_proof": {
+    "counterexample": null,
+    "proof_complete": false,
+    "reason": "formal AST proof is only enabled for reviewed windowed_boundary contracts",
+    "receipt": null,
+    "status": "NOT_APPLICABLE"
+  },
+  "function": "Qp2Qlevel",
+  "kind": "qp_table_lookup",
+  "matrix": {
+    "modes": {
+      "C_ONLY": "PASS",
+      "RTL_RETURN": "PASS",
+      "SHADOW": "PASS"
+    },
+    "scripts_discovered": 22,
+    "status": "PASS"
+  },
+  "module": "qp2qlevel",
+  "promoted_at": "2026-08-02T19:29:30Z",
+  "rtl_sha256": "18f078d82f020604fbcae57261373e69e9291f7757f81585163bb47fa1d893df",
+  "schema_version": 2,
+  "source_gate": {
+    "baseline_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+    "pdf_sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+    "source_sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+    "status": "PASS"
+  },
+  "stages": {
+    "dependency_composition": "PASS",
+    "formal": "NOT_APPLICABLE",
+    "formal_partitions": null,
+    "formal_rtl_equivalence": "NOT_APPLICABLE",
+    "frame_compare": "PASS",
+    "generator": "PASS",
+    "model_matrix": "PASS",
+    "shards_mutations": "PASS",
+    "unit_equivalence": "EXHAUSTIVE_EQUIVALENT",
+    "verilator_lint_build": "PASS",
+    "width_spec_gate": "PASS"
+  },
+  "status": "PASS",
+  "traceability": {
+    "authority": "EXACT_SPEC",
+    "c_span": {
+      "end_line": 844,
+      "start_line": 816
+    },
+    "review_status": "REVIEWED",
+    "source_file": "codec_main.c",
+    "spec_links": [
+      {
+        "anchor_id": "pdf:table:6-2",
+        "evidence": "The normative Table 6-2 rows are copied into the reviewed semantic table below.",
+        "page": 114,
+        "section": "6.8.6",
+        "status": "EXACT"
+      }
+    ]
+  },
+  "unit_vectors": 5760
+}

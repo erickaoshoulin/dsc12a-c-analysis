@@ -124,6 +124,16 @@ bounded, free of state writes/I/O/allocation/logging, and dynamically executed
 or explicitly marked `STATIC_BUT_UNCOVERED`. No function name may be supplied
 as a selection allowlist.
 
+The DUT rule above applies to production-output RTL. A tool-ranked, executed
+pure/combinational `CONFIG` helper whose only failed criterion is
+`contributes_to_observable_output` may instead be admitted as a reusable
+configuration-library primitive, but only with a complete finite exact-spec
+domain and reviewed `tool_admission.kind: CONFIG_LIBRARY`,
+`role: CONFIG_HELPER`, and `non_dut_boundary: true`. This admission must not
+waive state, I/O/allocation/logging, boundedness, coverage, dependency, or
+source gates. Emit it under the configuration/library boundary and never count
+it as production codec DUT or output logic.
+
 ## Contract and RTL-slice contract
 
 Select up to the top N eligible leaf functions from tool facts (default N=10;
@@ -378,6 +388,14 @@ indirect calls, output reachability, coverage, or any other failed criterion;
 the RTL contract covers the legal domain only and never models the diagnostic
 branch as DUT behavior. The receipt records
 `coverage_basis: reviewed_domain_effect`.
+
+When the only failed candidate criterion is observable-output contribution for
+a tool-discovered `CONFIG` function, a reviewed `CONFIG_LIBRARY` admission may
+promote a pure/combinational, finite, exact-spec lookup or helper for designer
+reuse. The override must explicitly set `role: CONFIG_HELPER` and
+`non_dut_boundary: true`; it cannot select a function, waive any other fact,
+or make configuration plumbing part of the production-output DUT. Its receipt
+records `coverage_basis: reviewed_config_library`.
 
 Composite candidates are also tool-discovered work. A reviewed override may
 resolve a pure, bounded function with direct callees only after every direct

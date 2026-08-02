@@ -124,6 +124,76 @@ def qp_mapping_body(interface: dict[str, object], bad: bool) -> str:
     return "\n".join(lines)
 
 
+def qp_table_lookup_body(
+    interface: dict[str, object], semantics: dict[str, object], bad: bool
+) -> str:
+    """Emit a self-contained Table 6-2 qLevel lookup.
+
+    The C helper reads immutable global qLevel tables selected by
+    bits_per_component.  The RTL library exposes the same normative lookup
+    directly, so the generated interface contains only configuration and
+    lookup inputs; no host/configuration pointer or C table storage crosses
+    the DUT boundary.
+    """
+    ports = interface.get("ports", [])
+    names = {
+        normalized_identifier(str(port.get("role", port.get("name")))): str(port.get("name"))
+        for port in ports
+        if isinstance(port, dict)
+    }
+    bpc_name = names.get("bitspercomponent", "bits_per_component")
+    convert_name = names.get("convertrgb", "convert_rgb")
+    version_name = names.get("dscversionminor", "dsc_version_minor")
+    native_name = names.get("native420", "native_420")
+    cpnt_name = names.get("cpnt", "cpnt")
+    qp_name = names.get("qp", "qp")
+    out_name = names.get("returnvalue", "return_value")
+    tables = semantics.get("tables", {}) or {}
+
+    def table_case(table_name: str) -> list[str]:
+        table = tables.get(table_name, {}) or {}
+        lines = ["            case (bits_per_component_i)"]
+        for raw_bpc, raw_values in sorted(table.items(), key=lambda item: int(item[0])):
+            values = [int(value) for value in raw_values]
+            lines.append(f"                {int(raw_bpc)}: begin")
+            lines.append("                    case (qp_i)")
+            for index, value in enumerate(values):
+                lines.append(f"                        {index}: qlevel_i = {value};")
+            lines.extend([
+                "                        default: qlevel_i = 0;",
+                "                    endcase",
+                "                end",
+            ])
+        lines.extend([
+            "                default: qlevel_i = 0;",
+            "            endcase",
+        ])
+        return lines
+
+    lines = [
+        "    logic [4:0] bits_per_component_i;",
+        "    logic [4:0] qp_i;",
+        "    logic [4:0] qlevel_i;",
+        "    always_comb begin",
+        f"        bits_per_component_i = {bpc_name};",
+        f"        qp_i = {qp_name};",
+        "        qlevel_i = 0;",
+        f"        if ((({cpnt_name} % 3) == 0) || (({native_name} != 0) && ({cpnt_name} == 1))) begin",
+        *table_case("luma"),
+        "        end else begin",
+        *[line.replace("            ", "            ", 1) for line in table_case("chroma")],
+        f"            if (({version_name} == 2) && ({convert_name} == 0) && (qlevel_i > 0)) begin",
+        "                qlevel_i = qlevel_i - 1;",
+        "            end",
+        "        end",
+        f"        {out_name} = qlevel_i;",
+    ]
+    if bad:
+        lines.append(f"        {out_name} = {out_name} + 1;")
+    lines.append("    end")
+    return "\n".join(lines)
+
+
 def max_residual_size_body(interface: dict[str, object], bad: bool) -> str:
     ports = interface.get("ports", [])
     names = {
@@ -724,6 +794,8 @@ def render_candidate(contract: dict[str, object], interface: dict[str, object], 
         body = line_storage_body(interface, bad)
     elif kind == "qp_mapping":
         body = qp_mapping_body(interface, bad)
+    elif kind == "qp_table_lookup":
+        body = qp_table_lookup_body(interface, semantics, bad)
     elif kind == "max_residual_size":
         body = max_residual_size_body(interface, bad)
     elif kind == "residual_size":

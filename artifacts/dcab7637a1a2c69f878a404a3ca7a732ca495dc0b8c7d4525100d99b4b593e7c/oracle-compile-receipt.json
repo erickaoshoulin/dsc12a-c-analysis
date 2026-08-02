@@ -15,7 +15,26 @@
         "/private/tmp/dsc12a-c-analysis/artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c/oracle-build/cmd_parse.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.063,
+      "duration_seconds": 0.055,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=c99",
+        "-O0",
+        "-g",
+        "-I",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "-Dmain=dsc_cicd_original_main",
+        "-c",
+        "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c",
+        "-o",
+        "/private/tmp/dsc12a-c-analysis/artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c/oracle-build/codec_main.o"
+      ],
+      "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+      "duration_seconds": 0.054,
       "output": "",
       "returncode": 0
     },
@@ -205,6 +224,7 @@
         "-o",
         "/private/tmp/dsc12a-c-analysis/artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c/oracle-build/c_oracle",
         "/private/tmp/dsc12a-c-analysis/artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c/oracle-build/cmd_parse.o",
+        "/private/tmp/dsc12a-c-analysis/artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c/oracle-build/codec_main.o",
         "/private/tmp/dsc12a-c-analysis/artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c/oracle-build/dpx.o",
         "/private/tmp/dsc12a-c-analysis/artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c/oracle-build/dsc_codec.o",
         "/private/tmp/dsc12a-c-analysis/artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c/oracle-build/dsc_utils.o",
@@ -217,13 +237,14 @@
         "/private/tmp/dsc12a-c-analysis/artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c/oracle-build/oracle.o"
       ],
       "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
-      "duration_seconds": 0.035,
+      "duration_seconds": 0.032,
       "output": "",
       "returncode": 0
     }
   ],
   "compiled_translation_units": [
     "cmd_parse.c",
+    "codec_main.c",
     "dpx.c",
     "dsc_codec.c",
     "dsc_utils.c",

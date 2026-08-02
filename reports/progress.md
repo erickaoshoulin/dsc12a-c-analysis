@@ -81,9 +81,23 @@ This handoff is isolated from SVRT. The local PDF and upstream C model were read
 - The refresh also materialized the three stable manifest leaves that were not present in `contracts/locked`, using their tool facts and reviewed PDF/source overrides rather than a hardcoded target list.
 - The executable promotion stage materialized all ten canonical RTL modules, contracts, verification receipts, and manifest entries under a library write lock; each result records `library_promotion: PASS` and any replaced RTL is archived.
 
+## Configuration-library extension
+
+- The facts-driven frontier selected `Qp2Qlevel` from `codec_main.c:816-844` as a production-reachable, pure/combinational `CONFIG` helper. It was not selected by a function-name allowlist.
+- DSC 1.2a Table 6-2 (PDF page `114`, section `6.8.6`) was added as a reviewed exact link. The contract carries the normative luma/chroma rows, the version-2 chroma adjustment, and a row-constrained `qp_table` exhaustive strategy.
+- Because the helper is configuration plumbing rather than observable codec output, it entered through reviewed `CONFIG_LIBRARY` admission with `role: CONFIG_HELPER` and `non_dut_boundary: true`. This does not waive effects, boundedness, coverage, dependency, source, or C-oracle gates.
+- The C oracle now compiles all model translation units, including `codec_main.c` with its CLI `main` renamed for the wrapper link. The immutable C build/smoke gate remains `PASS` with golden hash `2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797`.
+- `Qp2Qlevel` passed `5,760` exhaustive C/RTL vectors across `8` shards, C_ONLY/SHADOW/RTL_RETURN, dependency, frame/SHA, source, and strict Verilator lint gates. The deliberately mutated candidate was rejected by the first-vector counterexample.
+
+## Thirteen-component parallel refresh
+
+- The reviewed stable frontier now contains `13` promoted components: `12` exhaustive-equivalent leaves plus `SamplePredict` as the reviewed `FORMAL_EQUIVALENT` relative-window leaf.
+- The final refresh executed `106,010,095` C/RTL vectors across `104` parallel shards. Every component passed dependency composition, C_ONLY, SHADOW, RTL_RETURN, frame/SHA, source, and exact-spec gates; deliberate negative candidates remained expected rejections.
+- The stable manifest now includes `qp2qlevel` as a reusable configuration-library primitive while stateful callers, line-buffer storage, and other non-DUT C logic remain outside the RTL library.
+
 ## Recommendation
 
-Continue by re-reading the tool-ranked frontier for a new reviewed leaf or composite whose direct callees are already PASS, then repeat the same C-oracle/Verilator/formal flow. The current ten-leaf stable frontier is revalidated; its static Eva/From limitations remain recorded separately and do not weaken the executable RTL gates. Deliberate negative variants stay visible as counterexamples.
+Continue by re-reading the tool-ranked frontier for a new reviewed leaf or composite whose direct callees are already PASS, then repeat the same C-oracle/Verilator/formal flow. The current thirteen-component stable frontier is revalidated; its static Eva/From limitations remain recorded separately and do not weaken the executable RTL gates. Deliberate negative variants stay visible as counterexamples.
 
 ## Receipts
 

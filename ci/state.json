@@ -3,21 +3,20 @@
   "contracts": [
     {
       "artifacts": [
-        "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
-        "artifacts/b97f6b1552fbeac75f18b5004df3e9268747993cd543faf16b4cc5db8cca0a7c"
+        "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896"
       ],
       "contract_id": "ceil_log2",
       "current_state": "PROMOTED",
       "failure_reason": null,
       "function": "ceil_log2",
       "hashes": {
-        "agent": "55b27d7d551f95ef7154f5e2146d46d345c4e6ed0a65c8fc3700d8b11e1bb1b7",
+        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
         "contract": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
-        "dependency": "585542720fb7519141d045868af8b64838d02c196114a9c916e78332526451c0",
+        "dependency": "36e7af5a75d3a4162670ca604cc87a53daee9c23548299822ff9cd71e7fdbe9d",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ac4a9f07b904cd0abc1a3cc9e6ed8f540825310badac8df57f1ad200ae033d0b",
+        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -32,86 +31,6 @@
           "failure_reason": null,
           "state": "CONTRACT_LOCKED",
           "status": "EXECUTING"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_GENERATED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "UNIT_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "SHADOW_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_RETURN_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "DEPENDENCIES_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "BITSTREAM_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "PROMOTED",
-          "status": "PROMOTED"
-        },
-        {
-          "failure_reason": null,
-          "state": "CONTRACT_LOCKED",
-          "status": "EXECUTING"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_GENERATED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "UNIT_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "SHADOW_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_RETURN_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "DEPENDENCIES_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "BITSTREAM_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "PROMOTED",
-          "status": "PROMOTED"
-        },
-        {
-          "failure_reason": "bounded selection deferred",
-          "state": "CONTRACT_LOCKED",
-          "status": "DEFERRED"
         },
         {
           "failure_reason": null,
@@ -179,13 +98,13 @@
       "failure_reason": null,
       "function": "EscapeCodeSize",
       "hashes": {
-        "agent": "55b27d7d551f95ef7154f5e2146d46d345c4e6ed0a65c8fc3700d8b11e1bb1b7",
+        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
         "contract": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
-        "dependency": "f7708a726f1e3bfc7e1065b296d6e7cba6ba42cc05ad476f63ef4807a51063cd",
+        "dependency": "6f573328acee06945d4ef4dd9bf72123895919bf1e10bfe6eb3cccc22f5cd8f5",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ac4a9f07b904cd0abc1a3cc9e6ed8f540825310badac8df57f1ad200ae033d0b",
+        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -200,46 +119,6 @@
           "failure_reason": null,
           "state": "CONTRACT_LOCKED",
           "status": "EXECUTING"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_GENERATED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "UNIT_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "SHADOW_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_RETURN_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "DEPENDENCIES_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "BITSTREAM_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "PROMOTED",
-          "status": "PROMOTED"
-        },
-        {
-          "failure_reason": "bounded selection deferred",
-          "state": "CONTRACT_LOCKED",
-          "status": "DEFERRED"
         },
         {
           "failure_reason": null,
@@ -364,13 +243,13 @@
       "failure_reason": null,
       "function": "FindMidpoint",
       "hashes": {
-        "agent": "55b27d7d551f95ef7154f5e2146d46d345c4e6ed0a65c8fc3700d8b11e1bb1b7",
+        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
         "contract": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
-        "dependency": "e94f47021ebec21ff62cdb42103b55fd5a397acdc5fd3fcb264f0527d92fd8f5",
+        "dependency": "592e02e45134a781e900c00660fc39cbcaeab366c8c0f4ce1de450194717322c",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ac4a9f07b904cd0abc1a3cc9e6ed8f540825310badac8df57f1ad200ae033d0b",
+        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -628,119 +507,11 @@
           "failure_reason": null,
           "state": "PROMOTED",
           "status": "PROMOTED"
-        }
-      ],
-      "interface_shape": [
-        [
-          "input",
-          "cpnt",
-          2,
-          false
-        ],
-        [
-          "input",
-          "cpntBitDepth",
-          5,
-          false
-        ],
-        [
-          "input",
-          "leftRecon",
-          16,
-          false
-        ],
-        [
-          "input",
-          "qlevel",
-          5,
-          false
-        ],
-        [
-          "output",
-          "return_value",
-          17,
-          false
-        ]
-      ],
-      "model_calls": 1,
-      "origin": "locked_contract",
-      "selected": true,
-      "status": "PROMOTED",
-      "token_count": 2264,
-      "unit_receipt": "EXECUTED_NOW"
-    },
-    {
-      "artifacts": [
-        "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
-        "artifacts/e38246679057499205fa866b474d27d0a9877b0760de295507f85f3ac93c0a79",
-        "artifacts/e811fba7e8fd5c8f6d9e0199a16b136457523608a21b54c736fc23e4f0244177"
-      ],
-      "contract_id": "findresidualsize",
-      "current_state": "PROMOTED",
-      "failure_reason": null,
-      "function": "FindResidualSize",
-      "hashes": {
-        "agent": "55b27d7d551f95ef7154f5e2146d46d345c4e6ed0a65c8fc3700d8b11e1bb1b7",
-        "contract": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
-        "dependency": "680b24305cf839ced60952c9413926b2e96c6983c28ccc9db8d3736c917226fc",
-        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
-        "model": "external-generator-hook",
-        "pipeline": "executable-cicd-v2",
-        "prompt": "ac4a9f07b904cd0abc1a3cc9e6ed8f540825310badac8df57f1ad200ae033d0b",
-        "shards": "8",
-        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
-        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "8"
-      },
-      "history": [
-        {
-          "state": "DISCOVERED"
         },
         {
-          "failure_reason": null,
+          "failure_reason": "bounded selection deferred",
           "state": "CONTRACT_LOCKED",
-          "status": "EXECUTING"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_GENERATED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "UNIT_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "SHADOW_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_RETURN_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "DEPENDENCIES_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "BITSTREAM_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "PROMOTED",
-          "status": "PROMOTED"
-        },
-        {
-          "failure_reason": null,
-          "state": "CONTRACT_LOCKED",
-          "status": "EXECUTING"
+          "status": "DEFERRED"
         },
         {
           "failure_reason": null,
@@ -816,6 +587,72 @@
           "failure_reason": null,
           "state": "PROMOTED",
           "status": "PROMOTED"
+        }
+      ],
+      "interface_shape": [
+        [
+          "input",
+          "cpnt",
+          2,
+          false
+        ],
+        [
+          "input",
+          "cpntBitDepth",
+          5,
+          false
+        ],
+        [
+          "input",
+          "leftRecon",
+          16,
+          false
+        ],
+        [
+          "input",
+          "qlevel",
+          5,
+          false
+        ],
+        [
+          "output",
+          "return_value",
+          17,
+          false
+        ]
+      ],
+      "model_calls": 1,
+      "origin": "locked_contract",
+      "selected": true,
+      "status": "PROMOTED",
+      "token_count": 2264,
+      "unit_receipt": "EXECUTED_NOW"
+    },
+    {
+      "artifacts": [
+        "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b"
+      ],
+      "contract_id": "findresidualsize",
+      "current_state": "PROMOTED",
+      "failure_reason": null,
+      "function": "FindResidualSize",
+      "hashes": {
+        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
+        "contract": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+        "dependency": "5880d2bef1fdeda4c9206a4c48623f038f5a4d7a1ef03f1937f32064b685cb41",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
+        "shards": "8",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "8"
+      },
+      "history": [
+        {
+          "state": "DISCOVERED"
         },
         {
           "failure_reason": null,
@@ -888,13 +725,13 @@
       "failure_reason": null,
       "function": "GetQpAdjPredSize",
       "hashes": {
-        "agent": "55b27d7d551f95ef7154f5e2146d46d345c4e6ed0a65c8fc3700d8b11e1bb1b7",
+        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
         "contract": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
-        "dependency": "669cbb2b5fa6c86bb74deb65faece490de7eef7328729373527ed9f2053d28ca",
+        "dependency": "ff809e4e896a05695becfa554877a3c4be8f059e7814d8675b1ccc0b6ae7957a",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ac4a9f07b904cd0abc1a3cc9e6ed8f540825310badac8df57f1ad200ae033d0b",
+        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -909,46 +746,6 @@
           "failure_reason": null,
           "state": "CONTRACT_LOCKED",
           "status": "EXECUTING"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_GENERATED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "UNIT_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "SHADOW_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_RETURN_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "DEPENDENCIES_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "BITSTREAM_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "PROMOTED",
-          "status": "PROMOTED"
-        },
-        {
-          "failure_reason": "bounded selection deferred",
-          "state": "CONTRACT_LOCKED",
-          "status": "DEFERRED"
         },
         {
           "failure_reason": null,
@@ -1114,13 +911,13 @@
       "failure_reason": null,
       "function": "IsFlatnessInfoSent",
       "hashes": {
-        "agent": "55b27d7d551f95ef7154f5e2146d46d345c4e6ed0a65c8fc3700d8b11e1bb1b7",
+        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
         "contract": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
-        "dependency": "1b6dcd8b78d23b6ef7b4844734a39e892b4e9b693dcab3e9db71e210e1858e96",
+        "dependency": "af095c5bf7dc00a4a3fc82dae57b7710b2833f50d1f470ec4df5f71197d92433",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ac4a9f07b904cd0abc1a3cc9e6ed8f540825310badac8df57f1ad200ae033d0b",
+        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -1433,6 +1230,86 @@
           "failure_reason": null,
           "state": "PROMOTED",
           "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
         }
       ],
       "interface_shape": [
@@ -1490,13 +1367,13 @@
       "failure_reason": null,
       "function": "MapQpToQlevel",
       "hashes": {
-        "agent": "55b27d7d551f95ef7154f5e2146d46d345c4e6ed0a65c8fc3700d8b11e1bb1b7",
+        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
         "contract": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
-        "dependency": "c6f52af5dd9138398e19a33d462d483823d8add2c6ea76621c267624fe91da10",
+        "dependency": "79ae40eda9a6a6e57a9a24f4bb51fd89a3196e56be2a7b52ce751942b912b1be",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ac4a9f07b904cd0abc1a3cc9e6ed8f540825310badac8df57f1ad200ae033d0b",
+        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -1754,6 +1631,86 @@
           "failure_reason": null,
           "state": "PROMOTED",
           "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
         }
       ],
       "interface_shape": [
@@ -1828,13 +1785,13 @@
       "failure_reason": null,
       "function": "MaxResidualSize",
       "hashes": {
-        "agent": "55b27d7d551f95ef7154f5e2146d46d345c4e6ed0a65c8fc3700d8b11e1bb1b7",
+        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
         "contract": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
-        "dependency": "6a1c3478e8c0832060ee0f4ad95c62dce751132ac8088b6cfa6eeab1952a0867",
+        "dependency": "fb36ad3710962ee5a814a093041756571a79bc3c818b666ce82f23760886c58a",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ac4a9f07b904cd0abc1a3cc9e6ed8f540825310badac8df57f1ad200ae033d0b",
+        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -1849,46 +1806,6 @@
           "failure_reason": null,
           "state": "CONTRACT_LOCKED",
           "status": "EXECUTING"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_GENERATED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "UNIT_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "SHADOW_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_RETURN_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "DEPENDENCIES_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "BITSTREAM_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "PROMOTED",
-          "status": "PROMOTED"
-        },
-        {
-          "failure_reason": "bounded selection deferred",
-          "state": "CONTRACT_LOCKED",
-          "status": "DEFERRED"
         },
         {
           "failure_reason": null,
@@ -2004,13 +1921,13 @@
       "failure_reason": null,
       "function": "PredictSize",
       "hashes": {
-        "agent": "55b27d7d551f95ef7154f5e2146d46d345c4e6ed0a65c8fc3700d8b11e1bb1b7",
+        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
         "contract": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
-        "dependency": "fdec35d1ddba08cef64a02ca36bbf98b32b6548b4f5f5ede601cb94356f59fe2",
+        "dependency": "b02a4d5b48662017408cd47f9a1b6de3c2c9843d4168799cbf642bcae534fa33",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ac4a9f07b904cd0abc1a3cc9e6ed8f540825310badac8df57f1ad200ae033d0b",
+        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -2145,6 +2062,86 @@
           "failure_reason": null,
           "state": "CONTRACT_LOCKED",
           "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
         },
         {
           "failure_reason": null,
@@ -2297,6 +2294,261 @@
     },
     {
       "artifacts": [
+        "artifacts/5cc749c3741d2467caa8e270fff1f7bde0393ffc33ad173664769dab86233e2c",
+        "artifacts/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+        "artifacts/e4c7abaddba0123399c1ee038abfeacbbe65cfdd2b148ffe2001eae01c5e3944"
+      ],
+      "contract_id": "qp2qlevel",
+      "current_state": "PROMOTED",
+      "failure_reason": null,
+      "function": "Qp2Qlevel",
+      "hashes": {
+        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
+        "contract": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+        "dependency": "4cd88c977b41c92d03f608f3593959f193c57a7e2a633fb0f01b0e35b1fb120e",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
+        "shards": "8",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "8"
+      },
+      "history": [
+        {
+          "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "INFRASTRUCTURE_FAILURE"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        }
+      ],
+      "interface_shape": [
+        [
+          "input",
+          "bits_per_component",
+          5,
+          false
+        ],
+        [
+          "input",
+          "convert_rgb",
+          1,
+          false
+        ],
+        [
+          "input",
+          "cpnt",
+          2,
+          false
+        ],
+        [
+          "input",
+          "dsc_version_minor",
+          2,
+          false
+        ],
+        [
+          "input",
+          "native_420",
+          1,
+          false
+        ],
+        [
+          "input",
+          "qp",
+          5,
+          false
+        ],
+        [
+          "output",
+          "return_value",
+          5,
+          false
+        ]
+      ],
+      "model_calls": 1,
+      "origin": "tool_discovered_reviewed_override",
+      "selected": true,
+      "status": "PROMOTED",
+      "token_count": 8517,
+      "unit_receipt": "EXECUTED_NOW"
+    },
+    {
+      "artifacts": [
         "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
         "artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a"
       ],
@@ -2305,13 +2557,13 @@
       "failure_reason": null,
       "function": "QuantizeResidual",
       "hashes": {
-        "agent": "55b27d7d551f95ef7154f5e2146d46d345c4e6ed0a65c8fc3700d8b11e1bb1b7",
+        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
         "contract": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
-        "dependency": "577cc98609c33d94f72ef5ba0381c56e07b51a57d73586945ee23b9c13359dab",
+        "dependency": "9c1ac8406f197955ddb077a9bf2b7049a3d9b1e1fefb28bf6202e318d88cefd3",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ac4a9f07b904cd0abc1a3cc9e6ed8f540825310badac8df57f1ad200ae033d0b",
+        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -2856,6 +3108,86 @@
           "failure_reason": null,
           "state": "PROMOTED",
           "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
         }
       ],
       "interface_shape": [
@@ -2894,13 +3226,13 @@
       "failure_reason": null,
       "function": "SamplePredict",
       "hashes": {
-        "agent": "55b27d7d551f95ef7154f5e2146d46d345c4e6ed0a65c8fc3700d8b11e1bb1b7",
+        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
         "contract": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
-        "dependency": "064daa5ae4eb6c4b6ee1777454666e5b4c209e44962926c6e3f29197a156137f",
+        "dependency": "a671d3851b09188424741aa421d51023cbcfa6a865fa5827d862da572e597cb9",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ac4a9f07b904cd0abc1a3cc9e6ed8f540825310badac8df57f1ad200ae033d0b",
+        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -3065,6 +3397,86 @@
           "failure_reason": null,
           "state": "CONTRACT_LOCKED",
           "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
         },
         {
           "failure_reason": null,
@@ -3440,13 +3852,13 @@
       "failure_reason": null,
       "function": "SampToLineBuf",
       "hashes": {
-        "agent": "55b27d7d551f95ef7154f5e2146d46d345c4e6ed0a65c8fc3700d8b11e1bb1b7",
+        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
         "contract": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
-        "dependency": "8a0b6d898e06a6eb2be2a2dcc6b61c66ae829bdee2630ba217df9bc44357b263",
+        "dependency": "1fed1596663992dd5a977b3b86ff473737e0260480624bd08fcda5587a0ae2a7",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ac4a9f07b904cd0abc1a3cc9e6ed8f540825310badac8df57f1ad200ae033d0b",
+        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -3656,6 +4068,86 @@
           "failure_reason": null,
           "state": "PROMOTED",
           "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
         }
       ],
       "interface_shape": [
@@ -3737,8 +4229,8 @@
     "caller_usr": "c:@F@IchDecision",
     "selection_basis": "smallest acyclic direct call site from facts/callgraph.json"
   },
-  "generator_invocations": 12,
-  "model_calls": 12,
+  "generator_invocations": 13,
+  "model_calls": 13,
   "rollback_mode": "C_ONLY",
   "schema_version": 2,
   "selected_contracts": [
@@ -3751,6 +4243,7 @@
     "mapqptoqlevel",
     "maxresidualsize",
     "predictsize",
+    "qp2qlevel",
     "quantizeresidual",
     "samplepredict",
     "samptolinebuf"
@@ -3766,5 +4259,5 @@
     "BITSTREAM_PASS",
     "PROMOTED"
   ],
-  "token_count": 39644
+  "token_count": 48161
 }

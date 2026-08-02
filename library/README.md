@@ -29,3 +29,8 @@ source artifact directory in the manifest and receipt.
 `samplepredict` is the first production-domain relative-window leaf: its C
 line-buffer state remains at the caller boundary, while the RTL consumes the
 reviewed MMAP/left/block predictor taps.
+
+`qp2qlevel` is a configuration-library primitive, not production codec-output
+DUT logic. It is the reviewed DSC 1.2a Table 6-2 qLevel lookup, with its C
+configuration pointer flattened into finite read-only ports and its legal QP
+range constrained to each normative table row.

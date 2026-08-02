@@ -375,7 +375,11 @@ class Agent:
             return None
         criteria = candidate.get("criteria", {}) or {}
         failed = sorted(str(key) for key, value in criteria.items() if value is not True)
-        allowed_failures = {"bounded_computation", "no_io_allocation_or_logging"}
+        allowed_failures = {
+            "bounded_computation",
+            "no_io_allocation_or_logging",
+            "contributes_to_observable_output",
+        }
         if len(failed) != 1 or failed[0] not in allowed_failures:
             return None
         covered = coverage.get("covered") is True or (coverage.get("coverage", {}) or {}).get("covered") is True
@@ -416,11 +420,23 @@ class Agent:
                 or proof.get("max_iterations") <= 0
             ):
                 return None
-        else:
+        elif failed == ["no_io_allocation_or_logging"]:
             discharged = sorted(str(item) for item in proof.get("discharged_effects", []))
             if proof.get("kind") != "DOMAIN_EFFECT" or discharged != ["logging"]:
                 return None
             if not proof.get("unreachable_condition"):
+                return None
+        else:
+            # A CONFIG_LIBRARY is deliberately outside the production-output
+            # DUT set.  It may still be promoted as a reusable, spec-defined
+            # combinational library primitive when the tool facts prove every
+            # other admission criterion and the reviewed record explicitly
+            # identifies the boundary as configuration-only.
+            if (
+                proof.get("kind") != "CONFIG_LIBRARY"
+                or proof.get("role") != "CONFIG_HELPER"
+                or not proof.get("non_dut_boundary")
+            ):
                 return None
         spec_links = override.get("spec_links", []) or []
         if not spec_links or not all(link.get("status") == "EXACT" for link in spec_links):
@@ -554,6 +570,10 @@ class Agent:
                     and candidate.get("eligible") is not True
                     else "reviewed_domain_effect"
                     if domain_override and candidate.get("eligible") is not True
+                    and domain_override.get("tool_admission", {}).get("kind") == "DOMAIN_EFFECT"
+                    else "reviewed_config_library"
+                    if domain_override and candidate.get("eligible") is not True
+                    and domain_override.get("tool_admission", {}).get("kind") == "CONFIG_LIBRARY"
                     else "reviewed_static_but_uncovered"
                     if reviewed_static_eligible
                     else "dynamic_execution"
@@ -668,8 +688,17 @@ class Agent:
         if interface.get("ports"):
             return list(interface["ports"])
         ports = []
+        port_names: set[str] = set()
+
+        def add_port(port: dict[str, Any]) -> None:
+            name = str(port.get("name", ""))
+            if name in port_names:
+                return
+            port_names.add(name)
+            ports.append(port)
+
         for item in interface.get("inputs", []):
-            ports.append({
+            add_port({
                 "name": safe_identifier(str(item.get("name", "input"))),
                 "role": str(item.get("name", "input")),
                 "direction": "input",
@@ -680,7 +709,7 @@ class Agent:
             })
         for item in interface.get("flattened_pointer_dependencies", []):
             port_name = str(item.get("port_name") or item.get("field") or "field")
-            ports.append({
+            add_port({
                 "name": safe_identifier(port_name),
                 "role": str(item.get("role") or item.get("field") or port_name),
                 "direction": "input",
@@ -690,7 +719,7 @@ class Agent:
                 "legal_domain": item.get("legal_domain", {}),
             })
         output = interface.get("output", {}) or {}
-        ports.append({
+        add_port({
             "name": safe_identifier(str(output.get("name", "return_value"))),
             "role": "return_value",
             "direction": "output",
@@ -1998,7 +2027,7 @@ class Agent:
         positions = {name: index for index, name in enumerate(names)}
         base_port = str(strategy.get("base_bit_depth_port", ""))
         table_bindings = strategy.get("table_bindings", {}) or {}
-        tables = strategy.get("tables", {}) or {}
+        tables = strategy.get("tables", {}) or (contract.get("semantics", {}) or {}).get("tables", {}) or {}
         related_specs = strategy.get("bit_depth_ports", {}) or {}
         if base_port not in positions or not table_bindings or not tables:
             raise RuntimeError("incomplete reviewed table-lookup vector strategy")
@@ -2090,6 +2119,70 @@ class Agent:
             "related_bit_depth_ports": sorted(related_ports),
             "table_ports": sorted(table_ports),
             "qp_ports": sorted(qp_ports),
+        }
+
+    def qp_table_vector_iterator(
+        self,
+        contract: dict[str, Any],
+        input_ports: list[dict[str, Any]],
+        values: list[list[int]],
+        strategy: dict[str, Any],
+    ) -> tuple[Iterable[tuple[int, ...]], dict[str, Any]]:
+        """Enumerate a normative QP table with its bit-depth row relation.
+
+        Table 6-2 has a different legal QP extent for each supported bit
+        depth.  Keeping that relation here prevents the C oracle from reading
+        past the selected immutable table while retaining an exhaustive
+        finite domain.  The strategy is data-driven and applies to any
+        reviewed configuration lookup with the same table shape.
+        """
+        names = [str(port.get("name")) for port in input_ports]
+        by_name = {name: values[index] for index, name in enumerate(names)}
+        base_port = str(strategy.get("base_bit_depth_port", ""))
+        qp_port = str(strategy.get("qp_port", ""))
+        tables = strategy.get("tables") or (contract.get("semantics", {}) or {}).get("tables", {}) or {}
+        if base_port not in by_name or qp_port not in by_name or not tables:
+            raise RuntimeError("incomplete reviewed QP-table vector strategy")
+        fixed_names = [name for name in names if name not in {base_port, qp_port}]
+        fixed_values = [by_name[name] for name in fixed_names]
+
+        def table_length(table_kind: str, bit_depth: int) -> int:
+            table = tables.get(table_kind, {}) or {}
+            raw = table.get(str(bit_depth), table.get(bit_depth))
+            if not isinstance(raw, list) or not raw:
+                raise RuntimeError(
+                    f"reviewed QP table {table_kind} has no row for {bit_depth}"
+                )
+            return len(raw)
+
+        def constrained() -> Iterable[tuple[int, ...]]:
+            for fixed in itertools.product(*fixed_values) if fixed_values else [()]:
+                context = dict(zip(fixed_names, fixed))
+                for bit_depth in by_name[base_port]:
+                    bit_depth = int(bit_depth)
+                    max_qp = min(
+                        table_length(str(table_kind), bit_depth)
+                        for table_kind in tables
+                    ) - 1
+                    for qp in by_name[qp_port]:
+                        if int(qp) > max_qp:
+                            continue
+                        context[base_port] = bit_depth
+                        context[qp_port] = int(qp)
+                        yield tuple(int(context[name]) for name in names)
+
+        return constrained(), {
+            "kind": "qp_table",
+            "source": "reviewed normative QP table row relation",
+            "base_bit_depth_port": base_port,
+            "qp_port": qp_port,
+            "max_qp_by_bit_depth": {
+                str(bit_depth): min(
+                    table_length(str(table_kind), int(bit_depth))
+                    for table_kind in tables
+                ) - 1
+                for bit_depth in by_name[base_port]
+            },
         }
 
     def windowed_boundary_vector_iterator(
@@ -2361,6 +2454,8 @@ class Agent:
         names = [str(port.get("name")) for port in input_ports]
         semantics = contract.get("semantics", {}) or {}
         table_strategy = semantics.get("legal_vector_strategy") or semantics.get("vector_strategy")
+        if isinstance(table_strategy, dict) and table_strategy.get("kind") == "qp_table":
+            return self.qp_table_vector_iterator(contract, input_ports, values, table_strategy)
         if isinstance(table_strategy, dict) and table_strategy.get("kind") == "table_lookup":
             return self.table_lookup_vector_iterator(contract, input_ports, values, table_strategy)
         if isinstance(table_strategy, dict) and table_strategy.get("kind") == "windowed_boundary":
@@ -2738,11 +2833,12 @@ class Agent:
         if not source_files:
             return {"status": "INFRASTRUCTURE_FAILURE", "reason": "no C translation units"}
         for source in source_files:
-            if source.name == "codec_main.c":
-                continue
             object_path = build_dir / (source.stem + ".o")
+            extra = ["-Dmain=dsc_cicd_original_main"] if source.name == "codec_main.c" else []
             result = self.run_process(
-                [clang, "-std=c99", "-O0", "-g", "-I", str(source_dir), "-c", str(source), "-o", str(object_path)],
+                [clang, "-std=c99", "-O0", "-g", "-I", str(source_dir)]
+                + extra
+                + ["-c", str(source), "-o", str(object_path)],
                 cwd=source_dir,
                 timeout=int(os.environ.get("DSC_CICD_COMPILE_TIMEOUT", "600")),
             )
@@ -2773,7 +2869,7 @@ class Agent:
             "status": status,
             "binary": str(binary.relative_to(artifact)) if binary.is_file() else None,
             "commands": commands,
-            "compiled_translation_units": [path.name for path in source_files if path.name != "codec_main.c"],
+            "compiled_translation_units": [path.name for path in source_files],
         }
         write_json(artifact / "oracle-compile-receipt.json", receipt)
         return receipt

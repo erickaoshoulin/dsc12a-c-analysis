@@ -59,6 +59,10 @@
 - `EXACT` page 83 `pdf:model-note:MN_IQ_RECON:p083` (exact_mn_id)
 - `EXACT` page 83 `pdf:section:6.4.6` (exact_mn_id)
 
+## `Qp2Qlevel`
+
+- `REVIEWED` page 114 `pdf:table:6-2` (reviewed_exact_spec)
+
 ## `QuantizeResidual`
 
 - `EXACT` page 83 `pdf:model-note:MN_ENC_QUANTIZATION:p083` (exact_mn_id)

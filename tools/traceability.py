@@ -863,6 +863,7 @@ def apply_reviewed(
     manifest: dict[str, Any],
     anchors: list[dict[str, Any]] | None = None,
     code_anchors: list[dict[str, Any]] | None = None,
+    raw_functions: list[dict[str, Any]] | None = None,
 ) -> list[dict[str, Any]]:
     by_key = {(item.get("spec_anchor_id", ""), item.get("code_anchor_id", "")): item for item in reviewed}
     pdf_sha = manifest.get("spec", {}).get("sha256", "UNKNOWN")
@@ -886,6 +887,30 @@ def apply_reviewed(
     # function selection list.
     anchor_by_id = {str(item.get("anchor_id")): item for item in (anchors or [])}
     code_by_id = {str(item.get("code_anchor_id")): item for item in (code_anchors or [])}
+    # Some source files are intentionally excluded from heuristic
+    # traceability (for example host/configuration plumbing).  A reviewed
+    # exact link may still name one of those functions when it is a real
+    # reusable, spec-defined library boundary.  Resolve that identity from
+    # the immutable Clang facts rather than turning the reviewed file into a
+    # function selector or broadening heuristic proposals.
+    source_dir = pathlib.Path(manifest.get("source", {}).get("source_dir", "."))
+    for function in raw_functions or []:
+        code_id = f"code:function:{function.get('clang_usr', '')}"
+        if not function.get("clang_usr") or code_id in code_by_id:
+            continue
+        source_file = str(function.get("source_file", ""))
+        line = int(function.get("line", 0) or 0)
+        end_line = int(function.get("end_line", line) or line)
+        code_by_id[code_id] = {
+            "code_anchor_id": code_id,
+            "kind": "function",
+            "function": function.get("name", "UNKNOWN"),
+            "clang_usr": function.get("clang_usr", "UNKNOWN"),
+            "file": source_relative(pathlib.Path(source_file), source_dir),
+            "line": line,
+            "end_line": end_line,
+            "permalink": code_permalink(source_file, line, end_line, manifest),
+        }
     existing = {link_key(link) for link in links}
     for review in reviewed:
         key = (review.get("spec_anchor_id", ""), review.get("code_anchor_id", ""))
@@ -969,6 +994,7 @@ def main() -> int:
         manifest,
         anchors=anchors,
         code_anchors=comments["code_anchors"],
+        raw_functions=raw.get("functions", []),
     )
     linked_spec = {link["spec_anchor_id"] for link in links}
     linked_code = {link["code_anchor_id"] for link in links}

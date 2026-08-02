@@ -41,11 +41,11 @@
     "caller_usr": "c:@F@IchDecision",
     "selection_basis": "smallest acyclic direct call site from facts/callgraph.json"
   },
-  "generator_invocations": 12,
+  "generator_invocations": 13,
   "input_pdf": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf",
   "input_source_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
   "matrix_scripts_discovered": 22,
-  "model_calls": 12,
+  "model_calls": 13,
   "new_candidates": [],
   "ready_contracts": [
     "ceil_log2",
@@ -57,6 +57,7 @@
     "mapqptoqlevel",
     "maxresidualsize",
     "predictsize",
+    "qp2qlevel",
     "quantizeresidual",
     "samplepredict",
     "samptolinebuf"
@@ -136,14 +137,14 @@
         }
       ],
       "shard_durations_seconds": [
-        1.98,
-        1.853,
-        1.904,
-        1.883,
-        1.865,
-        2.014,
-        1.861,
-        1.866
+        0.776,
+        0.755,
+        0.84,
+        0.785,
+        0.746,
+        0.711,
+        0.705,
+        0.669
       ],
       "status": "PROMOTED",
       "tokens": 989,
@@ -225,14 +226,14 @@
         }
       ],
       "shard_durations_seconds": [
-        0.845,
-        0.83,
-        0.822,
-        0.813,
-        0.83,
-        0.814,
-        0.797,
-        0.829
+        0.77,
+        0.755,
+        0.747,
+        0.777,
+        0.764,
+        0.775,
+        0.773,
+        0.736
       ],
       "status": "PROMOTED",
       "tokens": 1703,
@@ -312,14 +313,14 @@
         }
       ],
       "shard_durations_seconds": [
-        5.066,
-        5.792,
-        5.681,
-        5.397,
-        5.519,
-        5.621,
-        5.404,
-        5.675
+        5.423,
+        5.305,
+        5.691,
+        5.257,
+        5.723,
+        5.612,
+        5.633,
+        5.559
       ],
       "status": "PROMOTED",
       "tokens": 2264,
@@ -393,14 +394,14 @@
         }
       ],
       "shard_durations_seconds": [
-        1.965,
-        2.041,
-        1.907,
-        1.882,
-        1.877,
-        1.894,
-        1.831,
-        1.824
+        2.405,
+        2.2,
+        2.178,
+        2.238,
+        2.173,
+        2.119,
+        2.127,
+        2.125
       ],
       "status": "PROMOTED",
       "tokens": 2202,
@@ -502,14 +503,14 @@
         }
       ],
       "shard_durations_seconds": [
-        5.314,
-        5.613,
-        5.007,
-        5.649,
-        5.62,
-        5.143,
-        5.571,
-        5.659
+        5.672,
+        5.503,
+        4.994,
+        5.342,
+        5.726,
+        5.659,
+        5.735,
+        5.222
       ],
       "status": "PROMOTED",
       "tokens": 4922,
@@ -587,14 +588,14 @@
         }
       ],
       "shard_durations_seconds": [
-        1.119,
-        1.186,
-        1.093,
-        1.101,
-        1.124,
-        1.07,
-        1.065,
-        1.103
+        1.807,
+        1.77,
+        1.729,
+        1.647,
+        1.706,
+        1.694,
+        1.567,
+        1.568
       ],
       "status": "PROMOTED",
       "tokens": 2012,
@@ -682,14 +683,14 @@
         }
       ],
       "shard_durations_seconds": [
-        2.388,
-        2.17,
-        2.438,
-        2.417,
-        2.149,
-        2.294,
-        2.04,
-        2.174
+        3.694,
+        3.679,
+        3.574,
+        3.666,
+        3.411,
+        3.499,
+        3.755,
+        3.736
       ],
       "status": "PROMOTED",
       "tokens": 3697,
@@ -779,14 +780,14 @@
         }
       ],
       "shard_durations_seconds": [
-        8.675,
-        9.473,
-        9.379,
-        9.612,
-        9.352,
-        9.192,
-        8.591,
-        9.561
+        9.838,
+        9.718,
+        9.316,
+        9.937,
+        9.897,
+        9.959,
+        9.591,
+        9.28
       ],
       "status": "PROMOTED",
       "tokens": 2772,
@@ -864,19 +865,110 @@
         }
       ],
       "shard_durations_seconds": [
-        2.019,
-        2.133,
-        1.991,
-        1.991,
-        2.093,
-        1.996,
-        2.08,
-        1.949
+        2.284,
+        2.252,
+        2.206,
+        2.12,
+        2.146,
+        2.074,
+        2.048,
+        1.876
       ],
       "status": "PROMOTED",
       "tokens": 1954,
       "unit_status": "EXHAUSTIVE_EQUIVALENT",
       "vector_strategy": "cartesian"
+    },
+    {
+      "contract_id": "qp2qlevel",
+      "counterexample": {
+        "actual": "1",
+        "expected": "0",
+        "index": 0,
+        "inputs": [
+          0,
+          0,
+          8,
+          0,
+          0,
+          0
+        ],
+        "shard_id": 0
+      },
+      "dependency_evidence": {
+        "call_sites": 2,
+        "compile_commands": true,
+        "direct_call_sites": 2,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": true,
+      "executed_shards": 8,
+      "executed_vectors": 5760,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": false,
+      "formal_proof_status": "NOT_APPLICABLE",
+      "library_promotion": {
+        "archived_previous": null,
+        "artifact_dir": "artifacts/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+        "contract_file": "library/contracts/qp2qlevel.json",
+        "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+        "contract_id": "qp2qlevel",
+        "module": "qp2qlevel",
+        "module_file": "library/rtl/qp2qlevel.sv",
+        "rtl_sha256": "18f078d82f020604fbcae57261373e69e9291f7757f81585163bb47fa1d893df",
+        "status": "PASS",
+        "verification_file": "library/verification/qp2qlevel.json"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 1,
+      "rejected_candidates": [
+        {
+          "bitstream_gate": "FAIL",
+          "candidate": "candidate_02",
+          "composition_gate": "FAIL",
+          "counterexample": {
+            "actual": "1",
+            "expected": "0",
+            "index": 0,
+            "inputs": [
+              0,
+              0,
+              8,
+              0,
+              0,
+              0
+            ],
+            "shard_id": 0
+          },
+          "expected_rejection": true,
+          "matrix_status": "FAIL",
+          "receipt": "artifacts/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026/rejected/candidate_02/rejection-receipt.json",
+          "status": "EXPECTED_REJECTION",
+          "unit_gate": "FAIL",
+          "unit_verification_status": "COUNTEREXAMPLE"
+        }
+      ],
+      "shard_durations_seconds": [
+        1.91,
+        1.838,
+        1.77,
+        1.726,
+        1.533,
+        1.482,
+        1.476,
+        1.458
+      ],
+      "status": "PROMOTED",
+      "tokens": 8517,
+      "unit_status": "EXHAUSTIVE_EQUIVALENT",
+      "vector_strategy": "qp_table"
     },
     {
       "contract_id": "quantizeresidual",
@@ -947,14 +1039,14 @@
         }
       ],
       "shard_durations_seconds": [
-        1.933,
-        1.868,
-        1.686,
-        1.532,
-        1.651,
-        1.637,
-        1.499,
-        1.654
+        2.013,
+        1.727,
+        1.738,
+        1.902,
+        1.722,
+        1.914,
+        1.649,
+        1.811
       ],
       "status": "PROMOTED",
       "tokens": 2108,
@@ -1104,14 +1196,14 @@
         }
       ],
       "shard_durations_seconds": [
-        18.096,
-        18.006,
-        17.107,
-        17.943,
-        17.815,
-        17.869,
-        17.757,
-        17.567
+        18.045,
+        17.157,
+        18.204,
+        17.673,
+        18.089,
+        17.935,
+        17.603,
+        17.875
       ],
       "status": "PROMOTED",
       "tokens": 12302,
@@ -1191,14 +1283,14 @@
         }
       ],
       "shard_durations_seconds": [
-        8.231,
-        8.698,
-        8.89,
         8.587,
-        8.172,
-        8.319,
-        8.815,
-        8.614
+        8.308,
+        8.182,
+        8.697,
+        8.367,
+        6.736,
+        8.192,
+        8.596
       ],
       "status": "PROMOTED",
       "tokens": 2719,
@@ -1217,6 +1309,7 @@
     "mapqptoqlevel",
     "maxresidualsize",
     "predictsize",
+    "qp2qlevel",
     "quantizeresidual",
     "samplepredict",
     "samptolinebuf"
@@ -1234,7 +1327,8 @@
     8,
     8,
     8,
+    8,
     8
   ],
-  "tokens": 39644
+  "tokens": 48161
 }

@@ -70,6 +70,20 @@ class CicdAgentUnitTests(unittest.TestCase):
         self.assertEqual(safe_identifier("a.b-c"), "a_b_c")
         self.assertEqual(len(digest({"a": 1})), 64)
 
+    def test_freeze_ports_deduplicates_flattened_pointer_fields(self):
+        agent = Agent(pathlib.Path(tempfile.mkdtemp()), "test")
+        ports = agent.freeze_ports({
+            "inputs": [{"name": "value", "logical_width": 8, "signed": False}],
+            "flattened_pointer_dependencies": [{
+                "field": "value",
+                "port_name": "value",
+                "logical_width": 8,
+                "signed": False,
+            }],
+            "output": {"name": "return_value", "logical_width": 8, "signed": False},
+        })
+        self.assertEqual([port["name"] for port in ports], ["value", "return_value"])
+
     def test_promoted_manifest_resolves_dynamic_contract_usr_from_tool_facts(self):
         with tempfile.TemporaryDirectory() as directory:
             root = pathlib.Path(directory)
@@ -218,6 +232,53 @@ class CicdAgentUnitTests(unittest.TestCase):
         missing_output_domain["interface"] = dict(override["interface"])
         missing_output_domain["interface"]["output"] = {"name": "return_value", "unresolved": False}
         self.assertIsNone(Agent.reviewed_domain_admission(candidate, coverage, missing_output_domain))
+
+    def test_reviewed_config_library_admission_keeps_non_dut_boundary(self):
+        candidate = {
+            "clang_usr": "c:@F@ConfigLeaf",
+            "name": "ConfigLeaf",
+            "role": "CONFIG",
+            "eligible": False,
+            "criteria": {
+                "production_reachable": True,
+                "contributes_to_observable_output": False,
+                "no_direct_or_transitive_state_write": True,
+                "no_io_allocation_or_logging": True,
+                "bounded_computation": True,
+            },
+        }
+        coverage = {"coverage_status": "EXECUTED", "covered": True}
+        override = {
+            "review_status": "REVIEWED",
+            "spec_links": [{"anchor_id": "pdf:table:config", "status": "EXACT"}],
+            "interface": {
+                "inputs": [{
+                    "name": "mode",
+                    "legal_domain": {"values": [0, 1]},
+                    "unresolved": False,
+                }],
+                "output": {"name": "return_value", "legal_range": [0, 3], "unresolved": False},
+            },
+            "semantics": {"kind": "table_lookup"},
+            "tool_admission": {
+                "kind": "CONFIG_LIBRARY",
+                "status": "PASS",
+                "role": "CONFIG_HELPER",
+                "non_dut_boundary": True,
+            },
+        }
+        admission = Agent.reviewed_domain_admission(candidate, coverage, override)
+        self.assertEqual(admission["kind"], "CONFIG_LIBRARY")
+
+        bad_boundary = dict(override)
+        bad_boundary["tool_admission"] = dict(override["tool_admission"])
+        bad_boundary["tool_admission"]["non_dut_boundary"] = False
+        self.assertIsNone(Agent.reviewed_domain_admission(candidate, coverage, bad_boundary))
+
+        bad_criteria = dict(candidate)
+        bad_criteria["criteria"] = dict(candidate["criteria"])
+        bad_criteria["criteria"]["no_io_allocation_or_logging"] = False
+        self.assertIsNone(Agent.reviewed_domain_admission(bad_criteria, coverage, override))
 
     def test_queue_target_selects_one_discovered_contract_and_refreshes_cache(self):
         contract = {
@@ -790,6 +851,43 @@ class CicdAgentUnitTests(unittest.TestCase):
         matching = [row for row in rows if row[1] == 8 and row[7] == 0 and row[8] == 0]
         self.assertTrue(matching)
         self.assertTrue(all(row[9:13] == [0, 5, 0, 5] for row in matching))
+
+    def test_qp_table_domain_keeps_qp_within_selected_table_row(self):
+        contract = {
+            "contract_id": "qp_table_relation",
+            "interface": {
+                "ports": [
+                    {"name": "bits_per_component", "direction": "input", "legal_domain": {"values": [8, 10]}},
+                    {"name": "qp", "direction": "input", "legal_domain": {"range": [0, 31]}},
+                    {"name": "cpnt", "direction": "input", "legal_domain": {"values": [0, 1]}},
+                    {"name": "return_value", "direction": "output"},
+                ]
+            },
+            "semantics": {
+                "legal_vector_strategy": {
+                    "kind": "qp_table",
+                    "base_bit_depth_port": "bits_per_component",
+                    "qp_port": "qp",
+                },
+                "tables": {
+                    "luma": {"8": [0, 1], "10": [0, 1, 2]},
+                    "chroma": {"8": [0, 1], "10": [0, 1, 2]},
+                },
+            },
+        }
+        agent = Agent(pathlib.Path(tempfile.mkdtemp()), "test")
+        with tempfile.TemporaryDirectory() as directory:
+            artifact = pathlib.Path(directory) / "artifact"
+            result = agent.make_shards(contract, artifact)
+            rows = [
+                [int(value) for value in line.split()]
+                for path in sorted((artifact / "shards").glob("*.vectors"))
+                for line in path.read_text(encoding="utf-8").splitlines()
+            ]
+        self.assertEqual(result["vector_strategy"]["kind"], "qp_table")
+        self.assertEqual(result["total_vectors"], 10)
+        self.assertEqual(max(row[1] for row in rows if row[0] == 8), 1)
+        self.assertEqual(max(row[1] for row in rows if row[0] == 10), 2)
 
     def test_generator_maps_c_style_semantic_identifiers_to_frozen_ports(self):
         interface = {

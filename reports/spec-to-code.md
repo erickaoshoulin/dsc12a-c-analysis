@@ -188,3 +188,6 @@ Generated links are EXACT only when anchored by a direct MN/spec reference; heur
 - `REVIEWED` `pdf:section:6.6.1` page 91 -> `FindResidualSize` `dsc_codec.c:1078`
   - method: reviewed_exact_spec; evidence: Table 3-1 gives normative residual-size examples and section 6.6.1 uses the residual size for DSU-VLC; the C threshold chain matches that relation over the reviewed domain.
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1078-L1109
+- `REVIEWED` `pdf:table:6-2` page 114 -> `Qp2Qlevel` `codec_main.c:816`
+  - method: reviewed_exact_spec; evidence: The immutable Qp2Qlevel body selects the luma/chroma Table 6-2 row by bits_per_component and applies the DSC 1.2 chroma adjustment.
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/codec_main.c#L816-L844

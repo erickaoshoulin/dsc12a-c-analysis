@@ -19,7 +19,7 @@
       "180000"
     ],
     "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
-    "duration_seconds": 75.356,
+    "duration_seconds": 74.658,
     "output": "{\n  \"ast_frontend\": \"verilator --json-only\",\n  \"candidate\": \"candidate_01.sv\",\n  \"candidate_path\": \"/private/tmp/dsc12a-c-analysis/artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509/generated/candidate_01.sv\",\n  \"candidate_sha256\": \"9284db80588056687c6156a939c57a46f1752f588c4429bd97a571959a151a1d\",\n  \"constraint_count\": 122076,\n  \"contract_id\": \"samplepredict\",\n  \"contract_sha256\": \"1cfd5881bc9ad0b2676584611e8732f4220cff2178dce7fb82d8e0e3ce4e3a3a\",\n  \"partition_count\": 1002,\n  \"partitions_checked\": 1002,\n  \"proof_basis\": \"locked exact spec-linked window equations versus parsed combinational RTL AST\",\n  \"proof_complete\": true,\n  \"proof_strategy\": \"STRUCTURAL_HPOS_RESIDUE_PARTITION\",\n  \"schema_version\": 1,\n  \"solver\": \"z3\",\n  \"status\": \"PASS\",\n  \"timeout_ms\": 180000\n}\n",
     "returncode": 0
   },

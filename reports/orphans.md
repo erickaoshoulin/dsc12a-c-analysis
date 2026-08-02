@@ -1,6 +1,6 @@
 # Traceability orphans
 
-- Untraced spec anchors: 157
+- Untraced spec anchors: 156
 - Untraced production functions: 59
 
 ## Spec anchors
@@ -132,7 +132,6 @@
 - `pdf:figure:6-16`
 - `pdf:figure:6-18`
 - `pdf:section:7`
-- `pdf:table:6-2`
 - `pdf:figure:7-1`
 - `pdf:section:7.1`
 - `pdf:section:7.3`

@@ -64,6 +64,14 @@ PDF authority, finite input/output domains, the unreachable condition, and
 the diagnostic branch into DUT logic. Its receipt is marked
 `coverage_basis: reviewed_domain_effect`.
 
+The production-output criterion has one explicit library boundary: a
+tool-ranked, executed pure/combinational `CONFIG` helper whose only failed
+criterion is observable-output contribution may be admitted as a reusable
+configuration primitive. It requires a complete finite exact-spec domain and
+reviewed `CONFIG_LIBRARY` evidence with `role: CONFIG_HELPER` and
+`non_dut_boundary: true`; it never turns configuration plumbing into codec DUT
+logic or waives effects, boundedness, coverage, dependency, or source gates.
+
 ## Specification traceability
 
 The primary PDF extractor is `pdfinfo` plus `pdftotext -layout`. It records page

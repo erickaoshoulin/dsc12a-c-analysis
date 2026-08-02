@@ -32,7 +32,7 @@
     "comment_count": 311,
     "exact_count": 53,
     "heading_anchor_count": 186,
-    "link_count": 62,
+    "link_count": 63,
     "model_note_anchor_count": 27,
     "model_note_count": 27,
     "pdf_model_note_ids": [
@@ -62,7 +62,7 @@
       "MN_SIMPLE_444_422"
     ],
     "proposed_count": 7,
-    "reviewed_count": 2,
+    "reviewed_count": 3,
     "shared_model_note_count": 23,
     "shared_model_note_ids": [
       "MN_BLOCK_PRED",
@@ -92,7 +92,7 @@
     "spec_anchor_count": 358,
     "stale_count": 0,
     "untraced_production_function_count": 59,
-    "untraced_spec_anchor_count": 157
+    "untraced_spec_anchor_count": 156
   },
   "do_not_edit": true,
   "links": [
@@ -1151,6 +1151,24 @@
       "spec_section": "6.6.1",
       "spec_sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "status": "REVIEWED"
+    },
+    {
+      "clang_usr": "c:@F@Qp2Qlevel",
+      "code_anchor_id": "code:function:c:@F@Qp2Qlevel",
+      "code_file": "codec_main.c",
+      "code_line": 816,
+      "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/codec_main.c#L816-L844",
+      "evidence": "The immutable Qp2Qlevel body selects the luma/chroma Table 6-2 row by bits_per_component and applies the DSC 1.2 chroma adjustment.",
+      "function": "Qp2Qlevel",
+      "link_id": "reviewed-qp2qlevel-table-6-2",
+      "method": "reviewed_exact_spec",
+      "review_note": "DSC 1.2a Table 6-2 is the normative qLevel lookup used by the configuration helper.",
+      "source_hashes_sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_anchor_id": "pdf:table:6-2",
+      "spec_page": 114,
+      "spec_section": null,
+      "spec_sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "status": "REVIEWED"
     }
   ],
   "orphans": {
@@ -1343,7 +1361,6 @@
       "pdf:figure:6-16",
       "pdf:figure:6-18",
       "pdf:section:7",
-      "pdf:table:6-2",
       "pdf:figure:7-1",
       "pdf:section:7.1",
       "pdf:section:7.3",
