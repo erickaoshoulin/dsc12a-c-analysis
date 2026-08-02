@@ -243,6 +243,96 @@ class RegressionServiceTests(unittest.TestCase):
             self.assertIn("module synthetic(", (root / "library" / "rtl" / "synthetic.sv").read_text(encoding="utf-8"))
             self.assertTrue((root / "library" / "verification" / "synthetic.json").is_file())
 
+    def test_library_promotion_preserves_existing_schema2_metadata(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            store = DurableStore(root / "state", validate=False)
+            service = RegressionService(store, root)
+            rtl = root / "accepted.sv"
+            rtl.write_text(
+                "module synthetic_candidate_01(input logic [7:0] value, output logic [7:0] return_value);\n"
+                "assign return_value = value + 8'd1;\nendmodule\n",
+                encoding="utf-8",
+            )
+            library = root / "library"
+            (library / "rtl").mkdir(parents=True)
+            (library / "contracts").mkdir()
+            (library / "verification").mkdir()
+            (library / "rtl" / "synthetic.sv").write_text(rtl.read_text(encoding="utf-8"), encoding="utf-8")
+            old_component = {
+                "contract_id": "synthetic",
+                "contract_file": "contracts/synthetic.json",
+                "artifact_dir": "artifacts/old-artifact",
+                "verification_file": "verification/synthetic.json",
+                "module": "synthetic",
+                "module_file": "rtl/synthetic.sv",
+                "status": "PASS",
+            }
+            (library / "manifest.json").write_text(
+                json.dumps({"schema_version": 2, "spec_hash": "spec", "source_hash": "source", "components": [old_component]}),
+                encoding="utf-8",
+            )
+            (library / "contracts" / "synthetic.json").write_text(
+                json.dumps({"do_not_edit": True, "interface": {"ports": []}}),
+                encoding="utf-8",
+            )
+            (library / "verification" / "synthetic.json").write_text(
+                json.dumps({
+                    "schema_version": 2,
+                    "artifact_dir": "artifacts/old-artifact",
+                    "formal_proof": {"status": "PASS"},
+                    "dependency": {"status": "PASS"},
+                    "stages": {"formal": "PASS"},
+                }),
+                encoding="utf-8",
+            )
+            run = store.run_dir("run-a")
+            function = run / "functions" / "synthetic"
+            function.mkdir(parents=True)
+            (run / "run.json").write_text(
+                json.dumps({"run_id": "run-a", "profile": "scale", "spec_hash": "spec", "source_hash": "source"}),
+                encoding="utf-8",
+            )
+            receipt = {
+                "status": "PASS",
+                "run_id": "run-a",
+                "contract_id": "synthetic",
+                "function": "Synthetic",
+                "kind": "arithmetic",
+                "execution_status": "EXECUTED_NOW",
+                "accepted_rtl": str(rtl),
+                "contract_hash": "contract-hash",
+                "candidate_pass_rate": "1/2",
+                "frame_pass_rate": "3/3",
+                "source_gate": {"status": "PASS"},
+                "traceability": {
+                    "authority": "EXACT_SPEC",
+                    "review_status": "REVIEWED",
+                    "source_file": "model.c",
+                    "c_span": {"start_line": 1, "end_line": 1},
+                    "spec_links": [{"status": "EXACT", "page": 1, "section": "1"}],
+                    "ports": [{"name": "value", "authority": "EXACT_SPEC"}],
+                },
+                "stages": {stage: {"status": "PASS"} for stage in ("width_spec_gate", "generator_cache", "verilator_lint_build", "shards_mutations", "dependency_composition", "model_matrix", "frame_compare")},
+            }
+            (function / "receipt.json").write_text(json.dumps(receipt), encoding="utf-8")
+
+            result = service.promote_library("run-a")
+
+            self.assertEqual(result["status"], "PASS")
+            manifest = read_json(library / "manifest.json", {})
+            component = manifest["components"][0]
+            self.assertEqual(manifest["schema_version"], 2)
+            self.assertEqual(component["artifact_dir"], "artifacts/old-artifact")
+            self.assertEqual(component["contract_file"], "contracts/synthetic.json")
+            self.assertEqual(component["last_verified_run_id"], "run-a")
+            verification = read_json(library / "verification" / "synthetic.json", {})
+            self.assertEqual(verification["schema_version"], 2)
+            self.assertEqual(verification["artifact_dir"], "artifacts/old-artifact")
+            self.assertEqual(verification["formal_proof"]["status"], "PASS")
+            self.assertEqual(verification["last_verified_run_id"], "run-a")
+            self.assertTrue(read_json(library / "contracts" / "synthetic.json", {}).get("do_not_edit"))
+
 
 if __name__ == "__main__":
     unittest.main()

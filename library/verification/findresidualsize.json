@@ -1,6 +1,7 @@
 {
   "artifact_dir": "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
   "candidate": "candidate_01",
+  "candidate_pass_rate": "1/2",
   "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
   "contract_id": "findresidualsize",
   "dependency": {
@@ -18,8 +19,163 @@
     "receipt": null,
     "status": "NOT_APPLICABLE"
   },
+  "frame_pass_rate": "3/3",
   "function": "FindResidualSize",
-  "kind": "residual_size",
+  "kind": "leaf",
+  "last_regression": {
+    "candidate": "candidate_01",
+    "candidate_pass_rate": "1/2",
+    "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+    "contract_id": "findresidualsize",
+    "execution_status": "EXECUTED_NOW",
+    "frame_pass_rate": "3/3",
+    "function": "FindResidualSize",
+    "kind": "leaf",
+    "module": "findresidualsize",
+    "parent_run_id": "20260802T062208Z-0ad45a41",
+    "profile": "scale",
+    "promoted_at": "2026-08-02T22:13:24Z",
+    "rtl_sha256": "a10d4649d371883b4bdfef25fc99448c5a719e937a93425900ddf00b26474073",
+    "run_id": "20260802T213843Z-scale-41855a25",
+    "schema_version": 1,
+    "source_gate": {
+      "blockers": [],
+      "build": {
+        "binary": {
+          "path": "source/dsc",
+          "sha256": "1aa30a5c49f7b87bc18c2150f94ad620bc005f3aa935327d63799cb3f674216c",
+          "size_bytes": 246352
+        },
+        "smoke": {
+          "expected_hash": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+          "matching_outputs": [
+            {
+              "path": "bittrue_smoke/out/simple_192x108.dsc",
+              "sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+              "size_bytes": 31236
+            }
+          ],
+          "mode": "bittrue_smoke/run_c_baseline.sh"
+        },
+        "status": "PASS"
+      },
+      "compile_check": {
+        "status": "PASS",
+        "translation_units": 11
+      },
+      "pdf": {
+        "pages": 145,
+        "path": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf",
+        "sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+      },
+      "source": {
+        "path": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf"
+      },
+      "status": "PASS"
+    },
+    "stages": {
+      "dependency_composition": "NOT_APPLICABLE",
+      "frame_compare": "PASS",
+      "generator_cache": "PASS",
+      "model_matrix": "PASS",
+      "shards_mutations": "PASS",
+      "verilator_lint_build": "PASS",
+      "width_spec_gate": "PASS"
+    },
+    "status": "PASS",
+    "traceability": {
+      "authority": "EXACT_SPEC",
+      "c_span": {
+        "end_line": 1109,
+        "start_line": 1078
+      },
+      "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+      "ports": [
+        {
+          "authority": "HUMAN_APPROVED",
+          "c_span": {
+            "end_line": 1109,
+            "start_line": 1078
+          },
+          "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+          "derivation": "DSC 1.2a signed residual range required by the reviewed DSU-VLC threshold domain",
+          "domain": {
+            "basis": "DSC 1.2a signed residual range required by the reviewed DSU-VLC threshold domain",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "eq",
+          "review_status": "REVIEWED",
+          "role": "eq",
+          "signed": true,
+          "spec_pages": [
+            34,
+            91
+          ],
+          "spec_sections": [
+            "3",
+            "6.6.1"
+          ],
+          "spec_tables": [],
+          "width": 17
+        },
+        {
+          "authority": "EXACT_SPEC",
+          "c_span": {
+            "end_line": 1109,
+            "start_line": 1078
+          },
+          "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+          "derivation": "locked contract interface",
+          "domain": {
+            "range": [
+              0,
+              17
+            ]
+          },
+          "name": "return_value",
+          "review_status": "REVIEWED",
+          "role": "return_value",
+          "signed": false,
+          "spec_pages": [
+            34,
+            91
+          ],
+          "spec_sections": [
+            "3",
+            "6.6.1"
+          ],
+          "spec_tables": [],
+          "width": 5
+        }
+      ],
+      "review_status": "REVIEWED",
+      "source_file": "dsc_codec.c",
+      "source_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:section:6.6.1",
+          "evidence": "The normative section defines the residual-size quantity used by DSU-VLC.",
+          "page": 91,
+          "section": "6.6.1",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:table:3-1",
+          "evidence": "The normative table lists residual values and their coded sizes.",
+          "page": 34,
+          "section": "3",
+          "status": "EXACT"
+        }
+      ],
+      "spec_pdf": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf"
+    }
+  },
+  "last_verified_run_id": "20260802T213843Z-scale-41855a25",
   "matrix": {
     "modes": {
       "C_ONLY": "PASS",
@@ -30,22 +186,56 @@
     "status": "PASS"
   },
   "module": "findresidualsize",
+  "parent_run_id": "20260802T062208Z-0ad45a41",
+  "profile": "scale",
   "promoted_at": "2026-08-02T21:15:58Z",
   "rtl_sha256": "a10d4649d371883b4bdfef25fc99448c5a719e937a93425900ddf00b26474073",
+  "run_id": "20260802T213843Z-scale-41855a25",
   "schema_version": 2,
   "source_gate": {
-    "baseline_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
-    "pdf_sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-    "source_sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+    "blockers": [],
+    "build": {
+      "binary": {
+        "path": "source/dsc",
+        "sha256": "1aa30a5c49f7b87bc18c2150f94ad620bc005f3aa935327d63799cb3f674216c",
+        "size_bytes": 246352
+      },
+      "smoke": {
+        "expected_hash": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+        "matching_outputs": [
+          {
+            "path": "bittrue_smoke/out/simple_192x108.dsc",
+            "sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+            "size_bytes": 31236
+          }
+        ],
+        "mode": "bittrue_smoke/run_c_baseline.sh"
+      },
+      "status": "PASS"
+    },
+    "compile_check": {
+      "status": "PASS",
+      "translation_units": 11
+    },
+    "pdf": {
+      "pages": 145,
+      "path": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf",
+      "sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+    },
+    "source": {
+      "path": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+      "sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf"
+    },
     "status": "PASS"
   },
   "stages": {
-    "dependency_composition": "PASS",
+    "dependency_composition": "NOT_APPLICABLE",
     "formal": "NOT_APPLICABLE",
     "formal_partitions": null,
     "formal_rtl_equivalence": "NOT_APPLICABLE",
     "frame_compare": "PASS",
     "generator": "PASS",
+    "generator_cache": "PASS",
     "model_matrix": "PASS",
     "shards_mutations": "PASS",
     "unit_equivalence": "EXHAUSTIVE_EQUIVALENT",
@@ -59,8 +249,72 @@
       "end_line": 1109,
       "start_line": 1078
     },
+    "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+    "ports": [
+      {
+        "authority": "HUMAN_APPROVED",
+        "c_span": {
+          "end_line": 1109,
+          "start_line": 1078
+        },
+        "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+        "derivation": "DSC 1.2a signed residual range required by the reviewed DSU-VLC threshold domain",
+        "domain": {
+          "basis": "DSC 1.2a signed residual range required by the reviewed DSU-VLC threshold domain",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "eq",
+        "review_status": "REVIEWED",
+        "role": "eq",
+        "signed": true,
+        "spec_pages": [
+          34,
+          91
+        ],
+        "spec_sections": [
+          "3",
+          "6.6.1"
+        ],
+        "spec_tables": [],
+        "width": 17
+      },
+      {
+        "authority": "EXACT_SPEC",
+        "c_span": {
+          "end_line": 1109,
+          "start_line": 1078
+        },
+        "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+        "derivation": "locked contract interface",
+        "domain": {
+          "range": [
+            0,
+            17
+          ]
+        },
+        "name": "return_value",
+        "review_status": "REVIEWED",
+        "role": "return_value",
+        "signed": false,
+        "spec_pages": [
+          34,
+          91
+        ],
+        "spec_sections": [
+          "3",
+          "6.6.1"
+        ],
+        "spec_tables": [],
+        "width": 5
+      }
+    ],
     "review_status": "REVIEWED",
     "source_file": "dsc_codec.c",
+    "source_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
     "spec_links": [
       {
         "anchor_id": "pdf:section:6.6.1",
@@ -76,7 +330,8 @@
         "section": "3",
         "status": "EXACT"
       }
-    ]
+    ],
+    "spec_pdf": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf"
   },
   "unit_vectors": 131071
 }

@@ -1807,32 +1807,67 @@ class RegressionService:
                 "stages": {key: value.get("status") for key, value in (receipt.get("stages", {}) or {}).items()},
                 "promoted_at": utc_now(),
             }
-            atomic_write_json(contract_root / f"{safe_id(cid)}.json", redact(trace))
-            atomic_write_json(receipt_root / f"{safe_id(cid)}.json", redact(compact))
-            components[cid] = {
+            verification_path = receipt_root / f"{safe_id(cid)}.json"
+            previous_verification = read_json(verification_path, {}) or {}
+            if previous_verification:
+                # The executable CICD agent owns the richer schema-2 receipt.
+                # A durable regression promotion may add a newer scale receipt,
+                # but must not erase artifact, formal, dependency, or matrix
+                # metadata already recorded by that agent.
+                merged_verification = dict(previous_verification)
+                previous_stages = previous_verification.get("stages", {}) or {}
+                merged_stages = dict(previous_stages) if isinstance(previous_stages, dict) else {}
+                merged_stages.update(compact["stages"])
+                merged_verification.update(compact)
+                merged_verification["schema_version"] = max(
+                    int(previous_verification.get("schema_version", 1)),
+                    int(compact["schema_version"]),
+                )
+                if previous_verification.get("promoted_at"):
+                    merged_verification["promoted_at"] = previous_verification["promoted_at"]
+                merged_verification["stages"] = merged_stages
+                merged_verification["last_verified_run_id"] = run_id
+                merged_verification["last_regression"] = compact
+                verification = merged_verification
+            else:
+                verification = compact
+            if not (contract_root / f"{safe_id(cid)}.json").is_file():
+                atomic_write_json(contract_root / f"{safe_id(cid)}.json", redact(trace))
+            atomic_write_json(verification_path, redact(verification))
+            previous_component = components.get(cid, {}) or {}
+            component = dict(previous_component)
+            component.update({
                 "contract_id": cid,
                 "function": receipt.get("function"),
                 "module_file": str(destination.relative_to(library)),
                 "module": module_name,
                 "module_sha256": file_hash(destination),
-                "verification_file": str((receipt_root / f"{safe_id(cid)}.json").relative_to(library)),
+                "verification_file": str(verification_path.relative_to(library)),
                 "contract_hash": receipt.get("contract_hash"),
                 "source_file": trace.get("source_file"),
                 "c_span": trace.get("c_span"),
                 "spec_links": trace.get("spec_links", []),
                 "authority": trace.get("authority"),
                 "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
-                "run_id": run_id,
                 "status": "PASS",
-            }
-            promoted.append(components[cid])
+            })
+            component["last_verified_run_id"] = run_id
+            components[cid] = component
+            promoted.append(component)
+        existing_schema_version = manifest.get("schema_version", 1)
+        existing_spec_hash = manifest.get("spec_hash")
+        existing_source_hash = manifest.get("source_hash")
+        try:
+            existing_schema_version = max(1, int(existing_schema_version))
+        except (TypeError, ValueError):
+            existing_schema_version = 1
         manifest = {
-            "schema_version": 1,
+            "schema_version": existing_schema_version,
             "library": "dsc-verilog-library",
             "policy": "Only spec-traceable PASS leaf RTL is canonical; stateful callers remain C until separately contracted and verified.",
             "source_policy": "immutable external C model and local DSC 1.2a PDF; no SVRT",
-            "spec_hash": run.get("spec_hash"),
-            "source_hash": run.get("source_hash"),
+            "spec_hash": existing_spec_hash or run.get("spec_hash"),
+            "source_hash": existing_source_hash or run.get("source_hash"),
             "updated_at": utc_now(),
             "components": sorted(components.values(), key=lambda item: str(item.get("contract_id"))),
         }
