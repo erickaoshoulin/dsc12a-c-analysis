@@ -163,9 +163,40 @@ Generated CI outputs are under `ci/`, `artifacts/<contract-hash>/`,
 `integration/bitstream-receipts/`, and
 `reports/pipeline-summary.md`. The upstream C model and PDF are never edited.
 
+### Executable generator contract
+
+The migration agent has no function-name target or implicit model stub. Tool
+facts, exact traceability, and reviewed domain evidence discover the next ready
+leaf; the reviewed override is matched by an exact spec anchor, not by a
+function-name allowlist. A ready cache miss requires an external hook:
+
+```sh
+DSC_CICD_GENERATOR_CMD='python3 tools/generator_fixture.py' \
+  python3 tools/cicd_agent.py run
+```
+
+The hook receives only `locked_contract`, `frozen_interface`, `c_body`, and
+short `exact_spec_anchors`. It emits at most four combinational `.sv`
+candidates plus telemetry. The fixture emits one correct and one deliberately
+wrong candidate so the verifier records both an exhaustive pass and a
+smallest counterexample. A missing hook records `GENERATION_REQUIRED` and
+makes no model call.
+
+The verifier compiles the immutable C oracle and every candidate once, runs
+the complete legal domain through parallel shards, and writes `EXECUTED_NOW`
+receipts. It then uses the Clang LibTooling rewriter to rename the discovered
+definition and rewrite every direct call site in an isolated copy.
+`C_ONLY`, `SHADOW`, and `RTL_RETURN` run against default, alternate-bpc, and
+sampling scenarios; promotion requires all byte/SHA bitstream gates. A second
+run exercises the valid cache and reports `REUSED_VERIFIED_RECEIPT` with zero
+generator/model calls.
+
 ## Environment
 
 Set `DSC_ANALYSIS_TIMEOUT_SECONDS` for compiler/Clang/Frama-C commands,
 `DSC_BUILD_TIMEOUT_SECONDS` for the isolated build/smoke gate, and
-`DSC_ANALYSIS_TOP_N` for the Frama-C candidate count. The temporary copy and
-raw logs are removed after each run.
+`DSC_ANALYSIS_TOP_N` for the Frama-C candidate count. The CI/CD verifier also
+accepts `DSC_CICD_SHARDS`, `DSC_CICD_GENERATOR_CMD`, and compile/shard timeout
+variables. Temporary model copies exclude the unrelated `dsc-rs` and
+`operator_bittrue` trees; the local PDF and upstream C source remain outside
+the repository and are never edited.

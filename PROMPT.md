@@ -217,3 +217,70 @@ For the dependency-aware CI/CD change, commit and open a draft PR with:
 ```text
 feat: add dependency-aware C-to-RTL CI/CD agent
 ```
+
+## Execution contract v2: generic, tool-discovered migration
+
+The previous migration paragraph is superseded by this executable contract.
+This repository is independent of SVRT: do not add SVRT integration, C/Rust
+parsers, whole-codec RTL, sequential hardware, or an LLM runtime. The local
+PDF and upstream C model are immutable external inputs.
+
+1. Discover and gate inputs. Find the local DSC 1.2a PDF and C model from the
+   manifest/discovery facts. Require the PDF hash/page gate, a clean `make`
+   build of `source/dsc`, and the existing `run_c_baseline*.sh` smoke receipt.
+   Missing or changed inputs/tools are `INFRASTRUCTURE_FAILURE`; never invoke
+   the generator to repair infrastructure.
+
+2. Discover work from facts. Use Clang facts, exact traceability, coverage,
+   callgraph, purity/timing/effect facts, and reviewed domain evidence. Do not
+   configure a function name, source filename, or target allowlist. The
+   reviewed domain file must match an exact spec anchor or reviewed runtime
+   evidence; otherwise the candidate remains blocked. Select at least one new
+   ready leaf whose frozen interface shape differs from existing promoted
+   work. Reject recursive/combinational dependency cycles.
+
+3. Invoke the real generator hook. On a ready cache miss invoke
+   `DSC_CICD_GENERATOR_CMD request.json output_dir` exactly once. The request
+   contains only `locked_contract`, `frozen_interface`, `c_body`, and short
+   `exact_spec_anchors`. The hook emits at most four SystemVerilog candidates
+   and telemetry. A missing hook is `GENERATION_REQUIRED`; zero-output or
+   invalid output is `GENERATION_FAILED`. Cache hits reuse verified receipts
+   with zero generator/model calls.
+
+4. Verify executable candidates. Freeze direct scalar argument/result ports,
+   legal domains, packing, C oracle, harness, and mutation cases. Reject
+   clocks, resets, latches, delays, `initial`, stateful memory, and testbench
+   logic. Compile each candidate once with Verilator. Run every candidate over
+   the complete legal domain as real parallel input-shard processes, cancel
+   after mismatch, reduce deterministically, and retain the smallest
+   counterexample. Only complete coverage is `EXHAUSTIVE_EQUIVALENT`.
+
+5. Verify a real dependency. Automatically choose the smallest acyclic direct
+   caller-to-callee edge from the callgraph. Prove caller core with callee C,
+   callee RTL against the callee C oracle, and caller core plus callee RTL.
+   Record each direct call site and direct argument/result port; state-only or
+   dummy passes are invalid. A wrong callee candidate must fail composition.
+
+6. Rewrite safely. Use Clang LibTooling/Rewriter and USRs, not line-number
+   text replacement. Rename the selected definition, rewrite every direct
+   cross-file/multiple-per-line call, and fail closed for macro, indirect, or
+   ambiguous references. Receipt old/new hashes, changed files, rewritten
+   USRs, call sites, and failures; verify the upstream source hash is unchanged.
+
+7. Run the model gates. Build an isolated immutable-C overlay with `C_ONLY`,
+   `SHADOW`, and `RTL_RETURN`. Auto-discover the default smoke script, a
+   different bpc script, and a sampling script when present. Run SHADOW before
+   RTL_RETURN. Require zero C/RTL mismatches and byte-for-byte plus SHA-256
+   equality with the original C stream. Promote only after unit, dependency,
+   shadow, RTL_RETURN, and bitstream gates pass. Rollback is `C_ONLY`.
+
+8. Report and hand off. Write deterministic `ci/plan.json`, `ci/dag.json`,
+   `ci/state.json`, `ci/cache-index.json`, artifact receipts, generated-overlay
+   receipts, bitstream receipts, and `reports/pipeline-summary.md`. Report
+   candidates, model calls/tokens, shard counts, timings, dependency pair,
+   matrix scenarios, cache status, blockers, and counterexamples. Run tests,
+   commit, push the requested branch, and open a draft PR titled exactly:
+
+```text
+feat: execute generic RTL generation and dependency composition
+```

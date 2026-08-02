@@ -1,5 +1,29 @@
 {
   "entries": {
+    "2b5352ba6b1faa514bbb4c61741413c15bc99122b6c6a0ce7d99be419700aa76": {
+      "artifact_dir": "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+      "cache_key": "2b5352ba6b1faa514bbb4c61741413c15bc99122b6c6a0ce7d99be419700aa76",
+      "contract_id": "quantizeresidual",
+      "execution_status": "EXECUTED_NOW",
+      "hashes": {
+        "agent": "21cd8f2a36b41e5debe2e163d87951783144115b747ce6ef8411a21b0e16b74f",
+        "contract": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+        "dependency": "9c0a6bc17523a90470b5a5c08efd38b7e73cdb740ff92fd681932484ff71d3e6",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "4472eac47e0093cedf287e593cc7343fd0580c38e293ccffe84abf6c3c00e763",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4"
+      },
+      "model_calls": 1,
+      "schema_version": 2,
+      "state": "UNPROVED",
+      "tokens": 1386,
+      "updated_at": "2026-08-01T19:12:58Z",
+      "valid": false
+    },
     "32f901800b6434de74d6872165b34b26ef93ad9fa7b365f5f72465f3a321dfc1": {
       "artifact_dir": "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa",
       "artifacts": [
@@ -39,6 +63,78 @@
       "status": "BLOCKED",
       "valid": false
     },
+    "34524cb3557508c66a81dd2f04f78f45df3f22a1462df92f4124393fe232db9a": {
+      "artifact_dir": "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+      "cache_key": "34524cb3557508c66a81dd2f04f78f45df3f22a1462df92f4124393fe232db9a",
+      "contract_id": "quantizeresidual",
+      "execution_status": "EXECUTED_NOW",
+      "hashes": {
+        "agent": "4da28bbac7c07164cd697fe953a01d7d545deeb55e5a6dce0b70bd3490fd637a",
+        "contract": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+        "dependency": "9c0a6bc17523a90470b5a5c08efd38b7e73cdb740ff92fd681932484ff71d3e6",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "4472eac47e0093cedf287e593cc7343fd0580c38e293ccffe84abf6c3c00e763",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4"
+      },
+      "model_calls": 1,
+      "schema_version": 2,
+      "state": "FAILED",
+      "tokens": 1386,
+      "updated_at": "2026-08-01T19:22:49Z",
+      "valid": false
+    },
+    "43cd850b8bb8b71c6234abe66ca26882ff78d448e631efdbf0f5bfb73271e188": {
+      "artifact_dir": "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+      "cache_key": "43cd850b8bb8b71c6234abe66ca26882ff78d448e631efdbf0f5bfb73271e188",
+      "contract_id": "quantizeresidual",
+      "execution_status": "EXECUTED_NOW",
+      "hashes": {
+        "agent": "75f0c48ba074e49758b10697510929642ea196e5e47cc9b6a36f915307836566",
+        "contract": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+        "dependency": "9c0a6bc17523a90470b5a5c08efd38b7e73cdb740ff92fd681932484ff71d3e6",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "4472eac47e0093cedf287e593cc7343fd0580c38e293ccffe84abf6c3c00e763",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4"
+      },
+      "model_calls": 1,
+      "schema_version": 2,
+      "state": "UNPROVED",
+      "tokens": 1386,
+      "updated_at": "2026-08-01T19:12:34Z",
+      "valid": false
+    },
+    "528fa35badc97370b8ea46f021925777dc42376e02bd69e73f5b815f3de2ed92": {
+      "artifact_dir": "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+      "cache_key": "528fa35badc97370b8ea46f021925777dc42376e02bd69e73f5b815f3de2ed92",
+      "contract_id": "quantizeresidual",
+      "execution_status": "REUSED_VERIFIED_RECEIPT",
+      "hashes": {
+        "agent": "04f08fb4c4b68067efc1739fcf120b2f77ad268868a921a6b7ef15f31240fef5",
+        "contract": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+        "dependency": "9c0a6bc17523a90470b5a5c08efd38b7e73cdb740ff92fd681932484ff71d3e6",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "52046cde6759294b04e2e32ae56cb5d9873f873c6bd03b84f2e8ea9a7d5db353",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4"
+      },
+      "model_calls": 0,
+      "schema_version": 2,
+      "state": "PROMOTED",
+      "tokens": 0,
+      "updated_at": "2026-08-01T19:29:05Z",
+      "valid": true
+    },
     "562c20a0081ca7ef05c249282e14cbdaf5a1550addbf3b527f2d096b361ef157": {
       "artifact_dir": "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697",
       "artifacts": [
@@ -77,6 +173,78 @@
       "state": "DISCOVERED",
       "status": "BLOCKED",
       "valid": false
+    },
+    "5a38195e01a943a5969e877688dad68b23cc3d6bd576443380fab9c206adf6ba": {
+      "artifact_dir": "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+      "cache_key": "5a38195e01a943a5969e877688dad68b23cc3d6bd576443380fab9c206adf6ba",
+      "contract_id": "quantizeresidual",
+      "execution_status": "REUSED_VERIFIED_RECEIPT",
+      "hashes": {
+        "agent": "6ac1aa7b6c986bf5fc2de0990cad787a39d49190da0e4dc09b53fe2104267ffa",
+        "contract": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+        "dependency": "9c0a6bc17523a90470b5a5c08efd38b7e73cdb740ff92fd681932484ff71d3e6",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "4472eac47e0093cedf287e593cc7343fd0580c38e293ccffe84abf6c3c00e763",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4"
+      },
+      "model_calls": 0,
+      "schema_version": 2,
+      "state": "PROMOTED",
+      "tokens": 0,
+      "updated_at": "2026-08-01T19:24:07Z",
+      "valid": true
+    },
+    "6e0f593f4e37911aff9fdb823632d9b580f086f7558f2df67df17402a453e0f0": {
+      "artifact_dir": "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+      "cache_key": "6e0f593f4e37911aff9fdb823632d9b580f086f7558f2df67df17402a453e0f0",
+      "contract_id": "quantizeresidual",
+      "execution_status": "REUSED_VERIFIED_RECEIPT",
+      "hashes": {
+        "agent": "802d0205f5ed3b79d7532a7f1e8176a2eaf59a645721615f62945ec4119355b7",
+        "contract": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+        "dependency": "9c0a6bc17523a90470b5a5c08efd38b7e73cdb740ff92fd681932484ff71d3e6",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "52046cde6759294b04e2e32ae56cb5d9873f873c6bd03b84f2e8ea9a7d5db353",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4"
+      },
+      "model_calls": 0,
+      "schema_version": 2,
+      "state": "PROMOTED",
+      "tokens": 0,
+      "updated_at": "2026-08-01T19:43:45Z",
+      "valid": true
+    },
+    "96e615cd2647d07818dcc2dfd96eed052e4a767c666faac2a1c5dee83e0417b5": {
+      "artifact_dir": "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+      "cache_key": "96e615cd2647d07818dcc2dfd96eed052e4a767c666faac2a1c5dee83e0417b5",
+      "contract_id": "quantizeresidual",
+      "execution_status": "EXECUTED_NOW",
+      "hashes": {
+        "agent": "e5e3f3e815b6874912e6dd02f5959e304c4cd69533a7209affc6a318f4880cb4",
+        "contract": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+        "dependency": "9c0a6bc17523a90470b5a5c08efd38b7e73cdb740ff92fd681932484ff71d3e6",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "52046cde6759294b04e2e32ae56cb5d9873f873c6bd03b84f2e8ea9a7d5db353",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4"
+      },
+      "model_calls": 1,
+      "schema_version": 2,
+      "state": "PROMOTED",
+      "tokens": 1386,
+      "updated_at": "2026-08-01T19:42:10Z",
+      "valid": true
     },
     "97082d587c6dbea378728889c0c2397fd26f89f04b0570a1fb1bc947b199679d": {
       "artifact_dir": "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda",
@@ -136,17 +304,83 @@
       "state": "PROMOTED",
       "status": "PASS",
       "valid": true
+    },
+    "ce1bd82c9834aaa883eda608c0c0dd62d91e45e1c795a2c8248bc2800a48dbb0": {
+      "artifact_dir": "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+      "cache_key": "ce1bd82c9834aaa883eda608c0c0dd62d91e45e1c795a2c8248bc2800a48dbb0",
+      "contract_id": "quantizeresidual",
+      "execution_status": "EXECUTED_NOW",
+      "hashes": {
+        "agent": "527eb789a027bc71c2c1a94d2d9a62b56846904276bcae0716d58b5e3066ef9b",
+        "contract": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+        "dependency": "9c0a6bc17523a90470b5a5c08efd38b7e73cdb740ff92fd681932484ff71d3e6",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "4472eac47e0093cedf287e593cc7343fd0580c38e293ccffe84abf6c3c00e763",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4"
+      },
+      "model_calls": 1,
+      "schema_version": 2,
+      "state": "INFRASTRUCTURE_FAILURE",
+      "tokens": 1386,
+      "updated_at": "2026-08-01T19:12:04Z",
+      "valid": false
+    },
+    "df664cae2c0362f3f3694dcefcecb1457f1c89f8572a2aa7f86cf607325a7853": {
+      "artifact_dir": "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+      "cache_key": "df664cae2c0362f3f3694dcefcecb1457f1c89f8572a2aa7f86cf607325a7853",
+      "contract_id": "quantizeresidual",
+      "execution_status": "REUSED_VERIFIED_RECEIPT",
+      "hashes": {
+        "agent": "e9800d5bdd133c61ff87e13424d5a732ba29455d20895c9e8d872653256a3c87",
+        "contract": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+        "dependency": "9c0a6bc17523a90470b5a5c08efd38b7e73cdb740ff92fd681932484ff71d3e6",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "52046cde6759294b04e2e32ae56cb5d9873f873c6bd03b84f2e8ea9a7d5db353",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "2"
+      },
+      "model_calls": 0,
+      "schema_version": 2,
+      "state": "PROMOTED",
+      "tokens": 0,
+      "updated_at": "2026-08-01T19:49:46Z",
+      "valid": true
+    },
+    "e84f18406f7463f533684f7b58aaa91927b0312461ade85ae0052dc782853d41": {
+      "artifact_dir": "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+      "cache_key": "e84f18406f7463f533684f7b58aaa91927b0312461ade85ae0052dc782853d41",
+      "contract_id": "quantizeresidual",
+      "execution_status": "REUSED_VERIFIED_RECEIPT",
+      "hashes": {
+        "agent": "c3636c6be31dd3fa6c8785ae6eec245bbfbb78479e1c3bf73fd9587fb5ce9d57",
+        "contract": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+        "dependency": "9c0a6bc17523a90470b5a5c08efd38b7e73cdb740ff92fd681932484ff71d3e6",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "52046cde6759294b04e2e32ae56cb5d9873f873c6bd03b84f2e8ea9a7d5db353",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "2"
+      },
+      "model_calls": 0,
+      "schema_version": 2,
+      "state": "PROMOTED",
+      "tokens": 0,
+      "updated_at": "2026-08-01T19:46:00Z",
+      "valid": true
     }
   },
-  "key_fields": [
-    "agent",
-    "source",
-    "spec",
-    "contract",
-    "dependency",
-    "prompt",
-    "model",
-    "tools"
-  ],
-  "schema_version": 1
+  "schema_version": 2
 }

@@ -398,3 +398,14 @@ if ! "$PYTHON" "$SCRIPT_DIR/tools/finalize_outputs.py" \
 fi
 
 echo "DSC 1.2a auto-discovery C analysis complete: $OUTPUT_DIR/summary.json"
+
+if [ "${DSC_RUN_CICD:-0}" = "1" ]; then
+  if [ -z "${DSC_CICD_GENERATOR_CMD:-}" ]; then
+    echo "GENERATION_REQUIRED: set DSC_CICD_GENERATOR_CMD before running the generic migration agent" >&2
+    exit 2
+  fi
+  if ! "$PYTHON" "$SCRIPT_DIR/tools/cicd_agent.py" run; then
+    echo "INFRASTRUCTURE_FAILURE: executable generic C-to-RTL CI/CD run failed; see $OUTPUT_DIR/reports/pipeline-summary.md" >&2
+    exit 1
+  fi
+fi

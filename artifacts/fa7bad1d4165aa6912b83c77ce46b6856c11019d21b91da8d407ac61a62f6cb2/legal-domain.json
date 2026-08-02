@@ -1,0 +1,42 @@
+{
+  "complete": true,
+  "ports": [
+    {
+      "domain": {
+        "basis": "runtime sample-domain evidence for 16bpc residuals",
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "e",
+      "role": "e"
+    },
+    {
+      "domain": {
+        "basis": "EXACT Table 6-2 qLevel domain",
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "qlevel",
+      "role": "qlevel"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "return_value",
+      "role": "return_value"
+    }
+  ],
+  "proof_basis": "exact spec/table plus reviewed runtime range override",
+  "schema_version": 1
+}

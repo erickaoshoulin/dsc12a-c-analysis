@@ -1,0 +1,292 @@
+{
+  "c_body": "int QuantizeResidual(int e, int qlevel)\n{\n\tint eq;\n\n\t// *MODEL NOTE* MN_ENC_QUANTIZATION\n\tif (e>0)\n\t\teq = (e + QuantOffset[qlevel]) >> qlevel;\n\telse\n\t\teq = -((QuantOffset[qlevel]-e) >> qlevel);\n\treturn eq;\n}",
+  "exact_spec_anchors": [
+    {
+      "anchor_id": "pdf:model-note:MN_ENC_QUANTIZATION:p083",
+      "evidence": "C comment and PDF anchor both contain MN_ENC_QUANTIZATION",
+      "page": 83,
+      "section": "6.4.5",
+      "short_anchor": "pdf:model-note:MN_ENC_QUANTIZATION:p083",
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:section:6.4.5",
+      "evidence": "C comment and PDF anchor both contain MN_ENC_QUANTIZATION",
+      "page": 83,
+      "section": "6.4.5",
+      "short_anchor": "pdf:section:6.4.5",
+      "status": "EXACT"
+    }
+  ],
+  "frozen_interface": {
+    "inputs": [
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "runtime sample-domain evidence for 16bpc residuals",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "e",
+        "signed": true
+      },
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "EXACT Table 6-2 qLevel domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "qlevel",
+        "signed": false
+      }
+    ],
+    "output": {
+      "c_type": "int",
+      "legal_range": [
+        -65535,
+        65535
+      ],
+      "logical_width": 17,
+      "name": "return_value",
+      "signed": true
+    },
+    "ports": [
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "runtime sample-domain evidence for 16bpc residuals",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "e",
+        "role": "e",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "EXACT Table 6-2 qLevel domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "qlevel",
+        "role": "qlevel",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "output",
+        "name": "return_value",
+        "role": "return_value",
+        "signed": true,
+        "width": 17
+      }
+    ]
+  },
+  "locked_contract": {
+    "contract_id": "quantizeresidual",
+    "dependencies": {
+      "direct_callees": [],
+      "read_fields": [],
+      "unresolved": []
+    },
+    "function": {
+      "clang_usr": "c:@F@QuantizeResidual",
+      "name": "QuantizeResidual",
+      "parameters": [
+        {
+          "name": "e",
+          "pointee_const": false,
+          "pointer": false,
+          "type": "int"
+        },
+        {
+          "name": "qlevel",
+          "pointee_const": false,
+          "pointer": false,
+          "type": "int"
+        }
+      ],
+      "qualified_name": "QuantizeResidual",
+      "return_type": "int",
+      "source_body_sha256": "8ad3efd6e106dfa6fabbcad67f58ece08660609d68e8a581a14dbc7231c1d177",
+      "source_file": "dsc_codec.c",
+      "source_span": {
+        "end_line": 255,
+        "start_line": 245
+      }
+    },
+    "interface": {
+      "inputs": [
+        {
+          "c_type": "int",
+          "legal_domain": {
+            "basis": "runtime sample-domain evidence for 16bpc residuals",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "e",
+          "signed": true
+        },
+        {
+          "c_type": "int",
+          "legal_domain": {
+            "basis": "EXACT Table 6-2 qLevel domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "name": "qlevel",
+          "signed": false
+        }
+      ],
+      "output": {
+        "c_type": "int",
+        "legal_range": [
+          -65535,
+          65535
+        ],
+        "logical_width": 17,
+        "name": "return_value",
+        "signed": true
+      },
+      "ports": [
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "runtime sample-domain evidence for 16bpc residuals",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "e",
+          "role": "e",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "EXACT Table 6-2 qLevel domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "name": "qlevel",
+          "role": "qlevel",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int",
+          "direction": "output",
+          "name": "return_value",
+          "role": "return_value",
+          "signed": true,
+          "width": 17
+        }
+      ]
+    },
+    "obligations": [],
+    "origin": "tool_discovered_reviewed_override",
+    "reviewed_evidence": [
+      {
+        "anchor_id": "pdf:model-note:MN_ENC_QUANTIZATION:p083",
+        "kind": "EXACT_SPEC",
+        "reason": "DSC 1.2a 6.4.5 defines signed residual E, qLevel, ROUND and truncating shift semantics."
+      },
+      {
+        "anchor_id": "pdf:section:6.4.5",
+        "kind": "EXACT_TABLE",
+        "reason": "The legal qLevel domain is the Table 6-2 qLevel range [0,16]."
+      },
+      {
+        "kind": "RUNTIME_EVIDENCE",
+        "reason": "A residual is the difference of two component samples; the widest supported sample domain is [-(2^16-1), 2^16-1].",
+        "source": "8..16 bpc smoke input domains"
+      }
+    ],
+    "schema_version": 2,
+    "selection": {
+      "basis": "exact traceability + pure leaf facts + reviewed domain evidence",
+      "fact_source": "facts/functions.json",
+      "new_work": true
+    },
+    "semantics": {
+      "expression": "e > 0 ? ((e + QuantOffset[qlevel]) >> qlevel) : -((QuantOffset[qlevel] - e) >> qlevel)",
+      "kind": "quantization",
+      "quant_offset": [
+        0,
+        0,
+        1,
+        3,
+        7,
+        15,
+        31,
+        63,
+        127,
+        255,
+        511,
+        1023,
+        2047,
+        4095,
+        8191,
+        16383,
+        32767
+      ],
+      "rounding": "QuantOffset[qlevel] = (qlevel > 0) ? ((1 << qlevel) / 2 - 1) : 0",
+      "signedness": "C signed int arithmetic; legal residual and result ranges fit signed 17 bits"
+    },
+    "spec_links": [
+      {
+        "anchor_id": "pdf:model-note:MN_ENC_QUANTIZATION:p083",
+        "evidence": "C comment and PDF anchor both contain MN_ENC_QUANTIZATION",
+        "page": 83,
+        "section": "6.4.5",
+        "short_anchor": "pdf:model-note:MN_ENC_QUANTIZATION:p083",
+        "status": "EXACT"
+      },
+      {
+        "anchor_id": "pdf:section:6.4.5",
+        "evidence": "C comment and PDF anchor both contain MN_ENC_QUANTIZATION",
+        "page": 83,
+        "section": "6.4.5",
+        "short_anchor": "pdf:section:6.4.5",
+        "status": "EXACT"
+      }
+    ],
+    "status": "LOCKED"
+  }
+}
