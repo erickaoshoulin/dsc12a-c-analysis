@@ -224,6 +224,39 @@
       "verification_file": "verification/isflatnessinfosent.json"
     },
     {
+      "artifact_dir": "artifacts/15e7e4bc9522fa586e9fcf9db6663660e37f2a62d310df0ae5eee7251fcd1c3a",
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
+        "end_line": 1195,
+        "start_line": 1126
+      },
+      "contract_file": "contracts/isorigflathindex.json",
+      "contract_hash": "15e7e4bc9522fa586e9fcf9db6663660e37f2a62d310df0ae5eee7251fcd1c3a",
+      "contract_id": "isorigflathindex",
+      "function": "IsOrigFlatHIndex",
+      "module": "isorigflathindex",
+      "module_file": "rtl/isorigflathindex.sv",
+      "module_sha256": "cfb707d7aa001c86145ecff6476c1fd36b7d2755ecabe5d5af41f817ea22d855",
+      "promoted_at": "2026-08-02T20:31:37Z",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:section:6.8.5.1",
+          "page": 111,
+          "section": "6.8.5.1",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:figure:6-19",
+          "page": 111,
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/isorigflathindex.json"
+    },
+    {
       "artifact_dir": "artifacts/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "authority": "EXACT_SPEC",
       "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
@@ -525,5 +558,5 @@
   "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
   "source_policy": "immutable external C model and local DSC 1.2a PDF; no SVRT",
   "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-  "updated_at": "2026-08-02T19:37:09Z"
+  "updated_at": "2026-08-02T20:31:37Z"
 }

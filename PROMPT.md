@@ -303,6 +303,21 @@ PDF and upstream C model are immutable external inputs.
    timeout as `UNPROVED`. Production frame, dependency, and source gates still
    decide whether the leaf can enter `library/manifest.json`.
 
+   For a reviewed `flatness_window`, derive the interface and equations from
+   the tool-discovered contract data, never from a function-name recipe. The
+   contract must declare the four component lanes and seven read-only original
+   pixel taps per lane, with Figure 6-19 check-1 offsets `0..3`, check-2
+   offsets `1..6`, and the line-window padding. Lock the exact Table 6-2
+   luma/chroma rows, `flatQLevel = MapQpToQlevel(MAX(0, primaryQp -
+   somewhatFlatQpDelta))`, the DSC 1.2a `flatnessDetThresh` relation, and the
+   native-420/version adjustment as reviewed semantics. The C oracle may own
+   line storage, but the RTL leaf receives only those read-only taps; an
+   adapter must short-circuit every lane whose `numComponents` is not active
+   before dereferencing its `origLine`. Concrete vectors must cover structural
+   modes, line ends, every tap at both boundaries, and pairwise tap effects;
+   the independent Verilator-AST/Z3 proof must establish the full declared
+   relation before promotion.
+
 5. Verify a real dependency. Automatically choose the smallest acyclic direct
    caller-to-callee edge from the callgraph. Prove caller core with callee C,
    callee RTL against the callee C oracle, and caller core plus callee RTL.

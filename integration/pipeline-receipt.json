@@ -5,59 +5,42 @@
   "dependency_pair": {
     "call_sites": [
       {
-        "callee_contract": "ceil_log2",
-        "callee_function": "ceil_log2",
-        "callee_usr": "c:@F@ceil_log2",
+        "callee_contract": "isorigflathindex",
+        "callee_function": "IsOrigFlatHIndex",
+        "callee_usr": "c:@F@IsOrigFlatHIndex",
         "caller_contract": null,
-        "caller_function": "IchDecision",
-        "caller_usr": "c:@F@IchDecision",
+        "caller_function": "FlatnessAdjustment",
+        "caller_usr": "c:@F@FlatnessAdjustment",
         "location": {
           "column": 21,
           "file": "dsc_codec.c",
-          "line": 513
-        },
-        "source": "facts/callgraph.json"
-      },
-      {
-        "callee_contract": "ceil_log2",
-        "callee_function": "ceil_log2",
-        "callee_usr": "c:@F@ceil_log2",
-        "caller_contract": null,
-        "caller_function": "IchDecision",
-        "caller_usr": "c:@F@IchDecision",
-        "location": {
-          "column": 23,
-          "file": "dsc_codec.c",
-          "line": 514
+          "line": 2528
         },
         "source": "facts/callgraph.json"
       }
     ],
-    "callee_contract": "ceil_log2",
-    "callee_function": "ceil_log2",
-    "callee_usr": "c:@F@ceil_log2",
+    "callee_contract": "isorigflathindex",
+    "callee_function": "IsOrigFlatHIndex",
+    "callee_usr": "c:@F@IsOrigFlatHIndex",
     "caller_contract": null,
-    "caller_function": "IchDecision",
-    "caller_usr": "c:@F@IchDecision",
+    "caller_function": "FlatnessAdjustment",
+    "caller_usr": "c:@F@FlatnessAdjustment",
     "selection_basis": "smallest acyclic direct call site from facts/callgraph.json"
   },
-  "generator_invocations": 13,
+  "generator_invocations": 1,
   "input_pdf": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf",
   "input_source_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
   "matrix_scripts_discovered": 22,
-  "model_calls": 13,
-  "new_candidates": [],
+  "model_calls": 1,
+  "new_candidates": [
+    "isorigflathindex"
+  ],
   "ready_contracts": [
-    "ceil_log2",
-    "escapecodesize",
     "findmidpoint",
-    "findresidualsize",
-    "getqpadjpredsize",
     "isflatnessinfosent",
+    "isorigflathindex",
     "mapqptoqlevel",
-    "maxresidualsize",
     "predictsize",
-    "qp2qlevel",
     "quantizeresidual",
     "samplepredict",
     "samptolinebuf"
@@ -71,13 +54,51 @@
   },
   "results": [
     {
-      "contract_id": "ceil_log2",
+      "contract_id": "isorigflathindex",
       "counterexample": {
         "actual": "1",
         "expected": "0",
         "index": 0,
         "inputs": [
-          0
+          0,
+          8,
+          0,
+          3,
+          1,
+          2,
+          4,
+          0,
+          1,
+          8,
+          8,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127,
+          127
         ],
         "shard_id": 0
       },
@@ -85,1170 +106,27 @@
         "call_sites": 2,
         "compile_commands": true,
         "direct_call_sites": 2,
-        "matrix_commands": true,
-        "vectors": true
-      },
-      "dependency_status": "PASS",
-      "domain_proof_complete": true,
-      "executed_shards": 8,
-      "executed_vectors": 65536,
-      "execution_status": "EXECUTED_NOW",
-      "formal_proof_complete": false,
-      "formal_proof_status": "NOT_APPLICABLE",
-      "library_promotion": {
-        "archived_previous": null,
-        "artifact_dir": "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
-        "contract_file": "library/contracts/ceil_log2.json",
-        "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
-        "contract_id": "ceil_log2",
-        "module": "ceil_log2",
-        "module_file": "library/rtl/ceil_log2.sv",
-        "rtl_sha256": "71784bb792966a7e48e98d35cc2e2c3f6052f1c17528ffe1b4256f805c9fda65",
-        "status": "PASS",
-        "verification_file": "library/verification/ceil_log2.json"
-      },
-      "matrix_modes": {
-        "C_ONLY": "PASS",
-        "RTL_RETURN": "PASS",
-        "SHADOW": "PASS"
-      },
-      "matrix_status": "PASS",
-      "model_calls": 1,
-      "rejected_candidates": [
-        {
-          "bitstream_gate": "FAIL",
-          "candidate": "candidate_02",
-          "composition_gate": "FAIL",
-          "counterexample": {
-            "actual": "1",
-            "expected": "0",
-            "index": 0,
-            "inputs": [
-              0
-            ],
-            "shard_id": 0
-          },
-          "expected_rejection": true,
-          "matrix_status": "FAIL",
-          "receipt": "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896/rejected/candidate_02/rejection-receipt.json",
-          "status": "EXPECTED_REJECTION",
-          "unit_gate": "FAIL",
-          "unit_verification_status": "COUNTEREXAMPLE"
-        }
-      ],
-      "shard_durations_seconds": [
-        0.776,
-        0.755,
-        0.84,
-        0.785,
-        0.746,
-        0.711,
-        0.705,
-        0.669
-      ],
-      "status": "PROMOTED",
-      "tokens": 989,
-      "unit_status": "EXHAUSTIVE_EQUIVALENT",
-      "vector_strategy": "cartesian"
-    },
-    {
-      "contract_id": "escapecodesize",
-      "counterexample": {
-        "actual": "10",
-        "expected": "9",
-        "index": 0,
-        "inputs": [
-          0,
-          0,
-          0,
-          8,
-          0
-        ],
-        "shard_id": 0
-      },
-      "dependency_evidence": {
-        "call_sites": 2,
-        "compile_commands": true,
-        "direct_call_sites": 2,
-        "matrix_commands": true,
-        "vectors": true
-      },
-      "dependency_status": "PASS",
-      "domain_proof_complete": true,
-      "executed_shards": 8,
-      "executed_vectors": 16320,
-      "execution_status": "EXECUTED_NOW",
-      "formal_proof_complete": false,
-      "formal_proof_status": "NOT_APPLICABLE",
-      "library_promotion": {
-        "archived_previous": null,
-        "artifact_dir": "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
-        "contract_file": "library/contracts/escapecodesize.json",
-        "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
-        "contract_id": "escapecodesize",
-        "module": "escapecodesize",
-        "module_file": "library/rtl/escapecodesize.sv",
-        "rtl_sha256": "582d5e131e638e5a6aa4f9783cf1755b041f9369f9c8c84e57fb413845272167",
-        "status": "PASS",
-        "verification_file": "library/verification/escapecodesize.json"
-      },
-      "matrix_modes": {
-        "C_ONLY": "PASS",
-        "RTL_RETURN": "PASS",
-        "SHADOW": "PASS"
-      },
-      "matrix_status": "PASS",
-      "model_calls": 1,
-      "rejected_candidates": [
-        {
-          "bitstream_gate": "FAIL",
-          "candidate": "candidate_02",
-          "composition_gate": "FAIL",
-          "counterexample": {
-            "actual": "10",
-            "expected": "9",
-            "index": 0,
-            "inputs": [
-              0,
-              0,
-              0,
-              8,
-              0
-            ],
-            "shard_id": 0
-          },
-          "expected_rejection": true,
-          "matrix_status": "FAIL",
-          "receipt": "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1/rejected/candidate_02/rejection-receipt.json",
-          "status": "EXPECTED_REJECTION",
-          "unit_gate": "FAIL",
-          "unit_verification_status": "COUNTEREXAMPLE"
-        }
-      ],
-      "shard_durations_seconds": [
-        0.77,
-        0.755,
-        0.747,
-        0.777,
-        0.764,
-        0.775,
-        0.773,
-        0.736
-      ],
-      "status": "PROMOTED",
-      "tokens": 1703,
-      "unit_status": "EXHAUSTIVE_EQUIVALENT",
-      "vector_strategy": "cartesian"
-    },
-    {
-      "contract_id": "findmidpoint",
-      "counterexample": {
-        "actual": "129",
-        "expected": "128",
-        "index": 0,
-        "inputs": [
-          0,
-          0,
-          8,
-          0
-        ],
-        "shard_id": 0
-      },
-      "dependency_evidence": {
-        "call_sites": 3,
-        "compile_commands": true,
-        "direct_call_sites": 3,
-        "matrix_commands": true,
-        "vectors": true
-      },
-      "dependency_status": "PASS",
-      "domain_proof_complete": true,
-      "executed_shards": 8,
-      "executed_vectors": 8207360,
-      "execution_status": "EXECUTED_NOW",
-      "formal_proof_complete": false,
-      "formal_proof_status": "NOT_APPLICABLE",
-      "library_promotion": {
-        "archived_previous": null,
-        "artifact_dir": "artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
-        "contract_file": "library/contracts/findmidpoint.json",
-        "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
-        "contract_id": "findmidpoint",
-        "module": "findmidpoint",
-        "module_file": "library/rtl/findmidpoint.sv",
-        "rtl_sha256": "95b00b9f217f19697deb92e6926e102faf48b91af79a9fb6331900a7217d480b",
-        "status": "PASS",
-        "verification_file": "library/verification/findmidpoint.json"
-      },
-      "matrix_modes": {
-        "C_ONLY": "PASS",
-        "RTL_RETURN": "PASS",
-        "SHADOW": "PASS"
-      },
-      "matrix_status": "PASS",
-      "model_calls": 1,
-      "rejected_candidates": [
-        {
-          "bitstream_gate": "FAIL",
-          "candidate": "candidate_02",
-          "composition_gate": "FAIL",
-          "counterexample": {
-            "actual": "129",
-            "expected": "128",
-            "index": 0,
-            "inputs": [
-              0,
-              0,
-              8,
-              0
-            ],
-            "shard_id": 0
-          },
-          "expected_rejection": true,
-          "matrix_status": "FAIL",
-          "receipt": "artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/rejected/candidate_02/rejection-receipt.json",
-          "status": "EXPECTED_REJECTION",
-          "unit_gate": "FAIL",
-          "unit_verification_status": "COUNTEREXAMPLE"
-        }
-      ],
-      "shard_durations_seconds": [
-        5.423,
-        5.305,
-        5.691,
-        5.257,
-        5.723,
-        5.612,
-        5.633,
-        5.559
-      ],
-      "status": "PROMOTED",
-      "tokens": 2264,
-      "unit_status": "EXHAUSTIVE_EQUIVALENT",
-      "vector_strategy": "conditional"
-    },
-    {
-      "contract_id": "findresidualsize",
-      "counterexample": {
-        "actual": "18",
-        "expected": "17",
-        "index": 0,
-        "inputs": [
-          -65535
-        ],
-        "shard_id": 0
-      },
-      "dependency_evidence": {
-        "call_sites": 6,
-        "compile_commands": true,
-        "direct_call_sites": 6,
-        "matrix_commands": true,
-        "vectors": true
-      },
-      "dependency_status": "PASS",
-      "domain_proof_complete": true,
-      "executed_shards": 8,
-      "executed_vectors": 131071,
-      "execution_status": "EXECUTED_NOW",
-      "formal_proof_complete": false,
-      "formal_proof_status": "NOT_APPLICABLE",
-      "library_promotion": {
-        "archived_previous": null,
-        "artifact_dir": "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
-        "contract_file": "library/contracts/findresidualsize.json",
-        "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
-        "contract_id": "findresidualsize",
-        "module": "findresidualsize",
-        "module_file": "library/rtl/findresidualsize.sv",
-        "rtl_sha256": "a10d4649d371883b4bdfef25fc99448c5a719e937a93425900ddf00b26474073",
-        "status": "PASS",
-        "verification_file": "library/verification/findresidualsize.json"
-      },
-      "matrix_modes": {
-        "C_ONLY": "PASS",
-        "RTL_RETURN": "PASS",
-        "SHADOW": "PASS"
-      },
-      "matrix_status": "PASS",
-      "model_calls": 1,
-      "rejected_candidates": [
-        {
-          "bitstream_gate": "FAIL",
-          "candidate": "candidate_02",
-          "composition_gate": "FAIL",
-          "counterexample": {
-            "actual": "18",
-            "expected": "17",
-            "index": 0,
-            "inputs": [
-              -65535
-            ],
-            "shard_id": 0
-          },
-          "expected_rejection": true,
-          "matrix_status": "FAIL",
-          "receipt": "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b/rejected/candidate_02/rejection-receipt.json",
-          "status": "EXPECTED_REJECTION",
-          "unit_gate": "FAIL",
-          "unit_verification_status": "COUNTEREXAMPLE"
-        }
-      ],
-      "shard_durations_seconds": [
-        2.405,
-        2.2,
-        2.178,
-        2.238,
-        2.173,
-        2.119,
-        2.127,
-        2.125
-      ],
-      "status": "PROMOTED",
-      "tokens": 2202,
-      "unit_status": "EXHAUSTIVE_EQUIVALENT",
-      "vector_strategy": "cartesian"
-    },
-    {
-      "contract_id": "getqpadjpredsize",
-      "counterexample": {
-        "actual": "1",
-        "expected": "0",
-        "index": 0,
-        "inputs": [
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          8,
-          8,
-          8,
-          8,
-          0,
-          0,
-          0,
-          0
-        ],
-        "shard_id": 0
-      },
-      "dependency_evidence": {
-        "call_sites": 3,
-        "compile_commands": true,
-        "direct_call_sites": 3,
-        "matrix_commands": true,
-        "vectors": true
-      },
-      "dependency_status": "PASS",
-      "domain_proof_complete": true,
-      "executed_shards": 8,
-      "executed_vectors": 14831616,
-      "execution_status": "EXECUTED_NOW",
-      "formal_proof_complete": false,
-      "formal_proof_status": "NOT_APPLICABLE",
-      "library_promotion": {
-        "archived_previous": null,
-        "artifact_dir": "artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
-        "contract_file": "library/contracts/getqpadjpredsize.json",
-        "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
-        "contract_id": "getqpadjpredsize",
-        "module": "getqpadjpredsize",
-        "module_file": "library/rtl/getqpadjpredsize.sv",
-        "rtl_sha256": "a8a237d111078f013fa7c15edf430b37d8c58a60595b1082166f16b0334c24b4",
-        "status": "PASS",
-        "verification_file": "library/verification/getqpadjpredsize.json"
-      },
-      "matrix_modes": {
-        "C_ONLY": "PASS",
-        "RTL_RETURN": "PASS",
-        "SHADOW": "PASS"
-      },
-      "matrix_status": "PASS",
-      "model_calls": 1,
-      "rejected_candidates": [
-        {
-          "bitstream_gate": "FAIL",
-          "candidate": "candidate_02",
-          "composition_gate": "FAIL",
-          "counterexample": {
-            "actual": "1",
-            "expected": "0",
-            "index": 0,
-            "inputs": [
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              8,
-              8,
-              8,
-              8,
-              0,
-              0,
-              0,
-              0
-            ],
-            "shard_id": 0
-          },
-          "expected_rejection": true,
-          "matrix_status": "FAIL",
-          "receipt": "artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c/rejected/candidate_02/rejection-receipt.json",
-          "status": "EXPECTED_REJECTION",
-          "unit_gate": "FAIL",
-          "unit_verification_status": "COUNTEREXAMPLE"
-        }
-      ],
-      "shard_durations_seconds": [
-        5.672,
-        5.503,
-        4.994,
-        5.342,
-        5.726,
-        5.659,
-        5.735,
-        5.222
-      ],
-      "status": "PROMOTED",
-      "tokens": 4922,
-      "unit_status": "EXHAUSTIVE_EQUIVALENT",
-      "vector_strategy": "table_lookup"
-    },
-    {
-      "contract_id": "isflatnessinfosent",
-      "counterexample": {
-        "actual": "0",
-        "expected": "1",
-        "index": 0,
-        "inputs": [
-          0,
-          0,
-          0
-        ],
-        "shard_id": 0
-      },
-      "dependency_evidence": {
-        "call_sites": 4,
-        "compile_commands": true,
-        "direct_call_sites": 4,
-        "matrix_commands": true,
-        "vectors": true
-      },
-      "dependency_status": "PASS",
-      "domain_proof_complete": true,
-      "executed_shards": 8,
-      "executed_vectors": 32768,
-      "execution_status": "EXECUTED_NOW",
-      "formal_proof_complete": false,
-      "formal_proof_status": "NOT_APPLICABLE",
-      "library_promotion": {
-        "archived_previous": null,
-        "artifact_dir": "artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
-        "contract_file": "library/contracts/isflatnessinfosent.json",
-        "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
-        "contract_id": "isflatnessinfosent",
-        "module": "isflatnessinfosent",
-        "module_file": "library/rtl/isflatnessinfosent.sv",
-        "rtl_sha256": "0a4b0d5ee2f45598e3ea1859102a42e3fa2ef66aba94e7049fc1d47876a5c07e",
-        "status": "PASS",
-        "verification_file": "library/verification/isflatnessinfosent.json"
-      },
-      "matrix_modes": {
-        "C_ONLY": "PASS",
-        "RTL_RETURN": "PASS",
-        "SHADOW": "PASS"
-      },
-      "matrix_status": "PASS",
-      "model_calls": 1,
-      "rejected_candidates": [
-        {
-          "bitstream_gate": "FAIL",
-          "candidate": "candidate_02",
-          "composition_gate": "FAIL",
-          "counterexample": {
-            "actual": "0",
-            "expected": "1",
-            "index": 0,
-            "inputs": [
-              0,
-              0,
-              0
-            ],
-            "shard_id": 0
-          },
-          "expected_rejection": true,
-          "matrix_status": "FAIL",
-          "receipt": "artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/rejected/candidate_02/rejection-receipt.json",
-          "status": "EXPECTED_REJECTION",
-          "unit_gate": "FAIL",
-          "unit_verification_status": "COUNTEREXAMPLE"
-        }
-      ],
-      "shard_durations_seconds": [
-        1.807,
-        1.77,
-        1.729,
-        1.647,
-        1.706,
-        1.694,
-        1.567,
-        1.568
-      ],
-      "status": "PROMOTED",
-      "tokens": 2012,
-      "unit_status": "EXHAUSTIVE_EQUIVALENT",
-      "vector_strategy": "cartesian"
-    },
-    {
-      "contract_id": "mapqptoqlevel",
-      "counterexample": {
-        "actual": "1",
-        "expected": "0",
-        "index": 0,
-        "inputs": [
-          0,
-          0,
-          0,
-          0,
-          8,
-          8,
-          0,
-          0
-        ],
-        "shard_id": 0
-      },
-      "dependency_evidence": {
-        "call_sites": 12,
-        "compile_commands": true,
-        "direct_call_sites": 12,
-        "matrix_commands": true,
-        "vectors": true
-      },
-      "dependency_status": "PASS",
-      "domain_proof_complete": true,
-      "executed_shards": 8,
-      "executed_vectors": 5548800,
-      "execution_status": "EXECUTED_NOW",
-      "formal_proof_complete": false,
-      "formal_proof_status": "NOT_APPLICABLE",
-      "library_promotion": {
-        "archived_previous": null,
-        "artifact_dir": "artifacts/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
-        "contract_file": "library/contracts/mapqptoqlevel.json",
-        "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
-        "contract_id": "mapqptoqlevel",
-        "module": "mapqptoqlevel",
-        "module_file": "library/rtl/mapqptoqlevel.sv",
-        "rtl_sha256": "5dda9dc25483193295e7af8abbd927b209f8e9715f2f4791864200f2fc0a3334",
-        "status": "PASS",
-        "verification_file": "library/verification/mapqptoqlevel.json"
-      },
-      "matrix_modes": {
-        "C_ONLY": "PASS",
-        "RTL_RETURN": "PASS",
-        "SHADOW": "PASS"
-      },
-      "matrix_status": "PASS",
-      "model_calls": 1,
-      "rejected_candidates": [
-        {
-          "bitstream_gate": "FAIL",
-          "candidate": "candidate_02",
-          "composition_gate": "FAIL",
-          "counterexample": {
-            "actual": "1",
-            "expected": "0",
-            "index": 0,
-            "inputs": [
-              0,
-              0,
-              0,
-              0,
-              8,
-              8,
-              0,
-              0
-            ],
-            "shard_id": 0
-          },
-          "expected_rejection": true,
-          "matrix_status": "FAIL",
-          "receipt": "artifacts/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371/rejected/candidate_02/rejection-receipt.json",
-          "status": "EXPECTED_REJECTION",
-          "unit_gate": "FAIL",
-          "unit_verification_status": "COUNTEREXAMPLE"
-        }
-      ],
-      "shard_durations_seconds": [
-        3.694,
-        3.679,
-        3.574,
-        3.666,
-        3.411,
-        3.499,
-        3.755,
-        3.736
-      ],
-      "status": "PROMOTED",
-      "tokens": 3697,
-      "unit_status": "EXHAUSTIVE_EQUIVALENT",
-      "vector_strategy": "cartesian"
-    },
-    {
-      "contract_id": "maxresidualsize",
-      "counterexample": {
-        "actual": "9",
-        "expected": "8",
-        "index": 0,
-        "inputs": [
-          0,
-          0,
-          0,
-          0,
-          8,
-          8,
-          8,
-          0,
-          0
-        ],
-        "shard_id": 0
-      },
-      "dependency_evidence": {
-        "call_sites": 8,
-        "compile_commands": true,
-        "direct_call_sites": 8,
-        "matrix_commands": true,
-        "vectors": true
-      },
-      "dependency_status": "PASS",
-      "domain_proof_complete": true,
-      "executed_shards": 8,
-      "executed_vectors": 27744000,
-      "execution_status": "EXECUTED_NOW",
-      "formal_proof_complete": false,
-      "formal_proof_status": "NOT_APPLICABLE",
-      "library_promotion": {
-        "archived_previous": null,
-        "artifact_dir": "artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
-        "contract_file": "library/contracts/maxresidualsize.json",
-        "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
-        "contract_id": "maxresidualsize",
-        "module": "maxresidualsize",
-        "module_file": "library/rtl/maxresidualsize.sv",
-        "rtl_sha256": "cfdb54a0936d5bd70d45ddd9bcb20d05d99b73039a3789c1124ed564ae5aa65b",
-        "status": "PASS",
-        "verification_file": "library/verification/maxresidualsize.json"
-      },
-      "matrix_modes": {
-        "C_ONLY": "PASS",
-        "RTL_RETURN": "PASS",
-        "SHADOW": "PASS"
-      },
-      "matrix_status": "PASS",
-      "model_calls": 1,
-      "rejected_candidates": [
-        {
-          "bitstream_gate": "FAIL",
-          "candidate": "candidate_02",
-          "composition_gate": "FAIL",
-          "counterexample": {
-            "actual": "9",
-            "expected": "8",
-            "index": 0,
-            "inputs": [
-              0,
-              0,
-              0,
-              0,
-              8,
-              8,
-              8,
-              0,
-              0
-            ],
-            "shard_id": 0
-          },
-          "expected_rejection": true,
-          "matrix_status": "FAIL",
-          "receipt": "artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/rejected/candidate_02/rejection-receipt.json",
-          "status": "EXPECTED_REJECTION",
-          "unit_gate": "FAIL",
-          "unit_verification_status": "COUNTEREXAMPLE"
-        }
-      ],
-      "shard_durations_seconds": [
-        9.838,
-        9.718,
-        9.316,
-        9.937,
-        9.897,
-        9.959,
-        9.591,
-        9.28
-      ],
-      "status": "PROMOTED",
-      "tokens": 2772,
-      "unit_status": "EXHAUSTIVE_EQUIVALENT",
-      "vector_strategy": "cartesian"
-    },
-    {
-      "contract_id": "predictsize",
-      "counterexample": {
-        "actual": "1",
-        "expected": "0",
-        "index": 0,
-        "inputs": [
-          0,
-          0,
-          0
-        ],
-        "shard_id": 0
-      },
-      "dependency_evidence": {
-        "call_sites": 2,
-        "compile_commands": true,
-        "direct_call_sites": 2,
-        "matrix_commands": true,
-        "vectors": true
-      },
-      "dependency_status": "PASS",
-      "domain_proof_complete": true,
-      "executed_shards": 8,
-      "executed_vectors": 4913,
-      "execution_status": "EXECUTED_NOW",
-      "formal_proof_complete": false,
-      "formal_proof_status": "NOT_APPLICABLE",
-      "library_promotion": {
-        "archived_previous": null,
-        "artifact_dir": "artifacts/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
-        "contract_file": "library/contracts/predictsize.json",
-        "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
-        "contract_id": "predictsize",
-        "module": "predictsize",
-        "module_file": "library/rtl/predictsize.sv",
-        "rtl_sha256": "861239ab7f41e5c98845588cfa54631e2d4449920afe9cdbde2eae0920b09af7",
-        "status": "PASS",
-        "verification_file": "library/verification/predictsize.json"
-      },
-      "matrix_modes": {
-        "C_ONLY": "PASS",
-        "RTL_RETURN": "PASS",
-        "SHADOW": "PASS"
-      },
-      "matrix_status": "PASS",
-      "model_calls": 1,
-      "rejected_candidates": [
-        {
-          "bitstream_gate": "FAIL",
-          "candidate": "candidate_02",
-          "composition_gate": "FAIL",
-          "counterexample": {
-            "actual": "1",
-            "expected": "0",
-            "index": 0,
-            "inputs": [
-              0,
-              0,
-              0
-            ],
-            "shard_id": 0
-          },
-          "expected_rejection": true,
-          "matrix_status": "FAIL",
-          "receipt": "artifacts/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d/rejected/candidate_02/rejection-receipt.json",
-          "status": "EXPECTED_REJECTION",
-          "unit_gate": "FAIL",
-          "unit_verification_status": "COUNTEREXAMPLE"
-        }
-      ],
-      "shard_durations_seconds": [
-        2.284,
-        2.252,
-        2.206,
-        2.12,
-        2.146,
-        2.074,
-        2.048,
-        1.876
-      ],
-      "status": "PROMOTED",
-      "tokens": 1954,
-      "unit_status": "EXHAUSTIVE_EQUIVALENT",
-      "vector_strategy": "cartesian"
-    },
-    {
-      "contract_id": "qp2qlevel",
-      "counterexample": {
-        "actual": "1",
-        "expected": "0",
-        "index": 0,
-        "inputs": [
-          0,
-          0,
-          8,
-          0,
-          0,
-          0
-        ],
-        "shard_id": 0
-      },
-      "dependency_evidence": {
-        "call_sites": 2,
-        "compile_commands": true,
-        "direct_call_sites": 2,
-        "matrix_commands": true,
-        "vectors": true
-      },
-      "dependency_status": "PASS",
-      "domain_proof_complete": true,
-      "executed_shards": 8,
-      "executed_vectors": 5760,
-      "execution_status": "EXECUTED_NOW",
-      "formal_proof_complete": false,
-      "formal_proof_status": "NOT_APPLICABLE",
-      "library_promotion": {
-        "archived_previous": null,
-        "artifact_dir": "artifacts/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
-        "contract_file": "library/contracts/qp2qlevel.json",
-        "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
-        "contract_id": "qp2qlevel",
-        "module": "qp2qlevel",
-        "module_file": "library/rtl/qp2qlevel.sv",
-        "rtl_sha256": "18f078d82f020604fbcae57261373e69e9291f7757f81585163bb47fa1d893df",
-        "status": "PASS",
-        "verification_file": "library/verification/qp2qlevel.json"
-      },
-      "matrix_modes": {
-        "C_ONLY": "PASS",
-        "RTL_RETURN": "PASS",
-        "SHADOW": "PASS"
-      },
-      "matrix_status": "PASS",
-      "model_calls": 1,
-      "rejected_candidates": [
-        {
-          "bitstream_gate": "FAIL",
-          "candidate": "candidate_02",
-          "composition_gate": "FAIL",
-          "counterexample": {
-            "actual": "1",
-            "expected": "0",
-            "index": 0,
-            "inputs": [
-              0,
-              0,
-              8,
-              0,
-              0,
-              0
-            ],
-            "shard_id": 0
-          },
-          "expected_rejection": true,
-          "matrix_status": "FAIL",
-          "receipt": "artifacts/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026/rejected/candidate_02/rejection-receipt.json",
-          "status": "EXPECTED_REJECTION",
-          "unit_gate": "FAIL",
-          "unit_verification_status": "COUNTEREXAMPLE"
-        }
-      ],
-      "shard_durations_seconds": [
-        1.91,
-        1.838,
-        1.77,
-        1.726,
-        1.533,
-        1.482,
-        1.476,
-        1.458
-      ],
-      "status": "PROMOTED",
-      "tokens": 8517,
-      "unit_status": "EXHAUSTIVE_EQUIVALENT",
-      "vector_strategy": "qp_table"
-    },
-    {
-      "contract_id": "quantizeresidual",
-      "counterexample": {
-        "actual": "-65534",
-        "expected": "-65535",
-        "index": 0,
-        "inputs": [
-          -65535,
-          0
-        ],
-        "shard_id": 0
-      },
-      "dependency_evidence": {
-        "call_sites": 3,
-        "compile_commands": true,
-        "direct_call_sites": 3,
-        "matrix_commands": true,
-        "vectors": true
-      },
-      "dependency_status": "PASS",
-      "domain_proof_complete": true,
-      "executed_shards": 8,
-      "executed_vectors": 2228207,
-      "execution_status": "EXECUTED_NOW",
-      "formal_proof_complete": false,
-      "formal_proof_status": "NOT_APPLICABLE",
-      "library_promotion": {
-        "archived_previous": null,
-        "artifact_dir": "artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
-        "contract_file": "library/contracts/quantizeresidual.json",
-        "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
-        "contract_id": "quantizeresidual",
-        "module": "quantizeresidual",
-        "module_file": "library/rtl/quantizeresidual.sv",
-        "rtl_sha256": "7c9d729bbe1ac193b6f355b3d8281a92ab350a9c27a7717145fdea31a863d9cd",
-        "status": "PASS",
-        "verification_file": "library/verification/quantizeresidual.json"
-      },
-      "matrix_modes": {
-        "C_ONLY": "PASS",
-        "RTL_RETURN": "PASS",
-        "SHADOW": "PASS"
-      },
-      "matrix_status": "PASS",
-      "model_calls": 1,
-      "rejected_candidates": [
-        {
-          "bitstream_gate": "FAIL",
-          "candidate": "candidate_02",
-          "composition_gate": "FAIL",
-          "counterexample": {
-            "actual": "-65534",
-            "expected": "-65535",
-            "index": 0,
-            "inputs": [
-              -65535,
-              0
-            ],
-            "shard_id": 0
-          },
-          "expected_rejection": true,
-          "matrix_status": "FAIL",
-          "receipt": "artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a/rejected/candidate_02/rejection-receipt.json",
-          "status": "EXPECTED_REJECTION",
-          "unit_gate": "FAIL",
-          "unit_verification_status": "COUNTEREXAMPLE"
-        }
-      ],
-      "shard_durations_seconds": [
-        2.013,
-        1.727,
-        1.738,
-        1.902,
-        1.722,
-        1.914,
-        1.649,
-        1.811
-      ],
-      "status": "PROMOTED",
-      "tokens": 2108,
-      "unit_status": "EXHAUSTIVE_EQUIVALENT",
-      "vector_strategy": "cartesian"
-    },
-    {
-      "contract_id": "samplepredict",
-      "counterexample": {
-        "actual": "128",
-        "expected": "127",
-        "index": 0,
-        "inputs": [
-          0,
-          0,
-          0,
-          0,
-          8,
-          0,
-          0,
-          0,
-          127,
-          127,
-          127,
-          127,
-          127,
-          127,
-          32768,
-          32768,
-          32768,
-          32768,
-          32768,
-          32768,
-          32768,
-          32768,
-          32768,
-          127,
-          127,
-          127,
-          127,
-          127,
-          127,
-          127,
-          127,
-          127,
-          127,
-          127,
-          127,
-          127,
-          32768,
-          32768,
-          32768
-        ],
-        "shard_id": 0
-      },
-      "dependency_evidence": {
-        "call_sites": 5,
-        "compile_commands": true,
-        "direct_call_sites": 5,
         "matrix_commands": true,
         "vectors": true
       },
       "dependency_status": "PASS",
       "domain_proof_complete": false,
       "executed_shards": 8,
-      "executed_vectors": 25960080,
+      "executed_vectors": 575552,
       "execution_status": "EXECUTED_NOW",
       "formal_proof_complete": true,
       "formal_proof_status": "PASS",
       "library_promotion": {
-        "archived_previous": null,
-        "artifact_dir": "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
-        "contract_file": "library/contracts/samplepredict.json",
-        "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
-        "contract_id": "samplepredict",
-        "module": "samplepredict",
-        "module_file": "library/rtl/samplepredict.sv",
-        "rtl_sha256": "831411aefb7fd14c630f6a71d75191a62320ce17566d6292637fcdab603e2011",
+        "archived_previous": "archive/isorigflathindex/15e7e4bc9522fa586e9fcf9db6663660e37f2a62d310df0ae5eee7251fcd1c3a.sv",
+        "artifact_dir": "artifacts/15e7e4bc9522fa586e9fcf9db6663660e37f2a62d310df0ae5eee7251fcd1c3a",
+        "contract_file": "library/contracts/isorigflathindex.json",
+        "contract_hash": "15e7e4bc9522fa586e9fcf9db6663660e37f2a62d310df0ae5eee7251fcd1c3a",
+        "contract_id": "isorigflathindex",
+        "module": "isorigflathindex",
+        "module_file": "library/rtl/isorigflathindex.sv",
+        "rtl_sha256": "cfb707d7aa001c86145ecff6476c1fd36b7d2755ecabe5d5af41f817ea22d855",
         "status": "PASS",
-        "verification_file": "library/verification/samplepredict.json"
-      },
-      "matrix_modes": {
-        "C_ONLY": "PASS",
-        "RTL_RETURN": "PASS",
-        "SHADOW": "PASS"
-      },
-      "matrix_status": "PASS",
-      "model_calls": 1,
-      "rejected_candidates": [
-        {
-          "bitstream_gate": "FAIL",
-          "candidate": "candidate_02",
-          "composition_gate": "FAIL",
-          "counterexample": {
-            "actual": "128",
-            "expected": "127",
-            "index": 0,
-            "inputs": [
-              0,
-              0,
-              0,
-              0,
-              8,
-              0,
-              0,
-              0,
-              127,
-              127,
-              127,
-              127,
-              127,
-              127,
-              32768,
-              32768,
-              32768,
-              32768,
-              32768,
-              32768,
-              32768,
-              32768,
-              32768,
-              127,
-              127,
-              127,
-              127,
-              127,
-              127,
-              127,
-              127,
-              127,
-              127,
-              127,
-              127,
-              127,
-              32768,
-              32768,
-              32768
-            ],
-            "shard_id": 0
-          },
-          "expected_rejection": true,
-          "matrix_status": "FAIL",
-          "receipt": "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509/rejected/candidate_02/rejection-receipt.json",
-          "status": "EXPECTED_REJECTION",
-          "unit_gate": "FAIL",
-          "unit_verification_status": "COUNTEREXAMPLE"
-        }
-      ],
-      "shard_durations_seconds": [
-        18.045,
-        17.157,
-        18.204,
-        17.673,
-        18.089,
-        17.935,
-        17.603,
-        17.875
-      ],
-      "status": "PROMOTED",
-      "tokens": 12302,
-      "unit_status": "FORMAL_EQUIVALENT",
-      "vector_strategy": "windowed_boundary"
-    },
-    {
-      "contract_id": "samptolinebuf",
-      "counterexample": {
-        "actual": "1",
-        "expected": "0",
-        "index": 0,
-        "inputs": [
-          0,
-          0,
-          8,
-          8
-        ],
-        "shard_id": 0
-      },
-      "dependency_evidence": {
-        "call_sites": 2,
-        "compile_commands": true,
-        "direct_call_sites": 2,
-        "matrix_commands": true,
-        "vectors": true
-      },
-      "dependency_status": "PASS",
-      "domain_proof_complete": true,
-      "executed_shards": 8,
-      "executed_vectors": 21233664,
-      "execution_status": "EXECUTED_NOW",
-      "formal_proof_complete": false,
-      "formal_proof_status": "NOT_APPLICABLE",
-      "library_promotion": {
-        "archived_previous": null,
-        "artifact_dir": "artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
-        "contract_file": "library/contracts/samptolinebuf.json",
-        "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
-        "contract_id": "samptolinebuf",
-        "module": "samptolinebuf",
-        "module_file": "library/rtl/samptolinebuf.sv",
-        "rtl_sha256": "971e3b07df907a913544145749bc5303b1c4532af69517ce97ab3bc9bed0cae9",
-        "status": "PASS",
-        "verification_file": "library/verification/samptolinebuf.json"
+        "verification_file": "library/verification/isorigflathindex.json"
       },
       "matrix_modes": {
         "C_ONLY": "PASS",
@@ -1268,67 +146,80 @@
             "index": 0,
             "inputs": [
               0,
-              0,
               8,
-              8
+              0,
+              3,
+              1,
+              2,
+              4,
+              0,
+              1,
+              8,
+              8,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127,
+              127
             ],
             "shard_id": 0
           },
           "expected_rejection": true,
           "matrix_status": "FAIL",
-          "receipt": "artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/rejected/candidate_02/rejection-receipt.json",
+          "receipt": "artifacts/15e7e4bc9522fa586e9fcf9db6663660e37f2a62d310df0ae5eee7251fcd1c3a/rejected/candidate_02/rejection-receipt.json",
           "status": "EXPECTED_REJECTION",
           "unit_gate": "FAIL",
           "unit_verification_status": "COUNTEREXAMPLE"
         }
       ],
       "shard_durations_seconds": [
-        8.587,
-        8.308,
-        8.182,
-        8.697,
-        8.367,
-        6.736,
-        8.192,
-        8.596
+        1.245,
+        1.272,
+        1.276,
+        1.284,
+        1.234,
+        1.259,
+        1.265,
+        1.272
       ],
       "status": "PROMOTED",
-      "tokens": 2719,
-      "unit_status": "EXHAUSTIVE_EQUIVALENT",
-      "vector_strategy": "cartesian"
+      "tokens": 19139,
+      "unit_status": "FORMAL_EQUIVALENT",
+      "vector_strategy": "flatness_window"
     }
   ],
   "schema_version": 2,
   "selected_contracts": [
-    "ceil_log2",
-    "escapecodesize",
-    "findmidpoint",
-    "findresidualsize",
-    "getqpadjpredsize",
-    "isflatnessinfosent",
-    "mapqptoqlevel",
-    "maxresidualsize",
-    "predictsize",
-    "qp2qlevel",
-    "quantizeresidual",
-    "samplepredict",
-    "samptolinebuf"
+    "isorigflathindex"
   ],
-  "selected_new_work": [],
+  "selected_new_work": [
+    "isorigflathindex"
+  ],
   "shards": [
-    8,
-    8,
-    8,
-    8,
-    8,
-    8,
-    8,
-    8,
-    8,
-    8,
-    8,
-    8,
     8
   ],
-  "tokens": 48161
+  "tokens": 19139
 }

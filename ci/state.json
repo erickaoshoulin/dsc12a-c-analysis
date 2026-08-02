@@ -3,206 +3,6 @@
   "contracts": [
     {
       "artifacts": [
-        "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896"
-      ],
-      "contract_id": "ceil_log2",
-      "current_state": "PROMOTED",
-      "failure_reason": null,
-      "function": "ceil_log2",
-      "hashes": {
-        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
-        "contract": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
-        "dependency": "36e7af5a75d3a4162670ca604cc87a53daee9c23548299822ff9cd71e7fdbe9d",
-        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
-        "model": "external-generator-hook",
-        "pipeline": "executable-cicd-v2",
-        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
-        "shards": "8",
-        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
-        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "8"
-      },
-      "history": [
-        {
-          "state": "DISCOVERED"
-        },
-        {
-          "failure_reason": null,
-          "state": "CONTRACT_LOCKED",
-          "status": "EXECUTING"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_GENERATED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "UNIT_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "SHADOW_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_RETURN_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "DEPENDENCIES_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "BITSTREAM_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "PROMOTED",
-          "status": "PROMOTED"
-        }
-      ],
-      "interface_shape": [
-        [
-          "input",
-          "val",
-          16,
-          false
-        ],
-        [
-          "output",
-          "return_value",
-          5,
-          false
-        ]
-      ],
-      "model_calls": 1,
-      "origin": "tool_discovered_reviewed_override",
-      "selected": true,
-      "status": "PROMOTED",
-      "token_count": 989,
-      "unit_receipt": "EXECUTED_NOW"
-    },
-    {
-      "artifacts": [
-        "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1"
-      ],
-      "contract_id": "escapecodesize",
-      "current_state": "PROMOTED",
-      "failure_reason": null,
-      "function": "EscapeCodeSize",
-      "hashes": {
-        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
-        "contract": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
-        "dependency": "6f573328acee06945d4ef4dd9bf72123895919bf1e10bfe6eb3cccc22f5cd8f5",
-        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
-        "model": "external-generator-hook",
-        "pipeline": "executable-cicd-v2",
-        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
-        "shards": "8",
-        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
-        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "8"
-      },
-      "history": [
-        {
-          "state": "DISCOVERED"
-        },
-        {
-          "failure_reason": null,
-          "state": "CONTRACT_LOCKED",
-          "status": "EXECUTING"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_GENERATED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "UNIT_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "SHADOW_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_RETURN_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "DEPENDENCIES_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "BITSTREAM_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "PROMOTED",
-          "status": "PROMOTED"
-        }
-      ],
-      "interface_shape": [
-        [
-          "input",
-          "cpntBitDepth_0",
-          5,
-          false
-        ],
-        [
-          "input",
-          "dsc_version_minor",
-          2,
-          false
-        ],
-        [
-          "input",
-          "native_420",
-          1,
-          false
-        ],
-        [
-          "input",
-          "qlevel_luma",
-          5,
-          false
-        ],
-        [
-          "input",
-          "qp",
-          5,
-          false
-        ],
-        [
-          "output",
-          "return_value",
-          6,
-          true
-        ]
-      ],
-      "model_calls": 1,
-      "origin": "tool_discovered_reviewed_override",
-      "selected": true,
-      "status": "PROMOTED",
-      "token_count": 1703,
-      "unit_receipt": "EXECUTED_NOW"
-    },
-    {
-      "artifacts": [
         "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/artifact-manifest.json",
         "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/bitstream-receipt.json",
         "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/dependency-receipt.json",
@@ -239,17 +39,17 @@
         "integration/generated-overlay/findmidpoint/shadow.json"
       ],
       "contract_id": "findmidpoint",
-      "current_state": "PROMOTED",
-      "failure_reason": null,
+      "current_state": "CONTRACT_LOCKED",
+      "failure_reason": "bounded selection deferred",
       "function": "FindMidpoint",
       "hashes": {
-        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
+        "agent": "e2b9de9c306e0dd26e9d74872f1867b930aa33908c626618b5f5300e83edb4b4",
         "contract": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
-        "dependency": "592e02e45134a781e900c00660fc39cbcaeab366c8c0f4ce1de450194717322c",
+        "dependency": "72e4ad23974e3fdfa32898e2e49f44b048db20184afaa1a4879d88debbf591cb",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
+        "prompt": "fde1c371ac875598d621efe811a54ffd2e153b68ac2d2bb08be72adbf7d3051e",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -587,6 +387,11 @@
           "failure_reason": null,
           "state": "PROMOTED",
           "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
         }
       ],
       "interface_shape": [
@@ -621,272 +426,11 @@
           false
         ]
       ],
-      "model_calls": 1,
+      "model_calls": 0,
       "origin": "locked_contract",
-      "selected": true,
-      "status": "PROMOTED",
-      "token_count": 2264,
-      "unit_receipt": "EXECUTED_NOW"
-    },
-    {
-      "artifacts": [
-        "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b"
-      ],
-      "contract_id": "findresidualsize",
-      "current_state": "PROMOTED",
-      "failure_reason": null,
-      "function": "FindResidualSize",
-      "hashes": {
-        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
-        "contract": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
-        "dependency": "5880d2bef1fdeda4c9206a4c48623f038f5a4d7a1ef03f1937f32064b685cb41",
-        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
-        "model": "external-generator-hook",
-        "pipeline": "executable-cicd-v2",
-        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
-        "shards": "8",
-        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
-        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "8"
-      },
-      "history": [
-        {
-          "state": "DISCOVERED"
-        },
-        {
-          "failure_reason": null,
-          "state": "CONTRACT_LOCKED",
-          "status": "EXECUTING"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_GENERATED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "UNIT_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "SHADOW_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_RETURN_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "DEPENDENCIES_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "BITSTREAM_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "PROMOTED",
-          "status": "PROMOTED"
-        }
-      ],
-      "interface_shape": [
-        [
-          "input",
-          "eq",
-          17,
-          true
-        ],
-        [
-          "output",
-          "return_value",
-          5,
-          false
-        ]
-      ],
-      "model_calls": 1,
-      "origin": "tool_discovered_reviewed_override",
-      "selected": true,
-      "status": "PROMOTED",
-      "token_count": 2202,
-      "unit_receipt": "EXECUTED_NOW"
-    },
-    {
-      "artifacts": [
-        "artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c"
-      ],
-      "contract_id": "getqpadjpredsize",
-      "current_state": "PROMOTED",
-      "failure_reason": null,
-      "function": "GetQpAdjPredSize",
-      "hashes": {
-        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
-        "contract": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
-        "dependency": "ff809e4e896a05695becfa554877a3c4be8f059e7814d8675b1ccc0b6ae7957a",
-        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
-        "model": "external-generator-hook",
-        "pipeline": "executable-cicd-v2",
-        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
-        "shards": "8",
-        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
-        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "8"
-      },
-      "history": [
-        {
-          "state": "DISCOVERED"
-        },
-        {
-          "failure_reason": null,
-          "state": "CONTRACT_LOCKED",
-          "status": "EXECUTING"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_GENERATED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "UNIT_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "SHADOW_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_RETURN_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "DEPENDENCIES_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "BITSTREAM_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "PROMOTED",
-          "status": "PROMOTED"
-        }
-      ],
-      "interface_shape": [
-        [
-          "input",
-          "cpntBitDepth_0",
-          5,
-          false
-        ],
-        [
-          "input",
-          "cpntBitDepth_1",
-          5,
-          false
-        ],
-        [
-          "input",
-          "cpntBitDepth_2",
-          5,
-          false
-        ],
-        [
-          "input",
-          "cpntBitDepth_3",
-          5,
-          false
-        ],
-        [
-          "input",
-          "dsc_version_minor",
-          2,
-          false
-        ],
-        [
-          "input",
-          "native_420",
-          1,
-          false
-        ],
-        [
-          "input",
-          "predicted_size_selected",
-          5,
-          false
-        ],
-        [
-          "input",
-          "prev_primary_qp",
-          5,
-          false
-        ],
-        [
-          "input",
-          "primary_qp",
-          5,
-          false
-        ],
-        [
-          "input",
-          "qlevel_chroma_new",
-          5,
-          false
-        ],
-        [
-          "input",
-          "qlevel_chroma_old",
-          5,
-          false
-        ],
-        [
-          "input",
-          "qlevel_luma_new",
-          5,
-          false
-        ],
-        [
-          "input",
-          "qlevel_luma_old",
-          5,
-          false
-        ],
-        [
-          "input",
-          "unit",
-          2,
-          false
-        ],
-        [
-          "input",
-          "unit_c_type_selected",
-          2,
-          false
-        ],
-        [
-          "output",
-          "return_value",
-          5,
-          true
-        ]
-      ],
-      "model_calls": 1,
-      "origin": "tool_discovered_reviewed_override",
-      "selected": true,
-      "status": "PROMOTED",
-      "token_count": 4922,
-      "unit_receipt": "EXECUTED_NOW"
+      "selected": false,
+      "status": "DEFERRED",
+      "token_count": 0
     },
     {
       "artifacts": [
@@ -907,17 +451,17 @@
         "artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d"
       ],
       "contract_id": "isflatnessinfosent",
-      "current_state": "PROMOTED",
-      "failure_reason": null,
+      "current_state": "CONTRACT_LOCKED",
+      "failure_reason": "bounded selection deferred",
       "function": "IsFlatnessInfoSent",
       "hashes": {
-        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
+        "agent": "e2b9de9c306e0dd26e9d74872f1867b930aa33908c626618b5f5300e83edb4b4",
         "contract": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
-        "dependency": "af095c5bf7dc00a4a3fc82dae57b7710b2833f50d1f470ec4df5f71197d92433",
+        "dependency": "4eb3e62868a76220a5d61ca7f97da1ab8b2dbb2c837c66e5b67ebc181149b1a7",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
+        "prompt": "fde1c371ac875598d621efe811a54ffd2e153b68ac2d2bb08be72adbf7d3051e",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -1310,6 +854,11 @@
           "failure_reason": null,
           "state": "PROMOTED",
           "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
         }
       ],
       "interface_shape": [
@@ -1338,11 +887,437 @@
           false
         ]
       ],
+      "model_calls": 0,
+      "origin": "tool_discovered_reviewed_override",
+      "selected": false,
+      "status": "DEFERRED",
+      "token_count": 0
+    },
+    {
+      "artifacts": [
+        "artifacts/15e7e4bc9522fa586e9fcf9db6663660e37f2a62d310df0ae5eee7251fcd1c3a",
+        "artifacts/c798a86cf626d86352d81e3ff48beca0acd8bf78c2739016b2fecf522dbe8f03"
+      ],
+      "contract_id": "isorigflathindex",
+      "current_state": "PROMOTED",
+      "failure_reason": null,
+      "function": "IsOrigFlatHIndex",
+      "hashes": {
+        "agent": "e2b9de9c306e0dd26e9d74872f1867b930aa33908c626618b5f5300e83edb4b4",
+        "contract": "15e7e4bc9522fa586e9fcf9db6663660e37f2a62d310df0ae5eee7251fcd1c3a",
+        "dependency": "88b4500c69ca808d2cdc8bfad2389c198171c842c13e5c07c70b0aa4c3450643",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "fde1c371ac875598d621efe811a54ffd2e153b68ac2d2bb08be72adbf7d3051e",
+        "shards": "8",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "8"
+      },
+      "history": [
+        {
+          "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "COUNTEREXAMPLE"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "FAIL"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "FAIL"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "FAIL"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "FAIL"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "GENERATION_FAILED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        }
+      ],
+      "interface_shape": [
+        [
+          "input",
+          "bits_per_component",
+          5,
+          false
+        ],
+        [
+          "input",
+          "cpnt_bit_depth_0",
+          5,
+          false
+        ],
+        [
+          "input",
+          "cpnt_bit_depth_1",
+          5,
+          false
+        ],
+        [
+          "input",
+          "dsc_version_minor",
+          2,
+          false
+        ],
+        [
+          "input",
+          "flatness_det_thresh",
+          10,
+          false
+        ],
+        [
+          "input",
+          "hPos",
+          16,
+          false
+        ],
+        [
+          "input",
+          "native_420",
+          1,
+          false
+        ],
+        [
+          "input",
+          "num_components",
+          3,
+          false
+        ],
+        [
+          "input",
+          "orig_0_0",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_0_1",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_0_2",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_0_3",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_0_4",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_0_5",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_0_6",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_0",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_1",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_2",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_3",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_4",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_5",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_6",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_0",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_1",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_2",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_3",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_4",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_5",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_6",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_0",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_1",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_2",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_3",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_4",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_5",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_6",
+          16,
+          false
+        ],
+        [
+          "input",
+          "primary_qp",
+          5,
+          false
+        ],
+        [
+          "input",
+          "slice_width",
+          16,
+          false
+        ],
+        [
+          "input",
+          "somewhat_flat_qp_delta",
+          3,
+          false
+        ],
+        [
+          "output",
+          "return_value",
+          2,
+          false
+        ]
+      ],
       "model_calls": 1,
       "origin": "tool_discovered_reviewed_override",
       "selected": true,
       "status": "PROMOTED",
-      "token_count": 2012,
+      "token_count": 19139,
       "unit_receipt": "EXECUTED_NOW"
     },
     {
@@ -1363,17 +1338,17 @@
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/vector_generator.py"
       ],
       "contract_id": "mapqptoqlevel",
-      "current_state": "PROMOTED",
-      "failure_reason": null,
+      "current_state": "CONTRACT_LOCKED",
+      "failure_reason": "bounded selection deferred",
       "function": "MapQpToQlevel",
       "hashes": {
-        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
+        "agent": "e2b9de9c306e0dd26e9d74872f1867b930aa33908c626618b5f5300e83edb4b4",
         "contract": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
-        "dependency": "79ae40eda9a6a6e57a9a24f4bb51fd89a3196e56be2a7b52ce751942b912b1be",
+        "dependency": "4f3e0eba7c16cf161caa1d144c206816334be5aabf90ec748f2112d16ee99e4d",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
+        "prompt": "fde1c371ac875598d621efe811a54ffd2e153b68ac2d2bb08be72adbf7d3051e",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -1711,136 +1686,11 @@
           "failure_reason": null,
           "state": "PROMOTED",
           "status": "PROMOTED"
-        }
-      ],
-      "interface_shape": [
-        [
-          "input",
-          "cpnt",
-          2,
-          false
-        ],
-        [
-          "input",
-          "cpntBitDepth_0",
-          5,
-          false
-        ],
-        [
-          "input",
-          "cpntBitDepth_1",
-          5,
-          false
-        ],
-        [
-          "input",
-          "dsc_version_minor",
-          2,
-          false
-        ],
-        [
-          "input",
-          "native_420",
-          1,
-          false
-        ],
-        [
-          "input",
-          "qlevel_chroma",
-          5,
-          false
-        ],
-        [
-          "input",
-          "qlevel_luma",
-          5,
-          false
-        ],
-        [
-          "input",
-          "qp",
-          5,
-          false
-        ],
-        [
-          "output",
-          "return_value",
-          5,
-          false
-        ]
-      ],
-      "model_calls": 1,
-      "origin": "tool_discovered_reviewed_override",
-      "selected": true,
-      "status": "PROMOTED",
-      "token_count": 3697,
-      "unit_receipt": "EXECUTED_NOW"
-    },
-    {
-      "artifacts": [
-        "artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c"
-      ],
-      "contract_id": "maxresidualsize",
-      "current_state": "PROMOTED",
-      "failure_reason": null,
-      "function": "MaxResidualSize",
-      "hashes": {
-        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
-        "contract": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
-        "dependency": "fb36ad3710962ee5a814a093041756571a79bc3c818b666ce82f23760886c58a",
-        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
-        "model": "external-generator-hook",
-        "pipeline": "executable-cicd-v2",
-        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
-        "shards": "8",
-        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
-        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "8"
-      },
-      "history": [
-        {
-          "state": "DISCOVERED"
         },
         {
-          "failure_reason": null,
+          "failure_reason": "bounded selection deferred",
           "state": "CONTRACT_LOCKED",
-          "status": "EXECUTING"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_GENERATED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "UNIT_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "SHADOW_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_RETURN_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "DEPENDENCIES_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "BITSTREAM_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "PROMOTED",
-          "status": "PROMOTED"
+          "status": "DEFERRED"
         }
       ],
       "interface_shape": [
@@ -1859,12 +1709,6 @@
         [
           "input",
           "cpntBitDepth_1",
-          5,
-          false
-        ],
-        [
-          "input",
-          "cpntBitDepth_selected",
           5,
           false
         ],
@@ -1901,33 +1745,32 @@
         [
           "output",
           "return_value",
-          6,
-          true
+          5,
+          false
         ]
       ],
-      "model_calls": 1,
+      "model_calls": 0,
       "origin": "tool_discovered_reviewed_override",
-      "selected": true,
-      "status": "PROMOTED",
-      "token_count": 2772,
-      "unit_receipt": "EXECUTED_NOW"
+      "selected": false,
+      "status": "DEFERRED",
+      "token_count": 0
     },
     {
       "artifacts": [
         "artifacts/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d"
       ],
       "contract_id": "predictsize",
-      "current_state": "PROMOTED",
-      "failure_reason": null,
+      "current_state": "CONTRACT_LOCKED",
+      "failure_reason": "bounded selection deferred",
       "function": "PredictSize",
       "hashes": {
-        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
+        "agent": "e2b9de9c306e0dd26e9d74872f1867b930aa33908c626618b5f5300e83edb4b4",
         "contract": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
-        "dependency": "b02a4d5b48662017408cd47f9a1b6de3c2c9843d4168799cbf642bcae534fa33",
+        "dependency": "31a15ea0aaa35e736bc9b4bfc0b9a33ef5852b0820fbf7c4d9c8a7b399d5860a",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
+        "prompt": "fde1c371ac875598d621efe811a54ffd2e153b68ac2d2bb08be72adbf7d3051e",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -2257,6 +2100,11 @@
           "failure_reason": null,
           "state": "PROMOTED",
           "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
         }
       ],
       "interface_shape": [
@@ -2285,267 +2133,11 @@
           false
         ]
       ],
-      "model_calls": 1,
+      "model_calls": 0,
       "origin": "tool_discovered_reviewed_override",
-      "selected": true,
-      "status": "PROMOTED",
-      "token_count": 1954,
-      "unit_receipt": "EXECUTED_NOW"
-    },
-    {
-      "artifacts": [
-        "artifacts/5cc749c3741d2467caa8e270fff1f7bde0393ffc33ad173664769dab86233e2c",
-        "artifacts/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
-        "artifacts/e4c7abaddba0123399c1ee038abfeacbbe65cfdd2b148ffe2001eae01c5e3944"
-      ],
-      "contract_id": "qp2qlevel",
-      "current_state": "PROMOTED",
-      "failure_reason": null,
-      "function": "Qp2Qlevel",
-      "hashes": {
-        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
-        "contract": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
-        "dependency": "4cd88c977b41c92d03f608f3593959f193c57a7e2a633fb0f01b0e35b1fb120e",
-        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
-        "model": "external-generator-hook",
-        "pipeline": "executable-cicd-v2",
-        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
-        "shards": "8",
-        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
-        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "8"
-      },
-      "history": [
-        {
-          "state": "DISCOVERED"
-        },
-        {
-          "failure_reason": null,
-          "state": "CONTRACT_LOCKED",
-          "status": "EXECUTING"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_GENERATED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "UNIT_VERIFIED",
-          "status": "INFRASTRUCTURE_FAILURE"
-        },
-        {
-          "failure_reason": null,
-          "state": "CONTRACT_LOCKED",
-          "status": "EXECUTING"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_GENERATED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "UNIT_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "SHADOW_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_RETURN_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "DEPENDENCIES_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "BITSTREAM_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "PROMOTED",
-          "status": "PROMOTED"
-        },
-        {
-          "failure_reason": null,
-          "state": "CONTRACT_LOCKED",
-          "status": "EXECUTING"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_GENERATED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "UNIT_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "SHADOW_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_RETURN_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "DEPENDENCIES_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "BITSTREAM_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "PROMOTED",
-          "status": "PROMOTED"
-        },
-        {
-          "failure_reason": null,
-          "state": "CONTRACT_LOCKED",
-          "status": "EXECUTING"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_GENERATED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "UNIT_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "SHADOW_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_RETURN_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "DEPENDENCIES_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "BITSTREAM_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "PROMOTED",
-          "status": "PROMOTED"
-        },
-        {
-          "failure_reason": null,
-          "state": "CONTRACT_LOCKED",
-          "status": "EXECUTING"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_GENERATED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "UNIT_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "SHADOW_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_RETURN_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "DEPENDENCIES_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "BITSTREAM_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "PROMOTED",
-          "status": "PROMOTED"
-        }
-      ],
-      "interface_shape": [
-        [
-          "input",
-          "bits_per_component",
-          5,
-          false
-        ],
-        [
-          "input",
-          "convert_rgb",
-          1,
-          false
-        ],
-        [
-          "input",
-          "cpnt",
-          2,
-          false
-        ],
-        [
-          "input",
-          "dsc_version_minor",
-          2,
-          false
-        ],
-        [
-          "input",
-          "native_420",
-          1,
-          false
-        ],
-        [
-          "input",
-          "qp",
-          5,
-          false
-        ],
-        [
-          "output",
-          "return_value",
-          5,
-          false
-        ]
-      ],
-      "model_calls": 1,
-      "origin": "tool_discovered_reviewed_override",
-      "selected": true,
-      "status": "PROMOTED",
-      "token_count": 8517,
-      "unit_receipt": "EXECUTED_NOW"
+      "selected": false,
+      "status": "DEFERRED",
+      "token_count": 0
     },
     {
       "artifacts": [
@@ -2553,17 +2145,17 @@
         "artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a"
       ],
       "contract_id": "quantizeresidual",
-      "current_state": "PROMOTED",
-      "failure_reason": null,
+      "current_state": "CONTRACT_LOCKED",
+      "failure_reason": "bounded selection deferred",
       "function": "QuantizeResidual",
       "hashes": {
-        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
+        "agent": "e2b9de9c306e0dd26e9d74872f1867b930aa33908c626618b5f5300e83edb4b4",
         "contract": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
-        "dependency": "9c1ac8406f197955ddb077a9bf2b7049a3d9b1e1fefb28bf6202e318d88cefd3",
+        "dependency": "8f3ec730164262ee12ced056768bdb1fc9a3aaee27b47ac4846e323bc2d34e7f",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
+        "prompt": "fde1c371ac875598d621efe811a54ffd2e153b68ac2d2bb08be72adbf7d3051e",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -3188,6 +2780,11 @@
           "failure_reason": null,
           "state": "PROMOTED",
           "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
         }
       ],
       "interface_shape": [
@@ -3210,29 +2807,28 @@
           true
         ]
       ],
-      "model_calls": 1,
+      "model_calls": 0,
       "origin": "tool_discovered_reviewed_override",
-      "selected": true,
-      "status": "PROMOTED",
-      "token_count": 2108,
-      "unit_receipt": "EXECUTED_NOW"
+      "selected": false,
+      "status": "DEFERRED",
+      "token_count": 0
     },
     {
       "artifacts": [
         "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509"
       ],
       "contract_id": "samplepredict",
-      "current_state": "PROMOTED",
-      "failure_reason": null,
+      "current_state": "CONTRACT_LOCKED",
+      "failure_reason": "bounded selection deferred",
       "function": "SamplePredict",
       "hashes": {
-        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
+        "agent": "e2b9de9c306e0dd26e9d74872f1867b930aa33908c626618b5f5300e83edb4b4",
         "contract": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
-        "dependency": "a671d3851b09188424741aa421d51023cbcfa6a865fa5827d862da572e597cb9",
+        "dependency": "94fea1198a1aa8a3a234de13bf6d470b1b321e3140bfa218fa973ac9933bf2b2",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
+        "prompt": "fde1c371ac875598d621efe811a54ffd2e153b68ac2d2bb08be72adbf7d3051e",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -3592,6 +3188,11 @@
           "failure_reason": null,
           "state": "PROMOTED",
           "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
         }
       ],
       "interface_shape": [
@@ -3836,29 +3437,28 @@
           false
         ]
       ],
-      "model_calls": 1,
+      "model_calls": 0,
       "origin": "tool_discovered_reviewed_override",
-      "selected": true,
-      "status": "PROMOTED",
-      "token_count": 12302,
-      "unit_receipt": "EXECUTED_NOW"
+      "selected": false,
+      "status": "DEFERRED",
+      "token_count": 0
     },
     {
       "artifacts": [
         "artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a"
       ],
       "contract_id": "samptolinebuf",
-      "current_state": "PROMOTED",
-      "failure_reason": null,
+      "current_state": "CONTRACT_LOCKED",
+      "failure_reason": "bounded selection deferred",
       "function": "SampToLineBuf",
       "hashes": {
-        "agent": "042ec58c93548442ccc0cd62e3c68080d5d9125eb2aaa9f8babb16074e7c4131",
+        "agent": "e2b9de9c306e0dd26e9d74872f1867b930aa33908c626618b5f5300e83edb4b4",
         "contract": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
-        "dependency": "1fed1596663992dd5a977b3b86ff473737e0260480624bd08fcda5587a0ae2a7",
+        "dependency": "626c0497536009b9ac1d999ac43762314bfc176a20e081c7fa1cfecfdade812d",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ef620534e3f44b91bc353bae985f32e1ac51ed2fc860ccbddcae9616ded73050",
+        "prompt": "fde1c371ac875598d621efe811a54ffd2e153b68ac2d2bb08be72adbf7d3051e",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -4148,6 +3748,11 @@
           "failure_reason": null,
           "state": "PROMOTED",
           "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
         }
       ],
       "interface_shape": [
@@ -4182,71 +3787,44 @@
           false
         ]
       ],
-      "model_calls": 1,
+      "model_calls": 0,
       "origin": "tool_discovered_reviewed_override",
-      "selected": true,
-      "status": "PROMOTED",
-      "token_count": 2719,
-      "unit_receipt": "EXECUTED_NOW"
+      "selected": false,
+      "status": "DEFERRED",
+      "token_count": 0
     }
   ],
   "dependency_pair": {
     "call_sites": [
       {
-        "callee_contract": "ceil_log2",
-        "callee_function": "ceil_log2",
-        "callee_usr": "c:@F@ceil_log2",
+        "callee_contract": "isorigflathindex",
+        "callee_function": "IsOrigFlatHIndex",
+        "callee_usr": "c:@F@IsOrigFlatHIndex",
         "caller_contract": null,
-        "caller_function": "IchDecision",
-        "caller_usr": "c:@F@IchDecision",
+        "caller_function": "FlatnessAdjustment",
+        "caller_usr": "c:@F@FlatnessAdjustment",
         "location": {
           "column": 21,
           "file": "dsc_codec.c",
-          "line": 513
-        },
-        "source": "facts/callgraph.json"
-      },
-      {
-        "callee_contract": "ceil_log2",
-        "callee_function": "ceil_log2",
-        "callee_usr": "c:@F@ceil_log2",
-        "caller_contract": null,
-        "caller_function": "IchDecision",
-        "caller_usr": "c:@F@IchDecision",
-        "location": {
-          "column": 23,
-          "file": "dsc_codec.c",
-          "line": 514
+          "line": 2528
         },
         "source": "facts/callgraph.json"
       }
     ],
-    "callee_contract": "ceil_log2",
-    "callee_function": "ceil_log2",
-    "callee_usr": "c:@F@ceil_log2",
+    "callee_contract": "isorigflathindex",
+    "callee_function": "IsOrigFlatHIndex",
+    "callee_usr": "c:@F@IsOrigFlatHIndex",
     "caller_contract": null,
-    "caller_function": "IchDecision",
-    "caller_usr": "c:@F@IchDecision",
+    "caller_function": "FlatnessAdjustment",
+    "caller_usr": "c:@F@FlatnessAdjustment",
     "selection_basis": "smallest acyclic direct call site from facts/callgraph.json"
   },
-  "generator_invocations": 13,
-  "model_calls": 13,
+  "generator_invocations": 1,
+  "model_calls": 1,
   "rollback_mode": "C_ONLY",
   "schema_version": 2,
   "selected_contracts": [
-    "ceil_log2",
-    "escapecodesize",
-    "findmidpoint",
-    "findresidualsize",
-    "getqpadjpredsize",
-    "isflatnessinfosent",
-    "mapqptoqlevel",
-    "maxresidualsize",
-    "predictsize",
-    "qp2qlevel",
-    "quantizeresidual",
-    "samplepredict",
-    "samptolinebuf"
+    "isorigflathindex"
   ],
   "state_order": [
     "DISCOVERED",
@@ -4259,5 +3837,5 @@
     "BITSTREAM_PASS",
     "PROMOTED"
   ],
-  "token_count": 48161
+  "token_count": 19139
 }

@@ -889,6 +889,24 @@ class CicdAgentUnitTests(unittest.TestCase):
         self.assertEqual(max(row[1] for row in rows if row[0] == 8), 1)
         self.assertEqual(max(row[1] for row in rows if row[0] == 10), 2)
 
+    def test_flatness_window_strategy_is_data_driven_and_bounded(self):
+        root = pathlib.Path(__file__).resolve().parents[1]
+        contract = json.loads(
+            (root / "library" / "contracts" / "isorigflathindex.json").read_text(encoding="utf-8")
+        )
+        agent = Agent(root, "test")
+        ports = contract["interface"]["ports"]
+        input_ports = [port for port in ports if port.get("direction") == "input"]
+        values = [agent.port_domain(port) for port in input_ports]
+        vectors, receipt = agent.legal_vector_iterator(contract, input_ports, values)
+        first = next(iter(vectors))
+        self.assertEqual(len(first), len(input_ports))
+        self.assertFalse(receipt["exhaustive"])
+        self.assertEqual(receipt["kind"], "flatness_window")
+        self.assertEqual(receipt["coverage_mode"], "STRUCTURAL_PLUS_BOUNDARY_AND_PAIRWISE_FLATNESS_TAPS")
+        self.assertEqual(len(receipt["sample_ports_by_component"]), 4)
+        self.assertGreater(receipt["structural_cases"], 0)
+
     def test_generator_maps_c_style_semantic_identifiers_to_frozen_ports(self):
         interface = {
             "ports": [

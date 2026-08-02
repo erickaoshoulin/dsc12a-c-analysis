@@ -127,7 +127,8 @@ class AstInterpreter:
         if kind == "NEGATE":
             return -self.expr(first(node.get("lhsp")), env)
         if kind in {"NOT", "LOGNOT"}:
-            return z3.Not(self.expr(first(node.get("lhsp")), env))
+            value = self.expr(first(node.get("lhsp")), env)
+            return z3.Not(value) if z3.is_bool(value) else value == 0
         if kind in {"ADD", "ADDW", "ADDWRAP"}:
             return self.expr(first(node.get("lhsp")), env) + self.expr(first(node.get("rhsp")), env)
         if kind in {"SUB", "SUBW", "SUBWRAP"}:
@@ -161,18 +162,26 @@ class AstInterpreter:
             return self.expr(first(node.get("lhsp")), env) > self.expr(first(node.get("rhsp")), env)
         if kind in {"GTES", "GTE"}:
             return self.expr(first(node.get("lhsp")), env) >= self.expr(first(node.get("rhsp")), env)
-        if kind in {"AND", "BITAND"}:
+        if kind == "AND":
             left = self.expr(first(node.get("lhsp")), env)
             right = self.expr(first(node.get("rhsp")), env)
-            if z3.is_bool(left) or z3.is_bool(right):
-                return z3.And(left, right)
-            return left & right
-        if kind in {"OR", "BITOR"}:
+            left = left if z3.is_bool(left) else left != 0
+            right = right if z3.is_bool(right) else right != 0
+            return z3.And(left, right)
+        if kind == "BITAND":
             left = self.expr(first(node.get("lhsp")), env)
             right = self.expr(first(node.get("rhsp")), env)
-            if z3.is_bool(left) or z3.is_bool(right):
-                return z3.Or(left, right)
-            return left | right
+            return z3.And(left, right) if z3.is_bool(left) or z3.is_bool(right) else left & right
+        if kind == "OR":
+            left = self.expr(first(node.get("lhsp")), env)
+            right = self.expr(first(node.get("rhsp")), env)
+            left = left if z3.is_bool(left) else left != 0
+            right = right if z3.is_bool(right) else right != 0
+            return z3.Or(left, right)
+        if kind == "BITOR":
+            left = self.expr(first(node.get("lhsp")), env)
+            right = self.expr(first(node.get("rhsp")), env)
+            return z3.Or(left, right) if z3.is_bool(left) or z3.is_bool(right) else left | right
         if kind in {"XOR", "BITXOR"}:
             return self.expr(first(node.get("lhsp")), env) ^ self.expr(first(node.get("rhsp")), env)
         if kind == "COND":
@@ -283,7 +292,7 @@ class AstInterpreter:
         if kind == "ASSIGN":
             self.assign(node, env)
             return
-        if kind == "BEGIN":
+        if kind in {"BEGIN", "INITIALAUTOMATICSTMT"}:
             self.exec_nodes(as_list(node.get("stmtsp")), env)
             return
         if kind == "IF":
@@ -319,6 +328,198 @@ def domain_values(domain: dict[str, Any]) -> list[int] | None:
     return None
 
 
+def flatness_table_expr(table: dict[str, Any], bit_depth: Any, qp: Any) -> Any:
+    terms = []
+    for raw_bit_depth, raw_values in sorted(table.items(), key=lambda item: int(item[0])):
+        for index, value in enumerate(raw_values):
+            terms.append(z3.If(
+                z3.And(bit_depth == int(raw_bit_depth), qp == index),
+                int(value),
+                z3.IntVal(0),
+            ))
+    return sum_expr(terms)
+
+
+def flatness_sample_expr(sample_ports: dict[int, list[str]], variables: dict[str, Any], component: int, offset: int) -> Any:
+    try:
+        name = str(sample_ports[component][offset])
+    except (KeyError, IndexError):
+        raise FormalError(f"flatness proof is missing component {component} offset {offset}")
+    if name not in variables:
+        raise FormalError(f"flatness proof references missing sample port {name}")
+    return variables[name]
+
+
+def flatness_spread(sample_ports: dict[int, list[str]], variables: dict[str, Any], component: int, offsets: list[int]) -> Any:
+    values = [flatness_sample_expr(sample_ports, variables, component, offset) for offset in offsets]
+    current_max = values[0]
+    current_min = values[0]
+    for value in values[1:]:
+        current_max = maximum(current_max, value)
+        current_min = minimum(current_min, value)
+    return current_max - current_min
+
+
+def add_flatness_domain_constraints(solver: Any, contract: dict[str, Any], variables: dict[str, Any]) -> None:
+    semantics = contract.get("semantics", {}) or {}
+    strategy = semantics.get("legal_vector_strategy") or {}
+    bindings = semantics.get("bindings", {}) or {}
+    tables = semantics.get("tables", {}) or {}
+    luma = tables.get("luma", {}) or {}
+    chroma = tables.get("chroma", {}) or {}
+
+    def name(key: str, fallback: str) -> str:
+        value = str(bindings.get(key, fallback))
+        if value not in variables:
+            raise FormalError(f"flatness proof references missing control port {value}")
+        return value
+
+    bpc_name = name("bits_per_component_port", "bits_per_component")
+    qp_name = name("primary_qp_port", "primary_qp")
+    delta_name = name("somewhat_flat_qp_delta_port", "somewhat_flat_qp_delta")
+    threshold_name = name("flatness_det_thresh_port", "flatness_det_thresh")
+    bpc_values = [int(value) for value in strategy.get("bit_depth_values", sorted(int(key) for key in luma))]
+    if not bpc_values:
+        raise FormalError("flatness proof lacks Table 6-2 bit-depth rows")
+    adjusted_qp = z3.If(qp_name in variables, variables[qp_name] - variables[delta_name], z3.IntVal(0))
+    adjusted_qp = z3.If(adjusted_qp < 0, 0, adjusted_qp)
+    valid_rows = []
+    threshold_rows = []
+    for bit_depth in bpc_values:
+        luma_row = luma.get(str(bit_depth), luma.get(bit_depth, []))
+        chroma_row = chroma.get(str(bit_depth), chroma.get(bit_depth, []))
+        if not luma_row or not chroma_row:
+            raise FormalError(f"flatness proof lacks both Table 6-2 rows for {bit_depth} bpc")
+        valid_rows.append(z3.And(
+            variables[bpc_name] == bit_depth,
+            adjusted_qp >= 0,
+            adjusted_qp <= min(len(luma_row), len(chroma_row)) - 1,
+        ))
+        threshold_rows.append(z3.And(
+            variables[bpc_name] == bit_depth,
+            variables[threshold_name] == (2 << (bit_depth - 8)),
+        ))
+    solver.add(z3.Or(valid_rows))
+    solver.add(z3.Or(threshold_rows))
+
+    sample_ports = strategy.get("sample_ports_by_component") or (semantics.get("window_spec", {}) or {}).get("sample_ports_by_component") or {}
+    if not isinstance(sample_ports, dict):
+        raise FormalError("flatness proof lacks component tap metadata")
+    sample_max = pow2_expr(variables[bpc_name], 0, 16) - 1
+    for raw_component in range(4):
+        taps = sample_ports.get(str(raw_component), sample_ports.get(raw_component, []))
+        if not isinstance(taps, list) or len(taps) != 7:
+            raise FormalError(f"flatness proof needs seven taps for component {raw_component}")
+        for raw_name in taps:
+            tap_name = str(raw_name)
+            if tap_name not in variables:
+                raise FormalError(f"flatness proof references missing sample port {tap_name}")
+            solver.add(variables[tap_name] >= 0, variables[tap_name] <= sample_max)
+
+
+def flatness_contract_expression(contract: dict[str, Any], variables: dict[str, Any]) -> Any:
+    semantics = contract.get("semantics", {}) or {}
+    bindings = semantics.get("bindings", {}) or {}
+    tables = semantics.get("tables", {}) or {}
+    luma = tables.get("luma", {}) or {}
+    chroma = tables.get("chroma", {}) or {}
+    window = semantics.get("window_spec", {}) or {}
+    sample_metadata = window.get("sample_ports_by_component", {}) or {}
+    sample_ports = {
+        int(component): [str(value) for value in (sample_metadata.get(str(component), sample_metadata.get(component, [])))]
+        for component in range(4)
+    }
+
+    def variable(key: str, fallback: str) -> Any:
+        port_name = str(bindings.get(key, fallback))
+        if port_name not in variables:
+            raise FormalError(f"flatness expression references missing port {port_name}")
+        return variables[port_name]
+
+    bpc = variable("bits_per_component_port", "bits_per_component")
+    primary_qp = variable("primary_qp_port", "primary_qp")
+    delta = variable("somewhat_flat_qp_delta_port", "somewhat_flat_qp_delta")
+    flatness_threshold = variable("flatness_det_thresh_port", "flatness_det_thresh")
+    native420 = variable("native_420_port", "native_420")
+    version = variable("dsc_version_minor_port", "dsc_version_minor")
+    cpnt0 = variable("cpnt_bit_depth_0_port", "cpnt_bit_depth_0")
+    cpnt1 = variable("cpnt_bit_depth_1_port", "cpnt_bit_depth_1")
+    num_components = variable("num_components_port", "num_components")
+    hpos = variable("hpos_port", "hPos")
+    slice_width = variable("slice_width_port", "slice_width")
+    adjusted_qp = z3.If(primary_qp - delta < 0, 0, primary_qp - delta)
+    qlevel_cache: dict[int, Any] = {}
+
+    def qlevel(component: int) -> Any:
+        if component in qlevel_cache:
+            return qlevel_cache[component]
+        luma_value = flatness_table_expr(luma, bpc, adjusted_qp)
+        chroma_value = flatness_table_expr(chroma, bpc, adjusted_qp)
+        if component % 3 == 0:
+            result = luma_value
+        elif component == 1:
+            result = z3.If(native420 != 0, luma_value, chroma_value)
+        else:
+            result = chroma_value
+        if component % 3 != 0 and component != 1:
+            result = z3.If(
+                z3.And(version == 2, cpnt0 == cpnt1, result > 0),
+                result - 1,
+                result,
+            )
+        elif component == 1:
+            chroma_adjusted = z3.If(
+                z3.And(version == 2, cpnt0 == cpnt1, chroma_value > 0),
+                chroma_value - 1,
+                chroma_value,
+            )
+            result = z3.If(native420 != 0, luma_value, chroma_adjusted)
+        qlevel_cache[component] = result
+        return result
+
+    def quant_divisor(value: Any) -> Any:
+        return pow2_expr(value, 0, 16)
+
+    def check(component: int, offsets: list[int], somewhat: bool) -> Any:
+        spread = flatness_spread(sample_ports, variables, component, offsets)
+        limit = z3.If(
+            flatness_threshold > quant_divisor(qlevel(component)),
+            flatness_threshold,
+            quant_divisor(qlevel(component)),
+        ) if somewhat else flatness_threshold
+        return spread <= limit
+
+    first_somewhat = z3.And(*[
+        z3.Implies(num_components > component, check(component, [0, 1, 2, 3], True))
+        for component in range(4)
+    ])
+    first_very = z3.And(*[
+        z3.Implies(num_components > component, check(component, [0, 1, 2, 3], False))
+        for component in range(4)
+    ])
+    second_somewhat = z3.And(*[
+        z3.Implies(num_components > component, check(component, [1, 2, 3, 4, 5, 6], True))
+        for component in range(4)
+    ])
+    second_very = z3.And(*[
+        z3.Implies(num_components > component, check(component, [1, 2, 3, 4, 5, 6], False))
+        for component in range(4)
+    ])
+    return z3.If(
+        hpos + 1 < slice_width,
+        z3.If(
+            first_very,
+            2,
+            z3.If(
+                first_somewhat,
+                1,
+                z3.If(hpos + 2 < slice_width, z3.If(second_very, 2, z3.If(second_somewhat, 1, 0)), 0),
+            ),
+        ),
+        0,
+    )
+
+
 def add_domain_constraints(solver: Any, contract: dict[str, Any], variables: dict[str, Any]) -> None:
     ports = [port for port in contract.get("interface", {}).get("ports", []) if isinstance(port, dict)]
     for port in ports:
@@ -336,6 +537,9 @@ def add_domain_constraints(solver: Any, contract: dict[str, Any], variables: dic
 
     semantics = contract.get("semantics", {}) or {}
     strategy = semantics.get("legal_vector_strategy") or {}
+    if strategy.get("kind") == "flatness_window":
+        add_flatness_domain_constraints(solver, contract, variables)
+        return
     if strategy.get("kind") != "windowed_boundary":
         raise FormalError("formal window proof requires a reviewed windowed_boundary strategy")
     bit_name = str(strategy.get("bit_depth_port"))
@@ -379,6 +583,8 @@ def add_domain_constraints(solver: Any, contract: dict[str, Any], variables: dic
 
 def contract_expression(contract: dict[str, Any], variables: dict[str, Any]) -> Any:
     semantics = contract.get("semantics", {}) or {}
+    if semantics.get("kind") == "flatness_window":
+        return flatness_contract_expression(contract, variables)
     strategy = semantics.get("legal_vector_strategy") or {}
     window = semantics.get("window_spec") or {}
     samples_per_unit = int(window.get("samples_per_unit", 3))
@@ -726,8 +932,8 @@ def load_candidate_module(path: Path, verilator: str) -> dict[str, Any]:
 def run_proof(contract_path: Path, candidate_path: Path, verilator: str, timeout_ms: int) -> dict[str, Any]:
     contract = json.loads(contract_path.read_text(encoding="utf-8"))
     semantics = contract.get("semantics", {}) or {}
-    if semantics.get("kind") != "windowed_sample_predict":
-        raise FormalError("formal_rtl currently supports only a reviewed windowed_sample_predict contract")
+    if semantics.get("kind") not in {"windowed_sample_predict", "flatness_window"}:
+        raise FormalError("formal_rtl requires a reviewed windowed_sample_predict or flatness_window contract")
     ports = [port for port in contract.get("interface", {}).get("ports", []) if isinstance(port, dict)]
     inputs = [port for port in ports if port.get("direction") == "input"]
     output = next((port for port in ports if port.get("direction") == "output"), None)
@@ -740,6 +946,36 @@ def run_proof(contract_path: Path, candidate_path: Path, verilator: str, timeout
     module = load_candidate_module(candidate_path, verilator)
     rtl = AstInterpreter(module).output_expression(variables, str(output.get("name")))
     c_model = contract_expression(contract, variables)
+    if semantics.get("kind") == "flatness_window":
+        solver.add(c_model != rtl)
+        result = solver.check()
+        receipt: dict[str, Any] = {
+            "schema_version": 1,
+            "contract_id": contract.get("contract_id"),
+            "contract_sha256": file_digest(contract_path),
+            "candidate": candidate_path.name,
+            "candidate_path": str(candidate_path),
+            "candidate_sha256": file_digest(candidate_path),
+            "solver": "z3",
+            "ast_frontend": "verilator --json-only",
+            "proof_basis": "locked exact flatness equations and Table 6-2 relation versus parsed combinational RTL AST",
+            "proof_strategy": "SYMBOLIC_FLATNESS_WINDOW",
+            "timeout_ms": int(timeout_ms),
+            "constraint_count": len(solver.assertions()),
+            "status": "PASS" if result == z3.unsat else "COUNTEREXAMPLE" if result == z3.sat else "UNKNOWN",
+            "proof_complete": result == z3.unsat,
+        }
+        if result == z3.sat:
+            model = solver.model()
+            receipt["counterexample"] = {
+                name: model.eval(value, model_completion=True).as_long()
+                for name, value in variables.items()
+            }
+            receipt["expected"] = model.eval(c_model, model_completion=True).as_long()
+            receipt["actual"] = model.eval(rtl, model_completion=True).as_long()
+        elif result == z3.unknown:
+            receipt["reason"] = solver.reason_unknown()
+        return receipt
     partitions = dynamic_structural_partitions(contract, variables)
     if partitions:
         partitioned = run_partitioned_proof(

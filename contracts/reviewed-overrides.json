@@ -2183,6 +2183,723 @@
         "unresolved": []
       },
       "obligations": []
+    },
+    {
+      "match": {
+        "clang_usr": "c:@F@IsOrigFlatHIndex",
+        "spec_anchor_id": "pdf:section:6.8.5.1"
+      },
+      "review_status": "REVIEWED",
+      "reviewed_by": "codex",
+      "evidence": [
+        {
+          "kind": "EXACT_SPEC",
+          "anchor_id": "pdf:section:6.8.5.1",
+          "page": 111,
+          "section": "6.8.5.1",
+          "reason": "DSC 1.2a section 6.8.5.1 defines the original-pixel encoder flatness decision, the flatQLevel relation, and the line-end rule."
+        },
+        {
+          "kind": "EXACT_SPEC",
+          "anchor_id": "pdf:figure:6-19",
+          "page": 111,
+          "reason": "Figure 6-19 fixes Flatness Check 1 to four samples and Flatness Check 2 to six samples over the current and adjacent groups."
+        },
+        {
+          "kind": "SOURCE_SEMANTICS",
+          "source_file": "dsc_codec.c",
+          "c_span": {
+            "start_line": 1126,
+            "end_line": 1195
+          },
+          "reason": "The C body has no writes, I/O, allocation, or logging; its only variable loop bounds are numComponents, while sample windows are source constants 0..3 and 1..6."
+        },
+        {
+          "kind": "RUNTIME_EVIDENCE",
+          "source": "coverage/coverage.json",
+          "reason": "The tool-generated coverage facts show EXECUTED with 99389 calls and covered branches for this production-reachable DUT function."
+        }
+      ],
+      "spec_links": [
+        {
+          "anchor_id": "pdf:section:6.8.5.1",
+          "page": 111,
+          "section": "6.8.5.1",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:figure:6-19",
+          "page": 111,
+          "status": "EXACT"
+        }
+      ],
+      "tool_admission": {
+        "kind": "BOUNDED_DOMAIN",
+        "status": "PASS",
+        "loop": "numComponents is the reviewed DSC component-count domain {3,4}; the two pixel windows are fixed source/spec offsets 0..3 and 1..6.",
+        "max_iterations": 7,
+        "proof": "The generated RTL freezes four component lanes and seven read-only original-pixel taps per lane. The variable C loop is therefore fully covered by four guarded lanes, and every window read is one of the seven reviewed offsets."
+      },
+      "interface": {
+        "inputs": [
+          {
+            "name": "hPos",
+            "c_type": "int",
+            "role": "RUNTIME_INPUT",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {
+              "kind": "range",
+              "range": [0, 65534],
+              "basis": "DSC slice horizontal position domain; hPos + 1 is compared against the positive slice width"
+            },
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "bits_per_component",
+            "c_type": "int",
+            "role": "CONFIG_STATIC",
+            "logical_width": 5,
+            "signed": false,
+            "legal_domain": {
+              "kind": "set",
+              "values": [8, 10, 12, 14, 16],
+              "range": [8, 16],
+              "basis": "DSC supported component bit depths"
+            },
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "primary_qp",
+            "c_type": "int",
+            "role": "RUNTIME_INPUT",
+            "logical_width": 5,
+            "signed": false,
+            "legal_domain": {
+              "kind": "range",
+              "range": [0, 31],
+              "basis": "DSC masterQp/Table 6-2 index domain"
+            },
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "num_components",
+            "c_type": "int",
+            "role": "STATE_READ_ONLY",
+            "logical_width": 3,
+            "signed": false,
+            "legal_domain": {
+              "kind": "set",
+              "values": [3, 4],
+              "range": [3, 4],
+              "basis": "DSC model component count: three components except native 4:2:2's four component lanes"
+            },
+            "unresolved": false,
+            "width_source": "EXACT_SOURCE_CONSTANTS"
+          },
+          {
+            "name": "slice_width",
+            "c_type": "int",
+            "role": "STATE_READ_ONLY",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {
+              "kind": "range",
+              "range": [1, 65535],
+              "basis": "Positive DSC slice width domain used by the line-end decision"
+            },
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "flatness_det_thresh",
+            "c_type": "int",
+            "role": "CONFIG_STATIC",
+            "logical_width": 10,
+            "signed": false,
+            "legal_domain": {
+              "kind": "set",
+              "values": [2, 4, 8, 16, 32, 64, 128, 256, 512],
+              "range": [2, 512],
+              "basis": "DSC 1.2a flatnessDetThresh = 2 << (bits_per_component - 8)"
+            },
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "somewhat_flat_qp_delta",
+            "c_type": "int",
+            "role": "CONFIG_STATIC",
+            "logical_width": 3,
+            "signed": false,
+            "legal_domain": {
+              "kind": "set",
+              "values": [4],
+              "range": [4, 4],
+              "basis": "DSC 1.2a section 6.8.5.1 normative somewhatFlatQpDelta"
+            },
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "native_420",
+            "c_type": "int",
+            "role": "CONFIG_STATIC",
+            "logical_width": 1,
+            "signed": false,
+            "legal_domain": {
+              "kind": "set",
+              "values": [0, 1],
+              "range": [0, 1],
+              "basis": "DSC native_420 configuration flag"
+            },
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "dsc_version_minor",
+            "c_type": "int",
+            "role": "CONFIG_STATIC",
+            "logical_width": 2,
+            "signed": false,
+            "legal_domain": {
+              "kind": "set",
+              "values": [1, 2],
+              "range": [1, 2],
+              "basis": "DSC 1.1/1.2 model modes; the 1.2 chroma qLevel adjustment is active only at minor version 2"
+            },
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "cpnt_bit_depth_0",
+            "c_type": "int",
+            "role": "STATE_READ_ONLY",
+            "logical_width": 5,
+            "signed": false,
+            "legal_domain": {
+              "kind": "set",
+              "values": [8, 10, 12, 14, 16],
+              "range": [8, 16],
+              "basis": "DSC luma component bit depth used by MapQpToQlevel's YCbCr adjustment"
+            },
+            "unresolved": false,
+            "width_source": "EXACT_SOURCE_CONSTANTS"
+          },
+          {
+            "name": "cpnt_bit_depth_1",
+            "c_type": "int",
+            "role": "STATE_READ_ONLY",
+            "logical_width": 5,
+            "signed": false,
+            "legal_domain": {
+              "kind": "set",
+              "values": [8, 9, 10, 11, 12, 13, 14, 15, 16, 17],
+              "range": [8, 17],
+              "basis": "DSC component bit depth, including the RGB-conversion +1 component depth used by the model"
+            },
+            "unresolved": false,
+            "width_source": "EXACT_SOURCE_CONSTANTS"
+          },
+          {
+            "name": "orig_0_0",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_0_1",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_0_2",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_0_3",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_0_4",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_0_5",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_0_6",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_1_0",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_1_1",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_1_2",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_1_3",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_1_4",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_1_5",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_1_6",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_2_0",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_2_1",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_2_2",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_2_3",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_2_4",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_2_5",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_2_6",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_3_0",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_3_1",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_3_2",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_3_3",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_3_4",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_3_5",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "name": "orig_3_6",
+            "c_type": "int",
+            "role": "ORIGINAL_SAMPLE_TAP",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {"kind": "range", "range": [0, 65535], "basis": "DSC component sample domain"},
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          }
+        ],
+        "flattened_pointer_dependencies": [
+          {
+            "record": "dsc_cfg_t",
+            "field": "bits_per_component",
+            "port_name": "bits_per_component",
+            "c_type": "int",
+            "access": "READ_ONLY",
+            "logical_width": 5,
+            "unresolved": false
+          },
+          {
+            "record": "dsc_cfg_t",
+            "field": "flatness_det_thresh",
+            "port_name": "flatness_det_thresh",
+            "c_type": "int",
+            "access": "READ_ONLY",
+            "logical_width": 10,
+            "unresolved": false
+          },
+          {
+            "record": "dsc_cfg_t",
+            "field": "somewhat_flat_qp_delta",
+            "port_name": "somewhat_flat_qp_delta",
+            "c_type": "int",
+            "access": "READ_ONLY",
+            "logical_width": 3,
+            "unresolved": false
+          },
+          {
+            "record": "dsc_cfg_t",
+            "field": "native_420",
+            "port_name": "native_420",
+            "c_type": "int",
+            "access": "READ_ONLY",
+            "logical_width": 1,
+            "unresolved": false
+          },
+          {
+            "record": "dsc_cfg_t",
+            "field": "dsc_version_minor",
+            "port_name": "dsc_version_minor",
+            "c_type": "int",
+            "access": "READ_ONLY",
+            "logical_width": 2,
+            "unresolved": false
+          },
+          {
+            "record": "dsc_state_t",
+            "field": "numComponents",
+            "port_name": "num_components",
+            "c_type": "int",
+            "access": "READ_ONLY",
+            "logical_width": 3,
+            "unresolved": false
+          },
+          {
+            "record": "dsc_state_t",
+            "field": "sliceWidth",
+            "port_name": "slice_width",
+            "c_type": "int",
+            "access": "READ_ONLY",
+            "logical_width": 16,
+            "unresolved": false
+          },
+          {
+            "record": "dsc_state_t",
+            "field": "primaryQp",
+            "port_name": "primary_qp",
+            "c_type": "int",
+            "access": "READ_ONLY",
+            "logical_width": 5,
+            "unresolved": false
+          },
+          {
+            "record": "dsc_state_t",
+            "field": "cpntBitDepth[0]",
+            "port_name": "cpnt_bit_depth_0",
+            "c_type": "int",
+            "access": "READ_ONLY",
+            "logical_width": 5,
+            "unresolved": false
+          },
+          {
+            "record": "dsc_state_t",
+            "field": "cpntBitDepth[1]",
+            "port_name": "cpnt_bit_depth_1",
+            "c_type": "int",
+            "access": "READ_ONLY",
+            "logical_width": 5,
+            "unresolved": false
+          }
+        ],
+        "output": {
+          "name": "return_value",
+          "c_type": "int",
+          "role": "return_value",
+          "logical_width": 2,
+          "signed": false,
+          "legal_range": [0, 2],
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        }
+      },
+      "semantics": {
+        "kind": "flatness_window",
+        "expression": "DSC_1_2A_ENCODER_FLATNESS_DECISION",
+        "signedness": "Input samples, thresholds, qLevels, and the 0/1/2 decision are non-negative on the reviewed DSC domain.",
+        "overflow": "All arithmetic is bounded by the 16-bit sample domain, 10-bit flatness threshold domain, and qLevel/QuantDivisor tables; the generated implementation uses integer temporaries wider than the ports.",
+        "tables": {
+          "luma": {
+            "8": [0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 5, 6, 7],
+            "10": [0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 7, 8, 9],
+            "12": [0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 9, 10, 11],
+            "14": [0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 11, 12, 13],
+            "16": [0, 0, 0, 1, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 13, 14, 15]
+          },
+          "chroma": {
+            "8": [0, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 8, 8, 8],
+            "10": [0, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 10, 10, 10],
+            "12": [0, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 12, 12, 12],
+            "14": [0, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 14, 14, 14],
+            "16": [0, 1, 2, 2, 3, 3, 4, 4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 9, 10, 10, 11, 11, 12, 12, 13, 13, 14, 14, 15, 16, 16, 16]
+          }
+        },
+        "bindings": {
+          "hpos_port": "hPos",
+          "hpos_parameter": "hPos",
+          "bits_per_component_port": "bits_per_component",
+          "primary_qp_port": "primary_qp",
+          "num_components_port": "num_components",
+          "slice_width_port": "slice_width",
+          "flatness_det_thresh_port": "flatness_det_thresh",
+          "somewhat_flat_qp_delta_port": "somewhat_flat_qp_delta",
+          "native_420_port": "native_420",
+          "dsc_version_minor_port": "dsc_version_minor",
+          "cpnt_bit_depth_0_port": "cpnt_bit_depth_0",
+          "cpnt_bit_depth_1_port": "cpnt_bit_depth_1",
+          "config_fields": {
+            "bits_per_component": "bits_per_component",
+            "flatness_det_thresh": "flatness_det_thresh",
+            "somewhat_flat_qp_delta": "somewhat_flat_qp_delta",
+            "native_420": "native_420",
+            "dsc_version_minor": "dsc_version_minor"
+          },
+          "state_fields": {
+            "num_components": "numComponents",
+            "slice_width": "sliceWidth",
+            "primary_qp": "primaryQp",
+            "cpnt_bit_depth_0": "cpntBitDepth[0]",
+            "cpnt_bit_depth_1": "cpntBitDepth[1]"
+          }
+        },
+        "window_spec": {
+          "padding_left": 5,
+          "sample_offsets": [0, 1, 2, 3, 4, 5, 6],
+          "sample_ports_by_component": {
+            "0": ["orig_0_0", "orig_0_1", "orig_0_2", "orig_0_3", "orig_0_4", "orig_0_5", "orig_0_6"],
+            "1": ["orig_1_0", "orig_1_1", "orig_1_2", "orig_1_3", "orig_1_4", "orig_1_5", "orig_1_6"],
+            "2": ["orig_2_0", "orig_2_1", "orig_2_2", "orig_2_3", "orig_2_4", "orig_2_5", "orig_2_6"],
+            "3": ["orig_3_0", "orig_3_1", "orig_3_2", "orig_3_3", "orig_3_4", "orig_3_5", "orig_3_6"]
+          },
+          "check1_offsets": [0, 1, 2, 3],
+          "check2_offsets": [1, 2, 3, 4, 5, 6],
+          "source": "DSC 1.2a section 6.8.5.1 and Figure 6-19; C dsc_codec.c IsOrigFlatHIndex lines 1136, 1152, 1179"
+        },
+        "legal_vector_strategy": {
+          "kind": "flatness_window",
+          "exhaustive": false,
+          "formal_required": true,
+          "bit_depth_values": [8, 10, 12, 14, 16],
+          "hpos_port": "hPos",
+          "bits_per_component_port": "bits_per_component",
+          "primary_qp_port": "primary_qp",
+          "num_components_port": "num_components",
+          "slice_width_port": "slice_width",
+          "flatness_det_thresh_port": "flatness_det_thresh",
+          "somewhat_flat_qp_delta_port": "somewhat_flat_qp_delta",
+          "native_420_port": "native_420",
+          "dsc_version_minor_port": "dsc_version_minor",
+          "cpnt_bit_depth_0_port": "cpnt_bit_depth_0",
+          "cpnt_bit_depth_1_port": "cpnt_bit_depth_1",
+          "sample_ports_by_component": {
+            "0": ["orig_0_0", "orig_0_1", "orig_0_2", "orig_0_3", "orig_0_4", "orig_0_5", "orig_0_6"],
+            "1": ["orig_1_0", "orig_1_1", "orig_1_2", "orig_1_3", "orig_1_4", "orig_1_5", "orig_1_6"],
+            "2": ["orig_2_0", "orig_2_1", "orig_2_2", "orig_2_3", "orig_2_4", "orig_2_5", "orig_2_6"],
+            "3": ["orig_3_0", "orig_3_1", "orig_3_2", "orig_3_3", "orig_3_4", "orig_3_5", "orig_3_6"]
+          },
+          "hpos_probe_values": [0, 1, 2, 3, 4, 5, 6, 8, 16, 31, 63, 127, 255, 1023, 4095, 65534],
+          "slice_width_probe_values": [1, 2, 3, 4, 5, 6, 7, 8, 16, 31, 63, 127, 255, 1024, 4096, 65535],
+          "source": "DSC 1.2a section 6.8.5.1 / Figure 6-19 plus exact source constants in IsOrigFlatHIndex"
+        }
+      },
+      "dependencies": {
+        "direct_callees": [
+          {
+            "clang_usr": "c:@F@MapQpToQlevel",
+            "name": "MapQpToQlevel"
+          }
+        ],
+        "read_fields": [
+          "dsc_cfg_t.flatness_det_thresh",
+          "dsc_cfg_t.somewhat_flat_qp_delta",
+          "dsc_cfg_t.native_420",
+          "dsc_cfg_t.dsc_version_minor",
+          "dsc_state_t.numComponents",
+          "dsc_state_t.sliceWidth",
+          "dsc_state_t.primaryQp",
+          "dsc_state_t.cpntBitDepth[0]",
+          "dsc_state_t.cpntBitDepth[1]",
+          "dsc_state_t.origLine",
+          "QuantDivisor"
+        ],
+        "unresolved": []
+      },
+      "obligations": []
     }
   ]
 }

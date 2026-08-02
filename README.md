@@ -93,7 +93,8 @@ separate LLVM profile prefix and expected-output receipt for each script. Set
 `DSC_COVERAGE_SCRIPTS=default` only for a deliberately bounded smoke run.
 Contracts are selected without a function-name allowlist. A selected exact-link
 contract is checked with a generated C oracle, up to four combinational
-SystemVerilog candidates, Verilator, and exhaustive legal-domain enumeration.
+SystemVerilog candidates, Verilator, and either exhaustive legal-domain
+enumeration or the independent proof required by a reviewed finite window.
 Deliberate signedness, boundary, index, and off-by-one mutations remain
 visible as counterexamples.
 
@@ -232,6 +233,15 @@ Verilator-AST/Z3 gate may upgrade a complete reviewed window to
 must pass before promotion. This keeps the designer-facing library
 combinational and stable while stateful line storage and non-DUT C logic
 remain reference boundaries.
+
+Reviewed spec-defined flatness windows use the data-driven `flatness_window`
+strategy. The contract declares the four component lanes, seven original-pixel
+taps per lane, Figure 6-19 offsets, Table 6-2 qLevel rows, and the exact
+`flatnessDetThresh` relation. Concrete tests cover structural modes, line-end
+and per-tap boundaries, and pairwise taps; Verilator AST plus Z3 proves the
+complete reviewed relation. The line buffer stays at the C caller boundary,
+and the adapter must short-circuit unused component lanes before reading
+`origLine`. This is now the 14-component stable library frontier.
 
 ## Continuous CI/CD library loop
 

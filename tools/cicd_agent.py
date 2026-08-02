@@ -1652,6 +1652,8 @@ class Agent:
         dynamic_window = ((contract.get("semantics", {}) or {}).get("window_spec", {}) or {}).get(
             "dynamic_line_window"
         )
+        if (contract.get("semantics", {}) or {}).get("kind") == "flatness_window":
+            return self.render_flatness_window_oracle(contract, inputs, output)
         if isinstance(dynamic_window, dict) and dynamic_window:
             return self.render_dynamic_window_oracle(
                 contract,
@@ -1827,6 +1829,186 @@ class Agent:
                 int {output};
                 while (fscanf(input, "{format_string}", {arguments}) == {len(inputs)}) {{
                     {output} = {name}({call});
+                    printf("%d\\n", {output});
+                }}
+                if (input != stdin) fclose(input);
+                return 0;
+            }}
+            """
+        ).strip() + "\n"
+
+    def render_flatness_window_oracle(
+        self,
+        contract: dict[str, Any],
+        inputs: list[dict[str, Any]],
+        output: str,
+    ) -> str:
+        """Render an oracle for a reviewed original-pixel flatness window.
+
+        The immutable C function keeps its native ``dsc_cfg_t`` and
+        ``dsc_state_t`` parameters.  This adapter initializes only the
+        read-only configuration/state fields named by the contract, selects
+        the immutable Table 6-2 rows, and places the seven relative original
+        pixel taps into the model's padded line storage.  No line storage or
+        caller state is moved into the generated RTL.
+        """
+        function = contract_function(contract)
+        name = str(function.get("name"))
+        parameters = self.function_parameters(contract)
+        if not parameters:
+            raise RuntimeError("flatness-window oracle requires original C parameter facts")
+
+        semantics = contract.get("semantics", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        window = semantics.get("window_spec", {}) or {}
+        input_names = {str(port.get("name")) for port in inputs}
+
+        def binding(key: str, fallback: str) -> str:
+            value = bindings.get(key, fallback)
+            if value not in input_names:
+                raise RuntimeError(f"flatness-window binding is not an input port: {value}")
+            return str(value)
+
+        hpos_name = binding("hpos_port", "hPos")
+        bpc_name = binding("bits_per_component_port", "bits_per_component")
+        primary_qp_name = binding("primary_qp_port", "primary_qp")
+        num_components_name = binding("num_components_port", "num_components")
+        slice_width_name = binding("slice_width_port", "slice_width")
+        flatness_thresh_name = binding("flatness_det_thresh_port", "flatness_det_thresh")
+        flatness_delta_name = binding("somewhat_flat_qp_delta_port", "somewhat_flat_qp_delta")
+        native420_name = binding("native_420_port", "native_420")
+        version_name = binding("dsc_version_minor_port", "dsc_version_minor")
+        cpnt0_name = binding("cpnt_bit_depth_0_port", "cpnt_bit_depth_0")
+        cpnt1_name = binding("cpnt_bit_depth_1_port", "cpnt_bit_depth_1")
+
+        sample_ports_by_component = window.get("sample_ports_by_component", {})
+        if not isinstance(sample_ports_by_component, dict):
+            raise RuntimeError("flatness-window oracle is missing sample_ports_by_component")
+        sample_names: dict[int, list[str]] = {}
+        for component in range(4):
+            raw = sample_ports_by_component.get(str(component), sample_ports_by_component.get(component, []))
+            values = [str(value) for value in raw]
+            if len(values) != 7 or any(value not in input_names for value in values):
+                raise RuntimeError(f"flatness-window oracle has incomplete component {component} taps")
+            sample_names[component] = values
+
+        record_parameters: dict[str, str] = {}
+        parameter_declarations: list[str] = []
+        call_arguments: list[str] = []
+        for parameter in parameters:
+            parameter_name = str(parameter.get("name", ""))
+            parameter_type = str(parameter.get("type", "int")).strip()
+            if not parameter_name or not re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", parameter_name):
+                raise RuntimeError(f"invalid C parameter name: {parameter_name}")
+            parameter_declarations.append(f"{parameter_type} {parameter_name}")
+            if parameter.get("pointer"):
+                record_type = re.sub(r"\s*\*.*$", "", parameter_type).strip()
+                record_parameters[record_type] = parameter_name
+                call_arguments.append(f"&{parameter_name}")
+            else:
+                if parameter_name not in input_names:
+                    raise RuntimeError(f"flatness-window scalar parameter is not an input port: {parameter_name}")
+                call_arguments.append(parameter_name)
+
+        config_name = record_parameters.get("dsc_cfg_t")
+        state_name = record_parameters.get("dsc_state_t")
+        if not config_name or not state_name:
+            raise RuntimeError("flatness-window oracle requires dsc_cfg_t and dsc_state_t parameters")
+
+        tables = semantics.get("tables", {}) or {}
+        luma_tables = tables.get("luma", {}) or {}
+        chroma_tables = tables.get("chroma", {}) or {}
+        if not luma_tables or not chroma_tables:
+            raise RuntimeError("flatness-window oracle requires Table 6-2 rows")
+
+        table_declarations: list[str] = []
+        table_selection: list[str] = ["switch (bits_per_component) {"]
+        for raw_bpc in sorted(luma_tables, key=lambda value: int(value)):
+            bpc = int(raw_bpc)
+            luma_values = [int(value) for value in luma_tables[raw_bpc]]
+            chroma_values = [int(value) for value in chroma_tables[raw_bpc]]
+            luma_values.extend([0] * (32 - len(luma_values)))
+            chroma_values.extend([0] * (32 - len(chroma_values)))
+            table_declarations.extend([
+                f"static int flat_luma_{bpc}[32] = {{{', '.join(str(value) for value in luma_values)}}};",
+                f"static int flat_chroma_{bpc}[32] = {{{', '.join(str(value) for value in chroma_values)}}};",
+            ])
+            table_selection.extend([
+                f"case {bpc}: {state_name}.quantTableLuma = flat_luma_{bpc}; {state_name}.quantTableChroma = flat_chroma_{bpc}; break;",
+            ])
+        default_bpc = int(sorted(luma_tables, key=lambda value: int(value))[0])
+        table_selection.extend([
+            f"default: {state_name}.quantTableLuma = flat_luma_{default_bpc}; {state_name}.quantTableChroma = flat_chroma_{default_bpc}; break;",
+            "}",
+        ])
+
+        hpos_port = next(port for port in inputs if str(port.get("name")) == hpos_name)
+        hpos_domain = hpos_port.get("legal_domain", {}) or {}
+        hpos_values = hpos_domain.get("values")
+        hpos_bounds = hpos_domain.get("range")
+        if isinstance(hpos_values, list) and hpos_values:
+            hpos_max = max(int(value) for value in hpos_values)
+        elif isinstance(hpos_bounds, list) and len(hpos_bounds) == 2:
+            hpos_max = int(hpos_bounds[1])
+        else:
+            raise RuntimeError("flatness-window oracle needs a finite hPos upper bound")
+        padding_left = int(window.get("padding_left", 5))
+        max_offset = max(int(value) for value in window.get("sample_offsets", [0, 1, 2, 3, 4, 5, 6]))
+        line_capacity = max(1, hpos_max + padding_left + max_offset + 2)
+        storage_declarations = [
+            f"static int orig_line_{component}[{line_capacity}] = {{0}};"
+            for component in range(4)
+        ]
+
+        state_setup = [
+            f"{config_name}.bits_per_component = {bpc_name};",
+            f"{config_name}.flatness_det_thresh = {flatness_thresh_name};",
+            f"{config_name}.somewhat_flat_qp_delta = {flatness_delta_name};",
+            f"{config_name}.native_420 = {native420_name};",
+            f"{config_name}.dsc_version_minor = {version_name};",
+            f"{state_name}.numComponents = {num_components_name};",
+            f"{state_name}.sliceWidth = {slice_width_name};",
+            f"{state_name}.primaryQp = {primary_qp_name};",
+            f"{state_name}.cpntBitDepth[0] = {cpnt0_name};",
+            f"{state_name}.cpntBitDepth[1] = {cpnt1_name};",
+        ]
+        state_setup.extend(
+            f"{state_name}.origLine[{component}] = orig_line_{component};"
+            for component in range(4)
+        )
+        state_setup.extend(table_selection)
+        for component in range(4):
+            for offset, port_name in enumerate(sample_names[component]):
+                state_setup.append(
+                    f"orig_line_{component}[PADDING_LEFT + {hpos_name} + {offset}] = {port_name};"
+                )
+
+        input_declarations = ", ".join(str(port["name"]) for port in inputs)
+        input_arguments = ", ".join(f"&{port['name']}" for port in inputs)
+        format_string = " ".join(["%d"] * len(inputs))
+        setup = "\n                        ".join(state_setup)
+        return textwrap.dedent(
+            f"""
+            #include <stdio.h>
+            #include "dsc_types.h"
+            extern int {name}({', '.join(parameter_declarations)});
+            {' '.join(table_declarations)}
+            int main(int argc, char **argv) {{
+                FILE *input = stdin;
+                if (argc > 1) {{
+                    input = fopen(argv[1], "rb");
+                    if (!input) return 2;
+                }}
+                int {input_declarations};
+                static int orig_line_0[{line_capacity}] = {{0}};
+                static int orig_line_1[{line_capacity}] = {{0}};
+                static int orig_line_2[{line_capacity}] = {{0}};
+                static int orig_line_3[{line_capacity}] = {{0}};
+                while (fscanf(input, "{format_string}", {input_arguments}) == {len(inputs)}) {{
+                    dsc_cfg_t {config_name} = {{0}};
+                    dsc_state_t {state_name} = {{0}};
+                    {setup}
+                    int {output} = {name}({', '.join(call_arguments)});
                     printf("%d\\n", {output});
                 }}
                 if (input != stdin) fclose(input);
@@ -2442,6 +2624,291 @@ class Agent:
             "legal_relation": "qlevel is constrained by Table 6-2 component class and selected bit depth; residuals use signed n-bit decoded-domain boundaries",
         }
 
+    def flatness_window_vector_iterator(
+        self,
+        contract: dict[str, Any],
+        input_ports: list[dict[str, Any]],
+        values: list[list[int]],
+        strategy: dict[str, Any],
+    ) -> tuple[Iterable[tuple[int, ...]], dict[str, Any]]:
+        """Generate a bounded, spec-structured suite for flatness windows.
+
+        The value space contains up to 28 independent pixel taps and cannot be
+        exhaustively enumerated.  This iterator therefore covers every
+        structural branch, exact Table 6-2 qLevel relation, line-end cases,
+        per-tap boundaries, and pairwise tap interactions.  The independent
+        formal gate is required before the result can enter the stable library.
+        """
+        names = [str(port.get("name")) for port in input_ports]
+        by_name = {name: values[index] for index, name in enumerate(names)}
+        semantics = contract.get("semantics", {}) or {}
+        window = semantics.get("window_spec", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        tables = semantics.get("tables", {}) or {}
+        luma_tables = tables.get("luma", {}) or {}
+        chroma_tables = tables.get("chroma", {}) or {}
+
+        def require_binding(key: str, fallback: str) -> str:
+            name = str(bindings.get(key, fallback))
+            if name not in by_name:
+                raise RuntimeError(f"flatness window strategy port is missing: {name}")
+            return name
+
+        hpos_name = require_binding("hpos_port", "hPos")
+        bpc_name = require_binding("bits_per_component_port", "bits_per_component")
+        primary_qp_name = require_binding("primary_qp_port", "primary_qp")
+        num_components_name = require_binding("num_components_port", "num_components")
+        slice_width_name = require_binding("slice_width_port", "slice_width")
+        flatness_thresh_name = require_binding("flatness_det_thresh_port", "flatness_det_thresh")
+        flatness_delta_name = require_binding("somewhat_flat_qp_delta_port", "somewhat_flat_qp_delta")
+        native420_name = require_binding("native_420_port", "native_420")
+        version_name = require_binding("dsc_version_minor_port", "dsc_version_minor")
+        cpnt0_name = require_binding("cpnt_bit_depth_0_port", "cpnt_bit_depth_0")
+        cpnt1_name = require_binding("cpnt_bit_depth_1_port", "cpnt_bit_depth_1")
+
+        sample_by_component = window.get("sample_ports_by_component", {})
+        if not isinstance(sample_by_component, dict):
+            raise RuntimeError("flatness window strategy is missing sample_ports_by_component")
+        sample_ports: list[str] = []
+        for component in range(4):
+            raw = sample_by_component.get(str(component), sample_by_component.get(component, []))
+            taps = [str(value) for value in raw]
+            if len(taps) != 7 or any(tap not in by_name for tap in taps):
+                raise RuntimeError(f"flatness window strategy has incomplete component {component} taps")
+            sample_ports.extend(taps)
+
+        def unique(raw_values: Iterable[int]) -> list[int]:
+            result: list[int] = []
+            seen: set[int] = set()
+            for raw in raw_values:
+                value = int(raw)
+                if value not in seen:
+                    seen.add(value)
+                    result.append(value)
+            return result
+
+        def probes(port_name: str, explicit_key: str, fallback: list[int]) -> list[int]:
+            legal = [int(value) for value in by_name[port_name]]
+            if len(legal) <= 64:
+                return legal
+            requested = [int(value) for value in strategy.get(explicit_key, [])]
+            legal_set = set(legal)
+            values_for_probe = [value for value in requested if value in legal_set]
+            lower, upper = min(legal), max(legal)
+            values_for_probe.extend(value for value in fallback if lower <= value <= upper)
+            values_for_probe.extend([lower, lower + 1, upper - 1, upper])
+            return sorted(set(value for value in values_for_probe if value in legal_set))
+
+        hpos_values = probes(
+            hpos_name,
+            "hpos_probe_values",
+            [0, 1, 2, 3, 4, 5, 6, 8, 16, 31, 63, 127, 255, 1023, 4095, 65534],
+        )
+        slice_width_values = probes(
+            slice_width_name,
+            "slice_width_probe_values",
+            [1, 2, 3, 4, 5, 6, 7, 8, 16, 31, 63, 127, 255, 1024, 4096, 65535],
+        )
+        bpc_values = [int(value) for value in by_name[bpc_name]]
+        num_components_values = [int(value) for value in by_name[num_components_name]]
+        native_values = [int(value) for value in by_name[native420_name]]
+        version_values = [int(value) for value in by_name[version_name]]
+        delta_values = [int(value) for value in by_name[flatness_delta_name]]
+        if not delta_values:
+            raise RuntimeError("flatness window strategy has no qP-delta values")
+
+        def table_value(table: dict[str, Any], bit_depth: int, qp: int) -> int:
+            row = table.get(str(bit_depth), table.get(bit_depth))
+            if not isinstance(row, list) or not 0 <= qp < len(row):
+                raise RuntimeError(f"flatness window table lacks bpc={bit_depth}, qp={qp}")
+            return int(row[qp])
+
+        def adjusted_qp(primary_qp: int, delta: int) -> int:
+            return max(int(primary_qp) - int(delta), 0)
+
+        def valid_primary_qps(bit_depth: int) -> list[int]:
+            luma_row = luma_tables.get(str(bit_depth), luma_tables.get(bit_depth, []))
+            chroma_row = chroma_tables.get(str(bit_depth), chroma_tables.get(bit_depth, []))
+            max_adjusted = min(len(luma_row), len(chroma_row)) - 1
+            if max_adjusted < 0:
+                raise RuntimeError(f"flatness window table lacks bpc={bit_depth}")
+            return [
+                int(primary)
+                for primary in by_name[primary_qp_name]
+                if any(adjusted_qp(int(primary), delta) <= max_adjusted for delta in delta_values)
+            ]
+
+        depth_legal = [int(value) for value in by_name[cpnt0_name]]
+        depth_legal_1 = [int(value) for value in by_name[cpnt1_name]]
+        depth_probes = unique(
+            [min(depth_legal), max(depth_legal), 8, 10, 12, 14, 16]
+        )
+        depth_probes_1 = unique(
+            [min(depth_legal_1), max(depth_legal_1), 8, 10, 12, 14, 16]
+        )
+        depth_probes = [value for value in depth_probes if value in set(depth_legal)]
+        depth_probes_1 = [value for value in depth_probes_1 if value in set(depth_legal_1)]
+
+        # The structural suite is deliberately a covering array, not the
+        # Cartesian product of every legal scalar probe.  The full scalar
+        # domains are still enforced by the independent formal proof; the
+        # concrete suite needs only representative values for every branch,
+        # line-end class, qLevel table edge, and bit-depth equality relation.
+        def structural_probes(port_values: list[int], requested: Iterable[int]) -> list[int]:
+            legal = set(int(value) for value in port_values)
+            return unique(value for value in requested if int(value) in legal)
+
+        structural_hpos_values = structural_probes(
+            hpos_values,
+            [min(hpos_values), 0, 1, 2, 3, 6, max(hpos_values)],
+        )
+        structural_slice_width_values = structural_probes(
+            slice_width_values,
+            [min(slice_width_values), 1, 2, 3, 4, 7, max(slice_width_values)],
+        )
+        structural_depth_probes = structural_probes(
+            depth_legal,
+            [min(depth_legal), 8, 10, 12, 14, 16, max(depth_legal)],
+        )
+        structural_depth_probes_1 = structural_probes(
+            depth_legal_1,
+            [min(depth_legal_1), 8, 9, 10, 11, 16, 17, max(depth_legal_1)],
+        )
+
+        def sample_boundaries(bit_depth: int) -> list[int]:
+            maximum = (1 << int(bit_depth)) - 1
+            midpoint = maximum // 2
+            return unique([0, 1, midpoint - 1, midpoint, midpoint + 1, maximum - 1, maximum])
+
+        def baseline(
+            bit_depth: int,
+            primary_qp: int,
+            delta: int,
+            native420: int,
+            version: int,
+            cpnt0: int,
+            cpnt1: int,
+            num_components: int,
+            hpos: int,
+            slice_width: int,
+        ) -> dict[str, int]:
+            context = {
+                name: int(domain[len(domain) // 2])
+                for name, domain in by_name.items()
+                if domain
+            }
+            context.update({
+                bpc_name: int(bit_depth),
+                primary_qp_name: int(primary_qp),
+                flatness_delta_name: int(delta),
+                native420_name: int(native420),
+                version_name: int(version),
+                cpnt0_name: int(cpnt0),
+                cpnt1_name: int(cpnt1),
+                num_components_name: int(num_components),
+                hpos_name: int(hpos),
+                slice_width_name: int(slice_width),
+                flatness_thresh_name: 2 << (int(bit_depth) - 8),
+            })
+            maximum = (1 << int(bit_depth)) - 1
+            for tap in sample_ports:
+                context[tap] = maximum // 2
+            return context
+
+        def emit(context: dict[str, int]) -> tuple[int, ...]:
+            return tuple(int(context[name]) for name in names)
+
+        structural: list[dict[str, int]] = []
+        for bit_depth in bpc_values:
+            qps = valid_primary_qps(bit_depth)
+            primary_qp_probes = unique(
+                qps[index]
+                for index in [0, min(4, len(qps) - 1), max(0, len(qps) - 2), len(qps) - 1]
+            )
+            for primary_qp in primary_qp_probes:
+                for delta in delta_values:
+                    if adjusted_qp(primary_qp, delta) > min(
+                        len(luma_tables.get(str(bit_depth), [])),
+                        len(chroma_tables.get(str(bit_depth), [])),
+                    ) - 1:
+                        continue
+                    for native420 in native_values:
+                        for version in version_values:
+                            for cpnt0 in structural_depth_probes:
+                                for cpnt1 in structural_depth_probes_1:
+                                    for num_components in num_components_values:
+                                        for hpos in structural_hpos_values:
+                                            for slice_width in structural_slice_width_values:
+                                                structural.append(baseline(
+                                                    bit_depth, primary_qp, delta, native420, version,
+                                                    cpnt0, cpnt1, num_components, hpos, slice_width,
+                                                ))
+
+        def vectors() -> Iterable[tuple[int, ...]]:
+            for context in structural:
+                yield emit(context)
+
+            selected_contexts: list[dict[str, int]] = []
+            for bit_depth in bpc_values:
+                qps = valid_primary_qps(bit_depth)
+                if not qps:
+                    continue
+                for primary_qp in unique([qps[0], qps[-1]]):
+                    for delta in delta_values:
+                        if adjusted_qp(primary_qp, delta) >= len(luma_tables.get(str(bit_depth), [])):
+                            continue
+                        for native420 in unique([min(native_values), max(native_values)]):
+                            for version in unique([min(version_values), max(version_values)]):
+                                for num_components in unique([min(num_components_values), max(num_components_values)]):
+                                    for hpos in unique([min(hpos_values), max(hpos_values), 0, 1, 2, 3]):
+                                        for slice_width in unique([min(slice_width_values), max(slice_width_values), 1, 2, 3, 4]):
+                                            selected_contexts.append(baseline(
+                                                bit_depth, primary_qp, delta, native420, version,
+                                    structural_depth_probes[0], structural_depth_probes_1[-1], num_components,
+                                                hpos, slice_width,
+                                            ))
+
+            for context in selected_contexts:
+                bit_depth = int(context[bpc_name])
+                for tap in sample_ports:
+                    for value in sample_boundaries(bit_depth):
+                        case = dict(context)
+                        case[tap] = int(value)
+                        yield emit(case)
+
+            pair_contexts = selected_contexts[: max(1, min(32, len(selected_contexts)))]
+            for context in pair_contexts:
+                bit_depth = int(context[bpc_name])
+                endpoint_values = sample_boundaries(bit_depth)
+                endpoints = [endpoint_values[0], endpoint_values[-1]]
+                for component in range(4):
+                    taps = [str(value) for value in sample_by_component[str(component)]]
+                    for first, second in itertools.combinations(taps, 2):
+                        for first_value in endpoints:
+                            for second_value in endpoints:
+                                case = dict(context)
+                                case[first] = first_value
+                                case[second] = second_value
+                                yield emit(case)
+
+        return vectors(), {
+            "kind": "flatness_window",
+            "exhaustive": False,
+            "formal_required": True,
+            "coverage_mode": "STRUCTURAL_PLUS_BOUNDARY_AND_PAIRWISE_FLATNESS_TAPS",
+            "source": strategy.get("source", "DSC 1.2a section 6.8.5.1 and Figure 6-19"),
+            "structural_cases": len(structural),
+            "sample_ports": sample_ports,
+            "sample_ports_by_component": {
+                str(component): [str(value) for value in sample_by_component[str(component)]]
+                for component in range(4)
+            },
+            "hpos_probe_values": hpos_values,
+            "slice_width_probe_values": slice_width_values,
+            "table_relation": "primary_qp - somewhat_flat_qp_delta indexes the normative Table 6-2 row",
+            "legal_relation": "flatness_det_thresh = 2 << (bits_per_component - 8); taps are bounded original samples",
+        }
+
     def legal_vector_iterator(self, contract: dict[str, Any], input_ports: list[dict[str, Any]],
                               values: list[list[int]]) -> tuple[Iterable[tuple[int, ...]], dict[str, Any]]:
         """Return legal vectors, including reviewed conditional domains.
@@ -2460,6 +2927,8 @@ class Agent:
             return self.table_lookup_vector_iterator(contract, input_ports, values, table_strategy)
         if isinstance(table_strategy, dict) and table_strategy.get("kind") == "windowed_boundary":
             return self.windowed_boundary_vector_iterator(contract, input_ports, values, table_strategy)
+        if isinstance(table_strategy, dict) and table_strategy.get("kind") == "flatness_window":
+            return self.flatness_window_vector_iterator(contract, input_ports, values, table_strategy)
         normalized = {re.sub(r"[^a-z0-9]", "", name.lower()): name for name in names}
         bit_depth_name = normalized.get("cpntbitdepth")
         qlevel_name = normalized.get("qlevel")
@@ -2932,12 +3401,12 @@ class Agent:
         """
         semantics = contract.get("semantics", {}) or {}
         strategy = semantics.get("legal_vector_strategy") or {}
-        if strategy.get("kind") != "windowed_boundary":
+        if strategy.get("kind") not in {"windowed_boundary", "flatness_window"}:
             return {
                 "schema_version": 1,
                 "status": "NOT_APPLICABLE",
                 "proof_complete": False,
-                "reason": "formal AST proof is only enabled for reviewed windowed_boundary contracts",
+                "reason": "formal AST proof is only enabled for reviewed windowed_boundary or flatness_window contracts",
             }
         helper = self.root / "tools" / "formal_rtl.py"
         if not helper.is_file():
@@ -3359,8 +3828,169 @@ class Agent:
         write_json(source_dir / "overlay-receipt.json", receipt)
         return receipt
 
+    def write_flatness_overlay_sources(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        module: str,
+        candidate_sv: pathlib.Path,
+    ) -> dict[str, pathlib.Path]:
+        """Write the caller overlay for a reviewed flatness-window leaf."""
+        ports = contract.get("interface", {}).get("ports", [])
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        output = next(
+            port for port in ports if port.get("direction") == "output"
+        )
+        semantics = contract.get("semantics", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        window = semantics.get("window_spec", {}) or {}
+        parameters = self.function_parameters(contract)
+        if not parameters:
+            raise RuntimeError("flatness overlay requires original C parameter facts")
+
+        parameter_specs: list[str] = []
+        parameter_names: list[str] = []
+        records: dict[str, str] = {}
+        scalar_parameter = ""
+        for parameter in parameters:
+            parameter_name = str(parameter.get("name", ""))
+            parameter_type = str(parameter.get("type", "int")).strip()
+            parameter_specs.append(f"{parameter_type} {parameter_name}")
+            parameter_names.append(parameter_name)
+            if parameter.get("pointer"):
+                records[re.sub(r"\s*\*.*$", "", parameter_type).strip()] = parameter_name
+            else:
+                scalar_parameter = parameter_name
+        config_parameter = records.get("dsc_cfg_t")
+        state_parameter = records.get("dsc_state_t")
+        if not config_parameter or not state_parameter or not scalar_parameter:
+            raise RuntimeError("flatness overlay requires config, state, and hPos parameters")
+
+        hpos_port = str(bindings.get("hpos_port", "hPos"))
+        config_fields = bindings.get("config_fields", {}) or {}
+        state_fields = bindings.get("state_fields", {}) or {}
+        samples = window.get("sample_ports_by_component", {}) or {}
+        sample_expressions: dict[str, str] = {}
+        padding_left = int(window.get("padding_left", 5))
+        for raw_component in range(4):
+            taps = samples.get(str(raw_component), samples.get(raw_component, []))
+            for offset, tap in enumerate(taps):
+                sample_expressions[str(tap)] = (
+                    f"(({state_parameter}->numComponents > {raw_component}) ? "
+                    f"{state_parameter}->origLine[{raw_component}]"
+                    f"[{scalar_parameter} + PADDING_LEFT + {offset}] : 0)"
+                )
+
+        rtl_arguments: list[str] = []
+        for port in inputs:
+            port_name = str(port.get("name"))
+            if port_name == hpos_port:
+                rtl_arguments.append(scalar_parameter)
+                continue
+            if port_name in config_fields:
+                field = str(config_fields[port_name])
+                rtl_arguments.append(f"{config_parameter}->{field}")
+                continue
+            if port_name in state_fields:
+                field = str(state_fields[port_name])
+                if field.startswith("cpntBitDepth["):
+                    index = field.split("[", 1)[1].split("]", 1)[0]
+                    rtl_arguments.append(f"{state_parameter}->cpntBitDepth[{index}]")
+                else:
+                    rtl_arguments.append(f"{state_parameter}->{field}")
+                continue
+            if port_name in sample_expressions:
+                rtl_arguments.append(sample_expressions[port_name])
+                continue
+            raise RuntimeError(f"flatness overlay has no source binding for port: {port_name}")
+
+        original = str(contract_function(contract).get("name")) + "_original"
+        input_declarations = ", ".join(f"int {port['name']}" for port in inputs)
+        caller_declarations = ", ".join(parameter_specs)
+        caller_call = ", ".join(parameter_names)
+        rtl_call = ", ".join(rtl_arguments)
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n"
+            "#define DSC_CICD_OVERLAY_H\n"
+            "#include \"dsc_types.h\"\n"
+            f"int dsc_cicd_invoke({caller_declarations});\n"
+            "#endif\n",
+            encoding="utf-8",
+        )
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdio.h>\n"
+            "#include <stdlib.h>\n"
+            "#include <string.h>\n"
+            "#include \"dsc_cicd_overlay.h\"\n"
+            f"extern int {original}({caller_declarations});\n"
+            f"extern int dsc_cicd_rtl({input_declarations});\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n"
+            "}\n"
+            "static unsigned long dsc_cicd_mismatches;\n"
+            f"int dsc_cicd_invoke({caller_declarations}) {{\n"
+            f"    int c_value = {original}({caller_call});\n"
+            "    int mode = dsc_cicd_mode();\n"
+            "    if (mode == 0) return c_value;\n"
+            f"    int rtl_value = dsc_cicd_rtl({rtl_call});\n"
+            "    if (rtl_value != c_value) {\n"
+            "        ++dsc_cicd_mismatches;\n"
+            "        fprintf(stderr, \"C/RTL mismatch: c=%d rtl=%d\\n\", c_value, rtl_value);\n"
+            "    }\n"
+            "    return mode == 2 ? rtl_value : c_value;\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        bridge = source_dir / "rtl_bridge.cpp"
+        width = max(1, int(output.get("width", 1)))
+        assignments = "\n".join(
+            f"    dut.{port['name']} = static_cast<long long>({port['name']});"
+            for port in inputs
+        )
+        if output.get("signed"):
+            output_expr = f"sign_extend(static_cast<long long>(dut.{output['name']}), {width})"
+        else:
+            output_expr = f"static_cast<int>(dut.{output['name']})"
+        bridge.write_text(
+            "#include <cstdint>\n"
+            "#include \"verilated.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            "static long long sign_extend(long long value, int width) {\n"
+            "    if (width >= 63) return value;\n"
+            "    long long bit = 1LL << (width - 1);\n"
+            "    long long mask = (1LL << width) - 1;\n"
+            "    value &= mask;\n"
+            "    return (value & bit) ? value - (1LL << width) : value;\n"
+            "}\n"
+            f'extern "C" int dsc_cicd_rtl({input_declarations}) {{\n'
+            f"    V{safe_identifier(module)} dut;\n"
+            f"{assignments}\n"
+            "    dut.eval();\n"
+            f"    return static_cast<int>({output_expr});\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\n"
+            "extern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) {\n"
+            "    return dsc_cicd_original_main(argc, argv);\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        return {"header": header, "overlay": overlay, "bridge": bridge, "main": main, "candidate": candidate_sv}
+
     def write_overlay_sources(self, contract: dict[str, Any], source_dir: pathlib.Path,
                               module: str, candidate_sv: pathlib.Path) -> dict[str, pathlib.Path]:
+        if (contract.get("semantics", {}) or {}).get("kind") == "flatness_window":
+            return self.write_flatness_overlay_sources(contract, source_dir, module, candidate_sv)
         inputs = [
             port for port in contract.get("interface", {}).get("ports", [])
             if port.get("direction") == "input"

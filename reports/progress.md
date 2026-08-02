@@ -95,9 +95,22 @@ This handoff is isolated from SVRT. The local PDF and upstream C model were read
 - The final refresh executed `106,010,095` C/RTL vectors across `104` parallel shards. Every component passed dependency composition, C_ONLY, SHADOW, RTL_RETURN, frame/SHA, source, and exact-spec gates; deliberate negative candidates remained expected rejections.
 - The stable manifest now includes `qp2qlevel` as a reusable configuration-library primitive while stateful callers, line-buffer storage, and other non-DUT C logic remain outside the RTL library.
 
+## Flatness-window promotion
+
+- The next candidate was selected from Clang identity, coverage, exact PDF links, and reviewed domain data; no function-name allowlist was added. Its exact authority is DSC 1.2a section `6.8.5.1` and Figure `6-19` (PDF page `111`), with the direct `MapQpToQlevel` dependency already promoted.
+- The reviewed `flatness_window` contract keeps the C line storage at the caller boundary and exposes four lanes × seven original-pixel taps. Figure 6-19 check-1 offsets are `0..3`, check-2 offsets are `1..6`; Table 6-2 and the native-420/version qLevel relation are contract data.
+- The concrete suite passed `575,552` vectors across `8` shards, including `172,800` structural cases, line-end probes, per-tap boundaries, and pairwise tap cases. Candidate RTL compiled with Verilator; the independent Verilator-AST/Z3 proof returned `PASS` with `proof_complete=true`.
+- The C oracle compiled all `11` translation units. `C_ONLY`, `SHADOW`, and `RTL_RETURN` passed all three frame scenarios. The deliberately mutated candidate was rejected by concrete and formal counterexamples. Unconfigured component lanes are guarded in the C adapter so `origLine` is never dereferenced outside `numComponents`.
+- `isorigflathindex` is promoted as the fourteenth stable component; the stable library now has `14` leaves while stateful line storage and non-DUT caller logic remain outside RTL.
+
+## Frontier re-audit
+
+- A fresh facts/spec `plan` after promotion returned `new_candidates: []` and selected no new contract. The next ranked lowercase `getbits` fact is not bounded and has unknown timing, while the uppercase `GetBits` fact is stateful and carries logging/state-write effects.
+- Neither is admitted to the RTL library without a new exact spec contract that proves a bounded, combinational DUT slice. The C model remains the reference for this frontier; no non-DUT/stateful logic was converted just to keep the queue moving.
+
 ## Recommendation
 
-Continue by re-reading the tool-ranked frontier for a new reviewed leaf or composite whose direct callees are already PASS, then repeat the same C-oracle/Verilator/formal flow. The current thirteen-component stable frontier is revalidated; its static Eva/From limitations remain recorded separately and do not weaken the executable RTL gates. Deliberate negative variants stay visible as counterexamples.
+Continue by re-reading the tool-ranked frontier for a new reviewed leaf or composite whose direct callees are already PASS, then repeat the same C-oracle/Verilator/formal flow. The current fourteen-component stable frontier is revalidated; its static Eva/From limitations remain recorded separately and do not weaken the executable RTL gates. Deliberate negative variants stay visible as counterexamples.
 
 ## Receipts
 

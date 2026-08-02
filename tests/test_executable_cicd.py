@@ -311,6 +311,32 @@ class ExecutableCicdTests(unittest.TestCase):
         self.assertEqual(receipt["kind"], "windowed_boundary")
         self.assertEqual(receipt["pairwise_groups"], [["tap_a", "tap_b"]])
 
+    def test_flatness_window_promotion_receipt_and_unused_lane_guard(self):
+        artifact = next(
+            path for path in sorted((ROOT / "artifacts").iterdir())
+            if path.is_dir()
+            and json.loads((path / "locked-contract.json").read_text(encoding="utf-8")).get("contract_id")
+            == "isorigflathindex"
+            and (path / "formal" / "candidate_01.json").is_file()
+        )
+        contract = json.loads((artifact / "locked-contract.json").read_text(encoding="utf-8"))
+        unit = json.loads((artifact / "unit-receipt.json").read_text(encoding="utf-8"))
+        formal = json.loads((artifact / "formal" / "candidate_01.json").read_text(encoding="utf-8"))
+        self.assertEqual(unit["domain"]["vector_strategy"]["kind"], "flatness_window")
+        self.assertEqual(unit["domain"]["total_vectors"], 575552)
+        self.assertEqual(formal["proof_strategy"], "SYMBOLIC_FLATNESS_WINDOW")
+        self.assertTrue(formal["proof_complete"])
+        self.assertEqual(unit["candidates"][0]["verification_status"], "FORMAL_EQUIVALENT")
+
+        agent = Agent(ROOT, "test")
+        candidate = artifact / "generated" / "candidate_01.sv"
+        with tempfile.TemporaryDirectory() as directory:
+            paths = agent.write_overlay_sources(contract, pathlib.Path(directory), "isorigflathindex", candidate)
+            overlay = paths["overlay"].read_text(encoding="utf-8")
+        self.assertIn("dsc_state->numComponents > 3", overlay)
+        self.assertIn("dsc_state->origLine[3][hPos + PADDING_LEFT + 0] : 0", overlay)
+        self.assertNotIn("orig_line_window", overlay)
+
     def test_samplepredict_pointer_adapter_binds_state_and_taps(self):
         agent = Agent(ROOT, "test")
         agent.input_facts = {

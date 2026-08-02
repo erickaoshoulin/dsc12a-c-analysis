@@ -744,6 +744,253 @@ def dynamic_window_sample_predict_body(
     return "\n".join(lines)
 
 
+def flatness_window_body(
+    interface: dict[str, object], semantics: dict[str, object], bad: bool
+) -> str:
+    """Emit a spec-driven flatness decision over a frozen original-pixel window.
+
+    The C helper receives a state record because the model owns the original
+    line storage and the qLevel tables.  The library boundary exposes only the
+    fields and taps that the reviewed contract names.  All loops in the C body
+    are unrolled here through fixed-size helper functions: four components and
+    the normative four/six-sample flatness windows.
+    """
+    ports = {
+        str(port.get("name")): port
+        for port in interface.get("ports", [])
+        if isinstance(port, dict)
+    }
+    strategy = semantics.get("legal_vector_strategy", {}) if isinstance(semantics, dict) else {}
+    window = semantics.get("window_spec", {}) if isinstance(semantics, dict) else {}
+    bindings = semantics.get("bindings", {}) if isinstance(semantics, dict) else {}
+    if not isinstance(strategy, dict):
+        strategy = {}
+    if not isinstance(window, dict):
+        window = {}
+    if not isinstance(bindings, dict):
+        bindings = {}
+
+    def unsigned_integer(name: str) -> str:
+        """Zero-extend a frozen unsigned port before passing it to integer helpers."""
+        width = int(ports[name].get("width", 1))
+        if width >= 32:
+            return name
+        return f"{{{32 - width}'b0, {name}}}"
+
+    def require(name: str) -> str:
+        value = str(name)
+        if value not in ports:
+            raise ValueError("flatness fixture is missing port: " + value)
+        return value
+
+    hpos_name = require(bindings.get("hpos_port", strategy.get("hpos_port", "hPos")))
+    bpc_name = require(bindings.get("bits_per_component_port", "bits_per_component"))
+    primary_qp_name = require(bindings.get("primary_qp_port", "primary_qp"))
+    num_components_name = require(bindings.get("num_components_port", "num_components"))
+    slice_width_name = require(bindings.get("slice_width_port", "slice_width"))
+    flatness_thresh_name = require(bindings.get("flatness_det_thresh_port", "flatness_det_thresh"))
+    flatness_delta_name = require(bindings.get("somewhat_flat_qp_delta_port", "somewhat_flat_qp_delta"))
+    native420_name = require(bindings.get("native_420_port", "native_420"))
+    version_name = require(bindings.get("dsc_version_minor_port", "dsc_version_minor"))
+    cpnt0_name = require(bindings.get("cpnt_bit_depth_0_port", "cpnt_bit_depth_0"))
+    cpnt1_name = require(bindings.get("cpnt_bit_depth_1_port", "cpnt_bit_depth_1"))
+    out_name = require("return_value")
+
+    sample_ports_by_component = window.get("sample_ports_by_component", {})
+    if not isinstance(sample_ports_by_component, dict):
+        raise ValueError("flatness fixture is missing sample_ports_by_component")
+    sample_names: dict[int, list[str]] = {}
+    for raw_component in range(4):
+        raw_ports = sample_ports_by_component.get(str(raw_component), sample_ports_by_component.get(raw_component, []))
+        values = [require(value) for value in raw_ports]
+        if len(values) != 7:
+            raise ValueError("flatness fixture requires seven taps per component")
+        sample_names[raw_component] = values
+
+    tables = semantics.get("tables", {}) if isinstance(semantics, dict) else {}
+    luma_tables = tables.get("luma", {}) if isinstance(tables, dict) else {}
+    chroma_tables = tables.get("chroma", {}) if isinstance(tables, dict) else {}
+
+    def table_function(name: str, table: object) -> list[str]:
+        lines = [
+            f"    function automatic integer {name};",
+            "        input integer bit_depth;",
+            "        input integer qp;",
+            "        begin",
+            f"            {name} = 0;",
+            "            case (bit_depth)",
+        ]
+        if isinstance(table, dict):
+            for raw_bpc, raw_values in sorted(table.items(), key=lambda item: int(item[0])):
+                values = [int(value) for value in raw_values]
+                lines.extend([
+                    f"                {int(raw_bpc)}: begin",
+                    "                    case (qp)",
+                ])
+                for index, value in enumerate(values):
+                    lines.append(f"                        {index}: {name} = {value};")
+                lines.extend([
+                    f"                        default: {name} = 0;",
+                    "                    endcase",
+                    "                end",
+                ])
+        lines.extend([
+            f"                default: {name} = 0;",
+            "            endcase",
+            "        end",
+            "    endfunction",
+        ])
+        return lines
+
+    def sample_function() -> list[str]:
+        lines = [
+            "    function automatic integer sample_i;",
+            "        input integer component;",
+            "        input integer offset;",
+            "        begin",
+            "            sample_i = 0;",
+            "            case (component)",
+        ]
+        for component in range(4):
+            lines.extend([
+                f"                {component}: begin",
+                "                    case (offset)",
+            ])
+            for offset, port in enumerate(sample_names[component]):
+                lines.append(f"                        {offset}: sample_i = {unsigned_integer(port)};")
+            lines.extend([
+                "                        default: sample_i = 0;",
+                "                    endcase",
+                "                end",
+            ])
+        lines.extend([
+            "                default: sample_i = 0;",
+            "            endcase",
+            "        end",
+            "    endfunction",
+        ])
+        return lines
+
+    def spread_function(name: str, offsets: list[int]) -> list[str]:
+        values = [f"sample_i(component, {offset})" for offset in offsets]
+        maximum = values[0]
+        minimum = values[0]
+        for value in values[1:]:
+            maximum = f"max_i({maximum}, {value})"
+            minimum = f"min_i({minimum}, {value})"
+        return [
+            f"    function automatic integer {name};",
+            "        input integer component;",
+            "        begin",
+            f"            {name} = {maximum} - {minimum};",
+            "        end",
+            "    endfunction",
+        ]
+
+    lines = [
+        "    function automatic integer min_i;",
+        "        input integer left;",
+        "        input integer right;",
+        "        begin min_i = (left < right) ? left : right; end",
+        "    endfunction",
+        "    function automatic integer max_i;",
+        "        input integer left;",
+        "        input integer right;",
+        "        begin max_i = (left > right) ? left : right; end",
+        "    endfunction",
+        "    function automatic integer quant_divisor_i;",
+        "        input integer qlevel;",
+        "        begin",
+        "            quant_divisor_i = 1;",
+        "            case (qlevel)",
+    ]
+    for qlevel in range(17):
+        lines.append(f"                {qlevel}: quant_divisor_i = {1 << qlevel};")
+    lines.extend([
+        "                default: quant_divisor_i = 1;",
+        "            endcase",
+        "        end",
+        "    endfunction",
+    ])
+    lines.extend(table_function("luma_qlevel_i", luma_tables))
+    lines.extend(table_function("chroma_qlevel_i", chroma_tables))
+    lines.extend(sample_function())
+    lines.extend(spread_function("spread4_i", [0, 1, 2, 3]))
+    lines.extend(spread_function("spread6_i", [1, 2, 3, 4, 5, 6]))
+    lines.extend([
+        "    function automatic integer qlevel_i;",
+        "        input integer component;",
+        "        integer adjusted_qp;",
+        "        begin",
+        f"            adjusted_qp = {unsigned_integer(primary_qp_name)} - {unsigned_integer(flatness_delta_name)};",
+        "            if (adjusted_qp < 0) adjusted_qp = 0;",
+        f"            if ((component % 3) == 0) qlevel_i = luma_qlevel_i({unsigned_integer(bpc_name)}, adjusted_qp);",
+        f"            else if (({native420_name} != 0) && (component == 1)) qlevel_i = luma_qlevel_i({unsigned_integer(bpc_name)}, adjusted_qp);",
+        f"            else begin qlevel_i = chroma_qlevel_i({unsigned_integer(bpc_name)}, adjusted_qp);",
+        f"                if (({version_name} == 2) && ({cpnt0_name} == {cpnt1_name}) && (qlevel_i > 0)) qlevel_i = qlevel_i - 1;",
+        "            end",
+        "        end",
+        "    endfunction",
+        "    function automatic bit somewhat_flat4_i;",
+        "        input integer component;",
+        "        begin",
+        f"            somewhat_flat4_i = spread4_i(component) <= max_i({unsigned_integer(flatness_thresh_name)}, quant_divisor_i(qlevel_i(component)));",
+        "        end",
+        "    endfunction",
+        "    function automatic bit very_flat4_i;",
+        "        input integer component;",
+        "        begin",
+        f"            very_flat4_i = spread4_i(component) <= {unsigned_integer(flatness_thresh_name)};",
+        "        end",
+        "    endfunction",
+        "    function automatic bit somewhat_flat6_i;",
+        "        input integer component;",
+        "        begin",
+        f"            somewhat_flat6_i = spread6_i(component) <= max_i({unsigned_integer(flatness_thresh_name)}, quant_divisor_i(qlevel_i(component)));",
+        "        end",
+        "    endfunction",
+        "    function automatic bit very_flat6_i;",
+        "        input integer component;",
+        "        begin",
+        f"            very_flat6_i = spread6_i(component) <= {unsigned_integer(flatness_thresh_name)};",
+        "        end",
+        "    endfunction",
+        "    integer first_somewhat_i;",
+        "    integer first_very_i;",
+        "    integer second_somewhat_i;",
+        "    integer second_very_i;",
+        "    always_comb begin",
+        "        first_somewhat_i = 1;",
+        "        first_very_i = 1;",
+        "        second_somewhat_i = 1;",
+        "        second_very_i = 1;",
+    ])
+    for component in range(4):
+        lines.extend([
+            f"        if ({num_components_name} > {component}) begin",
+            f"            if (somewhat_flat4_i({component}) == 0) first_somewhat_i = 0;",
+            f"            if (very_flat4_i({component}) == 0) first_very_i = 0;",
+            f"            if (somewhat_flat6_i({component}) == 0) second_somewhat_i = 0;",
+            f"            if (very_flat6_i({component}) == 0) second_very_i = 0;",
+            "        end",
+        ])
+    lines.extend([
+        f"        {out_name} = 0;",
+        f"        if ({hpos_name} + 1 < {slice_width_name}) begin",
+        f"            if (first_very_i != 0) {out_name} = 2;",
+        f"            else if (first_somewhat_i != 0) {out_name} = 1;",
+        f"            else if ({hpos_name} + 2 < {slice_width_name}) begin",
+        f"                if (second_very_i != 0) {out_name} = 2;",
+        f"                else if (second_somewhat_i != 0) {out_name} = 1;",
+        "            end",
+        "        end",
+    ])
+    if bad:
+        lines.append(f"        {out_name} = {out_name} + 1;")
+    lines.extend(["    end"])
+    return "\n".join(lines)
+
+
 def generic_body(interface: dict[str, object], semantics: dict[str, object], bad: bool) -> str:
     ports = interface.get("ports", [])
     out = next((p for p in ports if isinstance(p, dict) and p.get("role") == "return_value"), None)
@@ -810,6 +1057,8 @@ def render_candidate(contract: dict[str, object], interface: dict[str, object], 
         body = dynamic_window_sample_predict_body(interface, semantics, bad)
     elif kind == "windowed_sample_predict":
         body = windowed_sample_predict_body(interface, semantics, bad)
+    elif kind == "flatness_window":
+        body = flatness_window_body(interface, semantics, bad)
     else:
         body = generic_body(interface, semantics if isinstance(semantics, dict) else {}, bad)
     return "module " + module + " (\n" + declarations + "\n);\n" + body + "\nendmodule\n"

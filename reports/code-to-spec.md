@@ -38,7 +38,8 @@
 
 ## `IsOrigFlatHIndex`
 
-- `PROPOSED` page 111 `pdf:figure:6-19` (normalized_function_identifier)
+- `REVIEWED` page 111 `pdf:figure:6-19` (normalized_function_identifier)
+- `REVIEWED` page 111 `pdf:section:6.8.5.1` (reviewed_exact_spec)
 
 ## `IsOrigWithinQerr`
 

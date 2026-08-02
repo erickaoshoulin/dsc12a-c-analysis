@@ -6,7 +6,8 @@ was explicitly promoted from a durable regression receipt.
 Promotion requires:
 
 - exact PDF/C traceability and reviewed port authority;
-- Verilator compile/lint and exhaustive legal-domain comparison;
+- Verilator compile/lint and either exhaustive legal-domain comparison or an
+  independent proof of a reviewed finite window;
 - C_ONLY, SHADOW, RTL_RETURN, and discovered frame byte/SHA-256 passes; and
 - no clock, reset, latch, testbench timing, or stateful caller logic in the
   promoted leaf.
@@ -34,3 +35,14 @@ reviewed MMAP/left/block predictor taps.
 DUT logic. It is the reviewed DSC 1.2a Table 6-2 qLevel lookup, with its C
 configuration pointer flattened into finite read-only ports and its legal QP
 range constrained to each normative table row.
+
+Reviewed pointer-heavy leaves use a data-driven window contract. The
+`windowed_boundary` strategy covers structural, boundary, and pairwise tap
+cases, while independent Verilator-AST/Z3 proof is required before a reviewed
+window can become `FORMAL_EQUIVALENT`. For a `flatness_window`, the contract
+declares four component lanes and seven read-only original-pixel taps per
+lane, including Figure 6-19 check-1 offsets `0..3` and check-2 offsets `1..6`.
+Table 6-2, the qLevel adjustment, and `flatnessDetThresh` relation are locked
+in reviewed semantics. Line storage stays at the C caller boundary, and the
+adapter short-circuits inactive lanes before dereferencing `origLine`. The
+stable library now contains 14 promoted components.
