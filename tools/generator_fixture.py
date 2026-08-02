@@ -165,6 +165,77 @@ def max_residual_size_body(interface: dict[str, object], bad: bool) -> str:
     return "\n".join(lines)
 
 
+def residual_size_body(
+    interface: dict[str, object], semantics: dict[str, object], bad: bool
+) -> str:
+    """Emit the reviewed residual-size threshold function.
+
+    The threshold table is carried by the contract semantics so the fixture
+    remains driven by the reviewed interface/spec data rather than a function
+    name.  The default table is the DSC 1.2a signed residual-size relation.
+    """
+    ports = interface.get("ports", [])
+    names = {
+        normalized_identifier(str(port.get("role", port.get("name")))): str(port.get("name"))
+        for port in ports
+        if isinstance(port, dict)
+    }
+    input_names = [
+        str(port.get("name"))
+        for port in ports
+        if isinstance(port, dict) and port.get("direction") == "input"
+    ]
+    eq_name = names.get("eq") or (input_names[0] if input_names else "eq")
+    input_port = next(
+        (
+            port
+            for port in ports
+            if isinstance(port, dict) and str(port.get("name")) == eq_name
+        ),
+        {},
+    )
+    input_width = int(input_port.get("width", 32))
+    out_name = names.get("returnvalue", "return_value")
+    thresholds = semantics.get("thresholds", [])
+    if not thresholds:
+        thresholds = [{"lower": 0, "upper": 0, "size": 0}]
+        thresholds.extend(
+            {
+                "lower": -(1 << (size - 1)),
+                "upper": (1 << (size - 1)) - 1,
+                "size": size,
+            }
+            for size in range(1, 19)
+        )
+    if 0 < input_width < 32:
+        sign_extended = "{{" + str(32 - input_width) + "{" + f"{eq_name}[{input_width - 1}]" + "}}, " + eq_name + "}"
+        eq_assignment = f"        eq_i = $signed({sign_extended});"
+    else:
+        eq_assignment = f"        eq_i = $signed({eq_name});"
+    lines = [
+        "    integer signed eq_i;",
+        "    always_comb begin",
+        eq_assignment,
+        f"        {out_name} = 0;",
+    ]
+    for index, threshold in enumerate(thresholds):
+        lower = int(threshold["lower"])
+        upper = int(threshold["upper"])
+        size = int(threshold["size"])
+        keyword = "if" if index == 0 else "else if"
+        if lower == upper:
+            condition = f"(eq_i == {lower})"
+        else:
+            condition = f"((eq_i >= {lower}) && (eq_i <= {upper}))"
+        lines.extend([
+            f"        {keyword} {condition} {out_name} = {size};",
+        ])
+    if bad:
+        lines.append(f"        {out_name} = {out_name} + 1;")
+    lines.append("    end")
+    return "\n".join(lines)
+
+
 def qp_adjusted_pred_size_body(interface: dict[str, object], bad: bool) -> str:
     ports = interface.get("ports", [])
     names = {
@@ -626,6 +697,15 @@ def generic_body(interface: dict[str, object], semantics: dict[str, object], bad
     # the frozen interface; operators and literals remain untouched.
     expression = re.sub(r"[A-Za-z_][A-Za-z0-9_]*", replace_identifier, expression)
     value = f"({expression})"
+    if "$clog2" in expression:
+        output_width = int(out.get("width", 1)) if isinstance(out, dict) else 1
+        output_slice = f"expression_wide[{output_width - 1}:0]" if output_width > 1 else "expression_wide[0]"
+        assigned = f"{output_slice} + {output_width}'d1" if bad else output_slice
+        return "\n".join([
+            "    logic [31:0] expression_wide;",
+            f"    assign expression_wide = {value};",
+            f"    assign {out_name} = {assigned};",
+        ])
     if bad:
         value = f"({value}) + 1"
     return f"    assign {out_name} = {value};"
@@ -646,6 +726,8 @@ def render_candidate(contract: dict[str, object], interface: dict[str, object], 
         body = qp_mapping_body(interface, bad)
     elif kind == "max_residual_size":
         body = max_residual_size_body(interface, bad)
+    elif kind == "residual_size":
+        body = residual_size_body(interface, semantics, bad)
     elif kind == "qp_adjusted_pred_size":
         body = qp_adjusted_pred_size_body(interface, bad)
     elif kind == "windowed_sample_predict" and (

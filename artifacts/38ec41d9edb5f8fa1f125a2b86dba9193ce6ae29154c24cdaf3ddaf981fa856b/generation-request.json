@@ -1,0 +1,349 @@
+{
+  "c_body": "int FindResidualSize(int eq)\n{\n\tint size_e;\n\n\t// Find the size in bits of e\n\tif(eq == 0) size_e = 0;\n\telse if (eq >= -1 && eq <= 0) size_e = 1;\n\telse if (eq >= -2 && eq <= 1) size_e = 2;\n\telse if (eq >= -4 && eq <= 3) size_e = 3;\n\telse if (eq >= -8 && eq <= 7) size_e = 4;\n\telse if (eq >= -16 && eq <= 15) size_e = 5;\n\telse if (eq >= -32 && eq <= 31) size_e = 6;\n\telse if (eq >= -64 && eq <= 63) size_e = 7;\n\telse if (eq >= -128 && eq <= 127) size_e = 8;\n\telse if (eq >= -256 && eq <= 255) size_e = 9;\n\telse if (eq >= -512 && eq <= 511) size_e = 10;\n\telse if (eq >= -1024 && eq <= 1023) size_e = 11;\n\telse if (eq >= -2048 && eq <= 2047) size_e = 12;\n\telse if (eq >= -4096 && eq <= 4095) size_e = 13;\n\telse if (eq >= -8192 && eq <= 8191) size_e = 14;\n\telse if (eq >= -16384 && eq <= 16383) size_e = 15;\n\telse if (eq >= -32768 && eq <= 32767) size_e = 16;\n\telse if (eq >= -65536 && eq <= 65535) size_e = 17;\n\telse if (eq >= -131702 && eq <= 131701) size_e = 18;\n\telse\n\t{\n\t\tprintf(\"unexpectedly large residual size\\n\");\n\t\treturn 0;\n\t}\n\n\treturn size_e;\n}",
+  "exact_spec_anchors": [
+    {
+      "anchor_id": "pdf:section:6.6.1",
+      "evidence": "The normative section defines the residual-size quantity used by DSU-VLC.",
+      "page": 91,
+      "section": "6.6.1",
+      "short_anchor": null,
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:table:3-1",
+      "evidence": "The normative table lists residual values and their coded sizes.",
+      "page": 34,
+      "section": "3",
+      "short_anchor": null,
+      "status": "EXACT"
+    }
+  ],
+  "frozen_interface": {
+    "inputs": [
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "DSC 1.2a signed residual range required by the reviewed DSU-VLC threshold domain",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "eq",
+        "role": "RUNTIME_INPUT",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      }
+    ],
+    "output": {
+      "c_type": "int",
+      "legal_range": [
+        0,
+        17
+      ],
+      "logical_width": 5,
+      "name": "return_value",
+      "role": "return_value",
+      "signed": false,
+      "unresolved": false,
+      "width_source": "EXACT_SPEC"
+    },
+    "ports": [
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC 1.2a signed residual range required by the reviewed DSU-VLC threshold domain",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "eq",
+        "role": "eq",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "output",
+        "name": "return_value",
+        "role": "return_value",
+        "signed": false,
+        "width": 5
+      }
+    ]
+  },
+  "locked_contract": {
+    "contract_id": "findresidualsize",
+    "dependencies": {
+      "direct_callees": [
+        {
+          "clang_usr": "c:@F@printf",
+          "name": "printf"
+        }
+      ],
+      "promotion_gate": null,
+      "read_fields": [],
+      "unresolved": []
+    },
+    "function": {
+      "clang_usr": "c:@F@FindResidualSize",
+      "name": "FindResidualSize",
+      "parameters": [
+        {
+          "name": "eq",
+          "pointee_const": false,
+          "pointer": false,
+          "type": "int"
+        }
+      ],
+      "qualified_name": "FindResidualSize",
+      "return_type": "int",
+      "source_body_sha256": "fb745368200eb46f64137a3ad6752552df1bc46978c98e0240508b5dea7f6e78",
+      "source_file": "dsc_codec.c",
+      "source_span": {
+        "end_line": 1109,
+        "start_line": 1078
+      }
+    },
+    "interface": {
+      "inputs": [
+        {
+          "c_type": "int",
+          "legal_domain": {
+            "basis": "DSC 1.2a signed residual range required by the reviewed DSU-VLC threshold domain",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "eq",
+          "role": "RUNTIME_INPUT",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        }
+      ],
+      "output": {
+        "c_type": "int",
+        "legal_range": [
+          0,
+          17
+        ],
+        "logical_width": 5,
+        "name": "return_value",
+        "role": "return_value",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      "ports": [
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC 1.2a signed residual range required by the reviewed DSU-VLC threshold domain",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "eq",
+          "role": "eq",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "output",
+          "name": "return_value",
+          "role": "return_value",
+          "signed": false,
+          "width": 5
+        }
+      ]
+    },
+    "obligations": [],
+    "origin": "tool_discovered_reviewed_override",
+    "reviewed_evidence": [
+      {
+        "anchor_id": "pdf:section:6.6.1",
+        "kind": "EXACT_SPEC",
+        "page": 91,
+        "reason": "DSC 1.2a defines residual size as the quantity used by Delta Size Unit-variable length coding.",
+        "section": "6.6.1"
+      },
+      {
+        "anchor_id": "pdf:table:3-1",
+        "kind": "EXACT_SPEC",
+        "page": 34,
+        "reason": "Table 3-1 gives normative examples for the signed residual-to-size threshold relation.",
+        "section": "3"
+      },
+      {
+        "c_span": {
+          "end_line": 1109,
+          "start_line": 1078
+        },
+        "kind": "SOURCE_SEMANTICS",
+        "reason": "The immutable C body implements the residual-size threshold chain and logs only after the supported threshold domain.",
+        "source_file": "dsc_codec.c"
+      },
+      {
+        "kind": "RUNTIME_DOMAIN",
+        "reason": "The contracted residual domain is [-65535,65535], which is fully covered by the normative size thresholds and cannot reach the diagnostic branch.",
+        "source": "DSC signed residual domain"
+      }
+    ],
+    "schema_version": 2,
+    "selection": {
+      "basis": "tool-ranked candidate and coverage facts + exact traceability + reviewed domain evidence",
+      "candidate_rank": 13,
+      "candidate_score": 79.95,
+      "candidate_source": "facts/candidates.json",
+      "coverage_basis": "reviewed_domain_effect",
+      "coverage_source": "coverage/coverage.json",
+      "domain_admission": {
+        "discharged_effects": [
+          "logging"
+        ],
+        "kind": "DOMAIN_EFFECT",
+        "proof": "The printf branch is outside the reviewed DSC residual domain [-65535,65535]; no logging is reachable for contracted vectors.",
+        "status": "PASS",
+        "unreachable_condition": "eq < -131702 || eq > 131701"
+      },
+      "fact_source": "facts/functions.json",
+      "new_work": false,
+      "promoted_existing": true
+    },
+    "semantics": {
+      "expression": "DSC_RESIDUAL_SIZE_THRESHOLDS",
+      "kind": "residual_size",
+      "overflow": "No signed overflow occurs on the reviewed [-65535,65535] domain; outside-domain behavior is not contracted.",
+      "signedness": "eq is a signed residual; the returned coded size is a non-negative unsigned count.",
+      "thresholds": [
+        {
+          "lower": 0,
+          "size": 0,
+          "upper": 0
+        },
+        {
+          "lower": -1,
+          "size": 1,
+          "upper": 0
+        },
+        {
+          "lower": -2,
+          "size": 2,
+          "upper": 1
+        },
+        {
+          "lower": -4,
+          "size": 3,
+          "upper": 3
+        },
+        {
+          "lower": -8,
+          "size": 4,
+          "upper": 7
+        },
+        {
+          "lower": -16,
+          "size": 5,
+          "upper": 15
+        },
+        {
+          "lower": -32,
+          "size": 6,
+          "upper": 31
+        },
+        {
+          "lower": -64,
+          "size": 7,
+          "upper": 63
+        },
+        {
+          "lower": -128,
+          "size": 8,
+          "upper": 127
+        },
+        {
+          "lower": -256,
+          "size": 9,
+          "upper": 255
+        },
+        {
+          "lower": -512,
+          "size": 10,
+          "upper": 511
+        },
+        {
+          "lower": -1024,
+          "size": 11,
+          "upper": 1023
+        },
+        {
+          "lower": -2048,
+          "size": 12,
+          "upper": 2047
+        },
+        {
+          "lower": -4096,
+          "size": 13,
+          "upper": 4095
+        },
+        {
+          "lower": -8192,
+          "size": 14,
+          "upper": 8191
+        },
+        {
+          "lower": -16384,
+          "size": 15,
+          "upper": 16383
+        },
+        {
+          "lower": -32768,
+          "size": 16,
+          "upper": 32767
+        },
+        {
+          "lower": -65536,
+          "size": 17,
+          "upper": 65535
+        },
+        {
+          "lower": -131702,
+          "size": 18,
+          "upper": 131701
+        }
+      ],
+      "verilog_expression": "DSC_RESIDUAL_SIZE_THRESHOLDS"
+    },
+    "spec_links": [
+      {
+        "anchor_id": "pdf:section:6.6.1",
+        "evidence": "The normative section defines the residual-size quantity used by DSU-VLC.",
+        "page": 91,
+        "section": "6.6.1",
+        "status": "EXACT"
+      },
+      {
+        "anchor_id": "pdf:table:3-1",
+        "evidence": "The normative table lists residual values and their coded sizes.",
+        "page": 34,
+        "section": "3",
+        "status": "EXACT"
+      }
+    ],
+    "status": "LOCKED"
+  }
+}

@@ -16,6 +16,10 @@
 - `EXACT` page 80 `pdf:model-note:MN_MIDPOINT_PRED:p080` (exact_mn_id)
 - `EXACT` page 80 `pdf:section:6.4.3` (exact_mn_id)
 
+## `FindResidualSize`
+
+- `REVIEWED` page 91 `pdf:section:6.6.1` (reviewed_exact_spec)
+
 ## `FlatnessAdjustment`
 
 - `EXACT` page 111 `pdf:model-note:MN_ENC_FLATNESS_DECISION:p111` (exact_mn_id)
@@ -106,6 +110,10 @@
 
 - `EXACT` page 118 `pdf:model-note:MN_DEC_MPP_SELECT:p118` (exact_mn_id)
 - `EXACT` page 118 `pdf:section:7.5.2.2` (exact_mn_id)
+
+## `ceil_log2`
+
+- `REVIEWED` page 22 `pdf:section:1.6.2` (reviewed_exact_spec)
 
 ## `make_qp_table`
 

@@ -857,7 +857,13 @@ def parse_reviewed(path: pathlib.Path) -> list[dict[str, str]]:
     return links
 
 
-def apply_reviewed(links: list[dict[str, Any]], reviewed: list[dict[str, str]], manifest: dict[str, Any]) -> list[dict[str, Any]]:
+def apply_reviewed(
+    links: list[dict[str, Any]],
+    reviewed: list[dict[str, str]],
+    manifest: dict[str, Any],
+    anchors: list[dict[str, Any]] | None = None,
+    code_anchors: list[dict[str, Any]] | None = None,
+) -> list[dict[str, Any]]:
     by_key = {(item.get("spec_anchor_id", ""), item.get("code_anchor_id", "")): item for item in reviewed}
     pdf_sha = manifest.get("spec", {}).get("sha256", "UNKNOWN")
     source_sha = manifest.get("source", {}).get("source_hashes_sha256", "UNKNOWN")
@@ -871,6 +877,53 @@ def apply_reviewed(links: list[dict[str, Any]], reviewed: list[dict[str, str]], 
         else:
             link["status"] = "REVIEWED"
             link["review_note"] = review.get("note", "human-reviewed")
+
+    # A reviewed exact reference may be intentionally absent from the
+    # heuristic proposal set (for example, a normative helper definition whose
+    # C comment has no MN tag).  Materialize it here only when the reviewed
+    # entry names an existing PDF anchor and an existing Clang code anchor.
+    # This keeps the review surface data-driven without turning it into a
+    # function selection list.
+    anchor_by_id = {str(item.get("anchor_id")): item for item in (anchors or [])}
+    code_by_id = {str(item.get("code_anchor_id")): item for item in (code_anchors or [])}
+    existing = {link_key(link) for link in links}
+    for review in reviewed:
+        key = (review.get("spec_anchor_id", ""), review.get("code_anchor_id", ""))
+        if key in existing or not key[0] or not key[1]:
+            continue
+        anchor = anchor_by_id.get(key[0])
+        code = code_by_id.get(key[1])
+        if not anchor or not code:
+            continue
+        status = (
+            "REVIEWED"
+            if review.get("spec_sha256", pdf_sha) == pdf_sha
+            and review.get("source_hashes_sha256", source_sha) == source_sha
+            else "STALE"
+        )
+        links.append(
+            {
+                "link_id": review.get("link_id") or f"reviewed-{len(links) + 1:04d}",
+                "status": status,
+                "method": review.get("method", "reviewed_exact_spec"),
+                "evidence": review.get("evidence") or review.get("note", "human-reviewed exact specification reference"),
+                "spec_anchor_id": anchor["anchor_id"],
+                "spec_page": anchor["page"],
+                "spec_section": anchor.get("section_id")
+                if anchor.get("kind") == "model_note"
+                else anchor["identifier"] if anchor.get("kind") == "section" else None,
+                "spec_sha256": pdf_sha,
+                "code_anchor_id": code["code_anchor_id"],
+                "function": code["function"],
+                "clang_usr": code["clang_usr"],
+                "code_file": code["file"],
+                "code_line": code["line"],
+                "code_permalink": code["permalink"],
+                "source_hashes_sha256": source_sha,
+                "review_note": review.get("note", "human-reviewed"),
+            }
+        )
+        existing.add(key)
     return links
 
 
@@ -910,7 +963,13 @@ def main() -> int:
     anchors = pdf_payload["anchors"]
     comments = extract_c_comments(manifest, raw)
     links = proposal_links(anchors, comments, candidates, manifest)
-    links = apply_reviewed(links, parse_reviewed(args.reviewed.resolve()), manifest)
+    links = apply_reviewed(
+        links,
+        parse_reviewed(args.reviewed.resolve()),
+        manifest,
+        anchors=anchors,
+        code_anchors=comments["code_anchors"],
+    )
     linked_spec = {link["spec_anchor_id"] for link in links}
     linked_code = {link["code_anchor_id"] for link in links}
     spec_orphans = [anchor["anchor_id"] for anchor in anchors if anchor["kind"] != "page" and anchor["anchor_id"] not in linked_spec]

@@ -358,6 +358,27 @@ already recorded as PASS in `library/manifest.json` is not new work and is
 excluded from ordinary queue planning; it may be re-run only when the durable
 queue explicitly requests a refresh or dependency composition.
 
+When Clang marks only `bounded_computation` false for an otherwise eligible,
+executed production leaf, a reviewed `BOUNDED_DOMAIN` admission may discharge
+that one fact. The admission must match the discovered Clang identity, carry an
+exact PDF link, provide a complete finite legal domain for every input and
+output, and record a tool-readable loop proof plus a finite maximum iteration
+count. It must never waive state writes, I/O, allocation, logging, indirect
+calls, output reachability, or coverage. The receipt records
+`coverage_basis: reviewed_bounded_domain`; negative/out-of-domain behavior is
+not silently promoted into the contract.
+
+When Clang marks only `no_io_allocation_or_logging` false for an otherwise
+eligible, executed production leaf, a reviewed `DOMAIN_EFFECT` admission may
+discharge only a logging effect proven unreachable throughout the contracted
+finite domain. It must carry exact PDF authority, a complete input/output
+domain, a tool-readable unreachable-condition proof, and
+`discharged_effects: ["logging"]`. It cannot waive allocation, state writes,
+indirect calls, output reachability, coverage, or any other failed criterion;
+the RTL contract covers the legal domain only and never models the diagnostic
+branch as DUT behavior. The receipt records
+`coverage_basis: reviewed_domain_effect`.
+
 Composite candidates are also tool-discovered work. A reviewed override may
 resolve a pure, bounded function with direct callees only after every direct
 callee has a PASS entry in `library/manifest.json`; the override supplies

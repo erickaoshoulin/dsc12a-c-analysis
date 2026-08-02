@@ -5,37 +5,53 @@
   "dependency_pair": {
     "call_sites": [
       {
-        "callee_contract": "escapecodesize",
-        "callee_function": "EscapeCodeSize",
-        "callee_usr": "c:@F@EscapeCodeSize",
+        "callee_contract": "ceil_log2",
+        "callee_function": "ceil_log2",
+        "callee_usr": "c:@F@ceil_log2",
         "caller_contract": null,
-        "caller_function": "VLCUnit",
-        "caller_usr": "c:@F@VLCUnit",
+        "caller_function": "IchDecision",
+        "caller_usr": "c:@F@IchDecision",
         "location": {
-          "column": 26,
+          "column": 21,
           "file": "dsc_codec.c",
-          "line": 1614
+          "line": 513
+        },
+        "source": "facts/callgraph.json"
+      },
+      {
+        "callee_contract": "ceil_log2",
+        "callee_function": "ceil_log2",
+        "callee_usr": "c:@F@ceil_log2",
+        "caller_contract": null,
+        "caller_function": "IchDecision",
+        "caller_usr": "c:@F@IchDecision",
+        "location": {
+          "column": 23,
+          "file": "dsc_codec.c",
+          "line": 514
         },
         "source": "facts/callgraph.json"
       }
     ],
-    "callee_contract": "escapecodesize",
-    "callee_function": "EscapeCodeSize",
-    "callee_usr": "c:@F@EscapeCodeSize",
+    "callee_contract": "ceil_log2",
+    "callee_function": "ceil_log2",
+    "callee_usr": "c:@F@ceil_log2",
     "caller_contract": null,
-    "caller_function": "VLCUnit",
-    "caller_usr": "c:@F@VLCUnit",
+    "caller_function": "IchDecision",
+    "caller_usr": "c:@F@IchDecision",
     "selection_basis": "smallest acyclic direct call site from facts/callgraph.json"
   },
-  "generator_invocations": 10,
+  "generator_invocations": 12,
   "input_pdf": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf",
   "input_source_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
   "matrix_scripts_discovered": 22,
-  "model_calls": 10,
+  "model_calls": 12,
   "new_candidates": [],
   "ready_contracts": [
+    "ceil_log2",
     "escapecodesize",
     "findmidpoint",
+    "findresidualsize",
     "getqpadjpredsize",
     "isflatnessinfosent",
     "mapqptoqlevel",
@@ -53,6 +69,87 @@
     "fresh_run": "EXECUTED_NOW"
   },
   "results": [
+    {
+      "contract_id": "ceil_log2",
+      "counterexample": {
+        "actual": "1",
+        "expected": "0",
+        "index": 0,
+        "inputs": [
+          0
+        ],
+        "shard_id": 0
+      },
+      "dependency_evidence": {
+        "call_sites": 2,
+        "compile_commands": true,
+        "direct_call_sites": 2,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": true,
+      "executed_shards": 8,
+      "executed_vectors": 65536,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": false,
+      "formal_proof_status": "NOT_APPLICABLE",
+      "library_promotion": {
+        "archived_previous": null,
+        "artifact_dir": "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+        "contract_file": "library/contracts/ceil_log2.json",
+        "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+        "contract_id": "ceil_log2",
+        "module": "ceil_log2",
+        "module_file": "library/rtl/ceil_log2.sv",
+        "rtl_sha256": "71784bb792966a7e48e98d35cc2e2c3f6052f1c17528ffe1b4256f805c9fda65",
+        "status": "PASS",
+        "verification_file": "library/verification/ceil_log2.json"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 1,
+      "rejected_candidates": [
+        {
+          "bitstream_gate": "FAIL",
+          "candidate": "candidate_02",
+          "composition_gate": "FAIL",
+          "counterexample": {
+            "actual": "1",
+            "expected": "0",
+            "index": 0,
+            "inputs": [
+              0
+            ],
+            "shard_id": 0
+          },
+          "expected_rejection": true,
+          "matrix_status": "FAIL",
+          "receipt": "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896/rejected/candidate_02/rejection-receipt.json",
+          "status": "EXPECTED_REJECTION",
+          "unit_gate": "FAIL",
+          "unit_verification_status": "COUNTEREXAMPLE"
+        }
+      ],
+      "shard_durations_seconds": [
+        1.98,
+        1.853,
+        1.904,
+        1.883,
+        1.865,
+        2.014,
+        1.861,
+        1.866
+      ],
+      "status": "PROMOTED",
+      "tokens": 989,
+      "unit_status": "EXHAUSTIVE_EQUIVALENT",
+      "vector_strategy": "cartesian"
+    },
     {
       "contract_id": "escapecodesize",
       "counterexample": {
@@ -84,9 +181,9 @@
       "formal_proof_status": "NOT_APPLICABLE",
       "library_promotion": {
         "archived_previous": null,
-        "artifact_dir": "artifacts/480f0f8595c56a062af62c4eabd3f0adc50bf08788abc6865dd1b1143b61e5f7",
+        "artifact_dir": "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
         "contract_file": "library/contracts/escapecodesize.json",
-        "contract_hash": "480f0f8595c56a062af62c4eabd3f0adc50bf08788abc6865dd1b1143b61e5f7",
+        "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
         "contract_id": "escapecodesize",
         "module": "escapecodesize",
         "module_file": "library/rtl/escapecodesize.sv",
@@ -121,24 +218,24 @@
           },
           "expected_rejection": true,
           "matrix_status": "FAIL",
-          "receipt": "artifacts/480f0f8595c56a062af62c4eabd3f0adc50bf08788abc6865dd1b1143b61e5f7/rejected/candidate_02/rejection-receipt.json",
+          "receipt": "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1/rejected/candidate_02/rejection-receipt.json",
           "status": "EXPECTED_REJECTION",
           "unit_gate": "FAIL",
           "unit_verification_status": "COUNTEREXAMPLE"
         }
       ],
       "shard_durations_seconds": [
-        0.774,
-        0.775,
-        0.783,
-        0.783,
-        0.774,
-        0.774,
-        0.775,
-        0.78
+        0.845,
+        0.83,
+        0.822,
+        0.813,
+        0.83,
+        0.814,
+        0.797,
+        0.829
       ],
       "status": "PROMOTED",
-      "tokens": 1697,
+      "tokens": 1703,
       "unit_status": "EXHAUSTIVE_EQUIVALENT",
       "vector_strategy": "cartesian"
     },
@@ -215,19 +312,100 @@
         }
       ],
       "shard_durations_seconds": [
-        2.996,
-        2.565,
-        3.071,
-        3.316,
-        2.788,
-        3.214,
-        3.128,
-        3.103
+        5.066,
+        5.792,
+        5.681,
+        5.397,
+        5.519,
+        5.621,
+        5.404,
+        5.675
       ],
       "status": "PROMOTED",
       "tokens": 2264,
       "unit_status": "EXHAUSTIVE_EQUIVALENT",
       "vector_strategy": "conditional"
+    },
+    {
+      "contract_id": "findresidualsize",
+      "counterexample": {
+        "actual": "18",
+        "expected": "17",
+        "index": 0,
+        "inputs": [
+          -65535
+        ],
+        "shard_id": 0
+      },
+      "dependency_evidence": {
+        "call_sites": 6,
+        "compile_commands": true,
+        "direct_call_sites": 6,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": true,
+      "executed_shards": 8,
+      "executed_vectors": 131071,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": false,
+      "formal_proof_status": "NOT_APPLICABLE",
+      "library_promotion": {
+        "archived_previous": null,
+        "artifact_dir": "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+        "contract_file": "library/contracts/findresidualsize.json",
+        "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+        "contract_id": "findresidualsize",
+        "module": "findresidualsize",
+        "module_file": "library/rtl/findresidualsize.sv",
+        "rtl_sha256": "a10d4649d371883b4bdfef25fc99448c5a719e937a93425900ddf00b26474073",
+        "status": "PASS",
+        "verification_file": "library/verification/findresidualsize.json"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 1,
+      "rejected_candidates": [
+        {
+          "bitstream_gate": "FAIL",
+          "candidate": "candidate_02",
+          "composition_gate": "FAIL",
+          "counterexample": {
+            "actual": "18",
+            "expected": "17",
+            "index": 0,
+            "inputs": [
+              -65535
+            ],
+            "shard_id": 0
+          },
+          "expected_rejection": true,
+          "matrix_status": "FAIL",
+          "receipt": "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b/rejected/candidate_02/rejection-receipt.json",
+          "status": "EXPECTED_REJECTION",
+          "unit_gate": "FAIL",
+          "unit_verification_status": "COUNTEREXAMPLE"
+        }
+      ],
+      "shard_durations_seconds": [
+        1.965,
+        2.041,
+        1.907,
+        1.882,
+        1.877,
+        1.894,
+        1.831,
+        1.824
+      ],
+      "status": "PROMOTED",
+      "tokens": 2202,
+      "unit_status": "EXHAUSTIVE_EQUIVALENT",
+      "vector_strategy": "cartesian"
     },
     {
       "contract_id": "getqpadjpredsize",
@@ -270,9 +448,9 @@
       "formal_proof_status": "NOT_APPLICABLE",
       "library_promotion": {
         "archived_previous": null,
-        "artifact_dir": "artifacts/5f5aca8e104da0024c8af97f48a06bbb5420a37964a8bd9237fb8b005e59d6c1",
+        "artifact_dir": "artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
         "contract_file": "library/contracts/getqpadjpredsize.json",
-        "contract_hash": "5f5aca8e104da0024c8af97f48a06bbb5420a37964a8bd9237fb8b005e59d6c1",
+        "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
         "contract_id": "getqpadjpredsize",
         "module": "getqpadjpredsize",
         "module_file": "library/rtl/getqpadjpredsize.sv",
@@ -317,24 +495,24 @@
           },
           "expected_rejection": true,
           "matrix_status": "FAIL",
-          "receipt": "artifacts/5f5aca8e104da0024c8af97f48a06bbb5420a37964a8bd9237fb8b005e59d6c1/rejected/candidate_02/rejection-receipt.json",
+          "receipt": "artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c/rejected/candidate_02/rejection-receipt.json",
           "status": "EXPECTED_REJECTION",
           "unit_gate": "FAIL",
           "unit_verification_status": "COUNTEREXAMPLE"
         }
       ],
       "shard_durations_seconds": [
-        5.719,
-        5.631,
-        5.327,
-        5.396,
-        5.443,
-        5.59,
-        5.708,
-        5.766
+        5.314,
+        5.613,
+        5.007,
+        5.649,
+        5.62,
+        5.143,
+        5.571,
+        5.659
       ],
       "status": "PROMOTED",
-      "tokens": 4915,
+      "tokens": 4922,
       "unit_status": "EXHAUSTIVE_EQUIVALENT",
       "vector_strategy": "table_lookup"
     },
@@ -409,14 +587,14 @@
         }
       ],
       "shard_durations_seconds": [
-        1.205,
-        1.252,
-        1.046,
-        1.019,
-        0.999,
-        1.023,
-        0.981,
-        0.988
+        1.119,
+        1.186,
+        1.093,
+        1.101,
+        1.124,
+        1.07,
+        1.065,
+        1.103
       ],
       "status": "PROMOTED",
       "tokens": 2012,
@@ -504,14 +682,14 @@
         }
       ],
       "shard_durations_seconds": [
-        2.487,
-        2.615,
-        2.455,
-        2.571,
-        2.618,
-        2.51,
-        2.448,
-        2.556
+        2.388,
+        2.17,
+        2.438,
+        2.417,
+        2.149,
+        2.294,
+        2.04,
+        2.174
       ],
       "status": "PROMOTED",
       "tokens": 3697,
@@ -553,9 +731,9 @@
       "formal_proof_status": "NOT_APPLICABLE",
       "library_promotion": {
         "archived_previous": null,
-        "artifact_dir": "artifacts/068017b8a23d03a9d7d16aac74ab5358cfea6ea0c1d2c2e2dc53361421d7f34d",
+        "artifact_dir": "artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
         "contract_file": "library/contracts/maxresidualsize.json",
-        "contract_hash": "068017b8a23d03a9d7d16aac74ab5358cfea6ea0c1d2c2e2dc53361421d7f34d",
+        "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
         "contract_id": "maxresidualsize",
         "module": "maxresidualsize",
         "module_file": "library/rtl/maxresidualsize.sv",
@@ -594,24 +772,24 @@
           },
           "expected_rejection": true,
           "matrix_status": "FAIL",
-          "receipt": "artifacts/068017b8a23d03a9d7d16aac74ab5358cfea6ea0c1d2c2e2dc53361421d7f34d/rejected/candidate_02/rejection-receipt.json",
+          "receipt": "artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/rejected/candidate_02/rejection-receipt.json",
           "status": "EXPECTED_REJECTION",
           "unit_gate": "FAIL",
           "unit_verification_status": "COUNTEREXAMPLE"
         }
       ],
       "shard_durations_seconds": [
-        8.762,
-        9.574,
-        8.873,
-        9.54,
-        9.507,
-        9.404,
-        9.149,
-        9.473
+        8.675,
+        9.473,
+        9.379,
+        9.612,
+        9.352,
+        9.192,
+        8.591,
+        9.561
       ],
       "status": "PROMOTED",
-      "tokens": 2766,
+      "tokens": 2772,
       "unit_status": "EXHAUSTIVE_EQUIVALENT",
       "vector_strategy": "cartesian"
     },
@@ -686,14 +864,14 @@
         }
       ],
       "shard_durations_seconds": [
-        1.065,
-        0.997,
-        1.074,
-        1.116,
-        1.108,
-        0.954,
-        0.914,
-        0.96
+        2.019,
+        2.133,
+        1.991,
+        1.991,
+        2.093,
+        1.996,
+        2.08,
+        1.949
       ],
       "status": "PROMOTED",
       "tokens": 1954,
@@ -769,14 +947,14 @@
         }
       ],
       "shard_durations_seconds": [
-        1.616,
-        1.802,
-        1.833,
-        1.69,
-        1.759,
-        1.488,
-        1.676,
-        1.511
+        1.933,
+        1.868,
+        1.686,
+        1.532,
+        1.651,
+        1.637,
+        1.499,
+        1.654
       ],
       "status": "PROMOTED",
       "tokens": 2108,
@@ -926,14 +1104,14 @@
         }
       ],
       "shard_durations_seconds": [
-        18.007,
-        17.894,
-        17.831,
-        17.524,
-        17.778,
-        17.691,
-        16.274,
-        17.585
+        18.096,
+        18.006,
+        17.107,
+        17.943,
+        17.815,
+        17.869,
+        17.757,
+        17.567
       ],
       "status": "PROMOTED",
       "tokens": 12302,
@@ -1013,14 +1191,14 @@
         }
       ],
       "shard_durations_seconds": [
-        10.877,
-        10.601,
-        10.993,
-        11.054,
-        10.406,
-        10.668,
-        10.738,
-        9.885
+        8.231,
+        8.698,
+        8.89,
+        8.587,
+        8.172,
+        8.319,
+        8.815,
+        8.614
       ],
       "status": "PROMOTED",
       "tokens": 2719,
@@ -1030,8 +1208,10 @@
   ],
   "schema_version": 2,
   "selected_contracts": [
+    "ceil_log2",
     "escapecodesize",
     "findmidpoint",
+    "findresidualsize",
     "getqpadjpredsize",
     "isflatnessinfosent",
     "mapqptoqlevel",
@@ -1052,7 +1232,9 @@
     8,
     8,
     8,
+    8,
+    8,
     8
   ],
-  "tokens": 36434
+  "tokens": 39644
 }

@@ -49,8 +49,20 @@ Candidates are ranked without a function-name allowlist. Each function gets
 purity, timing, role, production reachability, observable-output contribution,
 confidence, and evidence. The eligible criteria are production reachability,
 output contribution, no direct/transitive state write, no I/O/allocation/logging,
-and bounded computation. The top 10 (configurable with
+and bounded computation. If Clang proves every criterion except a loop bound,
+the CI/CD agent may accept a tool-ranked, executed candidate only through a
+reviewed `BOUNDED_DOMAIN` admission containing exact PDF authority, a complete
+finite input/output domain, and a finite loop proof; this never selects a
+function by name or waives any other effect/coverage criterion. The top 10
+(configurable with
 `DSC_ANALYSIS_TOP_N`) are passed to Frama-C Eva/From when analyzable.
+
+A reviewed `DOMAIN_EFFECT` admission can discharge only a logging effect that
+is proven unreachable over the complete contracted domain. It must name exact
+PDF authority, finite input/output domains, the unreachable condition, and
+`discharged_effects: ["logging"]`; it cannot waive any other criterion or turn
+the diagnostic branch into DUT logic. Its receipt is marked
+`coverage_basis: reviewed_domain_effect`.
 
 ## Specification traceability
 

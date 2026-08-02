@@ -1,0 +1,75 @@
+{
+  "artifact_dir": "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+  "candidate": "candidate_01",
+  "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+  "contract_id": "ceil_log2",
+  "dependency": {
+    "call_sites": 2,
+    "dependency_ports": 2,
+    "status": "PASS",
+    "vectors": 65536
+  },
+  "execution_status": "EXECUTED_NOW",
+  "formal_partitions": null,
+  "formal_proof": {
+    "counterexample": null,
+    "proof_complete": false,
+    "reason": "formal AST proof is only enabled for reviewed windowed_boundary contracts",
+    "receipt": null,
+    "status": "NOT_APPLICABLE"
+  },
+  "function": "ceil_log2",
+  "kind": "pure_expression",
+  "matrix": {
+    "modes": {
+      "C_ONLY": "PASS",
+      "RTL_RETURN": "PASS",
+      "SHADOW": "PASS"
+    },
+    "scripts_discovered": 22,
+    "status": "PASS"
+  },
+  "module": "ceil_log2",
+  "promoted_at": "2026-08-02T18:46:54Z",
+  "rtl_sha256": "71784bb792966a7e48e98d35cc2e2c3f6052f1c17528ffe1b4256f805c9fda65",
+  "schema_version": 2,
+  "source_gate": {
+    "baseline_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+    "pdf_sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+    "source_sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+    "status": "PASS"
+  },
+  "stages": {
+    "dependency_composition": "PASS",
+    "formal": "NOT_APPLICABLE",
+    "formal_partitions": null,
+    "formal_rtl_equivalence": "NOT_APPLICABLE",
+    "frame_compare": "PASS",
+    "generator": "PASS",
+    "model_matrix": "PASS",
+    "shards_mutations": "PASS",
+    "unit_equivalence": "EXHAUSTIVE_EQUIVALENT",
+    "verilator_lint_build": "PASS",
+    "width_spec_gate": "PASS"
+  },
+  "status": "PASS",
+  "traceability": {
+    "authority": "EXACT_SPEC",
+    "c_span": {
+      "end_line": 73,
+      "start_line": 67
+    },
+    "review_status": "REVIEWED",
+    "source_file": "dsc_utils.c",
+    "spec_links": [
+      {
+        "anchor_id": "pdf:section:1.6.2",
+        "evidence": "The normative section contains the ceil_log2 definition verbatim in C-like syntax.",
+        "page": 22,
+        "section": "1.6.2",
+        "status": "EXACT"
+      }
+    ]
+  },
+  "unit_vectors": 65536
+}

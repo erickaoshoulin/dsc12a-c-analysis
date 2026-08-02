@@ -92,6 +92,133 @@ class CicdAgentUnitTests(unittest.TestCase):
             promoted = agent.promoted_contract_usrs([])
         self.assertEqual(promoted, {"c:@F@PromotedComposite"})
 
+    def test_reviewed_bounded_domain_admission_only_discharge_loop_bound(self):
+        candidate = {
+            "clang_usr": "c:@F@BoundedLeaf",
+            "name": "BoundedLeaf",
+            "eligible": False,
+            "criteria": {
+                "production_reachable": True,
+                "contributes_to_observable_output": True,
+                "no_direct_or_transitive_state_write": True,
+                "no_io_allocation_or_logging": True,
+                "bounded_computation": False,
+            },
+        }
+        coverage = {"coverage_status": "EXECUTED", "covered": True}
+        override = {
+            "review_status": "REVIEWED",
+            "spec_links": [{"anchor_id": "pdf:section:bounded", "status": "EXACT"}],
+            "interface": {
+                "inputs": [{
+                    "name": "value",
+                    "legal_domain": {"kind": "range", "range": [0, 255]},
+                    "unresolved": False,
+                }],
+                "output": {"name": "return_value", "legal_range": [0, 8], "unresolved": False},
+            },
+            "semantics": {"kind": "pure_expression", "expression": "value"},
+            "tool_admission": {
+                "kind": "BOUNDED_DOMAIN",
+                "status": "PASS",
+                "loop": "while (value) value >>= 1",
+                "max_iterations": 8,
+            },
+        }
+        self.assertTrue(Agent.reviewed_bounded_domain_admission(candidate, coverage, override))
+
+        bad = dict(override)
+        bad["tool_admission"] = dict(override["tool_admission"])
+        bad["tool_admission"]["max_iterations"] = 0
+        self.assertFalse(Agent.reviewed_bounded_domain_admission(candidate, coverage, bad))
+
+    def test_tool_candidate_facts_accepts_reviewed_bounded_domain_without_name_queue(self):
+        candidate = {
+            "clang_usr": "c:@F@BoundedLeaf",
+            "name": "BoundedLeaf",
+            "eligible": False,
+            "score": 80.0,
+            "criteria": {
+                "production_reachable": True,
+                "contributes_to_observable_output": True,
+                "no_direct_or_transitive_state_write": True,
+                "no_io_allocation_or_logging": True,
+                "bounded_computation": False,
+            },
+        }
+        override = {
+            "match": {"clang_usr": "c:@F@BoundedLeaf", "spec_anchor_id": "pdf:section:bounded"},
+            "review_status": "REVIEWED",
+            "spec_links": [{"anchor_id": "pdf:section:bounded", "status": "EXACT"}],
+            "interface": {
+                "inputs": [{"name": "value", "legal_domain": {"kind": "range", "range": [0, 255]}, "unresolved": False}],
+                "output": {"name": "return_value", "legal_range": [0, 8], "unresolved": False},
+            },
+            "semantics": {"kind": "pure_expression", "expression": "value"},
+            "tool_admission": {"kind": "BOUNDED_DOMAIN", "status": "PASS", "loop": "while (value)", "max_iterations": 8},
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            (root / "facts").mkdir()
+            (root / "coverage").mkdir()
+            (root / "contracts").mkdir()
+            (root / "facts" / "candidates.json").write_text(json.dumps({"ranked_candidates": [candidate]}), encoding="utf-8")
+            (root / "coverage" / "coverage.json").write_text(json.dumps({"functions": [{
+                "clang_usr": "c:@F@BoundedLeaf",
+                "coverage_status": "EXECUTED",
+                "covered": True,
+            }]}), encoding="utf-8")
+            (root / "contracts" / "reviewed-overrides.json").write_text(json.dumps({"overrides": [override]}), encoding="utf-8")
+            facts = Agent(root, "plan").tool_candidate_facts()
+        self.assertIn("c:@F@BoundedLeaf", facts)
+        self.assertEqual(facts["c:@F@BoundedLeaf"]["coverage_basis"], "reviewed_bounded_domain")
+
+    def test_reviewed_domain_effect_only_discharges_out_of_domain_logging(self):
+        candidate = {
+            "clang_usr": "c:@F@DiagnosticLeaf",
+            "name": "DiagnosticLeaf",
+            "eligible": False,
+            "criteria": {
+                "production_reachable": True,
+                "contributes_to_observable_output": True,
+                "no_direct_or_transitive_state_write": True,
+                "no_io_allocation_or_logging": False,
+                "bounded_computation": True,
+            },
+        }
+        coverage = {"coverage_status": "EXECUTED", "coverage": {"covered": True}}
+        override = {
+            "review_status": "REVIEWED",
+            "spec_links": [{"anchor_id": "pdf:section:diagnostic", "status": "EXACT"}],
+            "interface": {
+                "inputs": [{
+                    "name": "value",
+                    "legal_domain": {"kind": "range", "range": [-4, 4]},
+                    "unresolved": False,
+                }],
+                "output": {"name": "return_value", "legal_range": [0, 3], "unresolved": False},
+            },
+            "semantics": {"kind": "domain_effect"},
+            "tool_admission": {
+                "kind": "DOMAIN_EFFECT",
+                "status": "PASS",
+                "discharged_effects": ["logging"],
+                "unreachable_condition": "value < -10 || value > 10",
+            },
+        }
+        admission = Agent.reviewed_domain_admission(candidate, coverage, override)
+        self.assertEqual(admission["kind"], "DOMAIN_EFFECT")
+
+        bad = dict(override)
+        bad["tool_admission"] = dict(override["tool_admission"])
+        bad["tool_admission"]["discharged_effects"] = ["logging", "allocation"]
+        self.assertIsNone(Agent.reviewed_domain_admission(candidate, coverage, bad))
+
+        missing_output_domain = dict(override)
+        missing_output_domain["interface"] = dict(override["interface"])
+        missing_output_domain["interface"]["output"] = {"name": "return_value", "unresolved": False}
+        self.assertIsNone(Agent.reviewed_domain_admission(candidate, coverage, missing_output_domain))
+
     def test_queue_target_selects_one_discovered_contract_and_refreshes_cache(self):
         contract = {
             "contract_id": "unit_target",

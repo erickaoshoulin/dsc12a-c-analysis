@@ -1,0 +1,30 @@
+{
+  "complete": true,
+  "ports": [
+    {
+      "domain": {
+        "basis": "DSC 1.2a signed residual range required by the reviewed DSU-VLC threshold domain",
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "eq",
+      "role": "eq"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          17
+        ]
+      },
+      "port": "return_value",
+      "role": "return_value"
+    }
+  ],
+  "proof_basis": "exact spec/table plus reviewed runtime range override",
+  "schema_version": 1
+}

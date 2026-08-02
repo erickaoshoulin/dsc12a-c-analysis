@@ -340,7 +340,12 @@ class Agent:
         payload = read_json(self.root / "traceability" / "traceability.json", {}) or {}
         result: dict[str, list[dict[str, Any]]] = {}
         for link in payload.get("links", []):
-            if link.get("status") != "EXACT":
+            # A human-reviewed link is an exact authority only after the
+            # traceability tool validated its PDF/source hashes.  Normalize
+            # the status in this facts view so downstream contract matching
+            # never depends on whether the link came from an MN comment or a
+            # reviewed exact section reference.
+            if link.get("status") not in {"EXACT", "REVIEWED"}:
                 continue
             result.setdefault(str(link.get("clang_usr", "")), []).append({
                 "anchor_id": link.get("spec_anchor_id"),
@@ -351,6 +356,86 @@ class Agent:
                 "status": "EXACT",
             })
         return result
+
+    @staticmethod
+    def reviewed_domain_admission(
+        candidate: dict[str, Any],
+        coverage: dict[str, Any],
+        override: dict[str, Any] | None,
+    ) -> dict[str, Any] | None:
+        """Return a narrowly-scoped reviewed admission for a tool candidate.
+
+        The candidate remains selected by generated Clang/coverage facts.  A
+        reviewed override may discharge either one bounded-loop fact or one
+        out-of-domain diagnostic effect.  It must carry a complete finite
+        legal domain and exact PDF authority.  This is deliberately generic:
+        no function name or source file is consulted here.
+        """
+        if not override or override.get("review_status") != "REVIEWED":
+            return None
+        criteria = candidate.get("criteria", {}) or {}
+        failed = sorted(str(key) for key, value in criteria.items() if value is not True)
+        allowed_failures = {"bounded_computation", "no_io_allocation_or_logging"}
+        if len(failed) != 1 or failed[0] not in allowed_failures:
+            return None
+        covered = coverage.get("covered") is True or (coverage.get("coverage", {}) or {}).get("covered") is True
+        if coverage.get("coverage_status") != "EXECUTED" or not covered:
+            return None
+        interface = override.get("interface", {}) or {}
+        inputs = interface.get("inputs", []) or []
+        output = interface.get("output", {}) or {}
+        if not inputs or not output or any(item.get("unresolved") for item in inputs):
+            return None
+        for item in inputs:
+            domain = item.get("legal_domain", {}) or {}
+            values = domain.get("values")
+            bounds = domain.get("range")
+            if not (isinstance(values, list) and values) and not (
+                isinstance(bounds, list) and len(bounds) == 2 and all(isinstance(value, int) for value in bounds)
+            ):
+                return None
+        if output.get("unresolved"):
+            return None
+        output_domain = output.get("legal_domain", {}) or {}
+        output_values = output.get("legal_values") or output.get("values") or output_domain.get("values")
+        output_bounds = output.get("legal_range") or output.get("range") or output_domain.get("range")
+        if not (isinstance(output_values, list) and output_values) and not (
+            isinstance(output_bounds, list)
+            and len(output_bounds) == 2
+            and all(isinstance(value, int) for value in output_bounds)
+        ):
+            return None
+        proof = override.get("tool_admission", {}) or {}
+        if proof.get("status") != "PASS":
+            return None
+        if failed == ["bounded_computation"]:
+            if (
+                proof.get("kind") != "BOUNDED_DOMAIN"
+                or not proof.get("loop")
+                or not isinstance(proof.get("max_iterations"), int)
+                or proof.get("max_iterations") <= 0
+            ):
+                return None
+        else:
+            discharged = sorted(str(item) for item in proof.get("discharged_effects", []))
+            if proof.get("kind") != "DOMAIN_EFFECT" or discharged != ["logging"]:
+                return None
+            if not proof.get("unreachable_condition"):
+                return None
+        spec_links = override.get("spec_links", []) or []
+        if not spec_links or not all(link.get("status") == "EXACT" for link in spec_links):
+            return None
+        return copy.deepcopy(proof)
+
+    @staticmethod
+    def reviewed_bounded_domain_admission(
+        candidate: dict[str, Any],
+        coverage: dict[str, Any],
+        override: dict[str, Any] | None,
+    ) -> bool:
+        """Compatibility predicate for the bounded-domain unit tests."""
+        admission = Agent.reviewed_domain_admission(candidate, coverage, override)
+        return bool(admission and admission.get("kind") == "BOUNDED_DOMAIN")
 
     def reviewed_overrides(self) -> list[dict[str, Any]]:
         payload = read_json(self.root / "contracts" / "reviewed-overrides.json", {}) or {}
@@ -416,7 +501,22 @@ class Agent:
         for rank, candidate in enumerate(candidates_payload.get("ranked_candidates", []), start=1):
             usr = str(candidate.get("clang_usr", ""))
             coverage = coverage_by_usr.get(usr, {})
-            if not usr or candidate.get("eligible") is not True:
+            if not usr:
+                continue
+            domain_override = next(
+                (
+                    item for item in overrides
+                    if item.get("review_status") == "REVIEWED"
+                    and self.reviewed_override_matches(
+                        {"function": {"clang_usr": usr}}, item, exact
+                    )
+                    and item.get("interface")
+                    and item.get("semantics")
+                    and self.reviewed_domain_admission(candidate, coverage, item)
+                ),
+                None,
+            )
+            if candidate.get("eligible") is not True and domain_override is None:
                 continue
             coverage_override = next(
                 (
@@ -439,14 +539,25 @@ class Agent:
                 and coverage.get("coverage_status") in {"STATIC_BUT_UNCOVERED", "NO_COVERAGE_DATA"}
             )
             if not dynamically_eligible and not reviewed_static_eligible:
-                continue
+                if domain_override is None:
+                    continue
             result[usr] = {
                 "rank": rank,
                 "score": candidate.get("score"),
                 "candidate": copy.deepcopy(candidate),
                 "coverage": copy.deepcopy(coverage),
                 "coverage_override": copy.deepcopy(coverage_override) if coverage_override else None,
-                "coverage_basis": "reviewed_static_but_uncovered" if reviewed_static_eligible else "dynamic_execution",
+                "domain_admission": copy.deepcopy(domain_override.get("tool_admission", {})) if domain_override else None,
+                "coverage_basis": (
+                    "reviewed_bounded_domain"
+                    if domain_override and domain_override.get("tool_admission", {}).get("kind") == "BOUNDED_DOMAIN"
+                    and candidate.get("eligible") is not True
+                    else "reviewed_domain_effect"
+                    if domain_override and candidate.get("eligible") is not True
+                    else "reviewed_static_but_uncovered"
+                    if reviewed_static_eligible
+                    else "dynamic_execution"
+                ),
             }
         return result
 
@@ -599,6 +710,11 @@ class Agent:
         effective_locked = self.apply_reviewed_overrides()
         known = {str(contract_function(item).get("clang_usr")) for item in effective_locked}
         promoted_usrs = self.promoted_contract_usrs(effective_locked)
+        source_usrs = {
+            str(item.get("clang_usr"))
+            for item in facts.get("functions", [])
+            if item.get("clang_usr")
+        }
         target_contract = safe_identifier(os.environ.get("DSC_CICD_TARGET_CONTRACT", "")).lower()
         refresh_stable = os.environ.get("DSC_CICD_REFRESH_STABLE", "").lower() in {"1", "true", "yes"}
         discovered = []
@@ -623,15 +739,23 @@ class Agent:
             callee_usrs = {
                 str(item.get("clang_usr"))
                 for item in function.get("callees", [])
-                if isinstance(item, dict) and item.get("clang_usr")
+                if isinstance(item, dict)
+                and item.get("clang_usr")
+                and str(item.get("clang_usr")) in source_usrs
             }
             # A reviewed override supplies semantics/domain evidence only.  A
             # composite is eligible when tool facts selected it and every
             # direct callee is already a PASS component in library/manifest.
             # The callee gate is intentionally not a function-name selector.
             dependencies_ready = callee_usrs.issubset(promoted_usrs)
+            admission = (candidate.get("domain_admission") or {}) if candidate else {}
+            admission_allows_combinational = (
+                admission.get("kind") == "DOMAIN_EFFECT"
+                and sorted(str(item) for item in admission.get("discharged_effects", [])) == ["logging"]
+            )
             if (not usr or not candidate or usr in known or not override or not reviewed_links
-                    or not proposal.get("combinational_candidate") or not dependencies_ready):
+                    or not (proposal.get("combinational_candidate") or admission_allows_combinational)
+                    or not dependencies_ready):
                 continue
             interface = copy.deepcopy(override.get("interface", {}))
             interface["ports"] = self.freeze_ports(interface)
@@ -685,6 +809,7 @@ class Agent:
                     "candidate_source": "facts/candidates.json",
                     "coverage_source": "coverage/coverage.json",
                     "coverage_basis": candidate.get("coverage_basis"),
+                    "domain_admission": copy.deepcopy(candidate.get("domain_admission")),
                     "promoted_existing": promoted_existing,
                 },
             }

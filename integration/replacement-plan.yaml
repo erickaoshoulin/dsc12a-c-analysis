@@ -1,8 +1,10 @@
 schema_version: 2
 rollback_mode: C_ONLY
 selected_contracts:
+  - ceil_log2
   - escapecodesize
   - findmidpoint
+  - findresidualsize
   - getqpadjpredsize
   - isflatnessinfosent
   - mapqptoqlevel

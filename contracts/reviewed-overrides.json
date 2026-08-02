@@ -1733,6 +1733,229 @@
         "unresolved": []
       },
       "obligations": []
+    },
+    {
+      "match": {
+        "clang_usr": "c:@F@ceil_log2",
+        "spec_anchor_id": "pdf:section:1.6.2"
+      },
+      "review_status": "REVIEWED",
+      "reviewed_by": "codex",
+      "evidence": [
+        {
+          "kind": "EXACT_SPEC",
+          "anchor_id": "pdf:section:1.6.2",
+          "page": 22,
+          "section": "1.6.2",
+          "reason": "DSC 1.2a gives the fixed-point ceil(log2(X+1)) definition, including the shift-based loop used by the immutable C model."
+        },
+        {
+          "kind": "SOURCE_SEMANTICS",
+          "source_file": "dsc_utils.c",
+          "c_span": {
+            "start_line": 67,
+            "end_line": 73
+          },
+          "reason": "The C body initializes ret and repeatedly increments it while right-shifting a non-negative copy of val."
+        },
+        {
+          "kind": "RUNTIME_DOMAIN",
+          "source": "DSC component/error sample domain",
+          "reason": "The ICH error terms passed to ceil_log2 are non-negative absolute differences bounded by the 16-bit component sample maximum."
+        }
+      ],
+      "spec_links": [
+        {
+          "anchor_id": "pdf:section:1.6.2",
+          "page": 22,
+          "section": "1.6.2",
+          "status": "EXACT",
+          "evidence": "The normative section contains the ceil_log2 definition verbatim in C-like syntax."
+        }
+      ],
+      "tool_admission": {
+        "kind": "BOUNDED_DOMAIN",
+        "status": "PASS",
+        "loop": "while (x) { ret++; x >>= 1; }",
+        "max_iterations": 16,
+        "bounded_input_ports": ["val"],
+        "proof": "The reviewed legal domain is 0..65535; each non-zero iteration removes one binary magnitude bit, so the loop terminates in at most 16 iterations."
+      },
+      "interface": {
+        "inputs": [
+          {
+            "name": "val",
+            "c_type": "int",
+            "role": "RUNTIME_INPUT",
+            "logical_width": 16,
+            "signed": false,
+            "legal_domain": {
+              "kind": "range",
+              "range": [0, 65535],
+              "basis": "DSC 1.2a component sample/error maximum for the widest supported 16bpc path"
+            },
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          }
+        ],
+        "output": {
+          "name": "return_value",
+          "c_type": "int",
+          "role": "return_value",
+          "logical_width": 5,
+          "signed": false,
+          "legal_range": [0, 16],
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        }
+      },
+      "semantics": {
+        "kind": "pure_expression",
+        "expression": "$clog2(val + 1)",
+        "verilog_expression": "$clog2(val + 1)",
+        "signedness": "The reviewed input is unsigned and non-negative; the returned bit count is unsigned 0..16.",
+        "rounding": "ceil(log2(val + 1)) as defined by DSC 1.2a section 1.6.2"
+      },
+      "dependencies": {
+        "direct_callees": [],
+        "read_fields": [],
+        "unresolved": []
+      },
+      "obligations": []
+    },
+    {
+      "match": {
+        "clang_usr": "c:@F@FindResidualSize",
+        "spec_anchor_id": "pdf:section:6.6.1"
+      },
+      "review_status": "REVIEWED",
+      "reviewed_by": "codex",
+      "evidence": [
+        {
+          "kind": "EXACT_SPEC",
+          "anchor_id": "pdf:section:6.6.1",
+          "page": 91,
+          "section": "6.6.1",
+          "reason": "DSC 1.2a defines residual size as the quantity used by Delta Size Unit-variable length coding."
+        },
+        {
+          "kind": "EXACT_SPEC",
+          "anchor_id": "pdf:table:3-1",
+          "page": 34,
+          "section": "3",
+          "reason": "Table 3-1 gives normative examples for the signed residual-to-size threshold relation."
+        },
+        {
+          "kind": "SOURCE_SEMANTICS",
+          "source_file": "dsc_codec.c",
+          "c_span": {
+            "start_line": 1078,
+            "end_line": 1109
+          },
+          "reason": "The immutable C body implements the residual-size threshold chain and logs only after the supported threshold domain."
+        },
+        {
+          "kind": "RUNTIME_DOMAIN",
+          "source": "DSC signed residual domain",
+          "reason": "The contracted residual domain is [-65535,65535], which is fully covered by the normative size thresholds and cannot reach the diagnostic branch."
+        }
+      ],
+      "spec_links": [
+        {
+          "anchor_id": "pdf:section:6.6.1",
+          "page": 91,
+          "section": "6.6.1",
+          "status": "EXACT",
+          "evidence": "The normative section defines the residual-size quantity used by DSU-VLC."
+        },
+        {
+          "anchor_id": "pdf:table:3-1",
+          "page": 34,
+          "section": "3",
+          "status": "EXACT",
+          "evidence": "The normative table lists residual values and their coded sizes."
+        }
+      ],
+      "tool_admission": {
+        "kind": "DOMAIN_EFFECT",
+        "status": "PASS",
+        "discharged_effects": ["logging"],
+        "unreachable_condition": "eq < -131702 || eq > 131701",
+        "proof": "The printf branch is outside the reviewed DSC residual domain [-65535,65535]; no logging is reachable for contracted vectors."
+      },
+      "interface": {
+        "inputs": [
+          {
+            "name": "eq",
+            "c_type": "int",
+            "role": "RUNTIME_INPUT",
+            "logical_width": 17,
+            "signed": true,
+            "legal_domain": {
+              "kind": "range",
+              "range": [-65535, 65535],
+              "basis": "DSC 1.2a signed residual range required by the reviewed DSU-VLC threshold domain"
+            },
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          }
+        ],
+        "output": {
+          "name": "return_value",
+          "c_type": "int",
+          "role": "return_value",
+          "logical_width": 5,
+          "signed": false,
+          "legal_range": [0, 17],
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        }
+      },
+      "semantics": {
+        "kind": "residual_size",
+        "expression": "DSC_RESIDUAL_SIZE_THRESHOLDS",
+        "verilog_expression": "DSC_RESIDUAL_SIZE_THRESHOLDS",
+        "signedness": "eq is a signed residual; the returned coded size is a non-negative unsigned count.",
+        "overflow": "No signed overflow occurs on the reviewed [-65535,65535] domain; outside-domain behavior is not contracted.",
+        "thresholds": [
+          {"lower": 0, "upper": 0, "size": 0},
+          {"lower": -1, "upper": 0, "size": 1},
+          {"lower": -2, "upper": 1, "size": 2},
+          {"lower": -4, "upper": 3, "size": 3},
+          {"lower": -8, "upper": 7, "size": 4},
+          {"lower": -16, "upper": 15, "size": 5},
+          {"lower": -32, "upper": 31, "size": 6},
+          {"lower": -64, "upper": 63, "size": 7},
+          {"lower": -128, "upper": 127, "size": 8},
+          {"lower": -256, "upper": 255, "size": 9},
+          {"lower": -512, "upper": 511, "size": 10},
+          {"lower": -1024, "upper": 1023, "size": 11},
+          {"lower": -2048, "upper": 2047, "size": 12},
+          {"lower": -4096, "upper": 4095, "size": 13},
+          {"lower": -8192, "upper": 8191, "size": 14},
+          {"lower": -16384, "upper": 16383, "size": 15},
+          {"lower": -32768, "upper": 32767, "size": 16},
+          {"lower": -65536, "upper": 65535, "size": 17},
+          {"lower": -131702, "upper": 131701, "size": 18}
+        ]
+      },
+      "dependencies": {
+        "direct_callees": [
+          {
+            "category": "logging",
+            "clang_usr": "c:@F@printf",
+            "direct": true,
+            "location": {
+              "file": "dsc_codec.c",
+              "line": 1104
+            },
+            "name": "printf"
+          }
+        ],
+        "read_fields": [],
+        "unresolved": []
+      },
+      "obligations": []
     }
   ]
 }

@@ -1,7 +1,36 @@
 {
   "components": [
     {
-      "artifact_dir": "artifacts/480f0f8595c56a062af62c4eabd3f0adc50bf08788abc6865dd1b1143b61e5f7",
+      "artifact_dir": "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
+        "end_line": 73,
+        "start_line": 67
+      },
+      "contract_file": "contracts/ceil_log2.json",
+      "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+      "contract_id": "ceil_log2",
+      "function": "ceil_log2",
+      "module": "ceil_log2",
+      "module_file": "rtl/ceil_log2.sv",
+      "module_sha256": "71784bb792966a7e48e98d35cc2e2c3f6052f1c17528ffe1b4256f805c9fda65",
+      "promoted_at": "2026-08-02T18:46:54Z",
+      "source_file": "dsc_utils.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:section:1.6.2",
+          "evidence": "The normative section contains the ceil_log2 definition verbatim in C-like syntax.",
+          "page": 22,
+          "section": "1.6.2",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/ceil_log2.json"
+    },
+    {
+      "artifact_dir": "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
       "authority": "EXACT_SPEC",
       "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
       "c_span": {
@@ -9,13 +38,13 @@
         "start_line": 443
       },
       "contract_file": "contracts/escapecodesize.json",
-      "contract_hash": "480f0f8595c56a062af62c4eabd3f0adc50bf08788abc6865dd1b1143b61e5f7",
+      "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
       "contract_id": "escapecodesize",
       "function": "EscapeCodeSize",
       "module": "escapecodesize",
       "module_file": "rtl/escapecodesize.sv",
       "module_sha256": "582d5e131e638e5a6aa4f9783cf1755b041f9369f9c8c84e57fb413845272167",
-      "promoted_at": "2026-08-02T18:08:49Z",
+      "promoted_at": "2026-08-02T18:51:53Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -57,7 +86,7 @@
       "module": "findmidpoint",
       "module_file": "rtl/findmidpoint.sv",
       "module_sha256": "95b00b9f217f19697deb92e6926e102faf48b91af79a9fb6331900a7217d480b",
-      "promoted_at": "2026-08-02T18:08:49Z",
+      "promoted_at": "2026-08-02T18:47:25Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -83,7 +112,43 @@
       "verification_file": "verification/findmidpoint.json"
     },
     {
-      "artifact_dir": "artifacts/5f5aca8e104da0024c8af97f48a06bbb5420a37964a8bd9237fb8b005e59d6c1",
+      "artifact_dir": "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
+        "end_line": 1109,
+        "start_line": 1078
+      },
+      "contract_file": "contracts/findresidualsize.json",
+      "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+      "contract_id": "findresidualsize",
+      "function": "FindResidualSize",
+      "module": "findresidualsize",
+      "module_file": "rtl/findresidualsize.sv",
+      "module_sha256": "a10d4649d371883b4bdfef25fc99448c5a719e937a93425900ddf00b26474073",
+      "promoted_at": "2026-08-02T18:46:54Z",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:section:6.6.1",
+          "evidence": "The normative section defines the residual-size quantity used by DSU-VLC.",
+          "page": 91,
+          "section": "6.6.1",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:table:3-1",
+          "evidence": "The normative table lists residual values and their coded sizes.",
+          "page": 34,
+          "section": "3",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/findresidualsize.json"
+    },
+    {
+      "artifact_dir": "artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
       "authority": "EXACT_SPEC",
       "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
       "c_span": {
@@ -91,13 +156,13 @@
         "start_line": 278
       },
       "contract_file": "contracts/getqpadjpredsize.json",
-      "contract_hash": "5f5aca8e104da0024c8af97f48a06bbb5420a37964a8bd9237fb8b005e59d6c1",
+      "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
       "contract_id": "getqpadjpredsize",
       "function": "GetQpAdjPredSize",
       "module": "getqpadjpredsize",
       "module_file": "rtl/getqpadjpredsize.sv",
       "module_sha256": "a8a237d111078f013fa7c15edf430b37d8c58a60595b1082166f16b0334c24b4",
-      "promoted_at": "2026-08-02T18:08:49Z",
+      "promoted_at": "2026-08-02T18:53:42Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -139,7 +204,7 @@
       "module": "isflatnessinfosent",
       "module_file": "rtl/isflatnessinfosent.sv",
       "module_sha256": "0a4b0d5ee2f45598e3ea1859102a42e3fa2ef66aba94e7049fc1d47876a5c07e",
-      "promoted_at": "2026-08-02T18:08:49Z",
+      "promoted_at": "2026-08-02T18:46:46Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -175,7 +240,7 @@
       "module": "mapqptoqlevel",
       "module_file": "rtl/mapqptoqlevel.sv",
       "module_sha256": "5dda9dc25483193295e7af8abbd927b209f8e9715f2f4791864200f2fc0a3334",
-      "promoted_at": "2026-08-02T18:08:49Z",
+      "promoted_at": "2026-08-02T18:47:08Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -201,7 +266,7 @@
       "verification_file": "verification/mapqptoqlevel.json"
     },
     {
-      "artifact_dir": "artifacts/068017b8a23d03a9d7d16aac74ab5358cfea6ea0c1d2c2e2dc53361421d7f34d",
+      "artifact_dir": "artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
       "authority": "EXACT_SPEC",
       "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
       "c_span": {
@@ -209,13 +274,13 @@
         "start_line": 263
       },
       "contract_file": "contracts/maxresidualsize.json",
-      "contract_hash": "068017b8a23d03a9d7d16aac74ab5358cfea6ea0c1d2c2e2dc53361421d7f34d",
+      "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
       "contract_id": "maxresidualsize",
       "function": "MaxResidualSize",
       "module": "maxresidualsize",
       "module_file": "rtl/maxresidualsize.sv",
       "module_sha256": "cfdb54a0936d5bd70d45ddd9bcb20d05d99b73039a3789c1124ed564ae5aa65b",
-      "promoted_at": "2026-08-02T18:08:49Z",
+      "promoted_at": "2026-08-02T18:52:22Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -257,7 +322,7 @@
       "module": "predictsize",
       "module_file": "rtl/predictsize.sv",
       "module_sha256": "861239ab7f41e5c98845588cfa54631e2d4449920afe9cdbde2eae0920b09af7",
-      "promoted_at": "2026-08-02T18:08:49Z",
+      "promoted_at": "2026-08-02T18:46:48Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -293,7 +358,7 @@
       "module": "quantizeresidual",
       "module_file": "rtl/quantizeresidual.sv",
       "module_sha256": "7c9d729bbe1ac193b6f355b3d8281a92ab350a9c27a7717145fdea31a863d9cd",
-      "promoted_at": "2026-08-02T18:08:49Z",
+      "promoted_at": "2026-08-02T18:46:57Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -333,7 +398,7 @@
       "module": "samplepredict",
       "module_file": "rtl/samplepredict.sv",
       "module_sha256": "831411aefb7fd14c630f6a71d75191a62320ce17566d6292637fcdab603e2011",
-      "promoted_at": "2026-08-02T18:08:49Z",
+      "promoted_at": "2026-08-02T18:51:10Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -393,7 +458,7 @@
       "module": "samptolinebuf",
       "module_file": "rtl/samptolinebuf.sv",
       "module_sha256": "971e3b07df907a913544145749bc5303b1c4532af69517ce97ab3bc9bed0cae9",
-      "promoted_at": "2026-08-02T18:08:49Z",
+      "promoted_at": "2026-08-02T18:48:20Z",
       "source_file": "dsc_codec.c",
       "spec_links": [
         {
@@ -431,5 +496,5 @@
   "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
   "source_policy": "immutable external C model and local DSC 1.2a PDF; no SVRT",
   "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-  "updated_at": "2026-08-02T18:08:49Z"
+  "updated_at": "2026-08-02T18:53:42Z"
 }
