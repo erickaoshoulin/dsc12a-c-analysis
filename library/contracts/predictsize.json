@@ -1,0 +1,61 @@
+{
+  "authority": "EXACT_SPEC",
+  "c_span": {
+    "end_column": 1,
+    "end_line": 1486,
+    "start_column": 5,
+    "start_line": 1476
+  },
+  "contract_hash": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
+  "ports": [
+    {
+      "authority": "EXACT_SPEC",
+      "c_span": {
+        "end_column": 1,
+        "end_line": 1486,
+        "start_column": 5,
+        "start_line": 1476
+      },
+      "contract_hash": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
+      "derivation": "locked contract interface",
+      "domain": {
+        "range": [
+          0,
+          16
+        ]
+      },
+      "name": "return_value",
+      "review_status": "REVIEWED",
+      "role": "return_value",
+      "signed": false,
+      "spec_pages": [
+        83,
+        91
+      ],
+      "spec_sections": [
+        "6.4.5",
+        "6.6.1"
+      ],
+      "spec_tables": [],
+      "width": 5
+    }
+  ],
+  "review_status": "REVIEWED",
+  "source_file": "dsc_codec.c",
+  "source_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
+  "spec_links": [
+    {
+      "anchor_id": "pdf:section:6.6.1",
+      "page": 91,
+      "section": "6.6.1",
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:section:6.4.5",
+      "page": 83,
+      "section": "6.4.5",
+      "status": "EXACT"
+    }
+  ],
+  "spec_pdf": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf"
+}

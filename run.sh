@@ -370,7 +370,7 @@ if ! "$PYTHON" "$SCRIPT_DIR/tools/create_contracts.py" \
     --traceability "$OUTPUT_DIR/traceability/traceability.json" \
     --anchors "$OUTPUT_DIR/spec/anchors.json" \
     --output-dir "$OUTPUT_DIR/contracts" \
-    --top-n 3; then
+    --top-n "$TOP_N"; then
   echo "INFRASTRUCTURE_FAILURE: tool-selected contract generation failed" >&2
   exit 1
 fi

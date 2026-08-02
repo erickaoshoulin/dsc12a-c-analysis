@@ -3,8 +3,8 @@
 This standalone repository analyzes the local DSC 1.2a C reference model and
 links tool-discovered C facts back to the local PDF specification. It is
 isolated from SVRT and unrelated projects. It does not modify the upstream
-model or copy the PDF. The pipeline also uses LLVM coverage, creates three
-tool-selected contracts, and verifies one small combinational RTL slice; it
+model or copy the PDF. The pipeline also uses LLVM coverage, creates a bounded
+tool-selected contract set, and verifies one small combinational RTL slice; it
 does not generate whole-codec RTL or add sequential hardware.
 
 ## Inputs
@@ -149,7 +149,7 @@ inputs; detects cycles; and schedules every locked contract whose semantics
 are resolved. Independent ready contracts use stable parallel batches.
 `resume` reuses a valid cache entry with zero model calls. Stale hashes are
 visible in `ci/plan.json` and cannot silently reuse old artifacts. Reviewed
-domain evidence can produce an effective contract under
+domain evidence can enrich a tool-selected eligible leaf under
 `ci/reviewed-contracts/` without editing the immutable generated lock.
 
 The state machine is recorded in `ci/dag.json` and `ci/state.json`. Each
@@ -173,9 +173,10 @@ when the current ready frontier is already proven.
 ### Executable generator contract
 
 The migration agent has no function-name target or implicit model stub. Tool
-facts, exact traceability, and reviewed domain evidence discover the next ready
-leaf; the reviewed override is matched by an exact spec anchor, not by a
-function-name allowlist. A ready cache miss requires an external hook:
+facts and coverage first select an eligible leaf; exact traceability and
+reviewed domain evidence only enrich that leaf. A reviewed override cannot
+materialize a function absent from `facts/candidates.json` and
+`coverage/coverage.json`. A ready cache miss requires an external hook:
 
 ```sh
 DSC_CICD_GENERATOR_CMD='python3 tools/generator_fixture.py' \
@@ -247,7 +248,7 @@ for the execution contract and durable workflow.
 
 Set `DSC_ANALYSIS_TIMEOUT_SECONDS` for compiler/Clang/Frama-C commands,
 `DSC_BUILD_TIMEOUT_SECONDS` for the isolated build/smoke gate, and
-`DSC_ANALYSIS_TOP_N` for the Frama-C candidate count. The CI/CD verifier also
+`DSC_ANALYSIS_TOP_N` for the bounded contract/candidate count. The CI/CD verifier also
 accepts `DSC_CICD_SHARDS`, `DSC_CICD_GENERATOR_CMD`, and compile/shard timeout
 variables. Temporary model copies exclude the unrelated `dsc-rs` and
 `operator_bittrue` trees; the local PDF and upstream C source remain outside

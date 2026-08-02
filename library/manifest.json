@@ -78,6 +78,40 @@
       "authority": "EXACT_SPEC",
       "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
       "c_span": {
+        "end_column": 1,
+        "end_line": 1486,
+        "start_column": 5,
+        "start_line": 1476
+      },
+      "contract_hash": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
+      "contract_id": "predictsize",
+      "function": "PredictSize",
+      "module": "predictsize",
+      "module_file": "rtl/predictsize.sv",
+      "module_sha256": "861239ab7f41e5c98845588cfa54631e2d4449920afe9cdbde2eae0920b09af7",
+      "run_id": "20260802T111122Z-scale-ccc96e95",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:section:6.6.1",
+          "page": 91,
+          "section": "6.6.1",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.4.5",
+          "page": 83,
+          "section": "6.4.5",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/predictsize.json"
+    },
+    {
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
         "end_line": 255,
         "start_line": 245
       },
@@ -109,6 +143,52 @@
       ],
       "status": "PASS",
       "verification_file": "verification/quantizeresidual.json"
+    },
+    {
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
+        "end_column": 1,
+        "end_line": 2049,
+        "start_column": 5,
+        "start_line": 2036
+      },
+      "contract_hash": "603022a22fb2cae3733c34ecdced2b658d739b9c3e418fc6cc7c4d89ec6e87bf",
+      "contract_id": "samptolinebuf",
+      "function": "SampToLineBuf",
+      "module": "samptolinebuf",
+      "module_file": "rtl/samptolinebuf.sv",
+      "module_sha256": "971e3b07df907a913544145749bc5303b1c4532af69517ce97ab3bc9bed0cae9",
+      "run_id": "20260802T105600Z-scale-67d0be81",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:model-note:MN_LINE_STORAGE:p075",
+          "page": 75,
+          "section": "6.3",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.3",
+          "page": 75,
+          "section": "6.3",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:model-note:MN_LINE_STORAGE:p117",
+          "page": 117,
+          "section": "7.4",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:7.4",
+          "page": 117,
+          "section": "7.4",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/samptolinebuf.json"
     }
   ],
   "library": "dsc-verilog-library",
@@ -117,5 +197,5 @@
   "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
   "source_policy": "immutable external C model and local DSC 1.2a PDF; no SVRT",
   "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-  "updated_at": "2026-08-02T10:35:52Z"
+  "updated_at": "2026-08-02T11:19:36Z"
 }

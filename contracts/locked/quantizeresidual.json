@@ -1,0 +1,200 @@
+{
+  "arithmetic_semantics": {
+    "overflow": "no signed overflow on the locked legal domain; outside-domain behavior is not contracted",
+    "rounding": "integer division by two truncates toward zero; modulo is C remainder on non-negative operands",
+    "saturation": "none",
+    "shifts": "left shifts have operands in [8,16], qlevel is [0,16], and all shifted values are non-negative",
+    "signedness": "C int operands are signed, but the legal-domain inputs and output are non-negative"
+  },
+  "contract_id": "quantizeresidual",
+  "coverage": {
+    "branch_coverage_percent": 100.0,
+    "execution_count": 124416,
+    "line_coverage_percent": 85.714,
+    "production_reachable": true,
+    "status": "EXECUTED"
+  },
+  "dependencies": {
+    "direct_callees": [],
+    "read_fields": [],
+    "return_dependencies": [],
+    "unresolved": [
+      "parameter:e"
+    ]
+  },
+  "do_not_edit": true,
+  "function": {
+    "clang_usr": "c:@F@QuantizeResidual",
+    "name": "QuantizeResidual",
+    "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/dsc_codec.c#L245-L255",
+    "qualified_name": "QuantizeResidual",
+    "source_body_sha256": "530349291cfeb32a0b9974bec45fda9796ff9aaab3e67709cc9aad82644cdd0c",
+    "source_file": "dsc_codec.c",
+    "source_file_sha256": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf",
+    "source_span": {
+      "end_column": 1,
+      "end_line": 255,
+      "start_column": 5,
+      "start_line": 245
+    }
+  },
+  "interface": {
+    "flattened_pointer_dependencies": [],
+    "input_bit_count": 37,
+    "inputs": [
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "kind": "unresolved",
+          "range": null,
+          "values": []
+        },
+        "logical_width": 32,
+        "name": "e",
+        "pointer": false,
+        "role": "RUNTIME_INPUT",
+        "unresolved": true,
+        "width_source": "C_TYPE_FALLBACK"
+      },
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "Table 6-2 qLevel columns",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ],
+          "values": []
+        },
+        "logical_width": 5,
+        "name": "qlevel",
+        "pointer": false,
+        "role": "RUNTIME_INPUT",
+        "spec_domain_anchor": "pdf:table:6-2",
+        "unresolved": false,
+        "width_source": "NORMATIVE_TABLE_DOMAIN"
+      }
+    ],
+    "output": {
+      "c_type": "int",
+      "legal_range": null,
+      "logical_width": 32,
+      "name": "return_value",
+      "signed": true,
+      "unresolved": true,
+      "width_source": "C_TYPE_FALLBACK"
+    }
+  },
+  "lock": {
+    "contract_sha256": "e7c009c9a02775e4258ae0152ffe1277a0936b84e728fadf01b1fbb5ceeb0125",
+    "do_not_edit": true,
+    "locked_from": "proposed/quantizeresidual.yaml"
+  },
+  "lock_status": "LOCKED_GENERATED",
+  "obligations": [
+    "parameter:e"
+  ],
+  "provenance": {
+    "coverage_sha256": "487b3d70a61f2a70b94d953d26ee078df3f8e3f4b2d30b6cdbb508a9548aef62",
+    "source_hashes_sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+    "spec_sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+  },
+  "read_struct_fields": [],
+  "schema_version": 1,
+  "selection": {
+    "candidate_rank": 5,
+    "eligible_after_coverage": true,
+    "eligible_static": true,
+    "leaf": true,
+    "rank": 5,
+    "score": 100.0,
+    "selection_basis": "tool-ranked production/output leaf candidate after dynamic coverage join"
+  },
+  "spec_links": [
+    {
+      "anchor_id": "pdf:model-note:MN_ENC_QUANTIZATION:p083",
+      "evidence": "C comment and PDF anchor both contain MN_ENC_QUANTIZATION",
+      "method": "exact_mn_id",
+      "page": 83,
+      "section": "6.4.5",
+      "short_anchor": "6.4.5 Quantization; model note: MN_ENC_QUANTIZATION in dsc_codec.c",
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:section:6.4.5",
+      "evidence": "C comment and PDF anchor both contain MN_ENC_QUANTIZATION",
+      "method": "exact_mn_id",
+      "page": 83,
+      "section": "6.4.5",
+      "short_anchor": "6.4.5 Quantization",
+      "status": "EXACT"
+    }
+  ],
+  "static_analysis": {
+    "callees": [],
+    "contributes_to_observable_output": true,
+    "direct_effects": {
+      "allocation": false,
+      "assertion": false,
+      "indirect_call": false,
+      "io": false,
+      "logging": false,
+      "state_write": false,
+      "unknown_facts": []
+    },
+    "globals_read": [
+      {
+        "context": "expression",
+        "location": {
+          "column": 13,
+          "file": "dsc_codec.c",
+          "line": 251
+        },
+        "name": "QuantOffset",
+        "record": "",
+        "role": "READ",
+        "type": "const int[17]"
+      },
+      {
+        "context": "expression",
+        "location": {
+          "column": 11,
+          "file": "dsc_codec.c",
+          "line": 253
+        },
+        "name": "QuantOffset",
+        "record": "",
+        "role": "READ",
+        "type": "const int[17]"
+      }
+    ],
+    "globals_write": [],
+    "production_reachable": true,
+    "purity": "PURE",
+    "role": "DUT",
+    "timing": "COMBINATIONAL",
+    "transitive_effects": {
+      "allocation": false,
+      "assertion": false,
+      "indirect_call": false,
+      "io": false,
+      "logging": false,
+      "state_write": false,
+      "unknown_facts": []
+    }
+  },
+  "status": "LOCKED",
+  "verification_plan": {
+    "legal_domain": "cpnt in [0,3], cpntBitDepth in {8..16}, qlevel <= table-derived maximum for the selected component depth, leftRecon in [0,(1<<cpntBitDepth)-1]",
+    "mutations": [
+      "signedness",
+      "boundary",
+      "array-index",
+      "off-by-one"
+    ],
+    "oracle": "call the immutable C function through a generated wrapper with flattened state dependencies",
+    "rtl": "at most four generated combinational SystemVerilog candidates",
+    "simulator": "Verilator lint/compile plus exhaustive legal-domain comparison"
+  }
+}

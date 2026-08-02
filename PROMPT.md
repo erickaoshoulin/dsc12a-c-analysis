@@ -10,7 +10,7 @@ Build a deterministic, rerunnable pipeline that discovers the local DSC 1.2a
 PDF and C model, proves the C model can clean-build and smoke-run, discovers
 combinational DUT candidates from tool facts rather than hardcoded names,
 generates bidirectional PDF <-> C traceability, joins dynamic LLVM coverage,
-creates three machine-selected contracts, and verifies one exhaustive
+creates a bounded machine-selected contract set, and verifies one exhaustive
 combinational RTL slice against the immutable C model. This project is not
 SVRT and must not grow SVRT integration, whole-codec RTL generation, an LLM
 runtime, C/Rust parsing, or sequential-hardware behavior.
@@ -119,7 +119,10 @@ as a selection allowlist.
 
 ## Contract and RTL-slice contract
 
-Select the top three eligible leaf functions from tool facts and write:
+Select the top N eligible leaf functions from tool facts (default N=10; the
+bounded batch may be changed only with `DSC_ANALYSIS_TOP_N`) and write. Any
+reviewed domain override may enrich a tool-selected candidate, but it must not
+select a function or bypass `facts/candidates.json` and `coverage/coverage.json`:
 
 - `contracts/proposed/<id>.yaml`
 - `contracts/locked/<id>.json`
@@ -150,7 +153,7 @@ otherwise.
 
 Write `coverage/`, `contracts/`, `rtl/candidates/`, `verification/`, and
 `reports/progress.md`, and extend `summary.json` with exact-link before/after
-counts, coverage ranking before/after, the three contracts, chosen-function
+counts, coverage ranking before/after, the selected contracts, chosen-function
 rationale, candidate results, counterexamples, and the next recommendation.
 
 ## Validation and handoff
@@ -160,7 +163,7 @@ linked C build/smoke receipt, coverage/tool receipts, Verilator evidence, no
 hardcoded function targets, no LLM-created exact links, and provenance with
 `do_not_edit` on generated artifacts. Update `README.md`, `run.sh`, and tests.
 Report build status, candidate counts, link counts, orphan counts, coverage
-before/after rankings, three contracts, and the first RTL result. Commit with:
+before/after rankings, selected contracts, and the first RTL result. Commit with:
 
 ```text
 feat: create DSC contracts and first bit-true RTL slice
@@ -304,8 +307,11 @@ and upstream C source outside this repository and read-only.
 
 Function selection is facts-driven. Discover functions through the existing
 Clang/facts/contracts/callgraph/coverage/cache artifacts and preserve the
-function names only as discovered data in receipts. Never add a target list,
-allowlist, source-file selector, or prompt field that supplies a function name.
+function names only as discovered data in receipts. Reviewed overrides may
+carry domain evidence for a known facts identity, but they cannot materialize
+a function that is absent from the tool-ranked candidate and coverage facts.
+Never add a target list, allowlist, source-file selector, or prompt field that
+supplies a function name.
 Reject recursive or combinational dependency cycles. A generation authority
 must be `EXACT_SPEC`, `DERIVED`, or `HUMAN_APPROVED`; `AI_PROPOSED` and
 `C_TYPE_FALLBACK` are visible blockers and cannot generate RTL.

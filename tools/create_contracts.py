@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create three tool-selected, provenance-locked RTL contract proposals."""
+"""Create tool-selected, provenance-locked RTL contract proposals."""
 
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--traceability", required=True, type=pathlib.Path)
     parser.add_argument("--anchors", required=True, type=pathlib.Path)
     parser.add_argument("--output-dir", required=True, type=pathlib.Path)
-    parser.add_argument("--top-n", type=int, default=3)
+    parser.add_argument("--top-n", type=int, default=10)
     return parser.parse_args()
 
 

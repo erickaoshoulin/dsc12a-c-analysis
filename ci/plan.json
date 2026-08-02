@@ -29,23 +29,23 @@
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "36a7e5e28ac7ca07f685c50a68622a4b2b41c2f74d9376a1dcd9a16f44f9b87a",
+      "cache_key": "5286217b15757b1c5f00e6cfb9d12cae2b09b25c1a7a2ec1239b89b80e8f725b",
       "call_sites": [],
       "clang_usr": "c:@F@FindMidpoint",
-      "contract_hash": "ddf6b008659477f8b63803b7d5b599f7227e5f363ae460be83a305e5b39d0dea",
+      "contract_hash": "4770cb54a401eb81b550fbb5dd3ede2af3c3a4d85ec2f92548125dbd638592cf",
       "contract_id": "findmidpoint",
       "deferred": true,
       "dependencies": [],
       "force_regenerate": false,
       "function": "FindMidpoint",
       "hashes": {
-        "agent": "32054109c01602b9239cbe49327b34cae26ebeeadae946d0d4da4ffe6efc9c2a",
-        "contract": "ddf6b008659477f8b63803b7d5b599f7227e5f363ae460be83a305e5b39d0dea",
-        "dependency": "fae6fba4c45b4a77b34f3e209851239acb540748180b881a568e349856559d98",
-        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "agent": "17b058f5507d0bc83d31d5e27b5dd2c817ccedfbeed37087a6d1f2740f58f98e",
+        "contract": "4770cb54a401eb81b550fbb5dd3ede2af3c3a4d85ec2f92548125dbd638592cf",
+        "dependency": "ff224b51d36a47747e7d89abcc4384af6a754c85ffe080d7a7844de79178f6db",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "0d4f176060a66741d0c0abe2c3f3b1cfcbb0fe7c278f3a2394bdd7b22b918027",
+        "prompt": "d8cd48238de8f6798b523b7f7d9044a459cd0357e9612605fd8af6cef2567078",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -91,30 +91,34 @@
       "selected": false,
       "stale": true,
       "stale_reasons": [
-        "agent"
+        "agent",
+        "contract",
+        "dependency",
+        "prompt",
+        "generator"
       ],
       "targeted": false
     },
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "02fb666b67c6d374a751b1cab14f9b602d080d2485fa8b653e95e64198fc3997",
+      "cache_key": "fa4befed65d623a0436b6bc46afc1ce5b55185269674d0c5f8d60c91d21be0bf",
       "call_sites": [],
       "clang_usr": "c:@F@IsFlatnessInfoSent",
-      "contract_hash": "60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2",
+      "contract_hash": "f079152437dbf9eea9e1ff9463e03ead04fd354570a45c8df03ce99dd49ee4f6",
       "contract_id": "isflatnessinfosent",
       "deferred": false,
       "dependencies": [],
       "force_regenerate": false,
       "function": "IsFlatnessInfoSent",
       "hashes": {
-        "agent": "32054109c01602b9239cbe49327b34cae26ebeeadae946d0d4da4ffe6efc9c2a",
-        "contract": "60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2",
-        "dependency": "8fe59255ed677a74d364b2e5bd5b6be2e942ef2b0ca388eea4a57ac29395b6a4",
-        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "agent": "17b058f5507d0bc83d31d5e27b5dd2c817ccedfbeed37087a6d1f2740f58f98e",
+        "contract": "f079152437dbf9eea9e1ff9463e03ead04fd354570a45c8df03ce99dd49ee4f6",
+        "dependency": "1ce8df5c0cd2d902b131e477076ca6b647bbfbc1e9a0644d27247aa545a62955",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "0d4f176060a66741d0c0abe2c3f3b1cfcbb0fe7c278f3a2394bdd7b22b918027",
+        "prompt": "d8cd48238de8f6798b523b7f7d9044a459cd0357e9612605fd8af6cef2567078",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -154,7 +158,11 @@
       "selected": true,
       "stale": true,
       "stale_reasons": [
-        "agent"
+        "agent",
+        "contract",
+        "dependency",
+        "prompt",
+        "generator"
       ],
       "targeted": false
     },
@@ -174,23 +182,23 @@
         "parameter:qp"
       ],
       "cache_hit": false,
-      "cache_key": "d92328c6a53f8ad22ce4ca5ccb9b5dde7de242e499d178c64854e0e00c468703",
+      "cache_key": "fb96347acea23075c7a21b1f472fa4b420e7c9818112b8a2a67d3b30cc68f3a2",
       "call_sites": [],
       "clang_usr": "c:@F@MapQpToQlevel",
-      "contract_hash": "b5d32e96c0ef357adad943e57b6e785389935d2b3a7265a6a709013ecb3e9a9f",
+      "contract_hash": "bbfcf35c821a762ad1d8d504e44d38aec01bbb6ee60214529ca297dc5085c744",
       "contract_id": "mapqptoqlevel",
       "deferred": false,
       "dependencies": [],
       "force_regenerate": false,
       "function": "MapQpToQlevel",
       "hashes": {
-        "agent": "32054109c01602b9239cbe49327b34cae26ebeeadae946d0d4da4ffe6efc9c2a",
-        "contract": "b5d32e96c0ef357adad943e57b6e785389935d2b3a7265a6a709013ecb3e9a9f",
-        "dependency": "17f152849d93c23b2e4b3a99393c87b468f587f6a952c9136b5c17e9573740cb",
-        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "agent": "17b058f5507d0bc83d31d5e27b5dd2c817ccedfbeed37087a6d1f2740f58f98e",
+        "contract": "bbfcf35c821a762ad1d8d504e44d38aec01bbb6ee60214529ca297dc5085c744",
+        "dependency": "8dd959dacf298b38a01f75cff909d1b3f8ca431333508a8c0f292bab569cdad3",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "0d4f176060a66741d0c0abe2c3f3b1cfcbb0fe7c278f3a2394bdd7b22b918027",
+        "prompt": "d8cd48238de8f6798b523b7f7d9044a459cd0357e9612605fd8af6cef2567078",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -254,30 +262,95 @@
       "selected": false,
       "stale": true,
       "stale_reasons": [
-        "agent"
+        "agent",
+        "contract",
+        "dependency",
+        "prompt",
+        "generator"
       ],
       "targeted": false
     },
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "7643fdc7dfbbaca92704483fb53cef043712e06a8ce78c906abe11ea62215e8c",
+      "cache_key": "2a35a145b9059ebce72411a308ec0abe9d433c487103bac4800c9c7786851923",
+      "call_sites": [],
+      "clang_usr": "c:@F@PredictSize",
+      "contract_hash": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
+      "contract_id": "predictsize",
+      "deferred": true,
+      "dependencies": [],
+      "force_regenerate": false,
+      "function": "PredictSize",
+      "hashes": {
+        "agent": "17b058f5507d0bc83d31d5e27b5dd2c817ccedfbeed37087a6d1f2740f58f98e",
+        "contract": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
+        "dependency": "0e41d2c9d457bee11139bc3aff3fef4a5bcc4f389364fd4e0501690353a69a50",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "d8cd48238de8f6798b523b7f7d9044a459cd0357e9612605fd8af6cef2567078",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "2"
+      },
+      "initial_state": "CONTRACT_LOCKED",
+      "interface_shape": [
+        [
+          "input",
+          "req_size_0",
+          5,
+          false
+        ],
+        [
+          "input",
+          "req_size_1",
+          5,
+          false
+        ],
+        [
+          "input",
+          "req_size_2",
+          5,
+          false
+        ],
+        [
+          "output",
+          "return_value",
+          5,
+          false
+        ]
+      ],
+      "new_work": true,
+      "origin": "tool_discovered_reviewed_override",
+      "ready": true,
+      "selected": false,
+      "stale": false,
+      "stale_reasons": [],
+      "targeted": false
+    },
+    {
+      "blocked_reasons": [],
+      "cache_hit": false,
+      "cache_key": "a63bbfa9eaed58a63f3ff27319b18c42ede6e6ef6e7e3440ccf8b0eb34eb940f",
       "call_sites": [],
       "clang_usr": "c:@F@QuantizeResidual",
-      "contract_hash": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+      "contract_hash": "bd7cac692d0064753250d5ae92776ee7718d8cb222ea52561893438c52e6e30d",
       "contract_id": "quantizeresidual",
       "deferred": true,
       "dependencies": [],
       "force_regenerate": false,
       "function": "QuantizeResidual",
       "hashes": {
-        "agent": "32054109c01602b9239cbe49327b34cae26ebeeadae946d0d4da4ffe6efc9c2a",
-        "contract": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
-        "dependency": "78f45614e09a87d9b5425de67052bcc241d5785b1cc4e364766e118669083e76",
-        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "agent": "17b058f5507d0bc83d31d5e27b5dd2c817ccedfbeed37087a6d1f2740f58f98e",
+        "contract": "bd7cac692d0064753250d5ae92776ee7718d8cb222ea52561893438c52e6e30d",
+        "dependency": "37918d36350707ad8203db6699df19caa9b84b24514b72e4206116980c090cf4",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "0d4f176060a66741d0c0abe2c3f3b1cfcbb0fe7c278f3a2394bdd7b22b918027",
+        "prompt": "d8cd48238de8f6798b523b7f7d9044a459cd0357e9612605fd8af6cef2567078",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -311,14 +384,87 @@
       "selected": false,
       "stale": true,
       "stale_reasons": [
-        "agent"
+        "agent",
+        "contract",
+        "dependency",
+        "prompt",
+        "generator"
       ],
+      "targeted": false
+    },
+    {
+      "blocked_reasons": [],
+      "cache_hit": false,
+      "cache_key": "55b164abf7524bcb2a02936871f394b68c464e45df34247ef46c0e03d1b5da94",
+      "call_sites": [],
+      "clang_usr": "c:@F@SampToLineBuf",
+      "contract_hash": "05bcff80920baf0d36d0cfceb95053d2385b1d939a15a173f0e253b27a18900d",
+      "contract_id": "samptolinebuf",
+      "deferred": true,
+      "dependencies": [],
+      "force_regenerate": false,
+      "function": "SampToLineBuf",
+      "hashes": {
+        "agent": "17b058f5507d0bc83d31d5e27b5dd2c817ccedfbeed37087a6d1f2740f58f98e",
+        "contract": "05bcff80920baf0d36d0cfceb95053d2385b1d939a15a173f0e253b27a18900d",
+        "dependency": "38ecff4aa14bbe3017176c129708181aee01b5ecbb8d2bf3a3c77cdcd1a84d14",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "d8cd48238de8f6798b523b7f7d9044a459cd0357e9612605fd8af6cef2567078",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "2"
+      },
+      "initial_state": "CONTRACT_LOCKED",
+      "interface_shape": [
+        [
+          "input",
+          "cpnt",
+          2,
+          false
+        ],
+        [
+          "input",
+          "cpntBitDepth",
+          5,
+          false
+        ],
+        [
+          "input",
+          "linebuf_depth",
+          4,
+          false
+        ],
+        [
+          "input",
+          "x",
+          16,
+          false
+        ],
+        [
+          "output",
+          "return_value",
+          16,
+          false
+        ]
+      ],
+      "new_work": true,
+      "origin": "tool_discovered_reviewed_override",
+      "ready": true,
+      "selected": false,
+      "stale": false,
+      "stale_reasons": [],
       "targeted": false
     }
   ],
   "deferred_ready_contracts": [
     "findmidpoint",
-    "quantizeresidual"
+    "predictsize",
+    "quantizeresidual",
+    "samptolinebuf"
   ],
   "dependency_pair": {
     "call_sites": [
@@ -360,16 +506,20 @@
     "selection_basis": "smallest acyclic direct call site from facts/callgraph.json"
   },
   "force_regenerate": false,
-  "generator_hook": "python3 tools/generator_fixture.py",
+  "generator_hook": null,
   "input_errors": [],
   "new_candidates": [
     "isflatnessinfosent",
-    "quantizeresidual"
+    "predictsize",
+    "quantizeresidual",
+    "samptolinebuf"
   ],
   "ready_contracts": [
     "findmidpoint",
     "isflatnessinfosent",
-    "quantizeresidual"
+    "predictsize",
+    "quantizeresidual",
+    "samptolinebuf"
   ],
   "schema_version": 2,
   "selected_contracts": [

@@ -347,6 +347,52 @@ class Agent:
         payload = read_json(self.root / "contracts" / "reviewed-overrides.json", {}) or {}
         return [item for item in payload.get("overrides", []) if item.get("match")]
 
+    def tool_candidate_facts(self) -> dict[str, dict[str, Any]]:
+        """Return only candidates that the analysis facts marked eligible.
+
+        Reviewed overrides may provide exact domain/semantics evidence, but
+        they must never turn into a function selector.  Keep this gate backed
+        by the generated candidate ranking and dynamic coverage facts so a
+        reviewed data entry can enrich a tool-selected leaf only.
+        """
+        candidates_payload = read_json(self.root / "facts" / "candidates.json", {}) or {}
+        coverage_payload = read_json(self.root / "coverage" / "coverage.json", {}) or {}
+        coverage_by_usr = {
+            str(item.get("clang_usr")): item
+            for item in coverage_payload.get("functions", [])
+            if item.get("clang_usr")
+        }
+        result: dict[str, dict[str, Any]] = {}
+        for rank, candidate in enumerate(candidates_payload.get("ranked_candidates", []), start=1):
+            usr = str(candidate.get("clang_usr", ""))
+            coverage = coverage_by_usr.get(usr, {})
+            if (
+                not usr
+                or candidate.get("eligible") is not True
+                or coverage.get("eligible_after_coverage") is not True
+            ):
+                continue
+            result[usr] = {
+                "rank": rank,
+                "score": candidate.get("score"),
+                "candidate": copy.deepcopy(candidate),
+                "coverage": copy.deepcopy(coverage),
+            }
+        return result
+
+    def function_parameters(self, contract: dict[str, Any]) -> list[dict[str, Any]]:
+        """Recover original Clang parameter facts when older locks omitted them."""
+        function = contract_function(contract)
+        parameters = function.get("parameters")
+        if isinstance(parameters, list) and parameters:
+            return copy.deepcopy(parameters)
+        usr = str(function.get("clang_usr", ""))
+        facts = read_json(self.root / "facts" / "functions.json", {}) or {}
+        for candidate in facts.get("functions", []):
+            if str(candidate.get("clang_usr", "")) == usr and isinstance(candidate.get("parameters"), list):
+                return copy.deepcopy(candidate["parameters"])
+        return []
+
     @staticmethod
     def reviewed_override_matches(
         contract: dict[str, Any],
@@ -375,7 +421,12 @@ class Agent:
             }
             if requested not in link_ids and requested not in override_ids:
                 return False
-        return bool(match.get("clang_usr") or match.get("code_anchor_id") or match.get("exact_anchor_id"))
+        return bool(
+            match.get("clang_usr")
+            or match.get("code_anchor_id")
+            or match.get("exact_anchor_id")
+            or match.get("spec_anchor_id")
+        )
 
     def apply_reviewed_overrides(self) -> list[dict[str, Any]]:
         """Build effective contracts without editing generated locked JSON.
@@ -398,7 +449,10 @@ class Agent:
                     and self.reviewed_override_matches(contract, item, exact)
                     and item.get("interface")
                     and item.get("semantics")
-                    and item.get("spec_links")
+                    and (
+                        item.get("spec_links")
+                        or exact.get(str(contract_function(contract).get("clang_usr")))
+                    )
                 ),
                 None,
             )
@@ -407,7 +461,10 @@ class Agent:
                 continue
             contract["interface"] = copy.deepcopy(override["interface"])
             contract["semantics"] = copy.deepcopy(override["semantics"])
-            contract["spec_links"] = copy.deepcopy(override["spec_links"])
+            contract["spec_links"] = copy.deepcopy(
+                override.get("spec_links")
+                or exact.get(str(contract_function(contract).get("clang_usr")), [])
+            )
             contract["obligations"] = list(override.get("obligations", []))
             dependencies = copy.deepcopy(contract.get("dependencies", {}) or {})
             dependencies.update(copy.deepcopy(override.get("dependencies", {}) or {}))
@@ -441,12 +498,13 @@ class Agent:
                 "legal_domain": item.get("legal_domain", {}),
             })
         for item in interface.get("flattened_pointer_dependencies", []):
+            port_name = str(item.get("port_name") or item.get("field") or "field")
             ports.append({
-                "name": safe_identifier(str(item.get("field", "field"))),
-                "role": str(item.get("field", "field")),
+                "name": safe_identifier(port_name),
+                "role": str(item.get("role") or item.get("field") or port_name),
                 "direction": "input",
                 "width": int(item.get("logical_width") or 32),
-                "signed": False,
+                "signed": bool(item.get("signed", False)),
                 "c_type": item.get("c_type", "int"),
                 "legal_domain": item.get("legal_domain", {}),
             })
@@ -467,26 +525,32 @@ class Agent:
         facts = read_json(self.root / "facts" / "functions.json", {}) or {}
         exact = self.exact_links_by_usr()
         overrides = self.reviewed_overrides()
+        candidate_facts = self.tool_candidate_facts()
         effective_locked = self.apply_reviewed_overrides()
         known = {str(contract_function(item).get("clang_usr")) for item in effective_locked}
         discovered = []
         for function in facts.get("functions", []):
             usr = str(function.get("clang_usr", ""))
+            candidate = candidate_facts.get(usr)
             proposal = function.get("proposal", {}) or {}
+            candidate_identity = {"function": {"clang_usr": usr}}
             override = next(
                 (
                     item for item in overrides
-                    if any(
-                        link.get("anchor_id") == item.get("match", {}).get("exact_anchor_id")
-                        for link in exact.get(usr, [])
-                    )
+                    if item.get("review_status") == "REVIEWED"
+                    and self.reviewed_override_matches(candidate_identity, item, exact)
+                    and item.get("interface")
+                    and item.get("semantics")
                 ),
                 None,
             )
-            if (not usr or usr in known or not override or not exact.get(usr)
+            reviewed_links = exact.get(usr, []) if override else []
+            if override and not reviewed_links:
+                reviewed_links = copy.deepcopy(override.get("spec_links", []))
+            if (not usr or not candidate or usr in known or not override or not reviewed_links
                     or not proposal.get("combinational_candidate") or function.get("callees")):
                 continue
-            interface = dict(override.get("interface", {}))
+            interface = copy.deepcopy(override.get("interface", {}))
             interface["ports"] = self.freeze_ports(interface)
             name = str(function.get("name", "candidate"))
             cid = safe_identifier(name).lower()
@@ -518,12 +582,16 @@ class Agent:
                     "read_fields": [item.get("name") for item in function.get("field_reads", []) if isinstance(item, dict)],
                     "unresolved": [],
                 },
-                "spec_links": exact[usr],
+                "spec_links": copy.deepcopy(override.get("spec_links", reviewed_links)),
                 "reviewed_evidence": override.get("evidence", []),
                 "selection": {
                     "new_work": True,
-                    "basis": "exact traceability + pure leaf facts + reviewed domain evidence",
+                    "basis": "tool-ranked candidate and coverage facts + exact traceability + reviewed domain evidence",
+                    "candidate_rank": candidate.get("rank"),
+                    "candidate_score": candidate.get("score"),
                     "fact_source": "facts/functions.json",
+                    "candidate_source": "facts/candidates.json",
+                    "coverage_source": "coverage/coverage.json",
                 },
             }
             write_json(self.root / "ci" / "discovered-contracts" / f"{cid}.json", contract)
@@ -926,6 +994,91 @@ class Agent:
             )
         return "module " + safe_identifier(module) + " (\n" + ",\n".join(declarations) + "\n);\nendmodule\n"
 
+    def render_pointer_array_oracle(
+        self,
+        contract: dict[str, Any],
+        inputs: list[dict[str, Any]],
+        output: str,
+        flattened: list[dict[str, Any]],
+        ignored: list[dict[str, Any]],
+    ) -> str:
+        function = contract_function(contract)
+        name = str(function.get("name"))
+        parameters = self.function_parameters(contract)
+        if not parameters:
+            raise RuntimeError("pointer-array oracle requires original C parameter facts")
+        array_items = [item for item in flattened if item.get("parameter") and item.get("index") is not None]
+        arrays: dict[str, list[dict[str, Any]]] = {}
+        for item in array_items:
+            arrays.setdefault(str(item.get("parameter")), []).append(item)
+        ignored_by_parameter = {
+            str(item.get("parameter")): item for item in ignored if item.get("parameter")
+        }
+        declarations: list[str] = []
+        call_arguments: list[str] = []
+        local_setup: list[str] = []
+        local_dependencies: list[str] = []
+        known_ports = {str(port.get("name")) for port in inputs}
+        for parameter in parameters:
+            parameter_name = str(parameter.get("name", ""))
+            parameter_type = str(parameter.get("type", "int")).strip()
+            if not parameter_name or not re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", parameter_name):
+                raise RuntimeError(f"invalid C parameter name: {parameter_name}")
+            declarations.append(f"{parameter_type} {parameter_name}")
+            if not parameter.get("pointer"):
+                if parameter_name not in known_ports:
+                    raise RuntimeError(f"unfrozen scalar parameter: {parameter_name}")
+                call_arguments.append(parameter_name)
+                continue
+            if parameter_name in arrays:
+                items = arrays[parameter_name]
+                length = max(int(item.get("index", 0)) for item in items) + 1
+                local_dependencies.append(f"int {parameter_name}[{length}] = {{0}};")
+                for item in sorted(items, key=lambda value: int(value.get("index", 0))):
+                    port_name = safe_identifier(str(item.get("port_name") or item.get("field")))
+                    local_setup.append(
+                        f"{parameter_name}[{int(item.get('index', 0))}] = {port_name};"
+                    )
+                call_arguments.append(parameter_name)
+                continue
+            dependency = ignored_by_parameter.get(parameter_name)
+            if dependency:
+                parameter_type_base = re.sub(r"\s*\*.*$", "", parameter_type).strip()
+                local_dependencies.append(f"{parameter_type_base} {parameter_name} = {{0}};")
+                call_arguments.append(f"&{parameter_name}")
+                continue
+            raise RuntimeError(f"unfrozen pointer parameter: {parameter_name}")
+        local_names = ", ".join(str(port["name"]) for port in inputs)
+        input_arguments = ", ".join(f"&{port['name']}" for port in inputs)
+        format_string = " ".join(["%d"] * len(inputs))
+        include_types = any("_t" in str(item.get("c_type", "")) for item in ignored)
+        setup = "\n                        ".join(local_setup)
+        dependency_declarations = "\n                        ".join(local_dependencies)
+        include_block = '#include "dsc_types.h"\n' if include_types else ""
+        return textwrap.dedent(
+            f"""
+            #include <stdio.h>
+            {include_block}extern int {name}({', '.join(declarations)});
+            int main(int argc, char **argv) {{
+                FILE *input = stdin;
+                if (argc > 1) {{
+                    input = fopen(argv[1], "rb");
+                    if (!input) return 2;
+                }}
+                int {local_names};
+                int {output};
+                while (fscanf(input, "{format_string}", {input_arguments}) == {len(inputs)}) {{
+                    {dependency_declarations}
+                    {setup}
+                    {output} = {name}({', '.join(call_arguments)});
+                    printf("%d\\n", {output});
+                }}
+                if (input != stdin) fclose(input);
+                return 0;
+            }}
+            """
+        ).strip() + "\n"
+
     def render_oracle(self, contract: dict[str, Any]) -> str:
         function = contract_function(contract)
         name = str(function.get("name"))
@@ -947,24 +1100,65 @@ class Agent:
             "return_value",
         ))
         flattened = list(interface.get("flattened_pointer_dependencies", []) or [])
+        ignored = list(interface.get("ignored_pointer_dependencies", []) or [])
+        pointer_array_dependencies = [
+            item for item in flattened if item.get("parameter") and item.get("index") is not None
+        ]
+        if pointer_array_dependencies or ignored:
+            return self.render_pointer_array_oracle(contract, inputs, output, flattened, ignored)
         records = sorted({str(item.get("record")) for item in flattened if item.get("record")})
         if records:
-            if len(records) != 1:
-                raise RuntimeError("oracle supports one flattened record dependency at a time")
-            record_type = records[0]
-            # The C source uses the conventional parameter name dsc_state for
-            # dsc_state_t.  Flattened fields may be scalar members or bounded
-            # arrays.  Preserve that distinction instead of subscripting every
-            # field; the immutable C type is the authority here.
-            state_name = re.sub(r"_t$", "", record_type)
-            if not re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", state_name):
-                state_name = "state"
+            parameters = self.function_parameters(contract)
+            record_names: dict[str, str] = {}
+            parameter_record_types: dict[str, str] = {}
+            parameter_declarations: list[str] = []
+            for parameter in parameters:
+                parameter_name = str(parameter.get("name", ""))
+                parameter_type = str(parameter.get("type", "int")).strip()
+                if not parameter_name or not re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", parameter_name):
+                    raise RuntimeError(f"invalid C parameter name: {parameter_name}")
+                parameter_declarations.append(f"{parameter_type} {parameter_name}")
+                if parameter.get("pointer"):
+                    record_type = re.sub(r"\s*\*.*$", "", parameter_type).strip()
+                    parameter_record_types[parameter_name] = record_type
+                    if record_type in records:
+                        record_names[record_type] = parameter_name
+            for record_type in records:
+                if record_type not in record_names:
+                    state_name = re.sub(r"_t$", "", record_type)
+                    if not re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", state_name):
+                        state_name = "state"
+                    record_names[record_type] = state_name
+            flattened_port_names = {
+                safe_identifier(str(item.get("port_name") or item.get("field", "")))
+                for item in flattened
+            }
+            scalar_inputs = [port for port in inputs if str(port.get("name")) not in flattened_port_names]
+            if parameters:
+                pointer_records = {
+                    re.sub(r"\s*\*.*$", "", str(parameter.get("type", ""))).strip()
+                    for parameter in parameters if parameter.get("pointer")
+                }
+                if not set(records).issubset(pointer_records):
+                    raise RuntimeError("C parameters do not cover flattened record dependencies")
+            else:
+                parameter_declarations = [
+                    f"{record_type} *{record_names[record_type]}" for record_type in records
+                ]
+                parameter_declarations.extend(
+                    f"int {port['name']}" for port in inputs
+                    if port.get("name") not in {item.get("field") for item in flattened}
+                )
             assignments = []
             for item in flattened:
                 field = str(item.get("field", ""))
                 port = next((value for value in inputs if value.get("name") == field), None)
                 if not field or port is None or not re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", field):
                     raise RuntimeError(f"flattened state dependency is not a scalar port: {field}")
+                record_type = str(item.get("record", ""))
+                state_name = record_names.get(record_type)
+                if not state_name:
+                    raise RuntimeError(f"missing record parameter for: {record_type}")
                 c_type = str(item.get("c_type", port.get("c_type", "int")))
                 if "*" in c_type and "[" not in c_type:
                     raise RuntimeError(f"flattened pointer table is not a scalar port: {field}")
@@ -976,19 +1170,30 @@ class Agent:
                 else:
                     assignments.append(f"{state_name}.{field} = {field};")
             state_setup = "\n                ".join(assignments)
-            declaration = f"{record_type} *{state_name}"
-            call = ", ".join([f"&{state_name}"] + [str(port["name"]) for port in inputs if port.get("name") not in {item.get("field") for item in flattened}])
-            # The flattened fields are dependencies of the state pointer, not
-            # original C parameters.  Keep the original scalar parameters in
-            # their frozen interface order after the reconstructed state.
-            scalar_inputs = [
-                port for port in inputs
-                if port.get("name") not in {item.get("field") for item in flattened}
-            ]
-            declarations = ", ".join([declaration] + [f"int {port['name']}" for port in scalar_inputs])
+            if parameters:
+                call = ", ".join(
+                    (
+                        f"&{record_names[parameter_record_types[str(parameter.get('name'))]]}"
+                        if parameter.get("pointer")
+                        else str(parameter.get("name"))
+                    )
+                    for parameter in parameters
+                )
+            else:
+                call = ", ".join(f"&{record_names[record_type]}" for record_type in records)
+                scalar_names = [
+                    str(port["name"]) for port in inputs
+                    if port.get("name") not in {item.get("field") for item in flattened}
+                ]
+                if scalar_names:
+                    call += (", " if call else "") + ", ".join(scalar_names)
+            declarations = ", ".join(parameter_declarations)
             local_declarations = ", ".join(str(port["name"]) for port in inputs)
             arguments = ", ".join(f"&{port['name']}" for port in inputs)
             format_string = " ".join(["%d"] * len(inputs))
+            record_declarations = "\n                        ".join(
+                f"{record_type} {record_names[record_type]} = {{0}};" for record_type in records
+            )
             return textwrap.dedent(
                 f"""
                 #include <stddef.h>
@@ -1004,7 +1209,7 @@ class Agent:
                     int {local_declarations};
                     int {output};
                     while (fscanf(input, "{format_string}", {arguments}) == {len(inputs)}) {{
-                        {record_type} {state_name} = {{0}};
+                        {record_declarations}
                         {state_setup}
                         {output} = {name}({call});
                         printf("%d\\n", {output});
@@ -1801,17 +2006,47 @@ class Agent:
         header_prefix = ""
         if flattened:
             records = sorted({str(item.get("record")) for item in flattened if item.get("record")})
-            if len(records) != 1:
-                raise RuntimeError("overlay supports one flattened record dependency at a time")
-            record_type = records[0]
-            state_name = re.sub(r"_t$", "", record_type)
-            if not re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", state_name):
-                state_name = "state"
-            scalar_inputs = [port for port in inputs if str(port.get("name")) not in flattened_fields]
-            caller_declarations = ", ".join(
-                [f"{record_type} *{state_name}"] + [f"int {port['name']}" for port in scalar_inputs]
-            )
-            caller_call = ", ".join([f"{state_name}"] + [str(port["name"]) for port in scalar_inputs])
+            parameters = self.function_parameters(contract)
+            record_names: dict[str, str] = {}
+            parameter_specs: list[str] = []
+            parameter_names: list[str] = []
+            parameter_record_types: dict[str, str] = {}
+            for parameter in parameters:
+                parameter_name = str(parameter.get("name", ""))
+                parameter_type = str(parameter.get("type", "int")).strip()
+                if not parameter_name or not re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", parameter_name):
+                    raise RuntimeError(f"invalid C parameter name: {parameter_name}")
+                parameter_specs.append(f"{parameter_type} {parameter_name}")
+                parameter_names.append(parameter_name)
+                if parameter.get("pointer"):
+                    record_type = re.sub(r"\s*\*.*$", "", parameter_type).strip()
+                    parameter_record_types[parameter_name] = record_type
+                    if record_type in records:
+                        record_names[record_type] = parameter_name
+            for record_type in records:
+                if record_type not in record_names:
+                    state_name = re.sub(r"_t$", "", record_type)
+                    if not re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", state_name):
+                        state_name = "state"
+                    record_names[record_type] = state_name
+            flattened_port_names = {
+                safe_identifier(str(item.get("port_name") or item.get("field", "")))
+                for item in flattened
+            }
+            scalar_inputs = [port for port in inputs if str(port.get("name")) not in flattened_port_names]
+            if parameters:
+                pointer_records = set(parameter_record_types.values())
+                if not set(records).issubset(pointer_records):
+                    raise RuntimeError("C parameters do not cover flattened record dependencies")
+            else:
+                parameter_specs = [
+                    f"{record_type} *{record_names[record_type]}" for record_type in records
+                ]
+                parameter_specs.extend(f"int {port['name']}" for port in scalar_inputs)
+                parameter_names = [record_names[record_type] for record_type in records]
+                parameter_names.extend(str(port["name"]) for port in scalar_inputs)
+            caller_declarations = ", ".join(parameter_specs)
+            caller_call = ", ".join(parameter_names)
             source_body_text = ""
             try:
                 _, source_body_text, _ = source_body(
@@ -1830,10 +2065,22 @@ class Agent:
             )
             rtl_arguments = []
             flattened_by_field = {str(item.get("field")): item for item in flattened}
+            flattened_by_port = {
+                safe_identifier(str(item.get("port_name") or item.get("field", ""))): item
+                for item in flattened
+            }
             for port in inputs:
                 field = str(port.get("name"))
-                if field in flattened_fields:
+                if field in flattened_by_port and flattened_by_port[field].get("parameter"):
+                    dependency = flattened_by_port[field]
+                    parameter = str(dependency.get("parameter"))
+                    index = int(dependency.get("index", 0))
+                    rtl_arguments.append(f"{parameter}[{index}]")
+                elif field in flattened_fields:
                     dependency = flattened_by_field[field]
+                    record_name = record_names.get(str(dependency.get("record")))
+                    if not record_name:
+                        raise RuntimeError(f"missing record parameter for: {dependency.get('record')}")
                     c_type = str(dependency.get("c_type", port.get("c_type", "int")))
                     if "*" in c_type or ("[" in c_type and "]" in c_type):
                         match = re.search(
@@ -1841,9 +2088,9 @@ class Agent:
                             source_body_text,
                         )
                         index = match.group(1) if match else index_name
-                        rtl_arguments.append(f"{state_name}->{field}[{index}]")
+                        rtl_arguments.append(f"{record_name}->{field}[{index}]")
                     else:
-                        rtl_arguments.append(f"{state_name}->{field}")
+                        rtl_arguments.append(f"{record_name}->{field}")
                 else:
                     rtl_arguments.append(field)
             rtl_call = ", ".join(rtl_arguments)

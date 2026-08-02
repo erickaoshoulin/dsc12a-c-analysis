@@ -1,0 +1,284 @@
+{
+  "arithmetic_semantics": {
+    "overflow": "no signed overflow on the locked legal domain; outside-domain behavior is not contracted",
+    "rounding": "integer division by two truncates toward zero; modulo is C remainder on non-negative operands",
+    "saturation": "none",
+    "shifts": "left shifts have operands in [8,16], qlevel is [0,16], and all shifted values are non-negative",
+    "signedness": "C int operands are signed, but the legal-domain inputs and output are non-negative"
+  },
+  "contract_id": "samptolinebuf",
+  "coverage": {
+    "branch_coverage_percent": 50.0,
+    "execution_count": 67068,
+    "line_coverage_percent": 66.667,
+    "production_reachable": true,
+    "status": "EXECUTED"
+  },
+  "dependencies": {
+    "direct_callees": [],
+    "read_fields": [
+      "dsc_cfg_t.linebuf_depth",
+      "dsc_state_t.cpntBitDepth"
+    ],
+    "return_dependencies": [],
+    "unresolved": [
+      "parameter:x",
+      "field:dsc_cfg_t.linebuf_depth"
+    ]
+  },
+  "do_not_edit": true,
+  "function": {
+    "clang_usr": "c:@F@SampToLineBuf",
+    "name": "SampToLineBuf",
+    "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/dsc_codec.c#L2036-L2049",
+    "qualified_name": "SampToLineBuf",
+    "source_body_sha256": "edc5b9ebb87d2fb05ba842bddac76cbb5cf466c08ec2c939080340066b96df10",
+    "source_file": "dsc_codec.c",
+    "source_file_sha256": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf",
+    "source_span": {
+      "end_column": 1,
+      "end_line": 2049,
+      "start_column": 5,
+      "start_line": 2036
+    }
+  },
+  "interface": {
+    "flattened_pointer_dependencies": [
+      {
+        "access": "READ_ONLY",
+        "c_type": "int",
+        "field": "linebuf_depth",
+        "legal_domain": {
+          "kind": "unresolved",
+          "range": null,
+          "values": []
+        },
+        "logical_width": 32,
+        "record": "dsc_cfg_t",
+        "role": "RUNTIME_INPUT",
+        "unresolved": true,
+        "width_source": "C_TYPE_FALLBACK"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "conditional": "selected component bit depth; leftRecon range is conditional on this value",
+        "field": "cpntBitDepth",
+        "legal_domain": {
+          "basis": "PPS bits_per_component plus one-bit RGB chroma extension",
+          "kind": "set",
+          "range": [
+            8,
+            16
+          ],
+          "values": [
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "record": "dsc_state_t",
+        "role": "CONFIG_STATIC",
+        "unresolved": false,
+        "width_source": "NORMATIVE_COMPONENT_BIT_DEPTH_DOMAIN"
+      }
+    ],
+    "input_bit_count": 71,
+    "inputs": [
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "kind": "unresolved",
+          "range": null,
+          "values": []
+        },
+        "logical_width": 32,
+        "name": "x",
+        "pointer": false,
+        "role": "RUNTIME_INPUT",
+        "unresolved": true,
+        "width_source": "C_TYPE_FALLBACK"
+      },
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "dsc_state_t component arrays have extent 4",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ],
+          "values": []
+        },
+        "logical_width": 2,
+        "name": "cpnt",
+        "pointer": false,
+        "role": "RUNTIME_INPUT",
+        "unresolved": false,
+        "width_source": "C_ARRAY_EXTENT"
+      }
+    ],
+    "output": {
+      "c_type": "int",
+      "legal_range": null,
+      "logical_width": 32,
+      "name": "return_value",
+      "signed": true,
+      "unresolved": true,
+      "width_source": "C_TYPE_FALLBACK"
+    }
+  },
+  "lock_status": "LOCKED_GENERATED",
+  "obligations": [
+    "parameter:x",
+    "field:dsc_cfg_t.linebuf_depth"
+  ],
+  "provenance": {
+    "coverage_sha256": "487b3d70a61f2a70b94d953d26ee078df3f8e3f4b2d30b6cdbb508a9548aef62",
+    "source_hashes_sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+    "spec_sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+  },
+  "read_struct_fields": [
+    {
+      "access": "READ_ONLY",
+      "c_type": "int",
+      "field": "linebuf_depth",
+      "legal_domain": {
+        "kind": "unresolved",
+        "range": null,
+        "values": []
+      },
+      "logical_width": 32,
+      "record": "dsc_cfg_t",
+      "role": "RUNTIME_INPUT",
+      "unresolved": true,
+      "width_source": "C_TYPE_FALLBACK"
+    },
+    {
+      "access": "READ_ONLY",
+      "c_type": "int[4]",
+      "conditional": "selected component bit depth; leftRecon range is conditional on this value",
+      "field": "cpntBitDepth",
+      "legal_domain": {
+        "basis": "PPS bits_per_component plus one-bit RGB chroma extension",
+        "kind": "set",
+        "range": [
+          8,
+          16
+        ],
+        "values": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16
+        ]
+      },
+      "logical_width": 5,
+      "record": "dsc_state_t",
+      "role": "CONFIG_STATIC",
+      "unresolved": false,
+      "width_source": "NORMATIVE_COMPONENT_BIT_DEPTH_DOMAIN"
+    }
+  ],
+  "schema_version": 1,
+  "selection": {
+    "candidate_rank": 6,
+    "eligible_after_coverage": true,
+    "eligible_static": true,
+    "leaf": true,
+    "rank": 6,
+    "score": 100.0,
+    "selection_basis": "tool-ranked production/output leaf candidate after dynamic coverage join"
+  },
+  "spec_links": [
+    {
+      "anchor_id": "pdf:model-note:MN_LINE_STORAGE:p075",
+      "evidence": "C comment and PDF anchor both contain MN_LINE_STORAGE",
+      "method": "exact_mn_id",
+      "page": 75,
+      "section": "6.3",
+      "short_anchor": "6.3 Line Storage; model note: MN_LINE_STORAGE in dsc_codec.c",
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:section:6.3",
+      "evidence": "C comment and PDF anchor both contain MN_LINE_STORAGE",
+      "method": "exact_mn_id",
+      "page": 75,
+      "section": "6.3",
+      "short_anchor": "6.3 Line Storage",
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:model-note:MN_LINE_STORAGE:p117",
+      "evidence": "C comment and PDF anchor both contain MN_LINE_STORAGE",
+      "method": "exact_mn_id",
+      "page": 117,
+      "section": "7.4",
+      "short_anchor": "7.4 Line Storage; model note: MN_LINE_STORAGE in dsc_codec.c",
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:section:7.4",
+      "evidence": "C comment and PDF anchor both contain MN_LINE_STORAGE",
+      "method": "exact_mn_id",
+      "page": 117,
+      "section": "7.4",
+      "short_anchor": "7.4 Line Storage",
+      "status": "EXACT"
+    }
+  ],
+  "static_analysis": {
+    "callees": [],
+    "contributes_to_observable_output": true,
+    "direct_effects": {
+      "allocation": false,
+      "assertion": false,
+      "indirect_call": false,
+      "io": false,
+      "logging": false,
+      "state_write": false,
+      "unknown_facts": []
+    },
+    "globals_read": [],
+    "globals_write": [],
+    "production_reachable": true,
+    "purity": "PURE",
+    "role": "DUT",
+    "timing": "COMBINATIONAL",
+    "transitive_effects": {
+      "allocation": false,
+      "assertion": false,
+      "indirect_call": false,
+      "io": false,
+      "logging": false,
+      "state_write": false,
+      "unknown_facts": []
+    }
+  },
+  "status": "PROPOSED",
+  "verification_plan": {
+    "legal_domain": "cpnt in [0,3], cpntBitDepth in {8..16}, qlevel <= table-derived maximum for the selected component depth, leftRecon in [0,(1<<cpntBitDepth)-1]",
+    "mutations": [
+      "signedness",
+      "boundary",
+      "array-index",
+      "off-by-one"
+    ],
+    "oracle": "call the immutable C function through a generated wrapper with flattened state dependencies",
+    "rtl": "at most four generated combinational SystemVerilog candidates",
+    "simulator": "Verilator lint/compile plus exhaustive legal-domain comparison"
+  }
+}

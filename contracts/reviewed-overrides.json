@@ -177,6 +177,285 @@
         "return_range": [0, 1],
         "signedness": "All three inputs are unsigned 5-bit normative QP fields; the C int result is exactly 0 or 1."
       }
+    },
+    {
+      "match": {
+        "exact_anchor_id": "pdf:model-note:MN_LINE_STORAGE:p075"
+      },
+      "review_status": "REVIEWED",
+      "reviewed_by": "codex",
+      "evidence": [
+        {
+          "kind": "EXACT_SPEC",
+          "anchor_id": "pdf:section:6.3",
+          "page": 75,
+          "section": "6.3",
+          "reason": "DSC 1.2a defines shiftAmount, rounding, storedSample saturation, and readSample reconstruction for line storage."
+        },
+        {
+          "kind": "EXACT_SPEC",
+          "anchor_id": "pdf:section:7.4",
+          "page": 117,
+          "section": "7.4",
+          "reason": "DSC 1.2a repeats the line-buffer storage and reconstruction formula for the decoder path."
+        },
+        {
+          "kind": "SOURCE_SEMANTICS",
+          "source_file": "dsc_codec.c",
+          "c_span": {
+            "start_line": 2036,
+            "end_line": 2049
+          },
+          "reason": "The immutable C leaf is a pure shift, round, saturate, and reconstruct operation with no calls or state writes."
+        },
+        {
+          "kind": "EXACT_SPEC",
+          "anchor_id": "pdf:table:4-1",
+          "page": 50,
+          "section": "4.1",
+          "reason": "PPS3 constrains component bit depth and linebuf_depth to the DSC 1.2a supported field domains; the reviewed contract retains the full 8..16 bounded domain."
+        }
+      ],
+      "spec_links": [
+        {
+          "anchor_id": "pdf:model-note:MN_LINE_STORAGE:p075",
+          "page": 75,
+          "section": "6.3",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.3",
+          "page": 75,
+          "section": "6.3",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:model-note:MN_LINE_STORAGE:p117",
+          "page": 117,
+          "section": "7.4",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:7.4",
+          "page": 117,
+          "section": "7.4",
+          "status": "EXACT"
+        }
+      ],
+      "interface": {
+        "flattened_pointer_dependencies": [
+          {
+            "access": "READ_ONLY",
+            "c_type": "int[4]",
+            "field": "cpntBitDepth",
+            "legal_domain": {
+              "basis": "DSC 1.2a component bit-depth domain; selected component value is bounded to 8..16",
+              "kind": "set",
+              "range": [8, 16],
+              "values": [8, 9, 10, 11, 12, 13, 14, 15, 16]
+            },
+            "logical_width": 5,
+            "record": "dsc_state_t",
+            "role": "CONFIG_STATIC",
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "access": "READ_ONLY",
+            "c_type": "int",
+            "field": "linebuf_depth",
+            "legal_domain": {
+              "basis": "DSC 1.2a PPS3 linebuf_depth domain, including the v1.2 extended depth range",
+              "kind": "set",
+              "range": [8, 16],
+              "values": [8, 9, 10, 11, 12, 13, 14, 15, 16]
+            },
+            "logical_width": 4,
+            "record": "dsc_cfg_t",
+            "role": "CONFIG_STATIC",
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          }
+        ],
+        "input_bit_count": 27,
+        "inputs": [
+          {
+            "c_type": "int",
+            "legal_domain": {
+              "basis": "0 <= sample < (1 << cpntBitDepth); the frozen domain covers the widest supported component sample",
+              "kind": "conditional_range",
+              "range": [0, 65535]
+            },
+            "logical_width": 16,
+            "name": "x",
+            "pointer": false,
+            "role": "RUNTIME_INPUT",
+            "signed": false,
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "c_type": "int",
+            "legal_domain": {
+              "basis": "dsc_state_t component arrays have extent 4",
+              "kind": "range",
+              "range": [0, 3]
+            },
+            "logical_width": 2,
+            "name": "cpnt",
+            "pointer": false,
+            "role": "RUNTIME_INPUT",
+            "signed": false,
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          }
+        ],
+        "output": {
+          "c_type": "int",
+          "legal_range": [0, 65535],
+          "logical_width": 16,
+          "name": "return_value",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        }
+      },
+      "semantics": {
+        "kind": "line_storage",
+        "expression": "shift_amount = MAX(0, cpntBitDepth - linebuf_depth); round = shift_amount > 0 ? (1 << (shift_amount - 1)) : 0; storedSample = MIN((x + round) >> shift_amount, (1 << linebuf_depth) - 1); return_value = storedSample << shift_amount",
+        "return_range": [0, 65535],
+        "rounding": "round = shift_amount > 0 ? (1 << (shift_amount - 1)) : 0",
+        "shift_amount": "MAX(0, cpntBitDepth - linebuf_depth)",
+        "signedness": "Legal samples and configuration fields are non-negative; the C int intermediates remain within the supported 16-bit sample domain."
+      }
+    },
+    {
+      "match": {
+        "clang_usr": "c:@F@PredictSize",
+        "spec_anchor_id": "pdf:section:6.6.1"
+      },
+      "review_status": "REVIEWED",
+      "reviewed_by": "codex",
+      "evidence": [
+        {
+          "kind": "EXACT_SPEC",
+          "anchor_id": "pdf:section:6.6.1",
+          "page": 91,
+          "section": "6.6.1",
+          "reason": "DSC 1.2a gives predictedSize = (requiredSize[0] + requiredSize[1] + 2 * requiredSize[2] + 2) >> 2."
+        },
+        {
+          "kind": "EXACT_SPEC",
+          "anchor_id": "pdf:section:6.4.5",
+          "page": 83,
+          "section": "6.4.5",
+          "reason": "The required residual size is bounded by the component residual-size domain; for DSC 1.2a the maximum component depth is 16, so each requiredSize element is in [0,16]."
+        },
+        {
+          "kind": "SOURCE_SEMANTICS",
+          "source_file": "dsc_codec.c",
+          "c_span": {
+            "start_line": 1476,
+            "end_line": 1486
+          },
+          "reason": "The immutable C leaf reads three req_size elements, performs the exact rounded average, and does not read dsc_cfg or write state."
+        }
+      ],
+      "spec_links": [
+        {
+          "anchor_id": "pdf:section:6.6.1",
+          "page": 91,
+          "section": "6.6.1",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.4.5",
+          "page": 83,
+          "section": "6.4.5",
+          "status": "EXACT"
+        }
+      ],
+      "interface": {
+        "flattened_pointer_dependencies": [
+          {
+            "access": "READ_ONLY",
+            "c_type": "int *",
+            "field": "req_size[0]",
+            "index": 0,
+            "legal_domain": {
+              "basis": "requiredSize is a non-negative residual size bounded by maxSize <= 16",
+              "kind": "range",
+              "range": [0, 16]
+            },
+            "logical_width": 5,
+            "parameter": "req_size",
+            "port_name": "req_size_0",
+            "role": "RUNTIME_INPUT",
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "access": "READ_ONLY",
+            "c_type": "int *",
+            "field": "req_size[1]",
+            "index": 1,
+            "legal_domain": {
+              "basis": "requiredSize is a non-negative residual size bounded by maxSize <= 16",
+              "kind": "range",
+              "range": [0, 16]
+            },
+            "logical_width": 5,
+            "parameter": "req_size",
+            "port_name": "req_size_1",
+            "role": "RUNTIME_INPUT",
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          },
+          {
+            "access": "READ_ONLY",
+            "c_type": "int *",
+            "field": "req_size[2]",
+            "index": 2,
+            "legal_domain": {
+              "basis": "requiredSize is a non-negative residual size bounded by maxSize <= 16",
+              "kind": "range",
+              "range": [0, 16]
+            },
+            "logical_width": 5,
+            "parameter": "req_size",
+            "port_name": "req_size_2",
+            "role": "RUNTIME_INPUT",
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          }
+        ],
+        "ignored_pointer_dependencies": [
+          {
+            "access": "READ_ONLY",
+            "c_type": "dsc_cfg_t *",
+            "parameter": "dsc_cfg",
+            "reason": "C signature compatibility only; PredictSize reads no dsc_cfg fields",
+            "role": "UNUSED_DEPENDENCY",
+            "unresolved": false
+          }
+        ],
+        "input_bit_count": 15,
+        "output": {
+          "c_type": "int",
+          "legal_range": [0, 16],
+          "logical_width": 5,
+          "name": "return_value",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        }
+      },
+      "semantics": {
+        "kind": "pure_expression",
+        "expression": "(req_size_0 + req_size_1 + (2 * req_size_2) + 2) >> 2",
+        "return_range": [0, 16],
+        "signedness": "All requiredSize inputs are non-negative 5-bit normative residual sizes; the rounded average is non-negative and at most 16."
+      }
     }
   ]
 }

@@ -61,6 +61,34 @@ def quantization_body(interface: dict[str, object], semantics: dict[str, object]
     return "\n".join(lines)
 
 
+def line_storage_body(interface: dict[str, object], bad: bool) -> str:
+    ports = interface.get("ports", [])
+    names = {
+        normalized_identifier(str(port.get("role", port.get("name")))): str(port.get("name"))
+        for port in ports if isinstance(port, dict)
+    }
+    x_name = names.get("x", "x")
+    bit_depth_name = names.get("cpntbitdepth", "cpntBitDepth")
+    linebuf_name = names.get("linebufdepth", "linebuf_depth")
+    out_name = names.get("returnvalue", "return_value")
+    lines = [
+        "    integer signed shift_amount_i;",
+        "    integer signed round_i;",
+        "    integer signed stored_sample_i;",
+        "    always_comb begin",
+        f"        shift_amount_i = {bit_depth_name} - {linebuf_name};",
+        "        if (shift_amount_i < 0) shift_amount_i = 0;",
+        "        round_i = shift_amount_i > 0 ? (1 <<< (shift_amount_i - 1)) : 0;",
+        f"        stored_sample_i = ({x_name} + round_i) >>> shift_amount_i;",
+        f"        if (stored_sample_i > ((1 <<< {linebuf_name}) - 1)) stored_sample_i = (1 <<< {linebuf_name}) - 1;",
+        f"        {out_name} = stored_sample_i <<< shift_amount_i;",
+    ]
+    if bad:
+        lines.append(f"        {out_name} = {out_name} + 1;")
+    lines.append("    end")
+    return "\n".join(lines)
+
+
 def generic_body(interface: dict[str, object], semantics: dict[str, object], bad: bool) -> str:
     ports = interface.get("ports", [])
     out = next((p for p in ports if isinstance(p, dict) and p.get("role") == "return_value"), None)
@@ -98,6 +126,8 @@ def render_candidate(contract: dict[str, object], interface: dict[str, object], 
     kind = str(semantics.get("kind", "")) if isinstance(semantics, dict) else ""
     if kind == "quantization":
         body = quantization_body(interface, semantics, bad)
+    elif kind == "line_storage":
+        body = line_storage_body(interface, bad)
     else:
         body = generic_body(interface, semantics if isinstance(semantics, dict) else {}, bad)
     return "module " + module + " (\n" + declarations + "\n);\n" + body + "\nendmodule\n"
