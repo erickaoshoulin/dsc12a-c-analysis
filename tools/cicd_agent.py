@@ -41,6 +41,7 @@ STATE_ORDER = (
 )
 VERIFICATION_STATUSES = {
     "EXHAUSTIVE_EQUIVALENT",
+    "FORMAL_EQUIVALENT",
     "DIFFERENTIAL_PASS",
     "COUNTEREXAMPLE",
     "UNPROVED",
@@ -1918,6 +1919,7 @@ class Agent:
                 "verification_status",
                 "compile_once",
                 "shards",
+                "formal_proofs",
                 "smallest_counterexample",
             ],
         })
@@ -2177,6 +2179,72 @@ class Agent:
         candidate["compile"] = receipt
         return receipt
 
+    def formal_verify(self, contract: dict[str, Any], artifact: pathlib.Path,
+                      candidate: dict[str, Any]) -> dict[str, Any]:
+        """Run the independent AST/Z3 proof for a reviewed bounded window.
+
+        Concrete window coverage remains intentionally bounded.  The formal
+        helper is invoked only for contracts that explicitly declare the
+        reviewed semantic adapter; other contracts retain their normal
+        exhaustive-differential path.
+        """
+        semantics = contract.get("semantics", {}) or {}
+        strategy = semantics.get("legal_vector_strategy") or {}
+        if strategy.get("kind") != "windowed_boundary":
+            return {
+                "schema_version": 1,
+                "status": "NOT_APPLICABLE",
+                "proof_complete": False,
+                "reason": "formal AST proof is only enabled for reviewed windowed_boundary contracts",
+            }
+        helper = self.root / "tools" / "formal_rtl.py"
+        if not helper.is_file():
+            return {
+                "schema_version": 1,
+                "status": "INFRASTRUCTURE_FAILURE",
+                "proof_complete": False,
+                "error": "formal_rtl.py is missing",
+            }
+        candidate_path = artifact / str(candidate["path"])
+        output = artifact / "formal" / f"{safe_identifier(str(candidate['candidate']))}.json"
+        timeout_ms = int(os.environ.get("DSC_CICD_FORMAL_TIMEOUT_MS", "180000"))
+        verilator = self.input_facts["tools"].get("verilator") or "verilator"
+        command = [
+            sys.executable,
+            str(helper),
+            "--contract",
+            str(artifact / "locked-contract.json"),
+            "--candidate",
+            str(candidate_path),
+            "--output",
+            str(output),
+            "--verilator",
+            str(verilator),
+            "--timeout-ms",
+            str(timeout_ms),
+        ]
+        process = self.run_process(
+            command,
+            cwd=artifact,
+            timeout=max(60, int(timeout_ms / 1000) + 30),
+        )
+        receipt = read_json(output, {}) or {}
+        if not isinstance(receipt, dict):
+            receipt = {}
+        receipt["execution_status"] = "EXECUTED_NOW"
+        receipt["command"] = process
+        if process.get("returncode") == 124:
+            receipt["status"] = "UNKNOWN"
+            receipt["proof_complete"] = False
+            receipt.setdefault("reason", "formal proof timed out")
+        elif process.get("returncode") != 0 and receipt.get("status") not in {"COUNTEREXAMPLE", "UNKNOWN"}:
+            receipt["status"] = "INFRASTRUCTURE_FAILURE"
+            receipt["proof_complete"] = False
+            receipt.setdefault("error", "formal proof command failed")
+        write_json(output, receipt)
+        receipt["receipt"] = str(output.relative_to(artifact))
+        return receipt
+
     def run_shard(self, artifact: pathlib.Path, shard: dict[str, Any],
                   oracle: pathlib.Path, rtl: pathlib.Path,
                   stop_event: threading.Event) -> dict[str, Any]:
@@ -2290,6 +2358,7 @@ class Agent:
             "oracle_compile": oracle_receipt,
             "compile_once": [],
             "candidates": [],
+            "formal_proofs": [],
             "smallest_counterexample": None,
         }
         if oracle_receipt.get("status") != "PASS" or not shard_info.get("complete"):
@@ -2374,20 +2443,52 @@ class Agent:
                     "worker_count": worker_count,
                 },
             }
+            formal = self.formal_verify(contract, artifact, candidate)
+            candidate_result["formal_proof"] = {
+                "status": formal.get("status"),
+                "proof_complete": formal.get("proof_complete", False),
+                "receipt": formal.get("receipt"),
+                "counterexample": formal.get("counterexample"),
+                "reason": formal.get("reason") or formal.get("error"),
+            }
+            unit_receipt["formal_proofs"].append({
+                "candidate": candidate["candidate"],
+                "status": formal.get("status"),
+                "proof_complete": formal.get("proof_complete", False),
+                "receipt": formal.get("receipt"),
+            })
+            if status == "DIFFERENTIAL_PASS" and formal.get("status") == "PASS":
+                status = "FORMAL_EQUIVALENT"
+                candidate_result["verification_status"] = status
+            elif status == "DIFFERENTIAL_PASS" and formal.get("status") == "COUNTEREXAMPLE":
+                status = "COUNTEREXAMPLE"
+                candidate_result["verification_status"] = status
+                candidate_result["formal_counterexample"] = formal.get("counterexample")
+            elif status == "DIFFERENTIAL_PASS" and formal.get("status") in {
+                "INFRASTRUCTURE_FAILURE", "UNKNOWN"
+            }:
+                status = "INFRASTRUCTURE_FAILURE" if formal.get("status") == "INFRASTRUCTURE_FAILURE" else "UNPROVED"
+                candidate_result["verification_status"] = status
             unit_receipt["candidates"].append(candidate_result)
             if smallest and unit_receipt.get("smallest_counterexample") is None:
                 unit_receipt["smallest_counterexample"] = smallest
         promoted = next(
+            (item for item in unit_receipt["candidates"] if item["verification_status"] == "FORMAL_EQUIVALENT"),
+            None,
+        ) or next(
             (item for item in unit_receipt["candidates"] if item["verification_status"] == "EXHAUSTIVE_EQUIVALENT"),
             None,
         )
-        unit_receipt["verification_status"] = "EXHAUSTIVE_EQUIVALENT" if promoted else (
+        unit_receipt["verification_status"] = (
+            "FORMAL_EQUIVALENT" if promoted and promoted["verification_status"] == "FORMAL_EQUIVALENT"
+            else "EXHAUSTIVE_EQUIVALENT" if promoted else (
             "COUNTEREXAMPLE" if any(item["verification_status"] == "COUNTEREXAMPLE" for item in unit_receipt["candidates"])
             else "DIFFERENTIAL_PASS" if unit_receipt["candidates"] and all(
                 item["verification_status"] == "DIFFERENTIAL_PASS"
                 for item in unit_receipt["candidates"]
             )
             else "UNPROVED"
+            )
         )
         unit_receipt["promoted_candidate"] = promoted.get("candidate") if promoted else None
         unit_receipt["duration_seconds"] = round(time.time() - started, 3)
@@ -2605,7 +2706,37 @@ class Agent:
 
             def resolve_overlay_index(dependency: dict[str, Any], raw_index: object) -> str:
                 raw = str(raw_index)
+                if re.fullmatch(r"-?\d+", raw):
+                    return raw
                 normalized_raw = re.sub(r"[^a-z0-9]", "", raw.lower())
+                bound_port = next(
+                    (
+                        item for item in flattened
+                        if any(
+                            re.sub(r"[^a-z0-9]", "", str(candidate).lower()) == normalized_raw
+                            for candidate in (
+                                item.get("port_name"),
+                                item.get("role"),
+                            )
+                            if candidate is not None
+                        )
+                    ),
+                    None,
+                )
+                if bound_port and bound_port.get("record"):
+                    bound_record = record_names.get(str(bound_port.get("record")))
+                    bound_field = str(bound_port.get("field"))
+                    if bound_record and re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", bound_field):
+                        raw_indices: list[object] = []
+                        if bound_port.get("index_names") is not None:
+                            raw_indices.extend(bound_port.get("index_names") or [])
+                        elif bound_port.get("index_name") is not None:
+                            raw_indices.append(bound_port.get("index_name"))
+                        elif bound_port.get("index") is not None:
+                            raw_indices.append(bound_port.get("index"))
+                        indices = [resolve_overlay_index(bound_port, value) for value in raw_indices]
+                        suffix = "".join(f"[{index}]" for index in indices)
+                        return f"{bound_record}->{bound_field}{suffix}"
                 indexed_field = next(
                     (
                         item for item in flattened
@@ -2629,7 +2760,42 @@ class Agent:
                 field = str(port.get("name"))
                 if field in flattened_by_port:
                     dependency = flattened_by_port[field]
-                    if dependency.get("parameter"):
+                    # A flattened record field also carries its original
+                    # parameter name.  It must be emitted as
+                    # ``record->field[index]``; only a bare pointer-array tap
+                    # uses the ``parameter[index]`` form.
+                    if dependency.get("record"):
+                        record_name = record_names.get(str(dependency.get("record")))
+                        if not record_name:
+                            raise RuntimeError(f"missing record parameter for: {dependency.get('record')}")
+                        dependency_field = str(dependency.get("field"))
+                        c_type = str(dependency.get("c_type", port.get("c_type", "int")))
+                        raw_indices: list[object] = []
+                        if dependency.get("index_names") is not None:
+                            value = dependency.get("index_names")
+                            if not isinstance(value, list) or not value:
+                                raise RuntimeError(f"invalid record index_names for: {dependency_field}")
+                            raw_indices.extend(value)
+                        elif dependency.get("index_name") is not None:
+                            raw_indices.append(dependency.get("index_name"))
+                        elif dependency.get("index") is not None and "[" in c_type:
+                            raw_indices.append(dependency.get("index"))
+                        if raw_indices:
+                            indices = [resolve_overlay_index(dependency, value) for value in raw_indices]
+                            rtl_arguments.append(
+                                f"{record_name}->{dependency_field}" + "".join(f"[{index}]" for index in indices)
+                            )
+                        elif "*" in c_type or ("[" in c_type and "]" in c_type):
+                            match = re.search(
+                                rf"->\s*{re.escape(dependency_field)}\s*\[\s*([A-Za-z_][A-Za-z0-9_]*)\s*\]",
+                                source_body_text,
+                            )
+                            if not match:
+                                raise RuntimeError(f"record array field lacks a frozen index: {dependency_field}")
+                            rtl_arguments.append(f"{record_name}->{dependency_field}[{match.group(1)}]")
+                        else:
+                            rtl_arguments.append(f"{record_name}->{dependency_field}")
+                    elif dependency.get("parameter"):
                         parameter = str(dependency.get("parameter"))
                         index = int(dependency.get("index", 0))
                         rtl_arguments.append(f"{parameter}[{index}]")
@@ -2989,7 +3155,7 @@ class Agent:
         results: list[dict[str, Any]] = []
         for candidate_result in unit.get("candidates", []):
             unit_status = str(candidate_result.get("verification_status", "UNPROVED"))
-            if unit_status in {"EXHAUSTIVE_EQUIVALENT", "DIFFERENTIAL_PASS"}:
+            if unit_status in {"FORMAL_EQUIVALENT", "EXHAUSTIVE_EQUIVALENT", "DIFFERENTIAL_PASS"}:
                 continue
             name = str(candidate_result.get("candidate", "candidate"))
             candidate = generated.get(name, {})
@@ -3017,7 +3183,7 @@ class Agent:
                     matrix.get("modes", {}).get("SHADOW", {}).get("status") == "PASS"
                     and matrix.get("modes", {}).get("RTL_RETURN", {}).get("status") == "PASS"
                 ) else "FAIL"
-            expected = unit_status != "EXHAUSTIVE_EQUIVALENT" and bitstream_gate == "FAIL"
+            expected = unit_status not in {"FORMAL_EQUIVALENT", "EXHAUSTIVE_EQUIVALENT"} and bitstream_gate == "FAIL"
             full_receipt = {
                 "schema_version": 2,
                 "execution_status": "EXECUTED_NOW",
@@ -3352,6 +3518,8 @@ class Agent:
                 "executed_vectors": domain.get("total_vectors", 0),
                 "domain_proof_complete": domain.get("proof_complete", True),
                 "vector_strategy": domain.get("vector_strategy", {}).get("kind"),
+                "formal_proof_status": promoted.get("formal_proof", {}).get("status"),
+                "formal_proof_complete": promoted.get("formal_proof", {}).get("proof_complete", False),
                 "shard_durations_seconds": [
                     shard.get("duration_seconds")
                     for shard in promoted.get("shards", [])
@@ -3393,6 +3561,7 @@ class Agent:
                 "fresh_run": "EXECUTED_NOW",
                 "cache_hit": "REUSED_VERIFIED_RECEIPT",
                 "complete_domain_pass": "EXHAUSTIVE_EQUIVALENT",
+                "formal_window_pass": "FORMAL_EQUIVALENT; requires an independent parsed-RTL proof",
                 "bounded_differential_pass": "DIFFERENTIAL_PASS; never a promotion gate",
             },
         }
@@ -3419,7 +3588,9 @@ class Agent:
             lines.append(
                 f"  - executed vectors/shards: {value['executed_vectors']}/{value['executed_shards']}; "
                 f"shard seconds: {value['shard_durations_seconds']}; "
-                f"proof_complete={value['domain_proof_complete']}; strategy={value['vector_strategy']}"
+                f"domain_proof_complete={value['domain_proof_complete']}; "
+                f"formal={value['formal_proof_status']}/{value['formal_proof_complete']}; "
+                f"strategy={value['vector_strategy']}"
             )
             lines.append(f"  - matrix modes: {json.dumps(value['matrix_modes'], sort_keys=True)}")
             lines.append(f"  - dependency evidence: {json.dumps(value['dependency_evidence'], sort_keys=True)}")

@@ -205,10 +205,12 @@ Windowed/pointer-heavy DUTs use a reviewed scalar-tap adapter only for the
 read-only values consumed by the C body. The `windowed_boundary` strategy
 currently drives all structural modes plus deterministic boundary and
 pairwise tap cases. Its result is `DIFFERENTIAL_PASS` when every generated
-vector matches; it is deliberately not `EXHAUSTIVE_EQUIVALENT` and cannot be
-promoted until a complete legal-domain proof or a smaller spec-grounded slice
-is available. This keeps the designer-facing library combinational and stable
-while stateful line storage and non-DUT C logic remain reference boundaries.
+vector matches; it is deliberately not `EXHAUSTIVE_EQUIVALENT`. The independent
+Verilator-AST/Z3 gate may upgrade a complete reviewed window to
+`FORMAL_EQUIVALENT`, but production dependency, frame, and source gates still
+must pass before promotion. This keeps the designer-facing library
+combinational and stable while stateful line storage and non-DUT C logic
+remain reference boundaries.
 
 ## Durable regression queue
 

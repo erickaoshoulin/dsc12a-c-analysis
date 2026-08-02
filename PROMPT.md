@@ -26,7 +26,7 @@ sequential-hardware behavior.
   Compression and version 1.2a and the page count is 145. Record path, size,
   SHA-256, metadata, and the gate evidence.
 - Accept a C model only when the source contains `Makefile`,
-  `codec_main.c`, and `dsc_codec.c\). Record source path, source hashes,
+  `codec_main.c`, and `dsc_codec.c`. Record source path, source hashes,
   Git remote, branch, commit, and status.
 - Write `SPEC_UNAVAILABLE` or `SOURCE_UNAVAILABLE` when the corresponding
   gate fails. Never download, invent, or use an LLM to fill missing inputs.
@@ -278,9 +278,17 @@ PDF and upstream C model are immutable external inputs.
    samples-per-unit, group offsets, static pointer indices, and per-group
    pairwise tap sets in reviewed data; the generator and adapter derive the
    frozen ports from those facts rather than embedding a single sample index.
-   A clean result is `DIFFERENTIAL_PASS`, never a promotion or stable-library
-   proof. Continue iterating from its findings toward a formal proof or a
-   smaller spec-grounded DUT slice.
+   A clean concrete result is `DIFFERENTIAL_PASS`, never a promotion or
+   stable-library proof. For a reviewed window contract, run the independent
+   `tools/formal_rtl.py` gate: it must parse the candidate with Verilator's
+   AST, compare the AST to the locked spec-linked equations, and prove the
+   complete reviewed legal relation with Z3. Only that independent receipt
+   may upgrade the candidate to `FORMAL_EQUIVALENT`; a copied C expression,
+   function-name check, or concrete sample count is not a proof. Continue
+   iterating from counterexamples and proof gaps toward a formal proof or a
+   smaller spec-grounded DUT slice. `FORMAL_EQUIVALENT` proves only the
+   declared reviewed window; production frame, dependency, and source gates
+   still decide whether the leaf can enter `library/manifest.json`.
 
 5. Verify a real dependency. Automatically choose the smallest acyclic direct
    caller-to-callee edge from the callgraph. Prove caller core with callee C,
@@ -340,7 +348,9 @@ supplies a function name.
 An explicit `STATIC_BUT_UNCOVERED` review may admit a statically eligible
 candidate only when the override carries exact PDF authority and a complete
 finite legal domain. A bounded exploratory subset is
-`DIFFERENTIAL_PASS`/`UNPROVED`, never a stable-library promotion. A function
+`DIFFERENTIAL_PASS`/`UNPROVED`; a reviewed, independently parsed proof may
+be `FORMAL_EQUIVALENT`, but it still needs dependency, frame, and source
+gates before stable-library promotion. A function
 already recorded as PASS in `library/manifest.json` is not new work and is
 excluded from ordinary queue planning; it may be re-run only when the durable
 queue explicitly requests a refresh or dependency composition.
@@ -446,7 +456,8 @@ the oracle while replacing only proven DUT leaves:
 ```text
 facts/spec review → scale dispatch → parallel generate → C oracle + Verilator
 → exhaustive/legal-domain or explicitly bounded differential shards
-→ smallest counterexample / DIFFERENTIAL_PASS / EXHAUSTIVE_EQUIVALENT
+→ AST/Z3 proof when reviewed → smallest counterexample / DIFFERENTIAL_PASS /
+FORMAL_EQUIVALENT / EXHAUSTIVE_EQUIVALENT
 → caller/frame gates → promote PASS leaves → inspect blockers → next batch
 ```
 

@@ -121,6 +121,44 @@ class ExecutableCicdTests(unittest.TestCase):
         )
         self.assertTrue(any("logic" in reason for reason in memory_reasons))
 
+    def test_windowed_formal_receipts_and_record_field_overlay_mapping(self):
+        artifact = next(
+            path for path in sorted((ROOT / "artifacts").iterdir())
+            if path.is_dir()
+            and json.loads((path / "locked-contract.json").read_text(encoding="utf-8")).get("contract_id")
+            == "samplepredict"
+            and (path / "formal" / "candidate_01.json").is_file()
+        )
+        unit = json.loads((artifact / "unit-receipt.json").read_text(encoding="utf-8"))
+        statuses = {item["candidate"]: item["verification_status"] for item in unit["candidates"]}
+        self.assertEqual(statuses["candidate_01"], "FORMAL_EQUIVALENT")
+        self.assertEqual(statuses["candidate_02"], "COUNTEREXAMPLE")
+        formal = json.loads((artifact / "formal" / "candidate_01.json").read_text(encoding="utf-8"))
+        self.assertEqual(formal["status"], "PASS")
+        self.assertTrue(formal["proof_complete"])
+        self.assertEqual(formal["ast_frontend"], "verilator --json-only")
+
+        agent = Agent(ROOT, "test")
+        agent.load_inputs()
+        contract = json.loads((artifact / "locked-contract.json").read_text(encoding="utf-8"))
+        candidate = artifact / "generated" / "candidate_01.sv"
+        with tempfile.TemporaryDirectory() as directory:
+            source_dir = pathlib.Path(directory) / "source"
+            source_dir.mkdir()
+            paths = agent.write_overlay_sources(
+                contract,
+                source_dir,
+                "samplepredict_candidate_01",
+                candidate,
+            )
+            rtl_call = next(
+                line for line in paths["overlay"].read_text(encoding="utf-8").splitlines()
+                if "int rtl_value =" in line
+            )
+        self.assertIn("dsc_state->cpntBitDepth[dsc_state->unitCType[unit]]", rtl_call)
+        self.assertIn("dsc_state->quantizedResidual[unit][0]", rtl_call)
+        self.assertNotIn("dsc_state[0]", rtl_call)
+
     def test_fresh_receipts_prove_real_candidates_and_wrong_callee(self):
         selected = self.selected_contract_state()
         plan = json.loads((ROOT / "ci" / "plan.json").read_text(encoding="utf-8"))
