@@ -158,6 +158,13 @@ class RegressionServiceTests(unittest.TestCase):
         self.assertEqual(summary[1]["verification_status"], "COUNTEREXAMPLE")
         self.assertEqual(summary[1]["smallest_counterexample"], {"x": 0})
 
+    def test_formal_equivalent_unit_is_a_passing_shard_gate(self):
+        """A complete independent formal proof is equivalent to exhaustive evidence."""
+        from tools.regression import UNIT_EQUIVALENT_STATUSES
+
+        self.assertIn("FORMAL_EQUIVALENT", UNIT_EQUIVALENT_STATUSES)
+        self.assertNotIn("COUNTEREXAMPLE", UNIT_EQUIVALENT_STATUSES)
+
     def test_old_and_current_frame_receipt_shapes_are_normalized(self):
         context = LocalContext(ROOT)
         selected = context.frame_matrix()

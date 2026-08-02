@@ -47,6 +47,11 @@ STAGES = (
     "model_matrix",
     "frame_compare",
 )
+UNIT_EQUIVALENT_STATUSES = frozenset({
+    "EXHAUSTIVE_EQUIVALENT",
+    "FORMAL_EQUIVALENT",
+    "PASS",
+})
 ATOMIC_WRITE_LOCK = threading.RLock()
 
 
@@ -1328,7 +1333,7 @@ class RegressionService:
             self.set_stage(directory, STAGES[3], 3, total)
             domain = unit.get("domain", {}) or {}
             stage_results[STAGES[3]] = {
-                "status": "PASS" if unit.get("verification_status") in ("EXHAUSTIVE_EQUIVALENT", "PASS") else "FAIL",
+                "status": "PASS" if unit.get("verification_status") in UNIT_EQUIVALENT_STATUSES else "FAIL",
                 "vectors": domain.get("total_vectors", unit.get("vectors_executed", 0)),
                 "shards": domain.get("shards", []),
                 "verification_status": unit.get("verification_status"),
