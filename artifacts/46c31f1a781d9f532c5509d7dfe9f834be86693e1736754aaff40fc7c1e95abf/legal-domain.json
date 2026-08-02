@@ -1,0 +1,242 @@
+{
+  "complete": false,
+  "ports": [
+    {
+      "domain": {
+        "basis": "dsc_state_t quantizedResidual unit index; SAMPLES_PER_UNIT is 3 and four component lanes are modeled",
+        "kind": "range",
+        "range": [
+          0,
+          3
+        ]
+      },
+      "port": "unit",
+      "role": "unit"
+    },
+    {
+      "domain": {
+        "basis": "dsc_state_t component index domain",
+        "kind": "range",
+        "range": [
+          0,
+          3
+        ]
+      },
+      "port": "cpnt",
+      "role": "cpnt"
+    },
+    {
+      "domain": {
+        "basis": "DSC 1.1/1.2 version branches used by MapQpToQlevel",
+        "kind": "set",
+        "range": [
+          0,
+          2
+        ],
+        "values": [
+          0,
+          1,
+          2
+        ]
+      },
+      "port": "dsc_version_minor",
+      "role": "CONFIG_STATIC"
+    },
+    {
+      "domain": {
+        "basis": "PPS native_420 flag",
+        "kind": "set",
+        "range": [
+          0,
+          1
+        ],
+        "values": [
+          0,
+          1
+        ]
+      },
+      "port": "native_420",
+      "role": "CONFIG_STATIC"
+    },
+    {
+      "domain": {
+        "basis": "Table 6-2 masterQp rows",
+        "kind": "range",
+        "range": [
+          0,
+          31
+        ]
+      },
+      "port": "primary_qp",
+      "role": "STATE_RUNTIME"
+    },
+    {
+      "domain": {
+        "basis": "DSC supported component bit depths",
+        "kind": "set",
+        "range": [
+          8,
+          16
+        ],
+        "values": [
+          8,
+          10,
+          12,
+          14,
+          16
+        ]
+      },
+      "port": "cpntBitDepth_0",
+      "role": "CONFIG_STATIC"
+    },
+    {
+      "domain": {
+        "basis": "DSC supported component bit depths",
+        "kind": "set",
+        "range": [
+          8,
+          16
+        ],
+        "values": [
+          8,
+          10,
+          12,
+          14,
+          16
+        ]
+      },
+      "port": "cpntBitDepth_1",
+      "role": "CONFIG_STATIC"
+    },
+    {
+      "domain": {
+        "basis": "DSC supported component bit depths",
+        "kind": "set",
+        "range": [
+          8,
+          16
+        ],
+        "values": [
+          8,
+          10,
+          12,
+          14,
+          16
+        ]
+      },
+      "port": "cpntBitDepth_2",
+      "role": "CONFIG_STATIC"
+    },
+    {
+      "domain": {
+        "basis": "DSC supported component bit depths",
+        "kind": "set",
+        "range": [
+          8,
+          16
+        ],
+        "values": [
+          8,
+          10,
+          12,
+          14,
+          16
+        ]
+      },
+      "port": "cpntBitDepth_3",
+      "role": "CONFIG_STATIC"
+    },
+    {
+      "domain": {
+        "basis": "selected dsc_state_t component bit depth; exact cpnt array projection",
+        "kind": "set",
+        "range": [
+          8,
+          16
+        ],
+        "values": [
+          8,
+          10,
+          12,
+          14,
+          16
+        ]
+      },
+      "port": "cpntBitDepth_selected",
+      "role": "CONFIG_SELECTED"
+    },
+    {
+      "domain": {
+        "basis": "Table 6-2 qLevelY entry domain",
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "qlevel_luma",
+      "role": "TABLE_LOOKUP_LUMA"
+    },
+    {
+      "domain": {
+        "basis": "Table 6-2 qLevelC entry domain",
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "qlevel_chroma",
+      "role": "TABLE_LOOKUP_CHROMA"
+    },
+    {
+      "domain": {
+        "basis": "signed quantized residual envelope used by the reviewed C source gate",
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_0",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "signed quantized residual envelope used by the reviewed C source gate",
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_1",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "signed quantized residual envelope used by the reviewed C source gate",
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_2",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          1
+        ]
+      },
+      "port": "return_value",
+      "role": "return_value"
+    }
+  ],
+  "proof_basis": "reviewed spec-domain differential strategy; not a legal-domain proof",
+  "schema_version": 1
+}

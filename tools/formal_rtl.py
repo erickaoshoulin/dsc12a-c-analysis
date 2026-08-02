@@ -1,16 +1,17 @@
 #!/usr/bin/env python3
-"""Prove a reviewed windowed RTL candidate against its C/spec semantics.
+"""Prove a reviewed RTL candidate against its C/spec semantics.
 
 The executable CI runner already provides concrete C-vs-Verilator differential
 coverage.  This companion gate handles the value domain that is too large for
 Cartesian enumeration: Verilator emits its parsed AST as JSON, the restricted
 combinational AST is interpreted into Z3 expressions, and the locked
-contract's exact window equations are used as the independent oracle model.
+contract's exact semantic equations are used as the independent oracle model.
 
 This is deliberately a semantic-kind adapter, not a function-name selector.
 The candidate is admitted only when the locked contract is already selected by
 the normal facts/coverage pipeline and declares the reviewed
-``windowed_sample_predict`` semantics.
+``windowed_sample_predict``, ``flatness_window``, or ``using_midpoint``
+semantics.
 """
 
 from __future__ import annotations
@@ -520,6 +521,95 @@ def flatness_contract_expression(contract: dict[str, Any], variables: dict[str, 
     )
 
 
+def using_midpoint_table_expr(table: dict[str, Any], bit_depth: Any, qp: Any) -> Any:
+    """Return the selected Table 6-2 entry for a symbolic depth/QP pair."""
+
+    return flatness_table_expr(table, bit_depth, qp)
+
+
+def using_midpoint_residual_size_expr(value: Any, thresholds: list[Any]) -> Any:
+    """Encode FindResidualSize's ordered threshold branches symbolically."""
+
+    result: Any = z3.IntVal(0)
+    for threshold in reversed(thresholds):
+        if not isinstance(threshold, dict):
+            continue
+        lower = int(threshold.get("lower", 0))
+        upper = int(threshold.get("upper", lower))
+        size = int(threshold.get("size", 0))
+        condition = value == lower if lower == upper else z3.And(value >= lower, value <= upper)
+        result = z3.If(condition, size, result)
+    return result
+
+
+def add_using_midpoint_domain_constraints(
+    solver: Any,
+    contract: dict[str, Any],
+    variables: dict[str, Any],
+) -> None:
+    """Add exact table and selected-array relations for UsingMidpoint."""
+
+    semantics = contract.get("semantics", {}) or {}
+    strategy = semantics.get("legal_vector_strategy") or {}
+
+    def required(key: str, fallback: str) -> str:
+        name = str(strategy.get(key, fallback))
+        if name not in variables:
+            raise FormalError(f"using-midpoint proof references missing port {name}")
+        return name
+
+    cpnt = required("component_port", "cpnt")
+    primary_qp = required("primary_qp_port", "primary_qp")
+    version = required("version_port", "dsc_version_minor")
+    selected_depth = required("selected_depth_port", "cpntBitDepth_selected")
+    depth_ports = [str(value) for value in strategy.get("component_depth_ports", [])]
+    if len(depth_ports) != 4 or any(name not in variables for name in depth_ports):
+        raise FormalError("using-midpoint proof requires four component depth ports")
+
+    tables = strategy.get("tables", {}) or semantics.get("tables", {}) or {}
+    bindings = strategy.get("table_bindings", {}) or {}
+    table_ports: dict[str, str] = {}
+    qp_ports: set[str] = set()
+    for port_name, binding in bindings.items():
+        table_kind = str((binding or {}).get("table", ""))
+        qp_port = str((binding or {}).get("qp_port", ""))
+        if table_kind in {"luma", "chroma"}:
+            table_ports[table_kind] = str(port_name)
+        if qp_port:
+            qp_ports.add(qp_port)
+    if set(table_ports) != {"luma", "chroma"}:
+        raise FormalError("using-midpoint proof requires luma/chroma Table 6-2 bindings")
+    for qp_port in qp_ports:
+        if qp_port not in variables:
+            raise FormalError(f"using-midpoint proof references missing QP port {qp_port}")
+
+    base_depth = variables[depth_ports[0]]
+    qp = variables[primary_qp]
+    valid_rows: list[Any] = []
+    for raw_depth, luma_row in (tables.get("luma", {}) or {}).items():
+        chroma_row = (tables.get("chroma", {}) or {}).get(str(raw_depth), (tables.get("chroma", {}) or {}).get(raw_depth, []))
+        if not isinstance(luma_row, list) or not isinstance(chroma_row, list) or not luma_row or not chroma_row:
+            continue
+        valid_rows.append(z3.And(
+            base_depth == int(raw_depth),
+            qp >= 0,
+            qp <= min(len(luma_row), len(chroma_row)) - 1,
+        ))
+    if not valid_rows:
+        raise FormalError("using-midpoint proof has no complete Table 6-2 rows")
+    solver.add(z3.Or(valid_rows))
+
+    luma_port = table_ports["luma"]
+    chroma_port = table_ports["chroma"]
+    solver.add(variables[luma_port] == using_midpoint_table_expr(tables.get("luma", {}) or {}, base_depth, qp))
+    solver.add(variables[chroma_port] == using_midpoint_table_expr(tables.get("chroma", {}) or {}, base_depth, qp))
+
+    selected = variables[depth_ports[0]]
+    for index in reversed(range(1, len(depth_ports))):
+        selected = z3.If(variables[cpnt] == index, variables[depth_ports[index]], selected)
+    solver.add(variables[selected_depth] == selected)
+
+
 def add_domain_constraints(solver: Any, contract: dict[str, Any], variables: dict[str, Any]) -> None:
     ports = [port for port in contract.get("interface", {}).get("ports", []) if isinstance(port, dict)]
     for port in ports:
@@ -539,6 +629,9 @@ def add_domain_constraints(solver: Any, contract: dict[str, Any], variables: dic
     strategy = semantics.get("legal_vector_strategy") or {}
     if strategy.get("kind") == "flatness_window":
         add_flatness_domain_constraints(solver, contract, variables)
+        return
+    if strategy.get("kind") == "using_midpoint":
+        add_using_midpoint_domain_constraints(solver, contract, variables)
         return
     if strategy.get("kind") != "windowed_boundary":
         raise FormalError("formal window proof requires a reviewed windowed_boundary strategy")
@@ -581,8 +674,62 @@ def add_domain_constraints(solver: Any, contract: dict[str, Any], variables: dic
                                 variables[name] <= (decoded_width / 2) - 1)))
 
 
+def using_midpoint_contract_expression(contract: dict[str, Any], variables: dict[str, Any]) -> Any:
+    """Build the exact PDF 6.4.4.2 midpoint-selection predicate."""
+
+    semantics = contract.get("semantics", {}) or {}
+    strategy = semantics.get("legal_vector_strategy") or {}
+
+    def required(key: str, fallback: str) -> str:
+        name = str(strategy.get(key, fallback))
+        if name not in variables:
+            raise FormalError(f"using-midpoint expression references missing port {name}")
+        return name
+
+    cpnt = variables[required("component_port", "cpnt")]
+    version = variables[required("version_port", "dsc_version_minor")]
+    native420 = variables[required("native_420_port", "native_420")]
+    selected_depth = variables[required("selected_depth_port", "cpntBitDepth_selected")]
+    primary_qp = variables[required("primary_qp_port", "primary_qp")]
+    depth_ports = [str(value) for value in strategy.get("component_depth_ports", [])]
+    if len(depth_ports) != 4 or any(name not in variables for name in depth_ports):
+        raise FormalError("using-midpoint expression requires four component depth ports")
+    tables = strategy.get("tables", {}) or semantics.get("tables", {}) or {}
+    bindings = strategy.get("table_bindings", {}) or {}
+    table_ports: dict[str, str] = {}
+    for port_name, binding in bindings.items():
+        table_kind = str((binding or {}).get("table", ""))
+        if table_kind in {"luma", "chroma"}:
+            table_ports[table_kind] = str(port_name)
+    if set(table_ports) != {"luma", "chroma"}:
+        raise FormalError("using-midpoint expression requires luma/chroma Table 6-2 bindings")
+
+    luma = variables[table_ports["luma"]]
+    chroma = variables[table_ports["chroma"]]
+    qlevel = z3.If(
+        z3.Or(cpnt % 3 == 0, z3.And(native420 != 0, cpnt == 1)),
+        luma,
+        z3.If(
+            z3.And(version == 2, variables[depth_ports[0]] == variables[depth_ports[1]], chroma > 0),
+            chroma - 1,
+            chroma,
+        ),
+    )
+    thresholds = semantics.get("residual_size_thresholds") or semantics.get("thresholds") or []
+    residual_ports = [str(value) for value in strategy.get("residual_ports", [])]
+    if len(residual_ports) != 3 or any(name not in variables for name in residual_ports):
+        raise FormalError("using-midpoint expression requires three residual ports")
+    sizes = [using_midpoint_residual_size_expr(variables[name], thresholds) for name in residual_ports]
+    maximum = sizes[0]
+    for size in sizes[1:]:
+        maximum = z3.If(maximum > size, maximum, size)
+    return z3.If(maximum >= selected_depth - qlevel, 1, 0)
+
+
 def contract_expression(contract: dict[str, Any], variables: dict[str, Any]) -> Any:
     semantics = contract.get("semantics", {}) or {}
+    if semantics.get("kind") == "using_midpoint":
+        return using_midpoint_contract_expression(contract, variables)
     if semantics.get("kind") == "flatness_window":
         return flatness_contract_expression(contract, variables)
     strategy = semantics.get("legal_vector_strategy") or {}
@@ -932,8 +1079,8 @@ def load_candidate_module(path: Path, verilator: str) -> dict[str, Any]:
 def run_proof(contract_path: Path, candidate_path: Path, verilator: str, timeout_ms: int) -> dict[str, Any]:
     contract = json.loads(contract_path.read_text(encoding="utf-8"))
     semantics = contract.get("semantics", {}) or {}
-    if semantics.get("kind") not in {"windowed_sample_predict", "flatness_window"}:
-        raise FormalError("formal_rtl requires a reviewed windowed_sample_predict or flatness_window contract")
+    if semantics.get("kind") not in {"windowed_sample_predict", "flatness_window", "using_midpoint"}:
+        raise FormalError("formal_rtl requires a reviewed windowed_sample_predict, flatness_window, or using_midpoint contract")
     ports = [port for port in contract.get("interface", {}).get("ports", []) if isinstance(port, dict)]
     inputs = [port for port in ports if port.get("direction") == "input"]
     output = next((port for port in ports if port.get("direction") == "output"), None)
@@ -1011,6 +1158,7 @@ def run_proof(contract_path: Path, candidate_path: Path, verilator: str, timeout
         "solver": "z3",
         "ast_frontend": "verilator --json-only",
         "proof_basis": "locked exact spec-linked window equations versus parsed combinational RTL AST",
+        "proof_strategy": "SYMBOLIC_USING_MIDPOINT" if semantics.get("kind") == "using_midpoint" else "SYMBOLIC_WINDOW",
         "timeout_ms": int(timeout_ms),
         "constraint_count": len(solver.assertions()),
         "status": "PASS" if result == z3.unsat else "COUNTEREXAMPLE" if result == z3.sat else "UNKNOWN",

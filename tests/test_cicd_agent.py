@@ -724,6 +724,43 @@ class CicdAgentUnitTests(unittest.TestCase):
         self.assertIn("dsc_state.cpntBitDepth[cpnt] = cpntBitDepth_selected;", oracle)
         self.assertNotIn("cpntBitDepth_oracle_storage", oracle)
 
+    def test_oracle_supports_nested_state_array_indices(self):
+        contract = {
+            "contract_id": "nested_state_array",
+            "function": {
+                "name": "NestedStateArray",
+                "parameters": [
+                    {"name": "dsc_state", "pointer": True, "type": "dsc_state_t *"},
+                    {"name": "unit", "pointer": False, "type": "int"},
+                ],
+            },
+            "interface": {
+                "inputs": [{"name": "unit", "logical_width": 2, "signed": False}],
+                "flattened_pointer_dependencies": [
+                    {
+                        "record": "dsc_state_t",
+                        "field": "quantizedResidual",
+                        "index_names": ["unit", 0],
+                        "port_name": "quantized_residual_0",
+                        "c_type": "int[4][3]",
+                    },
+                    {
+                        "record": "dsc_state_t",
+                        "field": "quantizedResidual",
+                        "index_names": ["unit", 1],
+                        "port_name": "quantized_residual_1",
+                        "c_type": "int[4][3]",
+                    },
+                ],
+                "output": {"name": "return_value", "logical_width": 1, "signed": False},
+            },
+        }
+        agent = Agent(pathlib.Path(tempfile.mkdtemp()), "test")
+        contract["interface"]["ports"] = agent.freeze_ports(contract["interface"])
+        oracle = agent.render_oracle(contract)
+        self.assertIn("dsc_state.quantizedResidual[unit][0] = quantized_residual_0;", oracle)
+        self.assertIn("dsc_state.quantizedResidual[unit][1] = quantized_residual_1;", oracle)
+
     def test_oracle_resolves_camel_case_state_index_to_frozen_port(self):
         contract = {
             "contract_id": "state_table_alias",

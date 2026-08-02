@@ -555,6 +555,56 @@
       ],
       "status": "PASS",
       "verification_file": "verification/samptolinebuf.json"
+    },
+    {
+      "artifact_dir": "artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
+        "end_line": 476,
+        "start_line": 457
+      },
+      "contract_file": "contracts/usingmidpoint.json",
+      "contract_hash": "46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
+      "contract_id": "usingmidpoint",
+      "function": "UsingMidpoint",
+      "module": "usingmidpoint",
+      "module_file": "rtl/usingmidpoint.sv",
+      "module_sha256": "fc765032b32c15013196fa87328b8692da41071277c4bdd13ffb941c86132ab8",
+      "promoted_at": "2026-08-02T22:48:55Z",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:model-note:MN_ENC_MPP_SELECT:p082",
+          "evidence": "PDF model note MN_ENC_MPP_SELECT defines the encoder midpoint-selection decision used by this helper.",
+          "page": 82,
+          "section": "6.4.4.2",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.4.4.2",
+          "evidence": "PDF section 6.4.4.2 states that MPP is selected when maximum residual size is at least cpntBitDepth minus qLevel.",
+          "page": 82,
+          "section": "6.4.4.2",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:table:3-1",
+          "evidence": "PDF Table 3-1 supplies the residual-size threshold relation delegated to FindResidualSize.",
+          "page": 34,
+          "section": "3",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:table:6-2",
+          "evidence": "PDF Table 6-2 supplies the qLevel table relation delegated to MapQpToQlevel.",
+          "page": 114,
+          "section": "6.8.6",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/usingmidpoint.json"
     }
   ],
   "library": "dsc-verilog-library",
@@ -563,5 +613,5 @@
   "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
   "source_policy": "immutable external C model and local DSC 1.2a PDF; no SVRT",
   "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-  "updated_at": "2026-08-02T22:13:24Z"
+  "updated_at": "2026-08-02T22:48:55Z"
 }

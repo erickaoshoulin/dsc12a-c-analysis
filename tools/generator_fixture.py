@@ -1028,6 +1028,113 @@ def generic_body(interface: dict[str, object], semantics: dict[str, object], bad
     return f"    assign {out_name} = {value};"
 
 
+def using_midpoint_body(
+    interface: dict[str, object], semantics: dict[str, object], bad: bool
+) -> str:
+    """Emit the DSC 6.4.4.2 midpoint-selection predicate from contract data."""
+    ports = {
+        str(port.get("name")): port
+        for port in interface.get("ports", [])
+        if isinstance(port, dict)
+    }
+
+    def require(name: str) -> str:
+        if name not in ports:
+            raise ValueError("using-midpoint fixture is missing port: " + name)
+        return name
+
+    strategy = semantics.get("legal_vector_strategy", {})
+    if not isinstance(strategy, dict):
+        raise ValueError("using-midpoint fixture is missing legal vector strategy")
+    cpnt_name = require(str(strategy.get("component_port", "cpnt")))
+    version_name = require(str(strategy.get("version_port", "dsc_version_minor")))
+    native_name = require(str(strategy.get("native_420_port", "native_420")))
+    selected_depth_name = require(str(strategy.get("selected_depth_port", "cpntBitDepth_selected")))
+    depth_ports = [require(str(value)) for value in strategy.get("component_depth_ports", [])]
+    if len(depth_ports) != 4:
+        raise ValueError("using-midpoint fixture requires four component depth ports")
+    residual_ports = [require(str(value)) for value in strategy.get("residual_ports", [])]
+    if len(residual_ports) != 3:
+        raise ValueError("using-midpoint fixture requires three residual ports")
+    table_bindings = strategy.get("table_bindings", {}) or {}
+    table_ports: dict[str, str] = {}
+    for port_name, binding in table_bindings.items():
+        table_kind = str((binding or {}).get("table", ""))
+        if table_kind in {"luma", "chroma"}:
+            table_ports[table_kind] = require(str(port_name))
+    if set(table_ports) != {"luma", "chroma"}:
+        raise ValueError("using-midpoint fixture requires luma and chroma table ports")
+    output = next(
+        (str(port.get("name")) for port in interface.get("ports", [])
+         if isinstance(port, dict) and port.get("direction") == "output"),
+        "return_value",
+    )
+    require(output)
+    thresholds = semantics.get("residual_size_thresholds") or semantics.get("thresholds") or []
+    if not thresholds:
+        raise ValueError("using-midpoint fixture is missing residual-size thresholds")
+
+    def signed_literal(value: int) -> str:
+        if int(value) < 0:
+            return f"32'sh{(int(value) & 0xffffffff):08x}"
+        return str(int(value))
+
+    lines = [
+        "    integer signed qlevel_i;",
+        "    integer signed residual_0_i;",
+        "    integer signed residual_1_i;",
+        "    integer signed residual_2_i;",
+        "    integer signed req_size_0_i;",
+        "    integer signed req_size_1_i;",
+        "    integer signed req_size_2_i;",
+        "    integer signed max_size_i;",
+        "    integer signed threshold_i;",
+    ]
+    lines.extend([
+        "    always_comb begin",
+        f"        if (({cpnt_name} % 3) == 0) begin",
+        f"            qlevel_i = {table_ports['luma']};",
+        f"        end else if (({native_name} != 0) && ({cpnt_name} == 1)) begin",
+        f"            qlevel_i = {table_ports['luma']};",
+        "        end else begin",
+        f"            qlevel_i = {table_ports['chroma']};",
+        f"            if (({version_name} == 2) && ({depth_ports[0]} == {depth_ports[1]}) && (qlevel_i > 0)) begin",
+        "                qlevel_i = qlevel_i - 1;",
+        "            end",
+        "        end",
+    ])
+    for index, port_name in enumerate(residual_ports):
+        lines.append(f"        residual_{index}_i = $signed({port_name});")
+        lines.append(f"        req_size_{index}_i = 0;")
+        first_threshold = True
+        for threshold in thresholds:
+            if not isinstance(threshold, dict):
+                continue
+            lower = int(threshold.get("lower", 0))
+            upper = int(threshold.get("upper", lower))
+            size = int(threshold.get("size", 0))
+            keyword = "if" if first_threshold else "else if"
+            condition = (
+                f"(residual_{index}_i == {signed_literal(lower)})"
+                if lower == upper
+                else f"((residual_{index}_i >= {signed_literal(lower)}) && (residual_{index}_i <= {signed_literal(upper)}))"
+            )
+            lines.append(f"        {keyword} {condition} req_size_{index}_i = {size};")
+            first_threshold = False
+    lines.extend([
+        "        max_size_i = req_size_0_i;",
+        "        if (req_size_1_i > max_size_i) max_size_i = req_size_1_i;",
+        "        if (req_size_2_i > max_size_i) max_size_i = req_size_2_i;",
+        f"        threshold_i = {selected_depth_name};",
+        "        threshold_i = threshold_i - qlevel_i;",
+        f"        {output} = (max_size_i >= threshold_i) ? 1 : 0;",
+    ])
+    if bad:
+        lines.append(f"        {output} = {output} + 1;")
+    lines.append("    end")
+    return "\n".join(lines)
+
+
 def render_candidate(contract: dict[str, object], interface: dict[str, object], bad: bool) -> str:
     cid = safe(str(contract.get("contract_id", "candidate")))
     module = f"{cid}_candidate_{'02' if bad else '01'}"
@@ -1059,6 +1166,8 @@ def render_candidate(contract: dict[str, object], interface: dict[str, object], 
         body = windowed_sample_predict_body(interface, semantics, bad)
     elif kind == "flatness_window":
         body = flatness_window_body(interface, semantics, bad)
+    elif kind == "using_midpoint":
+        body = using_midpoint_body(interface, semantics, bad)
     else:
         body = generic_body(interface, semantics if isinstance(semantics, dict) else {}, bad)
     return "module " + module + " (\n" + declarations + "\n);\n" + body + "\nendmodule\n"

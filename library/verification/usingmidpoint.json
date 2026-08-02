@@ -1,0 +1,96 @@
+{
+  "artifact_dir": "artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
+  "candidate": "candidate_01",
+  "contract_hash": "46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
+  "contract_id": "usingmidpoint",
+  "dependency": {
+    "call_sites": 1,
+    "dependency_ports": 1,
+    "status": "PASS",
+    "vectors": 385344
+  },
+  "execution_status": "EXECUTED_NOW",
+  "formal_partitions": null,
+  "formal_proof": {
+    "counterexample": null,
+    "proof_complete": true,
+    "reason": null,
+    "receipt": "formal/candidate_01.json",
+    "status": "PASS"
+  },
+  "function": "UsingMidpoint",
+  "kind": "using_midpoint",
+  "matrix": {
+    "modes": {
+      "C_ONLY": "PASS",
+      "RTL_RETURN": "PASS",
+      "SHADOW": "PASS"
+    },
+    "scripts_discovered": 22,
+    "status": "PASS"
+  },
+  "module": "usingmidpoint",
+  "promoted_at": "2026-08-02T22:48:55Z",
+  "rtl_sha256": "fc765032b32c15013196fa87328b8692da41071277c4bdd13ffb941c86132ab8",
+  "schema_version": 2,
+  "source_gate": {
+    "baseline_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+    "pdf_sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+    "source_sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+    "status": "PASS"
+  },
+  "stages": {
+    "dependency_composition": "PASS",
+    "formal": "PASS",
+    "formal_partitions": null,
+    "formal_rtl_equivalence": "PASS",
+    "frame_compare": "PASS",
+    "generator": "PASS",
+    "model_matrix": "PASS",
+    "shards_mutations": "PASS",
+    "unit_equivalence": "FORMAL_EQUIVALENT",
+    "verilator_lint_build": "PASS",
+    "width_spec_gate": "PASS"
+  },
+  "status": "PASS",
+  "traceability": {
+    "authority": "EXACT_SPEC",
+    "c_span": {
+      "end_line": 476,
+      "start_line": 457
+    },
+    "review_status": "REVIEWED",
+    "source_file": "dsc_codec.c",
+    "spec_links": [
+      {
+        "anchor_id": "pdf:model-note:MN_ENC_MPP_SELECT:p082",
+        "evidence": "PDF model note MN_ENC_MPP_SELECT defines the encoder midpoint-selection decision used by this helper.",
+        "page": 82,
+        "section": "6.4.4.2",
+        "status": "EXACT"
+      },
+      {
+        "anchor_id": "pdf:section:6.4.4.2",
+        "evidence": "PDF section 6.4.4.2 states that MPP is selected when maximum residual size is at least cpntBitDepth minus qLevel.",
+        "page": 82,
+        "section": "6.4.4.2",
+        "status": "EXACT"
+      },
+      {
+        "anchor_id": "pdf:table:3-1",
+        "evidence": "PDF Table 3-1 supplies the residual-size threshold relation delegated to FindResidualSize.",
+        "page": 34,
+        "section": "3",
+        "status": "EXACT"
+      },
+      {
+        "anchor_id": "pdf:table:6-2",
+        "evidence": "PDF Table 6-2 supplies the qLevel table relation delegated to MapQpToQlevel.",
+        "page": 114,
+        "section": "6.8.6",
+        "status": "EXACT"
+      }
+    ]
+  },
+  "unit_vectors": 385344
+}

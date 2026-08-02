@@ -1,19 +1,6 @@
 schema_version: 2
 rollback_mode: C_ONLY
 selected_contracts:
-  - ceil_log2
-  - escapecodesize
-  - findmidpoint
-  - findresidualsize
-  - getqpadjpredsize
-  - isflatnessinfosent
-  - isorigflathindex
-  - mapqptoqlevel
-  - maxresidualsize
-  - predictsize
-  - qp2qlevel
-  - quantizeresidual
-  - samplepredict
-  - samptolinebuf
+  - usingmidpoint
 promotion_gate: unit + dependency + shadow + rtl_return + bitstream
 source_policy: immutable upstream C; generated overlay lives in isolated copy

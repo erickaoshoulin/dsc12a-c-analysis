@@ -1718,6 +1718,8 @@ class Agent:
 
             def resolve_input_index(raw_index: object) -> str:
                 raw = str(raw_index)
+                if re.fullmatch(r"-?\d+", raw):
+                    return raw
                 safe_raw = safe_identifier(raw)
                 if safe_raw in input_names:
                     return safe_raw
@@ -1739,7 +1741,15 @@ class Agent:
                 if not state_name:
                     raise RuntimeError(f"missing record parameter for: {record_type}")
                 c_type = str(item.get("c_type", port.get("c_type", "int")))
-                if "*" in c_type and item.get("index_name"):
+                if item.get("index_names") is not None:
+                    raw_indices = item.get("index_names")
+                    if not isinstance(raw_indices, list) or not raw_indices:
+                        raise RuntimeError(f"invalid nested array indices for: {field}")
+                    lhs = f"{state_name}.{field}"
+                    for raw_index in raw_indices:
+                        lhs += f"[{resolve_input_index(raw_index)}]"
+                    assignments.append(f"{lhs} = {port_name};")
+                elif "*" in c_type and item.get("index_name"):
                     index_name = resolve_input_index(item.get("index_name"))
                     array_length = int(item.get("array_length", 32))
                     storage_name = f"{safe_identifier(field)}_oracle_storage"
@@ -2624,6 +2634,217 @@ class Agent:
             "legal_relation": "qlevel is constrained by Table 6-2 component class and selected bit depth; residuals use signed n-bit decoded-domain boundaries",
         }
 
+    def using_midpoint_vector_iterator(
+        self,
+        contract: dict[str, Any],
+        input_ports: list[dict[str, Any]],
+        values: list[list[int]],
+        strategy: dict[str, Any],
+    ) -> tuple[Iterable[tuple[int, ...]], dict[str, Any]]:
+        """Generate a spec-structured suite for the midpoint-selection predicate.
+
+        Selected qLevels and component depth are relations, not independent
+        Cartesian inputs.  The concrete suite covers every component/unit
+        branch, Table 6-2 row endpoints, version/native-420 branches, depth
+        equality, and residual-size threshold boundaries.  The independent
+        formal gate covers the full finite scalar domain.
+        """
+        names = [str(port.get("name")) for port in input_ports]
+        by_name = {name: values[index] for index, name in enumerate(names)}
+        semantics = contract.get("semantics", {}) or {}
+
+        def require(key: str, fallback: str) -> str:
+            name = str(strategy.get(key, fallback))
+            if name not in by_name:
+                raise RuntimeError(f"using-midpoint strategy port is missing: {name}")
+            return name
+
+        unit_name = require("unit_port", "unit")
+        cpnt_name = require("component_port", "cpnt")
+        version_name = require("version_port", "dsc_version_minor")
+        native_name = require("native_420_port", "native_420")
+        primary_qp_name = require("primary_qp_port", "primary_qp")
+        selected_depth_name = require("selected_depth_port", "cpntBitDepth_selected")
+        residual_ports = [str(value) for value in strategy.get("residual_ports", [])]
+        if len(residual_ports) != 3 or any(name not in by_name for name in residual_ports):
+            raise RuntimeError("using-midpoint strategy requires three residual ports")
+        depth_ports = [str(value) for value in strategy.get("component_depth_ports", [])]
+        if len(depth_ports) != 4 or any(name not in by_name for name in depth_ports):
+            raise RuntimeError("using-midpoint strategy requires four component depth ports")
+        table_bindings = strategy.get("table_bindings", {}) or {}
+        tables = strategy.get("tables", {}) or semantics.get("tables", {}) or {}
+        table_ports: dict[str, str] = {}
+        for port_name, binding in table_bindings.items():
+            table_kind = str((binding or {}).get("table", ""))
+            if table_kind in {"luma", "chroma"}:
+                table_ports[table_kind] = str(port_name)
+            if str(port_name) not in by_name:
+                raise RuntimeError(f"using-midpoint table port is missing: {port_name}")
+        if set(table_ports) != {"luma", "chroma"}:
+            raise RuntimeError("using-midpoint strategy requires luma and chroma table bindings")
+
+        def unique(raw_values: Iterable[int]) -> list[int]:
+            result: list[int] = []
+            seen: set[int] = set()
+            for raw in raw_values:
+                value = int(raw)
+                if value not in seen:
+                    seen.add(value)
+                    result.append(value)
+            return result
+
+        def values_for(name: str) -> list[int]:
+            result = [int(value) for value in by_name[name]]
+            if not result:
+                raise RuntimeError(f"using-midpoint strategy has no legal values for {name}")
+            return result
+
+        def table_row(kind: str, bit_depth: int) -> list[int]:
+            table = tables.get(kind, {}) or {}
+            raw = table.get(str(bit_depth), table.get(bit_depth))
+            if not isinstance(raw, list) or not raw:
+                raise RuntimeError(f"using-midpoint table {kind} has no row for {bit_depth}")
+            return [int(value) for value in raw]
+
+        component_values = values_for(cpnt_name)
+        unit_values = values_for(unit_name)
+        version_values = values_for(version_name)
+        native_values = values_for(native_name)
+        primary_qp_values = values_for(primary_qp_name)
+        depth_values = {name: values_for(name) for name in depth_ports}
+        depth_probe_values = {
+            name: unique([min(domain), max(domain), domain[len(domain) // 2]])
+            for name, domain in depth_values.items()
+        }
+        # Component 0/1 equality is a semantic branch.  Components 2/3 only
+        # select the returned depth, so their boundary probes are sufficient.
+        depth_variants = list(itertools.product(
+            depth_values[depth_ports[0]],
+            depth_values[depth_ports[1]],
+            depth_probe_values[depth_ports[2]],
+            depth_probe_values[depth_ports[3]],
+        ))
+        if not depth_variants:
+            raise RuntimeError("using-midpoint strategy has no component-depth combinations")
+
+        def valid_qps(bit_depth: int) -> list[int]:
+            lengths = [len(table_row(kind, bit_depth)) for kind in ("luma", "chroma")]
+            maximum = min(lengths) - 1
+            return [value for value in primary_qp_values if value <= maximum]
+
+        def baseline(
+            component: int,
+            unit: int,
+            bit_depths: tuple[int, int, int, int],
+            primary_qp: int,
+            version: int,
+            native420: int,
+        ) -> dict[str, int]:
+            context = {
+                name: int(domain[len(domain) // 2])
+                for name, domain in by_name.items()
+                if domain
+            }
+            context.update({
+                unit_name: int(unit),
+                cpnt_name: int(component),
+                version_name: int(version),
+                native_name: int(native420),
+                primary_qp_name: int(primary_qp),
+            })
+            for name, value in zip(depth_ports, bit_depths):
+                context[name] = int(value)
+            context[selected_depth_name] = int(bit_depths[int(component)])
+            for kind, port_name in table_ports.items():
+                context[port_name] = table_row(kind, int(bit_depths[0]))[int(primary_qp)]
+            for port_name in residual_ports:
+                context[port_name] = 0
+            return context
+
+        def emit(context: dict[str, int]) -> tuple[int, ...]:
+            return tuple(int(context[name]) for name in names)
+
+        structural: list[dict[str, int]] = []
+        for bit_depth in depth_values[depth_ports[0]]:
+            qps = valid_qps(int(bit_depth))
+            if not qps:
+                continue
+            for primary_qp in unique([qps[0], qps[-1]]):
+                for version in version_values:
+                    for native420 in native_values:
+                        for bit_depths in depth_variants:
+                            if int(bit_depths[0]) != int(bit_depth):
+                                continue
+                            for component in component_values:
+                                for unit in unit_values:
+                                    structural.append(baseline(
+                                        int(component), int(unit),
+                                        tuple(int(value) for value in bit_depths),
+                                        int(primary_qp), int(version), int(native420),
+                                    ))
+
+        thresholds = semantics.get("residual_size_thresholds") or semantics.get("thresholds") or []
+        residual_probe_values: list[int] = [0, -1, 1]
+        for threshold in thresholds:
+            if not isinstance(threshold, dict):
+                continue
+            for key in ("lower", "upper"):
+                if threshold.get(key) is not None:
+                    residual_probe_values.append(int(threshold[key]))
+        residual_probe_values = unique(residual_probe_values)
+        legal_residual_sets = [set(values_for(name)) for name in residual_ports]
+        residual_probe_values = [
+            value for value in residual_probe_values
+            if all(value in legal_values for legal_values in legal_residual_sets)
+        ]
+
+        probe_depths = list(itertools.product(*(depth_probe_values[name] for name in depth_ports)))
+        probe_contexts: list[dict[str, int]] = []
+        for bit_depth in unique([
+            min(depth_values[depth_ports[0]]),
+            max(depth_values[depth_ports[0]]),
+        ]):
+            qps = valid_qps(int(bit_depth))
+            if not qps:
+                continue
+            for primary_qp in unique([qps[0], qps[-1]]):
+                for version in unique([min(version_values), max(version_values)]):
+                    for native420 in unique([min(native_values), max(native_values)]):
+                        for bit_depths in probe_depths:
+                            if int(bit_depths[0]) != int(bit_depth):
+                                continue
+                            for component in component_values:
+                                for unit in unique([min(unit_values), max(unit_values)]):
+                                    probe_contexts.append(baseline(
+                                        int(component), int(unit),
+                                        tuple(int(value) for value in bit_depths),
+                                        int(primary_qp), int(version), int(native420),
+                                    ))
+
+        def vectors() -> Iterable[tuple[int, ...]]:
+            for context in structural:
+                yield emit(context)
+            for context in probe_contexts:
+                for port_name in residual_ports:
+                    for value in residual_probe_values:
+                        case = dict(context)
+                        case[port_name] = int(value)
+                        yield emit(case)
+
+        return vectors(), {
+            "kind": "using_midpoint",
+            "exhaustive": False,
+            "formal_required": True,
+            "coverage_mode": "STRUCTURAL_COMPONENT_UNIT_TABLE_AND_RESIDUAL_THRESHOLDS",
+            "source": strategy.get("source", "DSC 1.2a section 6.4.4.2"),
+            "structural_cases": len(structural),
+            "probe_contexts": len(probe_contexts),
+            "residual_probe_values": residual_probe_values,
+            "table_relation": "qLevelY/qLevelC are selected from Table 6-2 by cpntBitDepth[0] and primaryQp",
+            "selected_depth_relation": "cpntBitDepth_selected equals cpntBitDepth[cpnt]",
+            "residual_relation": "FindResidualSize threshold classes over the reviewed [-65535,65535] residual domain",
+        }
+
     def flatness_window_vector_iterator(
         self,
         contract: dict[str, Any],
@@ -2929,6 +3150,8 @@ class Agent:
             return self.windowed_boundary_vector_iterator(contract, input_ports, values, table_strategy)
         if isinstance(table_strategy, dict) and table_strategy.get("kind") == "flatness_window":
             return self.flatness_window_vector_iterator(contract, input_ports, values, table_strategy)
+        if isinstance(table_strategy, dict) and table_strategy.get("kind") == "using_midpoint":
+            return self.using_midpoint_vector_iterator(contract, input_ports, values, table_strategy)
         normalized = {re.sub(r"[^a-z0-9]", "", name.lower()): name for name in names}
         bit_depth_name = normalized.get("cpntbitdepth")
         qlevel_name = normalized.get("qlevel")
@@ -3401,12 +3624,12 @@ class Agent:
         """
         semantics = contract.get("semantics", {}) or {}
         strategy = semantics.get("legal_vector_strategy") or {}
-        if strategy.get("kind") not in {"windowed_boundary", "flatness_window"}:
+        if strategy.get("kind") not in {"windowed_boundary", "flatness_window", "using_midpoint"}:
             return {
                 "schema_version": 1,
                 "status": "NOT_APPLICABLE",
                 "proof_complete": False,
-                "reason": "formal AST proof is only enabled for reviewed windowed_boundary or flatness_window contracts",
+                "reason": "formal AST proof is only enabled for reviewed windowed_boundary, flatness_window, or using_midpoint contracts",
             }
         helper = self.root / "tools" / "formal_rtl.py"
         if not helper.is_file():
