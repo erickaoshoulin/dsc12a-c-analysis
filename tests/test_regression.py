@@ -71,6 +71,30 @@ class RegressionServiceTests(unittest.TestCase):
             strategy = (run_dir / "strategy.jsonl").read_text(encoding="utf-8").splitlines()
             self.assertTrue(any(json.loads(line).get("event") == "stale_recovery" for line in strategy))
 
+    def test_run_status_is_reconciled_from_receipts(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            store = DurableStore(root, validate=False)
+            store.ensure_layout()
+            run_dir = store.run_dir("run-a")
+            function_dir = run_dir / "functions" / "contract-a"
+            function_dir.mkdir(parents=True)
+            (run_dir / "run.json").write_text(
+                json.dumps({"run_id": "run-a", "status": "QUEUED"}),
+                encoding="utf-8",
+            )
+            (function_dir / "receipt.json").write_text(
+                json.dumps({"run_id": "run-a", "contract_id": "contract-a", "status": "PASS"}),
+                encoding="utf-8",
+            )
+
+            service = RegressionService(store, ROOT)
+            refreshed = service.refresh_run_status("run-a")
+
+            self.assertEqual(refreshed["status"], "COMPLETED")
+            self.assertIn("completed_at", refreshed)
+            self.assertEqual(read_json(run_dir / "run.json", {})["status"], "COMPLETED")
+
     def test_source_gate_and_function_selection_use_current_facts(self):
         context = LocalContext(ROOT)
         gate = context.source_gate()

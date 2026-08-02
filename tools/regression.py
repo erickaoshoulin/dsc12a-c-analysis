@@ -1407,9 +1407,45 @@ class RegressionService:
             futures = [executor.submit(self.execute_job, item) for item in claimed]
             for future in futures:
                 results.append(future.result())
+        for run_id in sorted({str(item.get("run_id")) for item in results if item.get("run_id")}):
+            self.refresh_run_status(run_id)
         self.maybe_create_scale_plans()
         self.refresh_dashboard()
         return {"status": "PASS" if all(item.get("status") == "PASS" for item in results) else "FAIL", "recovered": recovered, "claimed": len(claimed), "results": results}
+
+    def refresh_run_status(self, run_id: str) -> dict[str, Any]:
+        """Reconcile the durable run summary with queue and receipt state."""
+        run_dir = self.store.run_dir(run_id)
+        run = read_json(run_dir / "run.json", {}) or {}
+        if not run:
+            raise FileNotFoundError(run_id)
+        function_dirs = [
+            path
+            for path in ((run_dir / "functions").iterdir() if (run_dir / "functions").is_dir() else [])
+            if path.is_dir()
+        ]
+        receipts = [read_json(path / "receipt.json", {}) or {} for path in function_dirs]
+        active_jobs = [
+            item
+            for item in self.store.list_jobs()
+            if str(item.get("run_id")) == str(run_id)
+            and item.get("queue_state") in {"pending", "running"}
+        ]
+        terminal_receipt_statuses = {"PASS", "FAIL", "INFRASTRUCTURE_FAILURE"}
+        status = run.get("status", "QUEUED")
+        if active_jobs:
+            status = "RUNNING"
+        elif function_dirs and len(receipts) == len(function_dirs) and all(
+            receipt.get("status") in terminal_receipt_statuses for receipt in receipts
+        ):
+            status = "COMPLETED" if all(receipt.get("status") == "PASS" for receipt in receipts) else "FAILED"
+        if status != run.get("status"):
+            run["status"] = status
+            run["updated_at"] = utc_now()
+            if status in {"COMPLETED", "FAILED"}:
+                run.setdefault("completed_at", utc_now())
+            atomic_write_json(run_dir / "run.json", redact(run))
+        return run
 
     def maybe_create_scale_plans(self) -> None:
         for run_dir in sorted(self.store.runs.iterdir() if self.store.runs.exists() else []):
