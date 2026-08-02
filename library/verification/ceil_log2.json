@@ -34,9 +34,10 @@
     "module": "ceil_log2",
     "parent_run_id": "20260802T062208Z-0ad45a41",
     "profile": "scale",
-    "promoted_at": "2026-08-02T22:13:24Z",
+    "promoted_at": "2026-08-02T23:46:34Z",
     "rtl_sha256": "71784bb792966a7e48e98d35cc2e2c3f6052f1c17528ffe1b4256f805c9fda65",
-    "run_id": "20260802T213843Z-scale-41855a25",
+    "run_id": "20260802T230757Z-scale-7a24e3ac",
+    "run_kind": "arithmetic",
     "schema_version": 1,
     "source_gate": {
       "blockers": [],
@@ -75,7 +76,7 @@
       "status": "PASS"
     },
     "stages": {
-      "dependency_composition": "PASS",
+      "dependency_composition": "NOT_APPLICABLE",
       "frame_compare": "PASS",
       "generator_cache": "PASS",
       "model_matrix": "PASS",
@@ -164,7 +165,7 @@
       "spec_pdf": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf"
     }
   },
-  "last_verified_run_id": "20260802T213843Z-scale-41855a25",
+  "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
   "matrix": {
     "modes": {
       "C_ONLY": "PASS",
@@ -179,7 +180,8 @@
   "profile": "scale",
   "promoted_at": "2026-08-02T21:15:54Z",
   "rtl_sha256": "71784bb792966a7e48e98d35cc2e2c3f6052f1c17528ffe1b4256f805c9fda65",
-  "run_id": "20260802T213843Z-scale-41855a25",
+  "run_id": "20260802T230757Z-scale-7a24e3ac",
+  "run_kind": "arithmetic",
   "schema_version": 2,
   "source_gate": {
     "blockers": [],
@@ -218,7 +220,7 @@
     "status": "PASS"
   },
   "stages": {
-    "dependency_composition": "PASS",
+    "dependency_composition": "NOT_APPLICABLE",
     "formal": "NOT_APPLICABLE",
     "formal_partitions": null,
     "formal_rtl_equivalence": "NOT_APPLICABLE",

@@ -73,6 +73,11 @@ regenerating analysis artifacts and do not invoke an LLM.
   bounded. Run Eva/From on the top 10 ranked analyzable candidates by default.
   Names may appear in receipts only as discovered output, never as selection
   input.
+- Treat every AST-observed `WRITES_THROUGH` pointer parameter, global/field
+  write, or mutable static as a stateful effect. Detect writes through
+  dereference and increment/compound-assignment wrappers (for example
+  `(*bit_count)++`); an unqualified pointer type is never evidence of a
+  read-only DUT interface. No reviewed domain override may waive a state write.
 
 ## Traceability contract
 
