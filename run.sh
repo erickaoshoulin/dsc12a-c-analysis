@@ -69,6 +69,7 @@ clear_generated_outputs() {
     "$OUTPUT_DIR/reports/candidates.md" \
     "$OUTPUT_DIR/reports/spec-to-code.md" \
     "$OUTPUT_DIR/reports/code-to-spec.md" \
+    "$OUTPUT_DIR/reports/orphan-triage.md" \
     "$OUTPUT_DIR/reports/orphans.md" \
     "$OUTPUT_DIR/reports/unresolved.md"
 }

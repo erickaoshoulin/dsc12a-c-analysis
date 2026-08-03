@@ -21,7 +21,7 @@ DSC PDF.
                         current tool-selected ready/candidate/blocker frontier
     dashboard/data/traceability.json
                         repository-wide exact/proposed/reviewed/orphan audit
-    reports/            readable regression-summary.md and per-function reports
+    reports/            readable regression-summary.md, orphan triage, and per-function reports
     library/index.json  accepted-library index with stale/provenance checks
     path-map.json       legacy-to-new path mapping
 

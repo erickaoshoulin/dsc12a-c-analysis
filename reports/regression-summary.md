@@ -32,7 +32,7 @@ The repository-wide traceability receipt is authoritative for discovery, but pro
 | Production anchors linked / total | 29 / 88 |
 | Untraced PDF anchors | 156 |
 | Untraced production functions | 59 |
-Readable audit: [code_to_spec](../reports/code-to-spec.md), [orphans](../reports/orphans.md), [spec_to_code](../reports/spec-to-code.md).
+Readable audit: [code_to_spec](../reports/code-to-spec.md), [orphan_triage](../reports/orphan-triage.md), [orphans](../reports/orphans.md), [spec_to_code](../reports/spec-to-code.md).
 
 ## Migration frontier
 

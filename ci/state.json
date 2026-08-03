@@ -13,19 +13,60 @@
         "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
         "contract": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
         "dependency": "4a5442ee94151d2e6ba60b488d1a79bc4f81e0e0eb9da651bac1d7b6636c0903",
-        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
+        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
         "workers": "8"
       },
       "history": [
         {
           "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "71784bb792966a7e48e98d35cc2e2c3f6052f1c17528ffe1b4256f805c9fda65",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,
@@ -351,19 +392,60 @@
         "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
         "contract": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
         "dependency": "5bbb07e9af0c0e1dc8724047acfdf53caaf53dbfc2c7e190e016ef05238c48be",
-        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
+        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
         "workers": "8"
       },
       "history": [
         {
           "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "582d5e131e638e5a6aa4f9783cf1755b041f9369f9c8c84e57fb413845272167",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,
@@ -714,14 +796,14 @@
         "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
         "contract": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
         "dependency": "6deb7d32a0542be5e6bf91755eba9ac4ac731922d3e08485e075cf80c9de3486",
-        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
+        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
         "workers": "8"
       },
       "history": [
@@ -868,6 +950,47 @@
           "state": "UNIT_VERIFIED",
           "status": "UNPROVED",
           "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "da8e09494b9dad38a4591c81c21adf445cc0b92cdaf4eabc1604aa1ca2db3f9f",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,
@@ -1302,14 +1425,14 @@
         "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
         "contract": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
         "dependency": "8075807255cf4e44064896310cc884d94fcc351bf7f74af032ae856b8ac37661",
-        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
+        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
         "workers": "8"
       },
       "history": [
@@ -2376,6 +2499,47 @@
           "promotion_status": "VERIFIED_REFRESH",
           "state": "BITSTREAM_PASS",
           "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "95b00b9f217f19697deb92e6926e102faf48b91af79a9fb6331900a7217d480b",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         }
       ],
       "interface_shape": [
@@ -2432,19 +2596,60 @@
         "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
         "contract": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
         "dependency": "d6657965d155244e4b80b6ab49c86ce3736eebe4e6decc771789b2b11342612a",
-        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
+        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
         "workers": "8"
       },
       "history": [
         {
           "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "a10d4649d371883b4bdfef25fc99448c5a719e937a93425900ddf00b26474073",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,
@@ -2729,19 +2934,60 @@
         "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
         "contract": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
         "dependency": "1bd73d2d1d0dc0d92f6e4a1eb1724c3584ff7007ace11c1f5d8de29477a7e26d",
-        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
+        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
         "workers": "8"
       },
       "history": [
         {
           "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "a8a237d111078f013fa7c15edf430b37d8c58a60595b1082166f16b0334c24b4",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,
@@ -4054,14 +4300,14 @@
         "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
         "contract": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
         "dependency": "5056ccfe9eee6dceaa183024a88208bfc55732b5b236ed8baacd98d44b7b8b68",
-        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
+        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
         "workers": "8"
       },
       "history": [
@@ -5031,6 +5277,47 @@
           "promotion_status": "VERIFIED_REFRESH",
           "state": "BITSTREAM_PASS",
           "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "0a4b0d5ee2f45598e3ea1859102a42e3fa2ef66aba94e7049fc1d47876a5c07e",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         }
       ],
       "interface_shape": [
@@ -5081,14 +5368,14 @@
         "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
         "contract": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
         "dependency": "202e4f3e09329e86568bf6e445ea40aad44b08cbc2e08d8e8e889404269c84cc",
-        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
+        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
         "workers": "8"
       },
       "history": [
@@ -5235,6 +5522,47 @@
           "state": "UNIT_VERIFIED",
           "status": "UNPROVED",
           "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "cfb707d7aa001c86145ecff6476c1fd36b7d2755ecabe5d5af41f817ea22d855",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,
@@ -5596,14 +5924,14 @@
         "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
         "contract": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
         "dependency": "ffc5198137d6fbbf9f09edcc8a760d5e25650efffae54cb01ec94bc447f7eae4",
-        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
+        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
         "workers": "8"
       },
       "history": [
@@ -6518,6 +6846,47 @@
           "promotion_status": "VERIFIED_REFRESH",
           "state": "BITSTREAM_PASS",
           "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "5dda9dc25483193295e7af8abbd927b209f8e9715f2f4791864200f2fc0a3334",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         }
       ],
       "interface_shape": [
@@ -6598,19 +6967,60 @@
         "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
         "contract": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
         "dependency": "674bbe59bc7b3e1b6c7bb740fb94db009fb7e014c1d815ece9de3cb2595ebd3d",
-        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
+        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
         "workers": "8"
       },
       "history": [
         {
           "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "cfdb54a0936d5bd70d45ddd9bcb20d05d99b73039a3789c1124ed564ae5aa65b",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,
@@ -6943,14 +7353,14 @@
         "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
         "contract": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
         "dependency": "c06c81af7f0aebcd65a6303518839aea78d8faea46d3e398b160f92f6173e030",
-        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
+        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
         "workers": "8"
       },
       "history": [
@@ -7857,6 +8267,47 @@
           "promotion_status": "VERIFIED_REFRESH",
           "state": "BITSTREAM_PASS",
           "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "861239ab7f41e5c98845588cfa54631e2d4449920afe9cdbde2eae0920b09af7",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         }
       ],
       "interface_shape": [
@@ -7907,19 +8358,60 @@
         "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
         "contract": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
         "dependency": "1eb0c0b6879eb69d337b06eeac34f3d0087bafca0c9ab3daa778de067446e8ce",
-        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
+        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
         "workers": "8"
       },
       "history": [
         {
           "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "18f078d82f020604fbcae57261373e69e9291f7757f81585163bb47fa1d893df",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,
@@ -8235,14 +8727,14 @@
         "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
         "contract": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
         "dependency": "ba208475235b6e92b65547f31cdffa4fe40ad3cdd5c1eec9bb75103c3ad7a956",
-        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
+        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
         "workers": "8"
       },
       "history": [
@@ -9464,6 +9956,47 @@
           "promotion_status": "VERIFIED_REFRESH",
           "state": "BITSTREAM_PASS",
           "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "7c9d729bbe1ac193b6f355b3d8281a92ab350a9c27a7717145fdea31a863d9cd",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         }
       ],
       "interface_shape": [
@@ -9508,14 +10041,14 @@
         "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
         "contract": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
         "dependency": "048c7cbc13af700b569cec566195f24f12782209a1fbfa528ca7b95d44a168c8",
-        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
+        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
         "workers": "8"
       },
       "history": [
@@ -10429,6 +10962,47 @@
           "promotion_status": "VERIFIED_REFRESH",
           "state": "BITSTREAM_PASS",
           "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "831411aefb7fd14c630f6a71d75191a62320ce17566d6292637fcdab603e2011",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         }
       ],
       "interface_shape": [
@@ -10695,14 +11269,14 @@
         "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
         "contract": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
         "dependency": "ef867cd7536ed109df25b32711d8bcc5a652673b12c1ce871c588a3df2e0e1b6",
-        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
+        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
         "workers": "8"
       },
       "history": [
@@ -11136,6 +11710,47 @@
         },
         {
           "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "971e3b07df907a913544145749bc5303b1c4532af69517ce97ab3bc9bed0cae9",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
           "state": "BITSTREAM_PASS",
           "status": "PASS"
         },
@@ -11605,14 +12220,14 @@
         "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
         "contract": "46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
         "dependency": "190a9a354943b435750ae28f6ae44805aaf9805259f9c5cfed0cb493014c0849",
-        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
+        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
         "workers": "8"
       },
       "history": [
@@ -11759,6 +12374,47 @@
           "state": "UNIT_VERIFIED",
           "status": "UNPROVED",
           "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "fc765032b32c15013196fa87328b8692da41071277c4bdd13ffb941c86132ab8",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,

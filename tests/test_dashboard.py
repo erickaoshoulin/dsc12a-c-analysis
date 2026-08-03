@@ -384,6 +384,33 @@ class DashboardFixtureTests(unittest.TestCase):
                 "spec_anchor_ids": ["pdf:figure:9"],
                 "production_code_anchor_ids": ["code:function:c:@F@Untraced"],
             },
+            "orphan_triage": {
+                "schema_version": 1,
+                "summary": {
+                    "production_code_count": 1,
+                    "spec_anchor_count": 1,
+                    "production_code_next_actions": {"CHECK_NON_OUTPUT_SCOPE": 1},
+                    "spec_next_actions": {"REVIEW_SPEC_SCOPE": 1},
+                },
+                "production_code": [{
+                    "function": "Untraced",
+                    "file": "fixture.c",
+                    "line": 20,
+                    "next_action": "CHECK_NON_OUTPUT_SCOPE",
+                    "rationale": "fixture triage evidence",
+                    "candidate": {"rank": 4, "score": 12, "eligible": False, "purity": "IMPURE", "timing": "UNKNOWN"},
+                    "coverage": {"status": "EXECUTED", "execution_count": 2, "eligible_after_coverage": False},
+                    "comments": [],
+                }],
+                "spec": [{
+                    "spec_anchor_id": "pdf:figure:9",
+                    "kind": "figure",
+                    "page": 9,
+                    "next_action": "REVIEW_SPEC_SCOPE",
+                    "rationale": "fixture spec evidence",
+                    "related_code_functions": [],
+                }],
+            },
         })
 
         site = repo / "dashboard"
@@ -398,6 +425,8 @@ class DashboardFixtureTests(unittest.TestCase):
         self.assertEqual(audit["counts"]["untraced_production_function_count"], 1)
         self.assertIn("CandidateLeaf", (site / "traceability.html").read_text(encoding="utf-8"))
         self.assertIn("pdf:figure:9", (site / "traceability.html").read_text(encoding="utf-8"))
+        self.assertIn("Deterministic orphan triage", (site / "traceability.html").read_text(encoding="utf-8"))
+        self.assertIn("CHECK_NON_OUTPUT_SCOPE", (site / "traceability.html").read_text(encoding="utf-8"))
         self.assertIn("Traceability audit", (site / "index.html").read_text(encoding="utf-8"))
         self.assertIn("Untraced production functions", (repo / "reports" / "regression-summary.md").read_text(encoding="utf-8"))
         self.assertTrue((site / "data" / "traceability.json").is_file())

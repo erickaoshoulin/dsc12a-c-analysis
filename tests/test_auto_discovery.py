@@ -246,6 +246,158 @@ class AutoDiscoveryTests(unittest.TestCase):
         self.assertEqual([link["function"] for link in links], ["MidpointPrediction"])
         self.assertEqual(links[0]["status"], "PROPOSED")
 
+    def test_orphan_triage_uses_tool_facts_without_creating_links(self):
+        anchors = [
+            {
+                "anchor_id": "pdf:model-note:MN_FIXTURE:p7",
+                "kind": "model_note",
+                "identifier": "MN_FIXTURE",
+                "mn_ids": ["MN_FIXTURE"],
+                "page": 7,
+                "title": "Fixture model note",
+            },
+            {
+                "anchor_id": "pdf:section:8",
+                "kind": "section",
+                "identifier": "8",
+                "page": 8,
+                "title": "Unlinked section",
+                "mn_ids": [],
+            },
+        ]
+        comments = {
+            "code_anchors": [
+                {
+                    "code_anchor_id": "code:function:U_leaf",
+                    "clang_usr": "U_leaf",
+                    "function": "leaf_from_facts",
+                    "file": "codec.c",
+                    "line": 10,
+                    "end_line": 20,
+                    "permalink": "https://example.invalid/codec.c#L10",
+                },
+                {
+                    "code_anchor_id": "code:function:U_state",
+                    "clang_usr": "U_state",
+                    "function": "state_from_facts",
+                    "file": "codec.c",
+                    "line": 30,
+                    "end_line": 40,
+                    "permalink": "https://example.invalid/codec.c#L30",
+                },
+            ],
+            "comments": [
+                {
+                    "comment_id": "comment:codec.c:8",
+                    "clang_usr": "U_leaf",
+                    "function": "leaf_from_facts",
+                    "file": "codec.c",
+                    "line": 8,
+                    "end_line": 8,
+                    "text": "// MN_FIXTURE",
+                    "mn_ids": ["MN_FIXTURE"],
+                    "spec_refs": {},
+                    "permalink": "https://example.invalid/codec.c#L8",
+                }
+            ],
+        }
+        raw = {
+            "functions": [
+                {
+                    "clang_usr": "U_leaf",
+                    "return_type": "int",
+                    "parameters": [],
+                    "pointer_parameters": [],
+                    "callers": [],
+                    "callees": [],
+                    "loops": [],
+                    "unknown_facts": [],
+                    "proposal": {"category_proposal": "PURE_COMB_CANDIDATE"},
+                    "effects": {},
+                },
+                {
+                    "clang_usr": "U_state",
+                    "return_type": "void",
+                    "parameters": [],
+                    "pointer_parameters": [{"mode": "WRITES_THROUGH"}],
+                    "callers": [],
+                    "callees": [],
+                    "loops": [],
+                    "unknown_facts": [],
+                    "proposal": {"category_proposal": "STATEFUL"},
+                    "effects": {"file_io": False},
+                },
+            ]
+        }
+        candidates = {
+            "functions": [
+                {
+                    "clang_usr": "U_leaf",
+                    "score": 100,
+                    "confidence": 1,
+                    "eligible": True,
+                    "production_reachable": True,
+                    "contributes_to_observable_output": True,
+                    "bounded_computation": True,
+                    "purity": "PURE",
+                    "timing": "COMBINATIONAL",
+                    "role": "DUT",
+                    "direct_effects": {},
+                    "transitive_effects": {},
+                },
+                {
+                    "clang_usr": "U_state",
+                    "score": 40,
+                    "confidence": 0.5,
+                    "eligible": False,
+                    "production_reachable": True,
+                    "contributes_to_observable_output": True,
+                    "bounded_computation": False,
+                    "purity": "IMPURE",
+                    "timing": "UNKNOWN",
+                    "role": "DUT",
+                    "direct_effects": {"state_write": True},
+                    "transitive_effects": {"state_write": True},
+                },
+            ],
+            "ranked_candidates": [
+                {"clang_usr": "U_leaf"},
+                {"clang_usr": "U_state"},
+            ],
+        }
+        coverage = {
+            "functions": [
+                {
+                    "clang_usr": "U_leaf",
+                    "coverage_status": "EXECUTED",
+                    "eligible_after_coverage": True,
+                    "coverage": {"execution_count": 12},
+                },
+                {
+                    "clang_usr": "U_state",
+                    "coverage_status": "EXECUTED",
+                    "eligible_after_coverage": False,
+                    "coverage": {"execution_count": 12},
+                },
+            ]
+        }
+        triage = traceability.build_orphan_triage(
+            anchors,
+            comments,
+            raw,
+            candidates,
+            coverage,
+            ["pdf:section:8"],
+            ["code:function:U_leaf", "code:function:U_state"],
+            {"raw_facts": "raw", "candidate_facts": "candidate"},
+        )
+        self.assertEqual(triage["summary"]["production_code_count"], 2)
+        by_function = {item["function"]: item for item in triage["production_code"]}
+        self.assertEqual(by_function["leaf_from_facts"]["next_action"], "RESOLVE_DIRECT_SPEC_REFERENCE")
+        self.assertEqual(by_function["state_from_facts"]["next_action"], "KEEP_STATEFUL_OR_UNPROVEN_BOUNDARY")
+        self.assertEqual(triage["spec"][0]["next_action"], "REVIEW_SPEC_SCOPE")
+        self.assertEqual(triage["input_hashes"]["raw_facts"], "raw")
+
 
 if __name__ == "__main__":
     unittest.main()

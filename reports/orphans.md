@@ -3,6 +3,8 @@
 - Untraced spec anchors: 156
 - Untraced production functions: 59
 
+- Detailed deterministic triage: [orphan-triage.md](orphan-triage.md)
+
 ## Spec anchors
 
 - `pdf:table:1`

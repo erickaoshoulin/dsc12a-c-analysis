@@ -27,7 +27,7 @@
               "/private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/shards/shard-000.vectors"
             ]
           },
-          "duration_seconds": 1.351,
+          "duration_seconds": 1.347,
           "shard_id": 0,
           "status": "PASS",
           "vectors": 71944
@@ -43,7 +43,7 @@
               "/private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/shards/shard-001.vectors"
             ]
           },
-          "duration_seconds": 1.347,
+          "duration_seconds": 1.283,
           "shard_id": 1,
           "status": "PASS",
           "vectors": 71944
@@ -59,7 +59,7 @@
               "/private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/shards/shard-002.vectors"
             ]
           },
-          "duration_seconds": 1.405,
+          "duration_seconds": 1.279,
           "shard_id": 2,
           "status": "PASS",
           "vectors": 71944
@@ -75,7 +75,7 @@
               "/private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/shards/shard-003.vectors"
             ]
           },
-          "duration_seconds": 1.398,
+          "duration_seconds": 1.224,
           "shard_id": 3,
           "status": "PASS",
           "vectors": 71944
@@ -91,7 +91,7 @@
               "/private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/shards/shard-004.vectors"
             ]
           },
-          "duration_seconds": 1.283,
+          "duration_seconds": 1.317,
           "shard_id": 4,
           "status": "PASS",
           "vectors": 71944
@@ -107,7 +107,7 @@
               "/private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/shards/shard-005.vectors"
             ]
           },
-          "duration_seconds": 1.343,
+          "duration_seconds": 1.305,
           "shard_id": 5,
           "status": "PASS",
           "vectors": 71944
@@ -123,7 +123,7 @@
               "/private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/shards/shard-006.vectors"
             ]
           },
-          "duration_seconds": 1.374,
+          "duration_seconds": 1.214,
           "shard_id": 6,
           "status": "PASS",
           "vectors": 71944
@@ -139,7 +139,7 @@
               "/private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/shards/shard-007.vectors"
             ]
           },
-          "duration_seconds": 1.267,
+          "duration_seconds": 1.26,
           "shard_id": 7,
           "status": "PASS",
           "vectors": 71944
@@ -171,8 +171,8 @@
           "--Wno-fatal"
         ],
         "cwd": "/private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
-        "duration_seconds": 3.254,
-        "output": "c++  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -Os  -c -o harness.o /private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/candidate-build/candidate_01/harness.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\npython3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Visorigflathindex.cpp Visorigflathindex___024root__0.cpp Visorigflathindex__ConstPool__0__Slow.cpp Visorigflathindex___024root__Slow.cpp Visorigflathindex___024root__0__Slow.cpp Visorigflathindex__Syms__Slow.cpp > Visorigflathindex__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o Visorigflathindex__ALL.o Visorigflathindex__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++  -Wl,-U,__Z15vl_time_stamp64v,-U,__Z13sc_time_stampv,-U,_vlog_startup_routines   harness.o verilated.o verilated_threads.o Visorigflathindex__ALL.a    -pthread -lpthread   -o Visorigflathindex\nrm Visorigflathindex__ALL.verilator_deplist.tmp\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.053 MB sources in 2 modules, into 0.426 MB in 6 C++ files needing 0.001 MB\n- Verilator: Walltime 3.192 s (elab=0.002, cvt=0.046, bld=3.136); cpu 0.055 s on 1 threads; allocated 29.312 MB\n",
+        "duration_seconds": 3.182,
+        "output": "c++  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -Os  -c -o harness.o /private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/candidate-build/candidate_01/harness.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\npython3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Visorigflathindex.cpp Visorigflathindex___024root__0.cpp Visorigflathindex__ConstPool__0__Slow.cpp Visorigflathindex___024root__Slow.cpp Visorigflathindex___024root__0__Slow.cpp Visorigflathindex__Syms__Slow.cpp > Visorigflathindex__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o Visorigflathindex__ALL.o Visorigflathindex__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++  -Wl,-U,__Z15vl_time_stamp64v,-U,__Z13sc_time_stampv,-U,_vlog_startup_routines   harness.o verilated.o verilated_threads.o Visorigflathindex__ALL.a    -pthread -lpthread   -o Visorigflathindex\nrm Visorigflathindex__ALL.verilator_deplist.tmp\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.053 MB sources in 2 modules, into 0.426 MB in 6 C++ files needing 0.001 MB\n- Verilator: Walltime 3.128 s (elab=0.002, cvt=0.044, bld=3.075); cpu 0.053 s on 1 threads; allocated 29.188 MB\n",
         "returncode": 0
       },
       "compile_once": true,
@@ -386,7 +386,7 @@
       "table_relation": "primary_qp - somewhat_flat_qp_delta indexes the normative Table 6-2 row"
     }
   },
-  "duration_seconds": 39.862,
+  "duration_seconds": 39.783,
   "execution_status": "EXECUTED_NOW",
   "formal_proofs": [
     {
@@ -413,7 +413,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/oracle-build/cmd_parse.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.067,
+        "duration_seconds": 0.079,
         "output": "",
         "returncode": 0
       },
@@ -432,7 +432,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/oracle-build/codec_main.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.095,
+        "duration_seconds": 0.084,
         "output": "",
         "returncode": 0
       },
@@ -450,7 +450,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/oracle-build/dpx.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.07,
+        "duration_seconds": 0.066,
         "output": "",
         "returncode": 0
       },
@@ -468,7 +468,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/oracle-build/dsc_codec.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.091,
+        "duration_seconds": 0.087,
         "output": "",
         "returncode": 0
       },
@@ -486,7 +486,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/oracle-build/dsc_utils.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.058,
+        "duration_seconds": 0.072,
         "output": "",
         "returncode": 0
       },
@@ -504,7 +504,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/oracle-build/fifo.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.063,
+        "duration_seconds": 0.049,
         "output": "",
         "returncode": 0
       },
@@ -522,7 +522,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/oracle-build/hdr_dpx.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.08,
+        "duration_seconds": 0.078,
         "output": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n2 warnings generated.\n",
         "returncode": 0
       },
@@ -540,7 +540,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/oracle-build/logging.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.043,
+        "duration_seconds": 0.051,
         "output": "",
         "returncode": 0
       },
@@ -558,7 +558,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/oracle-build/multiplex.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.036,
+        "duration_seconds": 0.043,
         "output": "",
         "returncode": 0
       },
@@ -576,7 +576,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/oracle-build/psnr.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.049,
+        "duration_seconds": 0.042,
         "output": "",
         "returncode": 0
       },
@@ -594,7 +594,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/oracle-build/utl.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.079,
+        "duration_seconds": 0.078,
         "output": "",
         "returncode": 0
       },
@@ -611,7 +611,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/oracle-build/oracle.o"
         ],
         "cwd": "/private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
-        "duration_seconds": 0.036,
+        "duration_seconds": 0.043,
         "output": "",
         "returncode": 0
       },
@@ -635,7 +635,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/oracle-build/oracle.o"
         ],
         "cwd": "/private/tmp/dsc12a-regression-dashboard/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
-        "duration_seconds": 0.05,
+        "duration_seconds": 0.043,
         "output": "",
         "returncode": 0
       }

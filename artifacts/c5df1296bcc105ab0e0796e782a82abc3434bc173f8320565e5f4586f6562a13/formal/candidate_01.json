@@ -19,7 +19,7 @@
       "180000"
     ],
     "cwd": "/private/tmp/dsc12a-regression-dashboard/artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
-    "duration_seconds": 6.881,
+    "duration_seconds": 6.831,
     "output": "{\n  \"ast_frontend\": \"verilator --json-only\",\n  \"candidate\": \"candidate_01.sv\",\n  \"candidate_path\": \"/private/tmp/dsc12a-regression-dashboard/artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13/generated/candidate_01.sv\",\n  \"candidate_sha256\": \"da8e09494b9dad38a4591c81c21adf445cc0b92cdaf4eabc1604aa1ca2db3f9f\",\n  \"constraint_count\": 76,\n  \"contract_id\": \"estimatebitsforgroup\",\n  \"contract_sha256\": \"3cc25d93550d0c223bfd8bc2f6498eb8f50eb8e7398a1ef06afec2b82749cda7\",\n  \"proof_basis\": \"locked exact spec-linked window equations versus parsed combinational RTL AST\",\n  \"proof_complete\": true,\n  \"proof_strategy\": \"SYMBOLIC_ESTIMATE_BITS\",\n  \"schema_version\": 1,\n  \"solver\": \"z3\",\n  \"status\": \"PASS\",\n  \"timeout_ms\": 180000\n}\n",
     "returncode": 0
   },

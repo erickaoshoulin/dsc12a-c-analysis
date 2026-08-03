@@ -147,11 +147,17 @@ Generate:
   `traceability/links.reviewed.yaml`, and
   `traceability/traceability.json`;
 - `reports/spec-to-code.md`, `reports/code-to-spec.md`,
-  `reports/orphans.md`, and `reports/candidates.md`.
+  `reports/orphan-triage.md`, `reports/orphans.md`, and
+  `reports/candidates.md`.
 - The dashboard must project the repository-wide receipt into a readable
   traceability audit: exact/proposed/reviewed/stale counts, proposal queue,
-  linked-versus-total PDF/C anchors, and complete orphan lists. An engineer
-  must not need to open raw JSON to discover unresolved traceability work.
+  linked-versus-total PDF/C anchors, complete orphan lists, and deterministic
+  orphan-triage actions. Triage must join tool-discovered Clang/candidate/
+  coverage facts with C comments and PDF anchors to show source spans, ranking,
+  eligibility, coverage, and the evidence-backed next review action. Triage is
+  reporting only: it must not create a traceability link, select a function by
+  name, or select an RTL target. An engineer must not need to open raw JSON to
+  discover unresolved traceability work.
 
 Link precedence is exact `MN_*` match, explicit page/section/table reference,
 normalized function/table identifier, then optional LLM proposal. Exact links

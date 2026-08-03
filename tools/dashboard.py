@@ -1407,6 +1407,7 @@ def make_traceability_audit(repo: Path) -> dict[str, Any]:
     payload = read_json(receipt_path, {}) or {}
     report_names = {
         "orphans": "orphans.md",
+        "orphan_triage": "orphan-triage.md",
         "spec_to_code": "spec-to-code.md",
         "code_to_spec": "code-to-spec.md",
     }
@@ -1439,6 +1440,17 @@ def make_traceability_audit(repo: Path) -> dict[str, Any]:
             "orphans": {
                 "spec_anchor_ids": [],
                 "production_code_anchor_ids": [],
+            },
+            "orphan_triage": {
+                "schema_version": 1,
+                "summary": {
+                    "production_code_count": 0,
+                    "spec_anchor_count": 0,
+                    "production_code_next_actions": {},
+                    "spec_next_actions": {},
+                },
+                "production_code": [],
+                "spec": [],
             },
             "reports": reports,
         }
@@ -1510,6 +1522,19 @@ def make_traceability_audit(repo: Path) -> dict[str, Any]:
         "untraced_production_function_count": len(code_orphans),
     }
     review_queue = [link for link in links if link.get("status") == "PROPOSED"]
+    orphan_triage = payload.get("orphan_triage") if isinstance(payload.get("orphan_triage"), dict) else {}
+    if not orphan_triage:
+        orphan_triage = {
+            "schema_version": 1,
+            "summary": {
+                "production_code_count": len(code_orphans),
+                "spec_anchor_count": len(spec_orphans),
+                "production_code_next_actions": {},
+                "spec_next_actions": {},
+            },
+            "production_code": [],
+            "spec": [],
+        }
     return {
         "schema_version": 1,
         "available": True,
@@ -1524,6 +1549,7 @@ def make_traceability_audit(repo: Path) -> dict[str, Any]:
             "spec_anchor_ids": spec_orphans,
             "production_code_anchor_ids": code_orphans,
         },
+        "orphan_triage": orphan_triage,
         "reports": reports,
     }
 
@@ -1809,7 +1835,7 @@ DSC PDF.
                         current tool-selected ready/candidate/blocker frontier
     dashboard/data/traceability.json
                         repository-wide exact/proposed/reviewed/orphan audit
-    reports/            readable regression-summary.md and per-function reports
+    reports/            readable regression-summary.md, orphan triage, and per-function reports
     library/index.json  accepted-library index with stale/provenance checks
     path-map.json       legacy-to-new path mapping
 
@@ -2431,6 +2457,78 @@ def render_repository_traceability_audit(audit: dict[str, Any]) -> str:
         + orphan_details("Production functions without a spec link", code_orphans)
         + '</div></section>'
     )
+    triage = audit.get("orphan_triage", {}) if isinstance(audit.get("orphan_triage"), dict) else {}
+    triage_summary = triage.get("summary", {}) if isinstance(triage.get("summary"), dict) else {}
+    code_triage = triage.get("production_code", []) if isinstance(triage.get("production_code"), list) else []
+    spec_triage = triage.get("spec", []) if isinstance(triage.get("spec"), list) else []
+    code_actions = triage_summary.get("production_code_next_actions", {})
+    spec_actions = triage_summary.get("spec_next_actions", {})
+
+    def action_summary(values: Any) -> str:
+        if not isinstance(values, dict) or not values:
+            return "none"
+        return ", ".join(
+            f'<span class="code">{html.escape(str(key))}</span> ({html.escape(str(value))})'
+            for key, value in sorted(values.items())
+        )
+
+    body += '<section><h3>Deterministic orphan triage</h3>'
+    body += (
+        '<div class="panel"><p>These next actions are derived from the Clang, candidate, coverage, '
+        'comment, and PDF-anchor facts. They are review guidance only; no link or RTL target is promoted.</p>'
+        f'<div class="statline"><span>Production actions</span><span>{action_summary(code_actions)}</span></div>'
+        f'<div class="statline"><span>PDF actions</span><span>{action_summary(spec_actions)}</span></div></div>'
+    )
+    body += (
+        f'<details class="panel"><summary>Production orphan triage ({html.escape(str(len(code_triage)))})</summary>'
+        '<div class="table-scroll"><table><thead><tr><th>Function</th><th>Source</th>'
+        '<th>Next action</th><th>Tool facts</th><th>Coverage</th><th>Evidence</th></tr></thead><tbody>'
+    )
+    for item in code_triage:
+        candidate = item.get("candidate") if isinstance(item.get("candidate"), dict) else {}
+        coverage = item.get("coverage") if isinstance(item.get("coverage"), dict) else {}
+        source_label = f'{item.get("file", "—")}:{item.get("line", "—")}'
+        permalink = item.get("permalink")
+        source = (
+            f'<a href="{html.escape(str(permalink))}">{html.escape(source_label)}</a>'
+            if permalink else html.escape(source_label)
+        )
+        facts = (
+            f'rank {html.escape(str(candidate.get("rank", "—")))} / '
+            f'score {html.escape(str(candidate.get("score", "—")))}<br>'
+            f'eligible {html.escape(str(candidate.get("eligible", "—")))} · '
+            f'{html.escape(str(candidate.get("purity", "—")))} / '
+            f'{html.escape(str(candidate.get("timing", "—")))}'
+        )
+        coverage_text = (
+            f'{html.escape(str(coverage.get("status", "—")))}<br>'
+            f'exec {html.escape(str(coverage.get("execution_count", "—")))} · '
+            f'after {html.escape(str(coverage.get("eligible_after_coverage", "—")))}'
+        )
+        evidence = (
+            f'{html.escape(str(item.get("rationale", "—")))}<br>'
+            f'C comments: {html.escape(str(len(item.get("comments", []))))}'
+        )
+        body += (
+            f'<tr><td class="code">{html.escape(str(item.get("function", "—")))}</td>'
+            f'<td>{source}</td><td class="code">{html.escape(str(item.get("next_action", "—")))}</td>'
+            f'<td>{facts}</td><td>{coverage_text}</td><td>{evidence}</td></tr>'
+        )
+    body += '</tbody></table></div></details>'
+    body += (
+        f'<details class="panel"><summary>PDF orphan triage ({html.escape(str(len(spec_triage)))})</summary>'
+        '<div class="table-scroll"><table><thead><tr><th>Anchor</th><th>Kind/page</th>'
+        '<th>Next action</th><th>Related C functions</th><th>Evidence</th></tr></thead><tbody>'
+    )
+    for item in spec_triage:
+        related = ", ".join(str(value) for value in item.get("related_code_functions", [])) or "none"
+        body += (
+            f'<tr><td class="code">{html.escape(str(item.get("spec_anchor_id", "—")))}</td>'
+            f'<td>{html.escape(str(item.get("kind", "—")))} / {html.escape(str(item.get("page", "—")))}</td>'
+            f'<td class="code">{html.escape(str(item.get("next_action", "—")))}</td>'
+            f'<td>{html.escape(related)}</td><td>{html.escape(str(item.get("rationale", "—")))}</td></tr>'
+        )
+    body += '</tbody></table></div></details></section>'
     return body
 
 
@@ -2811,6 +2909,16 @@ def check_site(repo: Path, output: Path | None = None) -> tuple[bool, list[str]]
             ):
                 if not isinstance(counts.get(key), int) or counts.get(key) < 0:
                     errors.append(f"invalid traceability count: {key}")
+            triage = audit.get("orphan_triage", {})
+            if triage and not isinstance(triage, dict):
+                errors.append("invalid traceability orphan triage")
+            elif isinstance(triage, dict):
+                for key in ("production_code", "spec"):
+                    if key in triage and not isinstance(triage.get(key), list):
+                        errors.append(f"invalid traceability orphan triage list: {key}")
+                summary = triage.get("summary", {})
+                if summary and not isinstance(summary, dict):
+                    errors.append("invalid traceability orphan triage summary")
     if site.is_dir():
         for path in relative_files(site):
             if path.suffix != ".html":

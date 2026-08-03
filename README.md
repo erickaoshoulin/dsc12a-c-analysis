@@ -88,7 +88,10 @@ never overwritten. A reviewed link becomes `STALE` if either input hash
 changes. Reports are bidirectional and retain visible unknowns/orphans. The
 dashboard traceability page also shows repository-wide exact/proposed/reviewed
 counts, the proposal queue, linked-versus-total anchors, and complete orphan
-lists, so raw JSON is not required to find the next review work.
+lists. `reports/orphan-triage.md` and the dashboard triage tables add
+evidence-backed next actions from Clang, candidate, coverage, comment, and PDF
+facts without creating links or RTL targets, so raw JSON is not required to
+find the next review work.
 
 After C facts are assembled, an instrumented temporary copy automatically
 discovers and runs every `bittrue_smoke/run_c_baseline*.sh` profile, retaining a
@@ -130,6 +133,7 @@ reports/
   candidate-functions.md
   spec-to-code.md
   code-to-spec.md
+  orphan-triage.md
   orphans.md
   function-summary.md
   field-summary.md
