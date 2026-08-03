@@ -5,7 +5,13 @@ set -u
 SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 REPO_DIR="$SCRIPT_DIR"
 OUTPUT_DIR="$SCRIPT_DIR"
-PYTHON="${PYTHON:-python3}"
+PYTHON_REQUESTED="${PYTHON:-python3}"
+CLANGXX_REQUESTED="${CLANGXX:-clang++}"
+CLANG_REQUESTED="${CLANG:-clang}"
+FRAMA_C_REQUESTED="${FRAMA_C:-frama-c}"
+LLVM_CONFIG_REQUESTED="${LLVM_CONFIG:-llvm-config}"
+CMAKE_REQUESTED="${CMAKE:-cmake}"
+PYTHON="$PYTHON_REQUESTED"
 TIMEOUT_SECONDS="${DSC_ANALYSIS_TIMEOUT_SECONDS:-600}"
 BUILD_TIMEOUT_SECONDS="${DSC_BUILD_TIMEOUT_SECONDS:-$TIMEOUT_SECONDS}"
 TOP_N="${DSC_ANALYSIS_TOP_N:-10}"
@@ -358,12 +364,12 @@ fi
 PREFLIGHT_RECEIPT="$OUTPUT_DIR/build/analysis-preflight.json"
 if ! "$PYTHON" "$SCRIPT_DIR/tools/analysis_preflight.py" \
     --output "$PREFLIGHT_RECEIPT" \
-    --python "$PYTHON" \
-    --clang "$CLANG" \
-    --clang++ "$CLANGXX" \
-    --frama-c "$FRAMA_C" \
-    --llvm-config "$LLVM_CONFIG" \
-    --cmake "$CMAKE"; then
+    --python "$PYTHON_REQUESTED" \
+    --clang "$CLANG_REQUESTED" \
+    --clang++ "$CLANGXX_REQUESTED" \
+    --frama-c "$FRAMA_C_REQUESTED" \
+    --llvm-config "$LLVM_CONFIG_REQUESTED" \
+    --cmake "$CMAKE_REQUESTED"; then
   refresh_dashboard || true
   echo "INFRASTRUCTURE_FAILURE: required analysis tools unavailable; preserving prior generated receipts; see $PREFLIGHT_RECEIPT" >&2
   exit 1

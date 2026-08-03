@@ -20,6 +20,21 @@ from typing import Any
 
 REQUIRED_TOOLS = ("python", "clang", "clang++", "frama-c", "llvm-config", "cmake")
 
+# Keep this lookup in the receipt-producing tool as well as in run.sh.  A
+# caller that invokes the preflight directly must get the same answer as the
+# pipeline wrapper, especially for Homebrew's LLVM tools which are often not
+# on PATH on macOS.
+HOMEBREW_TOOL_PATHS = {
+    "clang++": (
+        "/opt/homebrew/opt/llvm/bin/clang++",
+        "/usr/local/opt/llvm/bin/clang++",
+    ),
+    "llvm-config": (
+        "/opt/homebrew/opt/llvm/bin/llvm-config",
+        "/usr/local/opt/llvm/bin/llvm-config",
+    ),
+}
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
@@ -29,17 +44,28 @@ def parse_args() -> argparse.Namespace:
     return parser.parse_args()
 
 
-def resolve_executable(raw: str) -> str | None:
+def resolve_executable(raw: str, tool: str) -> tuple[str | None, str | None]:
     value = str(raw or "").strip()
-    if not value:
-        return None
-    found = shutil.which(value)
+    if value and ("/" in value or "\\" in value):
+        path = pathlib.Path(value).expanduser()
+        if path.is_file() and os.access(path, os.X_OK):
+            return str(path.resolve()), "configured"
+        return None, None
+
+    # Match run.sh: standard Homebrew locations take precedence over PATH for
+    # LLVM tools, while an explicitly configured absolute path remains the
+    # authority.  The fallback list is data, not a function-selection input.
+    if tool in HOMEBREW_TOOL_PATHS and value in {"", tool}:
+        for candidate in HOMEBREW_TOOL_PATHS[tool]:
+            path = pathlib.Path(candidate)
+            if path.is_file() and os.access(path, os.X_OK):
+                return str(path.resolve()), "homebrew"
+
+    lookup = value or tool
+    found = shutil.which(lookup)
     if found:
-        return str(pathlib.Path(found).resolve())
-    path = pathlib.Path(value).expanduser()
-    if path.is_file() and os.access(path, os.X_OK):
-        return str(path.resolve())
-    return None
+        return str(pathlib.Path(found).resolve()), "PATH"
+    return None, None
 
 
 def command_version(path: str, tool: str) -> str:
@@ -65,13 +91,14 @@ def build_receipt(args: argparse.Namespace) -> dict[str, Any]:
     missing: list[str] = []
     for name in REQUIRED_TOOLS:
         requested = str(getattr(args, name.replace("-", "_"), "") or "")
-        resolved = resolve_executable(requested)
+        resolved, resolution = resolve_executable(requested, name)
         entry: dict[str, Any] = {
             "requested": requested or None,
             "resolved": resolved,
             "status": "PASS" if resolved else "MISSING",
         }
         if resolved:
+            entry["resolution"] = resolution
             entry["version"] = command_version(resolved, name)
         else:
             missing.append(name)

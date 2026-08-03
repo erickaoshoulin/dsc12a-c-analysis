@@ -222,36 +222,41 @@
       "status": "INFRASTRUCTURE_FAILURE",
       "tools": {
         "clang": {
-          "requested": "/usr/bin/clang",
+          "requested": "clang",
+          "resolution": "PATH",
           "resolved": "/usr/bin/clang",
           "status": "PASS",
           "version": "Apple clang version 17.0.0 (clang-1700.6.3.2)"
         },
         "clang++": {
-          "requested": "/opt/homebrew/opt/llvm/bin/clang++",
+          "requested": "clang++",
+          "resolution": "homebrew",
           "resolved": "/opt/homebrew/Cellar/llvm/22.1.8/bin/clang-22",
           "status": "PASS",
           "version": "Homebrew clang version 22.1.8"
         },
         "cmake": {
-          "requested": "/opt/homebrew/bin/cmake",
+          "requested": "cmake",
+          "resolution": "PATH",
           "resolved": "/opt/homebrew/Cellar/cmake/4.1.1/bin/cmake",
           "status": "PASS",
           "version": "cmake version 4.1.1"
         },
         "frama-c": {
-          "requested": null,
+          "requested": "frama-c",
           "resolved": null,
           "status": "MISSING"
         },
         "llvm-config": {
-          "requested": "/opt/homebrew/opt/llvm/bin/llvm-config",
+          "requested": "llvm-config",
+          "resolution": "homebrew",
           "resolved": "/opt/homebrew/Cellar/llvm/22.1.8/bin/llvm-config",
           "status": "PASS",
           "version": "22.1.8"
         },
         "python": {
           "requested": "python3",
+          "resolution": "PATH",
           "resolved": "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
           "status": "PASS",
           "version": "Python 3.14.6"

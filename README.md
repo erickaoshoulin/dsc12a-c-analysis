@@ -384,7 +384,9 @@ artifact directory; `run.sh` derives one under `DSC_REGRESSION_ROOT` when
 `operator_bittrue` trees; the local PDF and upstream C source remain outside
 the repository and are never edited. `run.sh` records the analysis-tool
 preflight in compact `build/analysis-preflight.json` after the C gate and
-before clearing facts; it resolves the standard Homebrew LLVM paths and makes
-missing Frama-C/LLVM tools visible in the dashboard/report. `run.sh` refreshes
-and checks the static dashboard after a successful run and after a preflight
-failure, so the latest blocker is visible without hand-editing receipts.
+before clearing facts; both `run.sh` and the receipt producer resolve the
+standard Homebrew LLVM paths and record whether each tool came from explicit
+configuration, Homebrew, or `PATH`. Missing Frama-C/LLVM tools are visible in
+the dashboard/report. `run.sh` refreshes and checks the static dashboard after
+a successful run and after a preflight failure, so the latest blocker is
+visible without hand-editing receipts.
