@@ -278,6 +278,19 @@ archives replacements, and updates the manifest under a library write lock;
 stateful callers, line storage, and other non-DUT C logic remain reference
 boundaries.
 
+Accepted leaves with stale source/spec/contract/dependency, controller, prompt,
+generator, or tool hashes automatically enter a bounded regression frontier;
+valid cache entries are reused without regeneration. `DSC_CICD_REFRESH_STABLE=1`
+is available when the entire reviewed stable frontier must be refreshed.
+
+If a completed receipt records `COMPOSITION_BLOCKED` with a `C_BOUNDARY`
+composition, the planner keeps that boundary visible and does not invoke the
+generator again for the same source/spec/contract/dependency identity. A
+changed semantic input reopens the contract automatically; an intentional
+retry may set `DSC_CICD_RETRY_BLOCKED=1` (or use explicit queue routing). The
+agent never invents a pointer/state adapter or passes dummy caller state just
+to make RTL composition compile.
+
 ## Human-readable regression dashboard
 
 The receipt-backed dashboard is a reporting and traceability view; JSON

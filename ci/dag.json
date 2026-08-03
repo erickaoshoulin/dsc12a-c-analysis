@@ -30637,216 +30637,216 @@
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "f31ebf694a15c841fbcb763dc23e43abe9c95c8b66987812c0521ac805778ebe",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findmidpoint:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DISCOVERED",
-      "status": "DEFERRED"
+      "status": "PLANNED"
     },
     {
       "artifacts": [],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "f31ebf694a15c841fbcb763dc23e43abe9c95c8b66987812c0521ac805778ebe",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findmidpoint:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "CONTRACT_LOCKED",
-      "status": "DEFERRED"
+      "status": "PLANNED"
     },
     {
       "artifacts": [],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "f31ebf694a15c841fbcb763dc23e43abe9c95c8b66987812c0521ac805778ebe",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findmidpoint:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_GENERATED",
-      "status": "DEFERRED"
+      "status": "PLANNED"
     },
     {
       "artifacts": [],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "f31ebf694a15c841fbcb763dc23e43abe9c95c8b66987812c0521ac805778ebe",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findmidpoint:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "UNIT_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PLANNED"
     },
     {
       "artifacts": [],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "f31ebf694a15c841fbcb763dc23e43abe9c95c8b66987812c0521ac805778ebe",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findmidpoint:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DEPENDENCIES_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PLANNED"
     },
     {
       "artifacts": [],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "f31ebf694a15c841fbcb763dc23e43abe9c95c8b66987812c0521ac805778ebe",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findmidpoint:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "SHADOW_PASS",
-      "status": "DEFERRED"
+      "status": "PLANNED"
     },
     {
       "artifacts": [],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "f31ebf694a15c841fbcb763dc23e43abe9c95c8b66987812c0521ac805778ebe",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findmidpoint:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_RETURN_PASS",
-      "status": "DEFERRED"
+      "status": "PLANNED"
     },
     {
       "artifacts": [],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "f31ebf694a15c841fbcb763dc23e43abe9c95c8b66987812c0521ac805778ebe",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findmidpoint:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "BITSTREAM_PASS",
-      "status": "DEFERRED"
+      "status": "PLANNED"
     },
     {
       "artifacts": [],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "f31ebf694a15c841fbcb763dc23e43abe9c95c8b66987812c0521ac805778ebe",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findmidpoint:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "PROMOTED",
-      "status": "DEFERRED"
+      "status": "PLANNED"
     },
     {
       "artifacts": [],
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "cf5abbdacefe102de1bd5f0454009786f7795f91e11aab530b78c179dc2c68e3",
-      "failure_reason": null,
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "ichdecision:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DISCOVERED",
-      "status": "PLANNED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "cf5abbdacefe102de1bd5f0454009786f7795f91e11aab530b78c179dc2c68e3",
-      "failure_reason": null,
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "ichdecision:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "CONTRACT_LOCKED",
-      "status": "PLANNED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "cf5abbdacefe102de1bd5f0454009786f7795f91e11aab530b78c179dc2c68e3",
-      "failure_reason": null,
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "ichdecision:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_GENERATED",
-      "status": "PLANNED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "cf5abbdacefe102de1bd5f0454009786f7795f91e11aab530b78c179dc2c68e3",
-      "failure_reason": null,
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "ichdecision:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "UNIT_VERIFIED",
-      "status": "PLANNED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "cf5abbdacefe102de1bd5f0454009786f7795f91e11aab530b78c179dc2c68e3",
-      "failure_reason": null,
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "ichdecision:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DEPENDENCIES_VERIFIED",
-      "status": "PLANNED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "cf5abbdacefe102de1bd5f0454009786f7795f91e11aab530b78c179dc2c68e3",
-      "failure_reason": null,
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "ichdecision:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "SHADOW_PASS",
-      "status": "PLANNED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "cf5abbdacefe102de1bd5f0454009786f7795f91e11aab530b78c179dc2c68e3",
-      "failure_reason": null,
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "ichdecision:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_RETURN_PASS",
-      "status": "PLANNED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "cf5abbdacefe102de1bd5f0454009786f7795f91e11aab530b78c179dc2c68e3",
-      "failure_reason": null,
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "ichdecision:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "BITSTREAM_PASS",
-      "status": "PLANNED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "cf5abbdacefe102de1bd5f0454009786f7795f91e11aab530b78c179dc2c68e3",
-      "failure_reason": null,
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "ichdecision:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "PROMOTED",
-      "status": "PLANNED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],

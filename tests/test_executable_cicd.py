@@ -189,6 +189,16 @@ class ExecutableCicdTests(unittest.TestCase):
             # re-selected by the current plan.
             self.assertEqual(plan["selected_contracts"], [])
             self.assertEqual(plan["new_candidates"], [])
+        elif not selected_plan["selected"]:
+            # The current plan may retain a prior run's deterministic
+            # composition boundary as blocked while selecting another bounded
+            # frontier item. A last-run receipt is not a request to regenerate
+            # the same C boundary.
+            self.assertNotIn(selected["contract_id"], plan["selected_contracts"])
+            self.assertTrue(
+                selected_plan.get("prior_composition_boundary")
+                or selected_plan.get("blocked_reasons")
+            )
         else:
             existing_ready = [
                 item for item in plan["contracts"]

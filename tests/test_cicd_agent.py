@@ -1,4 +1,5 @@
 import json
+import os
 import pathlib
 import tempfile
 import threading
@@ -360,6 +361,121 @@ class CicdAgentUnitTests(unittest.TestCase):
         self.assertTrue(plan["force_regenerate"])
         self.assertTrue(plan["contracts"][0]["targeted"])
         self.assertTrue(plan["contracts"][0]["force_regenerate"])
+
+    def test_composition_boundary_is_not_regenerated_without_explicit_retry(self):
+        contract = {
+            "contract_id": "boundary_leaf",
+            "status": "LOCKED",
+            "function": {"name": "BoundaryLeaf", "clang_usr": "c:@F@BoundaryLeaf"},
+            "spec_links": [{"status": "EXACT", "anchor_id": "pdf:section:boundary"}],
+            "obligations": [],
+            "dependencies": {"unresolved": []},
+            "interface": {"ports": [
+                {"name": "value", "direction": "input", "width": 8, "signed": False},
+                {"name": "return_value", "direction": "output", "width": 8, "signed": False},
+            ]},
+            "semantics": {"kind": "pure_expression"},
+            "origin": "tool_discovered_reviewed_override",
+            "selection": {"new_work": True},
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            agent = Agent(root, "plan")
+            agent.contracts = [contract]
+            agent.input_facts = {"source_hash": "source", "spec_hash": "spec", "tool_versions": {}}
+            agent.dependency_info = {
+                "cycles": [],
+                "adjacency": {"boundary_leaf": []},
+                "call_sites": [],
+                "all_call_sites": [],
+                "dependency_hashes": {"boundary_leaf": "dependency"},
+            }
+            _, hashes = agent.cache_key(contract)
+            artifact = root / "artifacts" / hashes["contract"]
+            artifact.mkdir(parents=True)
+            (artifact / "matrix-receipt.json").write_text(json.dumps({
+                "status": "COMPOSITION_BLOCKED",
+                "reason": "caller call signature does not provide the frozen DUT interface; retain C boundary",
+                "composition": {"status": "C_BOUNDARY"},
+            }), encoding="utf-8")
+            agent.previous_state = {"contracts": [{
+                "contract_id": "boundary_leaf",
+                "current_state": "BITSTREAM_PASS",
+                "status": "FAILED",
+                "hashes": hashes,
+                "artifacts": [str(artifact.relative_to(root))],
+            }]}
+            with mock.patch.dict(os.environ, {
+                "DSC_CICD_TARGET_CONTRACT": "",
+                "DSC_CICD_RETRY_BLOCKED": "",
+                "DSC_CICD_FORCE_REGENERATE": "",
+                "DSC_CICD_REFRESH_STABLE": "",
+            }, clear=False):
+                plan = agent.build_plan()
+            item = plan["contracts"][0]
+            self.assertEqual(plan["selected_contracts"], [])
+            self.assertFalse(item["ready"])
+            self.assertIn("prior_composition_boundary_unresolved", item["blocked_reasons"])
+            self.assertEqual(plan["blocked_contracts"][0]["contract_id"], "boundary_leaf")
+            self.assertEqual(item["prior_composition_boundary"]["composition_status"], "C_BOUNDARY")
+
+            with mock.patch.dict(os.environ, {"DSC_CICD_RETRY_BLOCKED": "1"}, clear=False):
+                retry_plan = agent.build_plan()
+            retry_item = retry_plan["contracts"][0]
+            self.assertEqual(retry_plan["selected_contracts"], ["boundary_leaf"])
+            self.assertTrue(retry_item["ready"])
+            self.assertTrue(retry_item["boundary_retry_requested"])
+            self.assertNotIn("prior_composition_boundary_unresolved", retry_item["blocked_reasons"])
+
+    def test_stale_promoted_component_enters_bounded_auto_refresh(self):
+        contract = {
+            "contract_id": "stable_leaf",
+            "status": "LOCKED",
+            "function": {"name": "StableLeaf", "clang_usr": "c:@F@StableLeaf"},
+            "spec_links": [{"status": "EXACT", "anchor_id": "pdf:section:stable"}],
+            "obligations": [],
+            "dependencies": {"unresolved": []},
+            "interface": {"ports": [
+                {"name": "value", "direction": "input", "width": 8, "signed": False},
+                {"name": "return_value", "direction": "output", "width": 8, "signed": False},
+            ]},
+            "semantics": {"kind": "pure_expression"},
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            (root / "library").mkdir(parents=True)
+            (root / "library" / "manifest.json").write_text(json.dumps({
+                "components": [{"contract_id": "stable_leaf", "status": "PASS"}],
+            }), encoding="utf-8")
+            agent = Agent(root, "plan")
+            agent.contracts = [contract]
+            agent.input_facts = {"source_hash": "source", "spec_hash": "spec", "tool_versions": {}}
+            agent.dependency_info = {
+                "cycles": [],
+                "adjacency": {"stable_leaf": []},
+                "call_sites": [],
+                "all_call_sites": [],
+                "dependency_hashes": {"stable_leaf": "dependency"},
+            }
+            _, hashes = agent.cache_key(contract)
+            prior_hashes = dict(hashes)
+            prior_hashes["agent"] = "controller-before-change"
+            agent.previous_state = {"contracts": [{
+                "contract_id": "stable_leaf",
+                "current_state": "PROMOTED",
+                "status": "PROMOTED",
+                "hashes": prior_hashes,
+            }]}
+            with mock.patch.dict(os.environ, {
+                "DSC_CICD_TARGET_CONTRACT": "",
+                "DSC_CICD_REFRESH_STABLE": "",
+                "DSC_CICD_FORCE_REGENERATE": "",
+            }, clear=False):
+                plan = agent.build_plan()
+        self.assertEqual(plan["selected_contracts"], ["stable_leaf"])
+        self.assertEqual(plan["auto_refresh_contracts"], ["stable_leaf"])
+        self.assertFalse(plan["contracts"][0]["new_work"])
+        self.assertTrue(plan["contracts"][0]["stale"])
 
     def test_refresh_stable_selects_tool_ready_manifest_frontier_in_parallel_batch(self):
         def contract(contract_id):

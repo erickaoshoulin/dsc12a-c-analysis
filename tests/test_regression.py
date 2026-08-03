@@ -157,7 +157,15 @@ class RegressionServiceTests(unittest.TestCase):
         context = LocalContext(ROOT)
         blocked_ids = [item.get("contract_id") for item in context.plan.get("contracts", []) if not item.get("ready")]
         if blocked_ids:
-            self.assertEqual(context.width_spec_gate(str(blocked_ids[0]))["status"], "BLOCKED")
+            for contract_id in blocked_ids:
+                width_gate = context.width_spec_gate(str(contract_id))
+                if width_gate["status"] == "BLOCKED":
+                    self.assertTrue(width_gate["blockers"])
+                else:
+                    # Planner-level boundaries (for example an unresolved
+                    # caller composition) remain distinct from the width/spec
+                    # gate and expose their own durable reason.
+                    self.assertTrue(context.plan_item(str(contract_id)).get("blocked_reasons"))
         else:
             self.assertEqual(context.width_spec_gate("mapqptoqlevel")["status"], "PASS")
         with tempfile.TemporaryDirectory() as directory:

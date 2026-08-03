@@ -998,6 +998,60 @@ class Agent:
     def prior_contract(self, cid: str) -> dict[str, Any]:
         return next((item for item in self.previous_state.get("contracts", []) if item.get("contract_id") == cid), {})
 
+    def prior_composition_boundary(
+        self, cid: str, hashes: dict[str, str]
+    ) -> dict[str, Any] | None:
+        """Find a durable C-boundary result for the same semantic inputs.
+
+        A caller/callee composition can be blocked for a structural reason
+        that a generator cannot repair, such as a pointer/state call site not
+        being representable by the frozen scalar DUT interface.  Keep that
+        receipt visible, but do not spend another generator invocation merely
+        because controller/prompt/tool provenance hashes changed.  A changed
+        source, spec, contract, or dependency hash intentionally reopens the
+        work and is handled by the ordinary planner.
+        """
+        prior = self.prior_contract(cid)
+        prior_hashes = prior.get("hashes", {}) or {}
+        semantic_keys = ("source", "spec", "contract", "dependency")
+        if any(
+            not prior_hashes.get(key)
+            or str(prior_hashes.get(key)) != str(hashes.get(key))
+            for key in semantic_keys
+        ):
+            return None
+
+        artifact_dirs: list[pathlib.Path] = []
+        for raw in prior.get("artifacts", []) or []:
+            path = pathlib.Path(str(raw))
+            if not path.is_absolute():
+                path = self.root / path
+            if path.is_dir():
+                artifact_dirs.append(path)
+            elif path.is_file() and path.name in {
+                "matrix-receipt.json",
+                "dependency-receipt.json",
+            }:
+                artifact_dirs.append(path.parent)
+        for artifact in artifact_dirs:
+            matrix = read_json(artifact / "matrix-receipt.json", {}) or {}
+            composition = matrix.get("composition", {}) or {}
+            if (
+                matrix.get("status") == "COMPOSITION_BLOCKED"
+                and composition.get("status") == "C_BOUNDARY"
+            ):
+                try:
+                    artifact_ref = str(artifact.relative_to(self.root))
+                except ValueError:
+                    artifact_ref = str(artifact)
+                return {
+                    "status": matrix.get("status"),
+                    "composition_status": composition.get("status"),
+                    "reason": matrix.get("reason"),
+                    "artifact": artifact_ref,
+                }
+        return None
+
     def cache_entry(self, key: str) -> dict[str, Any]:
         entries = self.cache.get("entries", {}) if isinstance(self.cache, dict) else {}
         if isinstance(entries, list):
@@ -1044,6 +1098,8 @@ class Agent:
             os.environ.get("DSC_CICD_FORCE_REGENERATE", "").lower() in {"1", "true", "yes"}
             or refresh_stable
         )
+        target_contract = str(os.environ.get("DSC_CICD_TARGET_CONTRACT", "")).strip().lower()
+        retry_blocked = os.environ.get("DSC_CICD_RETRY_BLOCKED", "").lower() in {"1", "true", "yes"}
         prior_shapes = {str(item.get("contract_id")): item.get("interface_shape", []) for item in self.previous_state.get("contracts", []) if item.get("current_state") == "PROMOTED"}
         for contract in sorted(self.contracts, key=contract_id):
             if not contract.get("interface", {}).get("ports"):
@@ -1051,6 +1107,15 @@ class Agent:
             cid = contract_id(contract)
             key, hashes = self.cache_key(contract)
             is_ready, reasons = self.ready(contract)
+            prior_boundary = self.prior_composition_boundary(cid, hashes)
+            boundary_retry_requested = bool(
+                prior_boundary
+                and (retry_blocked or force_regenerate or cid == target_contract)
+            )
+            if prior_boundary and not boundary_retry_requested:
+                reasons.append("prior_composition_boundary_unresolved")
+                reasons = sorted(set(reasons))
+                is_ready = False
             entry = self.cache_entry(key)
             stale = [name for name, value in hashes.items() if self.prior_contract(cid).get("hashes", {}).get(name) not in (None, value)]
             cache_hit = self.cache_valid(entry, key) and not force_regenerate
@@ -1075,6 +1140,8 @@ class Agent:
                 "stale": bool(stale),
                 "stale_reasons": stale,
                 "cache_hit": cache_hit,
+                "prior_composition_boundary": prior_boundary,
+                "boundary_retry_requested": boundary_retry_requested,
                 "initial_state": entry.get("state") if cache_hit else "CONTRACT_LOCKED" if is_ready else "DISCOVERED",
             }
             entries.append(item)
@@ -1082,8 +1149,17 @@ class Agent:
                 ready.append(cid)
             else:
                 blocked.append({"contract_id": cid, "function": item["function"], "reasons": reasons})
-        target_contract = str(os.environ.get("DSC_CICD_TARGET_CONTRACT", "")).strip().lower()
         target_item = next((item for item in entries if item["contract_id"].lower() == target_contract), None)
+        stale_stable = sorted(
+            item["contract_id"]
+            for item in entries
+            if (
+                item["ready"]
+                and item["contract_id"] in stable_ids
+                and item["stale"]
+                and not item["cache_hit"]
+            )
+        )
         if target_item and target_item["ready"]:
             # The queue supplies a discovered contract id for this independent
             # batch. It is not a source-level function allowlist. A refresh can
@@ -1102,6 +1178,12 @@ class Agent:
             selected = sorted(selected[:max(1, int(os.environ.get("DSC_CICD_MAX_NEW", "1")))])
         else:
             selected = [item["contract_id"] for item in entries if item["ready"] and item["new_work"] and (not prior_shapes or item["interface_shape"] not in prior_shapes.values())]
+            if not selected:
+                # Accepted leaves must re-enter a bounded regression frontier
+                # when any recorded input/provenance hash is stale.  A valid
+                # cache entry remains untouched; a full stable refresh is
+                # still available through DSC_CICD_REFRESH_STABLE=1.
+                selected = stale_stable[:max(1, int(os.environ.get("DSC_CICD_MAX_NEW", "1")))]
             if not selected:
                 selected = [
                     item["contract_id"]
@@ -1124,10 +1206,12 @@ class Agent:
             "new_candidates": [item["contract_id"] for item in entries if item["new_work"]],
             "contracts": entries,
             "batches": [selected] if selected else [],
+            "auto_refresh_contracts": stale_stable,
             "dependency_pair": self.choose_dependency_pair(selected),
             "target_contract": target_item["contract_id"] if target_item else None,
             "force_regenerate": force_regenerate,
             "refresh_stable": refresh_stable,
+            "retry_blocked": retry_blocked,
             "generator_hook": os.environ.get("DSC_CICD_GENERATOR_CMD"),
             "input_errors": self.input_facts.get("errors", []),
         }

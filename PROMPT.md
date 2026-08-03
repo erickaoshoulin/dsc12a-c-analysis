@@ -414,8 +414,11 @@ finite legal domain. A bounded exploratory subset is
 be `FORMAL_EQUIVALENT`, but it still needs dependency, frame, and source
 gates before stable-library promotion. A function
 already recorded as PASS in `library/manifest.json` is not new work and is
-excluded from ordinary queue planning; it may be re-run only when the durable
-queue explicitly requests a refresh or dependency composition.
+excluded from new-work selection, but it automatically enters a bounded
+regression frontier when its recorded source/spec/contract/dependency,
+controller, prompt, generator, or tool hash is stale and no valid cache exists.
+Valid cache entries are never regenerated. `DSC_CICD_REFRESH_STABLE=1` remains
+the explicit route for a full stable-frontier refresh.
 
 When Clang marks only `bounded_computation` false for an otherwise eligible,
 executed production leaf, a reviewed `BOUNDED_DOMAIN` admission may discharge
@@ -483,6 +486,16 @@ links, or promotion status. Preserve historical nodes from the previous DAG or
 durable CI state and expose them as `historical_contracts`; the current plan
 still controls only new selection. DAG edges must resolve to nodes and remain
 deterministically ordered.
+
+When an executed composition receipt is `COMPOSITION_BLOCKED` and its
+composition is `C_BOUNDARY`, treat the boundary as a durable deterministic
+block for the same source/spec/contract/dependency hashes. Do not spend another
+generator or model call solely because controller, prompt, generator, or tool
+provenance changed. A semantic input change reopens the work automatically;
+an explicit queue retry may use `DSC_CICD_RETRY_BLOCKED=1`, an explicit target,
+or a deliberate force/refresh request. Keep the receipt and blocker visible,
+and never invent pointer/state adapters or dummy caller arguments to bypass the
+frozen interface.
 
 The supported commands are:
 
