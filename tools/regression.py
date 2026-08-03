@@ -1847,12 +1847,52 @@ class RegressionService:
                 # The executable CICD agent owns the richer schema-2 receipt.
                 # A durable regression promotion may add a newer scale receipt,
                 # but must not erase artifact, formal, dependency, or matrix
-                # metadata already recorded by that agent.
+                # metadata already recorded by that agent.  Keep the embedded
+                # revalidation record compact: the full traceability object
+                # (including every frozen port) already lives at the top level
+                # and the durable run retains the complete receipt externally.
                 merged_verification = dict(previous_verification)
                 previous_stages = previous_verification.get("stages", {}) or {}
                 merged_stages = dict(previous_stages) if isinstance(previous_stages, dict) else {}
                 merged_stages.update(compact["stages"])
-                merged_verification.update(compact)
+                compact_regression = {
+                    key: compact[key]
+                    for key in (
+                        "run_id",
+                        "profile",
+                        "parent_run_id",
+                        "contract_id",
+                        "function",
+                        "kind",
+                        "run_kind",
+                        "status",
+                        "execution_status",
+                        "candidate",
+                        "module",
+                        "rtl_sha256",
+                        "contract_hash",
+                        "candidate_pass_rate",
+                        "frame_pass_rate",
+                        "source_gate",
+                        "stages",
+                    )
+                    if key in compact
+                }
+                for key, value in compact.items():
+                    # Keep the richer schema-2 evidence already materialized
+                    # by the executable agent.  Durable revalidation updates
+                    # identity/provenance fields, but must not replace exact
+                    # port traceability with a duplicated run-local object.
+                    if key in {
+                        "traceability",
+                        "dependency",
+                        "formal_proof",
+                        "matrix",
+                        "unit_vectors",
+                        "formal_partitions",
+                    } and key in previous_verification:
+                        continue
+                    merged_verification[key] = value
                 merged_verification["schema_version"] = max(
                     int(previous_verification.get("schema_version", 1)),
                     int(compact["schema_version"]),
@@ -1868,7 +1908,7 @@ class RegressionService:
                     merged_verification["promoted_at"] = previous_verification["promoted_at"]
                 merged_verification["stages"] = merged_stages
                 merged_verification["last_verified_run_id"] = run_id
-                merged_verification["last_regression"] = compact
+                merged_verification["last_regression"] = compact_regression
                 verification = merged_verification
             else:
                 verification = compact

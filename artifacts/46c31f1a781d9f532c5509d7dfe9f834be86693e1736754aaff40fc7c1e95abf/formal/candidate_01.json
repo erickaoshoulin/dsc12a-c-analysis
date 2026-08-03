@@ -19,7 +19,7 @@
       "180000"
     ],
     "cwd": "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
-    "duration_seconds": 0.274,
+    "duration_seconds": 0.267,
     "output": "{\n  \"ast_frontend\": \"verilator --json-only\",\n  \"candidate\": \"candidate_01.sv\",\n  \"candidate_path\": \"/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/generated/candidate_01.sv\",\n  \"candidate_sha256\": \"fc765032b32c15013196fa87328b8692da41071277c4bdd13ffb941c86132ab8\",\n  \"constraint_count\": 23,\n  \"contract_id\": \"usingmidpoint\",\n  \"contract_sha256\": \"e80311e415176eab719952b67468dc7b584b2fd784c51d88223b79e152e4ffc7\",\n  \"proof_basis\": \"locked exact spec-linked window equations versus parsed combinational RTL AST\",\n  \"proof_complete\": true,\n  \"proof_strategy\": \"SYMBOLIC_USING_MIDPOINT\",\n  \"schema_version\": 1,\n  \"solver\": \"z3\",\n  \"status\": \"PASS\",\n  \"timeout_ms\": 180000\n}\n",
     "returncode": 0
   },

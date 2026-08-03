@@ -60,8 +60,8 @@
             "--Wno-fatal"
           ],
           "cwd": "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
-          "duration_seconds": 3.085,
-          "output": "%Warning-WIDTHEXPAND: /private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/generated/candidate_01.sv:30:22: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'qlevel_luma' generates 5 bits.\n                                                                                                                                                                         : ... note: In instance 'usingmidpoint'\n   30 |             qlevel_i = qlevel_luma;\n      |                      ^\n                      ... For warning description see https://verilator.org/warn/WIDTHEXPAND?v=5.050\n                      ... Use \"/* verilator lint_off WIDTHEXPAND */\" and lint_on around source to disable this message.\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/generated/candidate_01.sv:32:22: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'qlevel_luma' generates 5 bits.\n                                                                                                                                                                         : ... note: In instance 'usingmidpoint'\n   32 |             qlevel_i = qlevel_luma;\n      |                      ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/generated/candidate_01.sv:34:22: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'qlevel_chroma' generates 5 bits.\n                                                                                                                                                                         : ... note: In instance 'usingmidpoint'\n   34 |             qlevel_i = qlevel_chroma;\n      |                      ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/generated/candidate_01.sv:39:22: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's SIGNED generates 17 bits.\n                                                                                                                                                                         : ... note: In instance 'usingmidpoint'\n   39 |         residual_0_i = $signed(quantized_residual_0);\n      |                      ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/generated/candidate_01.sv:60:22: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's SIGNED generates 17 bits.\n                                                                                                                                                                         : ... note: In instance 'usingmidpoint'\n   60 |         residual_1_i = $signed(quantized_residual_1);\n      |                      ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/generated/candidate_01.sv:81:22: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's SIGNED generates 17 bits.\n                                                                                                                                                                         : ... note: In instance 'usingmidpoint'\n   81 |         residual_2_i = $signed(quantized_residual_2);\n      |                      ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/generated/candidate_01.sv:105:21: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'cpntBitDepth_selected' generates 5 bits.\n                                                                                                                                                                          : ... note: In instance 'usingmidpoint'\n  105 |         threshold_i = cpntBitDepth_selected;\n      |                     ^\nc++  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -Os  -c -o harness.o /private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/candidate-build/candidate_01/harness.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\npython3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vusingmidpoint.cpp Vusingmidpoint___024root__0.cpp Vusingmidpoint___024root__Slow.cpp Vusingmidpoint___024root__0__Slow.cpp Vusingmidpoint__Syms__Slow.cpp > Vusingmidpoint__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o Vusingmidpoint__ALL.o Vusingmidpoint__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++  -Wl,-U,__Z15vl_time_stamp64v,-U,__Z13sc_time_stampv,-U,_vlog_startup_routines   harness.o verilated.o verilated_threads.o Vusingmidpoint__ALL.a    -pthread -lpthread   -o Vusingmidpoint\nrm Vusingmidpoint__ALL.verilator_deplist.tmp\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.038 MB sources in 2 modules, into 0.052 MB in 5 C++ files needing 0.000 MB\n- Verilator: Walltime 2.994 s (elab=0.001, cvt=0.004, bld=2.984); cpu 0.010 s on 1 threads; allocated 10.656 MB\n",
+          "duration_seconds": 3.073,
+          "output": "%Warning-WIDTHEXPAND: /private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/generated/candidate_01.sv:30:22: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'qlevel_luma' generates 5 bits.\n                                                                                                                                                                         : ... note: In instance 'usingmidpoint'\n   30 |             qlevel_i = qlevel_luma;\n      |                      ^\n                      ... For warning description see https://verilator.org/warn/WIDTHEXPAND?v=5.050\n                      ... Use \"/* verilator lint_off WIDTHEXPAND */\" and lint_on around source to disable this message.\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/generated/candidate_01.sv:32:22: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'qlevel_luma' generates 5 bits.\n                                                                                                                                                                         : ... note: In instance 'usingmidpoint'\n   32 |             qlevel_i = qlevel_luma;\n      |                      ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/generated/candidate_01.sv:34:22: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'qlevel_chroma' generates 5 bits.\n                                                                                                                                                                         : ... note: In instance 'usingmidpoint'\n   34 |             qlevel_i = qlevel_chroma;\n      |                      ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/generated/candidate_01.sv:39:22: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's SIGNED generates 17 bits.\n                                                                                                                                                                         : ... note: In instance 'usingmidpoint'\n   39 |         residual_0_i = $signed(quantized_residual_0);\n      |                      ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/generated/candidate_01.sv:60:22: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's SIGNED generates 17 bits.\n                                                                                                                                                                         : ... note: In instance 'usingmidpoint'\n   60 |         residual_1_i = $signed(quantized_residual_1);\n      |                      ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/generated/candidate_01.sv:81:22: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's SIGNED generates 17 bits.\n                                                                                                                                                                         : ... note: In instance 'usingmidpoint'\n   81 |         residual_2_i = $signed(quantized_residual_2);\n      |                      ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/generated/candidate_01.sv:105:21: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'cpntBitDepth_selected' generates 5 bits.\n                                                                                                                                                                          : ... note: In instance 'usingmidpoint'\n  105 |         threshold_i = cpntBitDepth_selected;\n      |                     ^\nc++  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -Os  -c -o harness.o /private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/candidate-build/candidate_01/harness.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\npython3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vusingmidpoint.cpp Vusingmidpoint___024root__0.cpp Vusingmidpoint___024root__Slow.cpp Vusingmidpoint___024root__0__Slow.cpp Vusingmidpoint__Syms__Slow.cpp > Vusingmidpoint__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o Vusingmidpoint__ALL.o Vusingmidpoint__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++  -Wl,-U,__Z15vl_time_stamp64v,-U,__Z13sc_time_stampv,-U,_vlog_startup_routines   harness.o verilated.o verilated_threads.o Vusingmidpoint__ALL.a    -pthread -lpthread   -o Vusingmidpoint\nrm Vusingmidpoint__ALL.verilator_deplist.tmp\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.038 MB sources in 2 modules, into 0.052 MB in 5 C++ files needing 0.000 MB\n- Verilator: Walltime 2.997 s (elab=0.001, cvt=0.005, bld=2.987); cpu 0.010 s on 1 threads; allocated 10.797 MB\n",
           "returncode": 0
         },
         "compile_once": true,
@@ -84,7 +84,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/oracle-build/cmd_parse.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.07,
+        "duration_seconds": 0.075,
         "output": "",
         "returncode": 0
       },
@@ -103,7 +103,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/oracle-build/codec_main.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.073,
+        "duration_seconds": 0.084,
         "output": "",
         "returncode": 0
       },
@@ -121,7 +121,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/oracle-build/dpx.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.09,
+        "duration_seconds": 0.079,
         "output": "",
         "returncode": 0
       },
@@ -139,7 +139,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/oracle-build/dsc_codec.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.098,
+        "duration_seconds": 0.081,
         "output": "",
         "returncode": 0
       },
@@ -157,7 +157,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/oracle-build/dsc_utils.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.065,
+        "duration_seconds": 0.064,
         "output": "",
         "returncode": 0
       },
@@ -175,7 +175,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/oracle-build/fifo.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.059,
+        "duration_seconds": 0.049,
         "output": "",
         "returncode": 0
       },
@@ -193,7 +193,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/oracle-build/hdr_dpx.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.083,
+        "duration_seconds": 0.087,
         "output": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n2 warnings generated.\n",
         "returncode": 0
       },
@@ -211,7 +211,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/oracle-build/logging.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.077,
+        "duration_seconds": 0.039,
         "output": "",
         "returncode": 0
       },
@@ -229,7 +229,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/oracle-build/multiplex.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.044,
+        "duration_seconds": 0.051,
         "output": "",
         "returncode": 0
       },
@@ -247,7 +247,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/oracle-build/psnr.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.038,
+        "duration_seconds": 0.05,
         "output": "",
         "returncode": 0
       },
@@ -265,7 +265,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/oracle-build/utl.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.091,
+        "duration_seconds": 0.082,
         "output": "",
         "returncode": 0
       },
@@ -282,7 +282,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/oracle-build/oracle.o"
         ],
         "cwd": "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
-        "duration_seconds": 0.041,
+        "duration_seconds": 0.04,
         "output": "",
         "returncode": 0
       },
@@ -306,7 +306,7 @@
           "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/oracle-build/oracle.o"
         ],
         "cwd": "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
-        "duration_seconds": 0.051,
+        "duration_seconds": 0.048,
         "output": "",
         "returncode": 0
       }
@@ -316,7 +316,7 @@
         "cancellation": {
           "futures_cancelled": 0,
           "requested_after_counterexample": false,
-          "worker_count": 2
+          "worker_count": 8
         },
         "candidate": "candidate_01",
         "formal_proof": {
@@ -339,10 +339,10 @@
                 "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/shards/shard-000.vectors"
               ]
             },
-            "duration_seconds": 0.992,
+            "duration_seconds": 0.931,
             "shard_id": 0,
             "status": "PASS",
-            "vectors": 96336
+            "vectors": 48168
           },
           {
             "commands": {
@@ -355,10 +355,10 @@
                 "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/shards/shard-001.vectors"
               ]
             },
-            "duration_seconds": 0.97,
+            "duration_seconds": 0.916,
             "shard_id": 1,
             "status": "PASS",
-            "vectors": 96336
+            "vectors": 48168
           },
           {
             "commands": {
@@ -371,10 +371,10 @@
                 "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/shards/shard-002.vectors"
               ]
             },
-            "duration_seconds": 0.289,
+            "duration_seconds": 0.921,
             "shard_id": 2,
             "status": "PASS",
-            "vectors": 96336
+            "vectors": 48168
           },
           {
             "commands": {
@@ -387,10 +387,74 @@
                 "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/shards/shard-003.vectors"
               ]
             },
-            "duration_seconds": 0.273,
+            "duration_seconds": 0.91,
             "shard_id": 3,
             "status": "PASS",
-            "vectors": 96336
+            "vectors": 48168
+          },
+          {
+            "commands": {
+              "oracle": [
+                "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/oracle-build/c_oracle",
+                "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/shards/shard-004.vectors"
+              ],
+              "rtl": [
+                "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/candidate-build/candidate_01/obj/Vusingmidpoint",
+                "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/shards/shard-004.vectors"
+              ]
+            },
+            "duration_seconds": 0.881,
+            "shard_id": 4,
+            "status": "PASS",
+            "vectors": 48168
+          },
+          {
+            "commands": {
+              "oracle": [
+                "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/oracle-build/c_oracle",
+                "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/shards/shard-005.vectors"
+              ],
+              "rtl": [
+                "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/candidate-build/candidate_01/obj/Vusingmidpoint",
+                "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/shards/shard-005.vectors"
+              ]
+            },
+            "duration_seconds": 0.905,
+            "shard_id": 5,
+            "status": "PASS",
+            "vectors": 48168
+          },
+          {
+            "commands": {
+              "oracle": [
+                "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/oracle-build/c_oracle",
+                "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/shards/shard-006.vectors"
+              ],
+              "rtl": [
+                "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/candidate-build/candidate_01/obj/Vusingmidpoint",
+                "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/shards/shard-006.vectors"
+              ]
+            },
+            "duration_seconds": 0.91,
+            "shard_id": 6,
+            "status": "PASS",
+            "vectors": 48168
+          },
+          {
+            "commands": {
+              "oracle": [
+                "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/oracle-build/c_oracle",
+                "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/shards/shard-007.vectors"
+              ],
+              "rtl": [
+                "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/candidate-build/candidate_01/obj/Vusingmidpoint",
+                "/private/tmp/dsc12a-regression-dashboard/artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/shards/shard-007.vectors"
+              ]
+            },
+            "duration_seconds": 0.873,
+            "shard_id": 7,
+            "status": "PASS",
+            "vectors": 48168
           }
         ],
         "smallest_counterexample": null,
@@ -409,7 +473,87 @@
               "<overlay-work>/bittrue_smoke/simple_8bpc_rgb.cfg"
             ],
             "cwd": "<overlay-work>",
-            "duration_seconds": 0.028,
+            "duration_seconds": 0.03,
+            "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
+            "returncode": 0
+          },
+          "mismatch_count": 0,
+          "scenario": {
+            "config": "bittrue_smoke/simple_8bpc_rgb.cfg",
+            "expected_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+            "golden": "bittrue_smoke/out/simple_192x108.dsc",
+            "name": "run_c_baseline",
+            "script": "bittrue_smoke/run_c_baseline.sh"
+          },
+          "sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+          "size_bytes": 31236,
+          "status": "PASS"
+        },
+        {
+          "baseline_sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
+          "command": {
+            "command": [
+              "<overlay-work>/source/dsc",
+              "-F",
+              "<overlay-work>/bittrue_smoke/simple_10bpc_rgb.cfg"
+            ],
+            "cwd": "<overlay-work>",
+            "duration_seconds": 0.029,
+            "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
+            "returncode": 0
+          },
+          "mismatch_count": 0,
+          "scenario": {
+            "config": "bittrue_smoke/simple_10bpc_rgb.cfg",
+            "expected_sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
+            "golden": "bittrue_smoke/out/simple_192x108_10bpc.dsc",
+            "name": "run_c_baseline_10bpc",
+            "script": "bittrue_smoke/run_c_baseline_10bpc.sh"
+          },
+          "sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
+          "size_bytes": 31236,
+          "status": "PASS"
+        },
+        {
+          "baseline_sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
+          "command": {
+            "command": [
+              "<overlay-work>/source/dsc",
+              "-F",
+              "<overlay-work>/bittrue_smoke/native_8bpc_420.cfg"
+            ],
+            "cwd": "<overlay-work>",
+            "duration_seconds": 0.017,
+            "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
+            "returncode": 0
+          },
+          "mismatch_count": 0,
+          "scenario": {
+            "config": "bittrue_smoke/native_8bpc_420.cfg",
+            "expected_sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
+            "golden": "bittrue_smoke/out/native_192x108_420.dsc",
+            "name": "run_c_baseline_native420",
+            "script": "bittrue_smoke/run_c_baseline_native420.sh"
+          },
+          "sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
+          "size_bytes": 15684,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    "caller_core_with_callee_c": {
+      "scenarios": [
+        {
+          "baseline_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+          "command": {
+            "command": [
+              "<overlay-work>/source/dsc",
+              "-F",
+              "<overlay-work>/bittrue_smoke/simple_8bpc_rgb.cfg"
+            ],
+            "cwd": "<overlay-work>",
+            "duration_seconds": 0.611,
             "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
             "returncode": 0
           },
@@ -459,87 +603,7 @@
               "<overlay-work>/bittrue_smoke/native_8bpc_420.cfg"
             ],
             "cwd": "<overlay-work>",
-            "duration_seconds": 0.015,
-            "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
-            "returncode": 0
-          },
-          "mismatch_count": 0,
-          "scenario": {
-            "config": "bittrue_smoke/native_8bpc_420.cfg",
-            "expected_sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
-            "golden": "bittrue_smoke/out/native_192x108_420.dsc",
-            "name": "run_c_baseline_native420",
-            "script": "bittrue_smoke/run_c_baseline_native420.sh"
-          },
-          "sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
-          "size_bytes": 15684,
-          "status": "PASS"
-        }
-      ],
-      "status": "PASS"
-    },
-    "caller_core_with_callee_c": {
-      "scenarios": [
-        {
-          "baseline_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
-          "command": {
-            "command": [
-              "<overlay-work>/source/dsc",
-              "-F",
-              "<overlay-work>/bittrue_smoke/simple_8bpc_rgb.cfg"
-            ],
-            "cwd": "<overlay-work>",
-            "duration_seconds": 0.658,
-            "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
-            "returncode": 0
-          },
-          "mismatch_count": 0,
-          "scenario": {
-            "config": "bittrue_smoke/simple_8bpc_rgb.cfg",
-            "expected_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
-            "golden": "bittrue_smoke/out/simple_192x108.dsc",
-            "name": "run_c_baseline",
-            "script": "bittrue_smoke/run_c_baseline.sh"
-          },
-          "sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
-          "size_bytes": 31236,
-          "status": "PASS"
-        },
-        {
-          "baseline_sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
-          "command": {
-            "command": [
-              "<overlay-work>/source/dsc",
-              "-F",
-              "<overlay-work>/bittrue_smoke/simple_10bpc_rgb.cfg"
-            ],
-            "cwd": "<overlay-work>",
-            "duration_seconds": 0.025,
-            "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
-            "returncode": 0
-          },
-          "mismatch_count": 0,
-          "scenario": {
-            "config": "bittrue_smoke/simple_10bpc_rgb.cfg",
-            "expected_sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
-            "golden": "bittrue_smoke/out/simple_192x108_10bpc.dsc",
-            "name": "run_c_baseline_10bpc",
-            "script": "bittrue_smoke/run_c_baseline_10bpc.sh"
-          },
-          "sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
-          "size_bytes": 31236,
-          "status": "PASS"
-        },
-        {
-          "baseline_sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
-          "command": {
-            "command": [
-              "<overlay-work>/source/dsc",
-              "-F",
-              "<overlay-work>/bittrue_smoke/native_8bpc_420.cfg"
-            ],
-            "cwd": "<overlay-work>",
-            "duration_seconds": 0.015,
+            "duration_seconds": 0.017,
             "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
             "returncode": 0
           },
@@ -579,27 +643,47 @@
         "quantized_residual_2"
       ],
       "proof_complete": false,
-      "shard_count": 4,
+      "shard_count": 8,
       "shards": [
         {
           "path": "shards/shard-000.vectors",
           "shard_id": 0,
-          "vectors": 96336
+          "vectors": 48168
         },
         {
           "path": "shards/shard-001.vectors",
           "shard_id": 1,
-          "vectors": 96336
+          "vectors": 48168
         },
         {
           "path": "shards/shard-002.vectors",
           "shard_id": 2,
-          "vectors": 96336
+          "vectors": 48168
         },
         {
           "path": "shards/shard-003.vectors",
           "shard_id": 3,
-          "vectors": 96336
+          "vectors": 48168
+        },
+        {
+          "path": "shards/shard-004.vectors",
+          "shard_id": 4,
+          "vectors": 48168
+        },
+        {
+          "path": "shards/shard-005.vectors",
+          "shard_id": 5,
+          "vectors": 48168
+        },
+        {
+          "path": "shards/shard-006.vectors",
+          "shard_id": 6,
+          "vectors": 48168
+        },
+        {
+          "path": "shards/shard-007.vectors",
+          "shard_id": 7,
+          "vectors": 48168
         }
       ],
       "total_vectors": 385344,

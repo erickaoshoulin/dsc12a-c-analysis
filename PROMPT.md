@@ -742,6 +742,10 @@ only passes unit or differential comparison is never materialized.
 An already accepted manifest component is a grandfathered stable baseline:
 its bounded refresh reuses the hash-checked RTL and reports
 `VERIFIED_REFRESH` without changing the library or requiring a new approval.
+When a durable revalidation receipt is reconciled into the library index, it
+updates `last_verified_run_id` and a compact `last_regression` summary while
+preserving the existing schema-2 traceability, formal, dependency, and matrix
+evidence; full vectors and logs remain at `DSC_REGRESSION_ROOT`.
 The library is an incremental designer-facing RTL set, not a whole-codec
 rewrite: keep stateful callers, unresolved pointer/table dependencies, and
 non-DUT code in C until their contracts are independently proven.

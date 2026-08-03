@@ -45,4 +45,4 @@ lane, including Figure 6-19 check-1 offsets `0..3` and check-2 offsets `1..6`.
 Table 6-2, the qLevel adjustment, and `flatnessDetThresh` relation are locked
 in reviewed semantics. Line storage stays at the C caller boundary, and the
 adapter short-circuits inactive lanes before dereferencing `origLine`. The
-stable library now contains 14 promoted components.
+stable library now contains 16 promoted components.

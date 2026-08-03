@@ -325,6 +325,7 @@ class RegressionServiceTests(unittest.TestCase):
                     "kind": "using_midpoint",
                     "formal_proof": {"status": "PASS"},
                     "dependency": {"status": "PASS"},
+                    "traceability": {"source_file": "prior-reviewed.c", "spec_links": [{"status": "EXACT", "page": 7}]},
                     "stages": {"formal": "PASS"},
                 }),
                 encoding="utf-8",
@@ -375,7 +376,10 @@ class RegressionServiceTests(unittest.TestCase):
             self.assertEqual(verification["kind"], "using_midpoint")
             self.assertEqual(verification["run_kind"], "arithmetic")
             self.assertEqual(verification["formal_proof"]["status"], "PASS")
+            self.assertEqual(verification["traceability"]["source_file"], "prior-reviewed.c")
             self.assertEqual(verification["last_verified_run_id"], "run-a")
+            self.assertEqual(verification["last_regression"]["run_id"], "run-a")
+            self.assertNotIn("traceability", verification["last_regression"])
             self.assertTrue(read_json(library / "contracts" / "synthetic.json", {}).get("do_not_edit"))
 
 

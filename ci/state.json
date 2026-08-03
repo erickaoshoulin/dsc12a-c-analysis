@@ -17,15 +17,97 @@
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
         "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
-        "shards": "4",
+        "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
-        "workers": "2"
+        "workers": "8"
       },
       "history": [
         {
           "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "71784bb792966a7e48e98d35cc2e2c3f6052f1c17528ffe1b4256f805c9fda65",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "71784bb792966a7e48e98d35cc2e2c3f6052f1c17528ffe1b4256f805c9fda65",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,
@@ -273,15 +355,97 @@
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
         "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
-        "shards": "4",
+        "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
-        "workers": "2"
+        "workers": "8"
       },
       "history": [
         {
           "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "582d5e131e638e5a6aa4f9783cf1755b041f9369f9c8c84e57fb413845272167",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "582d5e131e638e5a6aa4f9783cf1755b041f9369f9c8c84e57fb413845272167",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,
@@ -554,11 +718,11 @@
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
         "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
-        "shards": "4",
+        "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
-        "workers": "2"
+        "workers": "8"
       },
       "history": [
         {
@@ -704,6 +868,88 @@
           "state": "UNIT_VERIFIED",
           "status": "UNPROVED",
           "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "da8e09494b9dad38a4591c81c21adf445cc0b92cdaf4eabc1604aa1ca2db3f9f",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "da8e09494b9dad38a4591c81c21adf445cc0b92cdaf4eabc1604aa1ca2db3f9f",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,
@@ -1060,11 +1306,11 @@
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
         "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
-        "shards": "4",
+        "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
-        "workers": "2"
+        "workers": "8"
       },
       "history": [
         {
@@ -2048,6 +2294,88 @@
           "promotion_status": "VERIFIED_REFRESH",
           "state": "BITSTREAM_PASS",
           "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "95b00b9f217f19697deb92e6926e102faf48b91af79a9fb6331900a7217d480b",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "95b00b9f217f19697deb92e6926e102faf48b91af79a9fb6331900a7217d480b",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         }
       ],
       "interface_shape": [
@@ -2108,15 +2436,56 @@
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
         "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
-        "shards": "4",
+        "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
-        "workers": "2"
+        "workers": "8"
       },
       "history": [
         {
           "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "a10d4649d371883b4bdfef25fc99448c5a719e937a93425900ddf00b26474073",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,
@@ -2364,15 +2733,56 @@
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
         "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
-        "shards": "4",
+        "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
-        "workers": "2"
+        "workers": "8"
       },
       "history": [
         {
           "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "a8a237d111078f013fa7c15edf430b37d8c58a60595b1082166f16b0334c24b4",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,
@@ -3648,11 +4058,11 @@
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
         "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
-        "shards": "4",
+        "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
-        "workers": "2"
+        "workers": "8"
       },
       "history": [
         {
@@ -4580,6 +4990,47 @@
           "promotion_status": "VERIFIED_REFRESH",
           "state": "BITSTREAM_PASS",
           "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "0a4b0d5ee2f45598e3ea1859102a42e3fa2ef66aba94e7049fc1d47876a5c07e",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         }
       ],
       "interface_shape": [
@@ -4634,11 +5085,11 @@
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
         "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
-        "shards": "4",
+        "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
-        "workers": "2"
+        "workers": "8"
       },
       "history": [
         {
@@ -4784,6 +5235,47 @@
           "state": "UNIT_VERIFIED",
           "status": "UNPROVED",
           "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "cfb707d7aa001c86145ecff6476c1fd36b7d2755ecabe5d5af41f817ea22d855",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,
@@ -5108,11 +5600,11 @@
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
         "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
-        "shards": "4",
+        "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
-        "workers": "2"
+        "workers": "8"
       },
       "history": [
         {
@@ -5985,6 +6477,47 @@
           "promotion_status": "VERIFIED_REFRESH",
           "state": "BITSTREAM_PASS",
           "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "5dda9dc25483193295e7af8abbd927b209f8e9715f2f4791864200f2fc0a3334",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         }
       ],
       "interface_shape": [
@@ -6069,15 +6602,56 @@
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
         "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
-        "shards": "4",
+        "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
-        "workers": "2"
+        "workers": "8"
       },
       "history": [
         {
           "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "cfdb54a0936d5bd70d45ddd9bcb20d05d99b73039a3789c1124ed564ae5aa65b",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,
@@ -6373,11 +6947,11 @@
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
         "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
-        "shards": "4",
+        "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
-        "workers": "2"
+        "workers": "8"
       },
       "history": [
         {
@@ -7242,6 +7816,47 @@
           "promotion_status": "VERIFIED_REFRESH",
           "state": "BITSTREAM_PASS",
           "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "861239ab7f41e5c98845588cfa54631e2d4449920afe9cdbde2eae0920b09af7",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         }
       ],
       "interface_shape": [
@@ -7296,15 +7911,56 @@
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
         "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
-        "shards": "4",
+        "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
-        "workers": "2"
+        "workers": "8"
       },
       "history": [
         {
           "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "18f078d82f020604fbcae57261373e69e9291f7757f81585163bb47fa1d893df",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,
@@ -7583,11 +8239,11 @@
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
         "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
-        "shards": "4",
+        "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
-        "workers": "2"
+        "workers": "8"
       },
       "history": [
         {
@@ -8767,6 +9423,47 @@
           "promotion_status": "VERIFIED_REFRESH",
           "state": "BITSTREAM_PASS",
           "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "7c9d729bbe1ac193b6f355b3d8281a92ab350a9c27a7717145fdea31a863d9cd",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         }
       ],
       "interface_shape": [
@@ -8815,11 +9512,11 @@
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
         "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
-        "shards": "4",
+        "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
-        "workers": "2"
+        "workers": "8"
       },
       "history": [
         {
@@ -9691,6 +10388,47 @@
           "promotion_status": "VERIFIED_REFRESH",
           "state": "BITSTREAM_PASS",
           "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "831411aefb7fd14c630f6a71d75191a62320ce17566d6292637fcdab603e2011",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         }
       ],
       "interface_shape": [
@@ -9961,11 +10699,11 @@
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
         "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
-        "shards": "4",
+        "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
-        "workers": "2"
+        "workers": "8"
       },
       "history": [
         {
@@ -10398,6 +11136,47 @@
         },
         {
           "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "971e3b07df907a913544145749bc5303b1c4532af69517ce97ab3bc9bed0cae9",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
           "state": "BITSTREAM_PASS",
           "status": "PASS"
         },
@@ -10830,11 +11609,11 @@
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
         "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
-        "shards": "4",
+        "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "7107efb05f06acbd360ff7735fc0b04afad88d6f995decfa6f2ba6acf55a69d5",
-        "workers": "2"
+        "workers": "8"
       },
       "history": [
         {
@@ -10980,6 +11759,47 @@
           "state": "UNIT_VERIFIED",
           "status": "UNPROVED",
           "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "fc765032b32c15013196fa87328b8692da41071277c4bdd13ffb941c86132ab8",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,

@@ -31393,655 +31393,1071 @@
   "historical_node_count": 7,
   "nodes": [
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896"
+      ],
       "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
       "contract_id": "ceil_log2",
       "dependency_hash": "4a5442ee94151d2e6ba60b488d1a79bc4f81e0e0eb9da651bac1d7b6636c0903",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "ceil_log2:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DISCOVERED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896"
+      ],
       "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
       "contract_id": "ceil_log2",
       "dependency_hash": "4a5442ee94151d2e6ba60b488d1a79bc4f81e0e0eb9da651bac1d7b6636c0903",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "ceil_log2:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "CONTRACT_LOCKED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896"
+      ],
       "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
       "contract_id": "ceil_log2",
       "dependency_hash": "4a5442ee94151d2e6ba60b488d1a79bc4f81e0e0eb9da651bac1d7b6636c0903",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "ceil_log2:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_GENERATED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896"
+      ],
       "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
       "contract_id": "ceil_log2",
       "dependency_hash": "4a5442ee94151d2e6ba60b488d1a79bc4f81e0e0eb9da651bac1d7b6636c0903",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "ceil_log2:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "UNIT_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896"
+      ],
       "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
       "contract_id": "ceil_log2",
       "dependency_hash": "4a5442ee94151d2e6ba60b488d1a79bc4f81e0e0eb9da651bac1d7b6636c0903",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "ceil_log2:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DEPENDENCIES_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896"
+      ],
       "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
       "contract_id": "ceil_log2",
       "dependency_hash": "4a5442ee94151d2e6ba60b488d1a79bc4f81e0e0eb9da651bac1d7b6636c0903",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "ceil_log2:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "SHADOW_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896"
+      ],
       "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
       "contract_id": "ceil_log2",
       "dependency_hash": "4a5442ee94151d2e6ba60b488d1a79bc4f81e0e0eb9da651bac1d7b6636c0903",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "ceil_log2:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_RETURN_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896"
+      ],
       "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
       "contract_id": "ceil_log2",
       "dependency_hash": "4a5442ee94151d2e6ba60b488d1a79bc4f81e0e0eb9da651bac1d7b6636c0903",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "ceil_log2:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "BITSTREAM_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896"
+      ],
       "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
       "contract_id": "ceil_log2",
       "dependency_hash": "4a5442ee94151d2e6ba60b488d1a79bc4f81e0e0eb9da651bac1d7b6636c0903",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "ceil_log2:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "PROMOTED",
-      "status": "DEFERRED"
+      "status": "PENDING"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1"
+      ],
       "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
       "contract_id": "escapecodesize",
       "dependency_hash": "5bbb07e9af0c0e1dc8724047acfdf53caaf53dbfc2c7e190e016ef05238c48be",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "escapecodesize:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DISCOVERED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1"
+      ],
       "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
       "contract_id": "escapecodesize",
       "dependency_hash": "5bbb07e9af0c0e1dc8724047acfdf53caaf53dbfc2c7e190e016ef05238c48be",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "escapecodesize:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "CONTRACT_LOCKED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1"
+      ],
       "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
       "contract_id": "escapecodesize",
       "dependency_hash": "5bbb07e9af0c0e1dc8724047acfdf53caaf53dbfc2c7e190e016ef05238c48be",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "escapecodesize:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_GENERATED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1"
+      ],
       "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
       "contract_id": "escapecodesize",
       "dependency_hash": "5bbb07e9af0c0e1dc8724047acfdf53caaf53dbfc2c7e190e016ef05238c48be",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "escapecodesize:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "UNIT_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1"
+      ],
       "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
       "contract_id": "escapecodesize",
       "dependency_hash": "5bbb07e9af0c0e1dc8724047acfdf53caaf53dbfc2c7e190e016ef05238c48be",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "escapecodesize:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DEPENDENCIES_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1"
+      ],
       "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
       "contract_id": "escapecodesize",
       "dependency_hash": "5bbb07e9af0c0e1dc8724047acfdf53caaf53dbfc2c7e190e016ef05238c48be",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "escapecodesize:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "SHADOW_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1"
+      ],
       "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
       "contract_id": "escapecodesize",
       "dependency_hash": "5bbb07e9af0c0e1dc8724047acfdf53caaf53dbfc2c7e190e016ef05238c48be",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "escapecodesize:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_RETURN_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1"
+      ],
       "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
       "contract_id": "escapecodesize",
       "dependency_hash": "5bbb07e9af0c0e1dc8724047acfdf53caaf53dbfc2c7e190e016ef05238c48be",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "escapecodesize:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "BITSTREAM_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1"
+      ],
       "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
       "contract_id": "escapecodesize",
       "dependency_hash": "5bbb07e9af0c0e1dc8724047acfdf53caaf53dbfc2c7e190e016ef05238c48be",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "escapecodesize:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "PROMOTED",
-      "status": "DEFERRED"
+      "status": "PENDING"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/bcf7ded8f7fbfd323e66fc25a51b6489a4fad835d03302af228c3b51be8f9bb2",
+        "artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13"
+      ],
       "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
       "contract_id": "estimatebitsforgroup",
       "dependency_hash": "6deb7d32a0542be5e6bf91755eba9ac4ac731922d3e08485e075cf80c9de3486",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "estimatebitsforgroup:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DISCOVERED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/bcf7ded8f7fbfd323e66fc25a51b6489a4fad835d03302af228c3b51be8f9bb2",
+        "artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13"
+      ],
       "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
       "contract_id": "estimatebitsforgroup",
       "dependency_hash": "6deb7d32a0542be5e6bf91755eba9ac4ac731922d3e08485e075cf80c9de3486",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "estimatebitsforgroup:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "CONTRACT_LOCKED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/bcf7ded8f7fbfd323e66fc25a51b6489a4fad835d03302af228c3b51be8f9bb2",
+        "artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13"
+      ],
       "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
       "contract_id": "estimatebitsforgroup",
       "dependency_hash": "6deb7d32a0542be5e6bf91755eba9ac4ac731922d3e08485e075cf80c9de3486",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "estimatebitsforgroup:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_GENERATED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/bcf7ded8f7fbfd323e66fc25a51b6489a4fad835d03302af228c3b51be8f9bb2",
+        "artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13"
+      ],
       "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
       "contract_id": "estimatebitsforgroup",
       "dependency_hash": "6deb7d32a0542be5e6bf91755eba9ac4ac731922d3e08485e075cf80c9de3486",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "estimatebitsforgroup:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "UNIT_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/bcf7ded8f7fbfd323e66fc25a51b6489a4fad835d03302af228c3b51be8f9bb2",
+        "artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13"
+      ],
       "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
       "contract_id": "estimatebitsforgroup",
       "dependency_hash": "6deb7d32a0542be5e6bf91755eba9ac4ac731922d3e08485e075cf80c9de3486",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "estimatebitsforgroup:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DEPENDENCIES_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/bcf7ded8f7fbfd323e66fc25a51b6489a4fad835d03302af228c3b51be8f9bb2",
+        "artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13"
+      ],
       "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
       "contract_id": "estimatebitsforgroup",
       "dependency_hash": "6deb7d32a0542be5e6bf91755eba9ac4ac731922d3e08485e075cf80c9de3486",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "estimatebitsforgroup:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "SHADOW_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/bcf7ded8f7fbfd323e66fc25a51b6489a4fad835d03302af228c3b51be8f9bb2",
+        "artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13"
+      ],
       "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
       "contract_id": "estimatebitsforgroup",
       "dependency_hash": "6deb7d32a0542be5e6bf91755eba9ac4ac731922d3e08485e075cf80c9de3486",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "estimatebitsforgroup:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_RETURN_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/bcf7ded8f7fbfd323e66fc25a51b6489a4fad835d03302af228c3b51be8f9bb2",
+        "artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13"
+      ],
       "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
       "contract_id": "estimatebitsforgroup",
       "dependency_hash": "6deb7d32a0542be5e6bf91755eba9ac4ac731922d3e08485e075cf80c9de3486",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "estimatebitsforgroup:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "BITSTREAM_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/bcf7ded8f7fbfd323e66fc25a51b6489a4fad835d03302af228c3b51be8f9bb2",
+        "artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13"
+      ],
       "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
       "contract_id": "estimatebitsforgroup",
       "dependency_hash": "6deb7d32a0542be5e6bf91755eba9ac4ac731922d3e08485e075cf80c9de3486",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "estimatebitsforgroup:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "PROMOTED",
-      "status": "DEFERRED"
+      "status": "PENDING"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/artifact-manifest.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/bitstream-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/dependency-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/generation.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_01.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_02.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_03.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_04.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/input-packing.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/interface.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/legal-domain.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/locked-contract.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/mutations.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/oracle.c",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/receipt-schema.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl-return-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_01.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_02.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_03.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_04.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/shadow-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/shadow_replacement_wrapper.c",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/unit-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/vector_generator.py",
+        "artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+        "integration/generated-overlay/findmidpoint/c-only.json",
+        "integration/generated-overlay/findmidpoint/call-sites.json",
+        "integration/generated-overlay/findmidpoint/dsc_cicd_overlay.c",
+        "integration/generated-overlay/findmidpoint/dsc_cicd_overlay.h",
+        "integration/generated-overlay/findmidpoint/integration_main.cpp",
+        "integration/generated-overlay/findmidpoint/overlay-receipt.json",
+        "integration/generated-overlay/findmidpoint/rtl-return.json",
+        "integration/generated-overlay/findmidpoint/rtl_bridge.cpp",
+        "integration/generated-overlay/findmidpoint/shadow.json"
+      ],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "8075807255cf4e44064896310cc884d94fcc351bf7f74af032ae856b8ac37661",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findmidpoint:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DISCOVERED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/artifact-manifest.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/bitstream-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/dependency-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/generation.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_01.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_02.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_03.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_04.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/input-packing.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/interface.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/legal-domain.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/locked-contract.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/mutations.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/oracle.c",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/receipt-schema.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl-return-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_01.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_02.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_03.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_04.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/shadow-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/shadow_replacement_wrapper.c",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/unit-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/vector_generator.py",
+        "artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+        "integration/generated-overlay/findmidpoint/c-only.json",
+        "integration/generated-overlay/findmidpoint/call-sites.json",
+        "integration/generated-overlay/findmidpoint/dsc_cicd_overlay.c",
+        "integration/generated-overlay/findmidpoint/dsc_cicd_overlay.h",
+        "integration/generated-overlay/findmidpoint/integration_main.cpp",
+        "integration/generated-overlay/findmidpoint/overlay-receipt.json",
+        "integration/generated-overlay/findmidpoint/rtl-return.json",
+        "integration/generated-overlay/findmidpoint/rtl_bridge.cpp",
+        "integration/generated-overlay/findmidpoint/shadow.json"
+      ],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "8075807255cf4e44064896310cc884d94fcc351bf7f74af032ae856b8ac37661",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findmidpoint:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "CONTRACT_LOCKED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/artifact-manifest.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/bitstream-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/dependency-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/generation.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_01.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_02.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_03.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_04.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/input-packing.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/interface.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/legal-domain.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/locked-contract.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/mutations.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/oracle.c",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/receipt-schema.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl-return-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_01.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_02.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_03.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_04.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/shadow-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/shadow_replacement_wrapper.c",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/unit-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/vector_generator.py",
+        "artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+        "integration/generated-overlay/findmidpoint/c-only.json",
+        "integration/generated-overlay/findmidpoint/call-sites.json",
+        "integration/generated-overlay/findmidpoint/dsc_cicd_overlay.c",
+        "integration/generated-overlay/findmidpoint/dsc_cicd_overlay.h",
+        "integration/generated-overlay/findmidpoint/integration_main.cpp",
+        "integration/generated-overlay/findmidpoint/overlay-receipt.json",
+        "integration/generated-overlay/findmidpoint/rtl-return.json",
+        "integration/generated-overlay/findmidpoint/rtl_bridge.cpp",
+        "integration/generated-overlay/findmidpoint/shadow.json"
+      ],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "8075807255cf4e44064896310cc884d94fcc351bf7f74af032ae856b8ac37661",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findmidpoint:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_GENERATED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/artifact-manifest.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/bitstream-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/dependency-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/generation.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_01.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_02.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_03.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_04.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/input-packing.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/interface.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/legal-domain.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/locked-contract.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/mutations.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/oracle.c",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/receipt-schema.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl-return-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_01.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_02.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_03.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_04.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/shadow-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/shadow_replacement_wrapper.c",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/unit-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/vector_generator.py",
+        "artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+        "integration/generated-overlay/findmidpoint/c-only.json",
+        "integration/generated-overlay/findmidpoint/call-sites.json",
+        "integration/generated-overlay/findmidpoint/dsc_cicd_overlay.c",
+        "integration/generated-overlay/findmidpoint/dsc_cicd_overlay.h",
+        "integration/generated-overlay/findmidpoint/integration_main.cpp",
+        "integration/generated-overlay/findmidpoint/overlay-receipt.json",
+        "integration/generated-overlay/findmidpoint/rtl-return.json",
+        "integration/generated-overlay/findmidpoint/rtl_bridge.cpp",
+        "integration/generated-overlay/findmidpoint/shadow.json"
+      ],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "8075807255cf4e44064896310cc884d94fcc351bf7f74af032ae856b8ac37661",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findmidpoint:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "UNIT_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/artifact-manifest.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/bitstream-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/dependency-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/generation.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_01.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_02.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_03.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_04.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/input-packing.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/interface.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/legal-domain.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/locked-contract.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/mutations.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/oracle.c",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/receipt-schema.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl-return-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_01.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_02.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_03.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_04.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/shadow-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/shadow_replacement_wrapper.c",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/unit-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/vector_generator.py",
+        "artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+        "integration/generated-overlay/findmidpoint/c-only.json",
+        "integration/generated-overlay/findmidpoint/call-sites.json",
+        "integration/generated-overlay/findmidpoint/dsc_cicd_overlay.c",
+        "integration/generated-overlay/findmidpoint/dsc_cicd_overlay.h",
+        "integration/generated-overlay/findmidpoint/integration_main.cpp",
+        "integration/generated-overlay/findmidpoint/overlay-receipt.json",
+        "integration/generated-overlay/findmidpoint/rtl-return.json",
+        "integration/generated-overlay/findmidpoint/rtl_bridge.cpp",
+        "integration/generated-overlay/findmidpoint/shadow.json"
+      ],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "8075807255cf4e44064896310cc884d94fcc351bf7f74af032ae856b8ac37661",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findmidpoint:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DEPENDENCIES_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/artifact-manifest.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/bitstream-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/dependency-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/generation.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_01.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_02.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_03.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_04.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/input-packing.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/interface.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/legal-domain.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/locked-contract.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/mutations.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/oracle.c",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/receipt-schema.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl-return-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_01.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_02.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_03.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_04.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/shadow-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/shadow_replacement_wrapper.c",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/unit-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/vector_generator.py",
+        "artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+        "integration/generated-overlay/findmidpoint/c-only.json",
+        "integration/generated-overlay/findmidpoint/call-sites.json",
+        "integration/generated-overlay/findmidpoint/dsc_cicd_overlay.c",
+        "integration/generated-overlay/findmidpoint/dsc_cicd_overlay.h",
+        "integration/generated-overlay/findmidpoint/integration_main.cpp",
+        "integration/generated-overlay/findmidpoint/overlay-receipt.json",
+        "integration/generated-overlay/findmidpoint/rtl-return.json",
+        "integration/generated-overlay/findmidpoint/rtl_bridge.cpp",
+        "integration/generated-overlay/findmidpoint/shadow.json"
+      ],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "8075807255cf4e44064896310cc884d94fcc351bf7f74af032ae856b8ac37661",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findmidpoint:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "SHADOW_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/artifact-manifest.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/bitstream-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/dependency-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/generation.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_01.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_02.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_03.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_04.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/input-packing.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/interface.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/legal-domain.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/locked-contract.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/mutations.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/oracle.c",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/receipt-schema.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl-return-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_01.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_02.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_03.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_04.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/shadow-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/shadow_replacement_wrapper.c",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/unit-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/vector_generator.py",
+        "artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+        "integration/generated-overlay/findmidpoint/c-only.json",
+        "integration/generated-overlay/findmidpoint/call-sites.json",
+        "integration/generated-overlay/findmidpoint/dsc_cicd_overlay.c",
+        "integration/generated-overlay/findmidpoint/dsc_cicd_overlay.h",
+        "integration/generated-overlay/findmidpoint/integration_main.cpp",
+        "integration/generated-overlay/findmidpoint/overlay-receipt.json",
+        "integration/generated-overlay/findmidpoint/rtl-return.json",
+        "integration/generated-overlay/findmidpoint/rtl_bridge.cpp",
+        "integration/generated-overlay/findmidpoint/shadow.json"
+      ],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "8075807255cf4e44064896310cc884d94fcc351bf7f74af032ae856b8ac37661",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findmidpoint:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_RETURN_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/artifact-manifest.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/bitstream-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/dependency-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/generation.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_01.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_02.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_03.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_04.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/input-packing.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/interface.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/legal-domain.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/locked-contract.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/mutations.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/oracle.c",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/receipt-schema.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl-return-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_01.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_02.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_03.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_04.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/shadow-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/shadow_replacement_wrapper.c",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/unit-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/vector_generator.py",
+        "artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+        "integration/generated-overlay/findmidpoint/c-only.json",
+        "integration/generated-overlay/findmidpoint/call-sites.json",
+        "integration/generated-overlay/findmidpoint/dsc_cicd_overlay.c",
+        "integration/generated-overlay/findmidpoint/dsc_cicd_overlay.h",
+        "integration/generated-overlay/findmidpoint/integration_main.cpp",
+        "integration/generated-overlay/findmidpoint/overlay-receipt.json",
+        "integration/generated-overlay/findmidpoint/rtl-return.json",
+        "integration/generated-overlay/findmidpoint/rtl_bridge.cpp",
+        "integration/generated-overlay/findmidpoint/shadow.json"
+      ],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "8075807255cf4e44064896310cc884d94fcc351bf7f74af032ae856b8ac37661",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findmidpoint:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "BITSTREAM_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/artifact-manifest.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/bitstream-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/dependency-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/generation.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_01.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_02.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_03.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/harness/harness_04.cpp",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/input-packing.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/interface.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/legal-domain.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/locked-contract.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/mutations.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/oracle.c",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/receipt-schema.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl-return-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_01.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_02.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_03.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/rtl/candidate_04.sv",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/shadow-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/shadow_replacement_wrapper.c",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/unit-receipt.json",
+        "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/vector_generator.py",
+        "artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+        "integration/generated-overlay/findmidpoint/c-only.json",
+        "integration/generated-overlay/findmidpoint/call-sites.json",
+        "integration/generated-overlay/findmidpoint/dsc_cicd_overlay.c",
+        "integration/generated-overlay/findmidpoint/dsc_cicd_overlay.h",
+        "integration/generated-overlay/findmidpoint/integration_main.cpp",
+        "integration/generated-overlay/findmidpoint/overlay-receipt.json",
+        "integration/generated-overlay/findmidpoint/rtl-return.json",
+        "integration/generated-overlay/findmidpoint/rtl_bridge.cpp",
+        "integration/generated-overlay/findmidpoint/shadow.json"
+      ],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "8075807255cf4e44064896310cc884d94fcc351bf7f74af032ae856b8ac37661",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findmidpoint:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "PROMOTED",
-      "status": "DEFERRED"
+      "status": "PENDING"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b"
+      ],
       "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
       "contract_id": "findresidualsize",
       "dependency_hash": "d6657965d155244e4b80b6ab49c86ce3736eebe4e6decc771789b2b11342612a",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findresidualsize:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DISCOVERED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b"
+      ],
       "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
       "contract_id": "findresidualsize",
       "dependency_hash": "d6657965d155244e4b80b6ab49c86ce3736eebe4e6decc771789b2b11342612a",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findresidualsize:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "CONTRACT_LOCKED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b"
+      ],
       "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
       "contract_id": "findresidualsize",
       "dependency_hash": "d6657965d155244e4b80b6ab49c86ce3736eebe4e6decc771789b2b11342612a",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findresidualsize:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_GENERATED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b"
+      ],
       "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
       "contract_id": "findresidualsize",
       "dependency_hash": "d6657965d155244e4b80b6ab49c86ce3736eebe4e6decc771789b2b11342612a",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findresidualsize:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "UNIT_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b"
+      ],
       "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
       "contract_id": "findresidualsize",
       "dependency_hash": "d6657965d155244e4b80b6ab49c86ce3736eebe4e6decc771789b2b11342612a",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findresidualsize:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DEPENDENCIES_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b"
+      ],
       "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
       "contract_id": "findresidualsize",
       "dependency_hash": "d6657965d155244e4b80b6ab49c86ce3736eebe4e6decc771789b2b11342612a",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findresidualsize:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "SHADOW_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b"
+      ],
       "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
       "contract_id": "findresidualsize",
       "dependency_hash": "d6657965d155244e4b80b6ab49c86ce3736eebe4e6decc771789b2b11342612a",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findresidualsize:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_RETURN_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b"
+      ],
       "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
       "contract_id": "findresidualsize",
       "dependency_hash": "d6657965d155244e4b80b6ab49c86ce3736eebe4e6decc771789b2b11342612a",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findresidualsize:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "BITSTREAM_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b"
+      ],
       "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
       "contract_id": "findresidualsize",
       "dependency_hash": "d6657965d155244e4b80b6ab49c86ce3736eebe4e6decc771789b2b11342612a",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "findresidualsize:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "PROMOTED",
-      "status": "DEFERRED"
+      "status": "PENDING"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c"
+      ],
       "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
       "contract_id": "getqpadjpredsize",
       "dependency_hash": "1bd73d2d1d0dc0d92f6e4a1eb1724c3584ff7007ace11c1f5d8de29477a7e26d",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "getqpadjpredsize:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DISCOVERED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c"
+      ],
       "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
       "contract_id": "getqpadjpredsize",
       "dependency_hash": "1bd73d2d1d0dc0d92f6e4a1eb1724c3584ff7007ace11c1f5d8de29477a7e26d",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "getqpadjpredsize:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "CONTRACT_LOCKED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c"
+      ],
       "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
       "contract_id": "getqpadjpredsize",
       "dependency_hash": "1bd73d2d1d0dc0d92f6e4a1eb1724c3584ff7007ace11c1f5d8de29477a7e26d",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "getqpadjpredsize:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_GENERATED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c"
+      ],
       "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
       "contract_id": "getqpadjpredsize",
       "dependency_hash": "1bd73d2d1d0dc0d92f6e4a1eb1724c3584ff7007ace11c1f5d8de29477a7e26d",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "getqpadjpredsize:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "UNIT_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c"
+      ],
       "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
       "contract_id": "getqpadjpredsize",
       "dependency_hash": "1bd73d2d1d0dc0d92f6e4a1eb1724c3584ff7007ace11c1f5d8de29477a7e26d",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "getqpadjpredsize:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DEPENDENCIES_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c"
+      ],
       "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
       "contract_id": "getqpadjpredsize",
       "dependency_hash": "1bd73d2d1d0dc0d92f6e4a1eb1724c3584ff7007ace11c1f5d8de29477a7e26d",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "getqpadjpredsize:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "SHADOW_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c"
+      ],
       "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
       "contract_id": "getqpadjpredsize",
       "dependency_hash": "1bd73d2d1d0dc0d92f6e4a1eb1724c3584ff7007ace11c1f5d8de29477a7e26d",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "getqpadjpredsize:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_RETURN_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c"
+      ],
       "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
       "contract_id": "getqpadjpredsize",
       "dependency_hash": "1bd73d2d1d0dc0d92f6e4a1eb1724c3584ff7007ace11c1f5d8de29477a7e26d",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "getqpadjpredsize:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "BITSTREAM_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c"
+      ],
       "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
       "contract_id": "getqpadjpredsize",
       "dependency_hash": "1bd73d2d1d0dc0d92f6e4a1eb1724c3584ff7007ace11c1f5d8de29477a7e26d",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "getqpadjpredsize:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "PROMOTED",
-      "status": "DEFERRED"
+      "status": "PENDING"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919"
+      ],
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "25626d6fa2e173ab00157660578aecb09ff633bce62f61973f7cdd3c45550358",
@@ -32053,7 +32469,9 @@
       "status": "BLOCKED"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919"
+      ],
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "25626d6fa2e173ab00157660578aecb09ff633bce62f61973f7cdd3c45550358",
@@ -32065,7 +32483,9 @@
       "status": "BLOCKED"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919"
+      ],
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "25626d6fa2e173ab00157660578aecb09ff633bce62f61973f7cdd3c45550358",
@@ -32077,7 +32497,9 @@
       "status": "BLOCKED"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919"
+      ],
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "25626d6fa2e173ab00157660578aecb09ff633bce62f61973f7cdd3c45550358",
@@ -32089,7 +32511,9 @@
       "status": "BLOCKED"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919"
+      ],
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "25626d6fa2e173ab00157660578aecb09ff633bce62f61973f7cdd3c45550358",
@@ -32101,7 +32525,9 @@
       "status": "BLOCKED"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919"
+      ],
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "25626d6fa2e173ab00157660578aecb09ff633bce62f61973f7cdd3c45550358",
@@ -32113,7 +32539,9 @@
       "status": "BLOCKED"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919"
+      ],
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "25626d6fa2e173ab00157660578aecb09ff633bce62f61973f7cdd3c45550358",
@@ -32125,7 +32553,9 @@
       "status": "BLOCKED"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919"
+      ],
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "25626d6fa2e173ab00157660578aecb09ff633bce62f61973f7cdd3c45550358",
@@ -32137,7 +32567,9 @@
       "status": "BLOCKED"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919"
+      ],
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "25626d6fa2e173ab00157660578aecb09ff633bce62f61973f7cdd3c45550358",
@@ -32149,1084 +32581,1525 @@
       "status": "BLOCKED"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/artifact-manifest.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/generation.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/harness/harness.cpp",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/input-packing.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/interface.sv",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/legal-domain.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/locked-contract.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/mutations.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/oracle.c",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/receipt-schema.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/rtl/candidate_01.sv",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/shadow_replacement_wrapper.c",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/vector_generator.py",
+        "artifacts/60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2",
+        "artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d"
+      ],
       "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
       "dependency_hash": "5056ccfe9eee6dceaa183024a88208bfc55732b5b236ed8baacd98d44b7b8b68",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "isflatnessinfosent:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DISCOVERED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/artifact-manifest.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/generation.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/harness/harness.cpp",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/input-packing.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/interface.sv",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/legal-domain.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/locked-contract.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/mutations.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/oracle.c",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/receipt-schema.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/rtl/candidate_01.sv",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/shadow_replacement_wrapper.c",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/vector_generator.py",
+        "artifacts/60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2",
+        "artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d"
+      ],
       "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
       "dependency_hash": "5056ccfe9eee6dceaa183024a88208bfc55732b5b236ed8baacd98d44b7b8b68",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "isflatnessinfosent:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "CONTRACT_LOCKED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/artifact-manifest.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/generation.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/harness/harness.cpp",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/input-packing.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/interface.sv",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/legal-domain.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/locked-contract.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/mutations.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/oracle.c",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/receipt-schema.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/rtl/candidate_01.sv",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/shadow_replacement_wrapper.c",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/vector_generator.py",
+        "artifacts/60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2",
+        "artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d"
+      ],
       "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
       "dependency_hash": "5056ccfe9eee6dceaa183024a88208bfc55732b5b236ed8baacd98d44b7b8b68",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "isflatnessinfosent:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_GENERATED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/artifact-manifest.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/generation.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/harness/harness.cpp",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/input-packing.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/interface.sv",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/legal-domain.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/locked-contract.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/mutations.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/oracle.c",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/receipt-schema.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/rtl/candidate_01.sv",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/shadow_replacement_wrapper.c",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/vector_generator.py",
+        "artifacts/60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2",
+        "artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d"
+      ],
       "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
       "dependency_hash": "5056ccfe9eee6dceaa183024a88208bfc55732b5b236ed8baacd98d44b7b8b68",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "isflatnessinfosent:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "UNIT_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/artifact-manifest.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/generation.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/harness/harness.cpp",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/input-packing.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/interface.sv",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/legal-domain.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/locked-contract.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/mutations.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/oracle.c",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/receipt-schema.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/rtl/candidate_01.sv",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/shadow_replacement_wrapper.c",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/vector_generator.py",
+        "artifacts/60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2",
+        "artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d"
+      ],
       "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
       "dependency_hash": "5056ccfe9eee6dceaa183024a88208bfc55732b5b236ed8baacd98d44b7b8b68",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "isflatnessinfosent:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DEPENDENCIES_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/artifact-manifest.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/generation.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/harness/harness.cpp",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/input-packing.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/interface.sv",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/legal-domain.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/locked-contract.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/mutations.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/oracle.c",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/receipt-schema.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/rtl/candidate_01.sv",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/shadow_replacement_wrapper.c",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/vector_generator.py",
+        "artifacts/60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2",
+        "artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d"
+      ],
       "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
       "dependency_hash": "5056ccfe9eee6dceaa183024a88208bfc55732b5b236ed8baacd98d44b7b8b68",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "isflatnessinfosent:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "SHADOW_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/artifact-manifest.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/generation.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/harness/harness.cpp",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/input-packing.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/interface.sv",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/legal-domain.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/locked-contract.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/mutations.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/oracle.c",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/receipt-schema.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/rtl/candidate_01.sv",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/shadow_replacement_wrapper.c",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/vector_generator.py",
+        "artifacts/60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2",
+        "artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d"
+      ],
       "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
       "dependency_hash": "5056ccfe9eee6dceaa183024a88208bfc55732b5b236ed8baacd98d44b7b8b68",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "isflatnessinfosent:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_RETURN_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/artifact-manifest.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/generation.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/harness/harness.cpp",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/input-packing.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/interface.sv",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/legal-domain.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/locked-contract.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/mutations.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/oracle.c",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/receipt-schema.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/rtl/candidate_01.sv",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/shadow_replacement_wrapper.c",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/vector_generator.py",
+        "artifacts/60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2",
+        "artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d"
+      ],
       "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
       "dependency_hash": "5056ccfe9eee6dceaa183024a88208bfc55732b5b236ed8baacd98d44b7b8b68",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "isflatnessinfosent:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "BITSTREAM_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/artifact-manifest.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/generation.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/harness/harness.cpp",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/input-packing.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/interface.sv",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/legal-domain.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/locked-contract.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/mutations.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/oracle.c",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/receipt-schema.json",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/rtl/candidate_01.sv",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/shadow_replacement_wrapper.c",
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/vector_generator.py",
+        "artifacts/60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2",
+        "artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d"
+      ],
       "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
       "dependency_hash": "5056ccfe9eee6dceaa183024a88208bfc55732b5b236ed8baacd98d44b7b8b68",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "isflatnessinfosent:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "PROMOTED",
-      "status": "DEFERRED"
+      "status": "PENDING"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115"
+      ],
       "contract_hash": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
       "contract_id": "isorigflathindex",
       "dependency_hash": "202e4f3e09329e86568bf6e445ea40aad44b08cbc2e08d8e8e889404269c84cc",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "isorigflathindex:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DISCOVERED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115"
+      ],
       "contract_hash": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
       "contract_id": "isorigflathindex",
       "dependency_hash": "202e4f3e09329e86568bf6e445ea40aad44b08cbc2e08d8e8e889404269c84cc",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "isorigflathindex:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "CONTRACT_LOCKED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115"
+      ],
       "contract_hash": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
       "contract_id": "isorigflathindex",
       "dependency_hash": "202e4f3e09329e86568bf6e445ea40aad44b08cbc2e08d8e8e889404269c84cc",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "isorigflathindex:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_GENERATED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115"
+      ],
       "contract_hash": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
       "contract_id": "isorigflathindex",
       "dependency_hash": "202e4f3e09329e86568bf6e445ea40aad44b08cbc2e08d8e8e889404269c84cc",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "isorigflathindex:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "UNIT_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115"
+      ],
       "contract_hash": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
       "contract_id": "isorigflathindex",
       "dependency_hash": "202e4f3e09329e86568bf6e445ea40aad44b08cbc2e08d8e8e889404269c84cc",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "isorigflathindex:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DEPENDENCIES_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115"
+      ],
       "contract_hash": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
       "contract_id": "isorigflathindex",
       "dependency_hash": "202e4f3e09329e86568bf6e445ea40aad44b08cbc2e08d8e8e889404269c84cc",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "isorigflathindex:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "SHADOW_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115"
+      ],
       "contract_hash": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
       "contract_id": "isorigflathindex",
       "dependency_hash": "202e4f3e09329e86568bf6e445ea40aad44b08cbc2e08d8e8e889404269c84cc",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "isorigflathindex:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_RETURN_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115"
+      ],
       "contract_hash": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
       "contract_id": "isorigflathindex",
       "dependency_hash": "202e4f3e09329e86568bf6e445ea40aad44b08cbc2e08d8e8e889404269c84cc",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "isorigflathindex:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "BITSTREAM_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115"
+      ],
       "contract_hash": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
       "contract_id": "isorigflathindex",
       "dependency_hash": "202e4f3e09329e86568bf6e445ea40aad44b08cbc2e08d8e8e889404269c84cc",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "isorigflathindex:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "PROMOTED",
-      "status": "DEFERRED"
+      "status": "PENDING"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/artifact-manifest.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/generation.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/harness/harness.cpp",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/input-packing.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/interface.sv",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/legal-domain.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/locked-contract.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/mutations.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/oracle.c",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/receipt-schema.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/rtl/candidate_01.sv",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/shadow_replacement_wrapper.c",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/vector_generator.py"
+      ],
       "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
       "dependency_hash": "ffc5198137d6fbbf9f09edcc8a760d5e25650efffae54cb01ec94bc447f7eae4",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "mapqptoqlevel:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DISCOVERED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/artifact-manifest.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/generation.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/harness/harness.cpp",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/input-packing.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/interface.sv",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/legal-domain.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/locked-contract.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/mutations.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/oracle.c",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/receipt-schema.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/rtl/candidate_01.sv",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/shadow_replacement_wrapper.c",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/vector_generator.py"
+      ],
       "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
       "dependency_hash": "ffc5198137d6fbbf9f09edcc8a760d5e25650efffae54cb01ec94bc447f7eae4",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "mapqptoqlevel:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "CONTRACT_LOCKED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/artifact-manifest.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/generation.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/harness/harness.cpp",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/input-packing.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/interface.sv",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/legal-domain.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/locked-contract.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/mutations.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/oracle.c",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/receipt-schema.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/rtl/candidate_01.sv",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/shadow_replacement_wrapper.c",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/vector_generator.py"
+      ],
       "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
       "dependency_hash": "ffc5198137d6fbbf9f09edcc8a760d5e25650efffae54cb01ec94bc447f7eae4",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "mapqptoqlevel:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_GENERATED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/artifact-manifest.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/generation.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/harness/harness.cpp",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/input-packing.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/interface.sv",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/legal-domain.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/locked-contract.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/mutations.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/oracle.c",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/receipt-schema.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/rtl/candidate_01.sv",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/shadow_replacement_wrapper.c",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/vector_generator.py"
+      ],
       "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
       "dependency_hash": "ffc5198137d6fbbf9f09edcc8a760d5e25650efffae54cb01ec94bc447f7eae4",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "mapqptoqlevel:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "UNIT_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/artifact-manifest.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/generation.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/harness/harness.cpp",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/input-packing.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/interface.sv",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/legal-domain.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/locked-contract.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/mutations.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/oracle.c",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/receipt-schema.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/rtl/candidate_01.sv",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/shadow_replacement_wrapper.c",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/vector_generator.py"
+      ],
       "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
       "dependency_hash": "ffc5198137d6fbbf9f09edcc8a760d5e25650efffae54cb01ec94bc447f7eae4",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "mapqptoqlevel:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DEPENDENCIES_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/artifact-manifest.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/generation.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/harness/harness.cpp",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/input-packing.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/interface.sv",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/legal-domain.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/locked-contract.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/mutations.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/oracle.c",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/receipt-schema.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/rtl/candidate_01.sv",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/shadow_replacement_wrapper.c",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/vector_generator.py"
+      ],
       "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
       "dependency_hash": "ffc5198137d6fbbf9f09edcc8a760d5e25650efffae54cb01ec94bc447f7eae4",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "mapqptoqlevel:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "SHADOW_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/artifact-manifest.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/generation.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/harness/harness.cpp",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/input-packing.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/interface.sv",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/legal-domain.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/locked-contract.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/mutations.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/oracle.c",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/receipt-schema.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/rtl/candidate_01.sv",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/shadow_replacement_wrapper.c",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/vector_generator.py"
+      ],
       "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
       "dependency_hash": "ffc5198137d6fbbf9f09edcc8a760d5e25650efffae54cb01ec94bc447f7eae4",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "mapqptoqlevel:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_RETURN_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/artifact-manifest.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/generation.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/harness/harness.cpp",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/input-packing.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/interface.sv",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/legal-domain.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/locked-contract.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/mutations.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/oracle.c",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/receipt-schema.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/rtl/candidate_01.sv",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/shadow_replacement_wrapper.c",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/vector_generator.py"
+      ],
       "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
       "dependency_hash": "ffc5198137d6fbbf9f09edcc8a760d5e25650efffae54cb01ec94bc447f7eae4",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "mapqptoqlevel:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "BITSTREAM_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/artifact-manifest.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/generation.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/harness/harness.cpp",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/input-packing.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/interface.sv",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/legal-domain.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/locked-contract.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/mutations.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/oracle.c",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/receipt-schema.json",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/rtl/candidate_01.sv",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/shadow_replacement_wrapper.c",
+        "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/vector_generator.py"
+      ],
       "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
       "dependency_hash": "ffc5198137d6fbbf9f09edcc8a760d5e25650efffae54cb01ec94bc447f7eae4",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "mapqptoqlevel:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "PROMOTED",
-      "status": "DEFERRED"
+      "status": "PENDING"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c"
+      ],
       "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
       "contract_id": "maxresidualsize",
       "dependency_hash": "674bbe59bc7b3e1b6c7bb740fb94db009fb7e014c1d815ece9de3cb2595ebd3d",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "maxresidualsize:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DISCOVERED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c"
+      ],
       "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
       "contract_id": "maxresidualsize",
       "dependency_hash": "674bbe59bc7b3e1b6c7bb740fb94db009fb7e014c1d815ece9de3cb2595ebd3d",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "maxresidualsize:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "CONTRACT_LOCKED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c"
+      ],
       "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
       "contract_id": "maxresidualsize",
       "dependency_hash": "674bbe59bc7b3e1b6c7bb740fb94db009fb7e014c1d815ece9de3cb2595ebd3d",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "maxresidualsize:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_GENERATED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c"
+      ],
       "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
       "contract_id": "maxresidualsize",
       "dependency_hash": "674bbe59bc7b3e1b6c7bb740fb94db009fb7e014c1d815ece9de3cb2595ebd3d",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "maxresidualsize:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "UNIT_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c"
+      ],
       "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
       "contract_id": "maxresidualsize",
       "dependency_hash": "674bbe59bc7b3e1b6c7bb740fb94db009fb7e014c1d815ece9de3cb2595ebd3d",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "maxresidualsize:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DEPENDENCIES_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c"
+      ],
       "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
       "contract_id": "maxresidualsize",
       "dependency_hash": "674bbe59bc7b3e1b6c7bb740fb94db009fb7e014c1d815ece9de3cb2595ebd3d",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "maxresidualsize:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "SHADOW_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c"
+      ],
       "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
       "contract_id": "maxresidualsize",
       "dependency_hash": "674bbe59bc7b3e1b6c7bb740fb94db009fb7e014c1d815ece9de3cb2595ebd3d",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "maxresidualsize:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_RETURN_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c"
+      ],
       "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
       "contract_id": "maxresidualsize",
       "dependency_hash": "674bbe59bc7b3e1b6c7bb740fb94db009fb7e014c1d815ece9de3cb2595ebd3d",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "maxresidualsize:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "BITSTREAM_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c"
+      ],
       "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
       "contract_id": "maxresidualsize",
       "dependency_hash": "674bbe59bc7b3e1b6c7bb740fb94db009fb7e014c1d815ece9de3cb2595ebd3d",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "maxresidualsize:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "PROMOTED",
-      "status": "DEFERRED"
+      "status": "PENDING"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d"
+      ],
       "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
       "dependency_hash": "c06c81af7f0aebcd65a6303518839aea78d8faea46d3e398b160f92f6173e030",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "predictsize:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DISCOVERED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d"
+      ],
       "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
       "dependency_hash": "c06c81af7f0aebcd65a6303518839aea78d8faea46d3e398b160f92f6173e030",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "predictsize:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "CONTRACT_LOCKED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d"
+      ],
       "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
       "dependency_hash": "c06c81af7f0aebcd65a6303518839aea78d8faea46d3e398b160f92f6173e030",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "predictsize:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_GENERATED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d"
+      ],
       "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
       "dependency_hash": "c06c81af7f0aebcd65a6303518839aea78d8faea46d3e398b160f92f6173e030",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "predictsize:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "UNIT_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d"
+      ],
       "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
       "dependency_hash": "c06c81af7f0aebcd65a6303518839aea78d8faea46d3e398b160f92f6173e030",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "predictsize:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DEPENDENCIES_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d"
+      ],
       "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
       "dependency_hash": "c06c81af7f0aebcd65a6303518839aea78d8faea46d3e398b160f92f6173e030",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "predictsize:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "SHADOW_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d"
+      ],
       "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
       "dependency_hash": "c06c81af7f0aebcd65a6303518839aea78d8faea46d3e398b160f92f6173e030",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "predictsize:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_RETURN_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d"
+      ],
       "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
       "dependency_hash": "c06c81af7f0aebcd65a6303518839aea78d8faea46d3e398b160f92f6173e030",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "predictsize:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "BITSTREAM_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d"
+      ],
       "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
       "dependency_hash": "c06c81af7f0aebcd65a6303518839aea78d8faea46d3e398b160f92f6173e030",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "predictsize:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "PROMOTED",
-      "status": "DEFERRED"
+      "status": "PENDING"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026"
+      ],
       "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
       "contract_id": "qp2qlevel",
       "dependency_hash": "1eb0c0b6879eb69d337b06eeac34f3d0087bafca0c9ab3daa778de067446e8ce",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "qp2qlevel:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DISCOVERED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026"
+      ],
       "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
       "contract_id": "qp2qlevel",
       "dependency_hash": "1eb0c0b6879eb69d337b06eeac34f3d0087bafca0c9ab3daa778de067446e8ce",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "qp2qlevel:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "CONTRACT_LOCKED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026"
+      ],
       "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
       "contract_id": "qp2qlevel",
       "dependency_hash": "1eb0c0b6879eb69d337b06eeac34f3d0087bafca0c9ab3daa778de067446e8ce",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "qp2qlevel:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_GENERATED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026"
+      ],
       "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
       "contract_id": "qp2qlevel",
       "dependency_hash": "1eb0c0b6879eb69d337b06eeac34f3d0087bafca0c9ab3daa778de067446e8ce",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "qp2qlevel:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "UNIT_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026"
+      ],
       "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
       "contract_id": "qp2qlevel",
       "dependency_hash": "1eb0c0b6879eb69d337b06eeac34f3d0087bafca0c9ab3daa778de067446e8ce",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "qp2qlevel:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DEPENDENCIES_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026"
+      ],
       "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
       "contract_id": "qp2qlevel",
       "dependency_hash": "1eb0c0b6879eb69d337b06eeac34f3d0087bafca0c9ab3daa778de067446e8ce",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "qp2qlevel:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "SHADOW_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026"
+      ],
       "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
       "contract_id": "qp2qlevel",
       "dependency_hash": "1eb0c0b6879eb69d337b06eeac34f3d0087bafca0c9ab3daa778de067446e8ce",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "qp2qlevel:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_RETURN_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026"
+      ],
       "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
       "contract_id": "qp2qlevel",
       "dependency_hash": "1eb0c0b6879eb69d337b06eeac34f3d0087bafca0c9ab3daa778de067446e8ce",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "qp2qlevel:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "BITSTREAM_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026"
+      ],
       "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
       "contract_id": "qp2qlevel",
       "dependency_hash": "1eb0c0b6879eb69d337b06eeac34f3d0087bafca0c9ab3daa778de067446e8ce",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "qp2qlevel:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "PROMOTED",
-      "status": "DEFERRED"
+      "status": "PENDING"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+        "artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a"
+      ],
       "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
       "contract_id": "quantizeresidual",
       "dependency_hash": "ba208475235b6e92b65547f31cdffa4fe40ad3cdd5c1eec9bb75103c3ad7a956",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "quantizeresidual:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DISCOVERED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+        "artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a"
+      ],
       "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
       "contract_id": "quantizeresidual",
       "dependency_hash": "ba208475235b6e92b65547f31cdffa4fe40ad3cdd5c1eec9bb75103c3ad7a956",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "quantizeresidual:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "CONTRACT_LOCKED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+        "artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a"
+      ],
       "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
       "contract_id": "quantizeresidual",
       "dependency_hash": "ba208475235b6e92b65547f31cdffa4fe40ad3cdd5c1eec9bb75103c3ad7a956",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "quantizeresidual:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_GENERATED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+        "artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a"
+      ],
       "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
       "contract_id": "quantizeresidual",
       "dependency_hash": "ba208475235b6e92b65547f31cdffa4fe40ad3cdd5c1eec9bb75103c3ad7a956",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "quantizeresidual:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "UNIT_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+        "artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a"
+      ],
       "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
       "contract_id": "quantizeresidual",
       "dependency_hash": "ba208475235b6e92b65547f31cdffa4fe40ad3cdd5c1eec9bb75103c3ad7a956",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "quantizeresidual:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DEPENDENCIES_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+        "artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a"
+      ],
       "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
       "contract_id": "quantizeresidual",
       "dependency_hash": "ba208475235b6e92b65547f31cdffa4fe40ad3cdd5c1eec9bb75103c3ad7a956",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "quantizeresidual:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "SHADOW_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+        "artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a"
+      ],
       "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
       "contract_id": "quantizeresidual",
       "dependency_hash": "ba208475235b6e92b65547f31cdffa4fe40ad3cdd5c1eec9bb75103c3ad7a956",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "quantizeresidual:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_RETURN_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+        "artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a"
+      ],
       "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
       "contract_id": "quantizeresidual",
       "dependency_hash": "ba208475235b6e92b65547f31cdffa4fe40ad3cdd5c1eec9bb75103c3ad7a956",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "quantizeresidual:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "BITSTREAM_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+        "artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a"
+      ],
       "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
       "contract_id": "quantizeresidual",
       "dependency_hash": "ba208475235b6e92b65547f31cdffa4fe40ad3cdd5c1eec9bb75103c3ad7a956",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "quantizeresidual:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "PROMOTED",
-      "status": "DEFERRED"
+      "status": "PENDING"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509"
+      ],
       "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
       "contract_id": "samplepredict",
       "dependency_hash": "048c7cbc13af700b569cec566195f24f12782209a1fbfa528ca7b95d44a168c8",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "samplepredict:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DISCOVERED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509"
+      ],
       "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
       "contract_id": "samplepredict",
       "dependency_hash": "048c7cbc13af700b569cec566195f24f12782209a1fbfa528ca7b95d44a168c8",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "samplepredict:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "CONTRACT_LOCKED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509"
+      ],
       "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
       "contract_id": "samplepredict",
       "dependency_hash": "048c7cbc13af700b569cec566195f24f12782209a1fbfa528ca7b95d44a168c8",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "samplepredict:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_GENERATED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509"
+      ],
       "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
       "contract_id": "samplepredict",
       "dependency_hash": "048c7cbc13af700b569cec566195f24f12782209a1fbfa528ca7b95d44a168c8",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "samplepredict:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "UNIT_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509"
+      ],
       "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
       "contract_id": "samplepredict",
       "dependency_hash": "048c7cbc13af700b569cec566195f24f12782209a1fbfa528ca7b95d44a168c8",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "samplepredict:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DEPENDENCIES_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509"
+      ],
       "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
       "contract_id": "samplepredict",
       "dependency_hash": "048c7cbc13af700b569cec566195f24f12782209a1fbfa528ca7b95d44a168c8",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "samplepredict:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "SHADOW_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509"
+      ],
       "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
       "contract_id": "samplepredict",
       "dependency_hash": "048c7cbc13af700b569cec566195f24f12782209a1fbfa528ca7b95d44a168c8",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "samplepredict:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_RETURN_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509"
+      ],
       "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
       "contract_id": "samplepredict",
       "dependency_hash": "048c7cbc13af700b569cec566195f24f12782209a1fbfa528ca7b95d44a168c8",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "samplepredict:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "BITSTREAM_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509"
+      ],
       "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
       "contract_id": "samplepredict",
       "dependency_hash": "048c7cbc13af700b569cec566195f24f12782209a1fbfa528ca7b95d44a168c8",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "samplepredict:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "PROMOTED",
-      "status": "DEFERRED"
+      "status": "PENDING"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a"
+      ],
       "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
       "contract_id": "samptolinebuf",
       "dependency_hash": "ef867cd7536ed109df25b32711d8bcc5a652673b12c1ce871c588a3df2e0e1b6",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "samptolinebuf:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DISCOVERED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a"
+      ],
       "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
       "contract_id": "samptolinebuf",
       "dependency_hash": "ef867cd7536ed109df25b32711d8bcc5a652673b12c1ce871c588a3df2e0e1b6",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "samptolinebuf:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "CONTRACT_LOCKED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a"
+      ],
       "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
       "contract_id": "samptolinebuf",
       "dependency_hash": "ef867cd7536ed109df25b32711d8bcc5a652673b12c1ce871c588a3df2e0e1b6",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "samptolinebuf:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_GENERATED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a"
+      ],
       "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
       "contract_id": "samptolinebuf",
       "dependency_hash": "ef867cd7536ed109df25b32711d8bcc5a652673b12c1ce871c588a3df2e0e1b6",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "samptolinebuf:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "UNIT_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a"
+      ],
       "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
       "contract_id": "samptolinebuf",
       "dependency_hash": "ef867cd7536ed109df25b32711d8bcc5a652673b12c1ce871c588a3df2e0e1b6",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "samptolinebuf:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DEPENDENCIES_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a"
+      ],
       "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
       "contract_id": "samptolinebuf",
       "dependency_hash": "ef867cd7536ed109df25b32711d8bcc5a652673b12c1ce871c588a3df2e0e1b6",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "samptolinebuf:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "SHADOW_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a"
+      ],
       "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
       "contract_id": "samptolinebuf",
       "dependency_hash": "ef867cd7536ed109df25b32711d8bcc5a652673b12c1ce871c588a3df2e0e1b6",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "samptolinebuf:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_RETURN_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a"
+      ],
       "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
       "contract_id": "samptolinebuf",
       "dependency_hash": "ef867cd7536ed109df25b32711d8bcc5a652673b12c1ce871c588a3df2e0e1b6",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "samptolinebuf:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "BITSTREAM_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a"
+      ],
       "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
       "contract_id": "samptolinebuf",
       "dependency_hash": "ef867cd7536ed109df25b32711d8bcc5a652673b12c1ce871c588a3df2e0e1b6",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "samptolinebuf:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "PROMOTED",
-      "status": "DEFERRED"
+      "status": "PENDING"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
+        "artifacts/a80e806bc03f18d8ed3285f7fc6c043b0bb487da5921717a8239a344049abab1"
+      ],
       "contract_hash": "46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
       "contract_id": "usingmidpoint",
       "dependency_hash": "190a9a354943b435750ae28f6ae44805aaf9805259f9c5cfed0cb493014c0849",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "usingmidpoint:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DISCOVERED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
+        "artifacts/a80e806bc03f18d8ed3285f7fc6c043b0bb487da5921717a8239a344049abab1"
+      ],
       "contract_hash": "46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
       "contract_id": "usingmidpoint",
       "dependency_hash": "190a9a354943b435750ae28f6ae44805aaf9805259f9c5cfed0cb493014c0849",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "usingmidpoint:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "CONTRACT_LOCKED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
+        "artifacts/a80e806bc03f18d8ed3285f7fc6c043b0bb487da5921717a8239a344049abab1"
+      ],
       "contract_hash": "46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
       "contract_id": "usingmidpoint",
       "dependency_hash": "190a9a354943b435750ae28f6ae44805aaf9805259f9c5cfed0cb493014c0849",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "usingmidpoint:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_GENERATED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
+        "artifacts/a80e806bc03f18d8ed3285f7fc6c043b0bb487da5921717a8239a344049abab1"
+      ],
       "contract_hash": "46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
       "contract_id": "usingmidpoint",
       "dependency_hash": "190a9a354943b435750ae28f6ae44805aaf9805259f9c5cfed0cb493014c0849",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "usingmidpoint:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "UNIT_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
+        "artifacts/a80e806bc03f18d8ed3285f7fc6c043b0bb487da5921717a8239a344049abab1"
+      ],
       "contract_hash": "46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
       "contract_id": "usingmidpoint",
       "dependency_hash": "190a9a354943b435750ae28f6ae44805aaf9805259f9c5cfed0cb493014c0849",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "usingmidpoint:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DEPENDENCIES_VERIFIED",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
+        "artifacts/a80e806bc03f18d8ed3285f7fc6c043b0bb487da5921717a8239a344049abab1"
+      ],
       "contract_hash": "46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
       "contract_id": "usingmidpoint",
       "dependency_hash": "190a9a354943b435750ae28f6ae44805aaf9805259f9c5cfed0cb493014c0849",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "usingmidpoint:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "SHADOW_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
+        "artifacts/a80e806bc03f18d8ed3285f7fc6c043b0bb487da5921717a8239a344049abab1"
+      ],
       "contract_hash": "46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
       "contract_id": "usingmidpoint",
       "dependency_hash": "190a9a354943b435750ae28f6ae44805aaf9805259f9c5cfed0cb493014c0849",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "usingmidpoint:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_RETURN_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
+        "artifacts/a80e806bc03f18d8ed3285f7fc6c043b0bb487da5921717a8239a344049abab1"
+      ],
       "contract_hash": "46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
       "contract_id": "usingmidpoint",
       "dependency_hash": "190a9a354943b435750ae28f6ae44805aaf9805259f9c5cfed0cb493014c0849",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "usingmidpoint:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "BITSTREAM_PASS",
-      "status": "DEFERRED"
+      "status": "PASS"
     },
     {
-      "artifacts": [],
+      "artifacts": [
+        "artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
+        "artifacts/a80e806bc03f18d8ed3285f7fc6c043b0bb487da5921717a8239a344049abab1"
+      ],
       "contract_hash": "46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
       "contract_id": "usingmidpoint",
       "dependency_hash": "190a9a354943b435750ae28f6ae44805aaf9805259f9c5cfed0cb493014c0849",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": null,
       "node_id": "usingmidpoint:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "PROMOTED",
-      "status": "DEFERRED"
+      "status": "PENDING"
     },
     {
       "artifacts": [],

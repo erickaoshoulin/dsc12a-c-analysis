@@ -32,13 +32,11 @@
     "function": "Qp2Qlevel",
     "kind": "table_config",
     "module": "qp2qlevel",
-    "parent_run_id": "20260802T062208Z-0ad45a41",
+    "parent_run_id": "20260803T013704Z-05a52482",
     "profile": "scale",
-    "promoted_at": "2026-08-02T23:46:34Z",
     "rtl_sha256": "18f078d82f020604fbcae57261373e69e9291f7757f81585163bb47fa1d893df",
-    "run_id": "20260802T230757Z-scale-7a24e3ac",
+    "run_id": "20260803T014654Z-scale-2b8c6c5c",
     "run_kind": "table_config",
-    "schema_version": 1,
     "source_gate": {
       "blockers": [],
       "build": {
@@ -84,253 +82,9 @@
       "verilator_lint_build": "PASS",
       "width_spec_gate": "PASS"
     },
-    "status": "PASS",
-    "traceability": {
-      "authority": "EXACT_SPEC",
-      "c_span": {
-        "end_line": 844,
-        "start_line": 816
-      },
-      "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
-      "ports": [
-        {
-          "authority": "EXACT_SPEC",
-          "c_span": {
-            "end_line": 844,
-            "start_line": 816
-          },
-          "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
-          "derivation": "DSC component index domain for native 4:4:4/4:2:2/4:2:0 container components",
-          "domain": {
-            "basis": "DSC component index domain for native 4:4:4/4:2:2/4:2:0 container components",
-            "kind": "range",
-            "range": [
-              0,
-              3
-            ]
-          },
-          "name": "cpnt",
-          "review_status": "REVIEWED",
-          "role": "cpnt",
-          "signed": false,
-          "spec_pages": [
-            114
-          ],
-          "spec_sections": [
-            "6.8.6"
-          ],
-          "spec_tables": [],
-          "width": 2
-        },
-        {
-          "authority": "EXACT_SPEC",
-          "c_span": {
-            "end_line": 844,
-            "start_line": 816
-          },
-          "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
-          "derivation": "Table 6-2 masterQp rows, constrained by the selected bits_per_component table row",
-          "domain": {
-            "basis": "Table 6-2 masterQp rows, constrained by the selected bits_per_component table row",
-            "kind": "range",
-            "range": [
-              0,
-              31
-            ]
-          },
-          "name": "qp",
-          "review_status": "REVIEWED",
-          "role": "qp",
-          "signed": false,
-          "spec_pages": [
-            114
-          ],
-          "spec_sections": [
-            "6.8.6"
-          ],
-          "spec_tables": [],
-          "width": 5
-        },
-        {
-          "authority": "EXACT_SPEC",
-          "c_span": {
-            "end_line": 844,
-            "start_line": 816
-          },
-          "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
-          "derivation": "DSC supported component bit depths",
-          "domain": {
-            "basis": "DSC supported component bit depths",
-            "kind": "set",
-            "range": [
-              8,
-              16
-            ],
-            "values": [
-              8,
-              10,
-              12,
-              14,
-              16
-            ]
-          },
-          "name": "bits_per_component",
-          "review_status": "REVIEWED",
-          "role": "bits_per_component",
-          "signed": false,
-          "spec_pages": [
-            114
-          ],
-          "spec_sections": [
-            "6.8.6"
-          ],
-          "spec_tables": [],
-          "width": 5
-        },
-        {
-          "authority": "EXACT_SPEC",
-          "c_span": {
-            "end_line": 844,
-            "start_line": 816
-          },
-          "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
-          "derivation": "PPS convert_rgb flag",
-          "domain": {
-            "basis": "PPS convert_rgb flag",
-            "kind": "set",
-            "range": [
-              0,
-              1
-            ],
-            "values": [
-              0,
-              1
-            ]
-          },
-          "name": "convert_rgb",
-          "review_status": "REVIEWED",
-          "role": "convert_rgb",
-          "signed": false,
-          "spec_pages": [
-            114
-          ],
-          "spec_sections": [
-            "6.8.6"
-          ],
-          "spec_tables": [],
-          "width": 1
-        },
-        {
-          "authority": "EXACT_SPEC",
-          "c_span": {
-            "end_line": 844,
-            "start_line": 816
-          },
-          "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
-          "derivation": "DSC minor-version branch domain used by the C model",
-          "domain": {
-            "basis": "DSC minor-version branch domain used by the C model",
-            "kind": "set",
-            "range": [
-              0,
-              2
-            ],
-            "values": [
-              0,
-              1,
-              2
-            ]
-          },
-          "name": "dsc_version_minor",
-          "review_status": "REVIEWED",
-          "role": "dsc_version_minor",
-          "signed": false,
-          "spec_pages": [
-            114
-          ],
-          "spec_sections": [
-            "6.8.6"
-          ],
-          "spec_tables": [],
-          "width": 2
-        },
-        {
-          "authority": "EXACT_SPEC",
-          "c_span": {
-            "end_line": 844,
-            "start_line": 816
-          },
-          "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
-          "derivation": "PPS native_420 flag",
-          "domain": {
-            "basis": "PPS native_420 flag",
-            "kind": "set",
-            "range": [
-              0,
-              1
-            ],
-            "values": [
-              0,
-              1
-            ]
-          },
-          "name": "native_420",
-          "review_status": "REVIEWED",
-          "role": "native_420",
-          "signed": false,
-          "spec_pages": [
-            114
-          ],
-          "spec_sections": [
-            "6.8.6"
-          ],
-          "spec_tables": [],
-          "width": 1
-        },
-        {
-          "authority": "EXACT_SPEC",
-          "c_span": {
-            "end_line": 844,
-            "start_line": 816
-          },
-          "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
-          "derivation": "locked contract interface",
-          "domain": {
-            "range": [
-              0,
-              16
-            ]
-          },
-          "name": "return_value",
-          "review_status": "REVIEWED",
-          "role": "return_value",
-          "signed": false,
-          "spec_pages": [
-            114
-          ],
-          "spec_sections": [
-            "6.8.6"
-          ],
-          "spec_tables": [],
-          "width": 5
-        }
-      ],
-      "review_status": "REVIEWED",
-      "source_file": "codec_main.c",
-      "source_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
-      "spec_links": [
-        {
-          "anchor_id": "pdf:table:6-2",
-          "evidence": "The normative Table 6-2 rows are copied into the reviewed semantic table below.",
-          "page": 114,
-          "section": "6.8.6",
-          "status": "EXACT"
-        }
-      ],
-      "spec_pdf": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf"
-    }
+    "status": "PASS"
   },
-  "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+  "last_verified_run_id": "20260803T014654Z-scale-2b8c6c5c",
   "matrix": {
     "modes": {
       "C_ONLY": "PASS",
@@ -341,11 +95,11 @@
     "status": "PASS"
   },
   "module": "qp2qlevel",
-  "parent_run_id": "20260802T062208Z-0ad45a41",
+  "parent_run_id": "20260803T013704Z-05a52482",
   "profile": "scale",
   "promoted_at": "2026-08-02T21:15:49Z",
   "rtl_sha256": "18f078d82f020604fbcae57261373e69e9291f7757f81585163bb47fa1d893df",
-  "run_id": "20260802T230757Z-scale-7a24e3ac",
+  "run_id": "20260803T014654Z-scale-2b8c6c5c",
   "run_kind": "table_config",
   "schema_version": 2,
   "source_gate": {

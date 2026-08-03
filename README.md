@@ -243,7 +243,7 @@ taps per lane, Figure 6-19 offsets, Table 6-2 qLevel rows, and the exact
 and per-tap boundaries, and pairwise taps; Verilator AST plus Z3 proves the
 complete reviewed relation. The line buffer stays at the C caller boundary,
 and the adapter must short-circuit unused component lanes before reading
-`origLine`. This is now the 14-component stable library frontier.
+`origLine`. This is now the 16-component stable library frontier.
 
 ## Continuous CI/CD library loop
 
