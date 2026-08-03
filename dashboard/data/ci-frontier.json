@@ -43,7 +43,7 @@
     "blocked": 1,
     "new_candidates": 1,
     "ready": 16,
-    "selected": 16
+    "selected": 0
   },
   "generator_invocations": 0,
   "model_calls": 0,
@@ -69,24 +69,7 @@
     "usingmidpoint"
   ],
   "schema_version": 1,
-  "selected_contracts": [
-    "ceil_log2",
-    "escapecodesize",
-    "estimatebitsforgroup",
-    "findmidpoint",
-    "findresidualsize",
-    "getqpadjpredsize",
-    "isflatnessinfosent",
-    "isorigflathindex",
-    "mapqptoqlevel",
-    "maxresidualsize",
-    "predictsize",
-    "qp2qlevel",
-    "quantizeresidual",
-    "samplepredict",
-    "samptolinebuf",
-    "usingmidpoint"
-  ],
+  "selected_contracts": [],
   "selected_new_work": [],
   "source_files": [
     "ci/plan.json",

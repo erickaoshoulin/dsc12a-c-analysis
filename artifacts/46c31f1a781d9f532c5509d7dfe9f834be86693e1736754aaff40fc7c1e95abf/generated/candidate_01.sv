@@ -1,4 +1,4 @@
-module usingmidpoint_candidate_01 (
+module usingmidpoint (
     input logic [1:0] unit,
     input logic [1:0] cpnt,
     input logic [1:0] dsc_version_minor,

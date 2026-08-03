@@ -5,7 +5,7 @@
   "candidate_sha256": "fc765032b32c15013196fa87328b8692da41071277c4bdd13ffb941c86132ab8",
   "command": {
     "command": [
-      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/Library/Developer/CommandLineTools/usr/bin/python3",
       "/private/tmp/dsc12a-regression-dashboard/tools/formal_rtl.py",
       "--contract",
       "/private/tmp/dsc12a-regression-dashboard/artifacts/a80e806bc03f18d8ed3285f7fc6c043b0bb487da5921717a8239a344049abab1/locked-contract.json",
@@ -19,19 +19,20 @@
       "180000"
     ],
     "cwd": "/private/tmp/dsc12a-regression-dashboard/artifacts/a80e806bc03f18d8ed3285f7fc6c043b0bb487da5921717a8239a344049abab1",
-    "duration_seconds": 0.275,
-    "output": "{\n  \"ast_frontend\": \"verilator --json-only\",\n  \"candidate\": \"candidate_01.sv\",\n  \"candidate_path\": \"/private/tmp/dsc12a-regression-dashboard/artifacts/a80e806bc03f18d8ed3285f7fc6c043b0bb487da5921717a8239a344049abab1/generated/candidate_01.sv\",\n  \"candidate_sha256\": \"fc765032b32c15013196fa87328b8692da41071277c4bdd13ffb941c86132ab8\",\n  \"constraint_count\": 23,\n  \"contract_id\": \"usingmidpoint\",\n  \"contract_sha256\": \"d987995228c372842f16f104d106c5f8e8c9350554710b20bcd9ea691dc1b884\",\n  \"proof_basis\": \"locked exact spec-linked window equations versus parsed combinational RTL AST\",\n  \"proof_complete\": true,\n  \"proof_strategy\": \"SYMBOLIC_USING_MIDPOINT\",\n  \"schema_version\": 1,\n  \"solver\": \"z3\",\n  \"status\": \"PASS\",\n  \"timeout_ms\": 180000\n}\n",
-    "returncode": 0
+    "duration_seconds": 0.086,
+    "output": "formal_rtl.py requires the z3-solver Python package\n",
+    "returncode": 1
   },
   "constraint_count": 23,
   "contract_id": "usingmidpoint",
   "contract_sha256": "d987995228c372842f16f104d106c5f8e8c9350554710b20bcd9ea691dc1b884",
+  "error": "formal proof command failed",
   "execution_status": "EXECUTED_NOW",
   "proof_basis": "locked exact spec-linked window equations versus parsed combinational RTL AST",
-  "proof_complete": true,
+  "proof_complete": false,
   "proof_strategy": "SYMBOLIC_USING_MIDPOINT",
   "schema_version": 1,
   "solver": "z3",
-  "status": "PASS",
+  "status": "INFRASTRUCTURE_FAILURE",
   "timeout_ms": 180000
 }

@@ -388,9 +388,17 @@ def load_ci_frontier(repo: Path) -> dict[str, Any]:
         if item.get("contract_id")
     }
 
-    ready = strings(summary.get("ready_contracts")) or strings(plan.get("selected_contracts"))
-    selected = strings(plan.get("selected_contracts")) or strings(summary.get("selected_contracts"))
-    new_candidates = strings(plan.get("new_candidates")) or strings(summary.get("new_candidates"))
+    def current_list(key: str, fallback_key: str | None = None) -> list[str]:
+        # An explicitly empty current plan is meaningful: it represents a
+        # no-new-work observation.  Do not replace it with the previous run's
+        # non-empty summary merely because the list is empty.
+        if key in plan:
+            return strings(plan.get(key))
+        return strings(summary.get(fallback_key or key))
+
+    ready = current_list("ready_contracts")
+    selected = current_list("selected_contracts")
+    new_candidates = current_list("new_candidates")
     selected_new_work = strings(summary.get("selected_new_work"))
     blockers_by_id: dict[str, dict[str, Any]] = {}
 
@@ -2289,7 +2297,7 @@ def render_history(dataset: Dataset) -> str:
             f'<td>{html.escape(str(run.get("function_count")))}</td>'
             f'<td>{html.escape(str(run.get("candidates", {}).get("display")))}</td>'
             f'<td>{html.escape(str(run.get("frames", {}).get("display")))}</td>'
-            f'<td>{html.escape(f"{run.get("vectors", 0):,}")}</td>'
+            f'<td>{html.escape(format(run.get("vectors", 0), ","))}</td>'
             f'<td class="small">source {html.escape(str(run.get("source_hash")))}<br>'
             f'spec {html.escape(str(run.get("spec_hash")))}</td></tr>'
         )

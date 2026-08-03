@@ -33,7 +33,7 @@ file is copied into the new layout.
 ## Storage resolution
 
 - selected root: /Users/snow/.svrt-network/dsc12a-regression
-- resolution mode: ENV_ROOT
+- resolution mode: EXPLICIT_ROOT
 - requested root: /Users/snow/.svrt-network/dsc12a-regression
 - SMB fallback reason: none
 

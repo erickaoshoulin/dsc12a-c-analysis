@@ -808,11 +808,13 @@ class Agent:
         whatever happens to be rediscovered in the current pass.
         """
         manifest = read_json(self.root / "library" / "manifest.json", {}) or {}
-        accepted_ids = {
-            str(component.get("contract_id", "")).strip().lower()
+        accepted_components = {
+            str(component.get("contract_id", "")).strip().lower(): component
             for component in manifest.get("components", [])
             if str(component.get("status", "")).upper() == "PASS"
+            and str(component.get("contract_id", "")).strip()
         }
+        accepted_ids = set(accepted_components)
         known_ids = {
             str(contract_id(item)).strip().lower()
             for item in existing
@@ -834,11 +836,50 @@ class Agent:
             if not contract_exact_links(contract):
                 continue
 
-            # Preserve the accepted snapshot and its identity.  build_plan
-            # classifies accepted manifest entries as retained work below,
-            # without rewriting selection metadata or reopening generation.
-            contract["status"] = "LOCKED"
-            loaded.append(contract)
+            # The library contract carries promotion provenance for audit, but
+            # the manifest's content-addressed artifact owns the planning
+            # identity.  Prefer its immutable locked snapshot so cache and
+            # dependency hashes stay equal to the accepted state after a
+            # normal plan.  Fall back to a provenance-stripped library copy
+            # only when an older artifact predates the snapshot file.
+            component = accepted_components[cid]
+            expected_hash = str(component.get("contract_hash", ""))
+            snapshots = [copy.deepcopy(contract)]
+            artifact_raw = str(component.get("artifact_dir", ""))
+            artifact_dir = pathlib.Path(artifact_raw)
+            if artifact_raw and not artifact_dir.is_absolute() and ".." not in artifact_dir.parts:
+                artifact_path = self.root / artifact_dir
+                try:
+                    artifact_path.resolve().relative_to(self.root.resolve())
+                except ValueError:
+                    artifact_path = None
+                if artifact_path is not None:
+                    locked_snapshot = read_json(artifact_path / "locked-contract.json", {}) or {}
+                    if contract_id(locked_snapshot).lower() == cid:
+                        snapshots.insert(0, locked_snapshot)
+            snapshots.extend(
+                [
+                    {
+                        key: value
+                        for key, value in contract.items()
+                        if key not in excluded
+                    }
+                    for excluded in (
+                        {"library_promotion"},
+                        {"library_promotion", "do_not_edit"},
+                    )
+                ]
+            )
+            accepted_snapshot = next(
+                (
+                    snapshot
+                    for snapshot in snapshots
+                    if expected_hash and digest(snapshot) == expected_hash
+                ),
+                snapshots[0],
+            )
+            accepted_snapshot["status"] = "LOCKED"
+            loaded.append(accepted_snapshot)
             known_ids.add(cid)
         return loaded
 
@@ -852,10 +893,13 @@ class Agent:
         effective_locked = self.apply_reviewed_overrides()
         target_contract = safe_identifier(os.environ.get("DSC_CICD_TARGET_CONTRACT", "")).lower()
         refresh_stable = os.environ.get("DSC_CICD_REFRESH_STABLE", "").lower() in {"1", "true", "yes"}
-        if not refresh_stable:
-            effective_locked.extend(
-                self.load_accepted_library_contracts(effective_locked)
-            )
+        # Stable refreshes must execute against the same canonical accepted
+        # snapshots as ordinary plans.  Rebuilding promoted contracts from
+        # current tool facts changes their content hash and can accidentally
+        # verify a rediscovered contract instead of the accepted RTL.
+        effective_locked.extend(
+            self.load_accepted_library_contracts(effective_locked)
+        )
         known = {str(contract_function(item).get("clang_usr")) for item in effective_locked}
         promoted_usrs = self.promoted_contract_usrs(effective_locked)
         source_usrs = {

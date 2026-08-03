@@ -116,6 +116,70 @@ class CicdAgentUnitTests(unittest.TestCase):
         self.assertEqual([item["contract_id"] for item in loaded], ["tool_leaf"])
         self.assertEqual(loaded[0]["status"], "LOCKED")
 
+    def test_accepted_library_reload_uses_manifest_locked_snapshot_hash(self):
+        snapshot = {
+            "contract_id": "tool_leaf",
+            "status": "LOCKED",
+            "function": {"name": "ToolLeaf", "clang_usr": "c:@F@ToolLeaf"},
+            "spec_links": [{"status": "EXACT", "anchor_id": "pdf:section:tool_leaf"}],
+            "obligations": [],
+            "dependencies": {"unresolved": []},
+            "interface": {"ports": [
+                {"name": "value", "direction": "input", "width": 8, "signed": False},
+                {"name": "return_value", "direction": "output", "width": 8, "signed": False},
+            ]},
+            "semantics": {"kind": "pure_expression"},
+            "selection": {"new_work": True, "candidate_rank": 1},
+        }
+        promoted = dict(snapshot)
+        promoted.update({
+            "do_not_edit": True,
+            "library_promotion": {"status": "PASS", "artifact_dir": "artifacts/tool-hash"},
+        })
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            artifact = root / "artifacts" / digest(snapshot)
+            (artifact).mkdir(parents=True)
+            (artifact / "locked-contract.json").write_text(json.dumps(snapshot), encoding="utf-8")
+            (root / "library" / "contracts").mkdir(parents=True)
+            (root / "library" / "contracts" / "tool_leaf.json").write_text(
+                json.dumps(promoted), encoding="utf-8"
+            )
+            (root / "library" / "manifest.json").write_text(json.dumps({
+                "components": [{
+                    "contract_id": "tool_leaf",
+                    "status": "PASS",
+                    "contract_hash": digest(snapshot),
+                    "artifact_dir": str(artifact.relative_to(root)),
+                }],
+            }), encoding="utf-8")
+            agent = Agent(root, "plan")
+            loaded = agent.load_accepted_library_contracts([])
+        self.assertEqual(digest(loaded[0]), digest(snapshot))
+        self.assertNotIn("library_promotion", loaded[0])
+        self.assertNotIn("do_not_edit", loaded[0])
+
+    def test_stable_refresh_reloads_accepted_library_contracts(self):
+        accepted = {
+            "contract_id": "tool_leaf",
+            "status": "LOCKED",
+            "function": {"name": "ToolLeaf", "clang_usr": "c:@F@ToolLeaf"},
+            "spec_links": [{"status": "EXACT", "anchor_id": "pdf:section:tool_leaf"}],
+            "obligations": [],
+            "dependencies": {"unresolved": []},
+            "interface": {"ports": []},
+            "semantics": {"kind": "pure_expression"},
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            agent = Agent(pathlib.Path(directory), "run")
+            agent.input_facts = {"errors": []}
+            with mock.patch.object(agent, "apply_reviewed_overrides", return_value=[]), \
+                    mock.patch.object(agent, "load_accepted_library_contracts", return_value=[accepted]) as reload:
+                with mock.patch.dict(os.environ, {"DSC_CICD_REFRESH_STABLE": "1"}, clear=False):
+                    agent.materialize_new_contracts()
+            reload.assert_called_once()
+        self.assertEqual([item["contract_id"] for item in agent.contracts], ["tool_leaf"])
+
     def test_stable_identity_ignores_library_provenance(self):
         contract = {"contract_id": "tool_leaf", "semantics": {"kind": "pure_expression"}}
         promoted = dict(contract)

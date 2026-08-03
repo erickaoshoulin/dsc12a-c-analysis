@@ -1,7 +1,7 @@
 # Regression summary
 
 Selected run: 20260803T014654Z-scale-2b8c6c5c (PASS)
-Storage: /Users/snow/.svrt-network/dsc12a-regression (ENV_ROOT)
+Storage: /Users/snow/.svrt-network/dsc12a-regression (EXPLICIT_ROOT)
 SMB fallback: none
 
 ## Overview

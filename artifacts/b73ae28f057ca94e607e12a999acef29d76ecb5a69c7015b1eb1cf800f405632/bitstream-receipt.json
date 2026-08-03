@@ -6,7 +6,7 @@
           "<overlay-work>/bittrue_smoke/run_c_baseline.sh"
         ],
         "cwd": "<overlay-work>",
-        "duration_seconds": 2.493,
+        "duration_seconds": 2.484,
         "output": "wrote <overlay-work>/bittrue_smoke/simple_192x108.ppm (62223 bytes)\nrm -f *.o\nrm -f dsc\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dsc_codec.c -o dsc_codec.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dsc_utils.c -o dsc_utils.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c cmd_parse.c -o cmd_parse.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c codec_main.c -o codec_main.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dpx.c -o dpx.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c fifo.c -o fifo.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c hdr_dpx.c -o hdr_dpx.o\nhdr_dpx.c:90:6: warning: variable 'yidx' set but not used [-Wunused-but-set-variable]\n   90 |         int yidx = 0;\n      |             ^\nhdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\nhdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n3 warnings generated.\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c logging.c -o logging.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c multiplex.c -o multiplex.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c psnr.c -o psnr.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c utl.c -o utl.o\ngcc dsc_codec.o dsc_utils.o cmd_parse.o codec_main.o dpx.o fifo.o hdr_dpx.o logging.o multiplex.o psnr.o utl.o -lm -o dsc\nDisplay Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nC baseline OK: 2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797\n",
         "returncode": 0
       },
@@ -27,7 +27,7 @@
           "<overlay-work>/bittrue_smoke/run_c_baseline_10bpc.sh"
         ],
         "cwd": "<overlay-work>",
-        "duration_seconds": 2.353,
+        "duration_seconds": 2.267,
         "output": "wrote <overlay-work>/bittrue_smoke/simple_192x108_10bpc.ppm (124432 bytes)\nrm -f *.o\nrm -f dsc\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dsc_codec.c -o dsc_codec.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dsc_utils.c -o dsc_utils.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c cmd_parse.c -o cmd_parse.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c codec_main.c -o codec_main.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dpx.c -o dpx.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c fifo.c -o fifo.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c hdr_dpx.c -o hdr_dpx.o\nhdr_dpx.c:90:6: warning: variable 'yidx' set but not used [-Wunused-but-set-variable]\n   90 |         int yidx = 0;\n      |             ^\nhdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\nhdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n3 warnings generated.\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c logging.c -o logging.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c multiplex.c -o multiplex.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c psnr.c -o psnr.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c utl.c -o utl.o\ngcc dsc_codec.o dsc_utils.o cmd_parse.o codec_main.o dpx.o fifo.o hdr_dpx.o logging.o multiplex.o psnr.o utl.o -lm -o dsc\nDisplay Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nC 10bpc baseline OK: 696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13\n",
         "returncode": 0
       },
@@ -48,7 +48,7 @@
           "<overlay-work>/bittrue_smoke/run_c_baseline_native420.sh"
         ],
         "cwd": "<overlay-work>",
-        "duration_seconds": 2.206,
+        "duration_seconds": 2.023,
         "output": "wrote <overlay-work>/bittrue_smoke/native_192x108_420.yuv (51840 bytes)\nrm -f *.o\nrm -f dsc\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dsc_codec.c -o dsc_codec.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dsc_utils.c -o dsc_utils.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c cmd_parse.c -o cmd_parse.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c codec_main.c -o codec_main.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dpx.c -o dpx.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c fifo.c -o fifo.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c hdr_dpx.c -o hdr_dpx.o\nhdr_dpx.c:90:6: warning: variable 'yidx' set but not used [-Wunused-but-set-variable]\n   90 |         int yidx = 0;\n      |             ^\nhdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\nhdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n3 warnings generated.\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c logging.c -o logging.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c multiplex.c -o multiplex.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c psnr.c -o psnr.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c utl.c -o utl.o\ngcc dsc_codec.o dsc_utils.o cmd_parse.o codec_main.o dpx.o fifo.o hdr_dpx.o logging.o multiplex.o psnr.o utl.o -lm -o dsc\nDisplay Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nC native420 baseline OK: 0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533\n",
         "returncode": 0
       },
@@ -82,7 +82,7 @@
           "<overlay-work>/overlay-build/cmd_parse.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.169,
+        "duration_seconds": 0.248,
         "output": "",
         "returncode": 0
       },
@@ -100,7 +100,7 @@
           "<overlay-work>/overlay-build/codec_main.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.286,
+        "duration_seconds": 0.314,
         "output": "",
         "returncode": 0
       },
@@ -117,7 +117,7 @@
           "<overlay-work>/overlay-build/dpx.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.144,
+        "duration_seconds": 0.139,
         "output": "",
         "returncode": 0
       },
@@ -134,7 +134,7 @@
           "<overlay-work>/overlay-build/dsc_cicd_main.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.029,
+        "duration_seconds": 0.03,
         "output": "",
         "returncode": 0
       },
@@ -151,7 +151,7 @@
           "<overlay-work>/overlay-build/dsc_cicd_overlay.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.036,
+        "duration_seconds": 0.035,
         "output": "",
         "returncode": 0
       },
@@ -168,7 +168,7 @@
           "<overlay-work>/overlay-build/dsc_codec.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.326,
+        "duration_seconds": 0.336,
         "output": "",
         "returncode": 0
       },
@@ -185,7 +185,7 @@
           "<overlay-work>/overlay-build/dsc_utils.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.15,
+        "duration_seconds": 0.154,
         "output": "",
         "returncode": 0
       },
@@ -202,7 +202,7 @@
           "<overlay-work>/overlay-build/fifo.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.047,
+        "duration_seconds": 0.049,
         "output": "",
         "returncode": 0
       },
@@ -219,7 +219,7 @@
           "<overlay-work>/overlay-build/hdr_dpx.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.204,
+        "duration_seconds": 0.206,
         "output": "<overlay-work>/source/hdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n<overlay-work>/source/hdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n2 warnings generated.\n",
         "returncode": 0
       },
@@ -253,7 +253,7 @@
           "<overlay-work>/overlay-build/multiplex.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.039,
+        "duration_seconds": 0.036,
         "output": "",
         "returncode": 0
       },
@@ -270,7 +270,7 @@
           "<overlay-work>/overlay-build/psnr.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.051,
+        "duration_seconds": 0.049,
         "output": "",
         "returncode": 0
       },
@@ -287,7 +287,7 @@
           "<overlay-work>/overlay-build/utl.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.222,
+        "duration_seconds": 0.251,
         "output": "",
         "returncode": 0
       },
@@ -306,7 +306,7 @@
           "<overlay-work>/overlay-build/rtl_bridge.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.44,
+        "duration_seconds": 0.517,
         "output": "",
         "returncode": 0
       },
@@ -334,7 +334,7 @@
           "<overlay-work>/overlay-build/rtl-object/libverilated.a"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.038,
+        "duration_seconds": 0.057,
         "output": "",
         "returncode": 0
       }
@@ -350,7 +350,7 @@
         "1"
       ],
       "cwd": "<overlay-work>/source",
-      "duration_seconds": 3.406,
+      "duration_seconds": 3.296,
       "output": "python3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vfindmidpoint.cpp Vfindmidpoint___024root__0.cpp Vfindmidpoint___024root__Slow.cpp Vfindmidpoint___024root__0__Slow.cpp Vfindmidpoint__Syms__Slow.cpp > Vfindmidpoint__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o Vfindmidpoint__ALL.o Vfindmidpoint__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nrm Vfindmidpoint__ALL.verilator_deplist.tmp libVfindmidpoint.verilator_deplist.tmp libverilated.verilator_deplist.tmp\n",
       "returncode": 0
     },
@@ -368,8 +368,8 @@
         "--Wno-fatal"
       ],
       "cwd": "<overlay-work>/source",
-      "duration_seconds": 0.075,
-      "output": "%Warning-WIDTHEXPAND: <overlay-work>/candidate.sv:8:67: Operator MODDIV expects 32 or 17 bits on the LHS, but LHS's VARREF 'leftRecon' generates 16 bits.\n                                                                                                                                 : ... note: In instance 'findmidpoint'\n    8 |     assign return_value = ((1 << (cpntBitDepth - 1)) + (leftRecon % (1 << qlevel)));\n      |                                                                   ^\n                      ... For warning description see https://verilator.org/warn/WIDTHEXPAND?v=5.050\n                      ... Use \"/* verilator lint_off WIDTHEXPAND */\" and lint_on around source to disable this message.\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.031 MB sources in 2 modules, into 0.025 MB in 5 C++ files needing 0.000 MB\n- Verilator: Walltime 0.010 s (elab=0.001, cvt=0.005, bld=0.000); cpu 0.009 s on 1 threads; allocated 9.562 MB\n",
+      "duration_seconds": 0.079,
+      "output": "%Warning-WIDTHEXPAND: <overlay-work>/candidate.sv:8:67: Operator MODDIV expects 32 or 17 bits on the LHS, but LHS's VARREF 'leftRecon' generates 16 bits.\n                                                                                                                                 : ... note: In instance 'findmidpoint'\n    8 |     assign return_value = ((1 << (cpntBitDepth - 1)) + (leftRecon % (1 << qlevel)));\n      |                                                                   ^\n                      ... For warning description see https://verilator.org/warn/WIDTHEXPAND?v=5.050\n                      ... Use \"/* verilator lint_off WIDTHEXPAND */\" and lint_on around source to disable this message.\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.031 MB sources in 2 modules, into 0.025 MB in 5 C++ files needing 0.000 MB\n- Verilator: Walltime 0.010 s (elab=0.000, cvt=0.003, bld=0.000); cpu 0.007 s on 1 threads; allocated 9.797 MB\n",
       "returncode": 0
     }
   },
@@ -414,7 +414,7 @@
               "<overlay-work>/bittrue_smoke/simple_8bpc_rgb.cfg"
             ],
             "cwd": "<overlay-work>",
-            "duration_seconds": 0.631,
+            "duration_seconds": 0.399,
             "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
             "returncode": 0
           },
@@ -439,7 +439,7 @@
               "<overlay-work>/bittrue_smoke/simple_10bpc_rgb.cfg"
             ],
             "cwd": "<overlay-work>",
-            "duration_seconds": 0.045,
+            "duration_seconds": 0.041,
             "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
             "returncode": 0
           },
@@ -464,7 +464,7 @@
               "<overlay-work>/bittrue_smoke/native_8bpc_420.cfg"
             ],
             "cwd": "<overlay-work>",
-            "duration_seconds": 0.019,
+            "duration_seconds": 0.025,
             "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
             "returncode": 0
           },
@@ -494,7 +494,7 @@
               "<overlay-work>/bittrue_smoke/simple_8bpc_rgb.cfg"
             ],
             "cwd": "<overlay-work>",
-            "duration_seconds": 0.136,
+            "duration_seconds": 0.14,
             "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
             "returncode": 0
           },
@@ -519,7 +519,7 @@
               "<overlay-work>/bittrue_smoke/simple_10bpc_rgb.cfg"
             ],
             "cwd": "<overlay-work>",
-            "duration_seconds": 0.14,
+            "duration_seconds": 0.147,
             "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
             "returncode": 0
           },
@@ -574,7 +574,7 @@
               "<overlay-work>/bittrue_smoke/simple_8bpc_rgb.cfg"
             ],
             "cwd": "<overlay-work>",
-            "duration_seconds": 0.147,
+            "duration_seconds": 0.145,
             "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
             "returncode": 0
           },
@@ -599,7 +599,7 @@
               "<overlay-work>/bittrue_smoke/simple_10bpc_rgb.cfg"
             ],
             "cwd": "<overlay-work>",
-            "duration_seconds": 0.133,
+            "duration_seconds": 0.142,
             "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
             "returncode": 0
           },
@@ -624,7 +624,7 @@
               "<overlay-work>/bittrue_smoke/native_8bpc_420.cfg"
             ],
             "cwd": "<overlay-work>",
-            "duration_seconds": 0.075,
+            "duration_seconds": 0.078,
             "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
             "returncode": 0
           },
@@ -715,7 +715,7 @@
         "<overlay-work>/source/utl.c"
       ],
       "cwd": "<overlay-work>/source",
-      "duration_seconds": 0.279,
+      "duration_seconds": 0.09,
       "output": "[1/13] Processing file <overlay-work>/source/cmd_parse.c.\n[2/13] Processing file <overlay-work>/source/codec_main.c.\n[3/13] Processing file <overlay-work>/source/dpx.c.\n[4/13] Processing file <overlay-work>/source/dsc_cicd_main.c.\n[5/13] Processing file <overlay-work>/source/dsc_cicd_overlay.c.\n[6/13] Processing file <overlay-work>/source/dsc_codec.c.\n[7/13] Processing file <overlay-work>/source/dsc_utils.c.\n[8/13] Processing file <overlay-work>/source/fifo.c.\n[9/13] Processing file <overlay-work>/source/hdr_dpx.c.\n[10/13] Processing file <overlay-work>/source/logging.c.\n[11/13] Processing file <overlay-work>/source/multiplex.c.\n[12/13] Processing file <overlay-work>/source/psnr.c.\n[13/13] Processing file <overlay-work>/source/utl.c.\n",
       "returncode": 0
     },

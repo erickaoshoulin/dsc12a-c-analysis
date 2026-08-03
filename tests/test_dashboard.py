@@ -345,6 +345,25 @@ class DashboardFixtureTests(unittest.TestCase):
         ok, errors = dashboard.check_site(repo, site)
         self.assertTrue(ok, errors)
 
+    def test_empty_current_plan_does_not_fall_back_to_previous_run_selection(self):
+        temp, repo, regression, _ = self.make_fixture()
+        self.addCleanup(temp.cleanup)
+        dashboard.write_json(repo / "ci" / "plan.json", {
+            "schema_version": 2,
+            "ready_contracts": ["fixture_leaf"],
+            "selected_contracts": [],
+            "new_candidates": [],
+        })
+        dashboard.write_json(repo / "summary.json", {
+            "ready_contracts": ["fixture_leaf"],
+            "selected_contracts": ["fixture_leaf"],
+            "new_candidates": [],
+        })
+        frontier = dashboard.load_ci_frontier(repo)
+        self.assertEqual(frontier["ready_contracts"], ["fixture_leaf"])
+        self.assertEqual(frontier["selected_contracts"], [])
+        self.assertEqual(frontier["counts"]["selected"], 0)
+
     def test_rebuild_is_deterministic_and_links_resolve(self):
         temp, repo, regression, _ = self.make_fixture()
         self.addCleanup(temp.cleanup)

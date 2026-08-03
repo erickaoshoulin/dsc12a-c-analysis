@@ -1,4 +1,4 @@
-module estimatebitsforgroup_candidate_01 (
+module estimatebitsforgroup (
     input logic [1:0] dsc_version_minor,
     input logic native_420,
     input logic [2:0] units_per_group,
