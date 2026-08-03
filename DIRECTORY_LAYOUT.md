@@ -21,6 +21,7 @@ DSC PDF.
       contract/         locked contract (content-addressed reference)
 
     dashboard/          static HTML and normalized view models
+    build/              compact C build and analysis-preflight receipts only
     dashboard/data/ci-frontier.json
                         current tool-selected ready/candidate/blocker frontier
     dashboard/data/traceability.json

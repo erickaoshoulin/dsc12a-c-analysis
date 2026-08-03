@@ -444,6 +444,7 @@ class DashboardFixtureTests(unittest.TestCase):
         self.assertEqual(audit["counts"]["reviewed_count"], 2)
         self.assertEqual(audit["counts"]["accepted_library_link_count"], 1)
         self.assertEqual(audit["library_projection"]["status"], "PASS")
+        self.assertEqual(dataset.overview["traceability"]["library_projection"]["status"], "PASS")
         self.assertEqual(audit["counts"]["untraced_spec_anchor_count"], 1)
         self.assertEqual(audit["counts"]["untraced_production_function_count"], 1)
         self.assertIn("CandidateLeaf", (site / "traceability.html").read_text(encoding="utf-8"))
@@ -453,7 +454,29 @@ class DashboardFixtureTests(unittest.TestCase):
         self.assertIn("Traceability audit", (site / "index.html").read_text(encoding="utf-8"))
         self.assertIn("Accepted library links projected", (site / "traceability.html").read_text(encoding="utf-8"))
         self.assertIn("Untraced production functions", (repo / "reports" / "regression-summary.md").read_text(encoding="utf-8"))
+        self.assertIn("1 / PASS", (repo / "reports" / "regression-summary.md").read_text(encoding="utf-8"))
         self.assertTrue((site / "data" / "traceability.json").is_file())
+        ok, errors = dashboard.check_site(repo, site)
+        self.assertTrue(ok, errors)
+
+    def test_analysis_preflight_blocker_is_visible_in_dashboard_and_report(self):
+        temp, repo, regression, _ = self.make_fixture()
+        self.addCleanup(temp.cleanup)
+        (repo / "build").mkdir()
+        dashboard.write_json(repo / "build" / "analysis-preflight.json", {
+            "schema_version": 1,
+            "status": "INFRASTRUCTURE_FAILURE",
+            "missing_tools": ["frama-c"],
+            "blockers": ["missing tool: frama-c"],
+        })
+        site = repo / "dashboard"
+        dataset, _ = dashboard.build(repo, str(regression), "latest", output=site, mirror_external=False)
+        preflight = dataset.overview["source"]["analysis_preflight"]
+        self.assertEqual(preflight["status"], "INFRASTRUCTURE_FAILURE")
+        self.assertEqual(preflight["missing_tools"], ["frama-c"])
+        summary = (repo / "reports" / "regression-summary.md").read_text(encoding="utf-8")
+        self.assertIn("Analysis-tool preflight: INFRASTRUCTURE_FAILURE", summary)
+        self.assertIn("frama-c", (site / "index.html").read_text(encoding="utf-8"))
         ok, errors = dashboard.check_site(repo, site)
         self.assertTrue(ok, errors)
 

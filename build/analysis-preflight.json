@@ -1,0 +1,56 @@
+{
+  "blockers": [
+    "missing tool: frama-c"
+  ],
+  "do_not_edit": true,
+  "missing_tools": [
+    "frama-c"
+  ],
+  "required_tools": [
+    "python",
+    "clang",
+    "clang++",
+    "frama-c",
+    "llvm-config",
+    "cmake"
+  ],
+  "schema_version": 1,
+  "status": "INFRASTRUCTURE_FAILURE",
+  "tools": {
+    "clang": {
+      "requested": "/usr/bin/clang",
+      "resolved": "/usr/bin/clang",
+      "status": "PASS",
+      "version": "Apple clang version 17.0.0 (clang-1700.6.3.2)"
+    },
+    "clang++": {
+      "requested": "/opt/homebrew/opt/llvm/bin/clang++",
+      "resolved": "/opt/homebrew/Cellar/llvm/22.1.8/bin/clang-22",
+      "status": "PASS",
+      "version": "Homebrew clang version 22.1.8"
+    },
+    "cmake": {
+      "requested": "/opt/homebrew/bin/cmake",
+      "resolved": "/opt/homebrew/Cellar/cmake/4.1.1/bin/cmake",
+      "status": "PASS",
+      "version": "cmake version 4.1.1"
+    },
+    "frama-c": {
+      "requested": null,
+      "resolved": null,
+      "status": "MISSING"
+    },
+    "llvm-config": {
+      "requested": "/opt/homebrew/opt/llvm/bin/llvm-config",
+      "resolved": "/opt/homebrew/Cellar/llvm/22.1.8/bin/llvm-config",
+      "status": "PASS",
+      "version": "22.1.8"
+    },
+    "python": {
+      "requested": "python3",
+      "resolved": "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+      "status": "PASS",
+      "version": "Python 3.14.6"
+    }
+  }
+}

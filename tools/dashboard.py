@@ -528,6 +528,33 @@ def spec_manifest(repo: Path) -> dict[str, Any]:
     return read_json(repo / "spec" / "manifest.json", {}) or {}
 
 
+def analysis_preflight_model(repo: Path) -> dict[str, Any]:
+    """Expose the latest analysis-tool preflight as a compact blocker receipt."""
+    path = repo / "build" / "analysis-preflight.json"
+    payload = read_json(path, {}) or {}
+    if not isinstance(payload, dict) or not payload:
+        return {
+            "available": False,
+            "status": "NOT_CONFIGURED",
+            "receipt": "build/analysis-preflight.json",
+            "missing_tools": [],
+            "blockers": [],
+        }
+    status_value = str(payload.get("status") or "NOT_CONFIGURED").upper()
+    if status_value not in {"PASS", "INFRASTRUCTURE_FAILURE", "NOT_CONFIGURED"}:
+        status_value = "INFRASTRUCTURE_FAILURE"
+    missing = payload.get("missing_tools") if isinstance(payload.get("missing_tools"), list) else []
+    blockers = payload.get("blockers") if isinstance(payload.get("blockers"), list) else []
+    return {
+        "available": True,
+        "status": status_value,
+        "receipt": "build/analysis-preflight.json",
+        "missing_tools": sorted({str(item) for item in missing if item}),
+        "blockers": sorted({str(item) for item in blockers if item}),
+        "tools": payload.get("tools") if isinstance(payload.get("tools"), dict) else {},
+    }
+
+
 def contract_for(
     contracts: dict[str, dict[str, Any]], cid: str, receipt: dict[str, Any]
 ) -> dict[str, Any]:
@@ -1886,6 +1913,7 @@ DSC PDF.
       contract/         locked contract (content-addressed reference)
 
     dashboard/          static HTML and normalized view models
+    build/              compact C build and analysis-preflight receipts only
     dashboard/data/ci-frontier.json
                         current tool-selected ready/candidate/blocker frontier
     dashboard/data/traceability.json
@@ -2122,6 +2150,7 @@ def build_dataset(
     traceability_audit = make_traceability_audit(repo)
     traceability["global_audit"] = traceability_audit
     repository_hygiene = repository_hygiene_model(repo)
+    analysis_preflight = analysis_preflight_model(repo)
     overview = {
         "schema_version": 1,
         "selected_run": selected_summary,
@@ -2130,6 +2159,7 @@ def build_dataset(
             "pdf": spec.get("spec", {}),
             "source": spec.get("source", {}),
             "source_gate": source_gate,
+            "analysis_preflight": analysis_preflight,
             "spec_status": (
                 "AVAILABLE"
                 if Path(str(spec.get("spec", {}).get("path", ""))).is_file()
@@ -2139,7 +2169,7 @@ def build_dataset(
         "ci_frontier": ci_frontier,
         "traceability": {
             key: traceability_audit[key]
-            for key in ("available", "receipt", "receipt_sha256", "counts", "reports")
+            for key in ("available", "receipt", "receipt_sha256", "counts", "reports", "library_projection")
         },
         "repository_hygiene": repository_hygiene,
         "counts": dict(sorted(counts.items())),
@@ -2638,6 +2668,16 @@ def render_index(dataset: Dataset) -> str:
         if overview["source"]["spec_status"] == "AVAILABLE"
         else '<div class="failure"><b>SPEC_UNAVAILABLE</b>: the recorded PDF path is not readable; traceability links remain visible but are not asserted.</div>'
     )
+    preflight = overview["source"].get("analysis_preflight", {})
+    if preflight.get("status") == "INFRASTRUCTURE_FAILURE":
+        missing = ", ".join(preflight.get("missing_tools") or []) or "see receipt"
+        source_notice += (
+            '<div class="failure"><b>ANALYSIS_PREFLIGHT</b>: '
+            f'analysis is blocked by missing tools: {html.escape(missing)}. '
+            f'<a href="../{html.escape(str(preflight.get("receipt", "build/analysis-preflight.json")))}">Open receipt</a>.</div>'
+        )
+    elif preflight.get("status") == "PASS":
+        source_notice += '<div class="panel"><b>ANALYSIS_PREFLIGHT</b>: all required analysis tools are available.</div>'
     body = header(
         "DSC regression dashboard",
         f"run {selected.get('run_id')} · {selected.get('status')} · JSON receipts are authoritative",
@@ -3307,6 +3347,8 @@ def report_summary(dataset: Dataset) -> str:
     lines += [
         f"- PDF: {source['spec_status']}; {md_escape((source.get('pdf') or {}).get('path'))}",
         f"- Source/build gate: {md_escape((source.get('source_gate') or {}).get('status'))}",
+        f"- Analysis-tool preflight: {md_escape((source.get('analysis_preflight') or {}).get('status', 'NOT_CONFIGURED'))}; "
+        f"missing: {md_escape(', '.join((source.get('analysis_preflight') or {}).get('missing_tools', [])) or 'none')}",
         "- PDF and C source remain external/immutable inputs.", "",
         "## Handoff storage", "",
         "Generated candidates, logs, vectors, and simulator build trees are external durable artifacts; only compact receipts, contracts, reports, and accepted RTL belong in this checkout.",

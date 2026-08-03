@@ -96,6 +96,14 @@ smoke outputs, and binary SHA-256 in `build/build-receipt.json`. Verbose
 make/smoke logs use `--log-dir` outside the checkout and appear only as
 `external://build-logs/...` receipt references.
 
+After the C gate, write the compact `build/analysis-preflight.json` receipt
+before clearing any derived facts. Resolve configured tools, PATH tools, and
+the standard Homebrew LLVM paths deterministically; record resolved paths,
+versions, and missing tools. Surface `INFRASTRUCTURE_FAILURE` in the
+dashboard/report and preserve the prior facts when Frama-C or another
+required analysis tool is unavailable. Refresh and check the dashboard/report
+after a successful run and after this preflight failure path.
+
 Any build/tool/path/timeout failure is `INFRASTRUCTURE_FAILURE`. Stop before
 regenerating analysis artifacts and do not invoke an LLM. `run.sh` checks
 Python, Clang/Clang++, Frama-C, `llvm-config`, and CMake after the C build but

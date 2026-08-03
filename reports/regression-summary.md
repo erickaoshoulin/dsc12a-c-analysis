@@ -19,6 +19,7 @@ SMB fallback: none
 
 - PDF: AVAILABLE; /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf
 - Source/build gate: PASS
+- Analysis-tool preflight: INFRASTRUCTURE_FAILURE; missing: frama-c
 - PDF and C source remain external/immutable inputs.
 
 ## Handoff storage
@@ -34,7 +35,7 @@ The repository-wide traceability receipt is authoritative for discovery, but pro
 |---|---:|
 | Generated links | 89 |
 | Exact / proposed / reviewed | 53 / 6 / 30 |
-| Accepted library links / projection | 25 / NOT_CONFIGURED |
+| Accepted library links / projection | 25 / PASS |
 | PDF anchors linked / total | 64 / 358 |
 | Production anchors linked / total | 35 / 88 |
 | Untraced PDF anchors | 150 |

@@ -15,6 +15,18 @@ import discover_inputs  # noqa: E402
 
 
 class AutoDiscoveryTests(unittest.TestCase):
+    def test_input_refresh_preserves_pdf_extraction_for_same_pdf(self):
+        current = {"status": "OK", "spec": {"status": "PASS", "sha256": "same-pdf"}}
+        previous = {
+            "spec": {"status": "PASS", "sha256": "same-pdf"},
+            "pdf_extraction": {"tool": "pdftotext -layout", "page_count": 145},
+        }
+        result = discover_inputs.preserve_pdf_extraction(current, previous)
+        self.assertEqual(result["pdf_extraction"]["page_count"], 145)
+
+        changed = {"status": "OK", "spec": {"status": "PASS", "sha256": "new-pdf"}}
+        self.assertNotIn("pdf_extraction", discover_inputs.preserve_pdf_extraction(changed, previous))
+
     def test_source_discovery_prefers_versioned_model_over_ephemeral_copy(self):
         with tempfile.TemporaryDirectory() as directory:
             root = pathlib.Path(directory)

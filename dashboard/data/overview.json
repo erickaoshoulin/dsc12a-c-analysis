@@ -181,7 +181,7 @@
       "vectors": "tracked vector directories"
     },
     "status": "PASS",
-    "tracked_count": 1113
+    "tracked_count": 1116
   },
   "run_count": 20,
   "schema_version": 1,
@@ -210,6 +210,54 @@
     "vectors": 108011919
   },
   "source": {
+    "analysis_preflight": {
+      "available": true,
+      "blockers": [
+        "missing tool: frama-c"
+      ],
+      "missing_tools": [
+        "frama-c"
+      ],
+      "receipt": "build/analysis-preflight.json",
+      "status": "INFRASTRUCTURE_FAILURE",
+      "tools": {
+        "clang": {
+          "requested": "/usr/bin/clang",
+          "resolved": "/usr/bin/clang",
+          "status": "PASS",
+          "version": "Apple clang version 17.0.0 (clang-1700.6.3.2)"
+        },
+        "clang++": {
+          "requested": "/opt/homebrew/opt/llvm/bin/clang++",
+          "resolved": "/opt/homebrew/Cellar/llvm/22.1.8/bin/clang-22",
+          "status": "PASS",
+          "version": "Homebrew clang version 22.1.8"
+        },
+        "cmake": {
+          "requested": "/opt/homebrew/bin/cmake",
+          "resolved": "/opt/homebrew/Cellar/cmake/4.1.1/bin/cmake",
+          "status": "PASS",
+          "version": "cmake version 4.1.1"
+        },
+        "frama-c": {
+          "requested": null,
+          "resolved": null,
+          "status": "MISSING"
+        },
+        "llvm-config": {
+          "requested": "/opt/homebrew/opt/llvm/bin/llvm-config",
+          "resolved": "/opt/homebrew/Cellar/llvm/22.1.8/bin/llvm-config",
+          "status": "PASS",
+          "version": "22.1.8"
+        },
+        "python": {
+          "requested": "python3",
+          "resolved": "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+          "status": "PASS",
+          "version": "Python 3.14.6"
+        }
+      }
+    },
     "pdf": {
       "gate": {
         "metadata_contains_display_stream_compression": true,
@@ -437,6 +485,19 @@
       "stale_count": 0,
       "untraced_production_function_count": 53,
       "untraced_spec_anchor_count": 150
+    },
+    "library_projection": {
+      "components_eligible": 16,
+      "components_seen": 16,
+      "links_added": 25,
+      "manifest_sha256": "3c42a038a8d3367eb7225a40e102f7150495daab672e2de2ea261446cef301d0",
+      "schema_version": 1,
+      "skipped": {
+        "code_anchor_missing": 1,
+        "component_no_new_links": 6,
+        "duplicate_link": 20
+      },
+      "status": "PASS"
     },
     "receipt": "traceability/traceability.json",
     "receipt_sha256": "91237e3ea6ff3a89c6ee8b1dbd553dbe29a0e18b04e4c27d36be3fcf634bbc3a",

@@ -9,11 +9,29 @@ PYTHON="${PYTHON:-python3}"
 TIMEOUT_SECONDS="${DSC_ANALYSIS_TIMEOUT_SECONDS:-600}"
 BUILD_TIMEOUT_SECONDS="${DSC_BUILD_TIMEOUT_SECONDS:-$TIMEOUT_SECONDS}"
 TOP_N="${DSC_ANALYSIS_TOP_N:-10}"
-CLANGXX="${CLANGXX:-$(command -v clang++ 2>/dev/null || true)}"
-CLANG="${CLANG:-$(command -v clang 2>/dev/null || true)}"
-FRAMA_C="${FRAMA_C:-$(command -v frama-c 2>/dev/null || true)}"
-LLVM_CONFIG="${LLVM_CONFIG:-$(command -v llvm-config 2>/dev/null || true)}"
-CMAKE="${CMAKE:-$(command -v cmake 2>/dev/null || true)}"
+resolve_executable() {
+  local name="$1"
+  shift
+  local candidate
+  for candidate in "$@"; do
+    if [ -x "$candidate" ]; then
+      printf '%s\n' "$candidate"
+      return 0
+    fi
+  done
+  candidate="$(command -v "$name" 2>/dev/null || true)"
+  if [ -n "$candidate" ]; then
+    printf '%s\n' "$candidate"
+    return 0
+  fi
+  return 1
+}
+
+CLANGXX="${CLANGXX:-$(resolve_executable clang++ /opt/homebrew/opt/llvm/bin/clang++ /usr/local/opt/llvm/bin/clang++ || true)}"
+CLANG="${CLANG:-$(resolve_executable clang || true)}"
+FRAMA_C="${FRAMA_C:-$(resolve_executable frama-c || true)}"
+LLVM_CONFIG="${LLVM_CONFIG:-$(resolve_executable llvm-config /opt/homebrew/opt/llvm/bin/llvm-config /usr/local/opt/llvm/bin/llvm-config || true)}"
+CMAKE="${CMAKE:-$(resolve_executable cmake || true)}"
 SYSROOT="${DSC_SYSROOT:-}"
 if [ -z "$SYSROOT" ] && command -v xcrun >/dev/null 2>&1; then
   SYSROOT="$(xcrun --show-sdk-path 2>/dev/null || true)"
@@ -43,6 +61,17 @@ fi
 fail() {
   FAILURE_REASON="$1"
   return 1
+}
+
+refresh_dashboard() {
+  if ! "$PYTHON" "$SCRIPT_DIR/tools/dashboard.py" build --run latest >/dev/null; then
+    echo "INFRASTRUCTURE_FAILURE: dashboard/report refresh failed" >&2
+    return 1
+  fi
+  if ! "$PYTHON" "$SCRIPT_DIR/tools/dashboard.py" check >/dev/null; then
+    echo "INFRASTRUCTURE_FAILURE: dashboard/report check failed" >&2
+    return 1
+  fi
 }
 
 clear_generated_outputs() {
@@ -326,22 +355,17 @@ if ! "$PYTHON" "$SCRIPT_DIR/tools/build_model.py" \
   exit 1
 fi
 
-missing_tools=""
-check_tool() {
-  local label="$1"
-  local tool="$2"
-  if [ -z "$tool" ] || ! command -v "$tool" >/dev/null 2>&1; then
-    missing_tools="${missing_tools}${missing_tools:+, }${label}"
-  fi
-}
-check_tool "Python" "$PYTHON"
-check_tool "Clang" "$CLANG"
-check_tool "Clang++" "$CLANGXX"
-check_tool "Frama-C" "$FRAMA_C"
-check_tool "llvm-config" "$LLVM_CONFIG"
-check_tool "CMake" "$CMAKE"
-if [ -n "$missing_tools" ]; then
-  echo "INFRASTRUCTURE_FAILURE: required analysis tools unavailable; preserving prior generated receipts: $missing_tools" >&2
+PREFLIGHT_RECEIPT="$OUTPUT_DIR/build/analysis-preflight.json"
+if ! "$PYTHON" "$SCRIPT_DIR/tools/analysis_preflight.py" \
+    --output "$PREFLIGHT_RECEIPT" \
+    --python "$PYTHON" \
+    --clang "$CLANG" \
+    --clang++ "$CLANGXX" \
+    --frama-c "$FRAMA_C" \
+    --llvm-config "$LLVM_CONFIG" \
+    --cmake "$CMAKE"; then
+  refresh_dashboard || true
+  echo "INFRASTRUCTURE_FAILURE: required analysis tools unavailable; preserving prior generated receipts; see $PREFLIGHT_RECEIPT" >&2
   exit 1
 fi
 
@@ -443,4 +467,8 @@ if [ "${DSC_RUN_CICD:-0}" = "1" ]; then
     echo "INFRASTRUCTURE_FAILURE: executable generic C-to-RTL CI/CD run failed; see $OUTPUT_DIR/reports/pipeline-summary.md" >&2
     exit 1
   fi
+fi
+
+if ! refresh_dashboard; then
+  exit 1
 fi

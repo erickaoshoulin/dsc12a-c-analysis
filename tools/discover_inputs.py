@@ -326,11 +326,34 @@ def build_manifest(repo_root: pathlib.Path, timeout: int) -> dict[str, Any]:
     return manifest
 
 
+def preserve_pdf_extraction(manifest: dict[str, Any], previous: dict[str, Any]) -> dict[str, Any]:
+    """Keep traceability extractor provenance when input identity is unchanged."""
+    previous_extraction = previous.get("pdf_extraction") if isinstance(previous, dict) else None
+    current_spec = manifest.get("spec") if isinstance(manifest.get("spec"), dict) else {}
+    previous_spec = previous.get("spec") if isinstance(previous.get("spec"), dict) else {}
+    if (
+        isinstance(previous_extraction, dict)
+        and previous_extraction
+        and current_spec.get("status") == "PASS"
+        and current_spec.get("sha256")
+        and previous_spec.get("sha256") == current_spec.get("sha256")
+    ):
+        manifest["pdf_extraction"] = previous_extraction
+    return manifest
+
+
 def main() -> int:
     args = parse_args()
     manifest = build_manifest(args.repo_root.resolve(), args.timeout)
-    args.output.resolve().parent.mkdir(parents=True, exist_ok=True)
-    args.output.resolve().write_text(
+    output = args.output.resolve()
+    previous: dict[str, Any] = {}
+    try:
+        previous = json.loads(output.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError):
+        previous = {}
+    manifest = preserve_pdf_extraction(manifest, previous)
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(
         json.dumps(manifest, ensure_ascii=False, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
     )
