@@ -464,6 +464,47 @@ python3 tools/cicd_agent.py resume
 python3 tools/cicd_agent.py status
 ```
 
+## Human-readable regression and traceability dashboard v1
+
+The dashboard is a deterministic reporting projection over durable JSON
+receipts; it must not launch a new RTL regression, copy large artifacts, or
+replace the receipt source of truth. Keep the following meanings explicit:
+
+```text
+runs/<run-id>/functions/<contract-id>/{rtl,verification,logs}/
+library/accepted/<contract-id>/<contract-hash>/{rtl,verification,contract}/
+dashboard/
+reports/
+```
+
+Index the legacy `rtl/`, `verification/`, `library/rtl/`,
+`library/verification/`, and `library/contracts/` paths in `path-map.json`;
+leave them readable and retain hashes/provenance without copying large files.
+Accepted library entries are immutable by contract hash and expose promotion
+provenance, stale state, and run history. Normalized function views must use
+only `PASS`, `FAIL`, `RUNNING`, `BLOCKED`, `UNPROVED`, or
+`INFRASTRUCTURE_FAILURE`, show numerator/denominator counts, and distinguish
+unit equivalence from frame/bitstream sanity. Preserve candidates, shards,
+vectors, mutations, counterexamples, C_ONLY/SHADOW/RTL_RETURN, cache/model
+telemetry, source/spec/contract/RTL hashes, strategy history, and next action.
+
+Build and validate with:
+
+```sh
+python3 tools/dashboard.py build --run latest
+python3 tools/dashboard.py check
+python3 tools/dashboard.py serve
+python3 tools/regression.py report <run-id>
+```
+
+The static site is self-contained with no CDN dependencies and includes an
+overview, filterable function table, failure/blocker summary, run history and
+comparison, bidirectional Spec -> C -> Contract -> RTL -> Verification ->
+Frame links, and per-function width/interface/promotion detail. Prefer
+`DSC_REGRESSION_ROOT`, otherwise inspect the mounted SMB regression root and
+show a visible repository-local fallback when it is unavailable. A missing
+recorded PDF is `SPEC_UNAVAILABLE`; external PDF/C inputs remain read-only.
+
 For a bounded regression refresh of already promoted leaves, the queue may use
 `DSC_CICD_REFRESH_STABLE=1` together with `DSC_CICD_MAX_NEW` and
 `DSC_CICD_CONTRACT_WORKERS`. This refresh selects the current PASS components
