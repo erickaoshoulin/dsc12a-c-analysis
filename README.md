@@ -85,7 +85,10 @@ permalinks are recorded in `facts/comments.json`.
 `traceability/links.proposed.yaml` contains generated exact/proposed links.
 `traceability/links.reviewed.yaml` is the human-edited review surface and is
 never overwritten. A reviewed link becomes `STALE` if either input hash
-changes. Reports are bidirectional and retain visible unknowns/orphans.
+changes. Reports are bidirectional and retain visible unknowns/orphans. The
+dashboard traceability page also shows repository-wide exact/proposed/reviewed
+counts, the proposal queue, linked-versus-total anchors, and complete orphan
+lists, so raw JSON is not required to find the next review work.
 
 After C facts are assembled, an instrumented temporary copy automatically
 discovers and runs every `bittrue_smoke/run_c_baseline*.sh` profile, retaining a
@@ -346,7 +349,9 @@ local receipts. Open `dashboard/index.html` for the overview, then use
 `dashboard/traceability.html` for details. The overview also shows the current
 tool-selected CI ready frontier, candidate queue, and blockers from
 `ci/plan.json`, `ci/state.json`, and `summary.json`; a green selected regression
-run cannot hide a pending human review. `DIRECTORY_LAYOUT.md` explains the new
+run cannot hide a pending human review or traceability orphan. The traceability
+page keeps `PROPOSED` links and orphan lists visibly unresolved until human
+review. `DIRECTORY_LAYOUT.md` explains the new
 run/library meanings and `path-map.json` keeps legacy paths readable without
 copying large RTL or verification files.
 

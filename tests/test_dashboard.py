@@ -335,6 +335,75 @@ class DashboardFixtureTests(unittest.TestCase):
         self.assertIn("SPEC_UNAVAILABLE", summary)
         self.assertIn("SMB fallback", summary)
 
+    def test_repository_traceability_audit_keeps_proposals_and_orphans_visible(self):
+        temp, repo, regression, _ = self.make_fixture()
+        self.addCleanup(temp.cleanup)
+        dashboard.write_json(repo / "traceability" / "traceability.json", {
+            "schema_version": 1,
+            "counts": {"spec_anchor_count": 4},
+            "links": [
+                {
+                    "link_id": "exact-1",
+                    "status": "EXACT",
+                    "method": "exact_mn_id",
+                    "function": "FixtureLeaf",
+                    "spec_anchor_id": "pdf:model-note:MN_FIXTURE:p7",
+                    "spec_page": 7,
+                    "code_anchor_id": "code:function:c:@F@FixtureLeaf",
+                    "code_file": "fixture.c",
+                    "code_line": 10,
+                    "code_permalink": "https://github.com/example/repo/blob/fixture/fixture.c#L10-L20",
+                    "evidence": "fixture exact evidence",
+                },
+                {
+                    "link_id": "proposed-1",
+                    "status": "PROPOSED",
+                    "method": "normalized_concept_heuristic",
+                    "function": "CandidateLeaf",
+                    "spec_anchor_id": "pdf:section:7",
+                    "spec_page": 7,
+                    "code_anchor_id": "code:function:c:@F@CandidateLeaf",
+                    "code_file": "candidate.c",
+                    "code_line": 12,
+                    "evidence": "heuristic evidence",
+                },
+                {
+                    "link_id": "reviewed-1",
+                    "status": "REVIEWED",
+                    "method": "reviewed_exact_spec",
+                    "function": "ReviewedLeaf",
+                    "spec_anchor_id": "pdf:section:8",
+                    "spec_page": 8,
+                    "code_anchor_id": "code:function:c:@F@ReviewedLeaf",
+                    "code_file": "reviewed.c",
+                    "code_line": 14,
+                    "evidence": "reviewed evidence",
+                },
+            ],
+            "orphans": {
+                "spec_anchor_ids": ["pdf:figure:9"],
+                "production_code_anchor_ids": ["code:function:c:@F@Untraced"],
+            },
+        })
+
+        site = repo / "dashboard"
+        dataset, _ = dashboard.build(repo, str(regression), "latest", output=site, mirror_external=False)
+        audit = dataset.traceability["global_audit"]
+        self.assertTrue(audit["available"])
+        self.assertEqual(audit["counts"]["link_count"], 3)
+        self.assertEqual(audit["counts"]["exact_count"], 1)
+        self.assertEqual(audit["counts"]["proposed_count"], 1)
+        self.assertEqual(audit["counts"]["reviewed_count"], 1)
+        self.assertEqual(audit["counts"]["untraced_spec_anchor_count"], 1)
+        self.assertEqual(audit["counts"]["untraced_production_function_count"], 1)
+        self.assertIn("CandidateLeaf", (site / "traceability.html").read_text(encoding="utf-8"))
+        self.assertIn("pdf:figure:9", (site / "traceability.html").read_text(encoding="utf-8"))
+        self.assertIn("Traceability audit", (site / "index.html").read_text(encoding="utf-8"))
+        self.assertIn("Untraced production functions", (repo / "reports" / "regression-summary.md").read_text(encoding="utf-8"))
+        self.assertTrue((site / "data" / "traceability.json").is_file())
+        ok, errors = dashboard.check_site(repo, site)
+        self.assertTrue(ok, errors)
+
     def test_ci_frontier_blocker_is_visible_in_dashboard_and_report(self):
         temp, repo, regression, _ = self.make_fixture()
         self.addCleanup(temp.cleanup)

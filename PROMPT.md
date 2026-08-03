@@ -148,6 +148,10 @@ Generate:
   `traceability/traceability.json`;
 - `reports/spec-to-code.md`, `reports/code-to-spec.md`,
   `reports/orphans.md`, and `reports/candidates.md`.
+- The dashboard must project the repository-wide receipt into a readable
+  traceability audit: exact/proposed/reviewed/stale counts, proposal queue,
+  linked-versus-total PDF/C anchors, and complete orphan lists. An engineer
+  must not need to open raw JSON to discover unresolved traceability work.
 
 Link precedence is exact `MN_*` match, explicit page/section/table reference,
 normalized function/table identifier, then optional LLM proposal. Exact links
@@ -628,7 +632,8 @@ python3 tools/regression.py report <run-id>
 The static site is self-contained with no CDN dependencies and includes an
 overview, filterable function table, failure/blocker summary, run history and
 comparison, bidirectional Spec -> C -> Contract -> RTL -> Verification ->
-Frame links, and per-function width/interface/promotion detail. Prefer
+Frame links, repository-wide traceability audit/orphan review, and per-function
+width/interface/promotion detail. Prefer
 `DSC_REGRESSION_ROOT`, otherwise inspect the mounted SMB regression root and
 show a visible repository-local fallback when it is unavailable. A missing
 recorded PDF is `SPEC_UNAVAILABLE`; external PDF/C inputs remain read-only.

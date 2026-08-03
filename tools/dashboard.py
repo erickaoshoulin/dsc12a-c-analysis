@@ -1401,6 +1401,133 @@ def make_traceability_index(functions: list[dict[str, Any]]) -> dict[str, Any]:
     }
 
 
+def make_traceability_audit(repo: Path) -> dict[str, Any]:
+    """Expose the repository-wide traceability receipt without promoting links."""
+    receipt_path = repo / "traceability" / "traceability.json"
+    payload = read_json(receipt_path, {}) or {}
+    report_names = {
+        "orphans": "orphans.md",
+        "spec_to_code": "spec-to-code.md",
+        "code_to_spec": "code-to-spec.md",
+    }
+    reports = {
+        key: f"../reports/{name}"
+        for key, name in report_names.items()
+        if (repo / "reports" / name).is_file()
+    }
+    if not isinstance(payload, dict) or not payload:
+        return {
+            "schema_version": 1,
+            "available": False,
+            "receipt": "traceability/traceability.json",
+            "receipt_sha256": None,
+            "counts": {
+                "link_count": 0,
+                "exact_count": 0,
+                "proposed_count": 0,
+                "reviewed_count": 0,
+                "stale_count": 0,
+                "spec_anchor_count": 0,
+                "linked_spec_anchor_count": 0,
+                "production_anchor_count": 0,
+                "linked_production_anchor_count": 0,
+                "untraced_spec_anchor_count": 0,
+                "untraced_production_function_count": 0,
+            },
+            "links": [],
+            "review_queue": [],
+            "orphans": {
+                "spec_anchor_ids": [],
+                "production_code_anchor_ids": [],
+            },
+            "reports": reports,
+        }
+
+    raw_links = payload.get("links") if isinstance(payload.get("links"), list) else []
+    link_fields = (
+        "link_id",
+        "status",
+        "method",
+        "function",
+        "clang_usr",
+        "spec_anchor_id",
+        "spec_page",
+        "spec_section",
+        "code_anchor_id",
+        "code_file",
+        "code_line",
+        "code_permalink",
+        "evidence",
+        "review_note",
+    )
+    links: list[dict[str, Any]] = []
+    for raw in raw_links:
+        if not isinstance(raw, dict):
+            continue
+        links.append({key: raw[key] for key in link_fields if key in raw})
+    links.sort(
+        key=lambda value: (
+            str(value.get("status", "")),
+            str(value.get("spec_anchor_id", "")),
+            str(value.get("function", "")),
+            str(value.get("link_id", "")),
+        )
+    )
+    status_counts = Counter(str(link.get("status", "UNRESOLVED")) for link in links)
+    orphan_payload = payload.get("orphans") if isinstance(payload.get("orphans"), dict) else {}
+    spec_orphans = sorted(
+        str(value)
+        for value in orphan_payload.get("spec_anchor_ids", [])
+        if value is not None
+    )
+    code_orphans = sorted(
+        str(value)
+        for value in orphan_payload.get("production_code_anchor_ids", [])
+        if value is not None
+    )
+    linked_spec = {
+        str(link.get("spec_anchor_id"))
+        for link in links
+        if link.get("spec_anchor_id")
+    }
+    linked_code = {
+        str(link.get("code_anchor_id"))
+        for link in links
+        if link.get("code_anchor_id")
+    }
+    raw_counts = payload.get("counts") if isinstance(payload.get("counts"), dict) else {}
+    counts = {
+        "link_count": len(links),
+        "exact_count": status_counts.get("EXACT", 0),
+        "proposed_count": status_counts.get("PROPOSED", 0),
+        "reviewed_count": status_counts.get("REVIEWED", 0),
+        "stale_count": status_counts.get("STALE", 0),
+        "spec_anchor_count": as_int(raw_counts.get("spec_anchor_count"), 0) or 0,
+        "linked_spec_anchor_count": len(linked_spec),
+        "production_anchor_count": len(linked_code) + len(code_orphans),
+        "linked_production_anchor_count": len(linked_code),
+        "untraced_spec_anchor_count": len(spec_orphans),
+        "untraced_production_function_count": len(code_orphans),
+    }
+    review_queue = [link for link in links if link.get("status") == "PROPOSED"]
+    return {
+        "schema_version": 1,
+        "available": True,
+        "receipt": "traceability/traceability.json",
+        "receipt_sha256": file_hash(receipt_path),
+        "source_hashes_sha256": payload.get("source_hashes_sha256"),
+        "spec_sha256": payload.get("spec_sha256"),
+        "counts": counts,
+        "links": links,
+        "review_queue": review_queue,
+        "orphans": {
+            "spec_anchor_ids": spec_orphans,
+            "production_code_anchor_ids": code_orphans,
+        },
+        "reports": reports,
+    }
+
+
 def make_library_index(
     repo: Path,
     manifest: dict[str, Any],
@@ -1680,6 +1807,8 @@ DSC PDF.
     dashboard/          static HTML and normalized view models
     dashboard/data/ci-frontier.json
                         current tool-selected ready/candidate/blocker frontier
+    dashboard/data/traceability.json
+                        repository-wide exact/proposed/reviewed/orphan audit
     reports/            readable regression-summary.md and per-function reports
     library/index.json  accepted-library index with stale/provenance checks
     path-map.json       legacy-to-new path mapping
@@ -1908,6 +2037,9 @@ def build_dataset(
         functions[0].get("source_gate") if functions else {}
     )
     ci_frontier = load_ci_frontier(repo)
+    traceability = make_traceability_index(functions)
+    traceability_audit = make_traceability_audit(repo)
+    traceability["global_audit"] = traceability_audit
     overview = {
         "schema_version": 1,
         "selected_run": selected_summary,
@@ -1923,6 +2055,10 @@ def build_dataset(
             ),
         },
         "ci_frontier": ci_frontier,
+        "traceability": {
+            key: traceability_audit[key]
+            for key in ("available", "receipt", "receipt_sha256", "counts", "reports")
+        },
         "counts": dict(sorted(counts.items())),
         "progress": {
             "functions": {
@@ -1948,7 +2084,7 @@ def build_dataset(
         ci_frontier=ci_frontier,
         functions=functions,
         runs=run_summaries,
-        traceability=make_traceability_index(functions),
+        traceability=traceability,
         library_index=make_library_index(repo, manifest, functions, resolution),
         path_map=make_path_map(repo, resolution.root, manifest, functions),
         docs=directory_layout_doc(resolution),
@@ -2071,7 +2207,7 @@ def report_function(item: dict[str, Any]) -> str:
 
 CSS = """
 :root{color-scheme:light;--ink:#17212b;--muted:#64748b;--line:#d8e0e8;--panel:#fff;--bg:#f5f7fa;--blue:#2563eb;--green:#16803c;--red:#b42318;--amber:#a15c00;--purple:#6941c6}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}.wrap{max-width:1500px;margin:0 auto;padding:28px 32px}header{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;margin-bottom:24px}h1{font-size:30px;line-height:1.15;margin:0 0 6px}h2{font-size:20px;margin:28px 0 12px}h3{font-size:16px;margin:22px 0 10px}.muted,.small{color:var(--muted);font-size:12px}.nav{display:flex;flex-wrap:wrap;gap:10px}.nav a,.button{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:7px 10px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}.card,.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:0 1px 2px #00000008}.card strong{font-size:26px;display:block}.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}@media(max-width:900px){.wrap{padding:20px 16px}.grid2{grid-template-columns:1fr}header{display:block}.nav{margin-top:14px}}table{border-collapse:collapse;width:100%;background:var(--panel)}th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}th{position:sticky;top:0;background:#eef3f8;z-index:1;cursor:pointer;font-size:12px}tr:hover td{background:#f8fbff}.table-scroll{overflow:auto;border:1px solid var(--line);border-radius:10px}.pill{display:inline-block;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:700;white-space:nowrap}.PASS{background:#dcfce7;color:#166534}.FAIL,.INFRASTRUCTURE_FAILURE{background:#fee4e2;color:#9b1c1c}.BLOCKED{background:#fff0c2;color:#8a4b00}.RUNNING,.NEW,.READY{background:#dbeafe;color:#1e40af}.UNPROVED{background:#eee9fe;color:#5b35a2}.bar{height:10px;border-radius:999px;background:#e8edf2;overflow:hidden;min-width:120px}.bar>i{height:100%;display:block;background:var(--blue)}.bar.green>i{background:var(--green)}.statline{display:flex;justify-content:space-between;gap:12px;margin:8px 0}.failure{border-left:4px solid var(--red);padding:10px 12px;background:#fff5f4;margin:8px 0}.notice{border-left:4px solid var(--amber);padding:10px 12px;background:#fff9e8;margin:8px 0}.chain{display:grid;grid-template-columns:repeat(6,minmax(100px,1fr));gap:8px}@media(max-width:900px){.chain{grid-template-columns:repeat(2,1fr)}}.chain div{border:1px solid var(--line);border-radius:8px;padding:10px;background:#fbfcfe}.chain b{display:block;margin-bottom:4px}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;word-break:break-word}.nowrap{white-space:nowrap}input,select{padding:8px;border:1px solid var(--line);border-radius:7px;background:#fff}.filters{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}.wrap{max-width:1500px;margin:0 auto;padding:28px 32px}header{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;margin-bottom:24px}h1{font-size:30px;line-height:1.15;margin:0 0 6px}h2{font-size:20px;margin:28px 0 12px}h3{font-size:16px;margin:22px 0 10px}.muted,.small{color:var(--muted);font-size:12px}.nav{display:flex;flex-wrap:wrap;gap:10px}.nav a,.button{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:7px 10px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}.card,.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:0 1px 2px #00000008}.card strong{font-size:26px;display:block}.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}@media(max-width:900px){.wrap{padding:20px 16px}.grid2{grid-template-columns:1fr}header{display:block}.nav{margin-top:14px}}table{border-collapse:collapse;width:100%;background:var(--panel)}th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}th{position:sticky;top:0;background:#eef3f8;z-index:1;cursor:pointer;font-size:12px}tr:hover td{background:#f8fbff}.table-scroll{overflow:auto;border:1px solid var(--line);border-radius:10px}.pill{display:inline-block;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:700;white-space:nowrap}.PASS{background:#dcfce7;color:#166534}.FAIL,.INFRASTRUCTURE_FAILURE,.STALE{background:#fee4e2;color:#9b1c1c}.BLOCKED,.PROPOSED{background:#fff0c2;color:#8a4b00}.REVIEWED{background:#dcfce7;color:#166534}.RUNNING,.NEW,.READY{background:#dbeafe;color:#1e40af}.UNPROVED{background:#eee9fe;color:#5b35a2}.bar{height:10px;border-radius:999px;background:#e8edf2;overflow:hidden;min-width:120px}.bar>i{height:100%;display:block;background:var(--blue)}.bar.green>i{background:var(--green)}.statline{display:flex;justify-content:space-between;gap:12px;margin:8px 0}.failure{border-left:4px solid var(--red);padding:10px 12px;background:#fff5f4;margin:8px 0}.notice{border-left:4px solid var(--amber);padding:10px 12px;background:#fff9e8;margin:8px 0}.chain{display:grid;grid-template-columns:repeat(6,minmax(100px,1fr));gap:8px}@media(max-width:900px){.chain{grid-template-columns:repeat(2,1fr)}}.chain div{border:1px solid var(--line);border-radius:8px;padding:10px;background:#fbfcfe}.chain b{display:block;margin-bottom:4px}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;word-break:break-word}.nowrap{white-space:nowrap}input,select{padding:8px;border:1px solid var(--line);border-radius:7px;background:#fff}.filters{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
 """
 
 
@@ -2169,6 +2305,135 @@ def render_ci_frontier(frontier: dict[str, Any]) -> str:
     return body + "</section>"
 
 
+def render_traceability_summary(audit: dict[str, Any], *, link_href: str) -> str:
+    counts = audit.get("counts", {}) if isinstance(audit, dict) else {}
+    if not audit.get("available"):
+        return (
+            '<section><h2>Traceability audit</h2><div class="panel">'
+            'No repository-wide traceability receipt is available; the selected '
+            'library projection remains below.</div></section>'
+        )
+    cards = [
+        ("Generated links", counts.get("link_count", 0)),
+        ("Exact", counts.get("exact_count", 0)),
+        ("Proposed", counts.get("proposed_count", 0)),
+        ("Reviewed", counts.get("reviewed_count", 0)),
+        ("PDF orphans", counts.get("untraced_spec_anchor_count", 0)),
+        ("C function orphans", counts.get("untraced_production_function_count", 0)),
+    ]
+    card_html = "".join(
+        f'<div class="card"><div class="muted">{html.escape(str(label))}</div>'
+        f'<strong>{html.escape(str(value))}</strong></div>'
+        for label, value in cards
+    )
+    return (
+        '<section><h2>Traceability audit</h2>'
+        f'<section class="cards">{card_html}</section>'
+        '<div class="panel"><p>Repository-wide links are tool-generated. '
+        'PROPOSED links and orphan lists remain human-review work; they are not '
+        'promoted by the dashboard.</p>'
+        f'<a class="button" href="{html.escape(link_href)}">Open complete traceability audit</a>'
+        '</div></section>'
+    )
+
+
+def render_repository_traceability_audit(audit: dict[str, Any]) -> str:
+    if not audit.get("available"):
+        return (
+            '<section><h2>Repository-wide audit</h2><div class="panel">'
+            'The generated traceability/traceability.json receipt is unavailable. '
+            'Only the selected library links can be displayed.</div></section>'
+        )
+    counts = audit.get("counts", {})
+    body = (
+        '<section><h2>Repository-wide audit</h2>'
+        '<div class="panel"><div class="statline"><span>Receipt</span>'
+        f'<span class="code">{html.escape(str(audit.get("receipt")))}</span></div>'
+        f'<div class="statline"><span>Production anchors linked</span><b>'
+        f'{html.escape(str(counts.get("linked_production_anchor_count", 0)))} / '
+        f'{html.escape(str(counts.get("production_anchor_count", 0)))}</b></div>'
+        f'<div class="statline"><span>PDF anchors linked</span><b>'
+        f'{html.escape(str(counts.get("linked_spec_anchor_count", 0)))} / '
+        f'{html.escape(str(counts.get("spec_anchor_count", 0)))}</b></div>'
+        '<p class="small">Exact links are supported by direct evidence. Proposed '
+        'links are review candidates only; orphaned anchors remain unresolved.</p>'
+    )
+    report_links = audit.get("reports", {}) if isinstance(audit.get("reports"), dict) else {}
+    if report_links:
+        body += '<p>Readable reports: ' + ", ".join(
+            f'<a href="{html.escape(str(href))}">{html.escape(str(label))}</a>'
+            for label, href in sorted(report_links.items())
+        ) + "</p>"
+    body += "</div>"
+
+    queue = audit.get("review_queue", []) if isinstance(audit.get("review_queue"), list) else []
+    body += '<h3>Proposed links awaiting human review</h3>'
+    if queue:
+        body += (
+            '<div class="table-scroll"><table><thead><tr><th>Spec anchor</th>'
+            '<th>Function</th><th>Method</th><th>Evidence</th><th>C source</th>'
+            '</tr></thead><tbody>'
+        )
+        for link in queue:
+            code_href = link.get("code_permalink")
+            code_label = f'{link.get("code_file", "—")}:{link.get("code_line", "—")}'
+            code = (
+                f'<a href="{html.escape(str(code_href))}">{html.escape(code_label)}</a>'
+                if code_href else html.escape(code_label)
+            )
+            body += (
+                f'<tr><td class="code">{html.escape(str(link.get("spec_anchor_id", "—")))}</td>'
+                f'<td>{html.escape(str(link.get("function", "—")))}</td>'
+                f'<td>{html_status(link.get("status"))}<br>{html.escape(str(link.get("method", "—")))}</td>'
+                f'<td>{html.escape(str(link.get("evidence", "—")))}</td><td>{code}</td></tr>'
+            )
+        body += '</tbody></table></div>'
+    else:
+        body += '<div class="panel">No proposed link is awaiting human review.</div>'
+
+    all_links = audit.get("links", []) if isinstance(audit.get("links"), list) else []
+    body += (
+        f'<details class="panel"><summary>All repository-wide generated links '
+        f'({html.escape(str(len(all_links)))})</summary>'
+        '<div class="table-scroll"><table><thead><tr><th>Status</th><th>Spec anchor</th>'
+        '<th>Function</th><th>Method</th><th>C source</th></tr></thead><tbody>'
+    )
+    for link in all_links:
+        code_href = link.get("code_permalink")
+        code_label = f'{link.get("code_file", "—")}:{link.get("code_line", "—")}'
+        code = (
+            f'<a href="{html.escape(str(code_href))}">{html.escape(code_label)}</a>'
+            if code_href else html.escape(code_label)
+        )
+        body += (
+            f'<tr><td>{html_status(link.get("status"))}</td>'
+            f'<td class="code">{html.escape(str(link.get("spec_anchor_id", "—")))}</td>'
+            f'<td>{html.escape(str(link.get("function", "—")))}</td>'
+            f'<td>{html.escape(str(link.get("method", "—")))}</td><td>{code}</td></tr>'
+        )
+    body += '</tbody></table></div></details>'
+
+    orphans = audit.get("orphans", {}) if isinstance(audit.get("orphans"), dict) else {}
+    spec_orphans = orphans.get("spec_anchor_ids", []) if isinstance(orphans.get("spec_anchor_ids"), list) else []
+    code_orphans = orphans.get("production_code_anchor_ids", []) if isinstance(orphans.get("production_code_anchor_ids"), list) else []
+
+    def orphan_details(title: str, values: list[Any]) -> str:
+        items = "".join(f'<li class="code">{html.escape(str(value))}</li>' for value in values)
+        return (
+            f'<details class="panel"><summary>{html.escape(title)} '
+            f'({html.escape(str(len(values)))})</summary><ul>{items}</ul></details>'
+        )
+
+    body += (
+        '<h3>Unresolved traceability queue</h3>'
+        '<div class="grid2">'
+        + orphan_details("PDF anchors without a code link", spec_orphans)
+        + orphan_details("Production functions without a spec link", code_orphans)
+        + '</div></section>'
+    )
+    return body
+
+
 def render_index(dataset: Dataset) -> str:
     overview = dataset.overview
     storage = dataset.resolution
@@ -2225,6 +2490,7 @@ def render_index(dataset: Dataset) -> str:
         + progress_bars
         + "</div></section>"
     )
+    body += render_traceability_summary(overview.get("traceability", {}), link_href="traceability.html")
     body += render_ci_frontier(overview["ci_frontier"])
     body += (
         '<h2>Function regression table</h2><div class="filters">'
@@ -2350,8 +2616,11 @@ def render_history(dataset: Dataset) -> str:
 def render_traceability(dataset: Dataset) -> str:
     body = header(
         "Traceability index",
-        "Bidirectional Spec -> C -> Contract -> RTL -> Verification links",
+        "Repository-wide PDF <-> C audit plus accepted Spec -> C -> Contract -> RTL -> Verification links",
         [("Overview", "index.html"), ("History", "history.html")],
+    )
+    body += render_repository_traceability_audit(
+        dataset.traceability.get("global_audit", {})
     )
     body += (
         '<h2>Spec -> code / functions</h2><div class="table-scroll"><table><thead>'
@@ -2498,6 +2767,7 @@ def check_site(repo: Path, output: Path | None = None) -> tuple[bool, list[str]]
         site / "history.html",
         site / "traceability.html",
         site / "manifest.json",
+        site / "data" / "traceability.json",
         repo / "reports" / "regression-summary.md",
         repo / "library" / "index.json",
         repo / "path-map.json",
@@ -2522,6 +2792,25 @@ def check_site(repo: Path, output: Path | None = None) -> tuple[bool, list[str]]
         for item in frontier.get("blockers", []) if isinstance(frontier.get("blockers"), list) else []:
             if item.get("status") != "BLOCKED":
                 errors.append(f"invalid CI blocker status: {item.get('contract_id')}")
+    traceability = read_json(site / "data" / "traceability.json", {}) or {}
+    if not isinstance(traceability, dict):
+        errors.append("invalid traceability view model")
+    else:
+        audit = traceability.get("global_audit", {})
+        if not isinstance(audit, dict):
+            errors.append("invalid repository-wide traceability audit")
+        elif audit.get("available"):
+            counts = audit.get("counts", {})
+            for key in (
+                "link_count",
+                "exact_count",
+                "proposed_count",
+                "reviewed_count",
+                "untraced_spec_anchor_count",
+                "untraced_production_function_count",
+            ):
+                if not isinstance(counts.get(key), int) or counts.get(key) < 0:
+                    errors.append(f"invalid traceability count: {key}")
     if site.is_dir():
         for path in relative_files(site):
             if path.suffix != ".html":
@@ -2813,7 +3102,35 @@ def report_summary(dataset: Dataset) -> str:
         f"- PDF: {source['spec_status']}; {md_escape((source.get('pdf') or {}).get('path'))}",
         f"- Source/build gate: {md_escape((source.get('source_gate') or {}).get('status'))}",
         "- PDF and C source remain external/immutable inputs.", "",
-        "## Migration frontier", "",
+        "## Traceability audit", "",
+    ]
+    traceability = overview.get("traceability", {})
+    trace_counts = traceability.get("counts", {}) if isinstance(traceability, dict) else {}
+    if traceability.get("available"):
+        lines += [
+            "The repository-wide traceability receipt is authoritative for discovery, "
+            "but proposed links and orphaned anchors remain human-review work.", "",
+            "| Measure | Result |", "|---|---:|",
+            f"| Generated links | {trace_counts.get('link_count', 0)} |",
+            f"| Exact / proposed / reviewed | {trace_counts.get('exact_count', 0)} / {trace_counts.get('proposed_count', 0)} / {trace_counts.get('reviewed_count', 0)} |",
+            f"| PDF anchors linked / total | {trace_counts.get('linked_spec_anchor_count', 0)} / {trace_counts.get('spec_anchor_count', 0)} |",
+            f"| Production anchors linked / total | {trace_counts.get('linked_production_anchor_count', 0)} / {trace_counts.get('production_anchor_count', 0)} |",
+            f"| Untraced PDF anchors | {trace_counts.get('untraced_spec_anchor_count', 0)} |",
+            f"| Untraced production functions | {trace_counts.get('untraced_production_function_count', 0)} |",
+        ]
+        if traceability.get("reports"):
+            lines.append(
+                "Readable audit: "
+                + ", ".join(
+                    f"[{label}]({href})"
+                    for label, href in sorted(traceability["reports"].items())
+                )
+                + "."
+            )
+    else:
+        lines.append("No repository-wide traceability receipt was available.")
+    lines += [
+        "", "## Migration frontier", "",
         f"- Ready contracts: {md_escape(', '.join(overview['ci_frontier'].get('ready_contracts', [])) or 'none')}",
         f"- New candidates: {md_escape(', '.join(overview['ci_frontier'].get('new_candidates', [])) or 'none')}",
         f"- Generator invocations: {overview['ci_frontier'].get('generator_invocations', 0)}; model calls: {overview['ci_frontier'].get('model_calls', 0)}",

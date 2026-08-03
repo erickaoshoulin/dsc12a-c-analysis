@@ -408,5 +408,28 @@
     "requested": "/Users/snow/.svrt-network/dsc12a-regression",
     "root": "/Users/snow/.svrt-network/dsc12a-regression",
     "share": null
+  },
+  "traceability": {
+    "available": true,
+    "counts": {
+      "exact_count": 53,
+      "link_count": 64,
+      "linked_production_anchor_count": 29,
+      "linked_spec_anchor_count": 58,
+      "production_anchor_count": 88,
+      "proposed_count": 6,
+      "reviewed_count": 5,
+      "spec_anchor_count": 358,
+      "stale_count": 0,
+      "untraced_production_function_count": 59,
+      "untraced_spec_anchor_count": 156
+    },
+    "receipt": "traceability/traceability.json",
+    "receipt_sha256": "a4e28d16144c23f9d4b581ba48eb4c9c5cb6850246745d2099b18da9da76fc9b",
+    "reports": {
+      "code_to_spec": "../reports/code-to-spec.md",
+      "orphans": "../reports/orphans.md",
+      "spec_to_code": "../reports/spec-to-code.md"
+    }
   }
 }

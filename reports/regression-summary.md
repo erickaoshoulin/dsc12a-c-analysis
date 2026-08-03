@@ -20,6 +20,20 @@ SMB fallback: none
 - Source/build gate: PASS
 - PDF and C source remain external/immutable inputs.
 
+## Traceability audit
+
+The repository-wide traceability receipt is authoritative for discovery, but proposed links and orphaned anchors remain human-review work.
+
+| Measure | Result |
+|---|---:|
+| Generated links | 64 |
+| Exact / proposed / reviewed | 53 / 6 / 5 |
+| PDF anchors linked / total | 58 / 358 |
+| Production anchors linked / total | 29 / 88 |
+| Untraced PDF anchors | 156 |
+| Untraced production functions | 59 |
+Readable audit: [code_to_spec](../reports/code-to-spec.md), [orphans](../reports/orphans.md), [spec_to_code](../reports/spec-to-code.md).
+
 ## Migration frontier
 
 - Ready contracts: ceil_log2, escapecodesize, estimatebitsforgroup, findmidpoint, findresidualsize, getqpadjpredsize, isflatnessinfosent, isorigflathindex, mapqptoqlevel, maxresidualsize, predictsize, qp2qlevel, quantizeresidual, samplepredict, samptolinebuf, usingmidpoint
