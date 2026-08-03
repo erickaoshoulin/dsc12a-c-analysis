@@ -26,12 +26,13 @@ The repository-wide traceability receipt is authoritative for discovery, but pro
 
 | Measure | Result |
 |---|---:|
-| Generated links | 64 |
-| Exact / proposed / reviewed | 53 / 6 / 5 |
-| PDF anchors linked / total | 58 / 358 |
-| Production anchors linked / total | 29 / 88 |
-| Untraced PDF anchors | 156 |
-| Untraced production functions | 59 |
+| Generated links | 89 |
+| Exact / proposed / reviewed | 53 / 6 / 30 |
+| Accepted library links / projection | 25 / NOT_CONFIGURED |
+| PDF anchors linked / total | 64 / 358 |
+| Production anchors linked / total | 35 / 88 |
+| Untraced PDF anchors | 150 |
+| Untraced production functions | 53 |
 Readable audit: [code_to_spec](../reports/code-to-spec.md), [orphan_triage](../reports/orphan-triage.md), [orphans](../reports/orphans.md), [spec_to_code](../reports/spec-to-code.md).
 
 ## Migration frontier

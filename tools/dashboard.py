@@ -1427,6 +1427,7 @@ def make_traceability_audit(repo: Path) -> dict[str, Any]:
                 "exact_count": 0,
                 "proposed_count": 0,
                 "reviewed_count": 0,
+                "accepted_library_link_count": 0,
                 "stale_count": 0,
                 "spec_anchor_count": 0,
                 "linked_spec_anchor_count": 0,
@@ -1451,6 +1452,15 @@ def make_traceability_audit(repo: Path) -> dict[str, Any]:
                 },
                 "production_code": [],
                 "spec": [],
+            },
+            "library_projection": {
+                "schema_version": 1,
+                "status": "NOT_CONFIGURED",
+                "manifest_sha256": None,
+                "components_seen": 0,
+                "components_eligible": 0,
+                "links_added": 0,
+                "skipped": {},
             },
             "reports": reports,
         }
@@ -1508,11 +1518,15 @@ def make_traceability_audit(repo: Path) -> dict[str, Any]:
         if link.get("code_anchor_id")
     }
     raw_counts = payload.get("counts") if isinstance(payload.get("counts"), dict) else {}
+    accepted_library_links = sum(
+        1 for link in links if link.get("method") == "accepted_library_exact_spec"
+    )
     counts = {
         "link_count": len(links),
         "exact_count": status_counts.get("EXACT", 0),
         "proposed_count": status_counts.get("PROPOSED", 0),
         "reviewed_count": status_counts.get("REVIEWED", 0),
+        "accepted_library_link_count": accepted_library_links,
         "stale_count": status_counts.get("STALE", 0),
         "spec_anchor_count": as_int(raw_counts.get("spec_anchor_count"), 0) or 0,
         "linked_spec_anchor_count": len(linked_spec),
@@ -1535,6 +1549,18 @@ def make_traceability_audit(repo: Path) -> dict[str, Any]:
             "production_code": [],
             "spec": [],
         }
+    raw_projection = payload.get("library_projection")
+    if not isinstance(raw_projection, dict):
+        raw_projection = {}
+    library_projection = {
+        "schema_version": raw_projection.get("schema_version", 1),
+        "status": raw_projection.get("status", "NOT_CONFIGURED"),
+        "manifest_sha256": raw_projection.get("manifest_sha256"),
+        "components_seen": as_int(raw_projection.get("components_seen"), 0) or 0,
+        "components_eligible": as_int(raw_projection.get("components_eligible"), 0) or 0,
+        "links_added": as_int(raw_projection.get("links_added"), 0) or 0,
+        "skipped": raw_projection.get("skipped") if isinstance(raw_projection.get("skipped"), dict) else {},
+    }
     return {
         "schema_version": 1,
         "available": True,
@@ -1550,6 +1576,7 @@ def make_traceability_audit(repo: Path) -> dict[str, Any]:
             "production_code_anchor_ids": code_orphans,
         },
         "orphan_triage": orphan_triage,
+        "library_projection": library_projection,
         "reports": reports,
     }
 
@@ -2344,6 +2371,7 @@ def render_traceability_summary(audit: dict[str, Any], *, link_href: str) -> str
         ("Exact", counts.get("exact_count", 0)),
         ("Proposed", counts.get("proposed_count", 0)),
         ("Reviewed", counts.get("reviewed_count", 0)),
+        ("Accepted library links", counts.get("accepted_library_link_count", 0)),
         ("PDF orphans", counts.get("untraced_spec_anchor_count", 0)),
         ("C function orphans", counts.get("untraced_production_function_count", 0)),
     ]
@@ -2352,12 +2380,17 @@ def render_traceability_summary(audit: dict[str, Any], *, link_href: str) -> str
         f'<strong>{html.escape(str(value))}</strong></div>'
         for label, value in cards
     )
+    projection = audit.get("library_projection", {}) if isinstance(audit.get("library_projection"), dict) else {}
+    projection_status = projection.get("status", "NOT_CONFIGURED")
+    projection_links = projection.get("links_added", counts.get("accepted_library_link_count", 0))
     return (
         '<section><h2>Traceability audit</h2>'
         f'<section class="cards">{card_html}</section>'
         '<div class="panel"><p>Repository-wide links are tool-generated. '
         'PROPOSED links and orphan lists remain human-review work; they are not '
         'promoted by the dashboard.</p>'
+        f'<p class="small">Accepted library projection: {html.escape(str(projection_status))}; '
+        f'{html.escape(str(projection_links))} links added from hash-checked PASS contracts.</p>'
         f'<a class="button" href="{html.escape(link_href)}">Open complete traceability audit</a>'
         '</div></section>'
     )
@@ -2371,6 +2404,7 @@ def render_repository_traceability_audit(audit: dict[str, Any]) -> str:
             'Only the selected library links can be displayed.</div></section>'
         )
     counts = audit.get("counts", {})
+    projection = audit.get("library_projection", {}) if isinstance(audit.get("library_projection"), dict) else {}
     body = (
         '<section><h2>Repository-wide audit</h2>'
         '<div class="panel"><div class="statline"><span>Receipt</span>'
@@ -2381,6 +2415,9 @@ def render_repository_traceability_audit(audit: dict[str, Any]) -> str:
         f'<div class="statline"><span>PDF anchors linked</span><b>'
         f'{html.escape(str(counts.get("linked_spec_anchor_count", 0)))} / '
         f'{html.escape(str(counts.get("spec_anchor_count", 0)))}</b></div>'
+        f'<div class="statline"><span>Accepted library links projected</span><b>'
+        f'{html.escape(str(counts.get("accepted_library_link_count", 0)))} '
+        f'({html.escape(str(projection.get("status", "NOT_CONFIGURED")))})</b></div>'
         '<p class="small">Exact links are supported by direct evidence. Proposed '
         'links are review candidates only; orphaned anchors remain unresolved.</p>'
     )
@@ -2904,6 +2941,7 @@ def check_site(repo: Path, output: Path | None = None) -> tuple[bool, list[str]]
                 "exact_count",
                 "proposed_count",
                 "reviewed_count",
+                "accepted_library_link_count",
                 "untraced_spec_anchor_count",
                 "untraced_production_function_count",
             ):
@@ -2919,6 +2957,15 @@ def check_site(repo: Path, output: Path | None = None) -> tuple[bool, list[str]]
                 summary = triage.get("summary", {})
                 if summary and not isinstance(summary, dict):
                     errors.append("invalid traceability orphan triage summary")
+            projection = audit.get("library_projection", {})
+            if not isinstance(projection, dict):
+                errors.append("invalid traceability library projection")
+            else:
+                if projection.get("status") not in {"PASS", "STALE_INPUT", "INVALID", "NOT_CONFIGURED"}:
+                    errors.append("invalid traceability library projection status")
+                for key in ("components_seen", "components_eligible", "links_added"):
+                    if not isinstance(projection.get(key), int) or projection.get(key) < 0:
+                        errors.append(f"invalid traceability library projection count: {key}")
     if site.is_dir():
         for path in relative_files(site):
             if path.suffix != ".html":
@@ -3221,6 +3268,7 @@ def report_summary(dataset: Dataset) -> str:
             "| Measure | Result |", "|---|---:|",
             f"| Generated links | {trace_counts.get('link_count', 0)} |",
             f"| Exact / proposed / reviewed | {trace_counts.get('exact_count', 0)} / {trace_counts.get('proposed_count', 0)} / {trace_counts.get('reviewed_count', 0)} |",
+            f"| Accepted library links / projection | {trace_counts.get('accepted_library_link_count', 0)} / {md_escape((traceability.get('library_projection') or {}).get('status', 'NOT_CONFIGURED'))} |",
             f"| PDF anchors linked / total | {trace_counts.get('linked_spec_anchor_count', 0)} / {trace_counts.get('spec_anchor_count', 0)} |",
             f"| Production anchors linked / total | {trace_counts.get('linked_production_anchor_count', 0)} / {trace_counts.get('production_anchor_count', 0)} |",
             f"| Untraced PDF anchors | {trace_counts.get('untraced_spec_anchor_count', 0)} |",

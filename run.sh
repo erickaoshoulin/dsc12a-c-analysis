@@ -205,7 +205,8 @@ run_once() {
       --raw "$raw_json" \
       --candidates "$OUTPUT_DIR/facts/candidates.json" \
       --output-dir "$OUTPUT_DIR" \
-      --reviewed "$OUTPUT_DIR/traceability/links.reviewed.yaml"; then
+      --reviewed "$OUTPUT_DIR/traceability/links.reviewed.yaml" \
+      --library-manifest "$OUTPUT_DIR/library/manifest.json"; then
     fail "INFRASTRUCTURE_FAILURE: deterministic PDF/C traceability extraction failed"
     return 1
   fi

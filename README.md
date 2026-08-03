@@ -82,13 +82,17 @@ C comments, `MN_*` model notes, explicit page/section/table references,
 function ranges, constants, tables, USRs, source hashes, and fixed-commit
 permalinks are recorded in `facts/comments.json`.
 
-`traceability/links.proposed.yaml` contains generated exact/proposed links.
+`traceability/links.proposed.yaml` contains generated exact/proposed links plus
+`REVIEWED` links projected from accepted library contracts. A `PASS` component
+with `authority: EXACT_SPEC` is joined by its contract's Clang USR and exact PDF
+anchors only after the library manifest's source/spec hashes match; this is
+traceability enrichment, never a function-name selector or new-work admission.
 `traceability/links.reviewed.yaml` is the human-edited review surface and is
 never overwritten. A reviewed link becomes `STALE` if either input hash
 changes. Reports are bidirectional and retain visible unknowns/orphans. The
 dashboard traceability page also shows repository-wide exact/proposed/reviewed
-counts, the proposal queue, linked-versus-total anchors, and complete orphan
-lists. `reports/orphan-triage.md` and the dashboard triage tables add
+counts, accepted-library projection status, the proposal queue, linked-versus-total
+anchors, and complete orphan lists. `reports/orphan-triage.md` and the dashboard triage tables add
 evidence-backed next actions from Clang, candidate, coverage, comment, and PDF
 facts without creating links or RTL targets, so raw JSON is not required to
 find the next review work.

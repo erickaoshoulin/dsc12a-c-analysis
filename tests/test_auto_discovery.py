@@ -195,6 +195,92 @@ class AutoDiscoveryTests(unittest.TestCase):
         self.assertEqual(result[0]["function"], "Qp2Qlevel")
         self.assertEqual(result[0]["code_file"], "codec_main.c")
 
+    def test_accepted_library_links_reduce_traceability_without_selecting_functions(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            library_dir = root / "library"
+            contract_dir = library_dir / "contracts"
+            contract_dir.mkdir(parents=True)
+            library_manifest = library_dir / "manifest.json"
+            library_manifest.write_text(
+                json.dumps({
+                    "schema_version": 1,
+                    "spec_hash": "pdf",
+                    "source_hash": "src",
+                    "components": [{
+                        "contract_id": "fixture_contract",
+                        "contract_hash": "contract-hash",
+                        "authority": "EXACT_SPEC",
+                        "status": "PASS",
+                    }],
+                }),
+                encoding="utf-8",
+            )
+            (contract_dir / "fixture_contract.json").write_text(
+                json.dumps({
+                    "contract_id": "fixture_contract",
+                    "function": {"clang_usr": "U_fixture", "name": "not_a_selector"},
+                    "spec_links": [{"anchor_id": "pdf:section:4.2", "status": "EXACT"}],
+                }),
+                encoding="utf-8",
+            )
+            anchors = [{
+                "anchor_id": "pdf:section:4.2",
+                "kind": "section",
+                "identifier": "4.2",
+                "page": 30,
+                "title": "Fixture section",
+            }]
+            code_anchors = [{
+                "code_anchor_id": "code:function:U_fixture",
+                "clang_usr": "U_fixture",
+                "function": "discovered_fixture",
+                "file": "codec.c",
+                "line": 10,
+                "end_line": 20,
+                "permalink": "https://example.invalid/codec.c#L10",
+            }]
+            links, audit = traceability.apply_library_links(
+                [],
+                library_manifest,
+                root,
+                anchors,
+                code_anchors,
+                {"spec": {"sha256": "pdf"}, "source": {"source_hashes_sha256": "src"}},
+            )
+        self.assertEqual(audit["status"], "PASS")
+        self.assertEqual(audit["links_added"], 1)
+        self.assertEqual(links[0]["method"], "accepted_library_exact_spec")
+        self.assertEqual(links[0]["status"], "REVIEWED")
+        self.assertEqual(links[0]["clang_usr"], "U_fixture")
+        self.assertEqual(links[0]["function"], "discovered_fixture")
+
+    def test_stale_library_manifest_fails_closed_without_projecting_links(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            library_manifest = root / "manifest.json"
+            library_manifest.write_text(
+                json.dumps({
+                    "schema_version": 1,
+                    "spec_hash": "old-pdf",
+                    "source_hash": "src",
+                    "components": [],
+                }),
+                encoding="utf-8",
+            )
+            existing = [{"spec_anchor_id": "pdf:section:1", "code_anchor_id": "code:function:U"}]
+            links, audit = traceability.apply_library_links(
+                existing,
+                library_manifest,
+                root,
+                [],
+                [],
+                {"spec": {"sha256": "new-pdf"}, "source": {"source_hashes_sha256": "src"}},
+            )
+        self.assertEqual(audit["status"], "STALE_INPUT")
+        self.assertEqual(audit["links_added"], 0)
+        self.assertEqual(links, existing)
+
     def test_every_shared_model_note_has_an_exact_link(self):
         payload = json.loads((ROOT / "traceability" / "traceability.json").read_text(encoding="utf-8"))
         shared = payload["counts"]["shared_model_note_ids"]

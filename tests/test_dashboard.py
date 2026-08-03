@@ -379,6 +379,18 @@ class DashboardFixtureTests(unittest.TestCase):
                     "code_line": 14,
                     "evidence": "reviewed evidence",
                 },
+                {
+                    "link_id": "library-1",
+                    "status": "REVIEWED",
+                    "method": "accepted_library_exact_spec",
+                    "function": "LibraryLeaf",
+                    "spec_anchor_id": "pdf:section:8.1",
+                    "spec_page": 8,
+                    "code_anchor_id": "code:function:c:@F@LibraryLeaf",
+                    "code_file": "library.c",
+                    "code_line": 16,
+                    "evidence": "accepted library evidence",
+                },
             ],
             "orphans": {
                 "spec_anchor_ids": ["pdf:figure:9"],
@@ -411,16 +423,27 @@ class DashboardFixtureTests(unittest.TestCase):
                     "related_code_functions": [],
                 }],
             },
+            "library_projection": {
+                "schema_version": 1,
+                "status": "PASS",
+                "manifest_sha256": "fixture-manifest",
+                "components_seen": 1,
+                "components_eligible": 1,
+                "links_added": 1,
+                "skipped": {},
+            },
         })
 
         site = repo / "dashboard"
         dataset, _ = dashboard.build(repo, str(regression), "latest", output=site, mirror_external=False)
         audit = dataset.traceability["global_audit"]
         self.assertTrue(audit["available"])
-        self.assertEqual(audit["counts"]["link_count"], 3)
+        self.assertEqual(audit["counts"]["link_count"], 4)
         self.assertEqual(audit["counts"]["exact_count"], 1)
         self.assertEqual(audit["counts"]["proposed_count"], 1)
-        self.assertEqual(audit["counts"]["reviewed_count"], 1)
+        self.assertEqual(audit["counts"]["reviewed_count"], 2)
+        self.assertEqual(audit["counts"]["accepted_library_link_count"], 1)
+        self.assertEqual(audit["library_projection"]["status"], "PASS")
         self.assertEqual(audit["counts"]["untraced_spec_anchor_count"], 1)
         self.assertEqual(audit["counts"]["untraced_production_function_count"], 1)
         self.assertIn("CandidateLeaf", (site / "traceability.html").read_text(encoding="utf-8"))
@@ -428,6 +451,7 @@ class DashboardFixtureTests(unittest.TestCase):
         self.assertIn("Deterministic orphan triage", (site / "traceability.html").read_text(encoding="utf-8"))
         self.assertIn("CHECK_NON_OUTPUT_SCOPE", (site / "traceability.html").read_text(encoding="utf-8"))
         self.assertIn("Traceability audit", (site / "index.html").read_text(encoding="utf-8"))
+        self.assertIn("Accepted library links projected", (site / "traceability.html").read_text(encoding="utf-8"))
         self.assertIn("Untraced production functions", (repo / "reports" / "regression-summary.md").read_text(encoding="utf-8"))
         self.assertTrue((site / "data" / "traceability.json").is_file())
         ok, errors = dashboard.check_site(repo, site)

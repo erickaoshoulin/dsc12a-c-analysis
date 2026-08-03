@@ -212,17 +212,31 @@
   "global_audit": {
     "available": true,
     "counts": {
+      "accepted_library_link_count": 25,
       "exact_count": 53,
-      "link_count": 64,
-      "linked_production_anchor_count": 29,
-      "linked_spec_anchor_count": 58,
+      "link_count": 89,
+      "linked_production_anchor_count": 35,
+      "linked_spec_anchor_count": 64,
       "production_anchor_count": 88,
       "proposed_count": 6,
-      "reviewed_count": 5,
+      "reviewed_count": 30,
       "spec_anchor_count": 358,
       "stale_count": 0,
-      "untraced_production_function_count": 59,
-      "untraced_spec_anchor_count": 156
+      "untraced_production_function_count": 53,
+      "untraced_spec_anchor_count": 150
+    },
+    "library_projection": {
+      "components_eligible": 16,
+      "components_seen": 16,
+      "links_added": 25,
+      "manifest_sha256": "3c42a038a8d3367eb7225a40e102f7150495daab672e2de2ea261446cef301d0",
+      "schema_version": 1,
+      "skipped": {
+        "code_anchor_missing": 1,
+        "component_no_new_links": 6,
+        "duplicate_link": 20
+      },
+      "status": "PASS"
     },
     "links": [
       {
@@ -1127,6 +1141,38 @@
         "status": "REVIEWED"
       },
       {
+        "clang_usr": "c:@F@EstimateBitsForGroup",
+        "code_anchor_id": "code:function:c:@F@EstimateBitsForGroup",
+        "code_file": "dsc_codec.c",
+        "code_line": 390,
+        "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L390-L437",
+        "evidence": "Accepted PASS library component estimatebitsforgroup carries an EXACT_SPEC link to pdf:model-note:MN_ENC_ICH_MODE_SELECT:p088",
+        "function": "EstimateBitsForGroup",
+        "link_id": "library-estimatebitsforgroup-pdf-model-note-MN_ENC_ICH_MODE_SELECT-p088",
+        "method": "accepted_library_exact_spec",
+        "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+        "spec_anchor_id": "pdf:model-note:MN_ENC_ICH_MODE_SELECT:p088",
+        "spec_page": 88,
+        "spec_section": "6.5.3.2",
+        "status": "REVIEWED"
+      },
+      {
+        "clang_usr": "c:@F@UsingMidpoint",
+        "code_anchor_id": "code:function:c:@F@UsingMidpoint",
+        "code_file": "dsc_codec.c",
+        "code_line": 457,
+        "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L457-L476",
+        "evidence": "Accepted PASS library component usingmidpoint carries an EXACT_SPEC link to pdf:model-note:MN_ENC_MPP_SELECT:p082",
+        "function": "UsingMidpoint",
+        "link_id": "library-usingmidpoint-pdf-model-note-MN_ENC_MPP_SELECT-p082",
+        "method": "accepted_library_exact_spec",
+        "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+        "spec_anchor_id": "pdf:model-note:MN_ENC_MPP_SELECT:p082",
+        "spec_page": 82,
+        "spec_section": "6.4.4.2",
+        "status": "REVIEWED"
+      },
+      {
         "clang_usr": "c:@F@ceil_log2",
         "code_anchor_id": "code:function:c:@F@ceil_log2",
         "code_file": "dsc_utils.c",
@@ -1140,6 +1186,118 @@
         "spec_anchor_id": "pdf:section:1.6.2",
         "spec_page": 22,
         "spec_section": "1.6.2",
+        "status": "REVIEWED"
+      },
+      {
+        "clang_usr": "c:@F@EscapeCodeSize",
+        "code_anchor_id": "code:function:c:@F@EscapeCodeSize",
+        "code_file": "dsc_codec.c",
+        "code_line": 443,
+        "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L443-L451",
+        "evidence": "Accepted PASS library component escapecodesize carries an EXACT_SPEC link to pdf:section:3.5.1",
+        "function": "EscapeCodeSize",
+        "link_id": "library-escapecodesize-pdf-section-3.5.1",
+        "method": "accepted_library_exact_spec",
+        "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+        "spec_anchor_id": "pdf:section:3.5.1",
+        "spec_page": 34,
+        "spec_section": "3.5.1",
+        "status": "REVIEWED"
+      },
+      {
+        "clang_usr": "c:@F@MaxResidualSize",
+        "code_anchor_id": "code:function:c:@F@MaxResidualSize",
+        "code_file": "dsc_codec.c",
+        "code_line": 263,
+        "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L263-L270",
+        "evidence": "Accepted PASS library component maxresidualsize carries an EXACT_SPEC link to pdf:section:3.5.1",
+        "function": "MaxResidualSize",
+        "link_id": "library-maxresidualsize-pdf-section-3.5.1",
+        "method": "accepted_library_exact_spec",
+        "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+        "spec_anchor_id": "pdf:section:3.5.1",
+        "spec_page": 34,
+        "spec_section": "3.5.1",
+        "status": "REVIEWED"
+      },
+      {
+        "clang_usr": "c:@F@IsFlatnessInfoSent",
+        "code_anchor_id": "code:function:c:@F@IsFlatnessInfoSent",
+        "code_file": "dsc_codec.c",
+        "code_line": 1116,
+        "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1116-L1119",
+        "evidence": "Accepted PASS library component isflatnessinfosent carries an EXACT_SPEC link to pdf:section:4.3",
+        "function": "IsFlatnessInfoSent",
+        "link_id": "library-isflatnessinfosent-pdf-section-4.3",
+        "method": "accepted_library_exact_spec",
+        "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+        "spec_anchor_id": "pdf:section:4.3",
+        "spec_page": 62,
+        "spec_section": "4.3",
+        "status": "REVIEWED"
+      },
+      {
+        "clang_usr": "c:@F@UsingMidpoint",
+        "code_anchor_id": "code:function:c:@F@UsingMidpoint",
+        "code_file": "dsc_codec.c",
+        "code_line": 457,
+        "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L457-L476",
+        "evidence": "Accepted PASS library component usingmidpoint carries an EXACT_SPEC link to pdf:section:6.4.4.2",
+        "function": "UsingMidpoint",
+        "link_id": "library-usingmidpoint-pdf-section-6.4.4.2",
+        "method": "accepted_library_exact_spec",
+        "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+        "spec_anchor_id": "pdf:section:6.4.4.2",
+        "spec_page": 82,
+        "spec_section": "6.4.4.2",
+        "status": "REVIEWED"
+      },
+      {
+        "clang_usr": "c:@F@PredictSize",
+        "code_anchor_id": "code:function:c:@F@PredictSize",
+        "code_file": "dsc_codec.c",
+        "code_line": 1476,
+        "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1476-L1486",
+        "evidence": "Accepted PASS library component predictsize carries an EXACT_SPEC link to pdf:section:6.4.5",
+        "function": "PredictSize",
+        "link_id": "library-predictsize-pdf-section-6.4.5",
+        "method": "accepted_library_exact_spec",
+        "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+        "spec_anchor_id": "pdf:section:6.4.5",
+        "spec_page": 83,
+        "spec_section": "6.4.5",
+        "status": "REVIEWED"
+      },
+      {
+        "clang_usr": "c:@F@EstimateBitsForGroup",
+        "code_anchor_id": "code:function:c:@F@EstimateBitsForGroup",
+        "code_file": "dsc_codec.c",
+        "code_line": 390,
+        "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L390-L437",
+        "evidence": "Accepted PASS library component estimatebitsforgroup carries an EXACT_SPEC link to pdf:section:6.5.3.2",
+        "function": "EstimateBitsForGroup",
+        "link_id": "library-estimatebitsforgroup-pdf-section-6.5.3.2",
+        "method": "accepted_library_exact_spec",
+        "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+        "spec_anchor_id": "pdf:section:6.5.3.2",
+        "spec_page": 88,
+        "spec_section": "6.5.3.2",
+        "status": "REVIEWED"
+      },
+      {
+        "clang_usr": "c:@F@EstimateBitsForGroup",
+        "code_anchor_id": "code:function:c:@F@EstimateBitsForGroup",
+        "code_file": "dsc_codec.c",
+        "code_line": 390,
+        "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L390-L437",
+        "evidence": "Accepted PASS library component estimatebitsforgroup carries an EXACT_SPEC link to pdf:section:6.6.1",
+        "function": "EstimateBitsForGroup",
+        "link_id": "library-estimatebitsforgroup-pdf-section-6.6.1",
+        "method": "accepted_library_exact_spec",
+        "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+        "spec_anchor_id": "pdf:section:6.6.1",
+        "spec_page": 91,
+        "spec_section": "6.6.1",
         "status": "REVIEWED"
       },
       {
@@ -1159,6 +1317,102 @@
         "status": "REVIEWED"
       },
       {
+        "clang_usr": "c:@F@GetQpAdjPredSize",
+        "code_anchor_id": "code:function:c:@F@GetQpAdjPredSize",
+        "code_file": "dsc_codec.c",
+        "code_line": 278,
+        "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L278-L297",
+        "evidence": "Accepted PASS library component getqpadjpredsize carries an EXACT_SPEC link to pdf:section:6.6.1",
+        "function": "GetQpAdjPredSize",
+        "link_id": "library-getqpadjpredsize-pdf-section-6.6.1",
+        "method": "accepted_library_exact_spec",
+        "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+        "spec_anchor_id": "pdf:section:6.6.1",
+        "spec_page": 91,
+        "spec_section": "6.6.1",
+        "status": "REVIEWED"
+      },
+      {
+        "clang_usr": "c:@F@MaxResidualSize",
+        "code_anchor_id": "code:function:c:@F@MaxResidualSize",
+        "code_file": "dsc_codec.c",
+        "code_line": 263,
+        "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L263-L270",
+        "evidence": "Accepted PASS library component maxresidualsize carries an EXACT_SPEC link to pdf:section:6.6.1",
+        "function": "MaxResidualSize",
+        "link_id": "library-maxresidualsize-pdf-section-6.6.1",
+        "method": "accepted_library_exact_spec",
+        "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+        "spec_anchor_id": "pdf:section:6.6.1",
+        "spec_page": 91,
+        "spec_section": "6.6.1",
+        "status": "REVIEWED"
+      },
+      {
+        "clang_usr": "c:@F@PredictSize",
+        "code_anchor_id": "code:function:c:@F@PredictSize",
+        "code_file": "dsc_codec.c",
+        "code_line": 1476,
+        "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1476-L1486",
+        "evidence": "Accepted PASS library component predictsize carries an EXACT_SPEC link to pdf:section:6.6.1",
+        "function": "PredictSize",
+        "link_id": "library-predictsize-pdf-section-6.6.1",
+        "method": "accepted_library_exact_spec",
+        "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+        "spec_anchor_id": "pdf:section:6.6.1",
+        "spec_page": 91,
+        "spec_section": "6.6.1",
+        "status": "REVIEWED"
+      },
+      {
+        "clang_usr": "c:@F@EscapeCodeSize",
+        "code_anchor_id": "code:function:c:@F@EscapeCodeSize",
+        "code_file": "dsc_codec.c",
+        "code_line": 443,
+        "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L443-L451",
+        "evidence": "Accepted PASS library component escapecodesize carries an EXACT_SPEC link to pdf:section:6.6.2",
+        "function": "EscapeCodeSize",
+        "link_id": "library-escapecodesize-pdf-section-6.6.2",
+        "method": "accepted_library_exact_spec",
+        "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+        "spec_anchor_id": "pdf:section:6.6.2",
+        "spec_page": 93,
+        "spec_section": "6.6.2",
+        "status": "REVIEWED"
+      },
+      {
+        "clang_usr": "c:@F@IsFlatnessInfoSent",
+        "code_anchor_id": "code:function:c:@F@IsFlatnessInfoSent",
+        "code_file": "dsc_codec.c",
+        "code_line": 1116,
+        "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1116-L1119",
+        "evidence": "Accepted PASS library component isflatnessinfosent carries an EXACT_SPEC link to pdf:section:6.6.3",
+        "function": "IsFlatnessInfoSent",
+        "link_id": "library-isflatnessinfosent-pdf-section-6.6.3",
+        "method": "accepted_library_exact_spec",
+        "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+        "spec_anchor_id": "pdf:section:6.6.3",
+        "spec_page": 94,
+        "spec_section": "6.6.3",
+        "status": "REVIEWED"
+      },
+      {
+        "clang_usr": "c:@F@EstimateBitsForGroup",
+        "code_anchor_id": "code:function:c:@F@EstimateBitsForGroup",
+        "code_file": "dsc_codec.c",
+        "code_line": 390,
+        "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L390-L437",
+        "evidence": "Accepted PASS library component estimatebitsforgroup carries an EXACT_SPEC link to pdf:section:6.6.4",
+        "function": "EstimateBitsForGroup",
+        "link_id": "library-estimatebitsforgroup-pdf-section-6.6.4",
+        "method": "accepted_library_exact_spec",
+        "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+        "spec_anchor_id": "pdf:section:6.6.4",
+        "spec_page": 94,
+        "spec_section": "6.6.4",
+        "status": "REVIEWED"
+      },
+      {
         "clang_usr": "c:@F@IsOrigFlatHIndex",
         "code_anchor_id": "code:function:c:@F@IsOrigFlatHIndex",
         "code_file": "dsc_codec.c",
@@ -1172,6 +1426,150 @@
         "spec_anchor_id": "pdf:section:6.8.5.1",
         "spec_page": 111,
         "spec_section": "6.8.5.1",
+        "status": "REVIEWED"
+      },
+      {
+        "clang_usr": "c:@F@GetQpAdjPredSize",
+        "code_anchor_id": "code:function:c:@F@GetQpAdjPredSize",
+        "code_file": "dsc_codec.c",
+        "code_line": 278,
+        "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L278-L297",
+        "evidence": "Accepted PASS library component getqpadjpredsize carries an EXACT_SPEC link to pdf:section:6.8.5.2",
+        "function": "GetQpAdjPredSize",
+        "link_id": "library-getqpadjpredsize-pdf-section-6.8.5.2",
+        "method": "accepted_library_exact_spec",
+        "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+        "spec_anchor_id": "pdf:section:6.8.5.2",
+        "spec_page": 113,
+        "spec_section": "6.8.5.2",
+        "status": "REVIEWED"
+      },
+      {
+        "clang_usr": "c:@F@EscapeCodeSize",
+        "code_anchor_id": "code:function:c:@F@EscapeCodeSize",
+        "code_file": "dsc_codec.c",
+        "code_line": 443,
+        "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L443-L451",
+        "evidence": "Accepted PASS library component escapecodesize carries an EXACT_SPEC link to pdf:section:6.8.6",
+        "function": "EscapeCodeSize",
+        "link_id": "library-escapecodesize-pdf-section-6.8.6",
+        "method": "accepted_library_exact_spec",
+        "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+        "spec_anchor_id": "pdf:section:6.8.6",
+        "spec_page": 113,
+        "spec_section": "6.8.6",
+        "status": "REVIEWED"
+      },
+      {
+        "clang_usr": "c:@F@GetQpAdjPredSize",
+        "code_anchor_id": "code:function:c:@F@GetQpAdjPredSize",
+        "code_file": "dsc_codec.c",
+        "code_line": 278,
+        "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L278-L297",
+        "evidence": "Accepted PASS library component getqpadjpredsize carries an EXACT_SPEC link to pdf:section:6.8.6",
+        "function": "GetQpAdjPredSize",
+        "link_id": "library-getqpadjpredsize-pdf-section-6.8.6",
+        "method": "accepted_library_exact_spec",
+        "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+        "spec_anchor_id": "pdf:section:6.8.6",
+        "spec_page": 113,
+        "spec_section": "6.8.6",
+        "status": "REVIEWED"
+      },
+      {
+        "clang_usr": "c:@F@MaxResidualSize",
+        "code_anchor_id": "code:function:c:@F@MaxResidualSize",
+        "code_file": "dsc_codec.c",
+        "code_line": 263,
+        "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L263-L270",
+        "evidence": "Accepted PASS library component maxresidualsize carries an EXACT_SPEC link to pdf:section:6.8.6",
+        "function": "MaxResidualSize",
+        "link_id": "library-maxresidualsize-pdf-section-6.8.6",
+        "method": "accepted_library_exact_spec",
+        "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+        "spec_anchor_id": "pdf:section:6.8.6",
+        "spec_page": 113,
+        "spec_section": "6.8.6",
+        "status": "REVIEWED"
+      },
+      {
+        "clang_usr": "c:@F@EstimateBitsForGroup",
+        "code_anchor_id": "code:function:c:@F@EstimateBitsForGroup",
+        "code_file": "dsc_codec.c",
+        "code_line": 390,
+        "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L390-L437",
+        "evidence": "Accepted PASS library component estimatebitsforgroup carries an EXACT_SPEC link to pdf:table:3-1",
+        "function": "EstimateBitsForGroup",
+        "link_id": "library-estimatebitsforgroup-pdf-table-3-1",
+        "method": "accepted_library_exact_spec",
+        "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+        "spec_anchor_id": "pdf:table:3-1",
+        "spec_page": 34,
+        "spec_section": null,
+        "status": "REVIEWED"
+      },
+      {
+        "clang_usr": "c:@F@FindResidualSize",
+        "code_anchor_id": "code:function:c:@F@FindResidualSize",
+        "code_file": "dsc_codec.c",
+        "code_line": 1078,
+        "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1078-L1109",
+        "evidence": "Accepted PASS library component findresidualsize carries an EXACT_SPEC link to pdf:table:3-1",
+        "function": "FindResidualSize",
+        "link_id": "library-findresidualsize-pdf-table-3-1",
+        "method": "accepted_library_exact_spec",
+        "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+        "spec_anchor_id": "pdf:table:3-1",
+        "spec_page": 34,
+        "spec_section": null,
+        "status": "REVIEWED"
+      },
+      {
+        "clang_usr": "c:@F@UsingMidpoint",
+        "code_anchor_id": "code:function:c:@F@UsingMidpoint",
+        "code_file": "dsc_codec.c",
+        "code_line": 457,
+        "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L457-L476",
+        "evidence": "Accepted PASS library component usingmidpoint carries an EXACT_SPEC link to pdf:table:3-1",
+        "function": "UsingMidpoint",
+        "link_id": "library-usingmidpoint-pdf-table-3-1",
+        "method": "accepted_library_exact_spec",
+        "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+        "spec_anchor_id": "pdf:table:3-1",
+        "spec_page": 34,
+        "spec_section": null,
+        "status": "REVIEWED"
+      },
+      {
+        "clang_usr": "c:@F@EstimateBitsForGroup",
+        "code_anchor_id": "code:function:c:@F@EstimateBitsForGroup",
+        "code_file": "dsc_codec.c",
+        "code_line": 390,
+        "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L390-L437",
+        "evidence": "Accepted PASS library component estimatebitsforgroup carries an EXACT_SPEC link to pdf:table:6-2",
+        "function": "EstimateBitsForGroup",
+        "link_id": "library-estimatebitsforgroup-pdf-table-6-2",
+        "method": "accepted_library_exact_spec",
+        "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+        "spec_anchor_id": "pdf:table:6-2",
+        "spec_page": 114,
+        "spec_section": null,
+        "status": "REVIEWED"
+      },
+      {
+        "clang_usr": "c:@F@MapQpToQlevel",
+        "code_anchor_id": "code:function:c:@F@MapQpToQlevel",
+        "code_file": "dsc_codec.c",
+        "code_line": 221,
+        "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L221-L238",
+        "evidence": "Accepted PASS library component mapqptoqlevel carries an EXACT_SPEC link to pdf:table:6-2",
+        "function": "MapQpToQlevel",
+        "link_id": "library-mapqptoqlevel-pdf-table-6-2",
+        "method": "accepted_library_exact_spec",
+        "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+        "spec_anchor_id": "pdf:table:6-2",
+        "spec_page": 114,
+        "spec_section": null,
         "status": "REVIEWED"
       },
       {
@@ -1189,6 +1587,22 @@
         "spec_page": 114,
         "spec_section": null,
         "status": "REVIEWED"
+      },
+      {
+        "clang_usr": "c:@F@UsingMidpoint",
+        "code_anchor_id": "code:function:c:@F@UsingMidpoint",
+        "code_file": "dsc_codec.c",
+        "code_line": 457,
+        "code_permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L457-L476",
+        "evidence": "Accepted PASS library component usingmidpoint carries an EXACT_SPEC link to pdf:table:6-2",
+        "function": "UsingMidpoint",
+        "link_id": "library-usingmidpoint-pdf-table-6-2",
+        "method": "accepted_library_exact_spec",
+        "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+        "spec_anchor_id": "pdf:table:6-2",
+        "spec_page": 114,
+        "spec_section": null,
+        "status": "REVIEWED"
       }
     ],
     "orphan_triage": {
@@ -1196,6 +1610,7 @@
       "input_hashes": {
         "candidate_facts": "858b671eb8ffb1d69544fd4e6c055a6c9da18a82c5e97079fb81fed963508f3b",
         "coverage": "f7faaab37dc4ca79a6f811ab817435cec4dae8dad8bf457a371dc62e786a7892",
+        "library_manifest": "3c42a038a8d3367eb7225a40e102f7150495daab672e2de2ea261446cef301d0",
         "raw_facts": "37b10d77d9c410d3ebc53766d78699da5c02cb8e7e3d176c8808477a29dea09e"
       },
       "production_code": [
@@ -1835,228 +2250,6 @@
         },
         {
           "candidate": {
-            "bounded_computation": true,
-            "confidence": 0.95,
-            "contributes_to_observable_output": true,
-            "direct_effects": {
-              "allocation": false,
-              "assertion": false,
-              "indirect_call": false,
-              "io": false,
-              "logging": false,
-              "state_write": false,
-              "unknown_facts": []
-            },
-            "eligible": true,
-            "evidence": [
-              "production reachability is a graph traversal from linked executable entry symbols",
-              "observable output is inferred from output file calls and codec boundary dataflow shape",
-              "direct effects: {\"allocation\": false, \"assertion\": false, \"indirect_call\": false, \"io\": false, \"logging\": false, \"state_write\": false, \"unknown_facts\": []}",
-              "transitive effects: {\"allocation\": false, \"assertion\": false, \"indirect_call\": false, \"io\": false, \"logging\": false, \"state_write\": false, \"unknown_facts\": []}",
-              "all reachable loops have fixed AST bounds"
-            ],
-            "production_reachable": true,
-            "purity": "PURE",
-            "rank": 8,
-            "role": "DUT",
-            "score": 99.95,
-            "timing": "COMBINATIONAL",
-            "transitive_effects": {
-              "allocation": false,
-              "assertion": false,
-              "indirect_call": false,
-              "io": false,
-              "logging": false,
-              "state_write": false,
-              "unknown_facts": []
-            }
-          },
-          "clang_usr": "c:@F@EscapeCodeSize",
-          "code_anchor_id": "code:function:c:@F@EscapeCodeSize",
-          "comments": [
-            {
-              "comment_id": "comment:dsc_codec.c:440",
-              "end_line": 440,
-              "file": "dsc_codec.c",
-              "function": "EscapeCodeSize",
-              "line": 440,
-              "mn_ids": [],
-              "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L440",
-              "spec_refs": {},
-              "text": "//! Size to code that means \"escape code\""
-            },
-            {
-              "comment_id": "comment:dsc_codec.c:441",
-              "end_line": 442,
-              "file": "dsc_codec.c",
-              "function": "EscapeCodeSize",
-              "line": 441,
-              "mn_ids": [],
-              "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L441-L442",
-              "spec_refs": {},
-              "text": "/*! \\param dsc_state DSC state structure \\param qp Quantization parameter for group */"
-            }
-          ],
-          "coverage": {
-            "branch_coverage_percent": 100.0,
-            "eligible_after_coverage": true,
-            "execution_count": 20889,
-            "line_coverage_percent": 33.333,
-            "profile": null,
-            "region_coverage_percent": 33.333,
-            "status": "EXECUTED"
-          },
-          "end_line": 451,
-          "file": "dsc_codec.c",
-          "function": "EscapeCodeSize",
-          "line": 443,
-          "next_action": "REVIEW_EXACT_SPEC_SCOPE",
-          "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L443-L451",
-          "rationale": "Tool facts and coverage admit the function; exact PDF scope still needs evidence",
-          "raw_facts": {
-            "callees": [
-              "MapQpToQlevel"
-            ],
-            "callers": [
-              "VLCUnit",
-              "VLDUnit"
-            ],
-            "effects": {
-              "assert": false,
-              "file_io": false,
-              "indirect_call": false,
-              "logging": false,
-              "malloc": false
-            },
-            "fields_written": [],
-            "loop_count": 0,
-            "parameter_count": 3,
-            "pointer_modes": [
-              "UNKNOWN",
-              "UNKNOWN"
-            ],
-            "proposal_category": "COMPOSITE_COMB_CANDIDATE",
-            "return_type": "int",
-            "static_mutable_state": [],
-            "unknown_facts": []
-          }
-        },
-        {
-          "candidate": {
-            "bounded_computation": false,
-            "confidence": 0.75,
-            "contributes_to_observable_output": true,
-            "direct_effects": {
-              "allocation": false,
-              "assertion": false,
-              "indirect_call": false,
-              "io": false,
-              "logging": false,
-              "state_write": false,
-              "unknown_facts": []
-            },
-            "eligible": false,
-            "evidence": [
-              "production reachability is a graph traversal from linked executable entry symbols",
-              "observable output is inferred from output file calls and codec boundary dataflow shape",
-              "direct effects: {\"allocation\": false, \"assertion\": false, \"indirect_call\": false, \"io\": false, \"logging\": false, \"state_write\": false, \"unknown_facts\": []}",
-              "transitive effects: {\"allocation\": false, \"assertion\": false, \"indirect_call\": false, \"io\": false, \"logging\": true, \"state_write\": false, \"unknown_facts\": []}",
-              "at least one reachable loop has UNKNOWN bounds"
-            ],
-            "production_reachable": true,
-            "purity": "IMPURE",
-            "rank": 46,
-            "role": "DUT",
-            "score": 59.85,
-            "timing": "UNKNOWN",
-            "transitive_effects": {
-              "allocation": false,
-              "assertion": false,
-              "indirect_call": false,
-              "io": false,
-              "logging": true,
-              "state_write": false,
-              "unknown_facts": []
-            }
-          },
-          "clang_usr": "c:@F@EstimateBitsForGroup",
-          "code_anchor_id": "code:function:c:@F@EstimateBitsForGroup",
-          "comments": [
-            {
-              "comment_id": "comment:dsc_codec.c:386",
-              "end_line": 386,
-              "file": "dsc_codec.c",
-              "function": "EstimateBitsForGroup",
-              "line": 386,
-              "mn_ids": [],
-              "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L386",
-              "spec_refs": {},
-              "text": "//! Encoder function to estimate bits required to code original pixels"
-            },
-            {
-              "comment_id": "comment:dsc_codec.c:387",
-              "end_line": 389,
-              "file": "dsc_codec.c",
-              "function": "EstimateBitsForGroup",
-              "line": 387,
-              "mn_ids": [],
-              "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L387-L389",
-              "spec_refs": {},
-              "text": "/*! \\param dsc_cfg DSC configuration structure \\param dsc_state DSC state structure \\return Bits estimate to code original pixels */"
-            }
-          ],
-          "coverage": {
-            "branch_coverage_percent": 95.833,
-            "eligible_after_coverage": false,
-            "execution_count": 20889,
-            "line_coverage_percent": 82.222,
-            "profile": null,
-            "region_coverage_percent": 82.222,
-            "status": "EXECUTED"
-          },
-          "end_line": 437,
-          "file": "dsc_codec.c",
-          "function": "EstimateBitsForGroup",
-          "line": 390,
-          "next_action": "KEEP_STATEFUL_OR_UNPROVEN_BOUNDARY",
-          "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L390-L437",
-          "rationale": "Tool facts show stateful, impure, or non-combinational behavior",
-          "raw_facts": {
-            "callees": [
-              "FindResidualSize",
-              "GetQpAdjPredSize",
-              "MaxResidualSize"
-            ],
-            "callers": [
-              "IchDecision"
-            ],
-            "effects": {
-              "assert": false,
-              "file_io": false,
-              "indirect_call": false,
-              "logging": false,
-              "malloc": false
-            },
-            "fields_written": [],
-            "loop_count": 4,
-            "parameter_count": 2,
-            "pointer_modes": [
-              "UNKNOWN",
-              "UNKNOWN"
-            ],
-            "proposal_category": "COMPOSITE_COMB_CANDIDATE",
-            "return_type": "int",
-            "static_mutable_state": [],
-            "unknown_facts": [
-              "Eva result unavailable",
-              "From result unavailable",
-              "at least one loop trip count is not proven fixed",
-              "loop has a potential read/write dependency across iterations"
-            ]
-          }
-        },
-        {
-          "candidate": {
             "bounded_computation": false,
             "confidence": 0.75,
             "contributes_to_observable_output": true,
@@ -2442,223 +2635,6 @@
         },
         {
           "candidate": {
-            "bounded_computation": true,
-            "confidence": 0.95,
-            "contributes_to_observable_output": true,
-            "direct_effects": {
-              "allocation": false,
-              "assertion": false,
-              "indirect_call": false,
-              "io": false,
-              "logging": false,
-              "state_write": false,
-              "unknown_facts": []
-            },
-            "eligible": true,
-            "evidence": [
-              "production reachability is a graph traversal from linked executable entry symbols",
-              "observable output is inferred from output file calls and codec boundary dataflow shape",
-              "direct effects: {\"allocation\": false, \"assertion\": false, \"indirect_call\": false, \"io\": false, \"logging\": false, \"state_write\": false, \"unknown_facts\": []}",
-              "transitive effects: {\"allocation\": false, \"assertion\": false, \"indirect_call\": false, \"io\": false, \"logging\": false, \"state_write\": false, \"unknown_facts\": []}",
-              "all reachable loops have fixed AST bounds"
-            ],
-            "production_reachable": true,
-            "purity": "PURE",
-            "rank": 2,
-            "role": "DUT",
-            "score": 100.0,
-            "timing": "COMBINATIONAL",
-            "transitive_effects": {
-              "allocation": false,
-              "assertion": false,
-              "indirect_call": false,
-              "io": false,
-              "logging": false,
-              "state_write": false,
-              "unknown_facts": []
-            }
-          },
-          "clang_usr": "c:@F@IsFlatnessInfoSent",
-          "code_anchor_id": "code:function:c:@F@IsFlatnessInfoSent",
-          "comments": [
-            {
-              "comment_id": "comment:dsc_codec.c:1112",
-              "end_line": 1112,
-              "file": "dsc_codec.c",
-              "function": "IsFlatnessInfoSent",
-              "line": 1112,
-              "mn_ids": [],
-              "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1112",
-              "spec_refs": {},
-              "text": "//! Map QP to quantization level"
-            },
-            {
-              "comment_id": "comment:dsc_codec.c:1113",
-              "end_line": 1115,
-              "file": "dsc_codec.c",
-              "function": "IsFlatnessInfoSent",
-              "line": 1113,
-              "mn_ids": [],
-              "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1113-L1115",
-              "spec_refs": {},
-              "text": "/*! \\param dsc_cfg DSC configuration structure \\param qp QP to map \\return Flag if flatness information sent for the current supergroup */"
-            }
-          ],
-          "coverage": {
-            "branch_coverage_percent": 75.0,
-            "eligible_after_coverage": true,
-            "execution_count": 275863,
-            "line_coverage_percent": 100.0,
-            "profile": null,
-            "region_coverage_percent": 100.0,
-            "status": "EXECUTED"
-          },
-          "end_line": 1119,
-          "file": "dsc_codec.c",
-          "function": "IsFlatnessInfoSent",
-          "line": 1116,
-          "next_action": "REVIEW_EXACT_SPEC_SCOPE",
-          "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1116-L1119",
-          "rationale": "Tool facts and coverage admit the function; exact PDF scope still needs evidence",
-          "raw_facts": {
-            "callees": [],
-            "callers": [
-              "FlatnessAdjustment",
-              "VLCUnit",
-              "VLDUnit"
-            ],
-            "effects": {
-              "assert": false,
-              "file_io": false,
-              "indirect_call": false,
-              "logging": false,
-              "malloc": false
-            },
-            "fields_written": [],
-            "loop_count": 0,
-            "parameter_count": 2,
-            "pointer_modes": [
-              "READ_ONLY"
-            ],
-            "proposal_category": "CONFIG_HELPER",
-            "return_type": "int",
-            "static_mutable_state": [],
-            "unknown_facts": []
-          }
-        },
-        {
-          "candidate": {
-            "bounded_computation": true,
-            "confidence": 0.95,
-            "contributes_to_observable_output": true,
-            "direct_effects": {
-              "allocation": false,
-              "assertion": false,
-              "indirect_call": false,
-              "io": false,
-              "logging": false,
-              "state_write": false,
-              "unknown_facts": []
-            },
-            "eligible": true,
-            "evidence": [
-              "production reachability is a graph traversal from linked executable entry symbols",
-              "observable output is inferred from output file calls and codec boundary dataflow shape",
-              "direct effects: {\"allocation\": false, \"assertion\": false, \"indirect_call\": false, \"io\": false, \"logging\": false, \"state_write\": false, \"unknown_facts\": []}",
-              "transitive effects: {\"allocation\": false, \"assertion\": false, \"indirect_call\": false, \"io\": false, \"logging\": false, \"state_write\": false, \"unknown_facts\": []}",
-              "all reachable loops have fixed AST bounds"
-            ],
-            "production_reachable": true,
-            "purity": "PURE",
-            "rank": 9,
-            "role": "DUT",
-            "score": 99.95,
-            "timing": "COMBINATIONAL",
-            "transitive_effects": {
-              "allocation": false,
-              "assertion": false,
-              "indirect_call": false,
-              "io": false,
-              "logging": false,
-              "state_write": false,
-              "unknown_facts": []
-            }
-          },
-          "clang_usr": "c:@F@MaxResidualSize",
-          "code_anchor_id": "code:function:c:@F@MaxResidualSize",
-          "comments": [
-            {
-              "comment_id": "comment:dsc_codec.c:258",
-              "end_line": 258,
-              "file": "dsc_codec.c",
-              "function": "MaxResidualSize",
-              "line": 258,
-              "mn_ids": [],
-              "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L258",
-              "spec_refs": {},
-              "text": "//! Get maximum residual size for a given component & quantization level"
-            },
-            {
-              "comment_id": "comment:dsc_codec.c:259",
-              "end_line": 262,
-              "file": "dsc_codec.c",
-              "function": "MaxResidualSize",
-              "line": 259,
-              "mn_ids": [],
-              "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L259-L262",
-              "spec_refs": {},
-              "text": "/*! \\param dsc_state DSC state structure \\param cpnt Which component \\param qp Quantization parameter \\return Max residual size in bits */"
-            }
-          ],
-          "coverage": {
-            "branch_coverage_percent": 100.0,
-            "eligible_after_coverage": true,
-            "execution_count": 2181573,
-            "line_coverage_percent": 33.333,
-            "profile": null,
-            "region_coverage_percent": 33.333,
-            "status": "EXECUTED"
-          },
-          "end_line": 270,
-          "file": "dsc_codec.c",
-          "function": "MaxResidualSize",
-          "line": 263,
-          "next_action": "REVIEW_EXACT_SPEC_SCOPE",
-          "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L263-L270",
-          "rationale": "Tool facts and coverage admit the function; exact PDF scope still needs evidence",
-          "raw_facts": {
-            "callees": [
-              "MapQpToQlevel"
-            ],
-            "callers": [
-              "EstimateBitsForGroup",
-              "GetQpAdjPredSize",
-              "PredictionLoop",
-              "VLCUnit",
-              "VLDUnit"
-            ],
-            "effects": {
-              "assert": false,
-              "file_io": false,
-              "indirect_call": false,
-              "logging": false,
-              "malloc": false
-            },
-            "fields_written": [],
-            "loop_count": 0,
-            "parameter_count": 4,
-            "pointer_modes": [
-              "UNKNOWN",
-              "UNKNOWN"
-            ],
-            "proposal_category": "COMPOSITE_COMB_CANDIDATE",
-            "return_type": "int",
-            "static_mutable_state": [],
-            "unknown_facts": []
-          }
-        },
-        {
-          "candidate": {
             "bounded_computation": false,
             "confidence": 0.75,
             "contributes_to_observable_output": true,
@@ -2767,114 +2743,6 @@
               "From result unavailable",
               "at least one loop trip count is not proven fixed",
               "loop has a potential read/write dependency across iterations"
-            ]
-          }
-        },
-        {
-          "candidate": {
-            "bounded_computation": true,
-            "confidence": 0.95,
-            "contributes_to_observable_output": true,
-            "direct_effects": {
-              "allocation": false,
-              "assertion": false,
-              "indirect_call": false,
-              "io": false,
-              "logging": false,
-              "state_write": false,
-              "unknown_facts": []
-            },
-            "eligible": true,
-            "evidence": [
-              "production reachability is a graph traversal from linked executable entry symbols",
-              "observable output is inferred from output file calls and codec boundary dataflow shape",
-              "direct effects: {\"allocation\": false, \"assertion\": false, \"indirect_call\": false, \"io\": false, \"logging\": false, \"state_write\": false, \"unknown_facts\": []}",
-              "transitive effects: {\"allocation\": false, \"assertion\": false, \"indirect_call\": false, \"io\": false, \"logging\": false, \"state_write\": false, \"unknown_facts\": []}",
-              "all reachable loops have fixed AST bounds"
-            ],
-            "production_reachable": true,
-            "purity": "PURE",
-            "rank": 4,
-            "role": "DUT",
-            "score": 100.0,
-            "timing": "COMBINATIONAL",
-            "transitive_effects": {
-              "allocation": false,
-              "assertion": false,
-              "indirect_call": false,
-              "io": false,
-              "logging": false,
-              "state_write": false,
-              "unknown_facts": []
-            }
-          },
-          "clang_usr": "c:@F@PredictSize",
-          "code_anchor_id": "code:function:c:@F@PredictSize",
-          "comments": [
-            {
-              "comment_id": "comment:dsc_codec.c:1472",
-              "end_line": 1472,
-              "file": "dsc_codec.c",
-              "function": "PredictSize",
-              "line": 1472,
-              "mn_ids": [],
-              "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1472",
-              "spec_refs": {},
-              "text": "//! Predict size for next unit"
-            },
-            {
-              "comment_id": "comment:dsc_codec.c:1473",
-              "end_line": 1475,
-              "file": "dsc_codec.c",
-              "function": "PredictSize",
-              "line": 1473,
-              "mn_ids": [],
-              "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1473-L1475",
-              "spec_refs": {},
-              "text": "/*! \\param dsc_cfg DSC configuration structure \\param req_size Array of required sizes for the samples in the unit \\return Predicted size for next unit */"
-            }
-          ],
-          "coverage": {
-            "branch_coverage_percent": 100.0,
-            "eligible_after_coverage": true,
-            "execution_count": 367218,
-            "line_coverage_percent": 33.333,
-            "profile": null,
-            "region_coverage_percent": 33.333,
-            "status": "EXECUTED"
-          },
-          "end_line": 1486,
-          "file": "dsc_codec.c",
-          "function": "PredictSize",
-          "line": 1476,
-          "next_action": "REVIEW_EXACT_SPEC_SCOPE",
-          "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1476-L1486",
-          "rationale": "Tool facts and coverage admit the function; exact PDF scope still needs evidence",
-          "raw_facts": {
-            "callees": [],
-            "callers": [
-              "VLCUnit",
-              "VLDUnit"
-            ],
-            "effects": {
-              "assert": false,
-              "file_io": false,
-              "indirect_call": false,
-              "logging": false,
-              "malloc": false
-            },
-            "fields_written": [],
-            "loop_count": 0,
-            "parameter_count": 2,
-            "pointer_modes": [
-              "READ_ONLY",
-              "READ_ONLY"
-            ],
-            "proposal_category": "PURE_COMB_CANDIDATE",
-            "return_type": "int",
-            "static_mutable_state": [],
-            "unknown_facts": [
-              "From result unavailable"
             ]
           }
         },
@@ -3562,118 +3430,6 @@
               "Eva result unavailable",
               "From result unavailable",
               "at least one loop trip count is not proven fixed",
-              "loop has a potential read/write dependency across iterations"
-            ]
-          }
-        },
-        {
-          "candidate": {
-            "bounded_computation": true,
-            "confidence": 0.75,
-            "contributes_to_observable_output": true,
-            "direct_effects": {
-              "allocation": false,
-              "assertion": false,
-              "indirect_call": false,
-              "io": false,
-              "logging": false,
-              "state_write": false,
-              "unknown_facts": []
-            },
-            "eligible": false,
-            "evidence": [
-              "production reachability is a graph traversal from linked executable entry symbols",
-              "observable output is inferred from output file calls and codec boundary dataflow shape",
-              "direct effects: {\"allocation\": false, \"assertion\": false, \"indirect_call\": false, \"io\": false, \"logging\": false, \"state_write\": false, \"unknown_facts\": []}",
-              "transitive effects: {\"allocation\": false, \"assertion\": false, \"indirect_call\": false, \"io\": false, \"logging\": true, \"state_write\": false, \"unknown_facts\": []}",
-              "all reachable loops have fixed AST bounds"
-            ],
-            "production_reachable": true,
-            "purity": "IMPURE",
-            "rank": 16,
-            "role": "DUT",
-            "score": 79.9,
-            "timing": "COMBINATIONAL",
-            "transitive_effects": {
-              "allocation": false,
-              "assertion": false,
-              "indirect_call": false,
-              "io": false,
-              "logging": true,
-              "state_write": false,
-              "unknown_facts": []
-            }
-          },
-          "clang_usr": "c:@F@UsingMidpoint",
-          "code_anchor_id": "code:function:c:@F@UsingMidpoint",
-          "comments": [
-            {
-              "comment_id": "comment:dsc_codec.c:454",
-              "end_line": 454,
-              "file": "dsc_codec.c",
-              "function": "UsingMidpoint",
-              "line": 454,
-              "mn_ids": [],
-              "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L454",
-              "spec_refs": {},
-              "text": "//! Encoder function that returns 1 if midpoint prediction will be used for the specified component"
-            },
-            {
-              "comment_id": "comment:dsc_codec.c:455",
-              "end_line": 456,
-              "file": "dsc_codec.c",
-              "function": "UsingMidpoint",
-              "line": 455,
-              "mn_ids": [],
-              "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L455-L456",
-              "spec_refs": {},
-              "text": "/*! \\param dsc_state DSC state structure \\param cpnt Component to check */"
-            }
-          ],
-          "coverage": {
-            "branch_coverage_percent": 100.0,
-            "eligible_after_coverage": false,
-            "execution_count": 65250,
-            "line_coverage_percent": 85.714,
-            "profile": null,
-            "region_coverage_percent": 85.714,
-            "status": "EXECUTED"
-          },
-          "end_line": 476,
-          "file": "dsc_codec.c",
-          "function": "UsingMidpoint",
-          "line": 457,
-          "next_action": "KEEP_STATEFUL_OR_UNPROVEN_BOUNDARY",
-          "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L457-L476",
-          "rationale": "Tool facts show stateful, impure, or non-combinational behavior",
-          "raw_facts": {
-            "callees": [
-              "FindResidualSize",
-              "MapQpToQlevel"
-            ],
-            "callers": [
-              "IchDecision"
-            ],
-            "effects": {
-              "assert": false,
-              "file_io": false,
-              "indirect_call": false,
-              "logging": false,
-              "malloc": false
-            },
-            "fields_written": [],
-            "loop_count": 1,
-            "parameter_count": 4,
-            "pointer_modes": [
-              "UNKNOWN",
-              "UNKNOWN"
-            ],
-            "proposal_category": "COMPOSITE_COMB_CANDIDATE",
-            "return_type": "int",
-            "static_mutable_state": [],
-            "unknown_facts": [
-              "Eva result unavailable",
-              "From result unavailable",
               "loop has a potential read/write dependency across iterations"
             ]
           }
@@ -8579,21 +8335,6 @@
         },
         {
           "comments": [],
-          "identifier": "3.5.1",
-          "kind": "section",
-          "mn_ids": [],
-          "next_action": "REVIEW_SPEC_SCOPE",
-          "page": 34,
-          "rationale": "No matching C comment evidence was found for this PDF anchor",
-          "related_code_functions": [],
-          "section_anchor_id": null,
-          "section_id": null,
-          "short_anchor": "3.5.1 Substream Layer",
-          "spec_anchor_id": "pdf:section:3.5.1",
-          "title": "Substream Layer"
-        },
-        {
-          "comments": [],
           "identifier": "3.5.2",
           "kind": "section",
           "mn_ids": [],
@@ -8834,21 +8575,6 @@
         },
         {
           "comments": [],
-          "identifier": "4.3",
-          "kind": "section",
-          "mn_ids": [],
-          "next_action": "REVIEW_SPEC_SCOPE",
-          "page": 62,
-          "rationale": "No matching C comment evidence was found for this PDF anchor",
-          "related_code_functions": [],
-          "section_anchor_id": null,
-          "section_id": null,
-          "short_anchor": "4.3 Slice",
-          "spec_anchor_id": "pdf:section:4.3",
-          "title": "Slice"
-        },
-        {
-          "comments": [],
           "identifier": "4.4",
           "kind": "section",
           "mn_ids": [],
@@ -9026,51 +8752,6 @@
           "short_anchor": "6.5.3.3 Full Error Precision for ICH Decision",
           "spec_anchor_id": "pdf:section:6.5.3.3",
           "title": "Full Error Precision for ICH Decision"
-        },
-        {
-          "comments": [],
-          "identifier": "6.6.2",
-          "kind": "section",
-          "mn_ids": [],
-          "next_action": "REVIEW_SPEC_SCOPE",
-          "page": 93,
-          "rationale": "No matching C comment evidence was found for this PDF anchor",
-          "related_code_functions": [],
-          "section_anchor_id": null,
-          "section_id": null,
-          "short_anchor": "6.6.2 Indexed Color History Coding",
-          "spec_anchor_id": "pdf:section:6.6.2",
-          "title": "Indexed Color History Coding"
-        },
-        {
-          "comments": [],
-          "identifier": "6.6.3",
-          "kind": "section",
-          "mn_ids": [],
-          "next_action": "REVIEW_SPEC_SCOPE",
-          "page": 94,
-          "rationale": "No matching C comment evidence was found for this PDF anchor",
-          "related_code_functions": [],
-          "section_anchor_id": null,
-          "section_id": null,
-          "short_anchor": "6.6.3 Flatness Signaling",
-          "spec_anchor_id": "pdf:section:6.6.3",
-          "title": "Flatness Signaling"
-        },
-        {
-          "comments": [],
-          "identifier": "6.6.4",
-          "kind": "section",
-          "mn_ids": [],
-          "next_action": "REVIEW_SPEC_SCOPE",
-          "page": 94,
-          "rationale": "No matching C comment evidence was found for this PDF anchor",
-          "related_code_functions": [],
-          "section_anchor_id": null,
-          "section_id": null,
-          "short_anchor": "6.6.4 Outputs to Rate Control",
-          "spec_anchor_id": "pdf:section:6.6.4",
-          "title": "Outputs to Rate Control"
         },
         {
           "comments": [],
@@ -9509,21 +9190,6 @@
         },
         {
           "comments": [],
-          "identifier": "3-1",
-          "kind": "table",
-          "mn_ids": [],
-          "next_action": "REVIEW_SPEC_SCOPE",
-          "page": 34,
-          "rationale": "No matching C comment evidence was found for this PDF anchor",
-          "related_code_functions": [],
-          "section_anchor_id": null,
-          "section_id": null,
-          "short_anchor": "Table 3-1: Examples of Sizes for Different Residual Values",
-          "spec_anchor_id": "pdf:table:3-1",
-          "title": "Examples of Sizes for Different Residual Values"
-        },
-        {
-          "comments": [],
           "identifier": "3-2",
           "kind": "table",
           "mn_ids": [],
@@ -9959,15 +9625,14 @@
         }
       ],
       "summary": {
-        "production_code_count": 59,
+        "production_code_count": 53,
         "production_code_next_actions": {
           "CHECK_NON_OUTPUT_SCOPE": 29,
-          "KEEP_STATEFUL_OR_UNPROVEN_BOUNDARY": 26,
-          "REVIEW_EXACT_SPEC_SCOPE": 4
+          "KEEP_STATEFUL_OR_UNPROVEN_BOUNDARY": 24
         },
-        "spec_anchor_count": 156,
+        "spec_anchor_count": 150,
         "spec_next_actions": {
-          "REVIEW_SPEC_SCOPE": 156
+          "REVIEW_SPEC_SCOPE": 150
         }
       }
     },
@@ -9978,22 +9643,16 @@
         "code:function:c:@F@DSC_Decode",
         "code:function:c:@F@DSC_Encode",
         "code:function:c:@F@ErrorHandler",
-        "code:function:c:@F@EscapeCodeSize",
-        "code:function:c:@F@EstimateBitsForGroup",
         "code:function:c:@F@GetBits",
         "code:function:c:@F@HistoryLookup",
         "code:function:c:@F@InitializeDSCState",
-        "code:function:c:@F@IsFlatnessInfoSent",
-        "code:function:c:@F@MaxResidualSize",
         "code:function:c:@F@PopulateOrigLine",
-        "code:function:c:@F@PredictSize",
         "code:function:c:@F@ProcessGroupDec",
         "code:function:c:@F@ProcessGroupEnc",
         "code:function:c:@F@RemoveBitsEncoderBuffer",
         "code:function:c:@F@UpdateICHistory",
         "code:function:c:@F@UpdateMidpoint",
         "code:function:c:@F@UseICHistory",
-        "code:function:c:@F@UsingMidpoint",
         "code:function:c:@F@VLCGroup",
         "code:function:c:@F@conv",
         "code:function:c:@F@convertbits",
@@ -10098,7 +9757,6 @@
         "pdf:section:3.3.3",
         "pdf:section:3.4",
         "pdf:section:3.5",
-        "pdf:section:3.5.1",
         "pdf:section:3.5.2",
         "pdf:section:3.6",
         "pdf:section:3.7",
@@ -10115,7 +9773,6 @@
         "pdf:section:4.2.1",
         "pdf:section:4.2.2",
         "pdf:section:4.2.3",
-        "pdf:section:4.3",
         "pdf:section:4.4",
         "pdf:section:4.5",
         "pdf:section:5",
@@ -10128,9 +9785,6 @@
         "pdf:section:6.5.2",
         "pdf:section:6.5.3",
         "pdf:section:6.5.3.3",
-        "pdf:section:6.6.2",
-        "pdf:section:6.6.3",
-        "pdf:section:6.6.4",
         "pdf:section:6.7",
         "pdf:section:6.7.1",
         "pdf:section:6.7.2",
@@ -10160,7 +9814,6 @@
         "pdf:table:1-5",
         "pdf:table:2",
         "pdf:table:3",
-        "pdf:table:3-1",
         "pdf:table:3-2",
         "pdf:table:4-1",
         "pdf:table:4-10",
@@ -10193,7 +9846,7 @@
       ]
     },
     "receipt": "traceability/traceability.json",
-    "receipt_sha256": "68b824feb6f1c2cf934e7231535721faf8552f13a8481820ab7404ed381361da",
+    "receipt_sha256": "91237e3ea6ff3a89c6ee8b1dbd553dbe29a0e18b04e4c27d36be3fcf634bbc3a",
     "reports": {
       "code_to_spec": "../reports/code-to-spec.md",
       "orphan_triage": "../reports/orphan-triage.md",

@@ -151,7 +151,7 @@ Generate:
   `reports/candidates.md`.
 - The dashboard must project the repository-wide receipt into a readable
   traceability audit: exact/proposed/reviewed/stale counts, proposal queue,
-  linked-versus-total PDF/C anchors, complete orphan lists, and deterministic
+  accepted-library projection status/count, linked-versus-total PDF/C anchors, complete orphan lists, and deterministic
   orphan-triage actions. Triage must join tool-discovered Clang/candidate/
   coverage facts with C comments and PDF anchors to show source spans, ranking,
   eligibility, coverage, and the evidence-backed next review action. Triage is
@@ -164,6 +164,14 @@ normalized function/table identifier, then optional LLM proposal. Exact links
 must never be created by an LLM. Proposed, reviewed, exact, and stale statuses
 remain distinct; reviewed links are human-edited and become stale when input
 hashes change. Unknowns and orphans must remain visible.
+
+An accepted library component may be projected into generated traceability only
+when its manifest entry is `PASS`, its authority is `EXACT_SPEC`, its contract
+file identifies the existing Clang USR, and the library source/spec hashes match
+the current input manifest. The projection reuses only the contract's existing
+`EXACT` PDF links and records the contract/manifest hashes as provenance; it
+must never select a function, add a candidate, or replace the human-edited
+review surface. Orphan triage remains reporting-only and must not create links.
 
 The primary PDF text path is `pdfinfo` plus `pdftotext -layout`. Every PDF
 `model note: MN_*` line is attached to the nearest preceding section heading

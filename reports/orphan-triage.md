@@ -2,8 +2,8 @@
 
 This is a deterministic evidence projection for human review. It does not create traceability links or select RTL targets.
 
-- Untraced production functions: 59
-- Untraced PDF anchors: 156
+- Untraced production functions: 53
+- Untraced PDF anchors: 150
 
 ## Production C functions
 
@@ -52,24 +52,6 @@ This is a deterministic evidence projection for human review. It does not create
 - C evidence: `dsc_codec.c:168` — //! Fill out the rest of the slice with valid pixels when an error occurs. Note the standard does not specify what the pixels should be & this is just an example.
 - C evidence: `dsc_codec.c:169` — /*! \param dsc_cfg DSC parameters \param dsc_state DSC state structure */
 
-### `EscapeCodeSize`
-
-- Anchor: `code:function:c:@F@EscapeCodeSize`; source: `dsc_codec.c:443-451`
-- Next action: `REVIEW_EXACT_SPEC_SCOPE` — Tool facts and coverage admit the function; exact PDF scope still needs evidence
-- Tool rank/score: `8` / `99.95`; eligible: `True`; purity/timing: `PURE` / `COMBINATIONAL`
-- Coverage: `EXECUTED`; executed: `20889`; eligible after coverage: `True`
-- C evidence: `dsc_codec.c:440` — //! Size to code that means "escape code"
-- C evidence: `dsc_codec.c:441` — /*! \param dsc_state DSC state structure \param qp Quantization parameter for group */
-
-### `EstimateBitsForGroup`
-
-- Anchor: `code:function:c:@F@EstimateBitsForGroup`; source: `dsc_codec.c:390-437`
-- Next action: `KEEP_STATEFUL_OR_UNPROVEN_BOUNDARY` — Tool facts show stateful, impure, or non-combinational behavior
-- Tool rank/score: `46` / `59.85`; eligible: `False`; purity/timing: `IMPURE` / `UNKNOWN`
-- Coverage: `EXECUTED`; executed: `20889`; eligible after coverage: `False`
-- C evidence: `dsc_codec.c:386` — //! Encoder function to estimate bits required to code original pixels
-- C evidence: `dsc_codec.c:387` — /*! \param dsc_cfg DSC configuration structure \param dsc_state DSC state structure \return Bits estimate to code original pixels */
-
 ### `GetBits`
 
 - Anchor: `code:function:c:@F@GetBits`; source: `multiplex.c:104-109`
@@ -97,24 +79,6 @@ This is a deterministic evidence projection for human review. It does not create
 - C evidence: `dsc_codec.c:2052` — //! Initialize the DSC state
 - C evidence: `dsc_codec.c:2053` — /*! \param dsc_cfg DSC configuration structure \param dsc_state DSC state structure \return Returns dsc_state that was passed in */
 
-### `IsFlatnessInfoSent`
-
-- Anchor: `code:function:c:@F@IsFlatnessInfoSent`; source: `dsc_codec.c:1116-1119`
-- Next action: `REVIEW_EXACT_SPEC_SCOPE` — Tool facts and coverage admit the function; exact PDF scope still needs evidence
-- Tool rank/score: `2` / `100.0`; eligible: `True`; purity/timing: `PURE` / `COMBINATIONAL`
-- Coverage: `EXECUTED`; executed: `275863`; eligible after coverage: `True`
-- C evidence: `dsc_codec.c:1112` — //! Map QP to quantization level
-- C evidence: `dsc_codec.c:1113` — /*! \param dsc_cfg DSC configuration structure \param qp QP to map \return Flag if flatness information sent for the current supergroup */
-
-### `MaxResidualSize`
-
-- Anchor: `code:function:c:@F@MaxResidualSize`; source: `dsc_codec.c:263-270`
-- Next action: `REVIEW_EXACT_SPEC_SCOPE` — Tool facts and coverage admit the function; exact PDF scope still needs evidence
-- Tool rank/score: `9` / `99.95`; eligible: `True`; purity/timing: `PURE` / `COMBINATIONAL`
-- Coverage: `EXECUTED`; executed: `2181573`; eligible after coverage: `True`
-- C evidence: `dsc_codec.c:258` — //! Get maximum residual size for a given component & quantization level
-- C evidence: `dsc_codec.c:259` — /*! \param dsc_state DSC state structure \param cpnt Which component \param qp Quantization parameter \return Max residual size in bits */
-
 ### `PopulateOrigLine`
 
 - Anchor: `code:function:c:@F@PopulateOrigLine`; source: `dsc_codec.c:2294-2351`
@@ -123,15 +87,6 @@ This is a deterministic evidence projection for human review. It does not create
 - Coverage: `EXECUTED`; executed: `2592`; eligible after coverage: `False`
 - C evidence: `dsc_codec.c:2289` — //! Convert original pixels in pic_t format to an array of unsigned int for easy access/
 - C evidence: `dsc_codec.c:2290` — /*! \param dsc_cfg DSC configuration structure \param dsc_state DSC state structure \param ip Input picture \param vPos Which line of slice to use */
-
-### `PredictSize`
-
-- Anchor: `code:function:c:@F@PredictSize`; source: `dsc_codec.c:1476-1486`
-- Next action: `REVIEW_EXACT_SPEC_SCOPE` — Tool facts and coverage admit the function; exact PDF scope still needs evidence
-- Tool rank/score: `4` / `100.0`; eligible: `True`; purity/timing: `PURE` / `COMBINATIONAL`
-- Coverage: `EXECUTED`; executed: `367218`; eligible after coverage: `True`
-- C evidence: `dsc_codec.c:1472` — //! Predict size for next unit
-- C evidence: `dsc_codec.c:1473` — /*! \param dsc_cfg DSC configuration structure \param req_size Array of required sizes for the samples in the unit \return Predicted size for next unit */
 
 ### `ProcessGroupDec`
 
@@ -186,15 +141,6 @@ This is a deterministic evidence projection for human review. It does not create
 - Coverage: `EXECUTED`; executed: `11704`; eligible after coverage: `False`
 - C evidence: `dsc_codec.c:828` — //! Encoder function to update the reconstructed samples & output picture if ICH is selected
 - C evidence: `dsc_codec.c:829` — /*! \param dsc_cfg DSC configuration structure \param dsc_state DSC state structure \param currLine Current line reconstructed samples (modified) */
-
-### `UsingMidpoint`
-
-- Anchor: `code:function:c:@F@UsingMidpoint`; source: `dsc_codec.c:457-476`
-- Next action: `KEEP_STATEFUL_OR_UNPROVEN_BOUNDARY` — Tool facts show stateful, impure, or non-combinational behavior
-- Tool rank/score: `16` / `79.9`; eligible: `False`; purity/timing: `IMPURE` / `COMBINATIONAL`
-- Coverage: `EXECUTED`; executed: `65250`; eligible after coverage: `False`
-- C evidence: `dsc_codec.c:454` — //! Encoder function that returns 1 if midpoint prediction will be used for the specified component
-- C evidence: `dsc_codec.c:455` — /*! \param dsc_state DSC state structure \param cpnt Component to check */
 
 ### `VLCGroup`
 
@@ -873,12 +819,6 @@ This is a deterministic evidence projection for human review. It does not create
 - Next action: `REVIEW_SPEC_SCOPE` — No matching C comment evidence was found for this PDF anchor
 - Related C functions: none
 
-### `pdf:section:3.5.1`
-
-- Kind/page: `section` / `34`; title: Substream Layer
-- Next action: `REVIEW_SPEC_SCOPE` — No matching C comment evidence was found for this PDF anchor
-- Related C functions: none
-
 ### `pdf:section:3.5.2`
 
 - Kind/page: `section` / `36`; title: Substream Multiplexing
@@ -975,12 +915,6 @@ This is a deterministic evidence projection for human review. It does not create
 - Next action: `REVIEW_SPEC_SCOPE` — No matching C comment evidence was found for this PDF anchor
 - Related C functions: none
 
-### `pdf:section:4.3`
-
-- Kind/page: `section` / `62`; title: Slice
-- Next action: `REVIEW_SPEC_SCOPE` — No matching C comment evidence was found for this PDF anchor
-- Related C functions: none
-
 ### `pdf:section:4.4`
 
 - Kind/page: `section` / `63`; title: Substream Multiplexing
@@ -1050,24 +984,6 @@ This is a deterministic evidence projection for human review. It does not create
 ### `pdf:section:6.5.3.3`
 
 - Kind/page: `section` / `91`; title: Full Error Precision for ICH Decision
-- Next action: `REVIEW_SPEC_SCOPE` — No matching C comment evidence was found for this PDF anchor
-- Related C functions: none
-
-### `pdf:section:6.6.2`
-
-- Kind/page: `section` / `93`; title: Indexed Color History Coding
-- Next action: `REVIEW_SPEC_SCOPE` — No matching C comment evidence was found for this PDF anchor
-- Related C functions: none
-
-### `pdf:section:6.6.3`
-
-- Kind/page: `section` / `94`; title: Flatness Signaling
-- Next action: `REVIEW_SPEC_SCOPE` — No matching C comment evidence was found for this PDF anchor
-- Related C functions: none
-
-### `pdf:section:6.6.4`
-
-- Kind/page: `section` / `94`; title: Outputs to Rate Control
 - Next action: `REVIEW_SPEC_SCOPE` — No matching C comment evidence was found for this PDF anchor
 - Related C functions: none
 
@@ -1242,12 +1158,6 @@ This is a deterministic evidence projection for human review. It does not create
 ### `pdf:table:3`
 
 - Kind/page: `table` / `13`; title: Revision History
-- Next action: `REVIEW_SPEC_SCOPE` — No matching C comment evidence was found for this PDF anchor
-- Related C functions: none
-
-### `pdf:table:3-1`
-
-- Kind/page: `table` / `34`; title: Examples of Sizes for Different Residual Values
 - Next action: `REVIEW_SPEC_SCOPE` — No matching C comment evidence was found for this PDF anchor
 - Related C functions: none
 

@@ -412,20 +412,21 @@
   "traceability": {
     "available": true,
     "counts": {
+      "accepted_library_link_count": 25,
       "exact_count": 53,
-      "link_count": 64,
-      "linked_production_anchor_count": 29,
-      "linked_spec_anchor_count": 58,
+      "link_count": 89,
+      "linked_production_anchor_count": 35,
+      "linked_spec_anchor_count": 64,
       "production_anchor_count": 88,
       "proposed_count": 6,
-      "reviewed_count": 5,
+      "reviewed_count": 30,
       "spec_anchor_count": 358,
       "stale_count": 0,
-      "untraced_production_function_count": 59,
-      "untraced_spec_anchor_count": 156
+      "untraced_production_function_count": 53,
+      "untraced_spec_anchor_count": 150
     },
     "receipt": "traceability/traceability.json",
-    "receipt_sha256": "68b824feb6f1c2cf934e7231535721faf8552f13a8481820ab7404ed381361da",
+    "receipt_sha256": "91237e3ea6ff3a89c6ee8b1dbd553dbe29a0e18b04e4c27d36be3fcf634bbc3a",
     "reports": {
       "code_to_spec": "../reports/code-to-spec.md",
       "orphan_triage": "../reports/orphan-triage.md",

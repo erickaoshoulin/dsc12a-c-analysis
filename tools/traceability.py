@@ -110,6 +110,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--candidates", required=True, type=pathlib.Path)
     parser.add_argument("--output-dir", required=True, type=pathlib.Path)
     parser.add_argument("--reviewed", required=True, type=pathlib.Path)
+    parser.add_argument("--library-manifest", type=pathlib.Path)
     return parser.parse_args()
 
 
@@ -952,6 +953,171 @@ def apply_reviewed(
     return links
 
 
+def apply_library_links(
+    links: list[dict[str, Any]],
+    library_manifest_path: pathlib.Path | None,
+    output_dir: pathlib.Path,
+    anchors: list[dict[str, Any]],
+    code_anchors: list[dict[str, Any]],
+    manifest: dict[str, Any],
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Project accepted library spec links into generated traceability.
+
+    A PASS library component is already a reviewed, content-addressed
+    contract.  Reusing its EXACT_SPEC links reduces duplicate human review,
+    but this projection is never a selector: it only joins an existing
+    accepted contract to an existing Clang code anchor and an existing PDF
+    anchor.  Stale or malformed library inputs are reported and ignored.
+    """
+    audit: dict[str, Any] = {
+        "schema_version": 1,
+        "status": "NOT_CONFIGURED",
+        "manifest": str(library_manifest_path) if library_manifest_path else None,
+        "manifest_sha256": None,
+        "components_seen": 0,
+        "components_eligible": 0,
+        "links_added": 0,
+        "skipped": {},
+    }
+    if library_manifest_path is None or not library_manifest_path.is_file():
+        return links, audit
+
+    try:
+        library = json.loads(library_manifest_path.read_text(encoding="utf-8"))
+        audit["manifest_sha256"] = sha256_file(library_manifest_path)
+    except (OSError, json.JSONDecodeError):
+        audit["status"] = "INVALID"
+        audit["skipped"] = {"invalid_manifest": 1}
+        return links, audit
+    if not isinstance(library, dict):
+        audit["status"] = "INVALID"
+        audit["skipped"] = {"invalid_manifest_shape": 1}
+        return links, audit
+
+    spec_sha = manifest.get("spec", {}).get("sha256", "UNKNOWN")
+    source_sha = manifest.get("source", {}).get("source_hashes_sha256", "UNKNOWN")
+    if library.get("spec_hash") != spec_sha or library.get("source_hash") != source_sha:
+        audit["status"] = "STALE_INPUT"
+        audit["skipped"] = {"library_input_hash_mismatch": 1}
+        return links, audit
+
+    components = library.get("components") if isinstance(library.get("components"), list) else []
+    audit["status"] = "PASS"
+    audit["components_seen"] = len(components)
+    anchor_by_id = {
+        str(item.get("anchor_id")): item
+        for item in anchors
+        if isinstance(item, dict) and item.get("anchor_id")
+    }
+    code_by_usr = {
+        str(item.get("clang_usr")): item
+        for item in code_anchors
+        if isinstance(item, dict) and item.get("clang_usr")
+    }
+    existing = {link_key(link) for link in links}
+    skipped: Counter[str] = Counter()
+    added: list[dict[str, Any]] = []
+
+    def component_sort_key(item: Any) -> str:
+        return str(item.get("contract_id", "")) if isinstance(item, dict) else ""
+
+    for component in sorted(components, key=component_sort_key):
+        if not isinstance(component, dict):
+            skipped["invalid_component"] += 1
+            continue
+        if component.get("status") != "PASS":
+            skipped["component_not_pass"] += 1
+            continue
+        if component.get("authority") != "EXACT_SPEC":
+            skipped["component_not_exact_spec"] += 1
+            continue
+        contract_id = str(component.get("contract_id", ""))
+        if not contract_id:
+            skipped["component_missing_id"] += 1
+            continue
+        contract_hash = str(component.get("contract_hash", ""))
+        if not contract_hash:
+            skipped["component_missing_hash"] += 1
+            continue
+        audit["components_eligible"] += 1
+        contract_paths = [
+            library_manifest_path.parent / "contracts" / f"{contract_id}.json",
+            output_dir / "library" / "contracts" / f"{contract_id}.json",
+        ]
+        contract_file = component.get("contract_file")
+        if contract_file:
+            contract_paths.append(output_dir / str(contract_file))
+        contract_path = next((path for path in contract_paths if path.is_file()), None)
+        if contract_path is None:
+            skipped["contract_file_missing"] += 1
+            continue
+        try:
+            contract = json.loads(contract_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            skipped["contract_file_invalid"] += 1
+            continue
+        if not isinstance(contract, dict) or contract.get("contract_id") != contract_id:
+            skipped["contract_identity_mismatch"] += 1
+            continue
+        function = contract.get("function") if isinstance(contract.get("function"), dict) else {}
+        clang_usr = str(function.get("clang_usr", ""))
+        code = code_by_usr.get(clang_usr)
+        if not code:
+            skipped["code_anchor_missing"] += 1
+            continue
+        spec_links = contract.get("spec_links") if isinstance(contract.get("spec_links"), list) else []
+        component_added = 0
+        for spec_link in spec_links:
+            if not isinstance(spec_link, dict) or spec_link.get("status") != "EXACT":
+                skipped["spec_link_not_exact"] += 1
+                continue
+            spec_anchor_id = str(spec_link.get("anchor_id", ""))
+            anchor = anchor_by_id.get(spec_anchor_id)
+            if not anchor:
+                skipped["spec_anchor_missing"] += 1
+                continue
+            key = (spec_anchor_id, str(code.get("code_anchor_id", "")))
+            if key in existing:
+                skipped["duplicate_link"] += 1
+                continue
+            link = {
+                "link_id": f"library-{contract_id}-{spec_anchor_id.replace(':', '-')}",
+                "status": "REVIEWED",
+                "method": "accepted_library_exact_spec",
+                "evidence": (
+                    f"Accepted PASS library component {contract_id} carries an EXACT_SPEC "
+                    f"link to {spec_anchor_id}"
+                ),
+                "spec_anchor_id": spec_anchor_id,
+                "spec_page": anchor.get("page", spec_link.get("page")),
+                "spec_section": anchor.get("section_id")
+                if anchor.get("kind") == "model_note"
+                else anchor.get("identifier") if anchor.get("kind") == "section" else None,
+                "spec_sha256": spec_sha,
+                "code_anchor_id": code.get("code_anchor_id"),
+                "function": code.get("function"),
+                "clang_usr": clang_usr,
+                "code_file": code.get("file"),
+                "code_line": code.get("line"),
+                "code_permalink": code.get("permalink"),
+                "source_hashes_sha256": source_sha,
+                "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+                "library_contract_id": contract_id,
+                "library_contract_hash": contract_hash,
+                "library_manifest_sha256": audit["manifest_sha256"],
+            }
+            links.append(link)
+            added.append(link)
+            existing.add(key)
+            component_added += 1
+        if component_added == 0:
+            skipped["component_no_new_links"] += 1
+
+    audit["links_added"] = len(added)
+    audit["skipped"] = dict(sorted(skipped.items()))
+    return links, audit
+
+
 def _comment_view(comment: dict[str, Any]) -> dict[str, Any]:
     refs = comment.get("spec_refs") if isinstance(comment.get("spec_refs"), dict) else {}
     return {
@@ -1255,7 +1421,15 @@ def build_orphan_triage(
 
 
 def markdown_spec_to_code(payload: dict[str, Any]) -> str:
-    lines = ["# Specification to C traceability", "", "Generated links are EXACT only when anchored by a direct MN/spec reference; heuristic links remain PROPOSED until human review.", ""]
+    lines = [
+        "# Specification to C traceability",
+        "",
+        "Generated links are EXACT only when anchored by a direct MN/spec reference. "
+        "Accepted PASS library contracts may also project their hash-checked EXACT_SPEC "
+        "links as REVIEWED joins to existing Clang/PDF anchors; heuristic links remain "
+        "PROPOSED until human review.",
+        "",
+    ]
     for link in payload["links"]:
         lines.extend([
             f"- `{link['status']}` `{link['spec_anchor_id']}` page {link['spec_page']} -> `{link['function']}` `{link['code_file']}:{link['code_line']}`",
@@ -1330,6 +1504,7 @@ def main() -> int:
     manifest = json.loads(args.input_manifest.resolve().read_text(encoding="utf-8"))
     raw = json.loads(args.raw.resolve().read_text(encoding="utf-8"))
     candidates = json.loads(args.candidates.resolve().read_text(encoding="utf-8"))
+    output = args.output_dir.resolve()
     pdf_path = pathlib.Path(manifest["spec"]["path"])
     pdf_payload = extract_pdf_layout(pdf_path)
     anchors = pdf_payload["anchors"]
@@ -1343,13 +1518,25 @@ def main() -> int:
         code_anchors=comments["code_anchors"],
         raw_functions=raw.get("functions", []),
     )
+    library_manifest_path = (
+        args.library_manifest.resolve()
+        if args.library_manifest
+        else output / "library" / "manifest.json"
+    )
+    links, library_projection = apply_library_links(
+        links,
+        library_manifest_path,
+        output,
+        anchors,
+        comments["code_anchors"],
+        manifest,
+    )
     linked_spec = {link["spec_anchor_id"] for link in links}
     linked_code = {link["code_anchor_id"] for link in links}
     spec_orphans = [anchor["anchor_id"] for anchor in anchors if anchor["kind"] != "page" and anchor["anchor_id"] not in linked_spec]
     production_usrs = {item.get("clang_usr") for item in candidates.get("functions", []) if item.get("production_reachable")}
     production_anchors = {anchor["code_anchor_id"] for anchor in comments["code_anchors"] if anchor["clang_usr"] in production_usrs}
     code_orphans = sorted(production_anchors - linked_code)
-    output = args.output_dir.resolve()
     coverage_path = output / "coverage" / "coverage.json"
     coverage = None
     if coverage_path.is_file():
@@ -1379,6 +1566,7 @@ def main() -> int:
         "proposed_count": sum(link["status"] == "PROPOSED" for link in links),
         "reviewed_count": sum(link["status"] == "REVIEWED" for link in links),
         "stale_count": sum(link["status"] == "STALE" for link in links),
+        "accepted_library_link_count": sum(link.get("method") == "accepted_library_exact_spec" for link in links),
         "untraced_spec_anchor_count": len(spec_orphans),
         "untraced_production_function_count": len(code_orphans),
     }
@@ -1398,6 +1586,7 @@ def main() -> int:
             "raw_facts": sha256_file(args.raw.resolve()),
             "candidate_facts": sha256_file(args.candidates.resolve()),
             "coverage": sha256_file(coverage_path) if coverage_path.is_file() else None,
+            "library_manifest": library_projection.get("manifest_sha256"),
         },
     )
     payload = {
@@ -1411,6 +1600,7 @@ def main() -> int:
             "spec_anchor_ids": spec_orphans,
             "production_code_anchor_ids": code_orphans,
         },
+        "library_projection": library_projection,
         "orphan_triage": orphan_triage,
     }
     write_json(
