@@ -1,5 +1,6 @@
 import json
 import pathlib
+import shlex
 import subprocess
 import sys
 import tempfile
@@ -26,6 +27,31 @@ class AnalysisPreflightTests(unittest.TestCase):
                 resolved, resolution = analysis_preflight.resolve_executable("llvm-config", "llvm-config")
         self.assertEqual(resolved, str(candidate.resolve()))
         self.assertEqual(resolution, "homebrew")
+
+    def test_opam_fallback_is_used_for_bare_frama_c(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            opam_bin = root / "opam-bin"
+            frama_bin = root / "switch-bin"
+            opam_bin.mkdir()
+            frama_bin.mkdir()
+            candidate = frama_bin / "frama-c"
+            candidate.write_text("#!/bin/sh\nprintf 'frama-c test\\n'\n", encoding="utf-8")
+            candidate.chmod(0o755)
+            opam = opam_bin / "opam"
+            opam.write_text(
+                "#!/bin/sh\nprintf '%s\\n' " + shlex.quote(str(candidate)) + "\n",
+                encoding="utf-8",
+            )
+            opam.chmod(0o755)
+            with mock.patch.dict(
+                analysis_preflight.os.environ,
+                {"PATH": str(opam_bin), "OPAM_SWITCH_PREFIX": ""},
+                clear=False,
+            ):
+                resolved, resolution = analysis_preflight.resolve_executable("frama-c", "frama-c")
+        self.assertEqual(resolved, str(candidate.resolve()))
+        self.assertEqual(resolution, "opam")
 
     def test_missing_tool_is_recorded_before_analysis(self):
         with tempfile.TemporaryDirectory() as directory:

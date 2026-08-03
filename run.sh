@@ -30,6 +30,45 @@ resolve_executable() {
     printf '%s\n' "$candidate"
     return 0
   fi
+  if [ "$name" = "frama-c" ]; then
+    if [ -n "${OPAM_SWITCH_PREFIX:-}" ]; then
+      for candidate in \
+        "$OPAM_SWITCH_PREFIX/bin/$name" \
+        "$OPAM_SWITCH_PREFIX/_opam/bin/$name"; do
+        if [ -x "$candidate" ]; then
+          printf '%s\n' "$candidate"
+          return 0
+        fi
+      done
+    fi
+    candidate="$(command -v opam 2>/dev/null || true)"
+    if [ -z "$candidate" ]; then
+      for candidate in /opt/homebrew/bin/opam /usr/local/bin/opam; do
+        if [ -x "$candidate" ]; then
+          break
+        fi
+      done
+    fi
+    if [ -n "$candidate" ] && [ -x "$candidate" ]; then
+      local opam_tool
+      opam_tool="$($candidate exec -- which "$name" 2>/dev/null | tail -n 1 || true)"
+      if [ -x "$opam_tool" ]; then
+        printf '%s\n' "$opam_tool"
+        return 0
+      fi
+      local switch_name
+      while IFS= read -r switch_name; do
+        [ -n "$switch_name" ] || continue
+        opam_tool="$($candidate exec --switch="$switch_name" -- which "$name" 2>/dev/null | tail -n 1 || true)"
+        if [ -x "$opam_tool" ]; then
+          printf '%s\n' "$opam_tool"
+          return 0
+        fi
+      done <<EOF
+$($candidate switch list --short 2>/dev/null || true)
+EOF
+    fi
+  fi
   return 1
 }
 

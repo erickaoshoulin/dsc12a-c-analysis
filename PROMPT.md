@@ -99,10 +99,12 @@ make/smoke logs use `--log-dir` outside the checkout and appear only as
 After the C gate, write the compact `build/analysis-preflight.json` receipt
 before clearing any derived facts. The receipt-producing tool and `run.sh`
 must use the same deterministic resolver: honor explicit executable paths,
-then standard Homebrew LLVM paths, then `PATH`; record the resolved path,
-version, and resolution source (`configured`, `homebrew`, or `PATH`) for every
-tool. Surface `INFRASTRUCTURE_FAILURE` in the dashboard/report and preserve
-the prior facts when Frama-C or another required analysis tool is unavailable.
+then standard Homebrew LLVM paths, then `PATH`, then an already-installed
+Opam switch for Frama-C; record the resolved path, version, and resolution
+source (`configured`, `homebrew`, `PATH`, or `opam`) for every tool. Never
+install or initialize a package manager during a run. Surface
+`INFRASTRUCTURE_FAILURE` in the dashboard/report and preserve the prior facts
+when Frama-C or another required analysis tool is unavailable.
 Refresh and check the dashboard/report after a successful run and after this
 preflight failure path.
 

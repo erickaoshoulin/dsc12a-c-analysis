@@ -35,6 +35,11 @@ HOMEBREW_TOOL_PATHS = {
     ),
 }
 
+OPAM_EXECUTABLE_PATHS = (
+    "/opt/homebrew/bin/opam",
+    "/usr/local/bin/opam",
+)
+
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser()
@@ -42,6 +47,82 @@ def parse_args() -> argparse.Namespace:
     for name in REQUIRED_TOOLS:
         parser.add_argument(f"--{name}", dest=name.replace("-", "_"), default="")
     return parser.parse_args()
+
+
+def _executable_from_output(output: str) -> str | None:
+    for line in reversed((output or "").splitlines()):
+        candidate = pathlib.Path(line.strip()).expanduser()
+        if candidate.is_file() and os.access(candidate, os.X_OK):
+            return str(candidate.resolve())
+    return None
+
+
+def resolve_opam_executable(tool: str) -> str | None:
+    """Find an Opam-managed executable without changing the active switch."""
+    switch_prefix = os.environ.get("OPAM_SWITCH_PREFIX", "").strip()
+    prefixes: list[pathlib.Path] = []
+    if switch_prefix:
+        prefixes.append(pathlib.Path(switch_prefix).expanduser())
+
+    opam_root = pathlib.Path.home() / ".opam"
+    default_switch = opam_root / "default"
+    prefixes.append(default_switch)
+    if opam_root.is_dir():
+        prefixes.extend(sorted(path for path in opam_root.iterdir() if path.is_dir()))
+
+    seen: set[pathlib.Path] = set()
+    for prefix in prefixes:
+        if prefix in seen:
+            continue
+        seen.add(prefix)
+        for candidate in (prefix / "bin" / tool, prefix / "_opam" / "bin" / tool):
+            if candidate.is_file() and os.access(candidate, os.X_OK):
+                return str(candidate.resolve())
+
+    opam = shutil.which("opam")
+    if not opam:
+        for candidate in OPAM_EXECUTABLE_PATHS:
+            if pathlib.Path(candidate).is_file() and os.access(candidate, os.X_OK):
+                opam = candidate
+                break
+    if not opam:
+        return None
+
+    commands = [[opam, "exec", "--", "which", tool]]
+    try:
+        switches = subprocess.run(
+            [opam, "switch", "list", "--short"],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.DEVNULL,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=15,
+            check=False,
+        ).stdout
+    except (OSError, subprocess.TimeoutExpired):
+        switches = ""
+    for switch in sorted({line.strip() for line in switches.splitlines() if line.strip()}):
+        commands.append([opam, "exec", f"--switch={switch}", "--", "which", tool])
+
+    for command in commands:
+        try:
+            result = subprocess.run(
+                command,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.DEVNULL,
+                text=True,
+                encoding="utf-8",
+                errors="replace",
+                timeout=15,
+                check=False,
+            )
+        except (OSError, subprocess.TimeoutExpired):
+            continue
+        resolved = _executable_from_output(result.stdout)
+        if resolved:
+            return resolved
+    return None
 
 
 def resolve_executable(raw: str, tool: str) -> tuple[str | None, str | None]:
@@ -65,6 +146,10 @@ def resolve_executable(raw: str, tool: str) -> tuple[str | None, str | None]:
     found = shutil.which(lookup)
     if found:
         return str(pathlib.Path(found).resolve()), "PATH"
+    if tool == "frama-c" and value in {"", tool}:
+        found = resolve_opam_executable(tool)
+        if found:
+            return found, "opam"
     return None, None
 
 

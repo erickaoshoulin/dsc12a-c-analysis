@@ -386,7 +386,9 @@ the repository and are never edited. `run.sh` records the analysis-tool
 preflight in compact `build/analysis-preflight.json` after the C gate and
 before clearing facts; both `run.sh` and the receipt producer resolve the
 standard Homebrew LLVM paths and record whether each tool came from explicit
-configuration, Homebrew, or `PATH`. Missing Frama-C/LLVM tools are visible in
-the dashboard/report. `run.sh` refreshes and checks the static dashboard after
-a successful run and after a preflight failure, so the latest blocker is
-visible without hand-editing receipts.
+configuration, Homebrew, `PATH`, or an already-installed Opam switch for
+Frama-C. They never install or initialize a package manager during a run.
+Missing Frama-C/LLVM tools are visible in the dashboard/report. `run.sh`
+refreshes and checks the static dashboard after a successful run and after a
+preflight failure, so the latest blocker is visible without hand-editing
+receipts.
