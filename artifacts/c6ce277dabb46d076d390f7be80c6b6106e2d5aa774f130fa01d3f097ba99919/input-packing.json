@@ -1,0 +1,734 @@
+{
+  "bit_order": "little-endian integer text to packed Verilator port",
+  "ports": [
+    {
+      "direction": "input",
+      "name": "adj_predicted_size",
+      "packing": "bits[5:0]",
+      "role": "adj_predicted_size",
+      "signed": false,
+      "width": 6
+    },
+    {
+      "direction": "input",
+      "name": "alt_pfx",
+      "packing": "bits[5:0]",
+      "role": "alt_pfx",
+      "signed": false,
+      "width": 6
+    },
+    {
+      "direction": "input",
+      "name": "alt_size_to_generate",
+      "packing": "bits[5:0]",
+      "role": "alt_size_to_generate",
+      "signed": false,
+      "width": 6
+    },
+    {
+      "direction": "input",
+      "name": "dsc_version_minor",
+      "packing": "bits[1:0]",
+      "role": "dsc_version_minor",
+      "signed": false,
+      "width": 2
+    },
+    {
+      "direction": "input",
+      "name": "native_420",
+      "packing": "bits[0:0]",
+      "role": "native_420",
+      "signed": false,
+      "width": 1
+    },
+    {
+      "direction": "input",
+      "name": "flatness_det_thresh",
+      "packing": "bits[9:0]",
+      "role": "flatness_det_thresh",
+      "signed": false,
+      "width": 10
+    },
+    {
+      "direction": "input",
+      "name": "somewhat_flat_qp_delta",
+      "packing": "bits[2:0]",
+      "role": "somewhat_flat_qp_delta",
+      "signed": false,
+      "width": 3
+    },
+    {
+      "direction": "input",
+      "name": "units_per_group",
+      "packing": "bits[2:0]",
+      "role": "units_per_group",
+      "signed": false,
+      "width": 3
+    },
+    {
+      "direction": "input",
+      "name": "pixels_in_group",
+      "packing": "bits[1:0]",
+      "role": "pixels_in_group",
+      "signed": false,
+      "width": 2
+    },
+    {
+      "direction": "input",
+      "name": "hPos",
+      "packing": "bits[15:0]",
+      "role": "hPos",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "slice_width",
+      "packing": "bits[15:0]",
+      "role": "slice_width",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "prev_ich_selected",
+      "packing": "bits[0:0]",
+      "role": "prev_ich_selected",
+      "signed": false,
+      "width": 1
+    },
+    {
+      "direction": "input",
+      "name": "primary_qp",
+      "packing": "bits[4:0]",
+      "role": "primary_qp",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "prev_primary_qp",
+      "packing": "bits[4:0]",
+      "role": "prev_primary_qp",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "ich_indices_in_group",
+      "packing": "bits[2:0]",
+      "role": "ich_indices_in_group",
+      "signed": false,
+      "width": 3
+    },
+    {
+      "direction": "input",
+      "name": "num_components",
+      "packing": "bits[2:0]",
+      "role": "num_components",
+      "signed": false,
+      "width": 3
+    },
+    {
+      "direction": "input",
+      "name": "cpnt_bit_depth_0",
+      "packing": "bits[4:0]",
+      "role": "cpnt_bit_depth_0",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "cpnt_bit_depth_1",
+      "packing": "bits[4:0]",
+      "role": "cpnt_bit_depth_1",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "cpnt_bit_depth_2",
+      "packing": "bits[4:0]",
+      "role": "cpnt_bit_depth_2",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "cpnt_bit_depth_3",
+      "packing": "bits[4:0]",
+      "role": "cpnt_bit_depth_3",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "unit_c_type_0",
+      "packing": "bits[1:0]",
+      "role": "unit_c_type_0",
+      "signed": false,
+      "width": 2
+    },
+    {
+      "direction": "input",
+      "name": "unit_c_type_1",
+      "packing": "bits[1:0]",
+      "role": "unit_c_type_1",
+      "signed": false,
+      "width": 2
+    },
+    {
+      "direction": "input",
+      "name": "unit_c_type_2",
+      "packing": "bits[1:0]",
+      "role": "unit_c_type_2",
+      "signed": false,
+      "width": 2
+    },
+    {
+      "direction": "input",
+      "name": "unit_c_type_3",
+      "packing": "bits[1:0]",
+      "role": "unit_c_type_3",
+      "signed": false,
+      "width": 2
+    },
+    {
+      "direction": "input",
+      "name": "unit_start_h_pos_0",
+      "packing": "bits[15:0]",
+      "role": "unit_start_h_pos_0",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "unit_start_h_pos_1",
+      "packing": "bits[15:0]",
+      "role": "unit_start_h_pos_1",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "unit_start_h_pos_2",
+      "packing": "bits[15:0]",
+      "role": "unit_start_h_pos_2",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "unit_start_h_pos_3",
+      "packing": "bits[15:0]",
+      "role": "unit_start_h_pos_3",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "predicted_size_0",
+      "packing": "bits[4:0]",
+      "role": "predicted_size_0",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "predicted_size_1",
+      "packing": "bits[4:0]",
+      "role": "predicted_size_1",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "predicted_size_2",
+      "packing": "bits[4:0]",
+      "role": "predicted_size_2",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "predicted_size_3",
+      "packing": "bits[4:0]",
+      "role": "predicted_size_3",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "max_error_0",
+      "packing": "bits[16:0]",
+      "role": "max_error_0",
+      "signed": false,
+      "width": 17
+    },
+    {
+      "direction": "input",
+      "name": "max_error_1",
+      "packing": "bits[16:0]",
+      "role": "max_error_1",
+      "signed": false,
+      "width": 17
+    },
+    {
+      "direction": "input",
+      "name": "max_error_2",
+      "packing": "bits[16:0]",
+      "role": "max_error_2",
+      "signed": false,
+      "width": 17
+    },
+    {
+      "direction": "input",
+      "name": "max_error_3",
+      "packing": "bits[16:0]",
+      "role": "max_error_3",
+      "signed": false,
+      "width": 17
+    },
+    {
+      "direction": "input",
+      "name": "max_mid_error_0",
+      "packing": "bits[16:0]",
+      "role": "max_mid_error_0",
+      "signed": false,
+      "width": 17
+    },
+    {
+      "direction": "input",
+      "name": "max_mid_error_1",
+      "packing": "bits[16:0]",
+      "role": "max_mid_error_1",
+      "signed": false,
+      "width": 17
+    },
+    {
+      "direction": "input",
+      "name": "max_mid_error_2",
+      "packing": "bits[16:0]",
+      "role": "max_mid_error_2",
+      "signed": false,
+      "width": 17
+    },
+    {
+      "direction": "input",
+      "name": "max_mid_error_3",
+      "packing": "bits[16:0]",
+      "role": "max_mid_error_3",
+      "signed": false,
+      "width": 17
+    },
+    {
+      "direction": "input",
+      "name": "max_ich_error_0",
+      "packing": "bits[16:0]",
+      "role": "max_ich_error_0",
+      "signed": false,
+      "width": 17
+    },
+    {
+      "direction": "input",
+      "name": "max_ich_error_1",
+      "packing": "bits[16:0]",
+      "role": "max_ich_error_1",
+      "signed": false,
+      "width": 17
+    },
+    {
+      "direction": "input",
+      "name": "max_ich_error_2",
+      "packing": "bits[16:0]",
+      "role": "max_ich_error_2",
+      "signed": false,
+      "width": 17
+    },
+    {
+      "direction": "input",
+      "name": "max_ich_error_3",
+      "packing": "bits[16:0]",
+      "role": "max_ich_error_3",
+      "signed": false,
+      "width": 17
+    },
+    {
+      "direction": "input",
+      "name": "quantized_residual_0_0",
+      "packing": "bits[16:0]",
+      "role": "quantized_residual_0_0",
+      "signed": true,
+      "width": 17
+    },
+    {
+      "direction": "input",
+      "name": "quantized_residual_0_1",
+      "packing": "bits[16:0]",
+      "role": "quantized_residual_0_1",
+      "signed": true,
+      "width": 17
+    },
+    {
+      "direction": "input",
+      "name": "quantized_residual_0_2",
+      "packing": "bits[16:0]",
+      "role": "quantized_residual_0_2",
+      "signed": true,
+      "width": 17
+    },
+    {
+      "direction": "input",
+      "name": "quantized_residual_1_0",
+      "packing": "bits[16:0]",
+      "role": "quantized_residual_1_0",
+      "signed": true,
+      "width": 17
+    },
+    {
+      "direction": "input",
+      "name": "quantized_residual_1_1",
+      "packing": "bits[16:0]",
+      "role": "quantized_residual_1_1",
+      "signed": true,
+      "width": 17
+    },
+    {
+      "direction": "input",
+      "name": "quantized_residual_1_2",
+      "packing": "bits[16:0]",
+      "role": "quantized_residual_1_2",
+      "signed": true,
+      "width": 17
+    },
+    {
+      "direction": "input",
+      "name": "quantized_residual_2_0",
+      "packing": "bits[16:0]",
+      "role": "quantized_residual_2_0",
+      "signed": true,
+      "width": 17
+    },
+    {
+      "direction": "input",
+      "name": "quantized_residual_2_1",
+      "packing": "bits[16:0]",
+      "role": "quantized_residual_2_1",
+      "signed": true,
+      "width": 17
+    },
+    {
+      "direction": "input",
+      "name": "quantized_residual_2_2",
+      "packing": "bits[16:0]",
+      "role": "quantized_residual_2_2",
+      "signed": true,
+      "width": 17
+    },
+    {
+      "direction": "input",
+      "name": "quantized_residual_3_0",
+      "packing": "bits[16:0]",
+      "role": "quantized_residual_3_0",
+      "signed": true,
+      "width": 17
+    },
+    {
+      "direction": "input",
+      "name": "quantized_residual_3_1",
+      "packing": "bits[16:0]",
+      "role": "quantized_residual_3_1",
+      "signed": true,
+      "width": 17
+    },
+    {
+      "direction": "input",
+      "name": "quantized_residual_3_2",
+      "packing": "bits[16:0]",
+      "role": "quantized_residual_3_2",
+      "signed": true,
+      "width": 17
+    },
+    {
+      "direction": "input",
+      "name": "qlevel_luma_primary",
+      "packing": "bits[4:0]",
+      "role": "qlevel_luma_primary",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "qlevel_chroma_primary",
+      "packing": "bits[4:0]",
+      "role": "qlevel_chroma_primary",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "qlevel_luma_previous",
+      "packing": "bits[4:0]",
+      "role": "qlevel_luma_previous",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "qlevel_chroma_previous",
+      "packing": "bits[4:0]",
+      "role": "qlevel_chroma_previous",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "qlevel_luma_flat",
+      "packing": "bits[4:0]",
+      "role": "qlevel_luma_flat",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "qlevel_chroma_flat",
+      "packing": "bits[4:0]",
+      "role": "qlevel_chroma_flat",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "orig_0_0",
+      "packing": "bits[15:0]",
+      "role": "orig_0_0",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_0_1",
+      "packing": "bits[15:0]",
+      "role": "orig_0_1",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_0_2",
+      "packing": "bits[15:0]",
+      "role": "orig_0_2",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_0_3",
+      "packing": "bits[15:0]",
+      "role": "orig_0_3",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_0_4",
+      "packing": "bits[15:0]",
+      "role": "orig_0_4",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_0_5",
+      "packing": "bits[15:0]",
+      "role": "orig_0_5",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_0_6",
+      "packing": "bits[15:0]",
+      "role": "orig_0_6",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_1_0",
+      "packing": "bits[15:0]",
+      "role": "orig_1_0",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_1_1",
+      "packing": "bits[15:0]",
+      "role": "orig_1_1",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_1_2",
+      "packing": "bits[15:0]",
+      "role": "orig_1_2",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_1_3",
+      "packing": "bits[15:0]",
+      "role": "orig_1_3",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_1_4",
+      "packing": "bits[15:0]",
+      "role": "orig_1_4",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_1_5",
+      "packing": "bits[15:0]",
+      "role": "orig_1_5",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_1_6",
+      "packing": "bits[15:0]",
+      "role": "orig_1_6",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_2_0",
+      "packing": "bits[15:0]",
+      "role": "orig_2_0",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_2_1",
+      "packing": "bits[15:0]",
+      "role": "orig_2_1",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_2_2",
+      "packing": "bits[15:0]",
+      "role": "orig_2_2",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_2_3",
+      "packing": "bits[15:0]",
+      "role": "orig_2_3",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_2_4",
+      "packing": "bits[15:0]",
+      "role": "orig_2_4",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_2_5",
+      "packing": "bits[15:0]",
+      "role": "orig_2_5",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_2_6",
+      "packing": "bits[15:0]",
+      "role": "orig_2_6",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_3_0",
+      "packing": "bits[15:0]",
+      "role": "orig_3_0",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_3_1",
+      "packing": "bits[15:0]",
+      "role": "orig_3_1",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_3_2",
+      "packing": "bits[15:0]",
+      "role": "orig_3_2",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_3_3",
+      "packing": "bits[15:0]",
+      "role": "orig_3_3",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_3_4",
+      "packing": "bits[15:0]",
+      "role": "orig_3_4",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_3_5",
+      "packing": "bits[15:0]",
+      "role": "orig_3_5",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "orig_3_6",
+      "packing": "bits[15:0]",
+      "role": "orig_3_6",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "output",
+      "name": "return_value",
+      "packing": "bits[0:0]",
+      "role": "return_value",
+      "signed": false,
+      "width": 1
+    }
+  ],
+  "schema_version": 1
+}

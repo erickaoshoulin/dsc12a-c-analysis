@@ -2,7 +2,7 @@
   "agent": "executable-generic-c-to-rtl-cicd",
   "batches": [
     [
-      "estimatebitsforgroup"
+      "ichdecision"
     ]
   ],
   "blocked_contracts": [],
@@ -10,52 +10,140 @@
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "398bc5c130b6dd51d7ca7faa32ae0ded84659e33bbcb4e79c28597e9097ee69b",
+      "cache_key": "d37bbb9e827beb15a923094fb219e4cab8832980c30389450b4da17b996f59a4",
       "call_sites": [],
-      "clang_usr": "c:@F@EstimateBitsForGroup",
-      "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
-      "contract_id": "estimatebitsforgroup",
-      "deferred": false,
+      "clang_usr": "c:@F@FindMidpoint",
+      "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+      "contract_id": "findmidpoint",
+      "deferred": true,
       "dependencies": [],
-      "force_regenerate": true,
-      "function": "EstimateBitsForGroup",
+      "force_regenerate": false,
+      "function": "FindMidpoint",
       "hashes": {
-        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
-        "contract": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
-        "dependency": "b0b74e666d2d9628c9789b688227db7a48043a32007016c7a0c5881a5acd2ed4",
+        "agent": "e8bb0bf2f56e779355bc162653c33130adee79900ecda3196ef980faaeb1b4d5",
+        "contract": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+        "dependency": "f31ebf694a15c841fbcb763dc23e43abe9c95c8b66987812c0521ac805778ebe",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ae67a01882691cd099a2e0c87b44436c9d3ece33399eff8a553fcbdcc1137411",
+        "prompt": "2e0c2f7df4c3dafcb10c510eee553db98a14b1ab2c0ff9bf9970e23af248df56",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "4"
+        "workers": "2"
       },
       "initial_state": "CONTRACT_LOCKED",
       "interface_shape": [
         [
           "input",
-          "cpntBitDepth_0",
+          "cpnt",
+          2,
+          false
+        ],
+        [
+          "input",
+          "cpntBitDepth",
           5,
           false
         ],
         [
           "input",
-          "cpntBitDepth_1",
+          "leftRecon",
+          16,
+          false
+        ],
+        [
+          "input",
+          "qlevel",
+          5,
+          false
+        ],
+        [
+          "output",
+          "return_value",
+          17,
+          false
+        ]
+      ],
+      "new_work": false,
+      "origin": "locked_contract",
+      "ready": true,
+      "selected": false,
+      "stale": true,
+      "stale_reasons": [
+        "agent",
+        "prompt"
+      ],
+      "targeted": false
+    },
+    {
+      "blocked_reasons": [],
+      "cache_hit": false,
+      "cache_key": "852970714b4683517a4d0f808aa262a855c375f861ad56e8d88fc9ab43b0534b",
+      "call_sites": [],
+      "clang_usr": "c:@F@IchDecision",
+      "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
+      "contract_id": "ichdecision",
+      "deferred": false,
+      "dependencies": [],
+      "force_regenerate": true,
+      "function": "IchDecision",
+      "hashes": {
+        "agent": "e8bb0bf2f56e779355bc162653c33130adee79900ecda3196ef980faaeb1b4d5",
+        "contract": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
+        "dependency": "cf5abbdacefe102de1bd5f0454009786f7795f91e11aab530b78c179dc2c68e3",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "2e0c2f7df4c3dafcb10c510eee553db98a14b1ab2c0ff9bf9970e23af248df56",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "2"
+      },
+      "initial_state": "CONTRACT_LOCKED",
+      "interface_shape": [
+        [
+          "input",
+          "adj_predicted_size",
+          6,
+          false
+        ],
+        [
+          "input",
+          "alt_pfx",
+          6,
+          false
+        ],
+        [
+          "input",
+          "alt_size_to_generate",
+          6,
+          false
+        ],
+        [
+          "input",
+          "cpnt_bit_depth_0",
           5,
           false
         ],
         [
           "input",
-          "cpntBitDepth_2",
+          "cpnt_bit_depth_1",
           5,
           false
         ],
         [
           "input",
-          "cpntBitDepth_3",
+          "cpnt_bit_depth_2",
+          5,
+          false
+        ],
+        [
+          "input",
+          "cpnt_bit_depth_3",
           5,
           false
         ],
@@ -67,14 +155,272 @@
         ],
         [
           "input",
+          "flatness_det_thresh",
+          10,
+          false
+        ],
+        [
+          "input",
           "hPos",
           16,
           false
         ],
         [
           "input",
+          "ich_indices_in_group",
+          3,
+          false
+        ],
+        [
+          "input",
+          "max_error_0",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_error_1",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_error_2",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_error_3",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_ich_error_0",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_ich_error_1",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_ich_error_2",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_ich_error_3",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_mid_error_0",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_mid_error_1",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_mid_error_2",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_mid_error_3",
+          17,
+          false
+        ],
+        [
+          "input",
           "native_420",
           1,
+          false
+        ],
+        [
+          "input",
+          "num_components",
+          3,
+          false
+        ],
+        [
+          "input",
+          "orig_0_0",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_0_1",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_0_2",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_0_3",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_0_4",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_0_5",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_0_6",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_0",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_1",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_2",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_3",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_4",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_5",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_6",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_0",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_1",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_2",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_3",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_4",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_5",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_6",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_0",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_1",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_2",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_3",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_4",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_5",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_6",
+          16,
           false
         ],
         [
@@ -127,25 +473,37 @@
         ],
         [
           "input",
-          "qlevel_chroma_new",
+          "qlevel_chroma_flat",
           5,
           false
         ],
         [
           "input",
-          "qlevel_chroma_old",
+          "qlevel_chroma_previous",
           5,
           false
         ],
         [
           "input",
-          "qlevel_luma_new",
+          "qlevel_chroma_primary",
           5,
           false
         ],
         [
           "input",
-          "qlevel_luma_old",
+          "qlevel_luma_flat",
+          5,
+          false
+        ],
+        [
+          "input",
+          "qlevel_luma_previous",
+          5,
+          false
+        ],
+        [
+          "input",
+          "qlevel_luma_primary",
           5,
           false
         ],
@@ -229,6 +587,12 @@
         ],
         [
           "input",
+          "somewhat_flat_qp_delta",
+          3,
+          false
+        ],
+        [
+          "input",
           "unit_c_type_0",
           2,
           false
@@ -284,7 +648,7 @@
         [
           "output",
           "return_value",
-          9,
+          1,
           false
         ]
       ],
@@ -294,8 +658,7 @@
       "selected": true,
       "stale": true,
       "stale_reasons": [
-        "contract",
-        "dependency",
+        "agent",
         "prompt"
       ],
       "targeted": true
@@ -303,77 +666,7 @@
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "084e75b032bdd3bda49734fe6ca55cb4d2a709d7ca23d4a4b36d7a9295ac769f",
-      "call_sites": [],
-      "clang_usr": "c:@F@FindMidpoint",
-      "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
-      "contract_id": "findmidpoint",
-      "deferred": true,
-      "dependencies": [],
-      "force_regenerate": false,
-      "function": "FindMidpoint",
-      "hashes": {
-        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
-        "contract": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
-        "dependency": "0293f28a62bf546c833c37e257ffa467a49fc8805e76bc248a7441522c7904ac",
-        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
-        "model": "external-generator-hook",
-        "pipeline": "executable-cicd-v2",
-        "prompt": "ae67a01882691cd099a2e0c87b44436c9d3ece33399eff8a553fcbdcc1137411",
-        "shards": "4",
-        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
-        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "4"
-      },
-      "initial_state": "CONTRACT_LOCKED",
-      "interface_shape": [
-        [
-          "input",
-          "cpnt",
-          2,
-          false
-        ],
-        [
-          "input",
-          "cpntBitDepth",
-          5,
-          false
-        ],
-        [
-          "input",
-          "leftRecon",
-          16,
-          false
-        ],
-        [
-          "input",
-          "qlevel",
-          5,
-          false
-        ],
-        [
-          "output",
-          "return_value",
-          17,
-          false
-        ]
-      ],
-      "new_work": false,
-      "origin": "locked_contract",
-      "ready": true,
-      "selected": false,
-      "stale": true,
-      "stale_reasons": [
-        "dependency",
-        "prompt"
-      ],
-      "targeted": false
-    },
-    {
-      "blocked_reasons": [],
-      "cache_hit": false,
-      "cache_key": "44dd2ce924607b5c4770d304213e1dae61f125df1f293ee71c12c09c30e2625e",
+      "cache_key": "46fffcd081185262c802b8795cb942fe326433dd269df6bd4ee68fd76cb876eb",
       "call_sites": [],
       "clang_usr": "c:@F@IsFlatnessInfoSent",
       "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
@@ -383,18 +676,18 @@
       "force_regenerate": false,
       "function": "IsFlatnessInfoSent",
       "hashes": {
-        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
+        "agent": "e8bb0bf2f56e779355bc162653c33130adee79900ecda3196ef980faaeb1b4d5",
         "contract": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
-        "dependency": "56603bc200cc992f7e1f591f8d7fda9a294179735b0b80f1abc032293e44369f",
+        "dependency": "cdacd46bfe4cae5e584f55fdb16b27c67c2f7fe22a67c58c85f32686e3e2caed",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ae67a01882691cd099a2e0c87b44436c9d3ece33399eff8a553fcbdcc1137411",
+        "prompt": "2e0c2f7df4c3dafcb10c510eee553db98a14b1ab2c0ff9bf9970e23af248df56",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "4"
+        "workers": "2"
       },
       "initial_state": "CONTRACT_LOCKED",
       "interface_shape": [
@@ -429,7 +722,7 @@
       "selected": false,
       "stale": true,
       "stale_reasons": [
-        "dependency",
+        "agent",
         "prompt"
       ],
       "targeted": false
@@ -437,7 +730,7 @@
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "287e0a1d916c19b42502b69aaae124e91d4f3a1226e37ea465a0980a16fd2d43",
+      "cache_key": "f9f0f2f79346197760c424ae6cd6836b2ea6204a8d5d6b1e6496b3d802d88dc0",
       "call_sites": [],
       "clang_usr": "c:@F@MapQpToQlevel",
       "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
@@ -447,18 +740,18 @@
       "force_regenerate": false,
       "function": "MapQpToQlevel",
       "hashes": {
-        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
+        "agent": "e8bb0bf2f56e779355bc162653c33130adee79900ecda3196ef980faaeb1b4d5",
         "contract": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
-        "dependency": "47ba2e723f118f99c08c24227c19e77fb1495c86660de40fc78db24ff6359805",
+        "dependency": "be9e5b87ba35328b2d70aebf14188b8adb9fa98ab9863a8d5f28b00492aebf68",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ae67a01882691cd099a2e0c87b44436c9d3ece33399eff8a553fcbdcc1137411",
+        "prompt": "2e0c2f7df4c3dafcb10c510eee553db98a14b1ab2c0ff9bf9970e23af248df56",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "4"
+        "workers": "2"
       },
       "initial_state": "CONTRACT_LOCKED",
       "interface_shape": [
@@ -523,7 +816,7 @@
       "selected": false,
       "stale": true,
       "stale_reasons": [
-        "dependency",
+        "agent",
         "prompt"
       ],
       "targeted": false
@@ -531,7 +824,7 @@
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "8141e5b83c68de060198699cc475c9657955c5bd5f5f593f87131be12d373a47",
+      "cache_key": "bcfef2445fb741b0a5c2d2f21516e7f24c221a95905255c2cc06c6a1dacf3411",
       "call_sites": [],
       "clang_usr": "c:@F@PredictSize",
       "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
@@ -541,18 +834,18 @@
       "force_regenerate": false,
       "function": "PredictSize",
       "hashes": {
-        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
+        "agent": "e8bb0bf2f56e779355bc162653c33130adee79900ecda3196ef980faaeb1b4d5",
         "contract": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
-        "dependency": "bc6716c31fb9010446ed24049f5da756059583ff9abad19e1f8dc1ce1783c726",
+        "dependency": "c8cc34c74343eb8209390547dd44c6e1233cac7f43fde90bf8d9bfff4fca8d9f",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ae67a01882691cd099a2e0c87b44436c9d3ece33399eff8a553fcbdcc1137411",
+        "prompt": "2e0c2f7df4c3dafcb10c510eee553db98a14b1ab2c0ff9bf9970e23af248df56",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "4"
+        "workers": "2"
       },
       "initial_state": "CONTRACT_LOCKED",
       "interface_shape": [
@@ -587,7 +880,7 @@
       "selected": false,
       "stale": true,
       "stale_reasons": [
-        "dependency",
+        "agent",
         "prompt"
       ],
       "targeted": false
@@ -595,7 +888,7 @@
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "c78aeb0be2b00732d2f4c38f1d1c5fd1659808bdf072ffcb81c141f09c9bc983",
+      "cache_key": "085325b238788588dd0c6e09070bea1d64a3dfaa6a7e7f30439157e5e5a726f8",
       "call_sites": [],
       "clang_usr": "c:@F@QuantizeResidual",
       "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
@@ -605,18 +898,18 @@
       "force_regenerate": false,
       "function": "QuantizeResidual",
       "hashes": {
-        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
+        "agent": "e8bb0bf2f56e779355bc162653c33130adee79900ecda3196ef980faaeb1b4d5",
         "contract": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
-        "dependency": "ed24f1ec7846b54710ba1365569b2c1eeec1de601471606ba06181adf5b6e129",
+        "dependency": "612f31e78f2dacecfc74eb2644ebc8d6256fd9f74b45383679a7e7405b10048f",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ae67a01882691cd099a2e0c87b44436c9d3ece33399eff8a553fcbdcc1137411",
+        "prompt": "2e0c2f7df4c3dafcb10c510eee553db98a14b1ab2c0ff9bf9970e23af248df56",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "4"
+        "workers": "2"
       },
       "initial_state": "CONTRACT_LOCKED",
       "interface_shape": [
@@ -645,7 +938,7 @@
       "selected": false,
       "stale": true,
       "stale_reasons": [
-        "dependency",
+        "agent",
         "prompt"
       ],
       "targeted": false
@@ -653,7 +946,7 @@
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "dc075d7bcfb8d16d8cb70ad0248d9f2794cd960ac6a5d055a8c79048e0a97f1c",
+      "cache_key": "9d836c5cb5b925366e3dfe67e47e0d4cf625ebc9b5d641ec8dd8f0e2fe7e0842",
       "call_sites": [],
       "clang_usr": "c:@F@SamplePredict",
       "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
@@ -663,18 +956,18 @@
       "force_regenerate": false,
       "function": "SamplePredict",
       "hashes": {
-        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
+        "agent": "e8bb0bf2f56e779355bc162653c33130adee79900ecda3196ef980faaeb1b4d5",
         "contract": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
-        "dependency": "96601a673791e5160dc8d134a7285e53cedee7930b3ff574afc82e3b72c30149",
+        "dependency": "c342660294a6ba98f6dbc6bc3d2b0ac8e094b34834409158eb72a155344bd6a1",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ae67a01882691cd099a2e0c87b44436c9d3ece33399eff8a553fcbdcc1137411",
+        "prompt": "2e0c2f7df4c3dafcb10c510eee553db98a14b1ab2c0ff9bf9970e23af248df56",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "4"
+        "workers": "2"
       },
       "initial_state": "CONTRACT_LOCKED",
       "interface_shape": [
@@ -925,7 +1218,7 @@
       "selected": false,
       "stale": true,
       "stale_reasons": [
-        "dependency",
+        "agent",
         "prompt"
       ],
       "targeted": false
@@ -933,7 +1226,7 @@
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "445dfe499604686f7eb117ca3240be6c0d4749f1153e8b0259ddc5d159024f46",
+      "cache_key": "bef7c428d8a369dd05ae7f3a0dd436f9be4d107cedd42a427c1056debb5f7fb7",
       "call_sites": [],
       "clang_usr": "c:@F@SampToLineBuf",
       "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
@@ -943,18 +1236,18 @@
       "force_regenerate": false,
       "function": "SampToLineBuf",
       "hashes": {
-        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
+        "agent": "e8bb0bf2f56e779355bc162653c33130adee79900ecda3196ef980faaeb1b4d5",
         "contract": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
-        "dependency": "a60b3b3f76f4775deb0cff3af831db9f3ec64aae4d1b5bbcaded1dfac9c19363",
+        "dependency": "242cb5947e0652925b268a83e82fda05796e637554bfa9fb425f4d261af6fceb",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ae67a01882691cd099a2e0c87b44436c9d3ece33399eff8a553fcbdcc1137411",
+        "prompt": "2e0c2f7df4c3dafcb10c510eee553db98a14b1ab2c0ff9bf9970e23af248df56",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "4"
+        "workers": "2"
       },
       "initial_state": "CONTRACT_LOCKED",
       "interface_shape": [
@@ -995,7 +1288,7 @@
       "selected": false,
       "stale": true,
       "stale_reasons": [
-        "dependency",
+        "agent",
         "prompt"
       ],
       "targeted": false
@@ -1013,37 +1306,37 @@
   "dependency_pair": {
     "call_sites": [
       {
-        "callee_contract": "estimatebitsforgroup",
-        "callee_function": "EstimateBitsForGroup",
-        "callee_usr": "c:@F@EstimateBitsForGroup",
+        "callee_contract": "ichdecision",
+        "callee_function": "IchDecision",
+        "callee_usr": "c:@F@IchDecision",
         "caller_contract": null,
-        "caller_function": "IchDecision",
-        "caller_usr": "c:@F@IchDecision",
+        "caller_function": "VLCUnit",
+        "caller_usr": "c:@F@VLCUnit",
         "location": {
-          "column": 16,
+          "column": 28,
           "file": "dsc_codec.c",
-          "line": 522
+          "line": 1620
         },
         "source": "facts/callgraph.json"
       }
     ],
-    "callee_contract": "estimatebitsforgroup",
-    "callee_function": "EstimateBitsForGroup",
-    "callee_usr": "c:@F@EstimateBitsForGroup",
+    "callee_contract": "ichdecision",
+    "callee_function": "IchDecision",
+    "callee_usr": "c:@F@IchDecision",
     "caller_contract": null,
-    "caller_function": "IchDecision",
-    "caller_usr": "c:@F@IchDecision",
+    "caller_function": "VLCUnit",
+    "caller_usr": "c:@F@VLCUnit",
     "selection_basis": "smallest acyclic direct call site from facts/callgraph.json"
   },
   "force_regenerate": true,
   "generator_hook": "python3 tools/generator_fixture.py",
   "input_errors": [],
   "new_candidates": [
-    "estimatebitsforgroup"
+    "ichdecision"
   ],
   "ready_contracts": [
-    "estimatebitsforgroup",
     "findmidpoint",
+    "ichdecision",
     "isflatnessinfosent",
     "mapqptoqlevel",
     "predictsize",
@@ -1054,7 +1347,7 @@
   "refresh_stable": false,
   "schema_version": 2,
   "selected_contracts": [
-    "estimatebitsforgroup"
+    "ichdecision"
   ],
-  "target_contract": "estimatebitsforgroup"
+  "target_contract": "ichdecision"
 }

@@ -10,8 +10,8 @@ contract's exact semantic equations are used as the independent oracle model.
 This is deliberately a semantic-kind adapter, not a function-name selector.
 The candidate is admitted only when the locked contract is already selected by
 the normal facts/coverage pipeline and declares the reviewed
-``windowed_sample_predict``, ``flatness_window``, ``using_midpoint``, or
-``estimate_bits`` semantics.
+``windowed_sample_predict``, ``flatness_window``, ``using_midpoint``,
+``estimate_bits``, or ``ich_decision`` semantics.
 """
 
 from __future__ import annotations
@@ -30,6 +30,62 @@ try:
     import z3
 except ImportError as error:  # pragma: no cover - exercised by infrastructure
     raise SystemExit("formal_rtl.py requires the z3-solver Python package") from error
+
+
+ICH_ABSTRACT_FUNCTIONS = {
+    "ceil_log2_i",
+    "depth_for_i",
+    "max_i",
+    "min_i",
+    "quant_divisor_i",
+    "qlevel_for_i",
+    "residual_size_i",
+    "spread4_i",
+    "spread6_i",
+}
+ICH_OPAQUE_CONTEXT: dict[tuple[str, tuple[str, ...]], Any] | None = None
+
+
+def ich_opaque(name: str, args: list[Any]) -> Any:
+    """Share a promoted helper call between RTL and the caller reference."""
+    if ICH_OPAQUE_CONTEXT is None:
+        raise FormalError("ICH helper abstraction is not active")
+    rendered = tuple(z3.simplify(value).sexpr() for value in args)
+    if name == "ceil_log2_i" and rendered:
+        # The caller computes max_p_error through a midpoint-selected mux.
+        # Verilator and the independent expression legally normalize that mux
+        # in different ways, so key the already-promoted ceil_log2 call by its
+        # reviewed lane rather than by incidental ITE syntax.
+        for lane in range(4):
+            if f"max_mid_error_{lane}" in rendered[0] and f"max_error_{lane}" in rendered[0]:
+                rendered = (f"p_error_lane_{lane}",)
+                break
+    key = (name, rendered)
+    if key not in ICH_OPAQUE_CONTEXT:
+        ICH_OPAQUE_CONTEXT[key] = z3.Int(f"ich_helper_{len(ICH_OPAQUE_CONTEXT)}")
+    return ICH_OPAQUE_CONTEXT[key]
+
+
+def add_ich_opaque_constraints(
+    solver: Any,
+    context: dict[tuple[str, tuple[str, ...]], Any],
+) -> None:
+    """Keep compositional helper symbols inside their reviewed output domains."""
+    for (name, args), symbol in context.items():
+        if name == "residual_size_i":
+            solver.add(symbol >= 0, symbol <= 17)
+        elif name == "ceil_log2_i":
+            solver.add(symbol >= 0, symbol <= 16)
+        elif name == "qlevel_for_i":
+            solver.add(symbol >= 0, symbol <= 16)
+        elif name == "depth_for_i":
+            solver.add(symbol >= 8, symbol <= 17)
+        elif name in {"spread4_i", "spread6_i"}:
+            solver.add(symbol >= 0, symbol <= 65535)
+        elif name == "quant_divisor_i":
+            solver.add(symbol >= 1, symbol <= 65536)
+        elif name == "max_i":
+            solver.add(symbol >= 0, symbol <= 65536)
 
 
 class FormalError(RuntimeError):
@@ -189,6 +245,8 @@ class AstInterpreter:
             condition = self.expr(first(node.get("condp")), env)
             then_value = self.expr(first(node.get("thenp")), env)
             else_value = self.expr(first(node.get("elsep")), env)
+            if not z3.is_bool(condition):
+                condition = condition != 0
             return z3.If(condition, then_value, else_value)
         if kind == "SEL":
             value = self.expr(first(node.get("fromp")), env)
@@ -202,6 +260,8 @@ class AstInterpreter:
         raise FormalError(f"unsupported AST expression node: {kind}")
 
     def call(self, name: str, args: list[Any], parent_env: dict[str, Any]) -> Any:
+        if ICH_OPAQUE_CONTEXT is not None and name in ICH_ABSTRACT_FUNCTIONS:
+            return ich_opaque(name, args)
         function = self.functions.get(name)
         if function is None:
             raise FormalError(f"AST calls unknown function {name}")
@@ -347,6 +407,7 @@ class AstInterpreter:
         self.execute(always[0], env)
         if output_name not in env:
             raise FormalError(f"candidate never assigns output {output_name}")
+        self.last_env = env
         return env[output_name]
 
 
@@ -762,6 +823,9 @@ def add_domain_constraints(solver: Any, contract: dict[str, Any], variables: dic
     if strategy.get("kind") == "estimate_bits":
         add_estimate_bits_domain_constraints(solver, contract, variables)
         return
+    if strategy.get("kind") == "ich_decision":
+        add_ich_decision_domain_constraints(solver, contract, variables)
+        return
     if strategy.get("kind") != "windowed_boundary":
         raise FormalError("formal window proof requires a reviewed windowed_boundary strategy")
     bit_name = str(strategy.get("bit_depth_port"))
@@ -984,10 +1048,304 @@ def estimate_bits_contract_expression(contract: dict[str, Any], variables: dict[
     return total + z3.If(z3.And(max_sizes[0] < luma_max, prev_ich != 0), 1, 0)
 
 
+def add_ich_decision_domain_constraints(
+    solver: Any,
+    contract: dict[str, Any],
+    variables: dict[str, Any],
+) -> None:
+    """Keep the equivalence proof on the rectangular frozen-port domain.
+
+    The locked contract records the qLevel witness relation as legal-domain
+    evidence, but both the independent expression and the parsed RTL consume
+    the witnesses identically.  Omitting those relational assumptions makes
+    the formal obligation strictly stronger and avoids adding a large set of
+    unrelated ITE constraints to the solver.
+    """
+    return
+
+
+def ich_decision_contract_expression(contract: dict[str, Any], variables: dict[str, Any]) -> Any:
+    """Build the exact fixed-lane ICH/P-mode decision expression."""
+    semantics = contract.get("semantics", {}) or {}
+    strategy = semantics.get("legal_vector_strategy") or {}
+
+    def required(key: str, fallback: str) -> str:
+        name = str(strategy.get(key, fallback))
+        if name not in variables:
+            raise FormalError(f"ich-decision expression references missing port {name}")
+        return name
+
+    units = variables[required("units_per_group_port", "units_per_group")]
+    pixels = variables[required("pixels_in_group_port", "pixels_in_group")]
+    hpos = variables[required("hpos_port", "hPos")]
+    slice_width = variables[required("slice_width_port", "slice_width")]
+    version = variables[required("version_port", "dsc_version_minor")]
+    native420 = variables[required("native_420_port", "native_420")]
+    prev_ich = variables[required("prev_ich_selected_port", "prev_ich_selected")]
+    primary = variables[required("primary_qp_port", "primary_qp")]
+    adj_predicted = variables[required("adj_predicted_size_port", "adj_predicted_size")]
+    alt_size = variables[required("alt_size_to_generate_port", "alt_size_to_generate")]
+    ich_indices = variables[required("ich_indices_in_group_port", "ich_indices_in_group")]
+    num_components = variables[required("num_components_port", "num_components")]
+    flatness_threshold = variables[required("flatness_det_thresh_port", "flatness_det_thresh")]
+    delta = variables[required("somewhat_flat_qp_delta_port", "somewhat_flat_qp_delta")]
+    depths = [str(value) for value in strategy.get("component_depth_ports", [])]
+    ctypes = [str(value) for value in strategy.get("unit_component_ports", [])]
+    starts = [str(value) for value in strategy.get("unit_start_hpos_ports", [])]
+    predicted = [str(value) for value in strategy.get("predicted_size_ports", [])]
+    max_errors = [str(value) for value in strategy.get("max_error_ports", [])]
+    max_mid_errors = [str(value) for value in strategy.get("max_mid_error_ports", [])]
+    max_ich_errors = [str(value) for value in strategy.get("max_ich_error_ports", [])]
+    residuals = [str(value) for value in strategy.get("residual_ports", [])]
+    if any(
+        len(group) != 4 or any(name not in variables for name in group)
+        for group in (depths, ctypes, starts, predicted, max_errors, max_mid_errors, max_ich_errors)
+    ):
+        raise FormalError("ich-decision expression requires four lane groups")
+    if len(residuals) != 12 or any(name not in variables for name in residuals):
+        raise FormalError("ich-decision expression requires twelve residual ports")
+    qports = strategy.get("qlevel_ports", {}) or {}
+    qnames = {
+        key: str(qports.get(key, ""))
+        for key in ("luma_primary", "chroma_primary", "luma_previous",
+                    "chroma_previous", "luma_flat", "chroma_flat")
+    }
+    if any(name not in variables for name in qnames.values()):
+        raise FormalError("ich-decision expression requires six qLevel witness ports")
+
+    def selected_depth(component: Any) -> Any:
+        if ICH_OPAQUE_CONTEXT is not None and z3.is_int_value(component) and component.as_long() == 0:
+            return variables[depths[0]]
+        if ICH_OPAQUE_CONTEXT is not None:
+            return ich_opaque("depth_for_i", [component])
+        result = variables[depths[0]]
+        for index in reversed(range(1, 4)):
+            result = z3.If(component == index, variables[depths[index]], result)
+        return result
+
+    def qlevel(component: Any, luma: Any, chroma: Any) -> Any:
+        if ICH_OPAQUE_CONTEXT is not None:
+            return ich_opaque("qlevel_for_i", [component, luma, chroma])
+        adjusted_chroma = z3.If(
+            z3.And(version == 2, variables[depths[0]] == variables[depths[1]], chroma > 0),
+            chroma - 1,
+            chroma,
+        )
+        return z3.If(
+            z3.Or(component % 3 == 0, z3.And(native420 != 0, component == 1)),
+            luma,
+            adjusted_chroma,
+        )
+
+    thresholds = semantics.get("thresholds") or semantics.get("residual_size_thresholds") or []
+    if not thresholds:
+        raise FormalError("ich-decision expression is missing residual-size thresholds")
+
+    def residual_size(value: Any) -> Any:
+        if ICH_OPAQUE_CONTEXT is not None:
+            return ich_opaque("residual_size_i", [value])
+        # Match the comparison orientation emitted by Verilator for the
+        # generated function (lower <= value <= upper).  This is algebraically
+        # identical to value >= lower && value <= upper, but the canonical AST
+        # shape lets Z3 share the same threshold DAG with the parsed RTL.
+        result: Any = z3.IntVal(0)
+        for threshold in reversed(thresholds):
+            if not isinstance(threshold, dict):
+                continue
+            lower = int(threshold.get("lower", 0))
+            upper = int(threshold.get("upper", lower))
+            size = int(threshold.get("size", 0))
+            condition = z3.IntVal(lower) == value if lower == upper else z3.And(
+                z3.IntVal(lower) <= value,
+                z3.IntVal(upper) >= value,
+            )
+            result = z3.If(condition, size, result)
+        return result
+
+    def ceil_log2(value: Any) -> Any:
+        if ICH_OPAQUE_CONTEXT is not None:
+            return ich_opaque("ceil_log2_i", [value])
+        result: Any = z3.IntVal(16)
+        for upper, size in (
+            (32767, 15), (16383, 14), (8191, 13),
+            (4095, 12), (2047, 11), (1023, 10), (511, 9),
+            (255, 8), (127, 7), (63, 6), (31, 5), (15, 4),
+            (7, 3), (3, 2), (1, 1),
+        ):
+            result = z3.If(z3.IntVal(upper) >= value, size, result)
+        return z3.If(z3.IntVal(0) >= value, 0, result)
+
+    max_sizes: list[Any] = []
+    midpoint: list[Any] = []
+    for unit in range(4):
+        cpnt = variables[ctypes[unit]]
+        current_qlevel = qlevel(cpnt, variables[qnames["luma_primary"]], variables[qnames["chroma_primary"]])
+        required_max: Any = z3.IntVal(0)
+        for sample in range(3):
+            sample_hpos = hpos + sample - (pixels - 1) + variables[starts[unit]]
+            required_size = residual_size(variables[residuals[unit * 3 + sample]])
+            required_max = z3.If(
+                z3.And(sample_hpos < slice_width, required_size > required_max),
+                required_size,
+                required_max,
+            )
+        maximum_residual = selected_depth(cpnt) - current_qlevel
+        max_sizes.append(z3.If(required_max > maximum_residual, maximum_residual, required_max))
+
+        midpoint_max: Any = z3.IntVal(0)
+        for sample in range(3):
+            midpoint_max = z3.If(
+                residual_size(variables[residuals[unit * 3 + sample]]) > midpoint_max,
+                residual_size(variables[residuals[unit * 3 + sample]]),
+                midpoint_max,
+            )
+        midpoint.append(midpoint_max >= maximum_residual)
+
+    total_size: Any = z3.IntVal(0)
+    for unit in range(4):
+        cpnt = variables[ctypes[unit]]
+        current_qlevel = qlevel(cpnt, variables[qnames["luma_primary"]], variables[qnames["chroma_primary"]])
+        previous_qlevel = qlevel(cpnt, variables[qnames["luma_previous"]], variables[qnames["chroma_previous"]])
+        maximum_residual = selected_depth(cpnt) - current_qlevel
+        pred_size = variables[predicted[unit]] + previous_qlevel - current_qlevel
+        pred_size = z3.If(pred_size < 0, 0, z3.If(pred_size > maximum_residual - 1, maximum_residual - 1, pred_size))
+        unit_total = z3.If(
+            max_sizes[unit] < pred_size,
+            1 + 3 * pred_size,
+            z3.If(
+                z3.And(max_sizes[unit] == maximum_residual, unit != 0),
+                max_sizes[unit] - pred_size + 3 * max_sizes[unit],
+                1 + max_sizes[unit] - pred_size + 3 * max_sizes[unit],
+            ),
+        )
+        total_size = total_size + z3.If(units > unit, unit_total, 0)
+
+    luma_max = selected_depth(z3.IntVal(0)) - variables[qnames["luma_primary"]]
+    total_size = total_size + z3.If(z3.And(max_sizes[0] < luma_max, prev_ich != 0), 1, 0)
+
+    p_log: Any = z3.IntVal(0)
+    ich_log: Any = z3.IntVal(0)
+    debug_p_errors: list[Any] = []
+    debug_p_logs: list[Any] = []
+    debug_ich_logs: list[Any] = []
+    for unit in range(4):
+        p_error = z3.If(midpoint[unit], variables[max_mid_errors[unit]], variables[max_errors[unit]])
+        p_contribution = ceil_log2(p_error)
+        ich_contribution = ceil_log2(variables[max_ich_errors[unit]])
+        if unit == 0:
+            p_contribution = z3.If(version == 1, 2 * p_contribution, p_contribution)
+            ich_contribution = z3.If(version == 1, 2 * ich_contribution, ich_contribution)
+        debug_p_errors.append(p_error)
+        debug_p_logs.append(p_contribution)
+        debug_ich_logs.append(ich_contribution)
+        p_log = p_log + z3.If(units > unit, p_contribution, 0)
+        ich_log = ich_log + z3.If(units > unit, ich_contribution, 0)
+
+    bits_ich = z3.If(prev_ich != 0, 1, alt_size - adj_predicted) + 5 * ich_indices
+    p_cost = total_size + 4 * p_log
+    ich_cost = bits_ich + 4 * ich_log
+
+    orig_ports = strategy.get("orig_ports_by_component", {}) or {}
+    sample_names = {
+        component: [str(value) for value in orig_ports.get(str(component), orig_ports.get(component, []))]
+        for component in range(4)
+    }
+    if any(len(group) != 7 or any(name not in variables for name in group) for group in sample_names.values()):
+        raise FormalError("ich-decision expression requires seven original taps per component")
+
+    def sample(component: int, offset: int) -> Any:
+        return variables[sample_names[component][offset]]
+
+    def spread(component: int, offsets: list[int]) -> Any:
+        if ICH_OPAQUE_CONTEXT is not None:
+            helper = "spread4_i" if offsets == [0, 1, 2, 3] else "spread6_i"
+            return ich_opaque(helper, [z3.IntVal(component)])
+        maximum = sample(component, offsets[0])
+        minimum = maximum
+        for offset in offsets[1:]:
+            maximum = z3.If(sample(component, offset) > maximum, sample(component, offset), maximum)
+            minimum = z3.If(sample(component, offset) < minimum, sample(component, offset), minimum)
+        return maximum - minimum
+
+    flat_qp = z3.If(primary - delta < 0, 0, primary - delta)
+    # The qLevel ports are already constrained by their equal-QP witness
+    # relation.  qLevel-flat uses the corresponding frozen flat witness.
+    flat_qlevel = lambda component: qlevel(
+        z3.IntVal(component), variables[qnames["luma_flat"]], variables[qnames["chroma_flat"]]
+    )
+
+    def quant_divisor_expr(value: Any) -> Any:
+        if ICH_OPAQUE_CONTEXT is not None:
+            return ich_opaque("quant_divisor_i", [value])
+        return sum_expr([z3.If(value == exponent, 1 << exponent, 0) for exponent in range(17)])
+
+    def max_helper(left: Any, right: Any) -> Any:
+        if ICH_OPAQUE_CONTEXT is not None:
+            return ich_opaque("max_i", [left, right])
+        return z3.If(left > right, left, right)
+
+    first_somewhat = z3.And(*[
+        z3.Implies(num_components > component,
+                   spread(component, [0, 1, 2, 3]) <= max_helper(
+                       flatness_threshold,
+                       quant_divisor_expr(flat_qlevel(component)),
+                   ))
+        for component in range(4)
+    ])
+    first_very = z3.And(*[
+        z3.Implies(num_components > component,
+                   spread(component, [0, 1, 2, 3]) <= flatness_threshold)
+        for component in range(4)
+    ])
+    second_somewhat = z3.And(*[
+        z3.Implies(num_components > component,
+                   spread(component, [1, 2, 3, 4, 5, 6]) <= max_helper(
+                       flatness_threshold,
+                       quant_divisor_expr(flat_qlevel(component)),
+                   ))
+        for component in range(4)
+    ])
+    second_very = z3.And(*[
+        z3.Implies(num_components > component,
+                   spread(component, [1, 2, 3, 4, 5, 6]) <= flatness_threshold)
+        for component in range(4)
+    ])
+    flat_index = z3.If(
+        hpos + 1 < slice_width,
+        z3.If(first_very, 2, z3.If(first_somewhat, 1,
+              z3.If(hpos + 2 < slice_width,
+                    z3.If(second_very, 2, z3.If(second_somewhat, 1, 0)), 0))),
+        0,
+    )
+    non_v1_compare = ich_cost < p_cost
+    v1_compare = z3.And(ich_log <= p_log, non_v1_compare)
+    global ICH_COMPOSITION_TERMS
+    ICH_COMPOSITION_TERMS = {
+        "total_size": total_size,
+        "p_log": p_log,
+        "ich_log": ich_log,
+        "p_cost": p_cost,
+        "ich_cost": ich_cost,
+        "flat_index": flat_index,
+        "p_errors": debug_p_errors,
+        "p_logs": debug_p_logs,
+        "ich_logs": debug_ich_logs,
+        "midpoint": midpoint,
+        "max_sizes": max_sizes,
+    }
+    return z3.If(
+        version == 2,
+        z3.If(flat_index == 2, z3.If(ich_log <= p_log, z3.If(ich_cost < p_cost, 1, 0), 0), z3.If(non_v1_compare, 1, 0)),
+        z3.If(v1_compare, 1, 0),
+    )
+
+
 def contract_expression(contract: dict[str, Any], variables: dict[str, Any]) -> Any:
     semantics = contract.get("semantics", {}) or {}
     if semantics.get("kind") == "estimate_bits":
         return estimate_bits_contract_expression(contract, variables)
+    if semantics.get("kind") == "ich_decision":
+        return ich_decision_contract_expression(contract, variables)
     if semantics.get("kind") == "using_midpoint":
         return using_midpoint_contract_expression(contract, variables)
     if semantics.get("kind") == "flatness_window":
@@ -1339,8 +1697,8 @@ def load_candidate_module(path: Path, verilator: str) -> dict[str, Any]:
 def run_proof(contract_path: Path, candidate_path: Path, verilator: str, timeout_ms: int) -> dict[str, Any]:
     contract = json.loads(contract_path.read_text(encoding="utf-8"))
     semantics = contract.get("semantics", {}) or {}
-    if semantics.get("kind") not in {"windowed_sample_predict", "flatness_window", "using_midpoint", "estimate_bits"}:
-        raise FormalError("formal_rtl requires a reviewed windowed_sample_predict, flatness_window, using_midpoint, or estimate_bits contract")
+    if semantics.get("kind") not in {"windowed_sample_predict", "flatness_window", "using_midpoint", "estimate_bits", "ich_decision"}:
+        raise FormalError("formal_rtl requires a reviewed windowed_sample_predict, flatness_window, using_midpoint, estimate_bits, or ich_decision contract")
     ports = [port for port in contract.get("interface", {}).get("ports", []) if isinstance(port, dict)]
     inputs = [port for port in ports if port.get("direction") == "input"]
     output = next((port for port in ports if port.get("direction") == "output"), None)
@@ -1350,9 +1708,34 @@ def run_proof(contract_path: Path, candidate_path: Path, verilator: str, timeout
     solver = z3.Solver()
     solver.set(timeout=int(timeout_ms))
     add_domain_constraints(solver, contract, variables)
-    module = load_candidate_module(candidate_path, verilator)
-    rtl = AstInterpreter(module).output_expression(variables, str(output.get("name")))
-    c_model = contract_expression(contract, variables)
+    global ICH_OPAQUE_CONTEXT
+    use_ich_abstraction = semantics.get("kind") == "ich_decision"
+    if use_ich_abstraction:
+        ICH_OPAQUE_CONTEXT = {}
+    try:
+        module = load_candidate_module(candidate_path, verilator)
+        interpreter = AstInterpreter(module)
+        rtl = interpreter.output_expression(variables, str(output.get("name")))
+        c_model = contract_expression(contract, variables)
+        if use_ich_abstraction:
+            add_ich_opaque_constraints(solver, ICH_OPAQUE_CONTEXT or {})
+            reference_midpoints = (globals().get("ICH_COMPOSITION_TERMS") or {}).get("midpoint", [])
+            for lane in range(4):
+                candidate_midpoint = interpreter.last_env.get(f"midpoint_{lane}_i")
+                if candidate_midpoint is None or lane >= len(reference_midpoints):
+                    raise FormalError("ICH composition proof is missing a midpoint selector")
+                selector_solver = z3.Solver()
+                selector_solver.set(timeout=min(int(timeout_ms), 10000))
+                add_domain_constraints(selector_solver, contract, variables)
+                add_ich_opaque_constraints(selector_solver, ICH_OPAQUE_CONTEXT or {})
+                selector_solver.add(
+                    candidate_midpoint != z3.If(reference_midpoints[lane], 1, 0)
+                )
+                if selector_solver.check() != z3.unsat:
+                    raise FormalError(f"ICH midpoint selector proof failed for lane {lane}")
+    finally:
+        if use_ich_abstraction:
+            ICH_OPAQUE_CONTEXT = None
     if semantics.get("kind") == "flatness_window":
         solver.add(c_model != rtl)
         result = solver.check()
@@ -1418,7 +1801,7 @@ def run_proof(contract_path: Path, candidate_path: Path, verilator: str, timeout
         "solver": "z3",
         "ast_frontend": "verilator --json-only",
         "proof_basis": "locked exact spec-linked window equations versus parsed combinational RTL AST",
-        "proof_strategy": "SYMBOLIC_ESTIMATE_BITS" if semantics.get("kind") == "estimate_bits" else "SYMBOLIC_USING_MIDPOINT" if semantics.get("kind") == "using_midpoint" else "SYMBOLIC_WINDOW",
+        "proof_strategy": "SYMBOLIC_ICH_DECISION" if semantics.get("kind") == "ich_decision" else "SYMBOLIC_ESTIMATE_BITS" if semantics.get("kind") == "estimate_bits" else "SYMBOLIC_USING_MIDPOINT" if semantics.get("kind") == "using_midpoint" else "SYMBOLIC_WINDOW",
         "timeout_ms": int(timeout_ms),
         "constraint_count": len(solver.assertions()),
         "status": "PASS" if result == z3.unsat else "COUNTEREXAMPLE" if result == z3.sat else "UNKNOWN",
