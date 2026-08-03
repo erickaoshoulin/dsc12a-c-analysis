@@ -1,4 +1,4 @@
-module isorigflathindex_candidate_01 (
+module isorigflathindex (
     input logic [15:0] hPos,
     input logic [4:0] bits_per_component,
     input logic [4:0] primary_qp,

@@ -18,6 +18,13 @@ library. This project is not SVRT and must not grow SVRT integration,
 whole-codec RTL generation, an LLM runtime, C/Rust parsing, or
 sequential-hardware behavior.
 
+The local PDF and C model are mandatory preflight inputs, not optional
+context: every run must rediscover and hash the PDF, compile the immutable C
+model with `make -j1 clean` followed by `make -j1`, require `source/dsc`, and
+run the discovered bit-true smoke/golden check before planning any RTL work.
+This repository is deliberately standalone and must not inspect, import,
+configure, or integrate with SVRT.
+
 ## Stable-library boundary (non-negotiable)
 
 - Function discovery and ranking are tool outputs. The prompt, environment,
@@ -302,6 +309,18 @@ PDF and upstream C model are immutable external inputs.
    ready leaf whose frozen interface shape differs from existing promoted
    work. Reject recursive/combinational dependency cycles.
 
+   Function selection is an output of the current discovery/ranking pipeline:
+   re-run AST, callgraph, effect, reachability, coverage, exact-PDF, and
+   contract-readiness gates, then select from the resulting candidate frontier.
+   Never put a source function name in a prompt, target list, allowlist,
+   environment default, reviewed override, or adapter branch. A target ID may
+   route an already materialized discovered contract for retry, but it cannot
+   create, select, or enrich a function absent from the current tool facts.
+   Semantic adapter dispatch may use reviewed `semantics.kind` and its binding
+   maps; it must never use a function-name recipe. The selector must remain
+   correct when function names, source order, or the top-ranked candidate
+   change.
+
 3. Materialize or generate RTL. On a ready cache miss for new/repair work,
    invoke `DSC_CICD_GENERATOR_CMD request.json output_dir` exactly once. The
    request contains only `locked_contract`, `frozen_interface`, `c_body`, and
@@ -343,6 +362,14 @@ PDF and upstream C model are immutable external inputs.
    reason to reject a valid reviewed scalar adapter. Reject only when the
    adapter cannot supply the complete frozen DUT interface, and retain the C
    boundary without dummy state.
+   For any reviewed pointer/state projection, preserve the original C
+   declaration and call signature in the overlay. Build the RTL call from the
+   reviewed semantic strategy: bind every frozen input exactly once to a
+   scalar parameter, a reviewed read-only record field, an indexed array
+   element, or an explicitly guarded tap; reject missing, duplicate, guessed,
+   or dummy bindings. Record native caller arity separately from frozen RTL
+   port count. This is a generic contract-driven adapter rule and must work
+   without naming the source function in code or configuration.
    A clean concrete result is `DIFFERENTIAL_PASS`, never a promotion or
    stable-library proof. For a reviewed production-domain relative-window
    contract, keep the complete C line-buffer state at the caller boundary and

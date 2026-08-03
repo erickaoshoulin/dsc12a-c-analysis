@@ -15,7 +15,7 @@
         "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/cmd_parse.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.156,
+      "duration_seconds": 0.115,
       "output": "",
       "returncode": 0
     },
@@ -34,7 +34,7 @@
         "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/codec_main.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.06,
+      "duration_seconds": 0.107,
       "output": "",
       "returncode": 0
     },
@@ -52,7 +52,7 @@
         "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/dpx.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.053,
+      "duration_seconds": 0.095,
       "output": "",
       "returncode": 0
     },
@@ -70,7 +70,7 @@
         "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/dsc_codec.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.067,
+      "duration_seconds": 0.091,
       "output": "",
       "returncode": 0
     },
@@ -88,7 +88,7 @@
         "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/dsc_utils.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.044,
+      "duration_seconds": 0.075,
       "output": "",
       "returncode": 0
     },
@@ -106,7 +106,7 @@
         "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/fifo.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.031,
+      "duration_seconds": 0.042,
       "output": "",
       "returncode": 0
     },
@@ -124,7 +124,7 @@
         "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/hdr_dpx.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.064,
+      "duration_seconds": 0.094,
       "output": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n2 warnings generated.\n",
       "returncode": 0
     },
@@ -142,7 +142,7 @@
         "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/logging.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.033,
+      "duration_seconds": 0.053,
       "output": "",
       "returncode": 0
     },
@@ -160,7 +160,7 @@
         "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/multiplex.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.031,
+      "duration_seconds": 0.042,
       "output": "",
       "returncode": 0
     },
@@ -178,7 +178,7 @@
         "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/psnr.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.031,
+      "duration_seconds": 0.057,
       "output": "",
       "returncode": 0
     },
@@ -196,7 +196,7 @@
         "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/utl.o"
       ],
       "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-      "duration_seconds": 0.059,
+      "duration_seconds": 0.076,
       "output": "",
       "returncode": 0
     },
@@ -213,7 +213,7 @@
         "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/oracle.o"
       ],
       "cwd": "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
-      "duration_seconds": 0.026,
+      "duration_seconds": 0.068,
       "output": "",
       "returncode": 0
     },
@@ -237,7 +237,7 @@
         "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/oracle.o"
       ],
       "cwd": "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
-      "duration_seconds": 0.109,
+      "duration_seconds": 0.137,
       "output": "",
       "returncode": 0
     }

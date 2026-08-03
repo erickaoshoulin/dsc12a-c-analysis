@@ -1,0 +1,37 @@
+{
+  "accepted_rtl": {
+    "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
+    "library_file": "library/rtl/estimatebitsforgroup.sv",
+    "module": "estimatebitsforgroup",
+    "module_sha256": "da8e09494b9dad38a4591c81c21adf445cc0b92cdaf4eabc1604aa1ca2db3f9f",
+    "reason": "bounded_stable_refresh"
+  },
+  "candidate_limit": 4,
+  "candidates": [
+    {
+      "candidate": "candidate_01",
+      "module": "estimatebitsforgroup",
+      "path": "generated/candidate_01.sv",
+      "sha256": "da8e09494b9dad38a4591c81c21adf445cc0b92cdaf4eabc1604aa1ca2db3f9f",
+      "validation": "PASS",
+      "validation_reasons": []
+    }
+  ],
+  "context_keys": [
+    "locked_contract",
+    "frozen_interface",
+    "c_body",
+    "exact_spec_anchors"
+  ],
+  "contract_id": "estimatebitsforgroup",
+  "execution_status": "REUSED_ACCEPTED_RTL",
+  "hook": "NOT_USED",
+  "model_calls": 0,
+  "schema_version": 2,
+  "source_span": {
+    "end_line": 437,
+    "start_line": 390
+  },
+  "status": "PASS",
+  "tokens": 0
+}

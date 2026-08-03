@@ -1,33 +1,22 @@
 {
+  "accepted_rtl": {
+    "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+    "library_file": "library/rtl/qp2qlevel.sv",
+    "module": "qp2qlevel",
+    "module_sha256": "18f078d82f020604fbcae57261373e69e9291f7757f81585163bb47fa1d893df",
+    "reason": "bounded_stable_refresh"
+  },
   "candidate_limit": 4,
   "candidates": [
     {
       "candidate": "candidate_01",
+      "module": "qp2qlevel",
       "path": "generated/candidate_01.sv",
-      "sha256": "77774d5203ec62c867082b0bd73fadff3dcd9b1eeded8bbc75d2b60c35a7d8cc",
-      "validation": "PASS",
-      "validation_reasons": []
-    },
-    {
-      "candidate": "candidate_02",
-      "path": "generated/candidate_02.sv",
-      "sha256": "94667ffa41c3da03097ab421220cac023d02cd927e2ee83b82921d7cb8c23744",
+      "sha256": "18f078d82f020604fbcae57261373e69e9291f7757f81585163bb47fa1d893df",
       "validation": "PASS",
       "validation_reasons": []
     }
   ],
-  "command": {
-    "command": [
-      "python3",
-      "tools/generator_fixture.py",
-      "/private/tmp/dsc12a-c-analysis/artifacts/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026/generation-request.json",
-      "/private/tmp/dsc12a-c-analysis/artifacts/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026/generated"
-    ],
-    "cwd": "/private/tmp/dsc12a-c-analysis",
-    "duration_seconds": 0.067,
-    "output": "",
-    "returncode": 0
-  },
   "context_keys": [
     "locked_contract",
     "frozen_interface",
@@ -35,28 +24,14 @@
     "exact_spec_anchors"
   ],
   "contract_id": "qp2qlevel",
-  "execution_status": "EXECUTED_NOW",
-  "hook": "python3 tools/generator_fixture.py",
-  "model_calls": 1,
+  "execution_status": "REUSED_ACCEPTED_RTL",
+  "hook": "NOT_USED",
+  "model_calls": 0,
   "schema_version": 2,
   "source_span": {
     "end_line": 844,
     "start_line": 816
   },
   "status": "PASS",
-  "telemetry": {
-    "candidate_count": 2,
-    "contract_id": "qp2qlevel",
-    "generator": "deterministic-fixture-hook",
-    "model_calls": 1,
-    "request_keys": [
-      "c_body",
-      "exact_spec_anchors",
-      "frozen_interface",
-      "locked_contract"
-    ],
-    "tokens_in": 2242,
-    "tokens_out": 6275
-  },
-  "tokens": 8517
+  "tokens": 0
 }

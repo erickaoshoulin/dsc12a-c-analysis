@@ -1,4 +1,4 @@
-module getqpadjpredsize_candidate_01 (
+module getqpadjpredsize (
     input logic [1:0] unit,
     input logic [1:0] dsc_version_minor,
     input logic native_420,

@@ -706,6 +706,16 @@ class LocalContext:
         if smoke and smoke.get("expected_hash") and not any(item.get("sha256") == smoke.get("expected_hash") for item in smoke.get("outputs", [])):
             blockers.append("c_smoke_golden_hash_not_pass")
         binary = build.get("binary", {}) or {}
+        raw_pdf_pages = (spec.get("pdfinfo", {}) or {}).get("Pages")
+        try:
+            pdf_pages = int(raw_pdf_pages) if raw_pdf_pages is not None else None
+        except (TypeError, ValueError):
+            pdf_pages = None
+        if pdf_pages is None and spec.get("gate", {}).get("pages_145") is True:
+            # The standalone discovery manifest records the validated page
+            # predicate even when it does not carry the legacy extraction
+            # summary used by older dashboard manifests.
+            pdf_pages = 145
         smoke_summary = {
             "mode": smoke.get("mode"),
             "expected_hash": smoke.get("expected_hash"),
@@ -718,7 +728,7 @@ class LocalContext:
         return {
             "status": "PASS" if not blockers else "BLOCKED",
             "blockers": blockers,
-            "pdf": {"path": spec.get("path"), "sha256": spec.get("sha256"), "pages": self.manifest.get("pdf_extraction", {}).get("page_count") or spec.get("gate", {}).get("pages")},
+            "pdf": {"path": spec.get("path"), "sha256": spec.get("sha256"), "pages": pdf_pages},
             "source": {"path": source.get("source_dir"), "sha256": source.get("source_hashes_sha256")},
             "compile_check": {"status": compile_check.get("status"), "translation_units": compile_check.get("compiler_command_count")},
             "build": {

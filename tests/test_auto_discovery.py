@@ -3,6 +3,7 @@ import pathlib
 import sys
 import tempfile
 import unittest
+from unittest import mock
 
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
@@ -10,9 +11,31 @@ sys.path.insert(0, str(ROOT / "tools"))
 
 import rank_candidates  # noqa: E402
 import traceability  # noqa: E402
+import discover_inputs  # noqa: E402
 
 
 class AutoDiscoveryTests(unittest.TestCase):
+    def test_source_discovery_prefers_versioned_model_over_ephemeral_copy(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            repo = root / "workspace" / "repo"
+            external = root / "Desktop" / "DSC_model_20210623" / "source"
+            ephemeral = root / "workspace" / "tmp-copy" / "DSC_model_20210623" / "source"
+            repo.mkdir(parents=True)
+            external.mkdir(parents=True)
+            ephemeral.mkdir(parents=True)
+
+            def fake_run(command, timeout):
+                if command[:4] == ["git", "-C", str(external.parent), "remote"]:
+                    return 0, "https://example.invalid/dsc.git\n"
+                return 128, "not a git repository\n"
+
+            with mock.patch.object(discover_inputs, "run_command", side_effect=fake_run):
+                external_key = discover_inputs.source_candidate_key(external, repo)
+                ephemeral_key = discover_inputs.source_candidate_key(ephemeral, repo)
+
+        self.assertLess(external_key, ephemeral_key)
+
     def test_generic_boundary_function_is_selected_without_name_allowlist(self):
         raw = {
             "functions": [

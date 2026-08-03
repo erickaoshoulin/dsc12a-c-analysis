@@ -214,6 +214,26 @@ def search_roots(repo_root: pathlib.Path) -> list[pathlib.Path]:
     return result
 
 
+def source_candidate_key(source_dir: pathlib.Path, repo_root: pathlib.Path) -> tuple[int, int, int, str]:
+    """Prefer an externally versioned model over an ephemeral build copy."""
+    model_root = source_dir.parent
+    remote_code, remote = run_command(
+        ["git", "-C", str(model_root), "remote", "get-url", "origin"], 30
+    )
+    has_git_provenance = remote_code == 0 and bool(remote.strip())
+    repo_root = repo_root.resolve()
+    repo_parent = repo_root.parent
+    inside_repo_parent = (
+        model_root == repo_parent or repo_parent in model_root.parents
+    ) and not (model_root == repo_root or repo_root in model_root.parents)
+    return (
+        0 if has_git_provenance else 1,
+        1 if inside_repo_parent else 0,
+        len(source_dir.parts),
+        str(source_dir),
+    )
+
+
 def discover_pdf(repo_root: pathlib.Path, timeout: int) -> tuple[pathlib.Path | None, list[str]]:
     explicit = os.environ.get("DSC_SPEC_PDF", "").strip()
     if explicit:
@@ -253,7 +273,7 @@ def discover_source(repo_root: pathlib.Path, timeout: int) -> tuple[pathlib.Path
                 if source_gate(source)["status"] == "PASS":
                     candidates.add(source.resolve())
                 directories[:] = []
-    ordered = sorted(candidates, key=lambda path: (len(path.parts), str(path)))
+    ordered = sorted(candidates, key=lambda path: source_candidate_key(path, repo_root))
     return (ordered[0] if ordered else None), [str(path) for path in ordered]
 
 

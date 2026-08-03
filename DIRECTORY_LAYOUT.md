@@ -31,8 +31,8 @@ file is copied into the new layout.
 ## Storage resolution
 
 - selected root: /Users/snow/.svrt-network/dsc12a-regression
-- resolution mode: SMB
-- requested root: /Volumes/homes/dsc12a-regression
+- resolution mode: ENV_ROOT
+- requested root: /Users/snow/.svrt-network/dsc12a-regression
 - SMB fallback reason: none
 
 If the SMB share is unavailable, the dashboard reports LOCAL_REPOSITORY and

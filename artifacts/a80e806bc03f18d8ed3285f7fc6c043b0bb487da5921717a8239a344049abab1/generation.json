@@ -1,0 +1,37 @@
+{
+  "accepted_rtl": {
+    "contract_hash": "46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
+    "library_file": "library/rtl/usingmidpoint.sv",
+    "module": "usingmidpoint",
+    "module_sha256": "fc765032b32c15013196fa87328b8692da41071277c4bdd13ffb941c86132ab8",
+    "reason": "bounded_stable_refresh"
+  },
+  "candidate_limit": 4,
+  "candidates": [
+    {
+      "candidate": "candidate_01",
+      "module": "usingmidpoint",
+      "path": "generated/candidate_01.sv",
+      "sha256": "fc765032b32c15013196fa87328b8692da41071277c4bdd13ffb941c86132ab8",
+      "validation": "PASS",
+      "validation_reasons": []
+    }
+  ],
+  "context_keys": [
+    "locked_contract",
+    "frozen_interface",
+    "c_body",
+    "exact_spec_anchors"
+  ],
+  "contract_id": "usingmidpoint",
+  "execution_status": "REUSED_ACCEPTED_RTL",
+  "hook": "NOT_USED",
+  "model_calls": 0,
+  "schema_version": 2,
+  "source_span": {
+    "end_line": 476,
+    "start_line": 457
+  },
+  "status": "PASS",
+  "tokens": 0
+}

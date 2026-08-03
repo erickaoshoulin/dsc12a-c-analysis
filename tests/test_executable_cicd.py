@@ -349,6 +349,14 @@ class ExecutableCicdTests(unittest.TestCase):
             None,
         )
         if entry is None:
+            if selected["status"] == "PROMOTED" and summary.get("results"):
+                # A stable refresh intentionally bypasses the normal cache
+                # entry while reusing accepted RTL and still executes all
+                # deterministic gates with zero generator/model calls.
+                self.assertEqual(summary["generator_invocations"], 0)
+                self.assertEqual(summary["model_calls"], 0)
+                self.assertEqual(summary["results"][0]["execution_status"], "EXECUTED_NOW")
+                return
             self.assertNotIn(selected["status"], ("PROMOTED", "CACHE_REUSED"))
             return
         self.assertTrue(entry.get("valid"))
@@ -462,6 +470,42 @@ class ExecutableCicdTests(unittest.TestCase):
         self.assertIn("dsc_state->numComponents > 3", overlay)
         self.assertIn("dsc_state->origLine[3][hPos + PADDING_LEFT + 0] : 0", overlay)
         self.assertNotIn("orig_line_window", overlay)
+
+    def test_ich_decision_overlay_preserves_native_call_and_expands_reviewed_ports(self):
+        contract = json.loads(
+            (ROOT / "ci" / "discovered-contracts" / "ichdecision.json").read_text(
+                encoding="utf-8"
+            )
+        )
+        agent = Agent(ROOT, "test")
+        with tempfile.TemporaryDirectory() as directory:
+            source_dir = pathlib.Path(directory)
+            paths = agent.write_overlay_sources(
+                contract,
+                source_dir,
+                "ichdecision_candidate_01",
+                source_dir / "candidate.sv",
+            )
+            header = (source_dir / "dsc_cicd_overlay.h").read_text(encoding="utf-8")
+            overlay = (source_dir / "dsc_cicd_overlay.c").read_text(encoding="utf-8")
+
+        self.assertEqual(paths["composition"]["status"], "PASS")
+        self.assertEqual(paths["composition"]["adapter_kind"], "reviewed_ich_decision")
+        self.assertEqual(paths["composition"]["caller_parameter_count"], 5)
+        self.assertEqual(paths["composition"]["rtl_input_count"], 90)
+        self.assertIn(
+            "int dsc_cicd_invoke(dsc_cfg_t * dsc_cfg, dsc_state_t * dsc_state, "
+            "int adj_predicted_size, int alt_pfx, int alt_size_to_generate);",
+            header,
+        )
+        self.assertIn(
+            "IchDecision_original(dsc_cfg, dsc_state, adj_predicted_size, alt_pfx, "
+            "alt_size_to_generate)",
+            overlay,
+        )
+        self.assertIn("dsc_state->quantTableLuma[dsc_state->primaryQp]", overlay)
+        self.assertIn("dsc_state->origLine[0][PADDING_LEFT + dsc_state->hPos + 0]", overlay)
+        self.assertNotIn("int dsc_cicd_invoke(int adj_predicted_size", header)
 
     def test_samplepredict_pointer_adapter_binds_state_and_taps(self):
         agent = Agent(ROOT, "test")

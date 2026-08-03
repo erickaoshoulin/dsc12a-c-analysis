@@ -1,0 +1,5522 @@
+{
+  "c_body": "int EstimateBitsForGroup(dsc_cfg_t *dsc_cfg, dsc_state_t *dsc_state)\n{\n\tint i, cpnt, unit;\n\tint max_size[MAX_UNITS_PER_GROUP];\n\tint total_size = 0;\n\tint size, qerr;\n\tint max_residual_size;\n\tint pred_size;\n\tint hPos;\n\n\tfor (i=0; i<MAX_UNITS_PER_GROUP; ++i)\n\t\tmax_size[i] = 0;\n\n\tfor (unit = 0; unit < dsc_state->unitsPerGroup; ++unit)\n\t{\n\t\tfor (i=0; i<SAMPLES_PER_UNIT; ++i)\n\t\t{\n\t\t\thPos = dsc_state->hPos + i - (dsc_state->pixelsInGroup-1) + dsc_state->unitStartHPos[unit];\n\t\t\tif (hPos >= dsc_state->sliceWidth)\n\t\t\t\tcontinue;\n\t\t\tqerr = dsc_state->quantizedResidual[unit][i];\t\t// use real P-mode residual sizes\n\t\t\tsize = FindResidualSize(qerr);\n\t\t\tif (size > max_size[unit])\n\t\t\t\tmax_size[unit] = size;\n\t\t}\n\t\tmax_residual_size = MaxResidualSize(dsc_cfg, dsc_state, dsc_state->unitCType[unit], dsc_state->primaryQp);\n\t\tif (max_size[unit] > max_residual_size)\n\t\t\tmax_size[unit] = max_residual_size;\n\t}\n\n\tfor (unit = 0; unit < dsc_state->unitsPerGroup; ++unit)\n\t{\n\t\tcpnt = dsc_state->unitCType[unit];\n\t\tpred_size = GetQpAdjPredSize(dsc_cfg, dsc_state, unit);\n\t\tif (max_size[unit] < pred_size)\n\t\t\ttotal_size += 1 + SAMPLES_PER_UNIT * pred_size;\n\t\telse if((max_size[unit] == MaxResidualSize(dsc_cfg, dsc_state, cpnt, dsc_state->primaryQp)) && (unit != 0)) // not 1st unit\n\t\t\ttotal_size += (max_size[unit] - pred_size) + SAMPLES_PER_UNIT * max_size[unit];\n\t\telse        \n\t\t\ttotal_size += 1 + (max_size[unit] - pred_size) + SAMPLES_PER_UNIT * max_size[unit];\n                                                                \n\t}\n\t//If previous group was ICH and luma is not maxsize, add another bit\n\tif( (max_size[0] < MaxResidualSize(dsc_cfg, dsc_state, 0, dsc_state->primaryQp)) && dsc_state->prevIchSelected)\n\t\ttotal_size += 1;\n\n\treturn (total_size);\n}",
+  "exact_spec_anchors": [
+    {
+      "anchor_id": "pdf:model-note:MN_ENC_ICH_MODE_SELECT:p088",
+      "evidence": "The PDF model note identifies the encoder ICH/P decision and its P-mode cost input.",
+      "page": 88,
+      "section": "6.5.3.2",
+      "short_anchor": null,
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:section:6.5.3.2",
+      "evidence": "The normative decision section is the exact consumer of the estimated predictive-mode bits.",
+      "page": 88,
+      "section": "6.5.3.2",
+      "short_anchor": null,
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:section:6.6.1",
+      "evidence": "The normative DSU-VLC section defines residual-size and prefix/sample bit accounting.",
+      "page": 91,
+      "section": "6.6.1",
+      "short_anchor": null,
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:section:6.6.4",
+      "evidence": "The normative rate-control output section defines codedBits/rcSizeGroup as bit-count outputs.",
+      "page": 94,
+      "section": "6.6.4",
+      "short_anchor": null,
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:table:3-1",
+      "evidence": "The normative residual-size threshold table is delegated to FindResidualSize.",
+      "page": 34,
+      "section": "3",
+      "short_anchor": null,
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:table:6-2",
+      "evidence": "The normative qLevel table is delegated to MapQpToQlevel and its promoted callers.",
+      "page": 114,
+      "section": "6.8.6",
+      "short_anchor": null,
+      "status": "EXACT"
+    }
+  ],
+  "frozen_interface": {
+    "flattened_pointer_dependencies": [
+      {
+        "access": "READ_ONLY",
+        "c_type": "int",
+        "field": "dsc_version_minor",
+        "legal_domain": {
+          "basis": "DSC 1.1/1.2 version branches used by MapQpToQlevel",
+          "kind": "set",
+          "range": [
+            1,
+            2
+          ],
+          "values": [
+            1,
+            2
+          ]
+        },
+        "logical_width": 2,
+        "port_name": "dsc_version_minor",
+        "record": "dsc_cfg_t",
+        "role": "CONFIG_STATIC",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int",
+        "field": "native_420",
+        "legal_domain": {
+          "basis": "PPS native_420 flag used by MapQpToQlevel",
+          "kind": "set",
+          "range": [
+            0,
+            1
+          ],
+          "values": [
+            0,
+            1
+          ]
+        },
+        "logical_width": 1,
+        "port_name": "native_420",
+        "record": "dsc_cfg_t",
+        "role": "CONFIG_STATIC",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int",
+        "field": "unitsPerGroup",
+        "legal_domain": {
+          "basis": "DSC source initialization and native 4:2:2 group structure",
+          "kind": "set",
+          "range": [
+            3,
+            4
+          ],
+          "values": [
+            3,
+            4
+          ]
+        },
+        "logical_width": 3,
+        "port_name": "units_per_group",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int",
+        "field": "pixelsInGroup",
+        "legal_domain": {
+          "basis": "SAMPLES_PER_UNIT and source pixelsInGroup initialization",
+          "kind": "set",
+          "range": [
+            3,
+            3
+          ],
+          "values": [
+            3
+          ]
+        },
+        "logical_width": 2,
+        "port_name": "pixels_in_group",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int",
+        "field": "hPos",
+        "legal_domain": {
+          "basis": "DSC slice-relative horizontal position domain",
+          "kind": "range",
+          "range": [
+            0,
+            65534
+          ]
+        },
+        "logical_width": 16,
+        "port_name": "hPos",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int",
+        "field": "sliceWidth",
+        "legal_domain": {
+          "basis": "DSC sliceWidth positive finite source domain",
+          "kind": "range",
+          "range": [
+            1,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "port_name": "slice_width",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int",
+        "field": "prevIchSelected",
+        "legal_domain": {
+          "basis": "Previous-group ICH selection flag",
+          "kind": "set",
+          "range": [
+            0,
+            1
+          ],
+          "values": [
+            0,
+            1
+          ]
+        },
+        "logical_width": 1,
+        "port_name": "prev_ich_selected",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int",
+        "field": "primaryQp",
+        "legal_domain": {
+          "basis": "Table 6-2 masterQp rows",
+          "kind": "range",
+          "range": [
+            0,
+            31
+          ]
+        },
+        "logical_width": 5,
+        "port_name": "primary_qp",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int",
+        "field": "prevPrimaryQp",
+        "legal_domain": {
+          "basis": "Table 6-2 masterQp rows",
+          "kind": "range",
+          "range": [
+            0,
+            31
+          ]
+        },
+        "logical_width": 5,
+        "port_name": "prev_primary_qp",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "field": "cpntBitDepth",
+        "index": 0,
+        "legal_domain": {
+          "basis": "DSC supported base component bit depths",
+          "kind": "set",
+          "range": [
+            8,
+            16
+          ],
+          "values": [
+            8,
+            10,
+            12,
+            14,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "port_name": "cpntBitDepth_0",
+        "record": "dsc_state_t",
+        "role": "CONFIG_STATIC",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "field": "cpntBitDepth",
+        "index": 1,
+        "legal_domain": {
+          "basis": "DSC component bit-depth projection; Table 6-2 base-depth relation is enforced by the vector/formal strategy",
+          "kind": "range",
+          "range": [
+            8,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "port_name": "cpntBitDepth_1",
+        "record": "dsc_state_t",
+        "role": "CONFIG_STATIC",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "field": "cpntBitDepth",
+        "index": 2,
+        "legal_domain": {
+          "basis": "DSC component bit-depth projection; Table 6-2 base-depth relation is enforced by the vector/formal strategy",
+          "kind": "range",
+          "range": [
+            8,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "port_name": "cpntBitDepth_2",
+        "record": "dsc_state_t",
+        "role": "CONFIG_STATIC",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "field": "cpntBitDepth",
+        "index": 3,
+        "legal_domain": {
+          "basis": "DSC component bit-depth projection; Table 6-2 base-depth relation is enforced by the vector/formal strategy",
+          "kind": "range",
+          "range": [
+            8,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "port_name": "cpntBitDepth_3",
+        "record": "dsc_state_t",
+        "role": "CONFIG_STATIC",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "field": "unitCType",
+        "index": 0,
+        "legal_domain": {
+          "basis": "dsc_state_t unitCType component index domain",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "logical_width": 2,
+        "port_name": "unit_c_type_0",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "field": "unitCType",
+        "index": 1,
+        "legal_domain": {
+          "basis": "dsc_state_t unitCType component index domain",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "logical_width": 2,
+        "port_name": "unit_c_type_1",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "field": "unitCType",
+        "index": 2,
+        "legal_domain": {
+          "basis": "dsc_state_t unitCType component index domain",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "logical_width": 2,
+        "port_name": "unit_c_type_2",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "field": "unitCType",
+        "index": 3,
+        "legal_domain": {
+          "basis": "dsc_state_t unitCType component index domain",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "logical_width": 2,
+        "port_name": "unit_c_type_3",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "field": "unitStartHPos",
+        "index": 0,
+        "legal_domain": {
+          "basis": "source initialization leaves unitStartHPos at zero",
+          "kind": "set",
+          "range": [
+            0,
+            0
+          ],
+          "values": [
+            0
+          ]
+        },
+        "logical_width": 16,
+        "port_name": "unit_start_h_pos_0",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "field": "unitStartHPos",
+        "index": 1,
+        "legal_domain": {
+          "basis": "source initialization leaves unitStartHPos at zero",
+          "kind": "set",
+          "range": [
+            0,
+            0
+          ],
+          "values": [
+            0
+          ]
+        },
+        "logical_width": 16,
+        "port_name": "unit_start_h_pos_1",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "field": "unitStartHPos",
+        "index": 2,
+        "legal_domain": {
+          "basis": "source initialization leaves unitStartHPos at zero",
+          "kind": "set",
+          "range": [
+            0,
+            0
+          ],
+          "values": [
+            0
+          ]
+        },
+        "logical_width": 16,
+        "port_name": "unit_start_h_pos_2",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "field": "unitStartHPos",
+        "index": 3,
+        "legal_domain": {
+          "basis": "source initialization leaves unitStartHPos at zero",
+          "kind": "set",
+          "range": [
+            0,
+            0
+          ],
+          "values": [
+            0
+          ]
+        },
+        "logical_width": 16,
+        "port_name": "unit_start_h_pos_3",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "field": "predictedSize",
+        "index": 0,
+        "legal_domain": {
+          "basis": "DSC DSU predicted size domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "port_name": "predicted_size_0",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "field": "predictedSize",
+        "index": 1,
+        "legal_domain": {
+          "basis": "DSC DSU predicted size domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "port_name": "predicted_size_1",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "field": "predictedSize",
+        "index": 2,
+        "legal_domain": {
+          "basis": "DSC DSU predicted size domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "port_name": "predicted_size_2",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "field": "predictedSize",
+        "index": 3,
+        "legal_domain": {
+          "basis": "DSC DSU predicted size domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "port_name": "predicted_size_3",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4][3]",
+        "field": "quantizedResidual",
+        "index_names": [
+          0,
+          0
+        ],
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "port_name": "quantized_residual_0_0",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4][3]",
+        "field": "quantizedResidual",
+        "index_names": [
+          0,
+          1
+        ],
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "port_name": "quantized_residual_0_1",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4][3]",
+        "field": "quantizedResidual",
+        "index_names": [
+          0,
+          2
+        ],
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "port_name": "quantized_residual_0_2",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4][3]",
+        "field": "quantizedResidual",
+        "index_names": [
+          1,
+          0
+        ],
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "port_name": "quantized_residual_1_0",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4][3]",
+        "field": "quantizedResidual",
+        "index_names": [
+          1,
+          1
+        ],
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "port_name": "quantized_residual_1_1",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4][3]",
+        "field": "quantizedResidual",
+        "index_names": [
+          1,
+          2
+        ],
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "port_name": "quantized_residual_1_2",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4][3]",
+        "field": "quantizedResidual",
+        "index_names": [
+          2,
+          0
+        ],
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "port_name": "quantized_residual_2_0",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4][3]",
+        "field": "quantizedResidual",
+        "index_names": [
+          2,
+          1
+        ],
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "port_name": "quantized_residual_2_1",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4][3]",
+        "field": "quantizedResidual",
+        "index_names": [
+          2,
+          2
+        ],
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "port_name": "quantized_residual_2_2",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4][3]",
+        "field": "quantizedResidual",
+        "index_names": [
+          3,
+          0
+        ],
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "port_name": "quantized_residual_3_0",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4][3]",
+        "field": "quantizedResidual",
+        "index_names": [
+          3,
+          1
+        ],
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "port_name": "quantized_residual_3_1",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4][3]",
+        "field": "quantizedResidual",
+        "index_names": [
+          3,
+          2
+        ],
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "port_name": "quantized_residual_3_2",
+        "record": "dsc_state_t",
+        "role": "STATE_RUNTIME",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "array_length": 32,
+        "c_type": "int *",
+        "field": "quantTableLuma",
+        "index_name": "primaryQp",
+        "legal_domain": {
+          "basis": "Table 6-2 qLevel entry domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "port_name": "qlevel_luma_new",
+        "record": "dsc_state_t",
+        "role": "TABLE_LOOKUP_LUMA",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "array_length": 32,
+        "c_type": "int *",
+        "field": "quantTableLuma",
+        "index_name": "prevPrimaryQp",
+        "legal_domain": {
+          "basis": "Table 6-2 qLevel entry domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "port_name": "qlevel_luma_old",
+        "record": "dsc_state_t",
+        "role": "TABLE_LOOKUP_LUMA",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "array_length": 32,
+        "c_type": "int *",
+        "field": "quantTableChroma",
+        "index_name": "primaryQp",
+        "legal_domain": {
+          "basis": "Table 6-2 qLevel entry domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "port_name": "qlevel_chroma_new",
+        "record": "dsc_state_t",
+        "role": "TABLE_LOOKUP_CHROMA",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "array_length": 32,
+        "c_type": "int *",
+        "field": "quantTableChroma",
+        "index_name": "prevPrimaryQp",
+        "legal_domain": {
+          "basis": "Table 6-2 qLevel entry domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "port_name": "qlevel_chroma_old",
+        "record": "dsc_state_t",
+        "role": "TABLE_LOOKUP_CHROMA",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      }
+    ],
+    "inputs": [
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "DSC 1.1/1.2 version branches used by MapQpToQlevel",
+          "kind": "set",
+          "range": [
+            1,
+            2
+          ],
+          "values": [
+            1,
+            2
+          ]
+        },
+        "logical_width": 2,
+        "name": "dsc_version_minor",
+        "role": "CONFIG_STATIC",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "PPS native_420 flag used by MapQpToQlevel",
+          "kind": "set",
+          "range": [
+            0,
+            1
+          ],
+          "values": [
+            0,
+            1
+          ]
+        },
+        "logical_width": 1,
+        "name": "native_420",
+        "role": "CONFIG_STATIC",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "DSC source initialization and native 4:2:2 group structure",
+          "kind": "set",
+          "range": [
+            3,
+            4
+          ],
+          "values": [
+            3,
+            4
+          ]
+        },
+        "logical_width": 3,
+        "name": "units_per_group",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "SAMPLES_PER_UNIT and source pixelsInGroup initialization",
+          "kind": "set",
+          "range": [
+            3,
+            3
+          ],
+          "values": [
+            3
+          ]
+        },
+        "logical_width": 2,
+        "name": "pixels_in_group",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "DSC slice-relative horizontal position domain",
+          "kind": "range",
+          "range": [
+            0,
+            65534
+          ]
+        },
+        "logical_width": 16,
+        "name": "hPos",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "DSC sliceWidth positive finite source domain",
+          "kind": "range",
+          "range": [
+            1,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "slice_width",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "Previous-group ICH selection flag",
+          "kind": "set",
+          "range": [
+            0,
+            1
+          ],
+          "values": [
+            0,
+            1
+          ]
+        },
+        "logical_width": 1,
+        "name": "prev_ich_selected",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "Table 6-2 masterQp rows",
+          "kind": "range",
+          "range": [
+            0,
+            31
+          ]
+        },
+        "logical_width": 5,
+        "name": "primary_qp",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "Table 6-2 masterQp rows",
+          "kind": "range",
+          "range": [
+            0,
+            31
+          ]
+        },
+        "logical_width": 5,
+        "name": "prev_primary_qp",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4]",
+        "legal_domain": {
+          "basis": "DSC supported base component bit depths",
+          "kind": "set",
+          "range": [
+            8,
+            16
+          ],
+          "values": [
+            8,
+            10,
+            12,
+            14,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "cpntBitDepth_0",
+        "role": "CONFIG_STATIC",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4]",
+        "legal_domain": {
+          "basis": "DSC component bit-depth projection; Table 6-2 base-depth relation is enforced by the vector/formal strategy",
+          "kind": "range",
+          "range": [
+            8,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "cpntBitDepth_1",
+        "role": "CONFIG_STATIC",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4]",
+        "legal_domain": {
+          "basis": "DSC component bit-depth projection; Table 6-2 base-depth relation is enforced by the vector/formal strategy",
+          "kind": "range",
+          "range": [
+            8,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "cpntBitDepth_2",
+        "role": "CONFIG_STATIC",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4]",
+        "legal_domain": {
+          "basis": "DSC component bit-depth projection; Table 6-2 base-depth relation is enforced by the vector/formal strategy",
+          "kind": "range",
+          "range": [
+            8,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "cpntBitDepth_3",
+        "role": "CONFIG_STATIC",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4]",
+        "legal_domain": {
+          "basis": "dsc_state_t unitCType component index domain",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "logical_width": 2,
+        "name": "unit_c_type_0",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4]",
+        "legal_domain": {
+          "basis": "dsc_state_t unitCType component index domain",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "logical_width": 2,
+        "name": "unit_c_type_1",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4]",
+        "legal_domain": {
+          "basis": "dsc_state_t unitCType component index domain",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "logical_width": 2,
+        "name": "unit_c_type_2",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4]",
+        "legal_domain": {
+          "basis": "dsc_state_t unitCType component index domain",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "logical_width": 2,
+        "name": "unit_c_type_3",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4]",
+        "legal_domain": {
+          "basis": "source initialization leaves unitStartHPos at zero",
+          "kind": "set",
+          "range": [
+            0,
+            0
+          ],
+          "values": [
+            0
+          ]
+        },
+        "logical_width": 16,
+        "name": "unit_start_h_pos_0",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4]",
+        "legal_domain": {
+          "basis": "source initialization leaves unitStartHPos at zero",
+          "kind": "set",
+          "range": [
+            0,
+            0
+          ],
+          "values": [
+            0
+          ]
+        },
+        "logical_width": 16,
+        "name": "unit_start_h_pos_1",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4]",
+        "legal_domain": {
+          "basis": "source initialization leaves unitStartHPos at zero",
+          "kind": "set",
+          "range": [
+            0,
+            0
+          ],
+          "values": [
+            0
+          ]
+        },
+        "logical_width": 16,
+        "name": "unit_start_h_pos_2",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4]",
+        "legal_domain": {
+          "basis": "source initialization leaves unitStartHPos at zero",
+          "kind": "set",
+          "range": [
+            0,
+            0
+          ],
+          "values": [
+            0
+          ]
+        },
+        "logical_width": 16,
+        "name": "unit_start_h_pos_3",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4]",
+        "legal_domain": {
+          "basis": "DSC DSU predicted size domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "predicted_size_0",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4]",
+        "legal_domain": {
+          "basis": "DSC DSU predicted size domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "predicted_size_1",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4]",
+        "legal_domain": {
+          "basis": "DSC DSU predicted size domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "predicted_size_2",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4]",
+        "legal_domain": {
+          "basis": "DSC DSU predicted size domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "predicted_size_3",
+        "role": "STATE_RUNTIME",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4][3]",
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "quantized_residual_0_0",
+        "role": "STATE_RUNTIME",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4][3]",
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "quantized_residual_0_1",
+        "role": "STATE_RUNTIME",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4][3]",
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "quantized_residual_0_2",
+        "role": "STATE_RUNTIME",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4][3]",
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "quantized_residual_1_0",
+        "role": "STATE_RUNTIME",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4][3]",
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "quantized_residual_1_1",
+        "role": "STATE_RUNTIME",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4][3]",
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "quantized_residual_1_2",
+        "role": "STATE_RUNTIME",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4][3]",
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "quantized_residual_2_0",
+        "role": "STATE_RUNTIME",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4][3]",
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "quantized_residual_2_1",
+        "role": "STATE_RUNTIME",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4][3]",
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "quantized_residual_2_2",
+        "role": "STATE_RUNTIME",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4][3]",
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "quantized_residual_3_0",
+        "role": "STATE_RUNTIME",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4][3]",
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "quantized_residual_3_1",
+        "role": "STATE_RUNTIME",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int[4][3]",
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "quantized_residual_3_2",
+        "role": "STATE_RUNTIME",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int *",
+        "legal_domain": {
+          "basis": "Table 6-2 qLevel entry domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "qlevel_luma_new",
+        "role": "TABLE_LOOKUP_LUMA",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int *",
+        "legal_domain": {
+          "basis": "Table 6-2 qLevel entry domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "qlevel_luma_old",
+        "role": "TABLE_LOOKUP_LUMA",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int *",
+        "legal_domain": {
+          "basis": "Table 6-2 qLevel entry domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "qlevel_chroma_new",
+        "role": "TABLE_LOOKUP_CHROMA",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int *",
+        "legal_domain": {
+          "basis": "Table 6-2 qLevel entry domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "qlevel_chroma_old",
+        "role": "TABLE_LOOKUP_CHROMA",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      }
+    ],
+    "output": {
+      "c_type": "int",
+      "legal_range": [
+        0,
+        261
+      ],
+      "logical_width": 9,
+      "name": "return_value",
+      "role": "return_value",
+      "signed": false,
+      "unresolved": false,
+      "width_source": "DERIVED_SPEC_DOMAIN"
+    },
+    "ports": [
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC 1.1/1.2 version branches used by MapQpToQlevel",
+          "kind": "set",
+          "range": [
+            1,
+            2
+          ],
+          "values": [
+            1,
+            2
+          ]
+        },
+        "name": "dsc_version_minor",
+        "role": "dsc_version_minor",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "PPS native_420 flag used by MapQpToQlevel",
+          "kind": "set",
+          "range": [
+            0,
+            1
+          ],
+          "values": [
+            0,
+            1
+          ]
+        },
+        "name": "native_420",
+        "role": "native_420",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC source initialization and native 4:2:2 group structure",
+          "kind": "set",
+          "range": [
+            3,
+            4
+          ],
+          "values": [
+            3,
+            4
+          ]
+        },
+        "name": "units_per_group",
+        "role": "units_per_group",
+        "signed": false,
+        "width": 3
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "SAMPLES_PER_UNIT and source pixelsInGroup initialization",
+          "kind": "set",
+          "range": [
+            3,
+            3
+          ],
+          "values": [
+            3
+          ]
+        },
+        "name": "pixels_in_group",
+        "role": "pixels_in_group",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC slice-relative horizontal position domain",
+          "kind": "range",
+          "range": [
+            0,
+            65534
+          ]
+        },
+        "name": "hPos",
+        "role": "hPos",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC sliceWidth positive finite source domain",
+          "kind": "range",
+          "range": [
+            1,
+            65535
+          ]
+        },
+        "name": "slice_width",
+        "role": "slice_width",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "Previous-group ICH selection flag",
+          "kind": "set",
+          "range": [
+            0,
+            1
+          ],
+          "values": [
+            0,
+            1
+          ]
+        },
+        "name": "prev_ich_selected",
+        "role": "prev_ich_selected",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "Table 6-2 masterQp rows",
+          "kind": "range",
+          "range": [
+            0,
+            31
+          ]
+        },
+        "name": "primary_qp",
+        "role": "primary_qp",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "Table 6-2 masterQp rows",
+          "kind": "range",
+          "range": [
+            0,
+            31
+          ]
+        },
+        "name": "prev_primary_qp",
+        "role": "prev_primary_qp",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int[4]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC supported base component bit depths",
+          "kind": "set",
+          "range": [
+            8,
+            16
+          ],
+          "values": [
+            8,
+            10,
+            12,
+            14,
+            16
+          ]
+        },
+        "name": "cpntBitDepth_0",
+        "role": "cpntBitDepth_0",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int[4]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC component bit-depth projection; Table 6-2 base-depth relation is enforced by the vector/formal strategy",
+          "kind": "range",
+          "range": [
+            8,
+            16
+          ]
+        },
+        "name": "cpntBitDepth_1",
+        "role": "cpntBitDepth_1",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int[4]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC component bit-depth projection; Table 6-2 base-depth relation is enforced by the vector/formal strategy",
+          "kind": "range",
+          "range": [
+            8,
+            16
+          ]
+        },
+        "name": "cpntBitDepth_2",
+        "role": "cpntBitDepth_2",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int[4]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC component bit-depth projection; Table 6-2 base-depth relation is enforced by the vector/formal strategy",
+          "kind": "range",
+          "range": [
+            8,
+            16
+          ]
+        },
+        "name": "cpntBitDepth_3",
+        "role": "cpntBitDepth_3",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int[4]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "dsc_state_t unitCType component index domain",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "name": "unit_c_type_0",
+        "role": "unit_c_type_0",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "c_type": "int[4]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "dsc_state_t unitCType component index domain",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "name": "unit_c_type_1",
+        "role": "unit_c_type_1",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "c_type": "int[4]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "dsc_state_t unitCType component index domain",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "name": "unit_c_type_2",
+        "role": "unit_c_type_2",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "c_type": "int[4]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "dsc_state_t unitCType component index domain",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "name": "unit_c_type_3",
+        "role": "unit_c_type_3",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "c_type": "int[4]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "source initialization leaves unitStartHPos at zero",
+          "kind": "set",
+          "range": [
+            0,
+            0
+          ],
+          "values": [
+            0
+          ]
+        },
+        "name": "unit_start_h_pos_0",
+        "role": "unit_start_h_pos_0",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int[4]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "source initialization leaves unitStartHPos at zero",
+          "kind": "set",
+          "range": [
+            0,
+            0
+          ],
+          "values": [
+            0
+          ]
+        },
+        "name": "unit_start_h_pos_1",
+        "role": "unit_start_h_pos_1",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int[4]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "source initialization leaves unitStartHPos at zero",
+          "kind": "set",
+          "range": [
+            0,
+            0
+          ],
+          "values": [
+            0
+          ]
+        },
+        "name": "unit_start_h_pos_2",
+        "role": "unit_start_h_pos_2",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int[4]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "source initialization leaves unitStartHPos at zero",
+          "kind": "set",
+          "range": [
+            0,
+            0
+          ],
+          "values": [
+            0
+          ]
+        },
+        "name": "unit_start_h_pos_3",
+        "role": "unit_start_h_pos_3",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int[4]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC DSU predicted size domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "predicted_size_0",
+        "role": "predicted_size_0",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int[4]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC DSU predicted size domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "predicted_size_1",
+        "role": "predicted_size_1",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int[4]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC DSU predicted size domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "predicted_size_2",
+        "role": "predicted_size_2",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int[4]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC DSU predicted size domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "predicted_size_3",
+        "role": "predicted_size_3",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int[4][3]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "quantized_residual_0_0",
+        "role": "quantized_residual_0_0",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int[4][3]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "quantized_residual_0_1",
+        "role": "quantized_residual_0_1",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int[4][3]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "quantized_residual_0_2",
+        "role": "quantized_residual_0_2",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int[4][3]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "quantized_residual_1_0",
+        "role": "quantized_residual_1_0",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int[4][3]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "quantized_residual_1_1",
+        "role": "quantized_residual_1_1",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int[4][3]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "quantized_residual_1_2",
+        "role": "quantized_residual_1_2",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int[4][3]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "quantized_residual_2_0",
+        "role": "quantized_residual_2_0",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int[4][3]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "quantized_residual_2_1",
+        "role": "quantized_residual_2_1",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int[4][3]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "quantized_residual_2_2",
+        "role": "quantized_residual_2_2",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int[4][3]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "quantized_residual_3_0",
+        "role": "quantized_residual_3_0",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int[4][3]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "quantized_residual_3_1",
+        "role": "quantized_residual_3_1",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int[4][3]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC signed quantized residual domain used by FindResidualSize",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "quantized_residual_3_2",
+        "role": "quantized_residual_3_2",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "Table 6-2 qLevel entry domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "qlevel_luma_new",
+        "role": "qlevel_luma_new",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "Table 6-2 qLevel entry domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "qlevel_luma_old",
+        "role": "qlevel_luma_old",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "Table 6-2 qLevel entry domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "qlevel_chroma_new",
+        "role": "qlevel_chroma_new",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "Table 6-2 qLevel entry domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "qlevel_chroma_old",
+        "role": "qlevel_chroma_old",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "output",
+        "name": "return_value",
+        "role": "return_value",
+        "signed": false,
+        "width": 9
+      }
+    ]
+  },
+  "locked_contract": {
+    "contract_id": "estimatebitsforgroup",
+    "dependencies": {
+      "direct_callees": [
+        {
+          "clang_usr": "c:@F@FindResidualSize",
+          "name": "FindResidualSize"
+        },
+        {
+          "clang_usr": "c:@F@GetQpAdjPredSize",
+          "name": "GetQpAdjPredSize"
+        },
+        {
+          "clang_usr": "c:@F@MaxResidualSize",
+          "name": "MaxResidualSize"
+        }
+      ],
+      "promotion_gate": "all direct callees PASS in library/manifest.json",
+      "read_fields": [],
+      "unresolved": []
+    },
+    "function": {
+      "clang_usr": "c:@F@EstimateBitsForGroup",
+      "name": "EstimateBitsForGroup",
+      "parameters": [
+        {
+          "name": "dsc_cfg",
+          "pointee_const": false,
+          "pointer": true,
+          "type": "dsc_cfg_t *"
+        },
+        {
+          "name": "dsc_state",
+          "pointee_const": false,
+          "pointer": true,
+          "type": "dsc_state_t *"
+        }
+      ],
+      "qualified_name": "EstimateBitsForGroup",
+      "return_type": "int",
+      "source_body_sha256": "fcf8f8763adb8acf10c516829aefa84bd859b31dd64dd92c6d8add64cecd3e70",
+      "source_file": "dsc_codec.c",
+      "source_span": {
+        "end_line": 437,
+        "start_line": 390
+      }
+    },
+    "interface": {
+      "flattened_pointer_dependencies": [
+        {
+          "access": "READ_ONLY",
+          "c_type": "int",
+          "field": "dsc_version_minor",
+          "legal_domain": {
+            "basis": "DSC 1.1/1.2 version branches used by MapQpToQlevel",
+            "kind": "set",
+            "range": [
+              1,
+              2
+            ],
+            "values": [
+              1,
+              2
+            ]
+          },
+          "logical_width": 2,
+          "port_name": "dsc_version_minor",
+          "record": "dsc_cfg_t",
+          "role": "CONFIG_STATIC",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int",
+          "field": "native_420",
+          "legal_domain": {
+            "basis": "PPS native_420 flag used by MapQpToQlevel",
+            "kind": "set",
+            "range": [
+              0,
+              1
+            ],
+            "values": [
+              0,
+              1
+            ]
+          },
+          "logical_width": 1,
+          "port_name": "native_420",
+          "record": "dsc_cfg_t",
+          "role": "CONFIG_STATIC",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int",
+          "field": "unitsPerGroup",
+          "legal_domain": {
+            "basis": "DSC source initialization and native 4:2:2 group structure",
+            "kind": "set",
+            "range": [
+              3,
+              4
+            ],
+            "values": [
+              3,
+              4
+            ]
+          },
+          "logical_width": 3,
+          "port_name": "units_per_group",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int",
+          "field": "pixelsInGroup",
+          "legal_domain": {
+            "basis": "SAMPLES_PER_UNIT and source pixelsInGroup initialization",
+            "kind": "set",
+            "range": [
+              3,
+              3
+            ],
+            "values": [
+              3
+            ]
+          },
+          "logical_width": 2,
+          "port_name": "pixels_in_group",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int",
+          "field": "hPos",
+          "legal_domain": {
+            "basis": "DSC slice-relative horizontal position domain",
+            "kind": "range",
+            "range": [
+              0,
+              65534
+            ]
+          },
+          "logical_width": 16,
+          "port_name": "hPos",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int",
+          "field": "sliceWidth",
+          "legal_domain": {
+            "basis": "DSC sliceWidth positive finite source domain",
+            "kind": "range",
+            "range": [
+              1,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "port_name": "slice_width",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int",
+          "field": "prevIchSelected",
+          "legal_domain": {
+            "basis": "Previous-group ICH selection flag",
+            "kind": "set",
+            "range": [
+              0,
+              1
+            ],
+            "values": [
+              0,
+              1
+            ]
+          },
+          "logical_width": 1,
+          "port_name": "prev_ich_selected",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int",
+          "field": "primaryQp",
+          "legal_domain": {
+            "basis": "Table 6-2 masterQp rows",
+            "kind": "range",
+            "range": [
+              0,
+              31
+            ]
+          },
+          "logical_width": 5,
+          "port_name": "primary_qp",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int",
+          "field": "prevPrimaryQp",
+          "legal_domain": {
+            "basis": "Table 6-2 masterQp rows",
+            "kind": "range",
+            "range": [
+              0,
+              31
+            ]
+          },
+          "logical_width": 5,
+          "port_name": "prev_primary_qp",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4]",
+          "field": "cpntBitDepth",
+          "index": 0,
+          "legal_domain": {
+            "basis": "DSC supported base component bit depths",
+            "kind": "set",
+            "range": [
+              8,
+              16
+            ],
+            "values": [
+              8,
+              10,
+              12,
+              14,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "port_name": "cpntBitDepth_0",
+          "record": "dsc_state_t",
+          "role": "CONFIG_STATIC",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4]",
+          "field": "cpntBitDepth",
+          "index": 1,
+          "legal_domain": {
+            "basis": "DSC component bit-depth projection; Table 6-2 base-depth relation is enforced by the vector/formal strategy",
+            "kind": "range",
+            "range": [
+              8,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "port_name": "cpntBitDepth_1",
+          "record": "dsc_state_t",
+          "role": "CONFIG_STATIC",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4]",
+          "field": "cpntBitDepth",
+          "index": 2,
+          "legal_domain": {
+            "basis": "DSC component bit-depth projection; Table 6-2 base-depth relation is enforced by the vector/formal strategy",
+            "kind": "range",
+            "range": [
+              8,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "port_name": "cpntBitDepth_2",
+          "record": "dsc_state_t",
+          "role": "CONFIG_STATIC",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4]",
+          "field": "cpntBitDepth",
+          "index": 3,
+          "legal_domain": {
+            "basis": "DSC component bit-depth projection; Table 6-2 base-depth relation is enforced by the vector/formal strategy",
+            "kind": "range",
+            "range": [
+              8,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "port_name": "cpntBitDepth_3",
+          "record": "dsc_state_t",
+          "role": "CONFIG_STATIC",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4]",
+          "field": "unitCType",
+          "index": 0,
+          "legal_domain": {
+            "basis": "dsc_state_t unitCType component index domain",
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ]
+          },
+          "logical_width": 2,
+          "port_name": "unit_c_type_0",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4]",
+          "field": "unitCType",
+          "index": 1,
+          "legal_domain": {
+            "basis": "dsc_state_t unitCType component index domain",
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ]
+          },
+          "logical_width": 2,
+          "port_name": "unit_c_type_1",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4]",
+          "field": "unitCType",
+          "index": 2,
+          "legal_domain": {
+            "basis": "dsc_state_t unitCType component index domain",
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ]
+          },
+          "logical_width": 2,
+          "port_name": "unit_c_type_2",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4]",
+          "field": "unitCType",
+          "index": 3,
+          "legal_domain": {
+            "basis": "dsc_state_t unitCType component index domain",
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ]
+          },
+          "logical_width": 2,
+          "port_name": "unit_c_type_3",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4]",
+          "field": "unitStartHPos",
+          "index": 0,
+          "legal_domain": {
+            "basis": "source initialization leaves unitStartHPos at zero",
+            "kind": "set",
+            "range": [
+              0,
+              0
+            ],
+            "values": [
+              0
+            ]
+          },
+          "logical_width": 16,
+          "port_name": "unit_start_h_pos_0",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4]",
+          "field": "unitStartHPos",
+          "index": 1,
+          "legal_domain": {
+            "basis": "source initialization leaves unitStartHPos at zero",
+            "kind": "set",
+            "range": [
+              0,
+              0
+            ],
+            "values": [
+              0
+            ]
+          },
+          "logical_width": 16,
+          "port_name": "unit_start_h_pos_1",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4]",
+          "field": "unitStartHPos",
+          "index": 2,
+          "legal_domain": {
+            "basis": "source initialization leaves unitStartHPos at zero",
+            "kind": "set",
+            "range": [
+              0,
+              0
+            ],
+            "values": [
+              0
+            ]
+          },
+          "logical_width": 16,
+          "port_name": "unit_start_h_pos_2",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4]",
+          "field": "unitStartHPos",
+          "index": 3,
+          "legal_domain": {
+            "basis": "source initialization leaves unitStartHPos at zero",
+            "kind": "set",
+            "range": [
+              0,
+              0
+            ],
+            "values": [
+              0
+            ]
+          },
+          "logical_width": 16,
+          "port_name": "unit_start_h_pos_3",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4]",
+          "field": "predictedSize",
+          "index": 0,
+          "legal_domain": {
+            "basis": "DSC DSU predicted size domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "port_name": "predicted_size_0",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4]",
+          "field": "predictedSize",
+          "index": 1,
+          "legal_domain": {
+            "basis": "DSC DSU predicted size domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "port_name": "predicted_size_1",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4]",
+          "field": "predictedSize",
+          "index": 2,
+          "legal_domain": {
+            "basis": "DSC DSU predicted size domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "port_name": "predicted_size_2",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4]",
+          "field": "predictedSize",
+          "index": 3,
+          "legal_domain": {
+            "basis": "DSC DSU predicted size domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "port_name": "predicted_size_3",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4][3]",
+          "field": "quantizedResidual",
+          "index_names": [
+            0,
+            0
+          ],
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "port_name": "quantized_residual_0_0",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4][3]",
+          "field": "quantizedResidual",
+          "index_names": [
+            0,
+            1
+          ],
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "port_name": "quantized_residual_0_1",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4][3]",
+          "field": "quantizedResidual",
+          "index_names": [
+            0,
+            2
+          ],
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "port_name": "quantized_residual_0_2",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4][3]",
+          "field": "quantizedResidual",
+          "index_names": [
+            1,
+            0
+          ],
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "port_name": "quantized_residual_1_0",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4][3]",
+          "field": "quantizedResidual",
+          "index_names": [
+            1,
+            1
+          ],
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "port_name": "quantized_residual_1_1",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4][3]",
+          "field": "quantizedResidual",
+          "index_names": [
+            1,
+            2
+          ],
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "port_name": "quantized_residual_1_2",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4][3]",
+          "field": "quantizedResidual",
+          "index_names": [
+            2,
+            0
+          ],
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "port_name": "quantized_residual_2_0",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4][3]",
+          "field": "quantizedResidual",
+          "index_names": [
+            2,
+            1
+          ],
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "port_name": "quantized_residual_2_1",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4][3]",
+          "field": "quantizedResidual",
+          "index_names": [
+            2,
+            2
+          ],
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "port_name": "quantized_residual_2_2",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4][3]",
+          "field": "quantizedResidual",
+          "index_names": [
+            3,
+            0
+          ],
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "port_name": "quantized_residual_3_0",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4][3]",
+          "field": "quantizedResidual",
+          "index_names": [
+            3,
+            1
+          ],
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "port_name": "quantized_residual_3_1",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4][3]",
+          "field": "quantizedResidual",
+          "index_names": [
+            3,
+            2
+          ],
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "port_name": "quantized_residual_3_2",
+          "record": "dsc_state_t",
+          "role": "STATE_RUNTIME",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "array_length": 32,
+          "c_type": "int *",
+          "field": "quantTableLuma",
+          "index_name": "primaryQp",
+          "legal_domain": {
+            "basis": "Table 6-2 qLevel entry domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "port_name": "qlevel_luma_new",
+          "record": "dsc_state_t",
+          "role": "TABLE_LOOKUP_LUMA",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "array_length": 32,
+          "c_type": "int *",
+          "field": "quantTableLuma",
+          "index_name": "prevPrimaryQp",
+          "legal_domain": {
+            "basis": "Table 6-2 qLevel entry domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "port_name": "qlevel_luma_old",
+          "record": "dsc_state_t",
+          "role": "TABLE_LOOKUP_LUMA",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "array_length": 32,
+          "c_type": "int *",
+          "field": "quantTableChroma",
+          "index_name": "primaryQp",
+          "legal_domain": {
+            "basis": "Table 6-2 qLevel entry domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "port_name": "qlevel_chroma_new",
+          "record": "dsc_state_t",
+          "role": "TABLE_LOOKUP_CHROMA",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "array_length": 32,
+          "c_type": "int *",
+          "field": "quantTableChroma",
+          "index_name": "prevPrimaryQp",
+          "legal_domain": {
+            "basis": "Table 6-2 qLevel entry domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "port_name": "qlevel_chroma_old",
+          "record": "dsc_state_t",
+          "role": "TABLE_LOOKUP_CHROMA",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        }
+      ],
+      "inputs": [
+        {
+          "c_type": "int",
+          "legal_domain": {
+            "basis": "DSC 1.1/1.2 version branches used by MapQpToQlevel",
+            "kind": "set",
+            "range": [
+              1,
+              2
+            ],
+            "values": [
+              1,
+              2
+            ]
+          },
+          "logical_width": 2,
+          "name": "dsc_version_minor",
+          "role": "CONFIG_STATIC",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int",
+          "legal_domain": {
+            "basis": "PPS native_420 flag used by MapQpToQlevel",
+            "kind": "set",
+            "range": [
+              0,
+              1
+            ],
+            "values": [
+              0,
+              1
+            ]
+          },
+          "logical_width": 1,
+          "name": "native_420",
+          "role": "CONFIG_STATIC",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int",
+          "legal_domain": {
+            "basis": "DSC source initialization and native 4:2:2 group structure",
+            "kind": "set",
+            "range": [
+              3,
+              4
+            ],
+            "values": [
+              3,
+              4
+            ]
+          },
+          "logical_width": 3,
+          "name": "units_per_group",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int",
+          "legal_domain": {
+            "basis": "SAMPLES_PER_UNIT and source pixelsInGroup initialization",
+            "kind": "set",
+            "range": [
+              3,
+              3
+            ],
+            "values": [
+              3
+            ]
+          },
+          "logical_width": 2,
+          "name": "pixels_in_group",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int",
+          "legal_domain": {
+            "basis": "DSC slice-relative horizontal position domain",
+            "kind": "range",
+            "range": [
+              0,
+              65534
+            ]
+          },
+          "logical_width": 16,
+          "name": "hPos",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int",
+          "legal_domain": {
+            "basis": "DSC sliceWidth positive finite source domain",
+            "kind": "range",
+            "range": [
+              1,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "slice_width",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int",
+          "legal_domain": {
+            "basis": "Previous-group ICH selection flag",
+            "kind": "set",
+            "range": [
+              0,
+              1
+            ],
+            "values": [
+              0,
+              1
+            ]
+          },
+          "logical_width": 1,
+          "name": "prev_ich_selected",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int",
+          "legal_domain": {
+            "basis": "Table 6-2 masterQp rows",
+            "kind": "range",
+            "range": [
+              0,
+              31
+            ]
+          },
+          "logical_width": 5,
+          "name": "primary_qp",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int",
+          "legal_domain": {
+            "basis": "Table 6-2 masterQp rows",
+            "kind": "range",
+            "range": [
+              0,
+              31
+            ]
+          },
+          "logical_width": 5,
+          "name": "prev_primary_qp",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4]",
+          "legal_domain": {
+            "basis": "DSC supported base component bit depths",
+            "kind": "set",
+            "range": [
+              8,
+              16
+            ],
+            "values": [
+              8,
+              10,
+              12,
+              14,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "name": "cpntBitDepth_0",
+          "role": "CONFIG_STATIC",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4]",
+          "legal_domain": {
+            "basis": "DSC component bit-depth projection; Table 6-2 base-depth relation is enforced by the vector/formal strategy",
+            "kind": "range",
+            "range": [
+              8,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "name": "cpntBitDepth_1",
+          "role": "CONFIG_STATIC",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4]",
+          "legal_domain": {
+            "basis": "DSC component bit-depth projection; Table 6-2 base-depth relation is enforced by the vector/formal strategy",
+            "kind": "range",
+            "range": [
+              8,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "name": "cpntBitDepth_2",
+          "role": "CONFIG_STATIC",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4]",
+          "legal_domain": {
+            "basis": "DSC component bit-depth projection; Table 6-2 base-depth relation is enforced by the vector/formal strategy",
+            "kind": "range",
+            "range": [
+              8,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "name": "cpntBitDepth_3",
+          "role": "CONFIG_STATIC",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4]",
+          "legal_domain": {
+            "basis": "dsc_state_t unitCType component index domain",
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ]
+          },
+          "logical_width": 2,
+          "name": "unit_c_type_0",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4]",
+          "legal_domain": {
+            "basis": "dsc_state_t unitCType component index domain",
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ]
+          },
+          "logical_width": 2,
+          "name": "unit_c_type_1",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4]",
+          "legal_domain": {
+            "basis": "dsc_state_t unitCType component index domain",
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ]
+          },
+          "logical_width": 2,
+          "name": "unit_c_type_2",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4]",
+          "legal_domain": {
+            "basis": "dsc_state_t unitCType component index domain",
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ]
+          },
+          "logical_width": 2,
+          "name": "unit_c_type_3",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4]",
+          "legal_domain": {
+            "basis": "source initialization leaves unitStartHPos at zero",
+            "kind": "set",
+            "range": [
+              0,
+              0
+            ],
+            "values": [
+              0
+            ]
+          },
+          "logical_width": 16,
+          "name": "unit_start_h_pos_0",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4]",
+          "legal_domain": {
+            "basis": "source initialization leaves unitStartHPos at zero",
+            "kind": "set",
+            "range": [
+              0,
+              0
+            ],
+            "values": [
+              0
+            ]
+          },
+          "logical_width": 16,
+          "name": "unit_start_h_pos_1",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4]",
+          "legal_domain": {
+            "basis": "source initialization leaves unitStartHPos at zero",
+            "kind": "set",
+            "range": [
+              0,
+              0
+            ],
+            "values": [
+              0
+            ]
+          },
+          "logical_width": 16,
+          "name": "unit_start_h_pos_2",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4]",
+          "legal_domain": {
+            "basis": "source initialization leaves unitStartHPos at zero",
+            "kind": "set",
+            "range": [
+              0,
+              0
+            ],
+            "values": [
+              0
+            ]
+          },
+          "logical_width": 16,
+          "name": "unit_start_h_pos_3",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4]",
+          "legal_domain": {
+            "basis": "DSC DSU predicted size domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "name": "predicted_size_0",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4]",
+          "legal_domain": {
+            "basis": "DSC DSU predicted size domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "name": "predicted_size_1",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4]",
+          "legal_domain": {
+            "basis": "DSC DSU predicted size domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "name": "predicted_size_2",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4]",
+          "legal_domain": {
+            "basis": "DSC DSU predicted size domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "name": "predicted_size_3",
+          "role": "STATE_RUNTIME",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4][3]",
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "quantized_residual_0_0",
+          "role": "STATE_RUNTIME",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4][3]",
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "quantized_residual_0_1",
+          "role": "STATE_RUNTIME",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4][3]",
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "quantized_residual_0_2",
+          "role": "STATE_RUNTIME",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4][3]",
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "quantized_residual_1_0",
+          "role": "STATE_RUNTIME",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4][3]",
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "quantized_residual_1_1",
+          "role": "STATE_RUNTIME",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4][3]",
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "quantized_residual_1_2",
+          "role": "STATE_RUNTIME",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4][3]",
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "quantized_residual_2_0",
+          "role": "STATE_RUNTIME",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4][3]",
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "quantized_residual_2_1",
+          "role": "STATE_RUNTIME",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4][3]",
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "quantized_residual_2_2",
+          "role": "STATE_RUNTIME",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4][3]",
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "quantized_residual_3_0",
+          "role": "STATE_RUNTIME",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4][3]",
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "quantized_residual_3_1",
+          "role": "STATE_RUNTIME",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int[4][3]",
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "quantized_residual_3_2",
+          "role": "STATE_RUNTIME",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int *",
+          "legal_domain": {
+            "basis": "Table 6-2 qLevel entry domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "name": "qlevel_luma_new",
+          "role": "TABLE_LOOKUP_LUMA",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int *",
+          "legal_domain": {
+            "basis": "Table 6-2 qLevel entry domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "name": "qlevel_luma_old",
+          "role": "TABLE_LOOKUP_LUMA",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int *",
+          "legal_domain": {
+            "basis": "Table 6-2 qLevel entry domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "name": "qlevel_chroma_new",
+          "role": "TABLE_LOOKUP_CHROMA",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "c_type": "int *",
+          "legal_domain": {
+            "basis": "Table 6-2 qLevel entry domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "name": "qlevel_chroma_old",
+          "role": "TABLE_LOOKUP_CHROMA",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        }
+      ],
+      "output": {
+        "c_type": "int",
+        "legal_range": [
+          0,
+          261
+        ],
+        "logical_width": 9,
+        "name": "return_value",
+        "role": "return_value",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "DERIVED_SPEC_DOMAIN"
+      },
+      "ports": [
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC 1.1/1.2 version branches used by MapQpToQlevel",
+            "kind": "set",
+            "range": [
+              1,
+              2
+            ],
+            "values": [
+              1,
+              2
+            ]
+          },
+          "name": "dsc_version_minor",
+          "role": "dsc_version_minor",
+          "signed": false,
+          "width": 2
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "PPS native_420 flag used by MapQpToQlevel",
+            "kind": "set",
+            "range": [
+              0,
+              1
+            ],
+            "values": [
+              0,
+              1
+            ]
+          },
+          "name": "native_420",
+          "role": "native_420",
+          "signed": false,
+          "width": 1
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC source initialization and native 4:2:2 group structure",
+            "kind": "set",
+            "range": [
+              3,
+              4
+            ],
+            "values": [
+              3,
+              4
+            ]
+          },
+          "name": "units_per_group",
+          "role": "units_per_group",
+          "signed": false,
+          "width": 3
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "SAMPLES_PER_UNIT and source pixelsInGroup initialization",
+            "kind": "set",
+            "range": [
+              3,
+              3
+            ],
+            "values": [
+              3
+            ]
+          },
+          "name": "pixels_in_group",
+          "role": "pixels_in_group",
+          "signed": false,
+          "width": 2
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC slice-relative horizontal position domain",
+            "kind": "range",
+            "range": [
+              0,
+              65534
+            ]
+          },
+          "name": "hPos",
+          "role": "hPos",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC sliceWidth positive finite source domain",
+            "kind": "range",
+            "range": [
+              1,
+              65535
+            ]
+          },
+          "name": "slice_width",
+          "role": "slice_width",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "Previous-group ICH selection flag",
+            "kind": "set",
+            "range": [
+              0,
+              1
+            ],
+            "values": [
+              0,
+              1
+            ]
+          },
+          "name": "prev_ich_selected",
+          "role": "prev_ich_selected",
+          "signed": false,
+          "width": 1
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "Table 6-2 masterQp rows",
+            "kind": "range",
+            "range": [
+              0,
+              31
+            ]
+          },
+          "name": "primary_qp",
+          "role": "primary_qp",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "Table 6-2 masterQp rows",
+            "kind": "range",
+            "range": [
+              0,
+              31
+            ]
+          },
+          "name": "prev_primary_qp",
+          "role": "prev_primary_qp",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int[4]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC supported base component bit depths",
+            "kind": "set",
+            "range": [
+              8,
+              16
+            ],
+            "values": [
+              8,
+              10,
+              12,
+              14,
+              16
+            ]
+          },
+          "name": "cpntBitDepth_0",
+          "role": "cpntBitDepth_0",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int[4]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC component bit-depth projection; Table 6-2 base-depth relation is enforced by the vector/formal strategy",
+            "kind": "range",
+            "range": [
+              8,
+              16
+            ]
+          },
+          "name": "cpntBitDepth_1",
+          "role": "cpntBitDepth_1",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int[4]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC component bit-depth projection; Table 6-2 base-depth relation is enforced by the vector/formal strategy",
+            "kind": "range",
+            "range": [
+              8,
+              16
+            ]
+          },
+          "name": "cpntBitDepth_2",
+          "role": "cpntBitDepth_2",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int[4]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC component bit-depth projection; Table 6-2 base-depth relation is enforced by the vector/formal strategy",
+            "kind": "range",
+            "range": [
+              8,
+              16
+            ]
+          },
+          "name": "cpntBitDepth_3",
+          "role": "cpntBitDepth_3",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int[4]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "dsc_state_t unitCType component index domain",
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ]
+          },
+          "name": "unit_c_type_0",
+          "role": "unit_c_type_0",
+          "signed": false,
+          "width": 2
+        },
+        {
+          "c_type": "int[4]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "dsc_state_t unitCType component index domain",
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ]
+          },
+          "name": "unit_c_type_1",
+          "role": "unit_c_type_1",
+          "signed": false,
+          "width": 2
+        },
+        {
+          "c_type": "int[4]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "dsc_state_t unitCType component index domain",
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ]
+          },
+          "name": "unit_c_type_2",
+          "role": "unit_c_type_2",
+          "signed": false,
+          "width": 2
+        },
+        {
+          "c_type": "int[4]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "dsc_state_t unitCType component index domain",
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ]
+          },
+          "name": "unit_c_type_3",
+          "role": "unit_c_type_3",
+          "signed": false,
+          "width": 2
+        },
+        {
+          "c_type": "int[4]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "source initialization leaves unitStartHPos at zero",
+            "kind": "set",
+            "range": [
+              0,
+              0
+            ],
+            "values": [
+              0
+            ]
+          },
+          "name": "unit_start_h_pos_0",
+          "role": "unit_start_h_pos_0",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int[4]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "source initialization leaves unitStartHPos at zero",
+            "kind": "set",
+            "range": [
+              0,
+              0
+            ],
+            "values": [
+              0
+            ]
+          },
+          "name": "unit_start_h_pos_1",
+          "role": "unit_start_h_pos_1",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int[4]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "source initialization leaves unitStartHPos at zero",
+            "kind": "set",
+            "range": [
+              0,
+              0
+            ],
+            "values": [
+              0
+            ]
+          },
+          "name": "unit_start_h_pos_2",
+          "role": "unit_start_h_pos_2",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int[4]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "source initialization leaves unitStartHPos at zero",
+            "kind": "set",
+            "range": [
+              0,
+              0
+            ],
+            "values": [
+              0
+            ]
+          },
+          "name": "unit_start_h_pos_3",
+          "role": "unit_start_h_pos_3",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int[4]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC DSU predicted size domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "name": "predicted_size_0",
+          "role": "predicted_size_0",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int[4]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC DSU predicted size domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "name": "predicted_size_1",
+          "role": "predicted_size_1",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int[4]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC DSU predicted size domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "name": "predicted_size_2",
+          "role": "predicted_size_2",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int[4]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC DSU predicted size domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "name": "predicted_size_3",
+          "role": "predicted_size_3",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int[4][3]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "quantized_residual_0_0",
+          "role": "quantized_residual_0_0",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int[4][3]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "quantized_residual_0_1",
+          "role": "quantized_residual_0_1",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int[4][3]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "quantized_residual_0_2",
+          "role": "quantized_residual_0_2",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int[4][3]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "quantized_residual_1_0",
+          "role": "quantized_residual_1_0",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int[4][3]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "quantized_residual_1_1",
+          "role": "quantized_residual_1_1",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int[4][3]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "quantized_residual_1_2",
+          "role": "quantized_residual_1_2",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int[4][3]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "quantized_residual_2_0",
+          "role": "quantized_residual_2_0",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int[4][3]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "quantized_residual_2_1",
+          "role": "quantized_residual_2_1",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int[4][3]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "quantized_residual_2_2",
+          "role": "quantized_residual_2_2",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int[4][3]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "quantized_residual_3_0",
+          "role": "quantized_residual_3_0",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int[4][3]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "quantized_residual_3_1",
+          "role": "quantized_residual_3_1",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int[4][3]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC signed quantized residual domain used by FindResidualSize",
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "quantized_residual_3_2",
+          "role": "quantized_residual_3_2",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int *",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "Table 6-2 qLevel entry domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "name": "qlevel_luma_new",
+          "role": "qlevel_luma_new",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int *",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "Table 6-2 qLevel entry domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "name": "qlevel_luma_old",
+          "role": "qlevel_luma_old",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int *",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "Table 6-2 qLevel entry domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "name": "qlevel_chroma_new",
+          "role": "qlevel_chroma_new",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int *",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "Table 6-2 qLevel entry domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "name": "qlevel_chroma_old",
+          "role": "qlevel_chroma_old",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int",
+          "direction": "output",
+          "name": "return_value",
+          "role": "return_value",
+          "signed": false,
+          "width": 9
+        }
+      ]
+    },
+    "obligations": [],
+    "origin": "tool_discovered_reviewed_override",
+    "reviewed_evidence": [
+      {
+        "anchor_id": "pdf:model-note:MN_ENC_ICH_MODE_SELECT:p088",
+        "kind": "EXACT_SPEC",
+        "page": 88,
+        "reason": "The DSC 1.2a ICH-vs-predictive decision is the exact downstream consumer of the P-mode bit estimate.",
+        "section": "6.5.3.2"
+      },
+      {
+        "anchor_id": "pdf:section:6.6.1",
+        "kind": "EXACT_SPEC",
+        "page": 91,
+        "reason": "The DSU-VLC section defines residual size and the per-unit prefix/sample bit accounting used by this estimator.",
+        "section": "6.6.1"
+      },
+      {
+        "anchor_id": "pdf:section:6.6.4",
+        "kind": "EXACT_SPEC",
+        "page": 94,
+        "reason": "The rate-control output section identifies coded group size as the observable bit-count quantity.",
+        "section": "6.6.4"
+      },
+      {
+        "c_span": {
+          "end_line": 437,
+          "start_line": 390
+        },
+        "kind": "SOURCE_SEMANTICS",
+        "reason": "The C body has fixed four-lane storage, three samples per unit, no writes, and a runtime unitsPerGroup bound of three or four.",
+        "source_file": "dsc_codec.c"
+      },
+      {
+        "kind": "DEPENDENCY_EVIDENCE",
+        "reason": "FindResidualSize, MaxResidualSize, and GetQpAdjPredSize are already PASS components in library/manifest.json; the direct C call chain remains the oracle/reference boundary."
+      }
+    ],
+    "schema_version": 2,
+    "selection": {
+      "basis": "tool-ranked candidate and coverage facts + exact traceability + reviewed domain evidence",
+      "candidate_rank": 46,
+      "candidate_score": 59.85,
+      "candidate_source": "facts/candidates.json",
+      "coverage_basis": "reviewed_combined_domain",
+      "coverage_source": "coverage/coverage.json",
+      "domain_admission": {
+        "admissions": [
+          {
+            "bounded_input_ports": [
+              "units_per_group"
+            ],
+            "kind": "BOUNDED_DOMAIN",
+            "loop": "unit < dsc_state->unitsPerGroup with unitsPerGroup in the reviewed {3,4} domain",
+            "max_iterations": 4,
+            "proof": "The source state is initialized to three units and switches only to four for native 4:2:2; four fixed lanes cover every legal iteration.",
+            "status": "PASS"
+          },
+          {
+            "discharged_effects": [
+              "logging"
+            ],
+            "kind": "DOMAIN_EFFECT",
+            "proof": "Every contracted quantized residual is in [-65535,65535], so the diagnostic branch is unreachable for all legal vectors.",
+            "status": "PASS",
+            "unreachable_condition": "FindResidualSize logging branch requires eq < -131702 || eq > 131701"
+          }
+        ],
+        "bounded_loops": [
+          {
+            "loop": "unit < dsc_state->unitsPerGroup with unitsPerGroup in the reviewed {3,4} domain",
+            "max_iterations": 4
+          }
+        ],
+        "criteria_discharged": [
+          "bounded_computation",
+          "no_io_allocation_or_logging"
+        ],
+        "discharged_effects": [
+          "logging"
+        ],
+        "kind": "COMBINED_DOMAIN",
+        "status": "PASS"
+      },
+      "fact_source": "facts/functions.json",
+      "new_work": false,
+      "promoted_existing": true
+    },
+    "semantics": {
+      "expression": "DSC_ESTIMATE_BITS_FOR_GROUP",
+      "kind": "estimate_bits",
+      "legal_vector_strategy": {
+        "base_bit_depth_port": "cpntBitDepth_0",
+        "bit_depth_ports": {
+          "cpntBitDepth_1": {
+            "values_by_base": {
+              "10": [
+                10,
+                11
+              ],
+              "12": [
+                12,
+                13
+              ],
+              "14": [
+                14,
+                15
+              ],
+              "16": [
+                16
+              ],
+              "8": [
+                8,
+                9
+              ]
+            }
+          },
+          "cpntBitDepth_2": {
+            "values_by_base": {
+              "10": [
+                10,
+                11
+              ],
+              "12": [
+                12,
+                13
+              ],
+              "14": [
+                14,
+                15
+              ],
+              "16": [
+                16
+              ],
+              "8": [
+                8,
+                9
+              ]
+            }
+          },
+          "cpntBitDepth_3": {
+            "values_by_base": {
+              "10": [
+                10
+              ],
+              "12": [
+                12
+              ],
+              "14": [
+                14
+              ],
+              "16": [
+                16
+              ],
+              "8": [
+                8
+              ]
+            }
+          }
+        },
+        "component_depth_ports": [
+          "cpntBitDepth_0",
+          "cpntBitDepth_1",
+          "cpntBitDepth_2",
+          "cpntBitDepth_3"
+        ],
+        "exhaustive": false,
+        "formal_required": true,
+        "hpos_port": "hPos",
+        "kind": "estimate_bits",
+        "native_420_port": "native_420",
+        "pixels_in_group_port": "pixels_in_group",
+        "predicted_size_ports": [
+          "predicted_size_0",
+          "predicted_size_1",
+          "predicted_size_2",
+          "predicted_size_3"
+        ],
+        "prev_ich_selected_port": "prev_ich_selected",
+        "prev_primary_qp_port": "prev_primary_qp",
+        "primary_qp_port": "primary_qp",
+        "residual_ports": [
+          "quantized_residual_0_0",
+          "quantized_residual_0_1",
+          "quantized_residual_0_2",
+          "quantized_residual_1_0",
+          "quantized_residual_1_1",
+          "quantized_residual_1_2",
+          "quantized_residual_2_0",
+          "quantized_residual_2_1",
+          "quantized_residual_2_2",
+          "quantized_residual_3_0",
+          "quantized_residual_3_1",
+          "quantized_residual_3_2"
+        ],
+        "slice_width_port": "slice_width",
+        "source": "DSC 1.2a sections 6.5.3.2, 6.6.1, 6.6.4, Table 3-1, and Table 6-2",
+        "table_bindings": {
+          "qlevel_chroma_new": {
+            "qp_port": "primary_qp",
+            "table": "chroma"
+          },
+          "qlevel_chroma_old": {
+            "qp_port": "prev_primary_qp",
+            "table": "chroma"
+          },
+          "qlevel_luma_new": {
+            "qp_port": "primary_qp",
+            "table": "luma"
+          },
+          "qlevel_luma_old": {
+            "qp_port": "prev_primary_qp",
+            "table": "luma"
+          }
+        },
+        "tables": {
+          "chroma": {
+            "10": [
+              0,
+              1,
+              2,
+              2,
+              3,
+              3,
+              4,
+              4,
+              5,
+              5,
+              6,
+              6,
+              7,
+              7,
+              8,
+              8,
+              9,
+              10,
+              10,
+              10
+            ],
+            "12": [
+              0,
+              1,
+              2,
+              2,
+              3,
+              3,
+              4,
+              4,
+              5,
+              5,
+              6,
+              6,
+              7,
+              7,
+              8,
+              8,
+              9,
+              9,
+              10,
+              10,
+              11,
+              12,
+              12,
+              12
+            ],
+            "14": [
+              0,
+              1,
+              2,
+              2,
+              3,
+              3,
+              4,
+              4,
+              5,
+              5,
+              6,
+              6,
+              7,
+              7,
+              8,
+              8,
+              9,
+              9,
+              10,
+              10,
+              11,
+              11,
+              12,
+              12,
+              13,
+              14,
+              14,
+              14
+            ],
+            "16": [
+              0,
+              1,
+              2,
+              2,
+              3,
+              3,
+              4,
+              4,
+              5,
+              5,
+              6,
+              6,
+              7,
+              7,
+              8,
+              8,
+              9,
+              9,
+              10,
+              10,
+              11,
+              11,
+              12,
+              12,
+              13,
+              13,
+              14,
+              14,
+              15,
+              16,
+              16,
+              16
+            ],
+            "8": [
+              0,
+              1,
+              2,
+              2,
+              3,
+              3,
+              4,
+              4,
+              5,
+              5,
+              6,
+              6,
+              7,
+              8,
+              8,
+              8
+            ]
+          },
+          "luma": {
+            "10": [
+              0,
+              0,
+              0,
+              1,
+              1,
+              2,
+              2,
+              3,
+              3,
+              4,
+              4,
+              5,
+              5,
+              6,
+              6,
+              7,
+              7,
+              7,
+              8,
+              9
+            ],
+            "12": [
+              0,
+              0,
+              0,
+              1,
+              1,
+              2,
+              2,
+              3,
+              3,
+              4,
+              4,
+              5,
+              5,
+              6,
+              6,
+              7,
+              7,
+              8,
+              8,
+              9,
+              9,
+              9,
+              10,
+              11
+            ],
+            "14": [
+              0,
+              0,
+              0,
+              1,
+              1,
+              2,
+              2,
+              3,
+              3,
+              4,
+              4,
+              5,
+              5,
+              6,
+              6,
+              7,
+              7,
+              8,
+              8,
+              9,
+              9,
+              10,
+              10,
+              11,
+              11,
+              11,
+              12,
+              13
+            ],
+            "16": [
+              0,
+              0,
+              0,
+              1,
+              1,
+              2,
+              2,
+              3,
+              3,
+              4,
+              4,
+              5,
+              5,
+              6,
+              6,
+              7,
+              7,
+              8,
+              8,
+              9,
+              9,
+              10,
+              10,
+              11,
+              11,
+              12,
+              12,
+              13,
+              13,
+              13,
+              14,
+              15
+            ],
+            "8": [
+              0,
+              0,
+              0,
+              1,
+              1,
+              2,
+              2,
+              3,
+              3,
+              4,
+              4,
+              5,
+              5,
+              5,
+              6,
+              7
+            ]
+          }
+        },
+        "unit_component_ports": [
+          "unit_c_type_0",
+          "unit_c_type_1",
+          "unit_c_type_2",
+          "unit_c_type_3"
+        ],
+        "unit_start_hpos_ports": [
+          "unit_start_h_pos_0",
+          "unit_start_h_pos_1",
+          "unit_start_h_pos_2",
+          "unit_start_h_pos_3"
+        ],
+        "units_per_group_port": "units_per_group",
+        "version_port": "dsc_version_minor"
+      },
+      "overflow": "No signed overflow occurs on the reviewed DSC 1.2a state/residual domain.",
+      "return_range": [
+        0,
+        261
+      ],
+      "signedness": "All legal source intermediates fit signed 32-bit C int arithmetic; the returned group bit estimate is non-negative.",
+      "thresholds": [
+        {
+          "lower": 0,
+          "size": 0,
+          "upper": 0
+        },
+        {
+          "lower": -1,
+          "size": 1,
+          "upper": 0
+        },
+        {
+          "lower": -2,
+          "size": 2,
+          "upper": 1
+        },
+        {
+          "lower": -4,
+          "size": 3,
+          "upper": 3
+        },
+        {
+          "lower": -8,
+          "size": 4,
+          "upper": 7
+        },
+        {
+          "lower": -16,
+          "size": 5,
+          "upper": 15
+        },
+        {
+          "lower": -32,
+          "size": 6,
+          "upper": 31
+        },
+        {
+          "lower": -64,
+          "size": 7,
+          "upper": 63
+        },
+        {
+          "lower": -128,
+          "size": 8,
+          "upper": 127
+        },
+        {
+          "lower": -256,
+          "size": 9,
+          "upper": 255
+        },
+        {
+          "lower": -512,
+          "size": 10,
+          "upper": 511
+        },
+        {
+          "lower": -1024,
+          "size": 11,
+          "upper": 1023
+        },
+        {
+          "lower": -2048,
+          "size": 12,
+          "upper": 2047
+        },
+        {
+          "lower": -4096,
+          "size": 13,
+          "upper": 4095
+        },
+        {
+          "lower": -8192,
+          "size": 14,
+          "upper": 8191
+        },
+        {
+          "lower": -16384,
+          "size": 15,
+          "upper": 16383
+        },
+        {
+          "lower": -32768,
+          "size": 16,
+          "upper": 32767
+        },
+        {
+          "lower": -65536,
+          "size": 17,
+          "upper": 65535
+        },
+        {
+          "lower": -131702,
+          "size": 18,
+          "upper": 131701
+        }
+      ]
+    },
+    "spec_links": [
+      {
+        "anchor_id": "pdf:model-note:MN_ENC_ICH_MODE_SELECT:p088",
+        "evidence": "The PDF model note identifies the encoder ICH/P decision and its P-mode cost input.",
+        "page": 88,
+        "section": "6.5.3.2",
+        "status": "EXACT"
+      },
+      {
+        "anchor_id": "pdf:section:6.5.3.2",
+        "evidence": "The normative decision section is the exact consumer of the estimated predictive-mode bits.",
+        "page": 88,
+        "section": "6.5.3.2",
+        "status": "EXACT"
+      },
+      {
+        "anchor_id": "pdf:section:6.6.1",
+        "evidence": "The normative DSU-VLC section defines residual-size and prefix/sample bit accounting.",
+        "page": 91,
+        "section": "6.6.1",
+        "status": "EXACT"
+      },
+      {
+        "anchor_id": "pdf:section:6.6.4",
+        "evidence": "The normative rate-control output section defines codedBits/rcSizeGroup as bit-count outputs.",
+        "page": 94,
+        "section": "6.6.4",
+        "status": "EXACT"
+      },
+      {
+        "anchor_id": "pdf:table:3-1",
+        "evidence": "The normative residual-size threshold table is delegated to FindResidualSize.",
+        "page": 34,
+        "section": "3",
+        "status": "EXACT"
+      },
+      {
+        "anchor_id": "pdf:table:6-2",
+        "evidence": "The normative qLevel table is delegated to MapQpToQlevel and its promoted callers.",
+        "page": 114,
+        "section": "6.8.6",
+        "status": "EXACT"
+      }
+    ],
+    "status": "LOCKED"
+  }
+}

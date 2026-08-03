@@ -307,10 +307,10 @@
   "storage": {
     "fallback": false,
     "fallback_reason": null,
-    "mode": "SMB",
-    "mountpoint": "/Users/snow/.svrt-network",
-    "requested": "/Volumes/homes/dsc12a-regression",
+    "mode": "ENV_ROOT",
+    "mountpoint": null,
+    "requested": "/Users/snow/.svrt-network/dsc12a-regression",
     "root": "/Users/snow/.svrt-network/dsc12a-regression",
-    "share": "//kslin@192.168.68.52/homes"
+    "share": null
   }
 }

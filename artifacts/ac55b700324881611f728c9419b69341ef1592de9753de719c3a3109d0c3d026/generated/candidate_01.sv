@@ -1,4 +1,4 @@
-module qp2qlevel_candidate_01 (
+module qp2qlevel (
     input logic [1:0] cpnt,
     input logic [4:0] qp,
     input logic [4:0] bits_per_component,

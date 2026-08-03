@@ -5,14 +5,53 @@
       "contract_id": "ichdecision",
       "function": "IchDecision",
       "reasons": [
-        "GENERATION_REQUIRED: DSC_CICD_GENERATOR_CMD is not configured"
+        "human_promotion_approval_pending"
       ]
     }
   ],
   "blockers": [
-    "ichdecision: GENERATION_REQUIRED: DSC_CICD_GENERATOR_CMD is not configured"
+    "ichdecision: human_promotion_approval_pending",
+    "ichdecision: human_promotion_approval_required"
   ],
-  "dependency_pair": null,
+  "dependency_pair": {
+    "call_sites": [
+      {
+        "callee_contract": "ceil_log2",
+        "callee_function": "ceil_log2",
+        "callee_usr": "c:@F@ceil_log2",
+        "caller_contract": "ichdecision",
+        "caller_function": "IchDecision",
+        "caller_usr": "c:@F@IchDecision",
+        "location": {
+          "column": 21,
+          "file": "dsc_codec.c",
+          "line": 513
+        },
+        "source": "facts/callgraph.json"
+      },
+      {
+        "callee_contract": "ceil_log2",
+        "callee_function": "ceil_log2",
+        "callee_usr": "c:@F@ceil_log2",
+        "caller_contract": "ichdecision",
+        "caller_function": "IchDecision",
+        "caller_usr": "c:@F@IchDecision",
+        "location": {
+          "column": 23,
+          "file": "dsc_codec.c",
+          "line": 514
+        },
+        "source": "facts/callgraph.json"
+      }
+    ],
+    "callee_contract": "ceil_log2",
+    "callee_function": "ceil_log2",
+    "callee_usr": "c:@F@ceil_log2",
+    "caller_contract": "ichdecision",
+    "caller_function": "IchDecision",
+    "caller_usr": "c:@F@IchDecision",
+    "selection_basis": "smallest acyclic direct call site from facts/callgraph.json"
+  },
   "generator_invocations": 0,
   "input_pdf": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf",
   "input_source_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
@@ -22,13 +61,22 @@
     "ichdecision"
   ],
   "ready_contracts": [
+    "ceil_log2",
+    "escapecodesize",
+    "estimatebitsforgroup",
     "findmidpoint",
+    "findresidualsize",
+    "getqpadjpredsize",
     "isflatnessinfosent",
+    "isorigflathindex",
     "mapqptoqlevel",
+    "maxresidualsize",
     "predictsize",
+    "qp2qlevel",
     "quantizeresidual",
     "samplepredict",
-    "samptolinebuf"
+    "samptolinebuf",
+    "usingmidpoint"
   ],
   "receipt_policy": {
     "accepted_rtl_refresh": "REUSED_ACCEPTED_RTL; deterministic verification still executes",
@@ -38,10 +86,845 @@
     "formal_window_pass": "FORMAL_EQUIVALENT; requires an independent parsed-RTL proof",
     "fresh_run": "EXECUTED_NOW"
   },
-  "results": [],
+  "results": [
+    {
+      "contract_id": "ceil_log2",
+      "counterexample": null,
+      "dependency_evidence": {
+        "call_sites": 2,
+        "compile_commands": true,
+        "direct_call_sites": 2,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": true,
+      "executed_shards": 4,
+      "executed_vectors": 65536,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": false,
+      "formal_proof_status": "NOT_APPLICABLE",
+      "library_promotion": {
+        "approval": {
+          "reason": "existing_accepted_rtl_unchanged",
+          "status": "NOT_REQUIRED"
+        },
+        "artifact_dir": "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+        "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+        "contract_id": "ceil_log2",
+        "module": "ceil_log2",
+        "module_file": "library/rtl/ceil_log2.sv",
+        "rtl_sha256": "71784bb792966a7e48e98d35cc2e2c3f6052f1c17528ffe1b4256f805c9fda65",
+        "status": "VERIFIED_REFRESH"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 0,
+      "rejected_candidates": [],
+      "rtl_materialization": "REUSED_ACCEPTED_RTL",
+      "shard_durations_seconds": [
+        2.119,
+        2.134,
+        0.148,
+        0.147
+      ],
+      "status": "PASS",
+      "tokens": 0,
+      "unit_status": "EXHAUSTIVE_EQUIVALENT",
+      "vector_strategy": "cartesian"
+    },
+    {
+      "contract_id": "escapecodesize",
+      "counterexample": null,
+      "dependency_evidence": {
+        "call_sites": 2,
+        "compile_commands": true,
+        "direct_call_sites": 2,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": true,
+      "executed_shards": 4,
+      "executed_vectors": 16320,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": false,
+      "formal_proof_status": "NOT_APPLICABLE",
+      "library_promotion": {
+        "approval": {
+          "reason": "existing_accepted_rtl_unchanged",
+          "status": "NOT_REQUIRED"
+        },
+        "artifact_dir": "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
+        "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
+        "contract_id": "escapecodesize",
+        "module": "escapecodesize",
+        "module_file": "library/rtl/escapecodesize.sv",
+        "rtl_sha256": "582d5e131e638e5a6aa4f9783cf1755b041f9369f9c8c84e57fb413845272167",
+        "status": "VERIFIED_REFRESH"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 0,
+      "rejected_candidates": [],
+      "rtl_materialization": "REUSED_ACCEPTED_RTL",
+      "shard_durations_seconds": [
+        0.886,
+        0.87,
+        0.177,
+        0.165
+      ],
+      "status": "PASS",
+      "tokens": 0,
+      "unit_status": "EXHAUSTIVE_EQUIVALENT",
+      "vector_strategy": "cartesian"
+    },
+    {
+      "contract_id": "estimatebitsforgroup",
+      "counterexample": null,
+      "dependency_evidence": {
+        "call_sites": 1,
+        "compile_commands": true,
+        "direct_call_sites": 1,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": false,
+      "executed_shards": 4,
+      "executed_vectors": 1040928,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": true,
+      "formal_proof_status": "PASS",
+      "library_promotion": {
+        "approval": {
+          "reason": "existing_accepted_rtl_unchanged",
+          "status": "NOT_REQUIRED"
+        },
+        "artifact_dir": "artifacts/bcf7ded8f7fbfd323e66fc25a51b6489a4fad835d03302af228c3b51be8f9bb2",
+        "contract_hash": "bcf7ded8f7fbfd323e66fc25a51b6489a4fad835d03302af228c3b51be8f9bb2",
+        "contract_id": "estimatebitsforgroup",
+        "module": "estimatebitsforgroup",
+        "module_file": "library/rtl/estimatebitsforgroup.sv",
+        "rtl_sha256": "da8e09494b9dad38a4591c81c21adf445cc0b92cdaf4eabc1604aa1ca2db3f9f",
+        "status": "VERIFIED_REFRESH"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 0,
+      "rejected_candidates": [],
+      "rtl_materialization": "REUSED_ACCEPTED_RTL",
+      "shard_durations_seconds": [
+        1.476,
+        1.501,
+        0.962,
+        0.934
+      ],
+      "status": "PASS",
+      "tokens": 0,
+      "unit_status": "FORMAL_EQUIVALENT",
+      "vector_strategy": "estimate_bits"
+    },
+    {
+      "contract_id": "findmidpoint",
+      "counterexample": null,
+      "dependency_evidence": {
+        "call_sites": 3,
+        "compile_commands": true,
+        "direct_call_sites": 3,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": true,
+      "executed_shards": 4,
+      "executed_vectors": 8207360,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": false,
+      "formal_proof_status": "NOT_APPLICABLE",
+      "library_promotion": {
+        "approval": {
+          "reason": "existing_accepted_rtl_unchanged",
+          "status": "NOT_REQUIRED"
+        },
+        "artifact_dir": "artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+        "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+        "contract_id": "findmidpoint",
+        "module": "findmidpoint",
+        "module_file": "library/rtl/findmidpoint.sv",
+        "rtl_sha256": "95b00b9f217f19697deb92e6926e102faf48b91af79a9fb6331900a7217d480b",
+        "status": "VERIFIED_REFRESH"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 0,
+      "rejected_candidates": [],
+      "rtl_materialization": "REUSED_ACCEPTED_RTL",
+      "shard_durations_seconds": [
+        3.761,
+        3.843,
+        3.384,
+        3.263
+      ],
+      "status": "PASS",
+      "tokens": 0,
+      "unit_status": "EXHAUSTIVE_EQUIVALENT",
+      "vector_strategy": "conditional"
+    },
+    {
+      "contract_id": "findresidualsize",
+      "counterexample": null,
+      "dependency_evidence": {
+        "call_sites": 6,
+        "compile_commands": true,
+        "direct_call_sites": 6,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": true,
+      "executed_shards": 4,
+      "executed_vectors": 131071,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": false,
+      "formal_proof_status": "NOT_APPLICABLE",
+      "library_promotion": {
+        "approval": {
+          "reason": "existing_accepted_rtl_unchanged",
+          "status": "NOT_REQUIRED"
+        },
+        "artifact_dir": "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+        "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+        "contract_id": "findresidualsize",
+        "module": "findresidualsize",
+        "module_file": "library/rtl/findresidualsize.sv",
+        "rtl_sha256": "a10d4649d371883b4bdfef25fc99448c5a719e937a93425900ddf00b26474073",
+        "status": "VERIFIED_REFRESH"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 0,
+      "rejected_candidates": [],
+      "rtl_materialization": "REUSED_ACCEPTED_RTL",
+      "shard_durations_seconds": [
+        1.561,
+        1.562,
+        0.15,
+        0.148
+      ],
+      "status": "PASS",
+      "tokens": 0,
+      "unit_status": "EXHAUSTIVE_EQUIVALENT",
+      "vector_strategy": "cartesian"
+    },
+    {
+      "contract_id": "getqpadjpredsize",
+      "counterexample": null,
+      "dependency_evidence": {
+        "call_sites": 3,
+        "compile_commands": true,
+        "direct_call_sites": 3,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": true,
+      "executed_shards": 4,
+      "executed_vectors": 14831616,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": false,
+      "formal_proof_status": "NOT_APPLICABLE",
+      "library_promotion": {
+        "approval": {
+          "reason": "existing_accepted_rtl_unchanged",
+          "status": "NOT_REQUIRED"
+        },
+        "artifact_dir": "artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
+        "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
+        "contract_id": "getqpadjpredsize",
+        "module": "getqpadjpredsize",
+        "module_file": "library/rtl/getqpadjpredsize.sv",
+        "rtl_sha256": "a8a237d111078f013fa7c15edf430b37d8c58a60595b1082166f16b0334c24b4",
+        "status": "VERIFIED_REFRESH"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 0,
+      "rejected_candidates": [],
+      "rtl_materialization": "REUSED_ACCEPTED_RTL",
+      "shard_durations_seconds": [
+        7.199,
+        7.246,
+        7.09,
+        6.973
+      ],
+      "status": "PASS",
+      "tokens": 0,
+      "unit_status": "EXHAUSTIVE_EQUIVALENT",
+      "vector_strategy": "table_lookup"
+    },
+    {
+      "contract_id": "isflatnessinfosent",
+      "counterexample": null,
+      "dependency_evidence": {
+        "call_sites": 4,
+        "compile_commands": true,
+        "direct_call_sites": 4,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": true,
+      "executed_shards": 4,
+      "executed_vectors": 32768,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": false,
+      "formal_proof_status": "NOT_APPLICABLE",
+      "library_promotion": {
+        "approval": {
+          "reason": "existing_accepted_rtl_unchanged",
+          "status": "NOT_REQUIRED"
+        },
+        "artifact_dir": "artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
+        "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
+        "contract_id": "isflatnessinfosent",
+        "module": "isflatnessinfosent",
+        "module_file": "library/rtl/isflatnessinfosent.sv",
+        "rtl_sha256": "0a4b0d5ee2f45598e3ea1859102a42e3fa2ef66aba94e7049fc1d47876a5c07e",
+        "status": "VERIFIED_REFRESH"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 0,
+      "rejected_candidates": [],
+      "rtl_materialization": "REUSED_ACCEPTED_RTL",
+      "shard_durations_seconds": [
+        1.838,
+        1.843,
+        0.102,
+        0.105
+      ],
+      "status": "PASS",
+      "tokens": 0,
+      "unit_status": "EXHAUSTIVE_EQUIVALENT",
+      "vector_strategy": "cartesian"
+    },
+    {
+      "contract_id": "isorigflathindex",
+      "counterexample": null,
+      "dependency_evidence": {
+        "call_sites": 2,
+        "compile_commands": true,
+        "direct_call_sites": 2,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": false,
+      "executed_shards": 4,
+      "executed_vectors": 575552,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": true,
+      "formal_proof_status": "PASS",
+      "library_promotion": {
+        "approval": {
+          "reason": "existing_accepted_rtl_unchanged",
+          "status": "NOT_REQUIRED"
+        },
+        "artifact_dir": "artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
+        "contract_hash": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
+        "contract_id": "isorigflathindex",
+        "module": "isorigflathindex",
+        "module_file": "library/rtl/isorigflathindex.sv",
+        "rtl_sha256": "cfb707d7aa001c86145ecff6476c1fd36b7d2755ecabe5d5af41f817ea22d855",
+        "status": "VERIFIED_REFRESH"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 0,
+      "rejected_candidates": [],
+      "rtl_materialization": "REUSED_ACCEPTED_RTL",
+      "shard_durations_seconds": [
+        1.334,
+        1.32,
+        0.679,
+        0.701
+      ],
+      "status": "PASS",
+      "tokens": 0,
+      "unit_status": "FORMAL_EQUIVALENT",
+      "vector_strategy": "flatness_window"
+    },
+    {
+      "contract_id": "mapqptoqlevel",
+      "counterexample": null,
+      "dependency_evidence": {
+        "call_sites": 12,
+        "compile_commands": true,
+        "direct_call_sites": 12,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": true,
+      "executed_shards": 4,
+      "executed_vectors": 5548800,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": false,
+      "formal_proof_status": "NOT_APPLICABLE",
+      "library_promotion": {
+        "approval": {
+          "reason": "existing_accepted_rtl_unchanged",
+          "status": "NOT_REQUIRED"
+        },
+        "artifact_dir": "artifacts/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+        "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+        "contract_id": "mapqptoqlevel",
+        "module": "mapqptoqlevel",
+        "module_file": "library/rtl/mapqptoqlevel.sv",
+        "rtl_sha256": "5dda9dc25483193295e7af8abbd927b209f8e9715f2f4791864200f2fc0a3334",
+        "status": "VERIFIED_REFRESH"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 0,
+      "rejected_candidates": [],
+      "rtl_materialization": "REUSED_ACCEPTED_RTL",
+      "shard_durations_seconds": [
+        3.423,
+        3.412,
+        2.602,
+        2.483
+      ],
+      "status": "PASS",
+      "tokens": 0,
+      "unit_status": "EXHAUSTIVE_EQUIVALENT",
+      "vector_strategy": "cartesian"
+    },
+    {
+      "contract_id": "maxresidualsize",
+      "counterexample": null,
+      "dependency_evidence": {
+        "call_sites": 8,
+        "compile_commands": true,
+        "direct_call_sites": 8,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": true,
+      "executed_shards": 4,
+      "executed_vectors": 27744000,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": false,
+      "formal_proof_status": "NOT_APPLICABLE",
+      "library_promotion": {
+        "approval": {
+          "reason": "existing_accepted_rtl_unchanged",
+          "status": "NOT_REQUIRED"
+        },
+        "artifact_dir": "artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
+        "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
+        "contract_id": "maxresidualsize",
+        "module": "maxresidualsize",
+        "module_file": "library/rtl/maxresidualsize.sv",
+        "rtl_sha256": "cfdb54a0936d5bd70d45ddd9bcb20d05d99b73039a3789c1124ed564ae5aa65b",
+        "status": "VERIFIED_REFRESH"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 0,
+      "rejected_candidates": [],
+      "rtl_materialization": "REUSED_ACCEPTED_RTL",
+      "shard_durations_seconds": [
+        12.037,
+        12.128,
+        10.764,
+        10.623
+      ],
+      "status": "PASS",
+      "tokens": 0,
+      "unit_status": "EXHAUSTIVE_EQUIVALENT",
+      "vector_strategy": "cartesian"
+    },
+    {
+      "contract_id": "predictsize",
+      "counterexample": null,
+      "dependency_evidence": {
+        "call_sites": 2,
+        "compile_commands": true,
+        "direct_call_sites": 2,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": true,
+      "executed_shards": 4,
+      "executed_vectors": 4913,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": false,
+      "formal_proof_status": "NOT_APPLICABLE",
+      "library_promotion": {
+        "approval": {
+          "reason": "existing_accepted_rtl_unchanged",
+          "status": "NOT_REQUIRED"
+        },
+        "artifact_dir": "artifacts/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
+        "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
+        "contract_id": "predictsize",
+        "module": "predictsize",
+        "module_file": "library/rtl/predictsize.sv",
+        "rtl_sha256": "861239ab7f41e5c98845588cfa54631e2d4449920afe9cdbde2eae0920b09af7",
+        "status": "VERIFIED_REFRESH"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 0,
+      "rejected_candidates": [],
+      "rtl_materialization": "REUSED_ACCEPTED_RTL",
+      "shard_durations_seconds": [
+        1.026,
+        1.026,
+        0.011,
+        0.011
+      ],
+      "status": "PASS",
+      "tokens": 0,
+      "unit_status": "EXHAUSTIVE_EQUIVALENT",
+      "vector_strategy": "cartesian"
+    },
+    {
+      "contract_id": "qp2qlevel",
+      "counterexample": null,
+      "dependency_evidence": {
+        "call_sites": 2,
+        "compile_commands": true,
+        "direct_call_sites": 2,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": true,
+      "executed_shards": 4,
+      "executed_vectors": 5760,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": false,
+      "formal_proof_status": "NOT_APPLICABLE",
+      "library_promotion": {
+        "approval": {
+          "reason": "existing_accepted_rtl_unchanged",
+          "status": "NOT_REQUIRED"
+        },
+        "artifact_dir": "artifacts/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+        "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+        "contract_id": "qp2qlevel",
+        "module": "qp2qlevel",
+        "module_file": "library/rtl/qp2qlevel.sv",
+        "rtl_sha256": "18f078d82f020604fbcae57261373e69e9291f7757f81585163bb47fa1d893df",
+        "status": "VERIFIED_REFRESH"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 0,
+      "rejected_candidates": [],
+      "rtl_materialization": "REUSED_ACCEPTED_RTL",
+      "shard_durations_seconds": [
+        1.436,
+        1.418,
+        0.021,
+        0.014
+      ],
+      "status": "PASS",
+      "tokens": 0,
+      "unit_status": "EXHAUSTIVE_EQUIVALENT",
+      "vector_strategy": "qp_table"
+    },
+    {
+      "contract_id": "quantizeresidual",
+      "counterexample": null,
+      "dependency_evidence": {
+        "call_sites": 3,
+        "compile_commands": true,
+        "direct_call_sites": 3,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": true,
+      "executed_shards": 4,
+      "executed_vectors": 2228207,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": false,
+      "formal_proof_status": "NOT_APPLICABLE",
+      "library_promotion": {
+        "approval": {
+          "reason": "existing_accepted_rtl_unchanged",
+          "status": "NOT_REQUIRED"
+        },
+        "artifact_dir": "artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
+        "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
+        "contract_id": "quantizeresidual",
+        "module": "quantizeresidual",
+        "module_file": "library/rtl/quantizeresidual.sv",
+        "rtl_sha256": "7c9d729bbe1ac193b6f355b3d8281a92ab350a9c27a7717145fdea31a863d9cd",
+        "status": "VERIFIED_REFRESH"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 0,
+      "rejected_candidates": [],
+      "rtl_materialization": "REUSED_ACCEPTED_RTL",
+      "shard_durations_seconds": [
+        1.459,
+        1.571,
+        0.84,
+        0.854
+      ],
+      "status": "PASS",
+      "tokens": 0,
+      "unit_status": "EXHAUSTIVE_EQUIVALENT",
+      "vector_strategy": "cartesian"
+    },
+    {
+      "contract_id": "samplepredict",
+      "counterexample": null,
+      "dependency_evidence": {
+        "call_sites": 5,
+        "compile_commands": true,
+        "direct_call_sites": 5,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": false,
+      "executed_shards": 4,
+      "executed_vectors": 25960080,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": true,
+      "formal_proof_status": "PASS",
+      "library_promotion": {
+        "approval": {
+          "reason": "existing_accepted_rtl_unchanged",
+          "status": "NOT_REQUIRED"
+        },
+        "artifact_dir": "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+        "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+        "contract_id": "samplepredict",
+        "module": "samplepredict",
+        "module_file": "library/rtl/samplepredict.sv",
+        "rtl_sha256": "831411aefb7fd14c630f6a71d75191a62320ce17566d6292637fcdab603e2011",
+        "status": "VERIFIED_REFRESH"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 0,
+      "rejected_candidates": [],
+      "rtl_materialization": "REUSED_ACCEPTED_RTL",
+      "shard_durations_seconds": [
+        23.058,
+        23.306,
+        22.552,
+        22.411
+      ],
+      "status": "PASS",
+      "tokens": 0,
+      "unit_status": "FORMAL_EQUIVALENT",
+      "vector_strategy": "windowed_boundary"
+    },
+    {
+      "contract_id": "samptolinebuf",
+      "counterexample": null,
+      "dependency_evidence": {
+        "call_sites": 2,
+        "compile_commands": true,
+        "direct_call_sites": 2,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": true,
+      "executed_shards": 4,
+      "executed_vectors": 21233664,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": false,
+      "formal_proof_status": "NOT_APPLICABLE",
+      "library_promotion": {
+        "approval": {
+          "reason": "existing_accepted_rtl_unchanged",
+          "status": "NOT_REQUIRED"
+        },
+        "artifact_dir": "artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
+        "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
+        "contract_id": "samptolinebuf",
+        "module": "samptolinebuf",
+        "module_file": "library/rtl/samptolinebuf.sv",
+        "rtl_sha256": "971e3b07df907a913544145749bc5303b1c4532af69517ce97ab3bc9bed0cae9",
+        "status": "VERIFIED_REFRESH"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 0,
+      "rejected_candidates": [],
+      "rtl_materialization": "REUSED_ACCEPTED_RTL",
+      "shard_durations_seconds": [
+        8.789,
+        8.897,
+        8.361,
+        8.159
+      ],
+      "status": "PASS",
+      "tokens": 0,
+      "unit_status": "EXHAUSTIVE_EQUIVALENT",
+      "vector_strategy": "cartesian"
+    },
+    {
+      "contract_id": "usingmidpoint",
+      "counterexample": null,
+      "dependency_evidence": {
+        "call_sites": 1,
+        "compile_commands": true,
+        "direct_call_sites": 1,
+        "matrix_commands": true,
+        "vectors": true
+      },
+      "dependency_status": "PASS",
+      "domain_proof_complete": false,
+      "executed_shards": 4,
+      "executed_vectors": 385344,
+      "execution_status": "EXECUTED_NOW",
+      "formal_proof_complete": true,
+      "formal_proof_status": "PASS",
+      "library_promotion": {
+        "approval": {
+          "reason": "existing_accepted_rtl_unchanged",
+          "status": "NOT_REQUIRED"
+        },
+        "artifact_dir": "artifacts/a80e806bc03f18d8ed3285f7fc6c043b0bb487da5921717a8239a344049abab1",
+        "contract_hash": "a80e806bc03f18d8ed3285f7fc6c043b0bb487da5921717a8239a344049abab1",
+        "contract_id": "usingmidpoint",
+        "module": "usingmidpoint",
+        "module_file": "library/rtl/usingmidpoint.sv",
+        "rtl_sha256": "fc765032b32c15013196fa87328b8692da41071277c4bdd13ffb941c86132ab8",
+        "status": "VERIFIED_REFRESH"
+      },
+      "matrix_modes": {
+        "C_ONLY": "PASS",
+        "RTL_RETURN": "PASS",
+        "SHADOW": "PASS"
+      },
+      "matrix_status": "PASS",
+      "model_calls": 0,
+      "rejected_candidates": [],
+      "rtl_materialization": "REUSED_ACCEPTED_RTL",
+      "shard_durations_seconds": [
+        1.089,
+        1.013,
+        0.256,
+        0.309
+      ],
+      "status": "PASS",
+      "tokens": 0,
+      "unit_status": "FORMAL_EQUIVALENT",
+      "vector_strategy": "using_midpoint"
+    }
+  ],
   "schema_version": 2,
-  "selected_contracts": [],
+  "selected_contracts": [
+    "ceil_log2",
+    "escapecodesize",
+    "estimatebitsforgroup",
+    "findmidpoint",
+    "findresidualsize",
+    "getqpadjpredsize",
+    "isflatnessinfosent",
+    "isorigflathindex",
+    "mapqptoqlevel",
+    "maxresidualsize",
+    "predictsize",
+    "qp2qlevel",
+    "quantizeresidual",
+    "samplepredict",
+    "samptolinebuf",
+    "usingmidpoint"
+  ],
   "selected_new_work": [],
-  "shards": [],
+  "shards": [
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4,
+    4
+  ],
   "tokens": 0
 }

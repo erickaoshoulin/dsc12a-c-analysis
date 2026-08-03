@@ -1175,6 +1175,7 @@ class Agent:
         contract_id_value: str,
         contract_hash: str,
         manifest: dict[str, Any] | None = None,
+        contract: dict[str, Any] | None = None,
     ) -> dict[str, Any] | None:
         """Resolve one immutable, hash-checked PASS RTL library component.
 
@@ -1194,8 +1195,31 @@ class Agent:
             ),
             None,
         )
-        if not component or str(component.get("contract_hash")) != str(contract_hash):
+        if not component:
             return None
+        manifest_contract_hash = str(component.get("contract_hash"))
+        if manifest_contract_hash != str(contract_hash):
+            # Selection/ranking metadata is routing provenance, not part of
+            # the semantic contract consumed by an already accepted RTL
+            # component.  Stable refreshes may rebuild that metadata from the
+            # current tool facts, so compare the immutable contract snapshot
+            # while ignoring only the transient selection block.
+            artifact_raw = str(component.get("artifact_dir", ""))
+            artifact_dir = pathlib.Path(artifact_raw)
+            if (
+                contract is None
+                or artifact_dir.is_absolute()
+                or ".." in artifact_dir.parts
+            ):
+                return None
+            artifact_path = self.root / artifact_dir
+            try:
+                artifact_path.resolve().relative_to(self.root.resolve())
+            except ValueError:
+                return None
+            promoted_contract = read_json(artifact_path / "locked-contract.json", {}) or {}
+            if not promoted_contract or self.stable_contract_identity(promoted_contract) != self.stable_contract_identity(contract):
+                return None
         raw_module_file = str(component.get("module_file", ""))
         if not raw_module_file:
             return None
@@ -1218,6 +1242,13 @@ class Agent:
             "module_path": module_path,
             "module_sha256": expected_sha256,
         }
+
+    @staticmethod
+    def stable_contract_identity(contract: dict[str, Any]) -> str:
+        """Hash semantic contract facts while excluding queue selection metadata."""
+        normalized = copy.deepcopy(contract)
+        normalized.pop("selection", None)
+        return digest(normalized)
 
     def choose_dependency_pair(self, selected: list[str]) -> dict[str, Any] | None:
         candidates = [site for site in self.dependency_info.get("all_call_sites", []) if site.get("callee_contract") in set(selected) and site.get("caller_usr") != site.get("callee_usr")]
@@ -1282,7 +1313,7 @@ class Agent:
             entry = self.cache_entry(key)
             stale = [name for name, value in hashes.items() if self.prior_contract(cid).get("hashes", {}).get(name) not in (None, value)]
             cache_hit = self.cache_valid(entry, key) and not force_regenerate
-            accepted_rtl = self.accepted_rtl_component(cid, hashes["contract"], manifest)
+            accepted_rtl = self.accepted_rtl_component(cid, hashes["contract"], manifest, contract)
             new_work = bool(
                 (contract.get("selection") or {}).get(
                     "new_work", cid in discovered and cid not in stable_ids
@@ -1823,7 +1854,7 @@ class Agent:
         module_name = safe_identifier(cid).lower()
         contract_hash = str(item.get("contract_hash") or artifact.name)
         artifact_relative = str(artifact.relative_to(self.root))
-        accepted = self.accepted_rtl_component(cid, contract_hash)
+        accepted = self.accepted_rtl_component(cid, contract_hash, contract=contract)
         if item.get("reuse_accepted_rtl") and accepted and accepted.get("module_sha256") == rtl_sha256:
             return {
                 "status": "VERIFIED_REFRESH",
@@ -4833,6 +4864,7 @@ class Agent:
             component = self.accepted_rtl_component(
                 contract_id(contract),
                 str(item.get("contract_hash") or digest(contract)),
+                contract=contract,
             )
             if not component:
                 receipt.update({
@@ -5765,10 +5797,292 @@ class Agent:
             },
         }
 
+    def write_ich_decision_overlay_sources(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        module: str,
+        candidate_sv: pathlib.Path,
+    ) -> dict[str, Any]:
+        """Write a caller adapter for a reviewed semantic ICH decision.
+
+        The frozen RTL interface is a scalar projection of the native C
+        configuration/state records.  The C callsite must keep its original
+        five-argument signature, while the adapter expands those records into
+        the scalar DUT ports using the reviewed legal-vector strategy.  This
+        binding is contract-driven; it does not identify a function by name or
+        guess fields from the generated RTL.
+        """
+        interface = contract.get("interface", {}) or {}
+        ports = [port for port in interface.get("ports", []) if isinstance(port, dict)]
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        outputs = [port for port in ports if port.get("direction") == "output"]
+        if len(outputs) != 1:
+            raise RuntimeError("ich-decision overlay requires exactly one output port")
+        output = outputs[0]
+        semantics = contract.get("semantics", {}) or {}
+        strategy = semantics.get("legal_vector_strategy", {}) or {}
+        if not isinstance(strategy, dict):
+            raise RuntimeError("ich-decision overlay is missing legal vector strategy")
+        parameters = self.function_parameters(contract)
+        if not parameters:
+            raise RuntimeError("ich-decision overlay requires original C parameter facts")
+
+        parameter_specs: list[str] = []
+        parameter_names: list[str] = []
+        pointer_records: dict[str, str] = {}
+        scalar_parameters: set[str] = set()
+        for parameter in parameters:
+            parameter_name = str(parameter.get("name", ""))
+            parameter_type = str(parameter.get("type", "int")).strip()
+            if not parameter_name or not re.match(r"^[A-Za-z_][A-Za-z0-9_]*$", parameter_name):
+                raise RuntimeError(f"invalid C parameter name: {parameter_name}")
+            parameter_specs.append(f"{parameter_type} {parameter_name}")
+            parameter_names.append(parameter_name)
+            if parameter.get("pointer"):
+                record_type = re.sub(r"\s*\*.*$", "", parameter_type).strip()
+                pointer_records[record_type] = parameter_name
+            else:
+                scalar_parameters.add(parameter_name)
+        config_parameter = pointer_records.get("dsc_cfg_t")
+        state_parameter = pointer_records.get("dsc_state_t")
+        if not config_parameter or not state_parameter:
+            raise RuntimeError("ich-decision overlay requires dsc_cfg_t and dsc_state_t parameters")
+
+        input_names = {str(port.get("name")) for port in inputs}
+
+        def require_port(key: str, fallback: str) -> str:
+            name = str(strategy.get(key, fallback))
+            if name not in input_names:
+                raise RuntimeError(f"ich-decision binding is not an input port: {name}")
+            return name
+
+        def require_scalar_port(key: str, fallback: str) -> str:
+            name = require_port(key, fallback)
+            if name not in scalar_parameters:
+                raise RuntimeError(f"ich-decision scalar binding is not a C parameter: {name}")
+            return name
+
+        def require_group(key: str, length: int) -> list[str]:
+            values = strategy.get(key, [])
+            if not isinstance(values, list) or len(values) != length:
+                raise RuntimeError(f"ich-decision binding requires {length} ports for {key}")
+            result = [str(value) for value in values]
+            if any(value not in input_names for value in result):
+                raise RuntimeError(f"ich-decision binding has a missing port for {key}")
+            return result
+
+        cfg_fields = {
+            require_port("version_port", "dsc_version_minor"): f"{config_parameter}->dsc_version_minor",
+            require_port("native_420_port", "native_420"): f"{config_parameter}->native_420",
+            require_port("flatness_det_thresh_port", "flatness_det_thresh"):
+                f"{config_parameter}->flatness_det_thresh",
+            require_port("somewhat_flat_qp_delta_port", "somewhat_flat_qp_delta"):
+                f"{config_parameter}->somewhat_flat_qp_delta",
+        }
+        state_fields = {
+            require_port("units_per_group_port", "units_per_group"): f"{state_parameter}->unitsPerGroup",
+            require_port("pixels_in_group_port", "pixels_in_group"): f"{state_parameter}->pixelsInGroup",
+            require_port("hpos_port", "hPos"): f"{state_parameter}->hPos",
+            require_port("slice_width_port", "slice_width"): f"{state_parameter}->sliceWidth",
+            require_port("prev_ich_selected_port", "prev_ich_selected"):
+                f"{state_parameter}->prevIchSelected",
+            require_port("primary_qp_port", "primary_qp"): f"{state_parameter}->primaryQp",
+            require_port("prev_primary_qp_port", "prev_primary_qp"):
+                f"{state_parameter}->prevPrimaryQp",
+            require_port("ich_indices_in_group_port", "ich_indices_in_group"):
+                f"{state_parameter}->ichIndicesInGroup",
+            require_port("num_components_port", "num_components"): f"{state_parameter}->numComponents",
+        }
+        depth_ports = require_group("component_depth_ports", 4)
+        ctype_ports = require_group("unit_component_ports", 4)
+        start_ports = require_group("unit_start_hpos_ports", 4)
+        predicted_ports = require_group("predicted_size_ports", 4)
+        max_error_ports = require_group("max_error_ports", 4)
+        max_mid_error_ports = require_group("max_mid_error_ports", 4)
+        max_ich_error_ports = require_group("max_ich_error_ports", 4)
+        residual_ports = require_group("residual_ports", 12)
+        qlevel_ports = strategy.get("qlevel_ports", {}) or {}
+        if not isinstance(qlevel_ports, dict):
+            raise RuntimeError("ich-decision overlay is missing qLevel bindings")
+        qlevel_names: dict[str, str] = {}
+        for key in ("luma_primary", "chroma_primary", "luma_previous",
+                    "chroma_previous", "luma_flat", "chroma_flat"):
+            if key not in qlevel_ports:
+                raise RuntimeError("ich-decision overlay is missing a qLevel port")
+            qlevel_names[key] = require_port(key, str(qlevel_ports[key]))
+        orig_ports = strategy.get("orig_ports_by_component", {}) or {}
+        if not isinstance(orig_ports, dict):
+            raise RuntimeError("ich-decision overlay is missing original-pixel bindings")
+        orig_names: dict[int, list[str]] = {}
+        for component in range(4):
+            raw = orig_ports.get(str(component), orig_ports.get(component, []))
+            if not isinstance(raw, list) or len(raw) != 7:
+                raise RuntimeError("ich-decision overlay requires seven original taps per component")
+            values = [str(value) for value in raw]
+            if any(value not in input_names for value in values):
+                raise RuntimeError("ich-decision overlay has a missing original tap")
+            orig_names[component] = values
+
+        scalar_ports = {
+            require_scalar_port("adj_predicted_size_port", "adj_predicted_size"),
+            require_scalar_port("alt_pfx_port", "alt_pfx"),
+            require_scalar_port("alt_size_to_generate_port", "alt_size_to_generate"),
+        }
+        expressions: dict[str, str] = {}
+        expressions.update(cfg_fields)
+        expressions.update(state_fields)
+        for index, port in enumerate(depth_ports):
+            expressions[port] = f"{state_parameter}->cpntBitDepth[{index}]"
+        for index, port in enumerate(ctype_ports):
+            expressions[port] = f"{state_parameter}->unitCType[{index}]"
+        for index, port in enumerate(start_ports):
+            expressions[port] = f"{state_parameter}->unitStartHPos[{index}]"
+        for index, port in enumerate(predicted_ports):
+            expressions[port] = f"{state_parameter}->predictedSize[{index}]"
+        for index, port in enumerate(max_error_ports):
+            expressions[port] = f"{state_parameter}->maxError[{index}]"
+        for index, port in enumerate(max_mid_error_ports):
+            expressions[port] = f"{state_parameter}->maxMidError[{index}]"
+        for index, port in enumerate(max_ich_error_ports):
+            expressions[port] = f"{state_parameter}->maxIchError[{index}]"
+        for index, port in enumerate(residual_ports):
+            unit, sample = divmod(index, 3)
+            expressions[port] = f"{state_parameter}->quantizedResidual[{unit}][{sample}]"
+        primary_qp = state_fields[require_port("primary_qp_port", "primary_qp")]
+        previous_qp = state_fields[require_port("prev_primary_qp_port", "prev_primary_qp")]
+        flat_delta = cfg_fields[require_port("somewhat_flat_qp_delta_port", "somewhat_flat_qp_delta")]
+        flat_qp = f"(({primary_qp} > {flat_delta}) ? ({primary_qp} - {flat_delta}) : 0)"
+        qlevel_qp = {
+            "luma_primary": primary_qp,
+            "chroma_primary": primary_qp,
+            "luma_previous": previous_qp,
+            "chroma_previous": previous_qp,
+            "luma_flat": flat_qp,
+            "chroma_flat": flat_qp,
+        }
+        for key, port in qlevel_names.items():
+            table = "quantTableLuma" if key.startswith("luma_") else "quantTableChroma"
+            expressions[port] = f"{state_parameter}->{table}[{qlevel_qp[key]}]"
+        for component, taps in orig_names.items():
+            for offset, port in enumerate(taps):
+                expressions[port] = (
+                    f"(({state_parameter}->numComponents > {component}) ? "
+                    f"{state_parameter}->origLine[{component}]"
+                    f"[PADDING_LEFT + {state_parameter}->hPos + {offset}] : 0)"
+                )
+        expressions.update({port: port for port in scalar_ports})
+        rtl_arguments = []
+        for port in inputs:
+            name = str(port.get("name"))
+            if name not in expressions:
+                raise RuntimeError(f"ich-decision overlay has no source binding for port: {name}")
+            rtl_arguments.append(expressions[name])
+
+        function = contract_function(contract)
+        original = str(function.get("name")) + "_original"
+        input_declarations = ", ".join(f"int {port['name']}" for port in inputs)
+        caller_declarations = ", ".join(parameter_specs)
+        caller_call = ", ".join(parameter_names)
+        rtl_call = ", ".join(rtl_arguments)
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n"
+            "#define DSC_CICD_OVERLAY_H\n"
+            "#include \"dsc_types.h\"\n"
+            f"int dsc_cicd_invoke({caller_declarations});\n"
+            "#endif\n",
+            encoding="utf-8",
+        )
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdio.h>\n"
+            "#include <stdlib.h>\n"
+            "#include <string.h>\n"
+            "#include \"dsc_cicd_overlay.h\"\n"
+            f"extern int {original}({caller_declarations});\n"
+            f"extern int dsc_cicd_rtl({input_declarations});\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n"
+            "}\n"
+            "static unsigned long dsc_cicd_mismatches;\n"
+            f"int dsc_cicd_invoke({caller_declarations}) {{\n"
+            f"    int c_value = {original}({caller_call});\n"
+            "    int mode = dsc_cicd_mode();\n"
+            "    if (mode == 0) return c_value;\n"
+            f"    int rtl_value = dsc_cicd_rtl({rtl_call});\n"
+            "    if (rtl_value != c_value) {\n"
+            "        ++dsc_cicd_mismatches;\n"
+            "        fprintf(stderr, \"C/RTL mismatch: c=%d rtl=%d\\n\", c_value, rtl_value);\n"
+            "    }\n"
+            "    return mode == 2 ? rtl_value : c_value;\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        bridge = source_dir / "rtl_bridge.cpp"
+        width = max(1, int(output.get("width", 1)))
+        assignments = "\n".join(
+            f"    dut.{port['name']} = static_cast<long long>({port['name']});"
+            for port in inputs
+        )
+        if output.get("signed"):
+            output_expr = f"sign_extend(static_cast<long long>(dut.{output['name']}), {width})"
+        else:
+            output_expr = f"static_cast<int>(dut.{output['name']})"
+        bridge.write_text(
+            "#include <cstdint>\n"
+            "#include \"verilated.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            "static long long sign_extend(long long value, int width) {\n"
+            "    if (width >= 63) return value;\n"
+            "    long long bit = 1LL << (width - 1);\n"
+            "    long long mask = (1LL << width) - 1;\n"
+            "    value &= mask;\n"
+            "    return (value & bit) ? value - (1LL << width) : value;\n"
+            "}\n"
+            f'extern "C" int dsc_cicd_rtl({input_declarations}) {{\n'
+            f"    V{safe_identifier(module)} dut;\n"
+            f"{assignments}\n"
+            "    dut.eval();\n"
+            f"    return static_cast<int>({output_expr});\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\n"
+            "extern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) {\n"
+            "    return dsc_cicd_original_main(argc, argv);\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        return {
+            "header": header,
+            "overlay": overlay,
+            "bridge": bridge,
+            "main": main,
+            "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": "reviewed_ich_decision",
+                "caller_parameter_count": len(parameters),
+                "rtl_input_count": len(rtl_arguments),
+                "frozen_input_ports": [str(port.get("name")) for port in inputs],
+                "rtl_bindings": list(rtl_arguments),
+            },
+        }
+
     def write_overlay_sources(self, contract: dict[str, Any], source_dir: pathlib.Path,
                               module: str, candidate_sv: pathlib.Path) -> dict[str, Any]:
         if (contract.get("semantics", {}) or {}).get("kind") == "flatness_window":
             return self.write_flatness_overlay_sources(contract, source_dir, module, candidate_sv)
+        if (contract.get("semantics", {}) or {}).get("kind") == "ich_decision":
+            return self.write_ich_decision_overlay_sources(contract, source_dir, module, candidate_sv)
         inputs = [
             port for port in contract.get("interface", {}).get("ports", [])
             if port.get("direction") == "input"
