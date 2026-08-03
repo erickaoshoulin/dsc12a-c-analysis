@@ -1066,6 +1066,55 @@ class Agent:
             artifact = self.root / artifact
         return artifact.is_dir() and (artifact / "unit-receipt.json").is_file() and (artifact / "bitstream-receipt.json").is_file()
 
+    def accepted_rtl_component(
+        self,
+        contract_id_value: str,
+        contract_hash: str,
+        manifest: dict[str, Any] | None = None,
+    ) -> dict[str, Any] | None:
+        """Resolve one immutable, hash-checked PASS RTL library component.
+
+        A stable refresh may reuse accepted RTL only when the current locked
+        contract is exactly the contract that was promoted.  The manifest
+        path and bytes are checked here rather than trusting a stale receipt;
+        a missing or changed library file is an infrastructure condition and
+        must not turn into an implicit generator retry.
+        """
+        library = self.root / "library"
+        payload = manifest if manifest is not None else read_json(library / "manifest.json", {}) or {}
+        component = next(
+            (
+                value for value in payload.get("components", [])
+                if str(value.get("contract_id")) == str(contract_id_value)
+                and value.get("status") == "PASS"
+            ),
+            None,
+        )
+        if not component or str(component.get("contract_hash")) != str(contract_hash):
+            return None
+        raw_module_file = str(component.get("module_file", ""))
+        if not raw_module_file:
+            return None
+        module_file = pathlib.Path(raw_module_file)
+        if module_file.is_absolute() or ".." in module_file.parts:
+            return None
+        module_path = library / module_file
+        try:
+            module_path.resolve().relative_to(library.resolve())
+        except ValueError:
+            return None
+        expected_sha256 = str(component.get("module_sha256", ""))
+        if not module_path.is_file() or not expected_sha256 or file_hash(module_path) != expected_sha256:
+            return None
+        return {
+            "contract_id": str(component.get("contract_id")),
+            "contract_hash": str(component.get("contract_hash")),
+            "module": str(component.get("module") or safe_identifier(contract_id_value).lower()),
+            "module_file": str(module_path.relative_to(self.root)),
+            "module_path": module_path,
+            "module_sha256": expected_sha256,
+        }
+
     def choose_dependency_pair(self, selected: list[str]) -> dict[str, Any] | None:
         candidates = [site for site in self.dependency_info.get("all_call_sites", []) if site.get("callee_contract") in set(selected) and site.get("caller_usr") != site.get("callee_usr")]
         if not candidates:
@@ -1094,10 +1143,8 @@ class Agent:
             if value.get("status") == "PASS" and value.get("contract_id")
         }
         refresh_stable = os.environ.get("DSC_CICD_REFRESH_STABLE", "").lower() in {"1", "true", "yes"}
-        force_regenerate = (
-            os.environ.get("DSC_CICD_FORCE_REGENERATE", "").lower() in {"1", "true", "yes"}
-            or refresh_stable
-        )
+        explicit_force_regenerate = os.environ.get("DSC_CICD_FORCE_REGENERATE", "").lower() in {"1", "true", "yes"}
+        force_regenerate = explicit_force_regenerate or refresh_stable
         target_contract = str(os.environ.get("DSC_CICD_TARGET_CONTRACT", "")).strip().lower()
         retry_blocked = os.environ.get("DSC_CICD_RETRY_BLOCKED", "").lower() in {"1", "true", "yes"}
         prior_shapes = {str(item.get("contract_id")): item.get("interface_shape", []) for item in self.previous_state.get("contracts", []) if item.get("current_state") == "PROMOTED"}
@@ -1119,6 +1166,23 @@ class Agent:
             entry = self.cache_entry(key)
             stale = [name for name, value in hashes.items() if self.prior_contract(cid).get("hashes", {}).get(name) not in (None, value)]
             cache_hit = self.cache_valid(entry, key) and not force_regenerate
+            accepted_rtl = self.accepted_rtl_component(cid, hashes["contract"], manifest)
+            stable_refresh_candidate = bool(
+                cid in stable_ids
+                and (
+                    refresh_stable
+                    or (stale and not cache_hit)
+                )
+            )
+            if (
+                stable_refresh_candidate
+                and not accepted_rtl
+                and not explicit_force_regenerate
+                and cid != target_contract
+            ):
+                reasons.append("accepted_rtl_unavailable")
+                reasons = sorted(set(reasons))
+                is_ready = False
             item = {
                 "contract_id": cid,
                 "function": contract_function(contract).get("name"),
@@ -1140,6 +1204,7 @@ class Agent:
                 "stale": bool(stale),
                 "stale_reasons": stale,
                 "cache_hit": cache_hit,
+                "accepted_rtl_available": bool(accepted_rtl),
                 "prior_composition_boundary": prior_boundary,
                 "boundary_retry_requested": boundary_retry_requested,
                 "initial_state": entry.get("state") if cache_hit else "CONTRACT_LOCKED" if is_ready else "DISCOVERED",
@@ -1196,6 +1261,15 @@ class Agent:
             item["deferred"] = bool(item["ready"] and not item["selected"])
             item["targeted"] = item["contract_id"] == (target_item or {}).get("contract_id")
             item["force_regenerate"] = force_regenerate and item["selected"]
+            item["auto_refresh"] = item["contract_id"] in stale_stable
+            item["reuse_accepted_rtl"] = bool(
+                item["selected"]
+                and item.get("accepted_rtl_available")
+                and item["contract_id"] in stable_ids
+                and (item["auto_refresh"] or refresh_stable)
+                and not item["targeted"]
+                and not explicit_force_regenerate
+            )
         self.plan = {
             "schema_version": 2,
             "agent": "executable-generic-c-to-rtl-cicd",
@@ -1210,8 +1284,12 @@ class Agent:
             "dependency_pair": self.choose_dependency_pair(selected),
             "target_contract": target_item["contract_id"] if target_item else None,
             "force_regenerate": force_regenerate,
+            "explicit_force_regenerate": explicit_force_regenerate,
             "refresh_stable": refresh_stable,
             "retry_blocked": retry_blocked,
+            "reuse_accepted_rtl_contracts": [
+                item["contract_id"] for item in entries if item.get("reuse_accepted_rtl")
+            ],
             "generator_hook": os.environ.get("DSC_CICD_GENERATOR_CMD"),
             "input_errors": self.input_facts.get("errors", []),
         }
@@ -4407,6 +4485,77 @@ class Agent:
             "candidate_limit": 4,
             "hook": hook or "MISSING",
         }
+        if item.get("reuse_accepted_rtl"):
+            component = self.accepted_rtl_component(
+                contract_id(contract),
+                str(item.get("contract_hash") or digest(contract)),
+            )
+            if not component:
+                receipt.update({
+                    "execution_status": "REUSED_ACCEPTED_RTL",
+                    "status": "INFRASTRUCTURE_FAILURE",
+                    "model_calls": 0,
+                    "tokens": 0,
+                    "candidates": [],
+                    "hook": "NOT_USED",
+                    "reason": "accepted_rtl_component_unavailable_or_hash_mismatch",
+                })
+                write_json(artifact / "generation.json", receipt)
+                return receipt
+            source = component["module_path"].read_text(encoding="utf-8", errors="replace")
+            reasons = self.validate_rtl(source, contract.get("interface", {}).get("ports", []))
+            scrubbed = re.sub(r"//.*|/\*.*?\*/", "", source, flags=re.S)
+            modules = list(re.finditer(r"\bmodule\s+[A-Za-z_][A-Za-z0-9_]*", scrubbed))
+            if len(modules) != 1 or len(re.findall(r"\bendmodule\b", scrubbed)) != 1:
+                reasons.append("accepted_rtl_must_contain_one_module")
+            try:
+                module = self.module_name(source)
+            except RuntimeError:
+                module = None
+                reasons.append("accepted_rtl_module_not_discoverable")
+            if reasons:
+                receipt.update({
+                    "execution_status": "REUSED_ACCEPTED_RTL",
+                    "status": "INFRASTRUCTURE_FAILURE",
+                    "model_calls": 0,
+                    "tokens": 0,
+                    "candidates": [],
+                    "hook": "NOT_USED",
+                    "accepted_rtl": {
+                        "library_file": component["module_file"],
+                        "module_sha256": component["module_sha256"],
+                    },
+                    "reason": "accepted_rtl_validation_failed: " + "; ".join(sorted(set(reasons))),
+                })
+                write_json(artifact / "generation.json", receipt)
+                return receipt
+            candidate_path = output_dir / "candidate_01.sv"
+            shutil.copy2(component["module_path"], candidate_path)
+            candidate = {
+                "candidate": "candidate_01",
+                "path": str(candidate_path.relative_to(artifact)),
+                "module": module,
+                "sha256": file_hash(candidate_path),
+                "validation": "PASS",
+                "validation_reasons": [],
+            }
+            receipt.update({
+                "execution_status": "REUSED_ACCEPTED_RTL",
+                "status": "PASS",
+                "model_calls": 0,
+                "tokens": 0,
+                "candidates": [candidate],
+                "hook": "NOT_USED",
+                "accepted_rtl": {
+                    "library_file": component["module_file"],
+                    "module": module,
+                    "module_sha256": component["module_sha256"],
+                    "contract_hash": component["contract_hash"],
+                    "reason": "bounded_stable_refresh",
+                },
+            })
+            write_json(artifact / "generation.json", receipt)
+            return receipt
         if not hook:
             receipt.update({
                 "status": "GENERATION_REQUIRED",
@@ -6312,6 +6461,7 @@ class Agent:
                 "contract_id": result.get("contract_id"),
                 "status": result.get("status"),
                 "execution_status": result.get("execution_status", "EXECUTED_NOW"),
+                "rtl_materialization": result.get("generation", {}).get("execution_status", "NOT_RUN"),
                 "model_calls": result.get("generation", {}).get("model_calls", 0),
                 "tokens": result.get("generation", {}).get("tokens", 0),
                 "unit_status": result.get("unit", {}).get("verification_status"),
@@ -6373,6 +6523,7 @@ class Agent:
             "receipt_policy": {
                 "fresh_run": "EXECUTED_NOW",
                 "cache_hit": "REUSED_VERIFIED_RECEIPT",
+                "accepted_rtl_refresh": "REUSED_ACCEPTED_RTL; deterministic verification still executes",
                 "complete_domain_pass": "EXHAUSTIVE_EQUIVALENT",
                 "formal_window_pass": "FORMAL_EQUIVALENT; requires an independent parsed-RTL proof",
                 "bounded_differential_pass": "DIFFERENTIAL_PASS; never a promotion gate",
@@ -6398,7 +6549,7 @@ class Agent:
             "",
         ]
         for value in result_lines:
-            lines.append(f"- {value['contract_id']}: {value['status']} ({value['execution_status']}); unit={value['unit_status']}; dependency={value['dependency_status']}; matrix={value['matrix_status']}; library={value['library_promotion'].get('status', 'NOT_ATTEMPTED')}")
+            lines.append(f"- {value['contract_id']}: {value['status']} ({value['execution_status']}); rtl={value['rtl_materialization']}; unit={value['unit_status']}; dependency={value['dependency_status']}; matrix={value['matrix_status']}; library={value['library_promotion'].get('status', 'NOT_ATTEMPTED')}")
             lines.append(
                 f"  - executed vectors/shards: {value['executed_vectors']}/{value['executed_shards']}; "
                 f"shard seconds: {value['shard_durations_seconds']}; "

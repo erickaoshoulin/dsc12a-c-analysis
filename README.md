@@ -268,20 +268,27 @@ DSC_CICD_SHARDS=8 DSC_CICD_GENERATOR_CMD='python3 tools/generator_fixture.py' \
 python3 tools/cicd_agent.py run
 ```
 
-Each selected contract gets its own generator invocation, C oracle, Verilator
+New/repair contracts get their own generator invocation, C oracle, Verilator
 candidate build, parallel differential shards, caller composition check, and
-frame matrix. Promotion requires unit, formal-or-exhaustive, dependency,
-`C_ONLY`/`SHADOW`/`RTL_RETURN`, source, and exact spec gates. Only stable,
-purely combinational DUT leaves are promoted into `library/rtl/` with their
-locked contract and verification receipt. The agent canonicalizes the module,
-archives replacements, and updates the manifest under a library write lock;
-stateful callers, line storage, and other non-DUT C logic remain reference
-boundaries.
+frame matrix. A stable refresh first hash-checks the matching PASS component
+in `library/manifest.json` and reuses its accepted `library/rtl/` file as the
+sole candidate, so it runs the same deterministic gates with zero generator or
+model calls. A missing or changed accepted file is an infrastructure failure,
+not an implicit regeneration request. Promotion requires unit,
+formal-or-exhaustive, dependency, `C_ONLY`/`SHADOW`/`RTL_RETURN`, source, and
+exact spec gates. Only stable, purely combinational DUT leaves are promoted
+into `library/rtl/` with their locked contract and verification receipt. The
+agent canonicalizes the module, archives replacements, and updates the
+manifest under a library write lock; stateful callers, line storage, and
+other non-DUT C logic remain reference boundaries.
 
 Accepted leaves with stale source/spec/contract/dependency, controller, prompt,
 generator, or tool hashes automatically enter a bounded regression frontier;
-valid cache entries are reused without regeneration. `DSC_CICD_REFRESH_STABLE=1`
-is available when the entire reviewed stable frontier must be refreshed.
+valid cache entries are reused without regeneration. Stale stable entries reuse
+accepted RTL and rerun verification rather than regenerating RTL. A deliberate
+new RTL attempt requires explicit queue routing with
+`DSC_CICD_FORCE_REGENERATE=1`. `DSC_CICD_REFRESH_STABLE=1` is available when
+the entire reviewed stable frontier must be verification-refreshed.
 
 If a completed receipt records `COMPOSITION_BLOCKED` with a `C_BOUNDARY`
 composition, the planner keeps that boundary visible and does not invoke the

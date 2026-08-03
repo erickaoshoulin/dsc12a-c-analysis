@@ -295,13 +295,18 @@ PDF and upstream C model are immutable external inputs.
    ready leaf whose frozen interface shape differs from existing promoted
    work. Reject recursive/combinational dependency cycles.
 
-3. Invoke the real generator hook. On a ready cache miss invoke
-   `DSC_CICD_GENERATOR_CMD request.json output_dir` exactly once. The request
-   contains only `locked_contract`, `frozen_interface`, `c_body`, and short
-   `exact_spec_anchors`. The hook emits at most four SystemVerilog candidates
-   and telemetry. A missing hook is `GENERATION_REQUIRED`; zero-output or
-   invalid output is `GENERATION_FAILED`. Cache hits reuse verified receipts
-   with zero generator/model calls.
+3. Materialize or generate RTL. On a ready cache miss for new/repair work,
+   invoke `DSC_CICD_GENERATOR_CMD request.json output_dir` exactly once. The
+   request contains only `locked_contract`, `frozen_interface`, `c_body`, and
+   short `exact_spec_anchors`. The hook emits at most four SystemVerilog
+   candidates and telemetry. A missing hook is `GENERATION_REQUIRED`;
+   zero-output or invalid output is `GENERATION_FAILED`. For a bounded refresh
+   of an already-PASS component, first verify the current contract hash and
+   the manifest's RTL path/SHA-256, copy that accepted RTL as the sole
+   candidate, and run all deterministic verification gates with zero
+   generator/model calls. A missing or changed accepted file is an
+   `INFRASTRUCTURE_FAILURE`, not a generator retry. Cache hits reuse verified
+   receipts with zero generator/model calls.
 
 4. Verify executable candidates. Freeze direct scalar argument/result ports,
    legal domains, packing, C oracle, harness, and mutation cases. A reviewed
@@ -417,8 +422,13 @@ already recorded as PASS in `library/manifest.json` is not new work and is
 excluded from new-work selection, but it automatically enters a bounded
 regression frontier when its recorded source/spec/contract/dependency,
 controller, prompt, generator, or tool hash is stale and no valid cache exists.
-Valid cache entries are never regenerated. `DSC_CICD_REFRESH_STABLE=1` remains
-the explicit route for a full stable-frontier refresh.
+Valid cache entries are never regenerated. A stale stable refresh reuses the
+hash-checked accepted RTL in `library/rtl/` and reruns the C oracle,
+Verilator, shards, dependency, and frame gates; it does not invoke the RTL
+generator merely because provenance changed. `DSC_CICD_REFRESH_STABLE=1`
+remains the explicit route for a full stable-frontier verification refresh.
+`DSC_CICD_FORCE_REGENERATE=1` with explicit queue routing is the deliberate
+route when new RTL generation is actually requested.
 
 When Clang marks only `bounded_computation` false for an otherwise eligible,
 executed production leaf, a reviewed `BOUNDED_DOMAIN` admission may discharge
@@ -565,9 +575,11 @@ frontier; those variables are routing and parallelism metadata, never a
 function-name allowlist. `DSC_CICD_FORCE_REGENERATE=1` remains the explicit
 single-contract refresh route through `DSC_CICD_TARGET_CONTRACT`.
 
-Each bounded batch may generate at most four candidates per selected contract.
-Independent contracts run in stable parallel workers. Preserve the immutable
-C model as oracle/reference, run the real C/Verilator shards, and promote only
+Each bounded batch may generate at most four candidates per selected
+new/repair contract. Stable refresh items may instead materialize one
+manifest-verified accepted candidate and generate zero RTL candidates.
+Independent contracts run in stable parallel workers. Preserve the immutable C
+model as oracle/reference, run the real C/Verilator shards, and promote only
 after unit, formal-or-exhaustive, dependency, C_ONLY/SHADOW/RTL_RETURN, and
 frame byte/SHA-256 gates pass.
 
@@ -583,18 +595,23 @@ python3 tools/cicd_agent.py status
 
 Each run reads the current facts/spec plan at dispatch. A reviewed contract
 that becomes eligible later enters a subsequent batch without editing a
-function allowlist. Each selected contract gets an independent generator
-invocation, C oracle, Verilator build, parallel shard set, caller composition
-check, and frame matrix. A target contract is queue routing metadata only; it
-is never a source-level function selector. A refresh intentionally bypasses a
-valid leaf cache while preserving prior receipts and accepted RTL for audit
-and rollback. If no unproven ready contract exists, the run reports no new
-work and does not enqueue a duplicate batch.
+function allowlist. Each selected new/repair contract gets an independent
+generator invocation, C oracle, Verilator build, parallel shard set, caller
+composition check, and frame matrix. A selected stable refresh instead uses
+the manifest-verified accepted RTL as its candidate and performs the same
+deterministic gates without a generator invocation. A target contract is
+queue routing metadata only; it is never a source-level function selector. A
+refresh intentionally bypasses a valid leaf cache while preserving prior
+receipts and accepted RTL for audit and rollback. If no unproven ready
+contract exists, the run reports no new work and does not enqueue a duplicate
+batch.
 
 For an explicit stable refresh, the scale function set is the union of the
 current facts/spec-ready plan and PASS components already recorded in
 `library/manifest.json`, rechecked through the current exact width/spec gate.
-Stable components that need to be rematerialized from reviewed overrides are
+Stable components with matching contract and RTL hashes are verification-only
+refreshes; components that cannot be hash-checked fail closed. Stable
+components that need to be rematerialized from reviewed overrides are
 discovered by their tool facts identity during that refresh. This keeps every
 verified leaf in the regression surface without turning the manifest into a
 source-level function allowlist.

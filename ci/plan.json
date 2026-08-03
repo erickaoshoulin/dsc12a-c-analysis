@@ -25,10 +25,12 @@
   ],
   "contracts": [
     {
+      "accepted_rtl_available": true,
+      "auto_refresh": true,
       "blocked_reasons": [],
       "boundary_retry_requested": false,
       "cache_hit": false,
-      "cache_key": "5b9da6ce484e6b84ee9b5d1c3606ec8ddd3f464df4d2e7e95318bc67b5d78c15",
+      "cache_key": "5a90a1ab9f2cd9dbd2840d1013ce4d3688d875c51b85a56b0f7bf95f02cddf46",
       "call_sites": [],
       "clang_usr": "c:@F@FindMidpoint",
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
@@ -38,13 +40,13 @@
       "force_regenerate": false,
       "function": "FindMidpoint",
       "hashes": {
-        "agent": "c39be9e5ad2d39d2b3634962514ba2d109ddb1c395cae9878522f2a5055aa4d2",
+        "agent": "0ca7eb6843319cc6ec4ed4366fe9be1838682aa96edcb0142d4f4705b908d370",
         "contract": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
         "dependency": "f31ebf694a15c841fbcb763dc23e43abe9c95c8b66987812c0521ac805778ebe",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "366df3f4697bfbac6b1f8c41cd1e1e56e93266c4b6da1d9464509a42afd3a7de",
+        "prompt": "8b0e89222fa048933c03b067b877755d3f23bf39852e65442a4edf7258ece663",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -88,6 +90,7 @@
       "origin": "locked_contract",
       "prior_composition_boundary": null,
       "ready": true,
+      "reuse_accepted_rtl": true,
       "selected": true,
       "stale": true,
       "stale_reasons": [
@@ -98,12 +101,14 @@
       "targeted": false
     },
     {
+      "accepted_rtl_available": false,
+      "auto_refresh": false,
       "blocked_reasons": [
         "prior_composition_boundary_unresolved"
       ],
       "boundary_retry_requested": false,
       "cache_hit": false,
-      "cache_key": "2715253134d919ac17db1a38ec45a47e6a459037bfdad4a03b78f692c1b4d15f",
+      "cache_key": "f93c2e37ea8b2d7f9ce1f37815362d4d432f28e9ce3173c89fddc9c7a1c009f1",
       "call_sites": [],
       "clang_usr": "c:@F@IchDecision",
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
@@ -113,13 +118,13 @@
       "force_regenerate": false,
       "function": "IchDecision",
       "hashes": {
-        "agent": "c39be9e5ad2d39d2b3634962514ba2d109ddb1c395cae9878522f2a5055aa4d2",
+        "agent": "0ca7eb6843319cc6ec4ed4366fe9be1838682aa96edcb0142d4f4705b908d370",
         "contract": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
         "dependency": "cf5abbdacefe102de1bd5f0454009786f7795f91e11aab530b78c179dc2c68e3",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "366df3f4697bfbac6b1f8c41cd1e1e56e93266c4b6da1d9464509a42afd3a7de",
+        "prompt": "8b0e89222fa048933c03b067b877755d3f23bf39852e65442a4edf7258ece663",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -684,6 +689,7 @@
         "status": "COMPOSITION_BLOCKED"
       },
       "ready": false,
+      "reuse_accepted_rtl": false,
       "selected": false,
       "stale": true,
       "stale_reasons": [
@@ -694,10 +700,12 @@
       "targeted": false
     },
     {
+      "accepted_rtl_available": true,
+      "auto_refresh": true,
       "blocked_reasons": [],
       "boundary_retry_requested": false,
       "cache_hit": false,
-      "cache_key": "1b30cd3dfa1edada7294dfa6c3c22837f0bb5c23a0c9e0ac6008daa091922eb6",
+      "cache_key": "df42157198a29bc3aee644b75aa5ecc2c76df51871b36969f0afdbd7ae08af13",
       "call_sites": [],
       "clang_usr": "c:@F@IsFlatnessInfoSent",
       "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
@@ -707,13 +715,13 @@
       "force_regenerate": false,
       "function": "IsFlatnessInfoSent",
       "hashes": {
-        "agent": "c39be9e5ad2d39d2b3634962514ba2d109ddb1c395cae9878522f2a5055aa4d2",
+        "agent": "0ca7eb6843319cc6ec4ed4366fe9be1838682aa96edcb0142d4f4705b908d370",
         "contract": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
         "dependency": "cdacd46bfe4cae5e584f55fdb16b27c67c2f7fe22a67c58c85f32686e3e2caed",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "366df3f4697bfbac6b1f8c41cd1e1e56e93266c4b6da1d9464509a42afd3a7de",
+        "prompt": "8b0e89222fa048933c03b067b877755d3f23bf39852e65442a4edf7258ece663",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -751,6 +759,7 @@
       "origin": "tool_discovered_reviewed_override",
       "prior_composition_boundary": null,
       "ready": true,
+      "reuse_accepted_rtl": false,
       "selected": false,
       "stale": true,
       "stale_reasons": [
@@ -761,10 +770,12 @@
       "targeted": false
     },
     {
+      "accepted_rtl_available": true,
+      "auto_refresh": true,
       "blocked_reasons": [],
       "boundary_retry_requested": false,
       "cache_hit": false,
-      "cache_key": "4df3facee72245a9deeee0c786354a3bcfde5f2903b716d3aafb24961690f5bd",
+      "cache_key": "64b1de04c62b2764d70e76a56e879ccd7385088d13881fc959012d266a3f12af",
       "call_sites": [],
       "clang_usr": "c:@F@MapQpToQlevel",
       "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
@@ -774,13 +785,13 @@
       "force_regenerate": false,
       "function": "MapQpToQlevel",
       "hashes": {
-        "agent": "c39be9e5ad2d39d2b3634962514ba2d109ddb1c395cae9878522f2a5055aa4d2",
+        "agent": "0ca7eb6843319cc6ec4ed4366fe9be1838682aa96edcb0142d4f4705b908d370",
         "contract": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
         "dependency": "be9e5b87ba35328b2d70aebf14188b8adb9fa98ab9863a8d5f28b00492aebf68",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "366df3f4697bfbac6b1f8c41cd1e1e56e93266c4b6da1d9464509a42afd3a7de",
+        "prompt": "8b0e89222fa048933c03b067b877755d3f23bf39852e65442a4edf7258ece663",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -848,6 +859,7 @@
       "origin": "tool_discovered_reviewed_override",
       "prior_composition_boundary": null,
       "ready": true,
+      "reuse_accepted_rtl": false,
       "selected": false,
       "stale": true,
       "stale_reasons": [
@@ -858,10 +870,12 @@
       "targeted": false
     },
     {
+      "accepted_rtl_available": true,
+      "auto_refresh": true,
       "blocked_reasons": [],
       "boundary_retry_requested": false,
       "cache_hit": false,
-      "cache_key": "77cf3aa81651c0fb6a5a0a98a17767f597c2cd95760b2c6dab8044a0d97afc1c",
+      "cache_key": "be21cd183b770f176d9f48a5caaa974294b20a4b05ba4940f043efb6259e2de9",
       "call_sites": [],
       "clang_usr": "c:@F@PredictSize",
       "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
@@ -871,13 +885,13 @@
       "force_regenerate": false,
       "function": "PredictSize",
       "hashes": {
-        "agent": "c39be9e5ad2d39d2b3634962514ba2d109ddb1c395cae9878522f2a5055aa4d2",
+        "agent": "0ca7eb6843319cc6ec4ed4366fe9be1838682aa96edcb0142d4f4705b908d370",
         "contract": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
         "dependency": "c8cc34c74343eb8209390547dd44c6e1233cac7f43fde90bf8d9bfff4fca8d9f",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "366df3f4697bfbac6b1f8c41cd1e1e56e93266c4b6da1d9464509a42afd3a7de",
+        "prompt": "8b0e89222fa048933c03b067b877755d3f23bf39852e65442a4edf7258ece663",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -915,6 +929,7 @@
       "origin": "tool_discovered_reviewed_override",
       "prior_composition_boundary": null,
       "ready": true,
+      "reuse_accepted_rtl": false,
       "selected": false,
       "stale": true,
       "stale_reasons": [
@@ -925,10 +940,12 @@
       "targeted": false
     },
     {
+      "accepted_rtl_available": true,
+      "auto_refresh": true,
       "blocked_reasons": [],
       "boundary_retry_requested": false,
       "cache_hit": false,
-      "cache_key": "d8c2ca1f10ce299876dbd3aec60af95d73ec728774676ff9e5b81d9cfd66a006",
+      "cache_key": "1ab6ee087e383d61b68dd548252a0b83981824b7962809b083ef89e44b7d9d39",
       "call_sites": [],
       "clang_usr": "c:@F@QuantizeResidual",
       "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
@@ -938,13 +955,13 @@
       "force_regenerate": false,
       "function": "QuantizeResidual",
       "hashes": {
-        "agent": "c39be9e5ad2d39d2b3634962514ba2d109ddb1c395cae9878522f2a5055aa4d2",
+        "agent": "0ca7eb6843319cc6ec4ed4366fe9be1838682aa96edcb0142d4f4705b908d370",
         "contract": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
         "dependency": "612f31e78f2dacecfc74eb2644ebc8d6256fd9f74b45383679a7e7405b10048f",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "366df3f4697bfbac6b1f8c41cd1e1e56e93266c4b6da1d9464509a42afd3a7de",
+        "prompt": "8b0e89222fa048933c03b067b877755d3f23bf39852e65442a4edf7258ece663",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -976,6 +993,7 @@
       "origin": "tool_discovered_reviewed_override",
       "prior_composition_boundary": null,
       "ready": true,
+      "reuse_accepted_rtl": false,
       "selected": false,
       "stale": true,
       "stale_reasons": [
@@ -986,10 +1004,12 @@
       "targeted": false
     },
     {
+      "accepted_rtl_available": true,
+      "auto_refresh": true,
       "blocked_reasons": [],
       "boundary_retry_requested": false,
       "cache_hit": false,
-      "cache_key": "89cd44c91c3cd143f307ce63283266e90060643c6b67ea8d1c7f0277c15e665c",
+      "cache_key": "0615b8fed055890d3e20032a6a0be3282df51426f7a661c867d72eee297ac3bb",
       "call_sites": [],
       "clang_usr": "c:@F@SamplePredict",
       "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
@@ -999,13 +1019,13 @@
       "force_regenerate": false,
       "function": "SamplePredict",
       "hashes": {
-        "agent": "c39be9e5ad2d39d2b3634962514ba2d109ddb1c395cae9878522f2a5055aa4d2",
+        "agent": "0ca7eb6843319cc6ec4ed4366fe9be1838682aa96edcb0142d4f4705b908d370",
         "contract": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
         "dependency": "c342660294a6ba98f6dbc6bc3d2b0ac8e094b34834409158eb72a155344bd6a1",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "366df3f4697bfbac6b1f8c41cd1e1e56e93266c4b6da1d9464509a42afd3a7de",
+        "prompt": "8b0e89222fa048933c03b067b877755d3f23bf39852e65442a4edf7258ece663",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -1259,6 +1279,7 @@
       "origin": "tool_discovered_reviewed_override",
       "prior_composition_boundary": null,
       "ready": true,
+      "reuse_accepted_rtl": false,
       "selected": false,
       "stale": true,
       "stale_reasons": [
@@ -1269,10 +1290,12 @@
       "targeted": false
     },
     {
+      "accepted_rtl_available": true,
+      "auto_refresh": true,
       "blocked_reasons": [],
       "boundary_retry_requested": false,
       "cache_hit": false,
-      "cache_key": "e3989611e198fce48a6fdecefcbce8ec87c2c0b8ad8e95b53602105fcd5144f7",
+      "cache_key": "8c66239e5d77e4328921c3d2d837ab10699a55573a4d99e11a4e66f8bdbb3934",
       "call_sites": [],
       "clang_usr": "c:@F@SampToLineBuf",
       "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
@@ -1282,13 +1305,13 @@
       "force_regenerate": false,
       "function": "SampToLineBuf",
       "hashes": {
-        "agent": "c39be9e5ad2d39d2b3634962514ba2d109ddb1c395cae9878522f2a5055aa4d2",
+        "agent": "0ca7eb6843319cc6ec4ed4366fe9be1838682aa96edcb0142d4f4705b908d370",
         "contract": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
         "dependency": "242cb5947e0652925b268a83e82fda05796e637554bfa9fb425f4d261af6fceb",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "366df3f4697bfbac6b1f8c41cd1e1e56e93266c4b6da1d9464509a42afd3a7de",
+        "prompt": "8b0e89222fa048933c03b067b877755d3f23bf39852e65442a4edf7258ece663",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -1332,6 +1355,7 @@
       "origin": "tool_discovered_reviewed_override",
       "prior_composition_boundary": null,
       "ready": true,
+      "reuse_accepted_rtl": false,
       "selected": false,
       "stale": true,
       "stale_reasons": [
@@ -1403,6 +1427,7 @@
     "caller_usr": "c:@F@PredictionLoop",
     "selection_basis": "smallest acyclic direct call site from facts/callgraph.json"
   },
+  "explicit_force_regenerate": false,
   "force_regenerate": false,
   "generator_hook": null,
   "historical_contracts": [
@@ -1423,6 +1448,9 @@
   ],
   "refresh_stable": false,
   "retry_blocked": false,
+  "reuse_accepted_rtl_contracts": [
+    "findmidpoint"
+  ],
   "schema_version": 2,
   "selected_contracts": [
     "findmidpoint"
