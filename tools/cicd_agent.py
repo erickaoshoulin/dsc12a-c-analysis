@@ -1249,6 +1249,7 @@ class Agent:
         refresh_stable = os.environ.get("DSC_CICD_REFRESH_STABLE", "").lower() in {"1", "true", "yes"}
         explicit_force_regenerate = os.environ.get("DSC_CICD_FORCE_REGENERATE", "").lower() in {"1", "true", "yes"}
         force_regenerate = explicit_force_regenerate or refresh_stable
+        generator_hook = os.environ.get("DSC_CICD_GENERATOR_CMD", "").strip()
         target_contract = str(os.environ.get("DSC_CICD_TARGET_CONTRACT", "")).strip().lower()
         retry_blocked = os.environ.get("DSC_CICD_RETRY_BLOCKED", "").lower() in {"1", "true", "yes"}
         prior_shapes = {str(item.get("contract_id")): item.get("interface_shape", []) for item in self.previous_state.get("contracts", []) if item.get("current_state") == "PROMOTED"}
@@ -1282,6 +1283,11 @@ class Agent:
             stale = [name for name, value in hashes.items() if self.prior_contract(cid).get("hashes", {}).get(name) not in (None, value)]
             cache_hit = self.cache_valid(entry, key) and not force_regenerate
             accepted_rtl = self.accepted_rtl_component(cid, hashes["contract"], manifest)
+            new_work = bool(
+                (contract.get("selection") or {}).get(
+                    "new_work", cid in discovered and cid not in stable_ids
+                )
+            )
             stable_refresh_candidate = bool(
                 cid in stable_ids
                 and (
@@ -1299,16 +1305,35 @@ class Agent:
                 reasons.append("accepted_rtl_unavailable")
                 reasons = sorted(set(reasons))
                 is_ready = False
+            reuses_accepted_rtl = bool(
+                accepted_rtl
+                and stable_refresh_candidate
+                and not explicit_force_regenerate
+                and cid != target_contract
+            )
+            generation_required = bool(
+                not cache_hit
+                and not promotion_pending
+                and not reuses_accepted_rtl
+                and (
+                    new_work
+                    or explicit_force_regenerate
+                    or cid == target_contract
+                    or cid not in stable_ids
+                )
+            )
+            if is_ready and generation_required and not generator_hook:
+                reasons.append(
+                    "GENERATION_REQUIRED: DSC_CICD_GENERATOR_CMD is not configured"
+                )
+                reasons = sorted(set(reasons))
+                is_ready = False
             item = {
                 "contract_id": cid,
                 "function": contract_function(contract).get("name"),
                 "clang_usr": contract_function(contract).get("clang_usr"),
                 "origin": contract.get("origin", "locked_contract"),
-                "new_work": bool(
-                    (contract.get("selection") or {}).get(
-                        "new_work", cid in discovered and cid not in stable_ids
-                    )
-                ),
+                "new_work": new_work,
                 "contract_hash": hashes["contract"],
                 "cache_key": key,
                 "hashes": hashes,
@@ -1321,6 +1346,8 @@ class Agent:
                 "stale_reasons": stale,
                 "cache_hit": cache_hit,
                 "accepted_rtl_available": bool(accepted_rtl),
+                "generation_required": generation_required,
+                "generator_hook_configured": bool(generator_hook),
                 "resume_needed": resume_needed,
                 "promotion_pending": promotion_pending,
                 "resume_human_approval": bool(promotion_pending and approval_available),
@@ -1437,7 +1464,8 @@ class Agent:
             "reuse_accepted_rtl_contracts": [
                 item["contract_id"] for item in entries if item.get("reuse_accepted_rtl")
             ],
-            "generator_hook": os.environ.get("DSC_CICD_GENERATOR_CMD"),
+            "generator_hook": generator_hook or None,
+            "generator_hook_configured": bool(generator_hook),
             "input_errors": self.input_facts.get("errors", []),
         }
         self.make_dag()
@@ -1585,11 +1613,12 @@ class Agent:
             old = previous.get(item["contract_id"], {})
             current = "PROMOTED" if item.get("cache_hit") else "CONTRACT_LOCKED" if item.get("selected") else "DISCOVERED"
             observed_hashes = item["hashes"]
-            if item.get("deferred") and old.get("hashes"):
-                # A bounded batch must not acknowledge an unexecuted stable
-                # refresh merely because the current controller hash changed.
-                # Keep the previous observation until this contract actually
-                # runs, so the next planner invocation can select it again.
+            if (item.get("deferred") or item.get("blocked_reasons")) and old.get("hashes"):
+                # A bounded batch or planner blocker must not acknowledge an
+                # unexecuted refresh/new attempt merely because the current
+                # controller hash changed. Keep the previous observation until
+                # this contract actually runs, so a later hook/tool change can
+                # reopen the exact work automatically.
                 observed_hashes = old["hashes"]
             contracts.append({
                 "contract_id": item["contract_id"],
@@ -6846,8 +6875,10 @@ class Agent:
         the regression dashboard and are not folded into this current list.
         """
         blockers: list[str] = list(self.input_facts.get("errors", []))
+        current_blocker_contracts: set[str] = set()
         for blocked in self.plan.get("blocked_contracts", []):
             cid = str(blocked.get("contract_id", "contract"))
+            current_blocker_contracts.add(cid)
             for reason in blocked.get("reasons", []) or []:
                 blockers.append(f"{cid}: {reason}")
         terminal = {
@@ -6868,6 +6899,7 @@ class Agent:
             if status not in terminal:
                 continue
             cid = str(result.get("contract_id", "contract"))
+            current_blocker_contracts.add(cid)
             reasons: list[str] = []
             reasons.extend(self._reason_text(result.get("reason")))
             for section in ("generation", "unit", "matrix", "dependency"):
@@ -6884,6 +6916,7 @@ class Agent:
             if status not in terminal:
                 continue
             cid = str(item.get("contract_id", "contract"))
+            current_blocker_contracts.add(cid)
             reasons = self._reason_text(item.get("failure_reason")) or [status]
             blockers.extend(f"{cid}: {reason}" for reason in reasons)
         # A later no-work plan can append DEFERRED/BLOCKED state and otherwise
@@ -6894,6 +6927,8 @@ class Agent:
         success_statuses = {"PASS", "PROMOTED", "CACHE_REUSED"}
         for item in self.previous_state.get("contracts", []):
             cid = str(item.get("contract_id", "contract"))
+            if cid in current_blocker_contracts:
+                continue
             for event in reversed(item.get("history", []) or []):
                 event_status = str(event.get("status", ""))
                 if event_status in {"DEFERRED", "BLOCKED"}:

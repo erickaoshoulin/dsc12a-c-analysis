@@ -306,7 +306,10 @@ PDF and upstream C model are immutable external inputs.
    invoke `DSC_CICD_GENERATOR_CMD request.json output_dir` exactly once. The
    request contains only `locked_contract`, `frozen_interface`, `c_body`, and
    short `exact_spec_anchors`. The hook emits at most four SystemVerilog
-   candidates and telemetry. A missing hook is `GENERATION_REQUIRED`;
+   candidates and telemetry. The planner must preflight this hook before
+   selecting new/repair work: a missing hook is a visible
+   `GENERATION_REQUIRED` infrastructure blocker with no generator/model call,
+   and the same contract must not be reselected until the hook is configured;
    zero-output or invalid output is `GENERATION_FAILED`. For a bounded refresh
    of an already-PASS component, first verify the current contract hash and
    the manifest's RTL path/SHA-256, copy that accepted RTL as the sole

@@ -31794,12 +31794,12 @@
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "cf5abbdacefe102de1bd5f0454009786f7795f91e11aab530b78c179dc2c68e3",
-      "failure_reason": null,
+      "failure_reason": "GENERATION_REQUIRED: DSC_CICD_GENERATOR_CMD is not configured",
       "node_id": "ichdecision:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DISCOVERED",
-      "status": "PASS"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [
@@ -31808,12 +31808,12 @@
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "cf5abbdacefe102de1bd5f0454009786f7795f91e11aab530b78c179dc2c68e3",
-      "failure_reason": null,
+      "failure_reason": "GENERATION_REQUIRED: DSC_CICD_GENERATOR_CMD is not configured",
       "node_id": "ichdecision:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "CONTRACT_LOCKED",
-      "status": "PASS"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [
@@ -31822,12 +31822,12 @@
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "cf5abbdacefe102de1bd5f0454009786f7795f91e11aab530b78c179dc2c68e3",
-      "failure_reason": null,
+      "failure_reason": "GENERATION_REQUIRED: DSC_CICD_GENERATOR_CMD is not configured",
       "node_id": "ichdecision:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_GENERATED",
-      "status": "GENERATION_REQUIRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [
@@ -31836,12 +31836,12 @@
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "cf5abbdacefe102de1bd5f0454009786f7795f91e11aab530b78c179dc2c68e3",
-      "failure_reason": null,
+      "failure_reason": "GENERATION_REQUIRED: DSC_CICD_GENERATOR_CMD is not configured",
       "node_id": "ichdecision:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "UNIT_VERIFIED",
-      "status": "PENDING"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [
@@ -31850,12 +31850,12 @@
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "cf5abbdacefe102de1bd5f0454009786f7795f91e11aab530b78c179dc2c68e3",
-      "failure_reason": null,
+      "failure_reason": "GENERATION_REQUIRED: DSC_CICD_GENERATOR_CMD is not configured",
       "node_id": "ichdecision:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DEPENDENCIES_VERIFIED",
-      "status": "PENDING"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [
@@ -31864,12 +31864,12 @@
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "cf5abbdacefe102de1bd5f0454009786f7795f91e11aab530b78c179dc2c68e3",
-      "failure_reason": null,
+      "failure_reason": "GENERATION_REQUIRED: DSC_CICD_GENERATOR_CMD is not configured",
       "node_id": "ichdecision:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "SHADOW_PASS",
-      "status": "PENDING"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [
@@ -31878,12 +31878,12 @@
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "cf5abbdacefe102de1bd5f0454009786f7795f91e11aab530b78c179dc2c68e3",
-      "failure_reason": null,
+      "failure_reason": "GENERATION_REQUIRED: DSC_CICD_GENERATOR_CMD is not configured",
       "node_id": "ichdecision:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_RETURN_PASS",
-      "status": "PENDING"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [
@@ -31892,12 +31892,12 @@
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "cf5abbdacefe102de1bd5f0454009786f7795f91e11aab530b78c179dc2c68e3",
-      "failure_reason": null,
+      "failure_reason": "GENERATION_REQUIRED: DSC_CICD_GENERATOR_CMD is not configured",
       "node_id": "ichdecision:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "BITSTREAM_PASS",
-      "status": "PENDING"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [
@@ -31906,12 +31906,12 @@
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
       "contract_id": "ichdecision",
       "dependency_hash": "cf5abbdacefe102de1bd5f0454009786f7795f91e11aab530b78c179dc2c68e3",
-      "failure_reason": null,
+      "failure_reason": "GENERATION_REQUIRED: DSC_CICD_GENERATOR_CMD is not configured",
       "node_id": "ichdecision:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "PROMOTED",
-      "status": "PENDING"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [
@@ -34026,12 +34026,12 @@
       "contract_hash": null,
       "contract_id": "ichdecision",
       "dependency_hash": "2ec671215150d199f493b20abdb153db3b63f529d094b5cfd439914af9e9d08e",
-      "failure_reason": "prior_composition_boundary_unresolved",
+      "failure_reason": "GENERATION_REQUIRED: DSC_CICD_GENERATOR_CMD is not configured",
       "node_id": "IchDecision:COMPOSITION",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "COMPOSITION",
-      "status": "PENDING"
+      "status": "BLOCKED"
     }
   ],
   "schema_version": 2,

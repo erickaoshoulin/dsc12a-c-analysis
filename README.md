@@ -211,8 +211,10 @@ The hook receives only `locked_contract`, `frozen_interface`, `c_body`, and
 short `exact_spec_anchors`. It emits at most four combinational `.sv`
 candidates plus telemetry. The fixture emits one correct and one deliberately
 wrong candidate so the verifier records both an exhaustive pass and a
-smallest counterexample. A missing hook records `GENERATION_REQUIRED` and
-makes no model call.
+smallest counterexample. The planner preflights the hook for new/repair work;
+a missing hook records `GENERATION_REQUIRED` in `ci/plan.json` as an
+infrastructure blocker, stops before any generator/model call, and does not
+reselect the same contract until the hook is configured.
 
 The verifier compiles the immutable C oracle and every candidate once, runs
 the complete legal domain through parallel shards, and writes `EXECUTED_NOW`

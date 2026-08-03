@@ -355,13 +355,62 @@ class CicdAgentUnitTests(unittest.TestCase):
             agent = Agent(root, "plan")
             agent.contracts = [contract]
             agent.dependency_info = {"cycles": [], "adjacency": {"unit_target": []}, "call_sites": [], "all_call_sites": [], "dependency_hashes": {}}
-            with mock.patch.dict("os.environ", {"DSC_CICD_TARGET_CONTRACT": "unit_target", "DSC_CICD_FORCE_REGENERATE": "1"}, clear=False):
+            with mock.patch.dict("os.environ", {
+                "DSC_CICD_TARGET_CONTRACT": "unit_target",
+                "DSC_CICD_FORCE_REGENERATE": "1",
+                "DSC_CICD_GENERATOR_CMD": "test-generator-hook",
+            }, clear=False):
                 plan = agent.build_plan()
         self.assertEqual(plan["selected_contracts"], ["unit_target"])
         self.assertEqual(plan["target_contract"], "unit_target")
         self.assertTrue(plan["force_regenerate"])
         self.assertTrue(plan["contracts"][0]["targeted"])
         self.assertTrue(plan["contracts"][0]["force_regenerate"])
+
+    def test_plan_blocks_new_work_when_generator_hook_is_missing(self):
+        contract = {
+            "contract_id": "new_leaf",
+            "status": "LOCKED",
+            "function": {"name": "NewLeaf", "clang_usr": "c:@F@NewLeaf"},
+            "spec_links": [{"status": "EXACT", "anchor_id": "pdf:section:new"}],
+            "obligations": [],
+            "dependencies": {"unresolved": []},
+            "interface": {"ports": [
+                {"name": "value", "direction": "input", "width": 8, "signed": False},
+                {"name": "return_value", "direction": "output", "width": 8, "signed": False},
+            ]},
+            "semantics": {"kind": "pure_expression"},
+            "origin": "tool_discovered_reviewed_override",
+            "selection": {"new_work": True},
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            agent = Agent(root, "plan")
+            agent.contracts = [contract]
+            agent.input_facts = {
+                "source_hash": "source",
+                "spec_hash": "spec",
+                "tool_versions": {},
+            }
+            agent.dependency_info = {
+                "cycles": [],
+                "adjacency": {"new_leaf": []},
+                "call_sites": [],
+                "all_call_sites": [],
+                "dependency_hashes": {"new_leaf": "dependency"},
+            }
+            with mock.patch.dict(os.environ, {"DSC_CICD_GENERATOR_CMD": ""}, clear=False):
+                plan = agent.build_plan()
+        item = plan["contracts"][0]
+        self.assertEqual(plan["selected_contracts"], [])
+        self.assertFalse(item["ready"])
+        self.assertTrue(item["generation_required"])
+        self.assertFalse(item["generator_hook_configured"])
+        self.assertIn(
+            "GENERATION_REQUIRED: DSC_CICD_GENERATOR_CMD is not configured",
+            item["blocked_reasons"],
+        )
+        self.assertEqual(plan["blocked_contracts"][0]["contract_id"], "new_leaf")
 
     def test_composition_boundary_is_not_regenerated_without_explicit_retry(self):
         contract = {
@@ -434,6 +483,7 @@ class CicdAgentUnitTests(unittest.TestCase):
                 "DSC_CICD_RETRY_BLOCKED": "",
                 "DSC_CICD_FORCE_REGENERATE": "",
                 "DSC_CICD_REFRESH_STABLE": "",
+                "DSC_CICD_GENERATOR_CMD": "test-generator-hook",
             }, clear=False):
                 controller_plan = agent.build_plan()
             controller_item = controller_plan["contracts"][0]
@@ -441,7 +491,10 @@ class CicdAgentUnitTests(unittest.TestCase):
             self.assertTrue(controller_item["prior_composition_boundary"]["controller_changed"])
             self.assertTrue(controller_item["boundary_retry_requested"])
 
-            with mock.patch.dict(os.environ, {"DSC_CICD_RETRY_BLOCKED": "1"}, clear=False):
+            with mock.patch.dict(os.environ, {
+                "DSC_CICD_RETRY_BLOCKED": "1",
+                "DSC_CICD_GENERATOR_CMD": "test-generator-hook",
+            }, clear=False):
                 retry_plan = agent.build_plan()
             retry_item = retry_plan["contracts"][0]
             self.assertEqual(retry_plan["selected_contracts"], ["boundary_leaf"])
@@ -656,6 +709,28 @@ class CicdAgentUnitTests(unittest.TestCase):
             agent.initialize_state()
         self.assertEqual(agent.state["contracts"][0]["hashes"]["agent"], "observed-before-batch")
 
+    def test_blocked_plan_preserves_previous_observation_hashes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            agent = Agent(root, "run")
+            agent.previous_state = {"contracts": [{
+                "contract_id": "blocked_leaf",
+                "hashes": {"agent": "observed-before-block"},
+                "history": [{"state": "DISCOVERED"}],
+            }]}
+            agent.plan = {"contracts": [{
+                "contract_id": "blocked_leaf",
+                "function": "ToolDiscoveredLeaf",
+                "origin": "tool_discovered_reviewed_override",
+                "selected": False,
+                "deferred": False,
+                "blocked_reasons": ["GENERATION_REQUIRED: DSC_CICD_GENERATOR_CMD is not configured"],
+                "hashes": {"agent": "current-controller"},
+                "interface_shape": [],
+            }]}
+            agent.initialize_state()
+        self.assertEqual(agent.state["contracts"][0]["hashes"]["agent"], "observed-before-block")
+
     def test_verified_refresh_is_not_requeued_after_deferred_plan(self):
         with tempfile.TemporaryDirectory() as directory:
             root = pathlib.Path(directory)
@@ -711,6 +786,32 @@ class CicdAgentUnitTests(unittest.TestCase):
         self.assertIn("boundary_contract: prior_composition_boundary_unresolved", blockers)
         self.assertIn("verified_contract: caller interface is not representable", blockers)
         self.assertIn("history_contract: last executable failure", blockers)
+
+    def test_report_blockers_prefers_current_specific_blocker_over_history_status(self):
+        agent = Agent(pathlib.Path(tempfile.mkdtemp()), "run")
+        agent.plan = {
+            "blocked_contracts": [{
+                "contract_id": "blocked_contract",
+                "reasons": ["GENERATION_REQUIRED: DSC_CICD_GENERATOR_CMD is not configured"],
+            }],
+        }
+        agent.state = {"contracts": [{
+            "contract_id": "blocked_contract",
+            "status": "BLOCKED",
+            "failure_reason": "GENERATION_REQUIRED: DSC_CICD_GENERATOR_CMD is not configured",
+        }]}
+        agent.previous_state = {"contracts": [{
+            "contract_id": "blocked_contract",
+            "history": [
+                {"state": "RTL_GENERATED", "status": "GENERATION_REQUIRED"},
+                {"state": "DISCOVERED", "status": "BLOCKED"},
+            ],
+        }]}
+        blockers = agent.report_blockers()
+        self.assertEqual(
+            blockers,
+            ["blocked_contract: GENERATION_REQUIRED: DSC_CICD_GENERATOR_CMD is not configured"],
+        )
 
     def test_accepted_rtl_refresh_skips_generator_and_copies_one_candidate(self):
         contract = {

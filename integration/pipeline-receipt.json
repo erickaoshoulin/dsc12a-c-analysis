@@ -1,35 +1,18 @@
 {
   "agent": "executable-generic-c-to-rtl-cicd",
-  "blocked_contracts": [],
-  "blockers": [
-    "ichdecision: DSC_CICD_GENERATOR_CMD is not configured",
-    "ichdecision: GENERATION_REQUIRED"
+  "blocked_contracts": [
+    {
+      "contract_id": "ichdecision",
+      "function": "IchDecision",
+      "reasons": [
+        "GENERATION_REQUIRED: DSC_CICD_GENERATOR_CMD is not configured"
+      ]
+    }
   ],
-  "dependency_pair": {
-    "call_sites": [
-      {
-        "callee_contract": "ichdecision",
-        "callee_function": "IchDecision",
-        "callee_usr": "c:@F@IchDecision",
-        "caller_contract": null,
-        "caller_function": "VLCUnit",
-        "caller_usr": "c:@F@VLCUnit",
-        "location": {
-          "column": 28,
-          "file": "dsc_codec.c",
-          "line": 1620
-        },
-        "source": "facts/callgraph.json"
-      }
-    ],
-    "callee_contract": "ichdecision",
-    "callee_function": "IchDecision",
-    "callee_usr": "c:@F@IchDecision",
-    "caller_contract": null,
-    "caller_function": "VLCUnit",
-    "caller_usr": "c:@F@VLCUnit",
-    "selection_basis": "smallest acyclic direct call site from facts/callgraph.json"
-  },
+  "blockers": [
+    "ichdecision: GENERATION_REQUIRED: DSC_CICD_GENERATOR_CMD is not configured"
+  ],
+  "dependency_pair": null,
   "generator_invocations": 0,
   "input_pdf": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf",
   "input_source_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
@@ -40,7 +23,6 @@
   ],
   "ready_contracts": [
     "findmidpoint",
-    "ichdecision",
     "isflatnessinfosent",
     "mapqptoqlevel",
     "predictsize",
@@ -56,48 +38,10 @@
     "formal_window_pass": "FORMAL_EQUIVALENT; requires an independent parsed-RTL proof",
     "fresh_run": "EXECUTED_NOW"
   },
-  "results": [
-    {
-      "contract_id": "ichdecision",
-      "counterexample": null,
-      "dependency_evidence": {
-        "call_sites": 0,
-        "compile_commands": false,
-        "direct_call_sites": 0,
-        "matrix_commands": false,
-        "vectors": false
-      },
-      "dependency_status": null,
-      "domain_proof_complete": true,
-      "executed_shards": 0,
-      "executed_vectors": 0,
-      "execution_status": "EXECUTED_NOW",
-      "formal_proof_complete": false,
-      "formal_proof_status": null,
-      "library_promotion": {},
-      "matrix_modes": {
-        "C_ONLY": null,
-        "RTL_RETURN": null,
-        "SHADOW": null
-      },
-      "matrix_status": null,
-      "model_calls": 0,
-      "rejected_candidates": [],
-      "rtl_materialization": "EXECUTED_NOW",
-      "shard_durations_seconds": [],
-      "status": "GENERATION_REQUIRED",
-      "tokens": 0,
-      "unit_status": null,
-      "vector_strategy": null
-    }
-  ],
+  "results": [],
   "schema_version": 2,
-  "selected_contracts": [
-    "ichdecision"
-  ],
-  "selected_new_work": [
-    "ichdecision"
-  ],
+  "selected_contracts": [],
+  "selected_new_work": [],
   "shards": [],
   "tokens": 0
 }
