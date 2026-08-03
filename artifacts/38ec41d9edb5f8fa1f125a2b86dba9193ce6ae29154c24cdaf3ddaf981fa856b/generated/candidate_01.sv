@@ -1,4 +1,4 @@
-module findresidualsize_candidate_01 (
+module findresidualsize (
     input logic signed [16:0] eq,
     output logic [4:0] return_value
 );

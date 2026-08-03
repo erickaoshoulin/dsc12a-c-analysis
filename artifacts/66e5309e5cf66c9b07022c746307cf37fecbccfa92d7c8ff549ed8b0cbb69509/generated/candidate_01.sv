@@ -1,4 +1,4 @@
-module samplepredict_candidate_01 (
+module samplepredict (
     input logic [15:0] hPos,
     input logic [3:0] predType,
     input logic [4:0] qLevel,

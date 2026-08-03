@@ -1,4 +1,4 @@
-module predictsize_candidate_01 (
+module predictsize (
     input logic [4:0] req_size_0,
     input logic [4:0] req_size_1,
     input logic [4:0] req_size_2,

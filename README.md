@@ -274,13 +274,22 @@ frame matrix. A stable refresh first hash-checks the matching PASS component
 in `library/manifest.json` and reuses its accepted `library/rtl/` file as the
 sole candidate, so it runs the same deterministic gates with zero generator or
 model calls. A missing or changed accepted file is an infrastructure failure,
-not an implicit regeneration request. Promotion requires unit,
-formal-or-exhaustive, dependency, `C_ONLY`/`SHADOW`/`RTL_RETURN`, source, and
-exact spec gates. Only stable, purely combinational DUT leaves are promoted
-into `library/rtl/` with their locked contract and verification receipt. The
-agent canonicalizes the module, archives replacements, and updates the
-manifest under a library write lock; stateful callers, line storage, and
-other non-DUT C logic remain reference boundaries.
+not an implicit regeneration request. A candidate becomes promotion-eligible
+only after unit, formal-or-exhaustive, dependency,
+`C_ONLY`/`SHADOW`/`RTL_RETURN`, source, and exact spec gates. Stable-library
+promotion additionally requires an explicit human approval receipt at
+`ci/promotion-approvals/<contract-id>/<contract-hash>.json`, bound to the
+exact canonical RTL, source/spec/interface hashes, design intent, QoR review,
+reviewer, and all gate decisions. The agent never creates that receipt and
+never auto-promotes a new or repaired candidate: without it the result is
+`AWAITING_HUMAN_APPROVAL` and the library is unchanged. After approval, only
+stable, purely combinational DUT leaves are written to `library/rtl/` with
+their locked contract and verification receipt. The agent canonicalizes the
+module, archives replacements, and updates the manifest under a library write
+lock; stateful callers, line storage, and other non-DUT C logic remain
+reference boundaries. Existing PASS manifest entries are a grandfathered
+stable baseline; their accepted-RTL refresh is verification-only and reports
+`VERIFIED_REFRESH` without rewriting the library.
 
 Accepted leaves with stale source/spec/contract/dependency, controller, prompt,
 generator, or tool hashes automatically enter a bounded regression frontier;
@@ -297,6 +306,12 @@ changed semantic input reopens the contract automatically; an intentional
 retry may set `DSC_CICD_RETRY_BLOCKED=1` (or use explicit queue routing). The
 agent never invents a pointer/state adapter or passes dummy caller state just
 to make RTL composition compile.
+
+If a process stops after entering an executable stage, durable history requeues
+that exact contract even when hashes are unchanged. If verification completes
+before human approval, the planner retains the exact candidate and resumes it
+after the matching approval receipt appears without a generator or model call;
+a missing or mismatched pending artifact fails closed as infrastructure.
 
 ## Human-readable regression dashboard
 

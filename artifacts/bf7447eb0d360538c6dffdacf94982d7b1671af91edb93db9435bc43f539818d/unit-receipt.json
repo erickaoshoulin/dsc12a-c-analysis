@@ -4,454 +4,115 @@
       "cancellation": {
         "futures_cancelled": 0,
         "requested_after_counterexample": false,
-        "worker_count": 8
+        "worker_count": 2
       },
       "candidate": "candidate_01",
       "formal_proof": {
         "counterexample": null,
         "proof_complete": false,
-        "reason": "formal AST proof is only enabled for reviewed windowed_boundary or flatness_window contracts",
+        "reason": "formal AST proof is only enabled for reviewed windowed_boundary, flatness_window, using_midpoint, estimate_bits, or ich_decision contracts",
         "receipt": null,
         "status": "NOT_APPLICABLE"
       },
-      "module": "isflatnessinfosent_candidate_01",
+      "module": "isflatnessinfosent",
       "shards": [
         {
           "commands": {
             "oracle": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/c_oracle",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-000.vectors"
+              "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/c_oracle",
+              "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-000.vectors"
             ],
             "rtl": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_01/obj/Visflatnessinfosent_candidate_01",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-000.vectors"
+              "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_01/obj/Visflatnessinfosent",
+              "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-000.vectors"
             ]
           },
-          "duration_seconds": 2.609,
+          "duration_seconds": 0.867,
           "shard_id": 0,
           "status": "PASS",
-          "vectors": 4096
+          "vectors": 8192
         },
         {
           "commands": {
             "oracle": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/c_oracle",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-001.vectors"
+              "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/c_oracle",
+              "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-001.vectors"
             ],
             "rtl": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_01/obj/Visflatnessinfosent_candidate_01",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-001.vectors"
+              "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_01/obj/Visflatnessinfosent",
+              "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-001.vectors"
             ]
           },
-          "duration_seconds": 2.541,
+          "duration_seconds": 0.867,
           "shard_id": 1,
           "status": "PASS",
-          "vectors": 4096
+          "vectors": 8192
         },
         {
           "commands": {
             "oracle": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/c_oracle",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-002.vectors"
+              "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/c_oracle",
+              "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-002.vectors"
             ],
             "rtl": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_01/obj/Visflatnessinfosent_candidate_01",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-002.vectors"
+              "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_01/obj/Visflatnessinfosent",
+              "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-002.vectors"
             ]
           },
-          "duration_seconds": 2.537,
+          "duration_seconds": 0.022,
           "shard_id": 2,
           "status": "PASS",
-          "vectors": 4096
+          "vectors": 8192
         },
         {
           "commands": {
             "oracle": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/c_oracle",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-003.vectors"
+              "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/c_oracle",
+              "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-003.vectors"
             ],
             "rtl": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_01/obj/Visflatnessinfosent_candidate_01",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-003.vectors"
+              "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_01/obj/Visflatnessinfosent",
+              "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-003.vectors"
             ]
           },
-          "duration_seconds": 2.422,
+          "duration_seconds": 0.021,
           "shard_id": 3,
           "status": "PASS",
-          "vectors": 4096
-        },
-        {
-          "commands": {
-            "oracle": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/c_oracle",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-004.vectors"
-            ],
-            "rtl": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_01/obj/Visflatnessinfosent_candidate_01",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-004.vectors"
-            ]
-          },
-          "duration_seconds": 2.417,
-          "shard_id": 4,
-          "status": "PASS",
-          "vectors": 4096
-        },
-        {
-          "commands": {
-            "oracle": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/c_oracle",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-005.vectors"
-            ],
-            "rtl": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_01/obj/Visflatnessinfosent_candidate_01",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-005.vectors"
-            ]
-          },
-          "duration_seconds": 2.327,
-          "shard_id": 5,
-          "status": "PASS",
-          "vectors": 4096
-        },
-        {
-          "commands": {
-            "oracle": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/c_oracle",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-006.vectors"
-            ],
-            "rtl": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_01/obj/Visflatnessinfosent_candidate_01",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-006.vectors"
-            ]
-          },
-          "duration_seconds": 2.252,
-          "shard_id": 6,
-          "status": "PASS",
-          "vectors": 4096
-        },
-        {
-          "commands": {
-            "oracle": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/c_oracle",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-007.vectors"
-            ],
-            "rtl": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_01/obj/Visflatnessinfosent_candidate_01",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-007.vectors"
-            ]
-          },
-          "duration_seconds": 2.167,
-          "shard_id": 7,
-          "status": "PASS",
-          "vectors": 4096
+          "vectors": 8192
         }
       ],
       "smallest_counterexample": null,
       "vectors_executed": 32768,
       "verification_status": "EXHAUSTIVE_EQUIVALENT"
-    },
-    {
-      "cancellation": {
-        "futures_cancelled": 0,
-        "requested_after_counterexample": true,
-        "worker_count": 8
-      },
-      "candidate": "candidate_02",
-      "formal_proof": {
-        "counterexample": null,
-        "proof_complete": false,
-        "reason": "formal AST proof is only enabled for reviewed windowed_boundary or flatness_window contracts",
-        "receipt": null,
-        "status": "NOT_APPLICABLE"
-      },
-      "module": "isflatnessinfosent_candidate_02",
-      "shards": [
-        {
-          "commands": {
-            "oracle": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/c_oracle",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-000.vectors"
-            ],
-            "rtl": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_02/obj/Visflatnessinfosent_candidate_02",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-000.vectors"
-            ]
-          },
-          "counterexample": {
-            "actual": "0",
-            "expected": "1",
-            "index": 0,
-            "inputs": [
-              0,
-              0,
-              0
-            ],
-            "shard_id": 0
-          },
-          "duration_seconds": 0.451,
-          "shard_id": 0,
-          "status": "COUNTEREXAMPLE",
-          "vectors": 4096
-        },
-        {
-          "commands": {
-            "oracle": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/c_oracle",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-001.vectors"
-            ],
-            "rtl": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_02/obj/Visflatnessinfosent_candidate_02",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-001.vectors"
-            ]
-          },
-          "counterexample": {
-            "actual": "0",
-            "expected": "1",
-            "index": 0,
-            "inputs": [
-              0,
-              0,
-              1
-            ],
-            "shard_id": 1
-          },
-          "duration_seconds": 0.516,
-          "shard_id": 1,
-          "status": "COUNTEREXAMPLE",
-          "vectors": 4096
-        },
-        {
-          "commands": {
-            "oracle": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/c_oracle",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-002.vectors"
-            ],
-            "rtl": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_02/obj/Visflatnessinfosent_candidate_02",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-002.vectors"
-            ]
-          },
-          "counterexample": {
-            "actual": "0",
-            "expected": "1",
-            "index": 0,
-            "inputs": [
-              0,
-              0,
-              2
-            ],
-            "shard_id": 2
-          },
-          "duration_seconds": 0.602,
-          "shard_id": 2,
-          "status": "COUNTEREXAMPLE",
-          "vectors": 4096
-        },
-        {
-          "commands": {
-            "oracle": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/c_oracle",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-003.vectors"
-            ],
-            "rtl": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_02/obj/Visflatnessinfosent_candidate_02",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-003.vectors"
-            ]
-          },
-          "counterexample": {
-            "actual": "0",
-            "expected": "1",
-            "index": 0,
-            "inputs": [
-              0,
-              0,
-              3
-            ],
-            "shard_id": 3
-          },
-          "duration_seconds": 0.505,
-          "shard_id": 3,
-          "status": "COUNTEREXAMPLE",
-          "vectors": 4096
-        },
-        {
-          "commands": {
-            "oracle": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/c_oracle",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-004.vectors"
-            ],
-            "rtl": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_02/obj/Visflatnessinfosent_candidate_02",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-004.vectors"
-            ]
-          },
-          "counterexample": {
-            "actual": "0",
-            "expected": "1",
-            "index": 0,
-            "inputs": [
-              0,
-              0,
-              4
-            ],
-            "shard_id": 4
-          },
-          "duration_seconds": 0.448,
-          "shard_id": 4,
-          "status": "COUNTEREXAMPLE",
-          "vectors": 4096
-        },
-        {
-          "commands": {
-            "oracle": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/c_oracle",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-005.vectors"
-            ],
-            "rtl": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_02/obj/Visflatnessinfosent_candidate_02",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-005.vectors"
-            ]
-          },
-          "counterexample": {
-            "actual": "0",
-            "expected": "1",
-            "index": 0,
-            "inputs": [
-              0,
-              0,
-              5
-            ],
-            "shard_id": 5
-          },
-          "duration_seconds": 0.437,
-          "shard_id": 5,
-          "status": "COUNTEREXAMPLE",
-          "vectors": 4096
-        },
-        {
-          "commands": {
-            "oracle": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/c_oracle",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-006.vectors"
-            ],
-            "rtl": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_02/obj/Visflatnessinfosent_candidate_02",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-006.vectors"
-            ]
-          },
-          "counterexample": {
-            "actual": "0",
-            "expected": "1",
-            "index": 0,
-            "inputs": [
-              0,
-              0,
-              6
-            ],
-            "shard_id": 6
-          },
-          "duration_seconds": 0.405,
-          "shard_id": 6,
-          "status": "COUNTEREXAMPLE",
-          "vectors": 4096
-        },
-        {
-          "commands": {
-            "oracle": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/c_oracle",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-007.vectors"
-            ],
-            "rtl": [
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_02/obj/Visflatnessinfosent_candidate_02",
-              "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/shards/shard-007.vectors"
-            ]
-          },
-          "counterexample": {
-            "actual": "0",
-            "expected": "1",
-            "index": 0,
-            "inputs": [
-              0,
-              0,
-              7
-            ],
-            "shard_id": 7
-          },
-          "duration_seconds": 0.45,
-          "shard_id": 7,
-          "status": "COUNTEREXAMPLE",
-          "vectors": 4096
-        }
-      ],
-      "smallest_counterexample": {
-        "actual": "0",
-        "expected": "1",
-        "index": 0,
-        "inputs": [
-          0,
-          0,
-          0
-        ],
-        "shard_id": 0
-      },
-      "vectors_executed": 0,
-      "verification_status": "COUNTEREXAMPLE"
     }
   ],
   "compile_once": [
     {
-      "binary": "candidate-build/candidate_01/obj/Visflatnessinfosent_candidate_01",
+      "binary": "candidate-build/candidate_01/obj/Visflatnessinfosent",
       "candidate": "candidate_01",
       "command": {
         "command": [
           "/opt/homebrew/bin/verilator",
           "--cc",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/generated/candidate_01.sv",
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/generated/candidate_01.sv",
           "--exe",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_01/harness.cpp",
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_01/harness.cpp",
           "--build",
           "-j",
           "1",
           "--Mdir",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_01/obj",
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_01/obj",
           "--top-module",
-          "isflatnessinfosent_candidate_01",
+          "isflatnessinfosent",
           "--Wno-fatal"
         ],
-        "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
-        "duration_seconds": 4.094,
-        "output": "c++  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -Os  -c -o harness.o /private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_01/harness.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\npython3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Visflatnessinfosent_candidate_01.cpp Visflatnessinfosent_candidate_01___024root__0.cpp Visflatnessinfosent_candidate_01___024root__Slow.cpp Visflatnessinfosent_candidate_01___024root__0__Slow.cpp Visflatnessinfosent_candidate_01__Syms__Slow.cpp > Visflatnessinfosent_candidate_01__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o Visflatnessinfosent_candidate_01__ALL.o Visflatnessinfosent_candidate_01__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++  -Wl,-U,__Z15vl_time_stamp64v,-U,__Z13sc_time_stampv,-U,_vlog_startup_routines   harness.o verilated.o verilated_threads.o Visflatnessinfosent_candidate_01__ALL.a    -pthread -lpthread   -o Visflatnessinfosent_candidate_01\nrm Visflatnessinfosent_candidate_01__ALL.verilator_deplist.tmp\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.031 MB sources in 2 modules, into 0.026 MB in 5 C++ files needing 0.000 MB\n- Verilator: Walltime 4.002 s (elab=0.000, cvt=0.002, bld=3.996); cpu 0.006 s on 1 threads; allocated 9.453 MB\n",
+        "cwd": "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
+        "duration_seconds": 3.034,
+        "output": "c++  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -Os  -c -o harness.o /private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_01/harness.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\npython3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Visflatnessinfosent.cpp Visflatnessinfosent___024root__0.cpp Visflatnessinfosent___024root__Slow.cpp Visflatnessinfosent___024root__0__Slow.cpp Visflatnessinfosent__Syms__Slow.cpp > Visflatnessinfosent__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o Visflatnessinfosent__ALL.o Visflatnessinfosent__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++  -Wl,-U,__Z15vl_time_stamp64v,-U,__Z13sc_time_stampv,-U,_vlog_startup_routines   harness.o verilated.o verilated_threads.o Visflatnessinfosent__ALL.a    -pthread -lpthread   -o Visflatnessinfosent\nrm Visflatnessinfosent__ALL.verilator_deplist.tmp\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.031 MB sources in 2 modules, into 0.024 MB in 5 C++ files needing 0.000 MB\n- Verilator: Walltime 2.987 s (elab=0.004, cvt=0.008, bld=2.965); cpu 0.010 s on 1 threads; allocated 9.406 MB\n",
         "returncode": 0
       },
       "compile_once": true,
-      "module": "isflatnessinfosent_candidate_01",
-      "status": "PASS"
-    },
-    {
-      "binary": "candidate-build/candidate_02/obj/Visflatnessinfosent_candidate_02",
-      "candidate": "candidate_02",
-      "command": {
-        "command": [
-          "/opt/homebrew/bin/verilator",
-          "--cc",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/generated/candidate_02.sv",
-          "--exe",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_02/harness.cpp",
-          "--build",
-          "-j",
-          "1",
-          "--Mdir",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_02/obj",
-          "--top-module",
-          "isflatnessinfosent_candidate_02",
-          "--Wno-fatal"
-        ],
-        "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
-        "duration_seconds": 4.442,
-        "output": "c++  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -Os  -c -o harness.o /private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/candidate-build/candidate_02/harness.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\npython3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Visflatnessinfosent_candidate_02.cpp Visflatnessinfosent_candidate_02___024root__0.cpp Visflatnessinfosent_candidate_02___024root__Slow.cpp Visflatnessinfosent_candidate_02___024root__0__Slow.cpp Visflatnessinfosent_candidate_02__Syms__Slow.cpp > Visflatnessinfosent_candidate_02__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o Visflatnessinfosent_candidate_02__ALL.o Visflatnessinfosent_candidate_02__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++  -Wl,-U,__Z15vl_time_stamp64v,-U,__Z13sc_time_stampv,-U,_vlog_startup_routines   harness.o verilated.o verilated_threads.o Visflatnessinfosent_candidate_02__ALL.a    -pthread -lpthread   -o Visflatnessinfosent_candidate_02\nrm Visflatnessinfosent_candidate_02__ALL.verilator_deplist.tmp\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.031 MB sources in 2 modules, into 0.027 MB in 5 C++ files needing 0.000 MB\n- Verilator: Walltime 4.336 s (elab=0.000, cvt=0.004, bld=4.328); cpu 0.007 s on 1 threads; allocated 9.609 MB\n",
-        "returncode": 0
-      },
-      "compile_once": true,
-      "module": "isflatnessinfosent_candidate_02",
+      "module": "isflatnessinfosent",
       "status": "PASS"
     }
   ],
@@ -464,47 +125,27 @@
       "flatness_max_qp"
     ],
     "proof_complete": true,
-    "shard_count": 8,
+    "shard_count": 4,
     "shards": [
       {
         "path": "shards/shard-000.vectors",
         "shard_id": 0,
-        "vectors": 4096
+        "vectors": 8192
       },
       {
         "path": "shards/shard-001.vectors",
         "shard_id": 1,
-        "vectors": 4096
+        "vectors": 8192
       },
       {
         "path": "shards/shard-002.vectors",
         "shard_id": 2,
-        "vectors": 4096
+        "vectors": 8192
       },
       {
         "path": "shards/shard-003.vectors",
         "shard_id": 3,
-        "vectors": 4096
-      },
-      {
-        "path": "shards/shard-004.vectors",
-        "shard_id": 4,
-        "vectors": 4096
-      },
-      {
-        "path": "shards/shard-005.vectors",
-        "shard_id": 5,
-        "vectors": 4096
-      },
-      {
-        "path": "shards/shard-006.vectors",
-        "shard_id": 6,
-        "vectors": 4096
-      },
-      {
-        "path": "shards/shard-007.vectors",
-        "shard_id": 7,
-        "vectors": 4096
+        "vectors": 8192
       }
     ],
     "total_vectors": 32768,
@@ -513,17 +154,11 @@
       "source": "frozen per-port legal domains"
     }
   },
-  "duration_seconds": 14.039,
+  "duration_seconds": 4.719,
   "execution_status": "EXECUTED_NOW",
   "formal_proofs": [
     {
       "candidate": "candidate_01",
-      "proof_complete": false,
-      "receipt": null,
-      "status": "NOT_APPLICABLE"
-    },
-    {
-      "candidate": "candidate_02",
       "proof_complete": false,
       "receipt": null,
       "status": "NOT_APPLICABLE"
@@ -543,10 +178,10 @@
           "-c",
           "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/cmd_parse.c",
           "-o",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/cmd_parse.o"
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/cmd_parse.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.08,
+        "duration_seconds": 0.159,
         "output": "",
         "returncode": 0
       },
@@ -562,10 +197,10 @@
           "-c",
           "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c",
           "-o",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/codec_main.o"
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/codec_main.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.083,
+        "duration_seconds": 0.06,
         "output": "",
         "returncode": 0
       },
@@ -580,10 +215,10 @@
           "-c",
           "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dpx.c",
           "-o",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/dpx.o"
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/dpx.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.062,
+        "duration_seconds": 0.053,
         "output": "",
         "returncode": 0
       },
@@ -598,10 +233,10 @@
           "-c",
           "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c",
           "-o",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/dsc_codec.o"
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/dsc_codec.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.103,
+        "duration_seconds": 0.068,
         "output": "",
         "returncode": 0
       },
@@ -616,10 +251,10 @@
           "-c",
           "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_utils.c",
           "-o",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/dsc_utils.o"
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/dsc_utils.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.085,
+        "duration_seconds": 0.044,
         "output": "",
         "returncode": 0
       },
@@ -634,10 +269,10 @@
           "-c",
           "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/fifo.c",
           "-o",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/fifo.o"
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/fifo.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.056,
+        "duration_seconds": 0.03,
         "output": "",
         "returncode": 0
       },
@@ -652,10 +287,10 @@
           "-c",
           "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c",
           "-o",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/hdr_dpx.o"
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/hdr_dpx.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.101,
+        "duration_seconds": 0.064,
         "output": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n2 warnings generated.\n",
         "returncode": 0
       },
@@ -670,10 +305,10 @@
           "-c",
           "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/logging.c",
           "-o",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/logging.o"
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/logging.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.065,
+        "duration_seconds": 0.033,
         "output": "",
         "returncode": 0
       },
@@ -688,10 +323,10 @@
           "-c",
           "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/multiplex.c",
           "-o",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/multiplex.o"
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/multiplex.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.039,
+        "duration_seconds": 0.031,
         "output": "",
         "returncode": 0
       },
@@ -706,10 +341,10 @@
           "-c",
           "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/psnr.c",
           "-o",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/psnr.o"
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/psnr.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.037,
+        "duration_seconds": 0.032,
         "output": "",
         "returncode": 0
       },
@@ -724,10 +359,10 @@
           "-c",
           "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/utl.c",
           "-o",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/utl.o"
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/utl.o"
         ],
         "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
-        "duration_seconds": 0.119,
+        "duration_seconds": 0.061,
         "output": "",
         "returncode": 0
       },
@@ -739,12 +374,12 @@
           "-I",
           "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
           "-c",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle.c",
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle.c",
           "-o",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/oracle.o"
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/oracle.o"
         ],
-        "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
-        "duration_seconds": 0.074,
+        "cwd": "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
+        "duration_seconds": 0.027,
         "output": "",
         "returncode": 0
       },
@@ -753,22 +388,22 @@
           "/usr/bin/clang",
           "-O0",
           "-o",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/c_oracle",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/cmd_parse.o",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/codec_main.o",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/dpx.o",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/dsc_codec.o",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/dsc_utils.o",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/fifo.o",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/hdr_dpx.o",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/logging.o",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/multiplex.o",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/psnr.o",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/utl.o",
-          "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/oracle.o"
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/c_oracle",
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/cmd_parse.o",
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/codec_main.o",
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/dpx.o",
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/dsc_codec.o",
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/dsc_utils.o",
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/fifo.o",
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/hdr_dpx.o",
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/logging.o",
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/multiplex.o",
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/psnr.o",
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/utl.o",
+          "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/oracle-build/oracle.o"
         ],
-        "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
-        "duration_seconds": 0.052,
+        "cwd": "/private/tmp/dsc12a-regression-dashboard/artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
+        "duration_seconds": 0.113,
         "output": "",
         "returncode": 0
       }
@@ -789,41 +424,8 @@
     "status": "PASS"
   },
   "promoted_candidate": "candidate_01",
-  "rejected_candidates": [
-    {
-      "bitstream_gate": "FAIL",
-      "candidate": "candidate_02",
-      "composition_gate": "FAIL",
-      "counterexample": {
-        "actual": "0",
-        "expected": "1",
-        "index": 0,
-        "inputs": [
-          0,
-          0,
-          0
-        ],
-        "shard_id": 0
-      },
-      "expected_rejection": true,
-      "matrix_status": "FAIL",
-      "receipt": "artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/rejected/candidate_02/rejection-receipt.json",
-      "status": "EXPECTED_REJECTION",
-      "unit_gate": "FAIL",
-      "unit_verification_status": "COUNTEREXAMPLE"
-    }
-  ],
+  "rejected_candidates": [],
   "schema_version": 2,
-  "smallest_counterexample": {
-    "actual": "0",
-    "expected": "1",
-    "index": 0,
-    "inputs": [
-      0,
-      0,
-      0
-    ],
-    "shard_id": 0
-  },
+  "smallest_counterexample": null,
   "verification_status": "EXHAUSTIVE_EQUIVALENT"
 }

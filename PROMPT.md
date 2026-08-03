@@ -507,6 +507,14 @@ or a deliberate force/refresh request. Keep the receipt and blocker visible,
 and never invent pointer/state adapters or dummy caller arguments to bypass the
 frozen interface.
 
+If a process stops after entering an executable stage, durable history
+requeues that exact contract even when semantic hashes are unchanged. If all
+deterministic gates pass but human promotion approval is absent, keep the
+exact candidate artifact and return `AWAITING_HUMAN_APPROVAL`. Once the
+matching approval receipt appears, resume that artifact without a generator or
+model call; a missing or mismatched pending candidate is an infrastructure
+failure.
+
 The supported commands are:
 
 ```sh
@@ -579,9 +587,12 @@ Each bounded batch may generate at most four candidates per selected
 new/repair contract. Stable refresh items may instead materialize one
 manifest-verified accepted candidate and generate zero RTL candidates.
 Independent contracts run in stable parallel workers. Preserve the immutable C
-model as oracle/reference, run the real C/Verilator shards, and promote only
-after unit, formal-or-exhaustive, dependency, C_ONLY/SHADOW/RTL_RETURN, and
-frame byte/SHA-256 gates pass.
+model as oracle/reference, run the real C/Verilator shards, and make a
+candidate promotion-eligible only after unit, formal-or-exhaustive,
+dependency, C_ONLY/SHADOW/RTL_RETURN, and frame byte/SHA-256 gates pass.
+Promotion still waits for a human approval receipt bound to the exact
+contract/interface/spec/source/RTL hashes; verification success alone never
+writes the stable library.
 
 ### Continuous scale and library loop
 
@@ -631,7 +642,8 @@ facts/spec review → scale dispatch → parallel generate → C oracle + Verila
 → exhaustive/legal-domain or explicitly bounded differential shards
 → AST/Z3 proof when reviewed → smallest counterexample / DIFFERENTIAL_PASS /
 FORMAL_EQUIVALENT / EXHAUSTIVE_EQUIVALENT
-→ caller/frame gates → promote PASS leaves → inspect blockers → next batch
+→ caller/frame gates → await explicit human promotion review → promote approved leaves
+→ inspect blockers → next batch
 ```
 
 On a counterexample, retain the receipt and feed the smallest failing vector
@@ -639,13 +651,25 @@ back into the next generator/repair attempt. On an infrastructure failure,
 repair the tool/domain/oracle gate and resume only the affected queue job.
 Never promote a candidate because it compiles alone. Promotion requires all
 unit, dependency, C_ONLY/SHADOW/RTL_RETURN, frame byte/SHA, exact PDF
-traceability, and reviewed-port gates. The promotion stage writes
-only stable, purely combinational DUT leaves to `library/rtl/`, together with
+traceability, and reviewed-port gates, followed by a separate human approval
+receipt. The approval is immutable by contract hash and exact canonical RTL
+hash at `ci/promotion-approvals/<contract-id>/<contract-hash>.json`; it must
+record the source/spec/interface hashes, reviewer and timestamp, design intent,
+QoR review, `decision: PROMOTE`, `review_status: APPROVED`, and every gate in
+`width_spec`, `unit_equivalence`, `formal_or_exhaustive`,
+`dependency_composition`, `C_ONLY`, `SHADOW`, `RTL_RETURN`, and `frame_compare`.
+The executable agent never creates this receipt and never auto-promotes a
+new or repaired candidate. Without it, a fully verified candidate remains
+`AWAITING_HUMAN_APPROVAL`, its artifact and receipt are retained, and the
+library is unchanged. After approval, the promotion stage writes only stable,
+purely combinational DUT leaves to `library/rtl/`, together with
 `library/contracts/`, `library/verification/`, and `library/manifest.json`.
-The executable agent performs that materialization automatically under a
-library write lock after a `PROMOTED` result, canonicalizes the module name,
-archives a replaced RTL file, and records `library_promotion: PASS`. A receipt
-that only passes unit or differential comparison is never materialized.
+The write is protected by the library lock, canonicalizes the module name,
+archives a replaced RTL file, and records the approval hash. A receipt that
+only passes unit or differential comparison is never materialized.
+An already accepted manifest component is a grandfathered stable baseline:
+its bounded refresh reuses the hash-checked RTL and reports
+`VERIFIED_REFRESH` without changing the library or requiring a new approval.
 The library is an incremental designer-facing RTL set, not a whole-codec
 rewrite: keep stateful callers, unresolved pointer/table dependencies, and
 non-DUT code in C until their contracts are independently proven.

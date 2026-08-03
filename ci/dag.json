@@ -1195,6 +1195,20 @@
       "callee_contract": "mapqptoqlevel",
       "callee_function": "MapQpToQlevel",
       "callee_usr": "c:@F@MapQpToQlevel",
+      "caller_contract": "escapecodesize",
+      "caller_function": "EscapeCodeSize",
+      "caller_usr": "c:@F@EscapeCodeSize",
+      "location": {
+        "column": 11,
+        "file": "dsc_codec.c",
+        "line": 447
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "mapqptoqlevel",
+      "callee_function": "MapQpToQlevel",
+      "callee_usr": "c:@F@MapQpToQlevel",
       "caller_contract": null,
       "caller_function": "EscapeCodeSize",
       "caller_usr": "c:@F@EscapeCodeSize",
@@ -1202,6 +1216,20 @@
         "column": 11,
         "file": "dsc_codec.c",
         "line": 447
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "findresidualsize",
+      "callee_function": "FindResidualSize",
+      "callee_usr": "c:@F@FindResidualSize",
+      "caller_contract": "estimatebitsforgroup",
+      "caller_function": "EstimateBitsForGroup",
+      "caller_usr": "c:@F@EstimateBitsForGroup",
+      "location": {
+        "column": 11,
+        "file": "dsc_codec.c",
+        "line": 411
       },
       "source": "facts/callgraph.json"
     },
@@ -1220,6 +1248,20 @@
       "source": "facts/callgraph.json"
     },
     {
+      "callee_contract": "getqpadjpredsize",
+      "callee_function": "GetQpAdjPredSize",
+      "callee_usr": "c:@F@GetQpAdjPredSize",
+      "caller_contract": "estimatebitsforgroup",
+      "caller_function": "EstimateBitsForGroup",
+      "caller_usr": "c:@F@EstimateBitsForGroup",
+      "location": {
+        "column": 15,
+        "file": "dsc_codec.c",
+        "line": 423
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
       "callee_contract": null,
       "callee_function": "GetQpAdjPredSize",
       "callee_usr": "c:@F@GetQpAdjPredSize",
@@ -1230,6 +1272,20 @@
         "column": 15,
         "file": "dsc_codec.c",
         "line": 423
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "maxresidualsize",
+      "callee_function": "MaxResidualSize",
+      "callee_usr": "c:@F@MaxResidualSize",
+      "caller_contract": "estimatebitsforgroup",
+      "caller_function": "EstimateBitsForGroup",
+      "caller_usr": "c:@F@EstimateBitsForGroup",
+      "location": {
+        "column": 21,
+        "file": "dsc_codec.c",
+        "line": 433
       },
       "source": "facts/callgraph.json"
     },
@@ -1248,10 +1304,10 @@
       "source": "facts/callgraph.json"
     },
     {
-      "callee_contract": null,
+      "callee_contract": "maxresidualsize",
       "callee_function": "MaxResidualSize",
       "callee_usr": "c:@F@MaxResidualSize",
-      "caller_contract": null,
+      "caller_contract": "estimatebitsforgroup",
       "caller_function": "EstimateBitsForGroup",
       "caller_usr": "c:@F@EstimateBitsForGroup",
       "location": {
@@ -1269,9 +1325,51 @@
       "caller_function": "EstimateBitsForGroup",
       "caller_usr": "c:@F@EstimateBitsForGroup",
       "location": {
+        "column": 23,
+        "file": "dsc_codec.c",
+        "line": 415
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "maxresidualsize",
+      "callee_function": "MaxResidualSize",
+      "callee_usr": "c:@F@MaxResidualSize",
+      "caller_contract": "estimatebitsforgroup",
+      "caller_function": "EstimateBitsForGroup",
+      "caller_usr": "c:@F@EstimateBitsForGroup",
+      "location": {
         "column": 30,
         "file": "dsc_codec.c",
         "line": 426
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": null,
+      "callee_function": "MaxResidualSize",
+      "callee_usr": "c:@F@MaxResidualSize",
+      "caller_contract": null,
+      "caller_function": "EstimateBitsForGroup",
+      "caller_usr": "c:@F@EstimateBitsForGroup",
+      "location": {
+        "column": 30,
+        "file": "dsc_codec.c",
+        "line": 426
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": null,
+      "callee_function": "printf",
+      "callee_usr": "c:@F@printf",
+      "caller_contract": "findresidualsize",
+      "caller_function": "FindResidualSize",
+      "caller_usr": "c:@F@FindResidualSize",
+      "location": {
+        "column": 3,
+        "file": "dsc_codec.c",
+        "line": 1104
       },
       "source": "facts/callgraph.json"
     },
@@ -1318,6 +1416,20 @@
       "source": "facts/callgraph.json"
     },
     {
+      "callee_contract": "isorigflathindex",
+      "callee_function": "IsOrigFlatHIndex",
+      "callee_usr": "c:@F@IsOrigFlatHIndex",
+      "caller_contract": null,
+      "caller_function": "FlatnessAdjustment",
+      "caller_usr": "c:@F@FlatnessAdjustment",
+      "location": {
+        "column": 21,
+        "file": "dsc_codec.c",
+        "line": 2528
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
       "callee_contract": null,
       "callee_function": "IsOrigFlatHIndex",
       "callee_usr": "c:@F@IsOrigFlatHIndex",
@@ -1349,7 +1461,7 @@
       "callee_contract": "mapqptoqlevel",
       "callee_function": "MapQpToQlevel",
       "callee_usr": "c:@F@MapQpToQlevel",
-      "caller_contract": null,
+      "caller_contract": "getqpadjpredsize",
       "caller_function": "GetQpAdjPredSize",
       "caller_usr": "c:@F@GetQpAdjPredSize",
       "location": {
@@ -1369,7 +1481,49 @@
       "location": {
         "column": 15,
         "file": "dsc_codec.c",
+        "line": 285
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "mapqptoqlevel",
+      "callee_function": "MapQpToQlevel",
+      "callee_usr": "c:@F@MapQpToQlevel",
+      "caller_contract": "getqpadjpredsize",
+      "caller_function": "GetQpAdjPredSize",
+      "caller_usr": "c:@F@GetQpAdjPredSize",
+      "location": {
+        "column": 15,
+        "file": "dsc_codec.c",
         "line": 290
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "mapqptoqlevel",
+      "callee_function": "MapQpToQlevel",
+      "callee_usr": "c:@F@MapQpToQlevel",
+      "caller_contract": null,
+      "caller_function": "GetQpAdjPredSize",
+      "caller_usr": "c:@F@GetQpAdjPredSize",
+      "location": {
+        "column": 15,
+        "file": "dsc_codec.c",
+        "line": 290
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "maxresidualsize",
+      "callee_function": "MaxResidualSize",
+      "callee_usr": "c:@F@MaxResidualSize",
+      "caller_contract": "getqpadjpredsize",
+      "caller_function": "GetQpAdjPredSize",
+      "caller_usr": "c:@F@GetQpAdjPredSize",
+      "location": {
+        "column": 13,
+        "file": "dsc_codec.c",
+        "line": 293
       },
       "source": "facts/callgraph.json"
     },
@@ -1416,6 +1570,20 @@
       "source": "facts/callgraph.json"
     },
     {
+      "callee_contract": "estimatebitsforgroup",
+      "callee_function": "EstimateBitsForGroup",
+      "callee_usr": "c:@F@EstimateBitsForGroup",
+      "caller_contract": "ichdecision",
+      "caller_function": "IchDecision",
+      "caller_usr": "c:@F@IchDecision",
+      "location": {
+        "column": 16,
+        "file": "dsc_codec.c",
+        "line": 522
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
       "callee_contract": null,
       "callee_function": "EstimateBitsForGroup",
       "callee_usr": "c:@F@EstimateBitsForGroup",
@@ -1440,6 +1608,20 @@
         "column": 16,
         "file": "dsc_codec.c",
         "line": 522
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "isorigflathindex",
+      "callee_function": "IsOrigFlatHIndex",
+      "callee_usr": "c:@F@IsOrigFlatHIndex",
+      "caller_contract": "ichdecision",
+      "caller_function": "IchDecision",
+      "caller_usr": "c:@F@IchDecision",
+      "location": {
+        "column": 6,
+        "file": "dsc_codec.c",
+        "line": 527
       },
       "source": "facts/callgraph.json"
     },
@@ -1472,6 +1654,20 @@
       "source": "facts/callgraph.json"
     },
     {
+      "callee_contract": "usingmidpoint",
+      "callee_function": "UsingMidpoint",
+      "callee_usr": "c:@F@UsingMidpoint",
+      "caller_contract": "ichdecision",
+      "caller_function": "IchDecision",
+      "caller_usr": "c:@F@IchDecision",
+      "location": {
+        "column": 6,
+        "file": "dsc_codec.c",
+        "line": 496
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
       "callee_contract": null,
       "callee_function": "UsingMidpoint",
       "callee_usr": "c:@F@UsingMidpoint",
@@ -1500,6 +1696,20 @@
       "source": "facts/callgraph.json"
     },
     {
+      "callee_contract": "ceil_log2",
+      "callee_function": "ceil_log2",
+      "callee_usr": "c:@F@ceil_log2",
+      "caller_contract": "ichdecision",
+      "caller_function": "IchDecision",
+      "caller_usr": "c:@F@IchDecision",
+      "location": {
+        "column": 21,
+        "file": "dsc_codec.c",
+        "line": 513
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
       "callee_contract": null,
       "callee_function": "ceil_log2",
       "callee_usr": "c:@F@ceil_log2",
@@ -1524,6 +1734,20 @@
         "column": 21,
         "file": "dsc_codec.c",
         "line": 513
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "ceil_log2",
+      "callee_function": "ceil_log2",
+      "callee_usr": "c:@F@ceil_log2",
+      "caller_contract": "ichdecision",
+      "caller_function": "IchDecision",
+      "caller_usr": "c:@F@IchDecision",
+      "location": {
+        "column": 23,
+        "file": "dsc_codec.c",
+        "line": 514
       },
       "source": "facts/callgraph.json"
     },
@@ -1755,6 +1979,20 @@
       "callee_contract": "mapqptoqlevel",
       "callee_function": "MapQpToQlevel",
       "callee_usr": "c:@F@MapQpToQlevel",
+      "caller_contract": "isorigflathindex",
+      "caller_function": "IsOrigFlatHIndex",
+      "caller_usr": "c:@F@IsOrigFlatHIndex",
+      "location": {
+        "column": 15,
+        "file": "dsc_codec.c",
+        "line": 1140
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "mapqptoqlevel",
+      "callee_function": "MapQpToQlevel",
+      "callee_usr": "c:@F@MapQpToQlevel",
       "caller_contract": null,
       "caller_function": "IsOrigFlatHIndex",
       "caller_usr": "c:@F@IsOrigFlatHIndex",
@@ -1804,6 +2042,20 @@
         "column": 14,
         "file": "dsc_codec.c",
         "line": 655
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "mapqptoqlevel",
+      "callee_function": "MapQpToQlevel",
+      "callee_usr": "c:@F@MapQpToQlevel",
+      "caller_contract": "maxresidualsize",
+      "caller_function": "MaxResidualSize",
+      "caller_usr": "c:@F@MaxResidualSize",
+      "location": {
+        "column": 11,
+        "file": "dsc_codec.c",
+        "line": 267
       },
       "source": "facts/callgraph.json"
     },
@@ -2130,6 +2382,20 @@
       "source": "facts/callgraph.json"
     },
     {
+      "callee_contract": "findresidualsize",
+      "callee_function": "FindResidualSize",
+      "callee_usr": "c:@F@FindResidualSize",
+      "caller_contract": null,
+      "caller_function": "PredictionLoop",
+      "caller_usr": "c:@F@PredictionLoop",
+      "location": {
+        "column": 12,
+        "file": "dsc_codec.c",
+        "line": 2435
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
       "callee_contract": null,
       "callee_function": "FindResidualSize",
       "callee_usr": "c:@F@FindResidualSize",
@@ -2140,6 +2406,20 @@
         "column": 12,
         "file": "dsc_codec.c",
         "line": 2435
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "findresidualsize",
+      "callee_function": "FindResidualSize",
+      "callee_usr": "c:@F@FindResidualSize",
+      "caller_contract": null,
+      "caller_function": "PredictionLoop",
+      "caller_usr": "c:@F@PredictionLoop",
+      "location": {
+        "column": 12,
+        "file": "dsc_codec.c",
+        "line": 2438
       },
       "source": "facts/callgraph.json"
     },
@@ -2200,6 +2480,20 @@
       "source": "facts/callgraph.json"
     },
     {
+      "callee_contract": "maxresidualsize",
+      "callee_function": "MaxResidualSize",
+      "callee_usr": "c:@F@MaxResidualSize",
+      "caller_contract": null,
+      "caller_function": "PredictionLoop",
+      "caller_usr": "c:@F@PredictionLoop",
+      "location": {
+        "column": 86,
+        "file": "dsc_codec.c",
+        "line": 2435
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
       "callee_contract": null,
       "callee_function": "MaxResidualSize",
       "callee_usr": "c:@F@MaxResidualSize",
@@ -2210,6 +2504,20 @@
         "column": 86,
         "file": "dsc_codec.c",
         "line": 2435
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "maxresidualsize",
+      "callee_function": "MaxResidualSize",
+      "callee_usr": "c:@F@MaxResidualSize",
+      "caller_contract": null,
+      "caller_function": "PredictionLoop",
+      "caller_usr": "c:@F@PredictionLoop",
+      "location": {
+        "column": 86,
+        "file": "dsc_codec.c",
+        "line": 2438
       },
       "source": "facts/callgraph.json"
     },
@@ -3040,6 +3348,20 @@
       "source": "facts/callgraph.json"
     },
     {
+      "callee_contract": "findresidualsize",
+      "callee_function": "FindResidualSize",
+      "callee_usr": "c:@F@FindResidualSize",
+      "caller_contract": "usingmidpoint",
+      "caller_function": "UsingMidpoint",
+      "caller_usr": "c:@F@UsingMidpoint",
+      "location": {
+        "column": 17,
+        "file": "dsc_codec.c",
+        "line": 467
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
       "callee_contract": null,
       "callee_function": "FindResidualSize",
       "callee_usr": "c:@F@FindResidualSize",
@@ -3050,6 +3372,20 @@
         "column": 17,
         "file": "dsc_codec.c",
         "line": 467
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "mapqptoqlevel",
+      "callee_function": "MapQpToQlevel",
+      "callee_usr": "c:@F@MapQpToQlevel",
+      "caller_contract": "usingmidpoint",
+      "caller_function": "UsingMidpoint",
+      "caller_usr": "c:@F@UsingMidpoint",
+      "location": {
+        "column": 11,
+        "file": "dsc_codec.c",
+        "line": 463
       },
       "source": "facts/callgraph.json"
     },
@@ -3404,7 +3740,7 @@
       "source": "facts/callgraph.json"
     },
     {
-      "callee_contract": null,
+      "callee_contract": "escapecodesize",
       "callee_function": "EscapeCodeSize",
       "callee_usr": "c:@F@EscapeCodeSize",
       "caller_contract": null,
@@ -3419,6 +3755,20 @@
     },
     {
       "callee_contract": null,
+      "callee_function": "EscapeCodeSize",
+      "callee_usr": "c:@F@EscapeCodeSize",
+      "caller_contract": null,
+      "caller_function": "VLCUnit",
+      "caller_usr": "c:@F@VLCUnit",
+      "location": {
+        "column": 26,
+        "file": "dsc_codec.c",
+        "line": 1614
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "findresidualsize",
       "callee_function": "FindResidualSize",
       "callee_usr": "c:@F@FindResidualSize",
       "caller_contract": null,
@@ -3428,6 +3778,34 @@
         "column": 22,
         "file": "dsc_codec.c",
         "line": 1567
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": null,
+      "callee_function": "FindResidualSize",
+      "callee_usr": "c:@F@FindResidualSize",
+      "caller_contract": null,
+      "caller_function": "VLCUnit",
+      "caller_usr": "c:@F@VLCUnit",
+      "location": {
+        "column": 22,
+        "file": "dsc_codec.c",
+        "line": 1567
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "getqpadjpredsize",
+      "callee_function": "GetQpAdjPredSize",
+      "callee_usr": "c:@F@GetQpAdjPredSize",
+      "caller_contract": null,
+      "caller_function": "VLCUnit",
+      "caller_usr": "c:@F@VLCUnit",
+      "location": {
+        "column": 23,
+        "file": "dsc_codec.c",
+        "line": 1521
       },
       "source": "facts/callgraph.json"
     },
@@ -3498,6 +3876,20 @@
         "column": 11,
         "file": "dsc_codec.c",
         "line": 1519
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "maxresidualsize",
+      "callee_function": "MaxResidualSize",
+      "callee_usr": "c:@F@MaxResidualSize",
+      "caller_contract": null,
+      "caller_function": "VLCUnit",
+      "caller_usr": "c:@F@VLCUnit",
+      "location": {
+        "column": 17,
+        "file": "dsc_codec.c",
+        "line": 1650
       },
       "source": "facts/callgraph.json"
     },
@@ -3824,6 +4216,20 @@
       "source": "facts/callgraph.json"
     },
     {
+      "callee_contract": "escapecodesize",
+      "callee_function": "EscapeCodeSize",
+      "callee_usr": "c:@F@EscapeCodeSize",
+      "caller_contract": null,
+      "caller_function": "VLDUnit",
+      "caller_usr": "c:@F@VLDUnit",
+      "location": {
+        "column": 25,
+        "file": "dsc_codec.c",
+        "line": 1927
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
       "callee_contract": null,
       "callee_function": "EscapeCodeSize",
       "callee_usr": "c:@F@EscapeCodeSize",
@@ -3834,6 +4240,20 @@
         "column": 25,
         "file": "dsc_codec.c",
         "line": 1927
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "findresidualsize",
+      "callee_function": "FindResidualSize",
+      "callee_usr": "c:@F@FindResidualSize",
+      "caller_contract": null,
+      "caller_function": "VLDUnit",
+      "caller_usr": "c:@F@VLDUnit",
+      "location": {
+        "column": 22,
+        "file": "dsc_codec.c",
+        "line": 1963
       },
       "source": "facts/callgraph.json"
     },
@@ -3978,6 +4398,20 @@
       "source": "facts/callgraph.json"
     },
     {
+      "callee_contract": "getqpadjpredsize",
+      "callee_function": "GetQpAdjPredSize",
+      "callee_usr": "c:@F@GetQpAdjPredSize",
+      "caller_contract": null,
+      "caller_function": "VLDUnit",
+      "caller_usr": "c:@F@VLDUnit",
+      "location": {
+        "column": 23,
+        "file": "dsc_codec.c",
+        "line": 1836
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
       "callee_contract": null,
       "callee_function": "GetQpAdjPredSize",
       "callee_usr": "c:@F@GetQpAdjPredSize",
@@ -4016,6 +4450,20 @@
         "column": 11,
         "file": "dsc_codec.c",
         "line": 1834
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "maxresidualsize",
+      "callee_function": "MaxResidualSize",
+      "callee_usr": "c:@F@MaxResidualSize",
+      "caller_contract": null,
+      "caller_function": "VLDUnit",
+      "caller_usr": "c:@F@VLDUnit",
+      "location": {
+        "column": 15,
+        "file": "dsc_codec.c",
+        "line": 1889
       },
       "source": "facts/callgraph.json"
     },
@@ -5602,6 +6050,20 @@
       "source": "facts/callgraph.json"
     },
     {
+      "callee_contract": "qp2qlevel",
+      "callee_function": "Qp2Qlevel",
+      "callee_usr": "c:@F@Qp2Qlevel",
+      "caller_contract": null,
+      "caller_function": "check_qp_for_overflow",
+      "caller_usr": "c:@F@check_qp_for_overflow",
+      "location": {
+        "column": 39,
+        "file": "codec_main.c",
+        "line": 877
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
       "callee_contract": null,
       "callee_function": "Qp2Qlevel",
       "callee_usr": "c:@F@Qp2Qlevel",
@@ -5612,6 +6074,20 @@
         "column": 39,
         "file": "codec_main.c",
         "line": 877
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "qp2qlevel",
+      "callee_function": "Qp2Qlevel",
+      "callee_usr": "c:@F@Qp2Qlevel",
+      "caller_contract": null,
+      "caller_function": "check_qp_for_overflow",
+      "caller_usr": "c:@F@check_qp_for_overflow",
+      "location": {
+        "column": 39,
+        "file": "codec_main.c",
+        "line": 886
       },
       "source": "facts/callgraph.json"
     },
@@ -30342,6 +30818,70 @@
   ],
   "edges": [
     {
+      "from": "ceil_log2:bitstream",
+      "to": "ceil_log2:promote"
+    },
+    {
+      "from": "ceil_log2:contract",
+      "to": "ceil_log2:rtl"
+    },
+    {
+      "from": "ceil_log2:dependencies",
+      "to": "ceil_log2:shadow"
+    },
+    {
+      "from": "ceil_log2:discover",
+      "to": "ceil_log2:contract"
+    },
+    {
+      "from": "ceil_log2:rtl",
+      "to": "ceil_log2:unit"
+    },
+    {
+      "from": "ceil_log2:rtl_return",
+      "to": "ceil_log2:bitstream"
+    },
+    {
+      "from": "ceil_log2:shadow",
+      "to": "ceil_log2:rtl_return"
+    },
+    {
+      "from": "ceil_log2:unit",
+      "to": "ceil_log2:dependencies"
+    },
+    {
+      "from": "escapecodesize:bitstream",
+      "to": "escapecodesize:promote"
+    },
+    {
+      "from": "escapecodesize:contract",
+      "to": "escapecodesize:rtl"
+    },
+    {
+      "from": "escapecodesize:dependencies",
+      "to": "escapecodesize:shadow"
+    },
+    {
+      "from": "escapecodesize:discover",
+      "to": "escapecodesize:contract"
+    },
+    {
+      "from": "escapecodesize:rtl",
+      "to": "escapecodesize:unit"
+    },
+    {
+      "from": "escapecodesize:rtl_return",
+      "to": "escapecodesize:bitstream"
+    },
+    {
+      "from": "escapecodesize:shadow",
+      "to": "escapecodesize:rtl_return"
+    },
+    {
+      "from": "escapecodesize:unit",
+      "to": "escapecodesize:dependencies"
+    },
+    {
       "from": "estimatebitsforgroup:bitstream",
       "to": "estimatebitsforgroup:promote"
     },
@@ -30404,6 +30944,70 @@
     {
       "from": "findmidpoint:unit",
       "to": "findmidpoint:dependencies"
+    },
+    {
+      "from": "findresidualsize:bitstream",
+      "to": "findresidualsize:promote"
+    },
+    {
+      "from": "findresidualsize:contract",
+      "to": "findresidualsize:rtl"
+    },
+    {
+      "from": "findresidualsize:dependencies",
+      "to": "findresidualsize:shadow"
+    },
+    {
+      "from": "findresidualsize:discover",
+      "to": "findresidualsize:contract"
+    },
+    {
+      "from": "findresidualsize:rtl",
+      "to": "findresidualsize:unit"
+    },
+    {
+      "from": "findresidualsize:rtl_return",
+      "to": "findresidualsize:bitstream"
+    },
+    {
+      "from": "findresidualsize:shadow",
+      "to": "findresidualsize:rtl_return"
+    },
+    {
+      "from": "findresidualsize:unit",
+      "to": "findresidualsize:dependencies"
+    },
+    {
+      "from": "getqpadjpredsize:bitstream",
+      "to": "getqpadjpredsize:promote"
+    },
+    {
+      "from": "getqpadjpredsize:contract",
+      "to": "getqpadjpredsize:rtl"
+    },
+    {
+      "from": "getqpadjpredsize:dependencies",
+      "to": "getqpadjpredsize:shadow"
+    },
+    {
+      "from": "getqpadjpredsize:discover",
+      "to": "getqpadjpredsize:contract"
+    },
+    {
+      "from": "getqpadjpredsize:rtl",
+      "to": "getqpadjpredsize:unit"
+    },
+    {
+      "from": "getqpadjpredsize:rtl_return",
+      "to": "getqpadjpredsize:bitstream"
+    },
+    {
+      "from": "getqpadjpredsize:shadow",
+      "to": "getqpadjpredsize:rtl_return"
+    },
+    {
+      "from": "getqpadjpredsize:unit",
+      "to": "getqpadjpredsize:dependencies"
     },
     {
       "from": "ichdecision:bitstream",
@@ -30470,6 +31074,38 @@
       "to": "isflatnessinfosent:dependencies"
     },
     {
+      "from": "isorigflathindex:bitstream",
+      "to": "isorigflathindex:promote"
+    },
+    {
+      "from": "isorigflathindex:contract",
+      "to": "isorigflathindex:rtl"
+    },
+    {
+      "from": "isorigflathindex:dependencies",
+      "to": "isorigflathindex:shadow"
+    },
+    {
+      "from": "isorigflathindex:discover",
+      "to": "isorigflathindex:contract"
+    },
+    {
+      "from": "isorigflathindex:rtl",
+      "to": "isorigflathindex:unit"
+    },
+    {
+      "from": "isorigflathindex:rtl_return",
+      "to": "isorigflathindex:bitstream"
+    },
+    {
+      "from": "isorigflathindex:shadow",
+      "to": "isorigflathindex:rtl_return"
+    },
+    {
+      "from": "isorigflathindex:unit",
+      "to": "isorigflathindex:dependencies"
+    },
+    {
       "from": "mapqptoqlevel:bitstream",
       "to": "mapqptoqlevel:promote"
     },
@@ -30502,6 +31138,38 @@
       "to": "mapqptoqlevel:dependencies"
     },
     {
+      "from": "maxresidualsize:bitstream",
+      "to": "maxresidualsize:promote"
+    },
+    {
+      "from": "maxresidualsize:contract",
+      "to": "maxresidualsize:rtl"
+    },
+    {
+      "from": "maxresidualsize:dependencies",
+      "to": "maxresidualsize:shadow"
+    },
+    {
+      "from": "maxresidualsize:discover",
+      "to": "maxresidualsize:contract"
+    },
+    {
+      "from": "maxresidualsize:rtl",
+      "to": "maxresidualsize:unit"
+    },
+    {
+      "from": "maxresidualsize:rtl_return",
+      "to": "maxresidualsize:bitstream"
+    },
+    {
+      "from": "maxresidualsize:shadow",
+      "to": "maxresidualsize:rtl_return"
+    },
+    {
+      "from": "maxresidualsize:unit",
+      "to": "maxresidualsize:dependencies"
+    },
+    {
       "from": "predictsize:bitstream",
       "to": "predictsize:promote"
     },
@@ -30532,6 +31200,38 @@
     {
       "from": "predictsize:unit",
       "to": "predictsize:dependencies"
+    },
+    {
+      "from": "qp2qlevel:bitstream",
+      "to": "qp2qlevel:promote"
+    },
+    {
+      "from": "qp2qlevel:contract",
+      "to": "qp2qlevel:rtl"
+    },
+    {
+      "from": "qp2qlevel:dependencies",
+      "to": "qp2qlevel:shadow"
+    },
+    {
+      "from": "qp2qlevel:discover",
+      "to": "qp2qlevel:contract"
+    },
+    {
+      "from": "qp2qlevel:rtl",
+      "to": "qp2qlevel:unit"
+    },
+    {
+      "from": "qp2qlevel:rtl_return",
+      "to": "qp2qlevel:bitstream"
+    },
+    {
+      "from": "qp2qlevel:shadow",
+      "to": "qp2qlevel:rtl_return"
+    },
+    {
+      "from": "qp2qlevel:unit",
+      "to": "qp2qlevel:dependencies"
     },
     {
       "from": "quantizeresidual:bitstream",
@@ -30628,117 +31328,149 @@
     {
       "from": "samptolinebuf:unit",
       "to": "samptolinebuf:dependencies"
+    },
+    {
+      "from": "usingmidpoint:bitstream",
+      "to": "usingmidpoint:promote"
+    },
+    {
+      "from": "usingmidpoint:contract",
+      "to": "usingmidpoint:rtl"
+    },
+    {
+      "from": "usingmidpoint:dependencies",
+      "to": "usingmidpoint:shadow"
+    },
+    {
+      "from": "usingmidpoint:discover",
+      "to": "usingmidpoint:contract"
+    },
+    {
+      "from": "usingmidpoint:rtl",
+      "to": "usingmidpoint:unit"
+    },
+    {
+      "from": "usingmidpoint:rtl_return",
+      "to": "usingmidpoint:bitstream"
+    },
+    {
+      "from": "usingmidpoint:shadow",
+      "to": "usingmidpoint:rtl_return"
+    },
+    {
+      "from": "usingmidpoint:unit",
+      "to": "usingmidpoint:dependencies"
     }
   ],
-  "historical_node_count": 9,
+  "historical_node_count": 88,
   "nodes": [
     {
       "artifacts": [],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "f31ebf694a15c841fbcb763dc23e43abe9c95c8b66987812c0521ac805778ebe",
-      "failure_reason": null,
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "findmidpoint:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DISCOVERED",
-      "status": "PLANNED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "f31ebf694a15c841fbcb763dc23e43abe9c95c8b66987812c0521ac805778ebe",
-      "failure_reason": null,
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "findmidpoint:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "CONTRACT_LOCKED",
-      "status": "PLANNED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "f31ebf694a15c841fbcb763dc23e43abe9c95c8b66987812c0521ac805778ebe",
-      "failure_reason": null,
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "findmidpoint:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_GENERATED",
-      "status": "PLANNED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "f31ebf694a15c841fbcb763dc23e43abe9c95c8b66987812c0521ac805778ebe",
-      "failure_reason": null,
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "findmidpoint:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "UNIT_VERIFIED",
-      "status": "PLANNED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "f31ebf694a15c841fbcb763dc23e43abe9c95c8b66987812c0521ac805778ebe",
-      "failure_reason": null,
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "findmidpoint:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DEPENDENCIES_VERIFIED",
-      "status": "PLANNED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "f31ebf694a15c841fbcb763dc23e43abe9c95c8b66987812c0521ac805778ebe",
-      "failure_reason": null,
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "findmidpoint:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "SHADOW_PASS",
-      "status": "PLANNED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "f31ebf694a15c841fbcb763dc23e43abe9c95c8b66987812c0521ac805778ebe",
-      "failure_reason": null,
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "findmidpoint:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_RETURN_PASS",
-      "status": "PLANNED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "f31ebf694a15c841fbcb763dc23e43abe9c95c8b66987812c0521ac805778ebe",
-      "failure_reason": null,
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "findmidpoint:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "BITSTREAM_PASS",
-      "status": "PLANNED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
       "dependency_hash": "f31ebf694a15c841fbcb763dc23e43abe9c95c8b66987812c0521ac805778ebe",
-      "failure_reason": null,
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "findmidpoint:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "PROMOTED",
-      "status": "PLANNED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
@@ -30853,324 +31585,324 @@
       "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
       "dependency_hash": "cdacd46bfe4cae5e584f55fdb16b27c67c2f7fe22a67c58c85f32686e3e2caed",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "isflatnessinfosent:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DISCOVERED",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
       "dependency_hash": "cdacd46bfe4cae5e584f55fdb16b27c67c2f7fe22a67c58c85f32686e3e2caed",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "isflatnessinfosent:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "CONTRACT_LOCKED",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
       "dependency_hash": "cdacd46bfe4cae5e584f55fdb16b27c67c2f7fe22a67c58c85f32686e3e2caed",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "isflatnessinfosent:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_GENERATED",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
       "dependency_hash": "cdacd46bfe4cae5e584f55fdb16b27c67c2f7fe22a67c58c85f32686e3e2caed",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "isflatnessinfosent:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "UNIT_VERIFIED",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
       "dependency_hash": "cdacd46bfe4cae5e584f55fdb16b27c67c2f7fe22a67c58c85f32686e3e2caed",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "isflatnessinfosent:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DEPENDENCIES_VERIFIED",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
       "dependency_hash": "cdacd46bfe4cae5e584f55fdb16b27c67c2f7fe22a67c58c85f32686e3e2caed",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "isflatnessinfosent:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "SHADOW_PASS",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
       "dependency_hash": "cdacd46bfe4cae5e584f55fdb16b27c67c2f7fe22a67c58c85f32686e3e2caed",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "isflatnessinfosent:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_RETURN_PASS",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
       "dependency_hash": "cdacd46bfe4cae5e584f55fdb16b27c67c2f7fe22a67c58c85f32686e3e2caed",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "isflatnessinfosent:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "BITSTREAM_PASS",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
       "dependency_hash": "cdacd46bfe4cae5e584f55fdb16b27c67c2f7fe22a67c58c85f32686e3e2caed",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "isflatnessinfosent:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "PROMOTED",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
       "dependency_hash": "be9e5b87ba35328b2d70aebf14188b8adb9fa98ab9863a8d5f28b00492aebf68",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "mapqptoqlevel:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DISCOVERED",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
       "dependency_hash": "be9e5b87ba35328b2d70aebf14188b8adb9fa98ab9863a8d5f28b00492aebf68",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "mapqptoqlevel:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "CONTRACT_LOCKED",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
       "dependency_hash": "be9e5b87ba35328b2d70aebf14188b8adb9fa98ab9863a8d5f28b00492aebf68",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "mapqptoqlevel:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_GENERATED",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
       "dependency_hash": "be9e5b87ba35328b2d70aebf14188b8adb9fa98ab9863a8d5f28b00492aebf68",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "mapqptoqlevel:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "UNIT_VERIFIED",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
       "dependency_hash": "be9e5b87ba35328b2d70aebf14188b8adb9fa98ab9863a8d5f28b00492aebf68",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "mapqptoqlevel:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DEPENDENCIES_VERIFIED",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
       "dependency_hash": "be9e5b87ba35328b2d70aebf14188b8adb9fa98ab9863a8d5f28b00492aebf68",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "mapqptoqlevel:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "SHADOW_PASS",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
       "dependency_hash": "be9e5b87ba35328b2d70aebf14188b8adb9fa98ab9863a8d5f28b00492aebf68",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "mapqptoqlevel:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_RETURN_PASS",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
       "dependency_hash": "be9e5b87ba35328b2d70aebf14188b8adb9fa98ab9863a8d5f28b00492aebf68",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "mapqptoqlevel:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "BITSTREAM_PASS",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
       "dependency_hash": "be9e5b87ba35328b2d70aebf14188b8adb9fa98ab9863a8d5f28b00492aebf68",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "mapqptoqlevel:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "PROMOTED",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
       "dependency_hash": "c8cc34c74343eb8209390547dd44c6e1233cac7f43fde90bf8d9bfff4fca8d9f",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "predictsize:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DISCOVERED",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
       "dependency_hash": "c8cc34c74343eb8209390547dd44c6e1233cac7f43fde90bf8d9bfff4fca8d9f",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "predictsize:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "CONTRACT_LOCKED",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
       "dependency_hash": "c8cc34c74343eb8209390547dd44c6e1233cac7f43fde90bf8d9bfff4fca8d9f",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "predictsize:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_GENERATED",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
       "dependency_hash": "c8cc34c74343eb8209390547dd44c6e1233cac7f43fde90bf8d9bfff4fca8d9f",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "predictsize:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "UNIT_VERIFIED",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
       "dependency_hash": "c8cc34c74343eb8209390547dd44c6e1233cac7f43fde90bf8d9bfff4fca8d9f",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "predictsize:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DEPENDENCIES_VERIFIED",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
       "dependency_hash": "c8cc34c74343eb8209390547dd44c6e1233cac7f43fde90bf8d9bfff4fca8d9f",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "predictsize:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "SHADOW_PASS",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
       "dependency_hash": "c8cc34c74343eb8209390547dd44c6e1233cac7f43fde90bf8d9bfff4fca8d9f",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "predictsize:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_RETURN_PASS",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
       "dependency_hash": "c8cc34c74343eb8209390547dd44c6e1233cac7f43fde90bf8d9bfff4fca8d9f",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "predictsize:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "BITSTREAM_PASS",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
       "dependency_hash": "c8cc34c74343eb8209390547dd44c6e1233cac7f43fde90bf8d9bfff4fca8d9f",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "predictsize:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "PROMOTED",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
@@ -31285,108 +32017,108 @@
       "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
       "contract_id": "samplepredict",
       "dependency_hash": "c342660294a6ba98f6dbc6bc3d2b0ac8e094b34834409158eb72a155344bd6a1",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "samplepredict:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DISCOVERED",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
       "contract_id": "samplepredict",
       "dependency_hash": "c342660294a6ba98f6dbc6bc3d2b0ac8e094b34834409158eb72a155344bd6a1",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "samplepredict:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "CONTRACT_LOCKED",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
       "contract_id": "samplepredict",
       "dependency_hash": "c342660294a6ba98f6dbc6bc3d2b0ac8e094b34834409158eb72a155344bd6a1",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "samplepredict:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_GENERATED",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
       "contract_id": "samplepredict",
       "dependency_hash": "c342660294a6ba98f6dbc6bc3d2b0ac8e094b34834409158eb72a155344bd6a1",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "samplepredict:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "UNIT_VERIFIED",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
       "contract_id": "samplepredict",
       "dependency_hash": "c342660294a6ba98f6dbc6bc3d2b0ac8e094b34834409158eb72a155344bd6a1",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "samplepredict:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DEPENDENCIES_VERIFIED",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
       "contract_id": "samplepredict",
       "dependency_hash": "c342660294a6ba98f6dbc6bc3d2b0ac8e094b34834409158eb72a155344bd6a1",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "samplepredict:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "SHADOW_PASS",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
       "contract_id": "samplepredict",
       "dependency_hash": "c342660294a6ba98f6dbc6bc3d2b0ac8e094b34834409158eb72a155344bd6a1",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "samplepredict:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_RETURN_PASS",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
       "contract_id": "samplepredict",
       "dependency_hash": "c342660294a6ba98f6dbc6bc3d2b0ac8e094b34834409158eb72a155344bd6a1",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "samplepredict:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "BITSTREAM_PASS",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
       "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
       "contract_id": "samplepredict",
       "dependency_hash": "c342660294a6ba98f6dbc6bc3d2b0ac8e094b34834409158eb72a155344bd6a1",
-      "failure_reason": "ready but outside bounded new-work selection",
+      "failure_reason": "prior_composition_boundary_unresolved",
       "node_id": "samplepredict:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "PROMOTED",
-      "status": "DEFERRED"
+      "status": "BLOCKED"
     },
     {
       "artifacts": [],
@@ -31498,14 +32230,13 @@
     },
     {
       "artifacts": [
-        "artifacts/3d66964980dfa45a183e2476b9ffcd790248975873ab0f5cf8156c58b0c7d629",
-        "artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13"
+        "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896"
       ],
-      "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
-      "contract_id": "estimatebitsforgroup",
-      "dependency_hash": "b0b74e666d2d9628c9789b688227db7a48043a32007016c7a0c5881a5acd2ed4",
+      "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+      "contract_id": "ceil_log2",
+      "dependency_hash": "3b7f5328839b9a8019d9b2517accb27b5a85150709907f97a39b72fb99dba088",
       "failure_reason": null,
-      "node_id": "estimatebitsforgroup:discover",
+      "node_id": "ceil_log2:discover",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DISCOVERED",
@@ -31513,14 +32244,13 @@
     },
     {
       "artifacts": [
-        "artifacts/3d66964980dfa45a183e2476b9ffcd790248975873ab0f5cf8156c58b0c7d629",
-        "artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13"
+        "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896"
       ],
-      "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
-      "contract_id": "estimatebitsforgroup",
-      "dependency_hash": "b0b74e666d2d9628c9789b688227db7a48043a32007016c7a0c5881a5acd2ed4",
+      "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+      "contract_id": "ceil_log2",
+      "dependency_hash": "3b7f5328839b9a8019d9b2517accb27b5a85150709907f97a39b72fb99dba088",
       "failure_reason": null,
-      "node_id": "estimatebitsforgroup:contract",
+      "node_id": "ceil_log2:contract",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "CONTRACT_LOCKED",
@@ -31528,14 +32258,13 @@
     },
     {
       "artifacts": [
-        "artifacts/3d66964980dfa45a183e2476b9ffcd790248975873ab0f5cf8156c58b0c7d629",
-        "artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13"
+        "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896"
       ],
-      "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
-      "contract_id": "estimatebitsforgroup",
-      "dependency_hash": "b0b74e666d2d9628c9789b688227db7a48043a32007016c7a0c5881a5acd2ed4",
+      "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+      "contract_id": "ceil_log2",
+      "dependency_hash": "3b7f5328839b9a8019d9b2517accb27b5a85150709907f97a39b72fb99dba088",
       "failure_reason": null,
-      "node_id": "estimatebitsforgroup:rtl",
+      "node_id": "ceil_log2:rtl",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_GENERATED",
@@ -31543,14 +32272,13 @@
     },
     {
       "artifacts": [
-        "artifacts/3d66964980dfa45a183e2476b9ffcd790248975873ab0f5cf8156c58b0c7d629",
-        "artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13"
+        "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896"
       ],
-      "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
-      "contract_id": "estimatebitsforgroup",
-      "dependency_hash": "b0b74e666d2d9628c9789b688227db7a48043a32007016c7a0c5881a5acd2ed4",
+      "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+      "contract_id": "ceil_log2",
+      "dependency_hash": "3b7f5328839b9a8019d9b2517accb27b5a85150709907f97a39b72fb99dba088",
       "failure_reason": null,
-      "node_id": "estimatebitsforgroup:unit",
+      "node_id": "ceil_log2:unit",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "UNIT_VERIFIED",
@@ -31558,14 +32286,13 @@
     },
     {
       "artifacts": [
-        "artifacts/3d66964980dfa45a183e2476b9ffcd790248975873ab0f5cf8156c58b0c7d629",
-        "artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13"
+        "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896"
       ],
-      "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
-      "contract_id": "estimatebitsforgroup",
-      "dependency_hash": "b0b74e666d2d9628c9789b688227db7a48043a32007016c7a0c5881a5acd2ed4",
+      "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+      "contract_id": "ceil_log2",
+      "dependency_hash": "3b7f5328839b9a8019d9b2517accb27b5a85150709907f97a39b72fb99dba088",
       "failure_reason": null,
-      "node_id": "estimatebitsforgroup:dependencies",
+      "node_id": "ceil_log2:dependencies",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "DEPENDENCIES_VERIFIED",
@@ -31573,14 +32300,13 @@
     },
     {
       "artifacts": [
-        "artifacts/3d66964980dfa45a183e2476b9ffcd790248975873ab0f5cf8156c58b0c7d629",
-        "artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13"
+        "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896"
       ],
-      "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
-      "contract_id": "estimatebitsforgroup",
-      "dependency_hash": "b0b74e666d2d9628c9789b688227db7a48043a32007016c7a0c5881a5acd2ed4",
+      "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+      "contract_id": "ceil_log2",
+      "dependency_hash": "3b7f5328839b9a8019d9b2517accb27b5a85150709907f97a39b72fb99dba088",
       "failure_reason": null,
-      "node_id": "estimatebitsforgroup:shadow",
+      "node_id": "ceil_log2:shadow",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "SHADOW_PASS",
@@ -31588,14 +32314,13 @@
     },
     {
       "artifacts": [
-        "artifacts/3d66964980dfa45a183e2476b9ffcd790248975873ab0f5cf8156c58b0c7d629",
-        "artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13"
+        "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896"
       ],
-      "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
-      "contract_id": "estimatebitsforgroup",
-      "dependency_hash": "b0b74e666d2d9628c9789b688227db7a48043a32007016c7a0c5881a5acd2ed4",
+      "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+      "contract_id": "ceil_log2",
+      "dependency_hash": "3b7f5328839b9a8019d9b2517accb27b5a85150709907f97a39b72fb99dba088",
       "failure_reason": null,
-      "node_id": "estimatebitsforgroup:rtl_return",
+      "node_id": "ceil_log2:rtl_return",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "RTL_RETURN_PASS",
@@ -31603,14 +32328,13 @@
     },
     {
       "artifacts": [
-        "artifacts/3d66964980dfa45a183e2476b9ffcd790248975873ab0f5cf8156c58b0c7d629",
-        "artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13"
+        "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896"
       ],
-      "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
-      "contract_id": "estimatebitsforgroup",
-      "dependency_hash": "b0b74e666d2d9628c9789b688227db7a48043a32007016c7a0c5881a5acd2ed4",
+      "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+      "contract_id": "ceil_log2",
+      "dependency_hash": "3b7f5328839b9a8019d9b2517accb27b5a85150709907f97a39b72fb99dba088",
       "failure_reason": null,
-      "node_id": "estimatebitsforgroup:bitstream",
+      "node_id": "ceil_log2:bitstream",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "BITSTREAM_PASS",
@@ -31618,18 +32342,1003 @@
     },
     {
       "artifacts": [
-        "artifacts/3d66964980dfa45a183e2476b9ffcd790248975873ab0f5cf8156c58b0c7d629",
-        "artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13"
+        "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896"
       ],
-      "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
-      "contract_id": "estimatebitsforgroup",
-      "dependency_hash": "b0b74e666d2d9628c9789b688227db7a48043a32007016c7a0c5881a5acd2ed4",
+      "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+      "contract_id": "ceil_log2",
+      "dependency_hash": "3b7f5328839b9a8019d9b2517accb27b5a85150709907f97a39b72fb99dba088",
       "failure_reason": null,
+      "node_id": "ceil_log2:promote",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "PROMOTED",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [
+        "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1"
+      ],
+      "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
+      "contract_id": "escapecodesize",
+      "dependency_hash": "45321616e0c7ed703dd1fa8c249701b85b8ccfe4a35607f923e0a251a9dab3be",
+      "failure_reason": null,
+      "node_id": "escapecodesize:discover",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "DISCOVERED",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [
+        "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1"
+      ],
+      "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
+      "contract_id": "escapecodesize",
+      "dependency_hash": "45321616e0c7ed703dd1fa8c249701b85b8ccfe4a35607f923e0a251a9dab3be",
+      "failure_reason": null,
+      "node_id": "escapecodesize:contract",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "CONTRACT_LOCKED",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [
+        "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1"
+      ],
+      "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
+      "contract_id": "escapecodesize",
+      "dependency_hash": "45321616e0c7ed703dd1fa8c249701b85b8ccfe4a35607f923e0a251a9dab3be",
+      "failure_reason": null,
+      "node_id": "escapecodesize:rtl",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "RTL_GENERATED",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [
+        "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1"
+      ],
+      "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
+      "contract_id": "escapecodesize",
+      "dependency_hash": "45321616e0c7ed703dd1fa8c249701b85b8ccfe4a35607f923e0a251a9dab3be",
+      "failure_reason": null,
+      "node_id": "escapecodesize:unit",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "UNIT_VERIFIED",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [
+        "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1"
+      ],
+      "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
+      "contract_id": "escapecodesize",
+      "dependency_hash": "45321616e0c7ed703dd1fa8c249701b85b8ccfe4a35607f923e0a251a9dab3be",
+      "failure_reason": null,
+      "node_id": "escapecodesize:dependencies",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "DEPENDENCIES_VERIFIED",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [
+        "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1"
+      ],
+      "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
+      "contract_id": "escapecodesize",
+      "dependency_hash": "45321616e0c7ed703dd1fa8c249701b85b8ccfe4a35607f923e0a251a9dab3be",
+      "failure_reason": null,
+      "node_id": "escapecodesize:shadow",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "SHADOW_PASS",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [
+        "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1"
+      ],
+      "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
+      "contract_id": "escapecodesize",
+      "dependency_hash": "45321616e0c7ed703dd1fa8c249701b85b8ccfe4a35607f923e0a251a9dab3be",
+      "failure_reason": null,
+      "node_id": "escapecodesize:rtl_return",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "RTL_RETURN_PASS",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [
+        "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1"
+      ],
+      "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
+      "contract_id": "escapecodesize",
+      "dependency_hash": "45321616e0c7ed703dd1fa8c249701b85b8ccfe4a35607f923e0a251a9dab3be",
+      "failure_reason": "caller call signature does not provide the frozen DUT interface; retain C boundary",
+      "node_id": "escapecodesize:bitstream",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "BITSTREAM_PASS",
+      "status": "FAILED"
+    },
+    {
+      "artifacts": [
+        "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1"
+      ],
+      "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
+      "contract_id": "escapecodesize",
+      "dependency_hash": "45321616e0c7ed703dd1fa8c249701b85b8ccfe4a35607f923e0a251a9dab3be",
+      "failure_reason": null,
+      "node_id": "escapecodesize:promote",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "PROMOTED",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "bcf7ded8f7fbfd323e66fc25a51b6489a4fad835d03302af228c3b51be8f9bb2",
+      "contract_id": "estimatebitsforgroup",
+      "dependency_hash": "a5b65df5860e2ac8b4f4e56dded393af00e6b6d01f3e173b7913dd173e67f65b",
+      "failure_reason": "accepted_rtl_unavailable",
+      "node_id": "estimatebitsforgroup:discover",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "DISCOVERED",
+      "status": "BLOCKED"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "bcf7ded8f7fbfd323e66fc25a51b6489a4fad835d03302af228c3b51be8f9bb2",
+      "contract_id": "estimatebitsforgroup",
+      "dependency_hash": "a5b65df5860e2ac8b4f4e56dded393af00e6b6d01f3e173b7913dd173e67f65b",
+      "failure_reason": "accepted_rtl_unavailable",
+      "node_id": "estimatebitsforgroup:contract",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "CONTRACT_LOCKED",
+      "status": "BLOCKED"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "bcf7ded8f7fbfd323e66fc25a51b6489a4fad835d03302af228c3b51be8f9bb2",
+      "contract_id": "estimatebitsforgroup",
+      "dependency_hash": "a5b65df5860e2ac8b4f4e56dded393af00e6b6d01f3e173b7913dd173e67f65b",
+      "failure_reason": "accepted_rtl_unavailable",
+      "node_id": "estimatebitsforgroup:rtl",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "RTL_GENERATED",
+      "status": "BLOCKED"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "bcf7ded8f7fbfd323e66fc25a51b6489a4fad835d03302af228c3b51be8f9bb2",
+      "contract_id": "estimatebitsforgroup",
+      "dependency_hash": "a5b65df5860e2ac8b4f4e56dded393af00e6b6d01f3e173b7913dd173e67f65b",
+      "failure_reason": "accepted_rtl_unavailable",
+      "node_id": "estimatebitsforgroup:unit",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "UNIT_VERIFIED",
+      "status": "BLOCKED"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "bcf7ded8f7fbfd323e66fc25a51b6489a4fad835d03302af228c3b51be8f9bb2",
+      "contract_id": "estimatebitsforgroup",
+      "dependency_hash": "a5b65df5860e2ac8b4f4e56dded393af00e6b6d01f3e173b7913dd173e67f65b",
+      "failure_reason": "accepted_rtl_unavailable",
+      "node_id": "estimatebitsforgroup:dependencies",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "DEPENDENCIES_VERIFIED",
+      "status": "BLOCKED"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "bcf7ded8f7fbfd323e66fc25a51b6489a4fad835d03302af228c3b51be8f9bb2",
+      "contract_id": "estimatebitsforgroup",
+      "dependency_hash": "a5b65df5860e2ac8b4f4e56dded393af00e6b6d01f3e173b7913dd173e67f65b",
+      "failure_reason": "accepted_rtl_unavailable",
+      "node_id": "estimatebitsforgroup:shadow",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "SHADOW_PASS",
+      "status": "BLOCKED"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "bcf7ded8f7fbfd323e66fc25a51b6489a4fad835d03302af228c3b51be8f9bb2",
+      "contract_id": "estimatebitsforgroup",
+      "dependency_hash": "a5b65df5860e2ac8b4f4e56dded393af00e6b6d01f3e173b7913dd173e67f65b",
+      "failure_reason": "accepted_rtl_unavailable",
+      "node_id": "estimatebitsforgroup:rtl_return",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "RTL_RETURN_PASS",
+      "status": "BLOCKED"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "bcf7ded8f7fbfd323e66fc25a51b6489a4fad835d03302af228c3b51be8f9bb2",
+      "contract_id": "estimatebitsforgroup",
+      "dependency_hash": "a5b65df5860e2ac8b4f4e56dded393af00e6b6d01f3e173b7913dd173e67f65b",
+      "failure_reason": "accepted_rtl_unavailable",
+      "node_id": "estimatebitsforgroup:bitstream",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "BITSTREAM_PASS",
+      "status": "BLOCKED"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "bcf7ded8f7fbfd323e66fc25a51b6489a4fad835d03302af228c3b51be8f9bb2",
+      "contract_id": "estimatebitsforgroup",
+      "dependency_hash": "a5b65df5860e2ac8b4f4e56dded393af00e6b6d01f3e173b7913dd173e67f65b",
+      "failure_reason": "accepted_rtl_unavailable",
       "node_id": "estimatebitsforgroup:promote",
       "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
       "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
       "stage": "PROMOTED",
-      "status": "PROMOTED"
+      "status": "BLOCKED"
+    },
+    {
+      "artifacts": [
+        "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b"
+      ],
+      "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+      "contract_id": "findresidualsize",
+      "dependency_hash": "9e6c1405ec992ffc24fd536b05eaa963645f2cf2cedc93afff3c5d59df2bcaee",
+      "failure_reason": null,
+      "node_id": "findresidualsize:discover",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "DISCOVERED",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [
+        "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b"
+      ],
+      "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+      "contract_id": "findresidualsize",
+      "dependency_hash": "9e6c1405ec992ffc24fd536b05eaa963645f2cf2cedc93afff3c5d59df2bcaee",
+      "failure_reason": null,
+      "node_id": "findresidualsize:contract",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "CONTRACT_LOCKED",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [
+        "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b"
+      ],
+      "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+      "contract_id": "findresidualsize",
+      "dependency_hash": "9e6c1405ec992ffc24fd536b05eaa963645f2cf2cedc93afff3c5d59df2bcaee",
+      "failure_reason": null,
+      "node_id": "findresidualsize:rtl",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "RTL_GENERATED",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [
+        "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b"
+      ],
+      "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+      "contract_id": "findresidualsize",
+      "dependency_hash": "9e6c1405ec992ffc24fd536b05eaa963645f2cf2cedc93afff3c5d59df2bcaee",
+      "failure_reason": null,
+      "node_id": "findresidualsize:unit",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "UNIT_VERIFIED",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [
+        "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b"
+      ],
+      "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+      "contract_id": "findresidualsize",
+      "dependency_hash": "9e6c1405ec992ffc24fd536b05eaa963645f2cf2cedc93afff3c5d59df2bcaee",
+      "failure_reason": null,
+      "node_id": "findresidualsize:dependencies",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "DEPENDENCIES_VERIFIED",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [
+        "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b"
+      ],
+      "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+      "contract_id": "findresidualsize",
+      "dependency_hash": "9e6c1405ec992ffc24fd536b05eaa963645f2cf2cedc93afff3c5d59df2bcaee",
+      "failure_reason": null,
+      "node_id": "findresidualsize:shadow",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "SHADOW_PASS",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [
+        "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b"
+      ],
+      "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+      "contract_id": "findresidualsize",
+      "dependency_hash": "9e6c1405ec992ffc24fd536b05eaa963645f2cf2cedc93afff3c5d59df2bcaee",
+      "failure_reason": null,
+      "node_id": "findresidualsize:rtl_return",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "RTL_RETURN_PASS",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [
+        "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b"
+      ],
+      "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+      "contract_id": "findresidualsize",
+      "dependency_hash": "9e6c1405ec992ffc24fd536b05eaa963645f2cf2cedc93afff3c5d59df2bcaee",
+      "failure_reason": null,
+      "node_id": "findresidualsize:bitstream",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "BITSTREAM_PASS",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [
+        "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b"
+      ],
+      "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+      "contract_id": "findresidualsize",
+      "dependency_hash": "9e6c1405ec992ffc24fd536b05eaa963645f2cf2cedc93afff3c5d59df2bcaee",
+      "failure_reason": null,
+      "node_id": "findresidualsize:promote",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "PROMOTED",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
+      "contract_id": "getqpadjpredsize",
+      "dependency_hash": "c62aba977da68e4668648b7d361d598777450780ff2ad5a2c6eabd8b9a4044fc",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "getqpadjpredsize:discover",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "DISCOVERED",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
+      "contract_id": "getqpadjpredsize",
+      "dependency_hash": "c62aba977da68e4668648b7d361d598777450780ff2ad5a2c6eabd8b9a4044fc",
+      "failure_reason": "bounded selection deferred",
+      "node_id": "getqpadjpredsize:contract",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "CONTRACT_LOCKED",
+      "status": "DEFERRED"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
+      "contract_id": "getqpadjpredsize",
+      "dependency_hash": "c62aba977da68e4668648b7d361d598777450780ff2ad5a2c6eabd8b9a4044fc",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "getqpadjpredsize:rtl",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "RTL_GENERATED",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
+      "contract_id": "getqpadjpredsize",
+      "dependency_hash": "c62aba977da68e4668648b7d361d598777450780ff2ad5a2c6eabd8b9a4044fc",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "getqpadjpredsize:unit",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "UNIT_VERIFIED",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
+      "contract_id": "getqpadjpredsize",
+      "dependency_hash": "c62aba977da68e4668648b7d361d598777450780ff2ad5a2c6eabd8b9a4044fc",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "getqpadjpredsize:dependencies",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "DEPENDENCIES_VERIFIED",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
+      "contract_id": "getqpadjpredsize",
+      "dependency_hash": "c62aba977da68e4668648b7d361d598777450780ff2ad5a2c6eabd8b9a4044fc",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "getqpadjpredsize:shadow",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "SHADOW_PASS",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
+      "contract_id": "getqpadjpredsize",
+      "dependency_hash": "c62aba977da68e4668648b7d361d598777450780ff2ad5a2c6eabd8b9a4044fc",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "getqpadjpredsize:rtl_return",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "RTL_RETURN_PASS",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
+      "contract_id": "getqpadjpredsize",
+      "dependency_hash": "c62aba977da68e4668648b7d361d598777450780ff2ad5a2c6eabd8b9a4044fc",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "getqpadjpredsize:bitstream",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "BITSTREAM_PASS",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
+      "contract_id": "getqpadjpredsize",
+      "dependency_hash": "c62aba977da68e4668648b7d361d598777450780ff2ad5a2c6eabd8b9a4044fc",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "getqpadjpredsize:promote",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "PROMOTED",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
+      "contract_id": "isorigflathindex",
+      "dependency_hash": "93b22aef1a39b6d94857c93ea838fd91e13d7e9f69b3ced44e1d182a97fb8d60",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "isorigflathindex:discover",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "DISCOVERED",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
+      "contract_id": "isorigflathindex",
+      "dependency_hash": "93b22aef1a39b6d94857c93ea838fd91e13d7e9f69b3ced44e1d182a97fb8d60",
+      "failure_reason": "bounded selection deferred",
+      "node_id": "isorigflathindex:contract",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "CONTRACT_LOCKED",
+      "status": "DEFERRED"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
+      "contract_id": "isorigflathindex",
+      "dependency_hash": "93b22aef1a39b6d94857c93ea838fd91e13d7e9f69b3ced44e1d182a97fb8d60",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "isorigflathindex:rtl",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "RTL_GENERATED",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
+      "contract_id": "isorigflathindex",
+      "dependency_hash": "93b22aef1a39b6d94857c93ea838fd91e13d7e9f69b3ced44e1d182a97fb8d60",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "isorigflathindex:unit",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "UNIT_VERIFIED",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
+      "contract_id": "isorigflathindex",
+      "dependency_hash": "93b22aef1a39b6d94857c93ea838fd91e13d7e9f69b3ced44e1d182a97fb8d60",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "isorigflathindex:dependencies",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "DEPENDENCIES_VERIFIED",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
+      "contract_id": "isorigflathindex",
+      "dependency_hash": "93b22aef1a39b6d94857c93ea838fd91e13d7e9f69b3ced44e1d182a97fb8d60",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "isorigflathindex:shadow",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "SHADOW_PASS",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
+      "contract_id": "isorigflathindex",
+      "dependency_hash": "93b22aef1a39b6d94857c93ea838fd91e13d7e9f69b3ced44e1d182a97fb8d60",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "isorigflathindex:rtl_return",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "RTL_RETURN_PASS",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
+      "contract_id": "isorigflathindex",
+      "dependency_hash": "93b22aef1a39b6d94857c93ea838fd91e13d7e9f69b3ced44e1d182a97fb8d60",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "isorigflathindex:bitstream",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "BITSTREAM_PASS",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
+      "contract_id": "isorigflathindex",
+      "dependency_hash": "93b22aef1a39b6d94857c93ea838fd91e13d7e9f69b3ced44e1d182a97fb8d60",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "isorigflathindex:promote",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "PROMOTED",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
+      "contract_id": "maxresidualsize",
+      "dependency_hash": "6727f24119f8f3a09311eb44dd06409d8a8acc6a6adbe7d5526153bb571c253c",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "maxresidualsize:discover",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "DISCOVERED",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
+      "contract_id": "maxresidualsize",
+      "dependency_hash": "6727f24119f8f3a09311eb44dd06409d8a8acc6a6adbe7d5526153bb571c253c",
+      "failure_reason": "bounded selection deferred",
+      "node_id": "maxresidualsize:contract",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "CONTRACT_LOCKED",
+      "status": "DEFERRED"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
+      "contract_id": "maxresidualsize",
+      "dependency_hash": "6727f24119f8f3a09311eb44dd06409d8a8acc6a6adbe7d5526153bb571c253c",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "maxresidualsize:rtl",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "RTL_GENERATED",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
+      "contract_id": "maxresidualsize",
+      "dependency_hash": "6727f24119f8f3a09311eb44dd06409d8a8acc6a6adbe7d5526153bb571c253c",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "maxresidualsize:unit",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "UNIT_VERIFIED",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
+      "contract_id": "maxresidualsize",
+      "dependency_hash": "6727f24119f8f3a09311eb44dd06409d8a8acc6a6adbe7d5526153bb571c253c",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "maxresidualsize:dependencies",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "DEPENDENCIES_VERIFIED",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
+      "contract_id": "maxresidualsize",
+      "dependency_hash": "6727f24119f8f3a09311eb44dd06409d8a8acc6a6adbe7d5526153bb571c253c",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "maxresidualsize:shadow",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "SHADOW_PASS",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
+      "contract_id": "maxresidualsize",
+      "dependency_hash": "6727f24119f8f3a09311eb44dd06409d8a8acc6a6adbe7d5526153bb571c253c",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "maxresidualsize:rtl_return",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "RTL_RETURN_PASS",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
+      "contract_id": "maxresidualsize",
+      "dependency_hash": "6727f24119f8f3a09311eb44dd06409d8a8acc6a6adbe7d5526153bb571c253c",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "maxresidualsize:bitstream",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "BITSTREAM_PASS",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
+      "contract_id": "maxresidualsize",
+      "dependency_hash": "6727f24119f8f3a09311eb44dd06409d8a8acc6a6adbe7d5526153bb571c253c",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "maxresidualsize:promote",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "PROMOTED",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+      "contract_id": "qp2qlevel",
+      "dependency_hash": "9d92f78af176f09f946ac7b8baba616875e6f609ac1bb13d10d94f398c1141a4",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "qp2qlevel:discover",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "DISCOVERED",
+      "status": "PASS"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+      "contract_id": "qp2qlevel",
+      "dependency_hash": "9d92f78af176f09f946ac7b8baba616875e6f609ac1bb13d10d94f398c1141a4",
+      "failure_reason": "bounded selection deferred",
+      "node_id": "qp2qlevel:contract",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "CONTRACT_LOCKED",
+      "status": "DEFERRED"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+      "contract_id": "qp2qlevel",
+      "dependency_hash": "9d92f78af176f09f946ac7b8baba616875e6f609ac1bb13d10d94f398c1141a4",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "qp2qlevel:rtl",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "RTL_GENERATED",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+      "contract_id": "qp2qlevel",
+      "dependency_hash": "9d92f78af176f09f946ac7b8baba616875e6f609ac1bb13d10d94f398c1141a4",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "qp2qlevel:unit",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "UNIT_VERIFIED",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+      "contract_id": "qp2qlevel",
+      "dependency_hash": "9d92f78af176f09f946ac7b8baba616875e6f609ac1bb13d10d94f398c1141a4",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "qp2qlevel:dependencies",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "DEPENDENCIES_VERIFIED",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+      "contract_id": "qp2qlevel",
+      "dependency_hash": "9d92f78af176f09f946ac7b8baba616875e6f609ac1bb13d10d94f398c1141a4",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "qp2qlevel:shadow",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "SHADOW_PASS",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+      "contract_id": "qp2qlevel",
+      "dependency_hash": "9d92f78af176f09f946ac7b8baba616875e6f609ac1bb13d10d94f398c1141a4",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "qp2qlevel:rtl_return",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "RTL_RETURN_PASS",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+      "contract_id": "qp2qlevel",
+      "dependency_hash": "9d92f78af176f09f946ac7b8baba616875e6f609ac1bb13d10d94f398c1141a4",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "qp2qlevel:bitstream",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "BITSTREAM_PASS",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+      "contract_id": "qp2qlevel",
+      "dependency_hash": "9d92f78af176f09f946ac7b8baba616875e6f609ac1bb13d10d94f398c1141a4",
+      "failure_reason": "ready but outside bounded new-work selection",
+      "node_id": "qp2qlevel:promote",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "PROMOTED",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "a80e806bc03f18d8ed3285f7fc6c043b0bb487da5921717a8239a344049abab1",
+      "contract_id": "usingmidpoint",
+      "dependency_hash": "ed4d1661a6d51b54c7a44d1beb0bea8e26a13899f0f8a28ae68673d4bd0ed631",
+      "failure_reason": "accepted_rtl_unavailable",
+      "node_id": "usingmidpoint:discover",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "DISCOVERED",
+      "status": "BLOCKED"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "a80e806bc03f18d8ed3285f7fc6c043b0bb487da5921717a8239a344049abab1",
+      "contract_id": "usingmidpoint",
+      "dependency_hash": "ed4d1661a6d51b54c7a44d1beb0bea8e26a13899f0f8a28ae68673d4bd0ed631",
+      "failure_reason": "accepted_rtl_unavailable",
+      "node_id": "usingmidpoint:contract",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "CONTRACT_LOCKED",
+      "status": "BLOCKED"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "a80e806bc03f18d8ed3285f7fc6c043b0bb487da5921717a8239a344049abab1",
+      "contract_id": "usingmidpoint",
+      "dependency_hash": "ed4d1661a6d51b54c7a44d1beb0bea8e26a13899f0f8a28ae68673d4bd0ed631",
+      "failure_reason": "accepted_rtl_unavailable",
+      "node_id": "usingmidpoint:rtl",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "RTL_GENERATED",
+      "status": "BLOCKED"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "a80e806bc03f18d8ed3285f7fc6c043b0bb487da5921717a8239a344049abab1",
+      "contract_id": "usingmidpoint",
+      "dependency_hash": "ed4d1661a6d51b54c7a44d1beb0bea8e26a13899f0f8a28ae68673d4bd0ed631",
+      "failure_reason": "accepted_rtl_unavailable",
+      "node_id": "usingmidpoint:unit",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "UNIT_VERIFIED",
+      "status": "BLOCKED"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "a80e806bc03f18d8ed3285f7fc6c043b0bb487da5921717a8239a344049abab1",
+      "contract_id": "usingmidpoint",
+      "dependency_hash": "ed4d1661a6d51b54c7a44d1beb0bea8e26a13899f0f8a28ae68673d4bd0ed631",
+      "failure_reason": "accepted_rtl_unavailable",
+      "node_id": "usingmidpoint:dependencies",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "DEPENDENCIES_VERIFIED",
+      "status": "BLOCKED"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "a80e806bc03f18d8ed3285f7fc6c043b0bb487da5921717a8239a344049abab1",
+      "contract_id": "usingmidpoint",
+      "dependency_hash": "ed4d1661a6d51b54c7a44d1beb0bea8e26a13899f0f8a28ae68673d4bd0ed631",
+      "failure_reason": "accepted_rtl_unavailable",
+      "node_id": "usingmidpoint:shadow",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "SHADOW_PASS",
+      "status": "BLOCKED"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "a80e806bc03f18d8ed3285f7fc6c043b0bb487da5921717a8239a344049abab1",
+      "contract_id": "usingmidpoint",
+      "dependency_hash": "ed4d1661a6d51b54c7a44d1beb0bea8e26a13899f0f8a28ae68673d4bd0ed631",
+      "failure_reason": "accepted_rtl_unavailable",
+      "node_id": "usingmidpoint:rtl_return",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "RTL_RETURN_PASS",
+      "status": "BLOCKED"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "a80e806bc03f18d8ed3285f7fc6c043b0bb487da5921717a8239a344049abab1",
+      "contract_id": "usingmidpoint",
+      "dependency_hash": "ed4d1661a6d51b54c7a44d1beb0bea8e26a13899f0f8a28ae68673d4bd0ed631",
+      "failure_reason": "accepted_rtl_unavailable",
+      "node_id": "usingmidpoint:bitstream",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "BITSTREAM_PASS",
+      "status": "BLOCKED"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": "a80e806bc03f18d8ed3285f7fc6c043b0bb487da5921717a8239a344049abab1",
+      "contract_id": "usingmidpoint",
+      "dependency_hash": "ed4d1661a6d51b54c7a44d1beb0bea8e26a13899f0f8a28ae68673d4bd0ed631",
+      "failure_reason": "accepted_rtl_unavailable",
+      "node_id": "usingmidpoint:promote",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "PROMOTED",
+      "status": "BLOCKED"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": null,
+      "contract_id": null,
+      "dependency_hash": "1c43167ba290eac03c91f2694efb313ee597c108d13625bfba844072501570c7",
+      "failure_reason": null,
+      "node_id": "PredictionLoop:COMPOSITION",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "COMPOSITION",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": null,
+      "contract_id": null,
+      "dependency_hash": "9be61a51faefe134d98b86230ad7e4bf095d77348995c0d3b5bd0911848d00ce",
+      "failure_reason": null,
+      "node_id": "FlatnessAdjustment:COMPOSITION",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "COMPOSITION",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": null,
+      "contract_id": null,
+      "dependency_hash": "156f47080ad0b90bb847140baa43fab17861480e82969a5c08b7a9334054ad48",
+      "failure_reason": null,
+      "node_id": "EscapeCodeSize:COMPOSITION",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "COMPOSITION",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": null,
+      "contract_id": null,
+      "dependency_hash": "9cf9de792befa15846ab9d63bcc9bdae476e0755c2d1f4fd640b28e832510ded",
+      "failure_reason": null,
+      "node_id": "VLCUnit:COMPOSITION",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "COMPOSITION",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": null,
+      "contract_id": null,
+      "dependency_hash": "8855abcc2fccbedce5d1c96bda431ade6adf640f9fec4ec37f9848e840a0669d",
+      "failure_reason": null,
+      "node_id": "BlockPredSearch:COMPOSITION",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "COMPOSITION",
+      "status": "PENDING"
+    },
+    {
+      "artifacts": [],
+      "contract_hash": null,
+      "contract_id": null,
+      "dependency_hash": "06e3c9c61077dba251d9d1013bee34493e0f7dc6cade6354b2a7790413b8e058",
+      "failure_reason": null,
+      "node_id": "DSC_Algorithm:COMPOSITION",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "COMPOSITION",
+      "status": "EXECUTED"
+    },
+    {
+      "artifacts": [
+        "artifacts/c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919"
+      ],
+      "contract_hash": null,
+      "contract_id": "ichdecision",
+      "dependency_hash": "2ec671215150d199f493b20abdb153db3b63f529d094b5cfd439914af9e9d08e",
+      "failure_reason": "prior_composition_boundary_unresolved",
+      "node_id": "IchDecision:COMPOSITION",
+      "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+      "stage": "COMPOSITION",
+      "status": "BLOCKED"
     }
   ],
   "schema_version": 2,

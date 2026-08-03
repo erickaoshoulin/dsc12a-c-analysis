@@ -50,6 +50,16 @@ VERIFICATION_STATUSES = {
     "GENERATION_REQUIRED",
     "GENERATION_FAILED",
 }
+PROMOTION_REVIEW_GATES = (
+    "width_spec",
+    "unit_equivalence",
+    "formal_or_exhaustive",
+    "dependency_composition",
+    "C_ONLY",
+    "SHADOW",
+    "RTL_RETURN",
+    "frame_compare",
+)
 STAGE_TO_STATE = {
     "discover": "DISCOVERED",
     "contract": "CONTRACT_LOCKED",
@@ -998,6 +1008,68 @@ class Agent:
     def prior_contract(self, cid: str) -> dict[str, Any]:
         return next((item for item in self.previous_state.get("contracts", []) if item.get("contract_id") == cid), {})
 
+    def prior_execution_incomplete(self, cid: str) -> bool:
+        """Detect an interrupted executable attempt from durable state history.
+
+        A later no-work plan may append a DEFERRED/BLOCKED event after a
+        process died during verification.  Do not lose that work merely
+        because the current semantic hashes are unchanged.  Only in-progress
+        or successfully-entered execution stages are recoverable here;
+        terminal composition boundaries and candidate counterexamples retain
+        their existing no-repeat behavior.
+        """
+        prior = self.prior_contract(cid)
+        if prior.get("promotion_status") in {
+            "AWAITING_HUMAN_APPROVAL",
+            "VERIFIED_REFRESH",
+        }:
+            return False
+        history = prior.get("history", []) or []
+        execution_states = set(STATE_ORDER[1:-1])
+        for event in reversed(history):
+            if not isinstance(event, dict):
+                continue
+            state = str(event.get("state", ""))
+            status = str(event.get("status", ""))
+            if state == "PROMOTED":
+                return False
+            if state in execution_states:
+                if status in {"COUNTEREXAMPLE", "FAILED", "FAIL", "UNPROVED", "UNSUPPORTED", "GENERATION_REQUIRED", "GENERATION_FAILED"}:
+                    return False
+                if status not in {"DEFERRED", "BLOCKED"}:
+                    return True
+            if state == "CONTRACT_LOCKED" and status == "EXECUTING":
+                return True
+            if state == "DISCOVERED" and status == "INFRASTRUCTURE_FAILURE":
+                return True
+            if state in {"CONTRACT_LOCKED", "DISCOVERED"} and status in {"DEFERRED", "BLOCKED"}:
+                continue
+            if state == "DISCOVERED" and status in {"COUNTEREXAMPLE", "FAILED"}:
+                return False
+        return False
+
+    def promotion_approval_path(self, cid: str, contract_hash: str) -> pathlib.Path:
+        """Return the immutable approval location for one contract identity."""
+        return self.ci / "promotion-approvals" / safe_identifier(cid) / f"{safe_identifier(contract_hash)}.json"
+
+    def prior_promotion_review(self, cid: str, contract_hash: str) -> tuple[bool, bool, str | None]:
+        """Return pending/ready approval state without selecting by source name.
+
+        The durable state carries the exact RTL hash that was reviewed.  A
+        later run may resume that same artifact only when the matching approval
+        receipt has appeared; otherwise the planner leaves the job visible and
+        does not regenerate it.
+        """
+        prior = self.prior_contract(cid)
+        pending = (
+            str(prior.get("promotion_status", "")) == "AWAITING_HUMAN_APPROVAL"
+            and str((prior.get("hashes", {}) or {}).get("contract", "")) == str(contract_hash)
+        )
+        if not pending:
+            return False, False, None
+        path = self.promotion_approval_path(cid, contract_hash)
+        return True, path.is_file(), str(prior.get("pending_rtl_sha256") or "") or None
+
     def prior_composition_boundary(
         self, cid: str, hashes: dict[str, str]
     ) -> dict[str, Any] | None:
@@ -1155,12 +1227,18 @@ class Agent:
             key, hashes = self.cache_key(contract)
             is_ready, reasons = self.ready(contract)
             prior_boundary = self.prior_composition_boundary(cid, hashes)
+            resume_needed = self.prior_execution_incomplete(cid)
+            promotion_pending, approval_available, pending_rtl_sha256 = self.prior_promotion_review(cid, hashes["contract"])
             boundary_retry_requested = bool(
                 prior_boundary
                 and (retry_blocked or force_regenerate or cid == target_contract)
             )
             if prior_boundary and not boundary_retry_requested:
                 reasons.append("prior_composition_boundary_unresolved")
+                reasons = sorted(set(reasons))
+                is_ready = False
+            if promotion_pending and not approval_available:
+                reasons.append("human_promotion_approval_pending")
                 reasons = sorted(set(reasons))
                 is_ready = False
             entry = self.cache_entry(key)
@@ -1172,6 +1250,7 @@ class Agent:
                 and (
                     refresh_stable
                     or (stale and not cache_hit)
+                    or (resume_needed and not cache_hit)
                 )
             )
             if (
@@ -1205,6 +1284,10 @@ class Agent:
                 "stale_reasons": stale,
                 "cache_hit": cache_hit,
                 "accepted_rtl_available": bool(accepted_rtl),
+                "resume_needed": resume_needed,
+                "promotion_pending": promotion_pending,
+                "resume_human_approval": bool(promotion_pending and approval_available),
+                "pending_rtl_sha256": pending_rtl_sha256,
                 "prior_composition_boundary": prior_boundary,
                 "boundary_retry_requested": boundary_retry_requested,
                 "initial_state": entry.get("state") if cache_hit else "CONTRACT_LOCKED" if is_ready else "DISCOVERED",
@@ -1225,6 +1308,16 @@ class Agent:
                 and not item["cache_hit"]
             )
         )
+        recovery_contracts = sorted(
+            item["contract_id"]
+            for item in entries
+            if item["ready"] and item.get("resume_needed") and not item["cache_hit"]
+        )
+        approval_resume_contracts = sorted(
+            item["contract_id"]
+            for item in entries
+            if item["ready"] and item.get("resume_human_approval") and not item["cache_hit"]
+        )
         if target_item and target_item["ready"]:
             # The queue supplies a discovered contract id for this independent
             # batch. It is not a source-level function allowlist. A refresh can
@@ -1242,7 +1335,18 @@ class Agent:
             ]
             selected = sorted(selected[:max(1, int(os.environ.get("DSC_CICD_MAX_NEW", "1")))])
         else:
-            selected = [item["contract_id"] for item in entries if item["ready"] and item["new_work"] and (not prior_shapes or item["interface_shape"] not in prior_shapes.values())]
+            if approval_resume_contracts:
+                # Human approval resumes the exact verified candidate already
+                # recorded in the artifact; it must not invoke a new model or
+                # generator attempt.
+                selected = approval_resume_contracts[:max(1, int(os.environ.get("DSC_CICD_MAX_NEW", "1")))]
+            elif recovery_contracts:
+                # Recover an interrupted executable attempt before opening
+                # unrelated new work.  This is state-driven orchestration,
+                # not a source-level function selector.
+                selected = recovery_contracts[:max(1, int(os.environ.get("DSC_CICD_MAX_NEW", "1")))]
+            else:
+                selected = [item["contract_id"] for item in entries if item["ready"] and item["new_work"] and (not prior_shapes or item["interface_shape"] not in prior_shapes.values())]
             if not selected:
                 # Accepted leaves must re-enter a bounded regression frontier
                 # when any recorded input/provenance hash is stale.  A valid
@@ -1262,11 +1366,15 @@ class Agent:
             item["targeted"] = item["contract_id"] == (target_item or {}).get("contract_id")
             item["force_regenerate"] = force_regenerate and item["selected"]
             item["auto_refresh"] = item["contract_id"] in stale_stable
+            item["recovery"] = item["contract_id"] in recovery_contracts
+            item["resume_human_approval"] = bool(
+                item["selected"] and item.get("resume_human_approval")
+            )
             item["reuse_accepted_rtl"] = bool(
                 item["selected"]
                 and item.get("accepted_rtl_available")
                 and item["contract_id"] in stable_ids
-                and (item["auto_refresh"] or refresh_stable)
+                and (item["auto_refresh"] or item["recovery"] or refresh_stable)
                 and not item["targeted"]
                 and not explicit_force_regenerate
             )
@@ -1281,6 +1389,8 @@ class Agent:
             "contracts": entries,
             "batches": [selected] if selected else [],
             "auto_refresh_contracts": stale_stable,
+            "recovery_contracts": recovery_contracts,
+            "approval_resume_contracts": approval_resume_contracts,
             "dependency_pair": self.choose_dependency_pair(selected),
             "target_contract": target_item["contract_id"] if target_item else None,
             "force_regenerate": force_regenerate,
@@ -1437,6 +1547,13 @@ class Agent:
         for item in self.plan.get("contracts", []):
             old = previous.get(item["contract_id"], {})
             current = "PROMOTED" if item.get("cache_hit") else "CONTRACT_LOCKED" if item.get("selected") else "DISCOVERED"
+            observed_hashes = item["hashes"]
+            if item.get("deferred") and old.get("hashes"):
+                # A bounded batch must not acknowledge an unexecuted stable
+                # refresh merely because the current controller hash changed.
+                # Keep the previous observation until this contract actually
+                # runs, so the next planner invocation can select it again.
+                observed_hashes = old["hashes"]
             contracts.append({
                 "contract_id": item["contract_id"],
                 "function": item.get("function"),
@@ -1445,7 +1562,7 @@ class Agent:
                 "current_state": current,
                 "status": "BLOCKED" if item.get("blocked_reasons") else "PENDING",
                 "failure_reason": "; ".join(item.get("blocked_reasons", [])) or None,
-                "hashes": item["hashes"],
+                "hashes": observed_hashes,
                 "interface_shape": item["interface_shape"],
                 "history": old.get("history", [{"state": "DISCOVERED"}]),
                 "artifacts": old.get("artifacts", []),
@@ -1523,6 +1640,71 @@ class Agent:
                 reasons.append("missing_port:" + str(port["name"]))
         return sorted(set(reasons))
 
+    def canonical_rtl_source(self, cid: str, source: str) -> tuple[str, str]:
+        """Canonicalize one candidate and return its immutable content hash."""
+        scrubbed = re.sub(r"//.*|/\*.*?\*/", "", source, flags=re.S)
+        modules = list(re.finditer(r"\bmodule\s+([A-Za-z_][A-Za-z0-9_]*)", scrubbed))
+        if len(modules) != 1 or len(re.findall(r"\bendmodule\b", scrubbed)) != 1:
+            raise RuntimeError(f"library promotion requires one RTL module: {cid}")
+        match = re.search(r"\bmodule\s+([A-Za-z_][A-Za-z0-9_]*)", source)
+        if not match:
+            raise RuntimeError(f"library promotion module name missing: {cid}")
+        module_name = safe_identifier(cid).lower()
+        canonical_source = source[:match.start(1)] + module_name + source[match.end(1):]
+        if not canonical_source.endswith("\n"):
+            canonical_source += "\n"
+        return canonical_source, hashlib.sha256(canonical_source.encode("utf-8")).hexdigest()
+
+    def promotion_approval(
+        self,
+        contract: dict[str, Any],
+        item: dict[str, Any],
+        rtl_sha256: str,
+    ) -> dict[str, Any]:
+        """Validate the human decision for one exact candidate identity."""
+        cid = contract_id(contract)
+        contract_hash = str(item.get("contract_hash") or digest(contract))
+        path = self.promotion_approval_path(cid, contract_hash)
+        expected = {
+            "contract_id": cid,
+            "contract_hash": contract_hash,
+            "rtl_sha256": rtl_sha256,
+            "source_sha256": str(self.input_facts.get("source_hash") or item.get("hashes", {}).get("source") or ""),
+            "spec_sha256": str(self.input_facts.get("spec_hash") or item.get("hashes", {}).get("spec") or ""),
+            "interface_sha256": digest(contract.get("interface", {}) or {}),
+        }
+        approval = read_json(path, None)
+        errors: list[str] = []
+        if not isinstance(approval, dict):
+            errors.append("approval_file_missing" if not path.exists() else "approval_file_invalid_json")
+            approval = {}
+        for key, value in expected.items():
+            if str(approval.get(key, "")) != str(value):
+                errors.append(f"approval_{key}_mismatch")
+        if approval.get("review_status") != "APPROVED":
+            errors.append("approval_review_status_not_approved")
+        if approval.get("decision") != "PROMOTE":
+            errors.append("approval_decision_not_promote")
+        if not str(approval.get("reviewer", "")).strip():
+            errors.append("approval_reviewer_missing")
+        if not str(approval.get("reviewed_at", "")).strip():
+            errors.append("approval_reviewed_at_missing")
+        if not str(approval.get("design_intent", "")).strip():
+            errors.append("approval_design_intent_missing")
+        if not isinstance(approval.get("qor"), dict) or not approval.get("qor"):
+            errors.append("approval_qor_review_missing")
+        reviewed_gates = {str(value) for value in approval.get("gates_reviewed", []) if value}
+        missing_gates = sorted(set(PROMOTION_REVIEW_GATES) - reviewed_gates)
+        if missing_gates:
+            errors.append("approval_gates_missing:" + ",".join(missing_gates))
+        return {
+            "status": "APPROVED" if not errors else "INVALID",
+            "approval_file": str(path.relative_to(self.root)),
+            "expected": expected,
+            "errors": sorted(set(errors)),
+            "approval_sha256": file_hash(path) if path.is_file() else None,
+        }
+
     def promote_library_component(
         self,
         contract: dict[str, Any],
@@ -1558,25 +1740,39 @@ class Agent:
         if not candidate_path.is_file():
             raise RuntimeError(f"library promotion candidate missing: {candidate_path}")
         source = candidate_path.read_text(encoding="utf-8", errors="replace")
-        scrubbed = re.sub(r"//.*|/\*.*?\*/", "", source, flags=re.S)
-        modules = list(re.finditer(r"\bmodule\s+([A-Za-z_][A-Za-z0-9_]*)", scrubbed))
-        if len(modules) != 1 or len(re.findall(r"\bendmodule\b", scrubbed)) != 1:
-            raise RuntimeError(f"library promotion requires one RTL module: {cid}")
         ports = self.freeze_ports(contract.get("interface", {}) or {})
         rtl_blockers = self.validate_rtl(source, ports)
         if rtl_blockers:
             raise RuntimeError(f"library promotion RTL boundary failed for {cid}: {rtl_blockers}")
-        module_name = safe_identifier(cid).lower()
-        match = re.search(r"\bmodule\s+([A-Za-z_][A-Za-z0-9_]*)", source)
-        if not match:
-            raise RuntimeError(f"library promotion module name missing: {cid}")
-        canonical_source = source[:match.start(1)] + module_name + source[match.end(1):]
-        if not canonical_source.endswith("\n"):
-            canonical_source += "\n"
+        canonical_source, rtl_sha256 = self.canonical_rtl_source(cid, source)
         canonical_bytes = canonical_source.encode("utf-8")
-        rtl_sha256 = hashlib.sha256(canonical_bytes).hexdigest()
+        module_name = safe_identifier(cid).lower()
         contract_hash = str(item.get("contract_hash") or artifact.name)
         artifact_relative = str(artifact.relative_to(self.root))
+        accepted = self.accepted_rtl_component(cid, contract_hash)
+        if item.get("reuse_accepted_rtl") and accepted and accepted.get("module_sha256") == rtl_sha256:
+            return {
+                "status": "VERIFIED_REFRESH",
+                "contract_id": cid,
+                "module": module_name,
+                "module_file": accepted["module_file"],
+                "artifact_dir": artifact_relative,
+                "rtl_sha256": rtl_sha256,
+                "contract_hash": contract_hash,
+                "approval": {"status": "NOT_REQUIRED", "reason": "existing_accepted_rtl_unchanged"},
+            }
+        approval = self.promotion_approval(contract, item, rtl_sha256)
+        if approval.get("status") != "APPROVED":
+            return {
+                "status": "AWAITING_HUMAN_APPROVAL",
+                "contract_id": cid,
+                "module": module_name,
+                "artifact_dir": artifact_relative,
+                "rtl_sha256": rtl_sha256,
+                "contract_hash": contract_hash,
+                "approval": approval,
+                "reason": "human promotion approval required for this exact candidate",
+            }
         promoted_at = time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime())
         library = self.root / "library"
         rtl_root = library / "rtl"
@@ -1684,6 +1880,8 @@ class Agent:
                 "module": module_name,
                 "rtl_sha256": rtl_sha256,
                 "promoted_at": promoted_at,
+                "approval_file": approval.get("approval_file"),
+                "approval_sha256": approval.get("approval_sha256"),
             }
             write_json(contract_path, library_contract)
 
@@ -1711,6 +1909,8 @@ class Agent:
                 "artifact_dir": artifact_relative,
                 "status": "PASS",
                 "promoted_at": promoted_at,
+                "approval_file": approval.get("approval_file"),
+                "approval_sha256": approval.get("approval_sha256"),
             }
             manifest.update({
                 "schema_version": max(2, int(manifest.get("schema_version", 1))),
@@ -4451,6 +4651,25 @@ class Agent:
             encoding="utf-8",
         )
 
+    @staticmethod
+    def preserve_generated_history(output_dir: pathlib.Path) -> pathlib.Path | None:
+        """Move prior generated candidates aside before a new materialization."""
+        if not output_dir.is_dir():
+            return None
+        prior = [path for path in output_dir.iterdir() if path.name != "history"]
+        if not prior:
+            return None
+        stamp = time.strftime("%Y%m%dT%H%M%SZ", time.gmtime())
+        history_root = output_dir / "history" / stamp
+        suffix = 1
+        while history_root.exists():
+            suffix += 1
+            history_root = output_dir / "history" / f"{stamp}-{suffix:02d}"
+        history_root.mkdir(parents=True, exist_ok=True)
+        for path in prior:
+            shutil.move(str(path), str(history_root / path.name))
+        return history_root
+
     def generate_artifacts(self, contract: dict[str, Any], item: dict[str, Any], artifact: pathlib.Path) -> dict[str, Any]:
         if self.input_facts.get("errors"):
             artifact.mkdir(parents=True, exist_ok=True)
@@ -4472,8 +4691,9 @@ class Agent:
         request_path = artifact / "generation-request.json"
         write_json(request_path, request)
         output_dir = artifact / "generated"
-        if output_dir.exists():
-            shutil.rmtree(output_dir)
+        resume_pending = bool(item.get("resume_human_approval"))
+        if output_dir.exists() and not resume_pending:
+            self.preserve_generated_history(output_dir)
         output_dir.mkdir(parents=True, exist_ok=True)
         hook = os.environ.get("DSC_CICD_GENERATOR_CMD", "").strip()
         receipt: dict[str, Any] = {
@@ -4485,6 +4705,56 @@ class Agent:
             "candidate_limit": 4,
             "hook": hook or "MISSING",
         }
+        if resume_pending:
+            candidate_path = output_dir / "candidate_01.sv"
+            expected_sha256 = str(item.get("pending_rtl_sha256") or "")
+            reasons = []
+            if not candidate_path.is_file():
+                reasons.append("pending_approval_candidate_missing")
+            if candidate_path.is_file():
+                source = candidate_path.read_text(encoding="utf-8", errors="replace")
+                reasons.extend(self.validate_rtl(source, contract.get("interface", {}).get("ports", [])))
+                try:
+                    module = self.module_name(source)
+                    _, canonical_sha256 = self.canonical_rtl_source(contract_id(contract), source)
+                    if expected_sha256 and canonical_sha256 != expected_sha256:
+                        reasons.append("pending_approval_candidate_hash_mismatch")
+                except RuntimeError:
+                    module = None
+                    reasons.append("pending_approval_module_not_discoverable")
+            else:
+                module = None
+            if reasons:
+                receipt.update({
+                    "execution_status": "REUSED_PENDING_APPROVAL_RTL",
+                    "status": "INFRASTRUCTURE_FAILURE",
+                    "model_calls": 0,
+                    "tokens": 0,
+                    "candidates": [],
+                    "hook": "NOT_USED",
+                    "reason": "; ".join(sorted(set(reasons))),
+                })
+                write_json(artifact / "generation.json", receipt)
+                return receipt
+            candidate = {
+                "candidate": "candidate_01",
+                "path": str(candidate_path.relative_to(artifact)),
+                "module": module,
+                "sha256": file_hash(candidate_path),
+                "validation": "PASS",
+                "validation_reasons": [],
+            }
+            receipt.update({
+                "execution_status": "REUSED_PENDING_APPROVAL_RTL",
+                "status": "PASS",
+                "model_calls": 0,
+                "tokens": 0,
+                "candidates": [candidate],
+                "hook": "NOT_USED",
+                "pending_approval": {"reason": "resume_exact_candidate_after_human_review"},
+            })
+            write_json(artifact / "generation.json", receipt)
+            return receipt
         if item.get("reuse_accepted_rtl"):
             component = self.accepted_rtl_component(
                 contract_id(contract),
@@ -6247,7 +6517,22 @@ class Agent:
                     "rejected_candidates": cached_unit.get("rejected_candidates", []),
                     "cache_entry": cache_entry,
                 }
-                result["library_promotion"] = self.promote_library_component(contract, item, artifact, result)
+                promotion = self.promote_library_component(contract, item, artifact, result)
+                result["library_promotion"] = promotion
+                result["promotion_status"] = promotion.get("status")
+                if promotion.get("status") == "AWAITING_HUMAN_APPROVAL":
+                    result["status"] = "PASS"
+                    self.update_state(
+                        cid,
+                        "BITSTREAM_PASS",
+                        "PASS",
+                        artifacts=[str(artifact.relative_to(self.root))],
+                        extra={
+                            "promotion_status": promotion.get("status"),
+                            "pending_rtl_sha256": promotion.get("rtl_sha256"),
+                            "promotion_approval_file": (promotion.get("approval") or {}).get("approval_file"),
+                        },
+                    )
                 self.append_result(result)
                 return result
             except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as error:
@@ -6319,25 +6604,40 @@ class Agent:
                 artifacts=[str(artifact.relative_to(self.root))],
                 failure=matrix_failure,
             )
-            final = "PROMOTED" if bitstream_status and dependency.get("status") == "PASS" else "FAILED"
-            self.update_state(
-                cid,
-                "PROMOTED" if final == "PROMOTED" else "BITSTREAM_PASS",
-                final,
-                artifacts=[str(artifact.relative_to(self.root))],
-                failure=None if final == "PROMOTED" else (matrix_failure or dependency.get("failure_reason")),
-            )
             result = {
                 "contract_id": cid,
-                "status": final,
+                "status": "FAILED" if not (bitstream_status and dependency.get("status") == "PASS") else "PROMOTED",
                 "generation": generation,
                 "unit": unit,
                 "matrix": matrix,
                 "dependency": dependency,
                 "rejected_candidates": rejected_candidates,
             }
+            final = result["status"]
+            promotion = None
             if final == "PROMOTED":
-                result["library_promotion"] = self.promote_library_component(contract, item, artifact, result)
+                promotion = self.promote_library_component(contract, item, artifact, result)
+                result["library_promotion"] = promotion
+                result["promotion_status"] = promotion.get("status")
+                if promotion.get("status") in {"AWAITING_HUMAN_APPROVAL", "VERIFIED_REFRESH"}:
+                    final = "PASS"
+                    result["status"] = final
+            self.update_state(
+                cid,
+                "PROMOTED" if final == "PROMOTED" else "BITSTREAM_PASS",
+                final,
+                artifacts=[str(artifact.relative_to(self.root))],
+                failure=None if final != "FAILED" else (matrix_failure or dependency.get("failure_reason")),
+                extra=(
+                    {
+                        "promotion_status": promotion.get("status"),
+                        "pending_rtl_sha256": promotion.get("rtl_sha256"),
+                        "promotion_approval_file": (promotion.get("approval") or {}).get("approval_file"),
+                    }
+                    if promotion and promotion.get("status") in {"AWAITING_HUMAN_APPROVAL", "VERIFIED_REFRESH"}
+                    else None
+                ),
+            )
             self.append_result(result)
             for name in ("shards", "shard-results", "oracle-build", "candidate-build", "generated"):
                 path = artifact / name
@@ -6359,7 +6659,8 @@ class Agent:
                 continue
             status = result.get("status")
             artifact = self.artifact_dir(item)
-            valid = status in ("PROMOTED", "CACHE_REUSED") and (artifact / "unit-receipt.json").is_file() and (artifact / "bitstream-receipt.json").is_file()
+            verified_refresh = status == "PASS" and result.get("promotion_status") == "VERIFIED_REFRESH"
+            valid = (status in ("PROMOTED", "CACHE_REUSED") or verified_refresh) and (artifact / "unit-receipt.json").is_file() and (artifact / "bitstream-receipt.json").is_file()
             entries[item["cache_key"]] = {
                 "schema_version": 2,
                 "cache_key": item["cache_key"],
@@ -6414,6 +6715,83 @@ class Agent:
                     "failure_reason": None,
                 })
         write_json(self.ci / "dag.json", self.dag)
+
+    @staticmethod
+    def _reason_text(value: Any) -> list[str]:
+        if isinstance(value, str) and value:
+            return [value]
+        if isinstance(value, list):
+            return [str(item) for item in value if item]
+        return []
+
+    def report_blockers(self) -> list[str]:
+        """Aggregate current plan, run, and durable-state blockers.
+
+        Reports must not claim a clean run merely because a later no-work
+        invocation produced no new result.  Keep the latest executable
+        failure visible alongside planner blockers; historical runs remain in
+        the regression dashboard and are not folded into this current list.
+        """
+        blockers: list[str] = list(self.input_facts.get("errors", []))
+        for blocked in self.plan.get("blocked_contracts", []):
+            cid = str(blocked.get("contract_id", "contract"))
+            for reason in blocked.get("reasons", []) or []:
+                blockers.append(f"{cid}: {reason}")
+        terminal = {
+            "BLOCKED",
+            "FAILED",
+            "INFRASTRUCTURE_FAILURE",
+            "GENERATION_REQUIRED",
+            "GENERATION_FAILED",
+            "COUNTEREXAMPLE",
+            "UNPROVED",
+            "UNSUPPORTED",
+        }
+        for result in self.run_results:
+            status = str(result.get("status", ""))
+            promotion = result.get("library_promotion", {}) or {}
+            if promotion.get("status") == "AWAITING_HUMAN_APPROVAL":
+                blockers.append(f"{result.get('contract_id', 'contract')}: human_promotion_approval_required")
+            if status not in terminal:
+                continue
+            cid = str(result.get("contract_id", "contract"))
+            reasons: list[str] = []
+            reasons.extend(self._reason_text(result.get("reason")))
+            for section in ("generation", "unit", "matrix", "dependency"):
+                value = result.get(section, {}) or {}
+                reasons.extend(self._reason_text(value.get("reason")))
+                reasons.extend(self._reason_text(value.get("failure_reason")))
+            if not reasons:
+                reasons.append(status)
+            blockers.extend(f"{cid}: {reason}" for reason in reasons)
+        for item in self.state.get("contracts", []):
+            status = str(item.get("status", ""))
+            if item.get("promotion_status") == "AWAITING_HUMAN_APPROVAL":
+                blockers.append(f"{item.get('contract_id', 'contract')}: human_promotion_approval_required")
+            if status not in terminal:
+                continue
+            cid = str(item.get("contract_id", "contract"))
+            reasons = self._reason_text(item.get("failure_reason")) or [status]
+            blockers.extend(f"{cid}: {reason}" for reason in reasons)
+        # A later no-work plan can append DEFERRED/BLOCKED state and otherwise
+        # hide the last executable failure.  Walk each durable history
+        # backwards, stopping at the newest successful terminal state and
+        # retaining only the latest failure before planner-only events.
+        failure_statuses = terminal - {"BLOCKED"}
+        success_statuses = {"PASS", "PROMOTED", "CACHE_REUSED"}
+        for item in self.previous_state.get("contracts", []):
+            cid = str(item.get("contract_id", "contract"))
+            for event in reversed(item.get("history", []) or []):
+                event_status = str(event.get("status", ""))
+                if event_status in {"DEFERRED", "BLOCKED"}:
+                    continue
+                if event_status in success_statuses:
+                    break
+                if event_status in failure_statuses:
+                    reason = str(event.get("failure_reason") or event_status)
+                    blockers.append(f"{cid}: {reason}")
+                    break
+        return sorted(set(str(value) for value in blockers if value))
 
     def write_integration(self) -> None:
         replacement_lines = [
@@ -6517,9 +6895,7 @@ class Agent:
             "dependency_pair": self.plan.get("dependency_pair"),
             "matrix_scripts_discovered": len(self.input_facts.get("baseline_scripts", [])),
             "results": result_lines,
-            "blockers": self.input_facts.get("errors", []) + [
-                item for blocked in self.plan.get("blocked_contracts", []) for item in blocked.get("reasons", [])
-            ],
+            "blockers": self.report_blockers(),
             "receipt_policy": {
                 "fresh_run": "EXECUTED_NOW",
                 "cache_hit": "REUSED_VERIFIED_RECEIPT",
@@ -6638,7 +7014,14 @@ class Agent:
         self.write_integration()
         self.write_reports()
         self.write_state()
-        successful = any(result.get("status") in ("PROMOTED", "CACHE_REUSED") for result in self.run_results)
+        successful = any(
+            result.get("status") in ("PROMOTED", "CACHE_REUSED")
+            or (
+                result.get("status") == "PASS"
+                and result.get("promotion_status") in {"VERIFIED_REFRESH", "AWAITING_HUMAN_APPROVAL"}
+            )
+            for result in self.run_results
+        )
         return 0 if successful else 1
 
     def status_command(self) -> int:

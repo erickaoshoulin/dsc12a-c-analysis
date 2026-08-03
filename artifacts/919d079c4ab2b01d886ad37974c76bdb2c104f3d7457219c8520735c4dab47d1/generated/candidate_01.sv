@@ -1,4 +1,4 @@
-module escapecodesize_candidate_01 (
+module escapecodesize (
     input logic [4:0] qp,
     input logic [1:0] dsc_version_minor,
     input logic native_420,

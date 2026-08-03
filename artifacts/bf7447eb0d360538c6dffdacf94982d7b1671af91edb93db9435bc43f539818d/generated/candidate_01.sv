@@ -1,4 +1,4 @@
-module isflatnessinfosent_candidate_01 (
+module isflatnessinfosent (
     input logic [4:0] qp,
     input logic [4:0] flatness_min_qp,
     input logic [4:0] flatness_max_qp,

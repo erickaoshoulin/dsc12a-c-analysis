@@ -6,7 +6,7 @@
           "<overlay-work>/bittrue_smoke/run_c_baseline.sh"
         ],
         "cwd": "<overlay-work>",
-        "duration_seconds": 2.753,
+        "duration_seconds": 2.008,
         "output": "wrote <overlay-work>/bittrue_smoke/simple_192x108.ppm (62223 bytes)\nrm -f *.o\nrm -f dsc\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dsc_codec.c -o dsc_codec.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dsc_utils.c -o dsc_utils.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c cmd_parse.c -o cmd_parse.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c codec_main.c -o codec_main.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dpx.c -o dpx.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c fifo.c -o fifo.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c hdr_dpx.c -o hdr_dpx.o\nhdr_dpx.c:90:6: warning: variable 'yidx' set but not used [-Wunused-but-set-variable]\n   90 |         int yidx = 0;\n      |             ^\nhdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\nhdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n3 warnings generated.\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c logging.c -o logging.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c multiplex.c -o multiplex.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c psnr.c -o psnr.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c utl.c -o utl.o\ngcc dsc_codec.o dsc_utils.o cmd_parse.o codec_main.o dpx.o fifo.o hdr_dpx.o logging.o multiplex.o psnr.o utl.o -lm -o dsc\nDisplay Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nC baseline OK: 2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797\n",
         "returncode": 0
       },
@@ -27,7 +27,7 @@
           "<overlay-work>/bittrue_smoke/run_c_baseline_10bpc.sh"
         ],
         "cwd": "<overlay-work>",
-        "duration_seconds": 2.908,
+        "duration_seconds": 1.934,
         "output": "wrote <overlay-work>/bittrue_smoke/simple_192x108_10bpc.ppm (124432 bytes)\nrm -f *.o\nrm -f dsc\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dsc_codec.c -o dsc_codec.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dsc_utils.c -o dsc_utils.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c cmd_parse.c -o cmd_parse.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c codec_main.c -o codec_main.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dpx.c -o dpx.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c fifo.c -o fifo.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c hdr_dpx.c -o hdr_dpx.o\nhdr_dpx.c:90:6: warning: variable 'yidx' set but not used [-Wunused-but-set-variable]\n   90 |         int yidx = 0;\n      |             ^\nhdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\nhdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n3 warnings generated.\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c logging.c -o logging.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c multiplex.c -o multiplex.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c psnr.c -o psnr.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c utl.c -o utl.o\ngcc dsc_codec.o dsc_utils.o cmd_parse.o codec_main.o dpx.o fifo.o hdr_dpx.o logging.o multiplex.o psnr.o utl.o -lm -o dsc\nDisplay Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nC 10bpc baseline OK: 696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13\n",
         "returncode": 0
       },
@@ -48,7 +48,7 @@
           "<overlay-work>/bittrue_smoke/run_c_baseline_native420.sh"
         ],
         "cwd": "<overlay-work>",
-        "duration_seconds": 2.914,
+        "duration_seconds": 1.926,
         "output": "wrote <overlay-work>/bittrue_smoke/native_192x108_420.yuv (51840 bytes)\nrm -f *.o\nrm -f dsc\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dsc_codec.c -o dsc_codec.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dsc_utils.c -o dsc_utils.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c cmd_parse.c -o cmd_parse.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c codec_main.c -o codec_main.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dpx.c -o dpx.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c fifo.c -o fifo.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c hdr_dpx.c -o hdr_dpx.o\nhdr_dpx.c:90:6: warning: variable 'yidx' set but not used [-Wunused-but-set-variable]\n   90 |         int yidx = 0;\n      |             ^\nhdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\nhdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n3 warnings generated.\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c logging.c -o logging.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c multiplex.c -o multiplex.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c psnr.c -o psnr.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c utl.c -o utl.o\ngcc dsc_codec.o dsc_utils.o cmd_parse.o codec_main.o dpx.o fifo.o hdr_dpx.o logging.o multiplex.o psnr.o utl.o -lm -o dsc\nDisplay Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nC native420 baseline OK: 0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533\n",
         "returncode": 0
       },
@@ -82,7 +82,7 @@
           "<overlay-work>/overlay-build/cmd_parse.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.172,
+        "duration_seconds": 0.123,
         "output": "",
         "returncode": 0
       },
@@ -100,7 +100,7 @@
           "<overlay-work>/overlay-build/codec_main.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.34,
+        "duration_seconds": 0.231,
         "output": "",
         "returncode": 0
       },
@@ -117,7 +117,7 @@
           "<overlay-work>/overlay-build/dpx.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.163,
+        "duration_seconds": 0.131,
         "output": "",
         "returncode": 0
       },
@@ -134,7 +134,7 @@
           "<overlay-work>/overlay-build/dsc_cicd_main.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.045,
+        "duration_seconds": 0.027,
         "output": "",
         "returncode": 0
       },
@@ -151,7 +151,7 @@
           "<overlay-work>/overlay-build/dsc_cicd_overlay.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.054,
+        "duration_seconds": 0.03,
         "output": "",
         "returncode": 0
       },
@@ -168,7 +168,7 @@
           "<overlay-work>/overlay-build/dsc_codec.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.44,
+        "duration_seconds": 0.31,
         "output": "",
         "returncode": 0
       },
@@ -185,7 +185,7 @@
           "<overlay-work>/overlay-build/dsc_utils.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.184,
+        "duration_seconds": 0.146,
         "output": "",
         "returncode": 0
       },
@@ -202,7 +202,7 @@
           "<overlay-work>/overlay-build/fifo.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.061,
+        "duration_seconds": 0.047,
         "output": "",
         "returncode": 0
       },
@@ -219,7 +219,7 @@
           "<overlay-work>/overlay-build/hdr_dpx.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.226,
+        "duration_seconds": 0.196,
         "output": "<overlay-work>/source/hdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n<overlay-work>/source/hdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n2 warnings generated.\n",
         "returncode": 0
       },
@@ -236,7 +236,7 @@
           "<overlay-work>/overlay-build/logging.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.045,
+        "duration_seconds": 0.036,
         "output": "",
         "returncode": 0
       },
@@ -253,7 +253,7 @@
           "<overlay-work>/overlay-build/multiplex.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.045,
+        "duration_seconds": 0.038,
         "output": "",
         "returncode": 0
       },
@@ -270,7 +270,7 @@
           "<overlay-work>/overlay-build/psnr.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.059,
+        "duration_seconds": 0.051,
         "output": "",
         "returncode": 0
       },
@@ -287,7 +287,7 @@
           "<overlay-work>/overlay-build/utl.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.235,
+        "duration_seconds": 0.214,
         "output": "",
         "returncode": 0
       },
@@ -306,7 +306,7 @@
           "<overlay-work>/overlay-build/rtl_bridge.o"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.424,
+        "duration_seconds": 0.382,
         "output": "",
         "returncode": 0
       },
@@ -330,11 +330,11 @@
           "<overlay-work>/overlay-build/psnr.o",
           "<overlay-work>/overlay-build/utl.o",
           "<overlay-work>/overlay-build/rtl_bridge.o",
-          "<overlay-work>/overlay-build/rtl-object/Vquantizeresidual_candidate_01__ALL.a",
+          "<overlay-work>/overlay-build/rtl-object/Vquantizeresidual__ALL.a",
           "<overlay-work>/overlay-build/rtl-object/libverilated.a"
         ],
         "cwd": "<overlay-work>/source",
-        "duration_seconds": 0.05,
+        "duration_seconds": 0.041,
         "output": "",
         "returncode": 0
       }
@@ -345,16 +345,16 @@
         "-C",
         "<overlay-work>/overlay-build/rtl-object",
         "-f",
-        "Vquantizeresidual_candidate_01.mk",
+        "Vquantizeresidual.mk",
         "-j",
         "1"
       ],
       "cwd": "<overlay-work>/source",
-      "duration_seconds": 4.168,
-      "output": "python3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vquantizeresidual_candidate_01.cpp Vquantizeresidual_candidate_01___024root__0.cpp Vquantizeresidual_candidate_01__ConstPool__0__Slow.cpp Vquantizeresidual_candidate_01___024root__Slow.cpp Vquantizeresidual_candidate_01___024root__0__Slow.cpp Vquantizeresidual_candidate_01__Syms__Slow.cpp > Vquantizeresidual_candidate_01__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o Vquantizeresidual_candidate_01__ALL.o Vquantizeresidual_candidate_01__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nrm Vquantizeresidual_candidate_01__ALL.verilator_deplist.tmp libVquantizeresidual_candidate_01.verilator_deplist.tmp libverilated.verilator_deplist.tmp\n",
+      "duration_seconds": 2.5,
+      "output": "python3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vquantizeresidual.cpp Vquantizeresidual___024root__0.cpp Vquantizeresidual__ConstPool__0__Slow.cpp Vquantizeresidual___024root__Slow.cpp Vquantizeresidual___024root__0__Slow.cpp Vquantizeresidual__Syms__Slow.cpp > Vquantizeresidual__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o Vquantizeresidual__ALL.o Vquantizeresidual__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nrm Vquantizeresidual__ALL.verilator_deplist.tmp libVquantizeresidual.verilator_deplist.tmp libverilated.verilator_deplist.tmp\n",
       "returncode": 0
     },
-    "module": "quantizeresidual_candidate_01",
+    "module": "quantizeresidual",
     "status": "PASS",
     "verilator": {
       "command": [
@@ -364,12 +364,12 @@
         "--Mdir",
         "<overlay-work>/overlay-build/rtl-object",
         "--top-module",
-        "quantizeresidual_candidate_01",
+        "quantizeresidual",
         "--Wno-fatal"
       ],
       "cwd": "<overlay-work>/source",
-      "duration_seconds": 0.08,
-      "output": "%Warning-WIDTHEXPAND: <overlay-work>/candidate.sv:9:13: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's SIGNED generates 17 bits.\n                                                                                                                       : ... note: In instance 'quantizeresidual_candidate_01'\n    9 |         e_i = $signed(e);\n      |             ^\n                      ... For warning description see https://verilator.org/warn/WIDTHEXPAND?v=5.050\n                      ... Use \"/* verilator lint_off WIDTHEXPAND */\" and lint_on around source to disable this message.\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:31:35: Operator ASSIGN expects 17 bits on the Assign RHS, but Assign RHS's SHIFTRS generates 32 bits.\n                                                                                                                       : ... note: In instance 'quantizeresidual_candidate_01'\n   31 |         if (e_i > 0) return_value = (e_i + round_i) >>> qlevel;\n      |                                   ^\n                     ... For warning description see https://verilator.org/warn/WIDTHTRUNC?v=5.050\n                     ... Use \"/* verilator lint_off WIDTHTRUNC */\" and lint_on around source to disable this message.\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:32:27: Operator ASSIGN expects 17 bits on the Assign RHS, but Assign RHS's NEGATE generates 32 bits.\n                                                                                                                       : ... note: In instance 'quantizeresidual_candidate_01'\n   32 |         else return_value = -((round_i - e_i) >>> qlevel);\n      |                           ^\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.032 MB sources in 2 modules, into 0.029 MB in 6 C++ files needing 0.000 MB\n- Verilator: Walltime 0.007 s (elab=0.000, cvt=0.003, bld=0.000); cpu 0.007 s on 1 threads; allocated 9.797 MB\n",
+      "duration_seconds": 0.054,
+      "output": "%Warning-WIDTHEXPAND: <overlay-work>/candidate.sv:9:13: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's SIGNED generates 17 bits.\n                                                                                                                                 : ... note: In instance 'quantizeresidual'\n    9 |         e_i = $signed(e);\n      |             ^\n                      ... For warning description see https://verilator.org/warn/WIDTHEXPAND?v=5.050\n                      ... Use \"/* verilator lint_off WIDTHEXPAND */\" and lint_on around source to disable this message.\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:31:35: Operator ASSIGN expects 17 bits on the Assign RHS, but Assign RHS's SHIFTRS generates 32 bits.\n                                                                                                                                 : ... note: In instance 'quantizeresidual'\n   31 |         if (e_i > 0) return_value = (e_i + round_i) >>> qlevel;\n      |                                   ^\n                     ... For warning description see https://verilator.org/warn/WIDTHTRUNC?v=5.050\n                     ... Use \"/* verilator lint_off WIDTHTRUNC */\" and lint_on around source to disable this message.\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:32:27: Operator ASSIGN expects 17 bits on the Assign RHS, but Assign RHS's NEGATE generates 32 bits.\n                                                                                                                                 : ... note: In instance 'quantizeresidual'\n   32 |         else return_value = -((round_i - e_i) >>> qlevel);\n      |                           ^\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.032 MB sources in 2 modules, into 0.027 MB in 6 C++ files needing 0.000 MB\n- Verilator: Walltime 0.006 s (elab=0.000, cvt=0.002, bld=0.000); cpu 0.006 s on 1 threads; allocated 9.656 MB\n",
       "returncode": 0
     }
   },
@@ -387,7 +387,7 @@
               "<overlay-work>/bittrue_smoke/simple_8bpc_rgb.cfg"
             ],
             "cwd": "<overlay-work>",
-            "duration_seconds": 0.444,
+            "duration_seconds": 0.348,
             "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
             "returncode": 0
           },
@@ -412,7 +412,7 @@
               "<overlay-work>/bittrue_smoke/simple_10bpc_rgb.cfg"
             ],
             "cwd": "<overlay-work>",
-            "duration_seconds": 0.051,
+            "duration_seconds": 0.029,
             "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
             "returncode": 0
           },
@@ -437,7 +437,7 @@
               "<overlay-work>/bittrue_smoke/native_8bpc_420.cfg"
             ],
             "cwd": "<overlay-work>",
-            "duration_seconds": 0.051,
+            "duration_seconds": 0.016,
             "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
             "returncode": 0
           },
@@ -467,7 +467,7 @@
               "<overlay-work>/bittrue_smoke/simple_8bpc_rgb.cfg"
             ],
             "cwd": "<overlay-work>",
-            "duration_seconds": 0.125,
+            "duration_seconds": 0.107,
             "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
             "returncode": 0
           },
@@ -492,7 +492,7 @@
               "<overlay-work>/bittrue_smoke/simple_10bpc_rgb.cfg"
             ],
             "cwd": "<overlay-work>",
-            "duration_seconds": 0.143,
+            "duration_seconds": 0.103,
             "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
             "returncode": 0
           },
@@ -517,7 +517,7 @@
               "<overlay-work>/bittrue_smoke/native_8bpc_420.cfg"
             ],
             "cwd": "<overlay-work>",
-            "duration_seconds": 0.105,
+            "duration_seconds": 0.055,
             "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
             "returncode": 0
           },
@@ -547,7 +547,7 @@
               "<overlay-work>/bittrue_smoke/simple_8bpc_rgb.cfg"
             ],
             "cwd": "<overlay-work>",
-            "duration_seconds": 0.146,
+            "duration_seconds": 0.103,
             "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
             "returncode": 0
           },
@@ -572,7 +572,7 @@
               "<overlay-work>/bittrue_smoke/simple_10bpc_rgb.cfg"
             ],
             "cwd": "<overlay-work>",
-            "duration_seconds": 0.131,
+            "duration_seconds": 0.107,
             "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
             "returncode": 0
           },
@@ -597,7 +597,7 @@
               "<overlay-work>/bittrue_smoke/native_8bpc_420.cfg"
             ],
             "cwd": "<overlay-work>",
-            "duration_seconds": 0.1,
+            "duration_seconds": 0.055,
             "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
             "returncode": 0
           },
@@ -685,7 +685,7 @@
         "<overlay-work>/source/utl.c"
       ],
       "cwd": "<overlay-work>/source",
-      "duration_seconds": 0.115,
+      "duration_seconds": 0.159,
       "output": "[1/13] Processing file <overlay-work>/source/cmd_parse.c.\n[2/13] Processing file <overlay-work>/source/codec_main.c.\n[3/13] Processing file <overlay-work>/source/dpx.c.\n[4/13] Processing file <overlay-work>/source/dsc_cicd_main.c.\n[5/13] Processing file <overlay-work>/source/dsc_cicd_overlay.c.\n[6/13] Processing file <overlay-work>/source/dsc_codec.c.\n[7/13] Processing file <overlay-work>/source/dsc_utils.c.\n[8/13] Processing file <overlay-work>/source/fifo.c.\n[9/13] Processing file <overlay-work>/source/hdr_dpx.c.\n[10/13] Processing file <overlay-work>/source/logging.c.\n[11/13] Processing file <overlay-work>/source/multiplex.c.\n[12/13] Processing file <overlay-work>/source/psnr.c.\n[13/13] Processing file <overlay-work>/source/utl.c.\n",
       "returncode": 0
     },

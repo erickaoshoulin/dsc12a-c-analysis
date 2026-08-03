@@ -750,8 +750,8 @@
       "unreachable_condition": "FindResidualSize's printf branch requires a residual outside [-131702,131701], while the reviewed quantized-residual contract is [-65535,65535]"
     },
     "fact_source": "facts/functions.json",
-    "new_work": true,
-    "promoted_existing": false
+    "new_work": false,
+    "promoted_existing": true
   },
   "semantics": {
     "expression": "MAX(FindResidualSize(quantizedResidual[unit][0]), FindResidualSize(quantizedResidual[unit][1]), FindResidualSize(quantizedResidual[unit][2])) >= cpntBitDepth[cpnt] - MapQpToQlevel(primaryQp, cpnt)",

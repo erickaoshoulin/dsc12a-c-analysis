@@ -1,51 +1,119 @@
 {
   "agent": "executable-generic-c-to-rtl-cicd",
-  "blocked_contracts": [],
-  "blockers": [],
+  "blocked_contracts": [
+    {
+      "contract_id": "ichdecision",
+      "function": "IchDecision",
+      "reasons": [
+        "prior_composition_boundary_unresolved"
+      ]
+    },
+    {
+      "contract_id": "isflatnessinfosent",
+      "function": "IsFlatnessInfoSent",
+      "reasons": [
+        "prior_composition_boundary_unresolved"
+      ]
+    },
+    {
+      "contract_id": "mapqptoqlevel",
+      "function": "MapQpToQlevel",
+      "reasons": [
+        "prior_composition_boundary_unresolved"
+      ]
+    },
+    {
+      "contract_id": "predictsize",
+      "function": "PredictSize",
+      "reasons": [
+        "prior_composition_boundary_unresolved"
+      ]
+    },
+    {
+      "contract_id": "samplepredict",
+      "function": "SamplePredict",
+      "reasons": [
+        "prior_composition_boundary_unresolved"
+      ]
+    }
+  ],
+  "blockers": [
+    "findmidpoint: caller call signature does not provide the frozen DUT interface; retain C boundary",
+    "findmidpoint: dependency composition did not pass all real gates",
+    "ichdecision: prior_composition_boundary_unresolved",
+    "isflatnessinfosent: prior_composition_boundary_unresolved",
+    "mapqptoqlevel: prior_composition_boundary_unresolved",
+    "predictsize: prior_composition_boundary_unresolved",
+    "samplepredict: prior_composition_boundary_unresolved"
+  ],
   "dependency_pair": {
     "call_sites": [
       {
-        "callee_contract": "ichdecision",
-        "callee_function": "IchDecision",
-        "callee_usr": "c:@F@IchDecision",
+        "callee_contract": "findmidpoint",
+        "callee_function": "FindMidpoint",
+        "callee_usr": "c:@F@FindMidpoint",
         "caller_contract": null,
-        "caller_function": "VLCUnit",
-        "caller_usr": "c:@F@VLCUnit",
+        "caller_function": "PredictionLoop",
+        "caller_usr": "c:@F@PredictionLoop",
         "location": {
-          "column": 28,
+          "column": 14,
           "file": "dsc_codec.c",
-          "line": 1620
+          "line": 2452
+        },
+        "source": "facts/callgraph.json"
+      },
+      {
+        "callee_contract": "findmidpoint",
+        "callee_function": "FindMidpoint",
+        "callee_usr": "c:@F@FindMidpoint",
+        "caller_contract": null,
+        "caller_function": "PredictionLoop",
+        "caller_usr": "c:@F@PredictionLoop",
+        "location": {
+          "column": 20,
+          "file": "dsc_codec.c",
+          "line": 2483
+        },
+        "source": "facts/callgraph.json"
+      },
+      {
+        "callee_contract": "findmidpoint",
+        "callee_function": "FindMidpoint",
+        "callee_usr": "c:@F@FindMidpoint",
+        "caller_contract": null,
+        "caller_function": "PredictionLoop",
+        "caller_usr": "c:@F@PredictionLoop",
+        "location": {
+          "column": 25,
+          "file": "dsc_codec.c",
+          "line": 2421
         },
         "source": "facts/callgraph.json"
       }
     ],
-    "callee_contract": "ichdecision",
-    "callee_function": "IchDecision",
-    "callee_usr": "c:@F@IchDecision",
+    "callee_contract": "findmidpoint",
+    "callee_function": "FindMidpoint",
+    "callee_usr": "c:@F@FindMidpoint",
     "caller_contract": null,
-    "caller_function": "VLCUnit",
-    "caller_usr": "c:@F@VLCUnit",
+    "caller_function": "PredictionLoop",
+    "caller_usr": "c:@F@PredictionLoop",
     "selection_basis": "smallest acyclic direct call site from facts/callgraph.json"
   },
-  "generator_invocations": 1,
+  "generator_invocations": 0,
   "input_pdf": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf",
   "input_source_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
   "matrix_scripts_discovered": 22,
-  "model_calls": 1,
+  "model_calls": 0,
   "new_candidates": [
     "ichdecision"
   ],
   "ready_contracts": [
     "findmidpoint",
-    "ichdecision",
-    "isflatnessinfosent",
-    "mapqptoqlevel",
-    "predictsize",
     "quantizeresidual",
-    "samplepredict",
     "samptolinebuf"
   ],
   "receipt_policy": {
+    "accepted_rtl_refresh": "REUSED_ACCEPTED_RTL; deterministic verification still executes",
     "bounded_differential_pass": "DIFFERENTIAL_PASS; never a promotion gate",
     "cache_hit": "REUSED_VERIFIED_RECEIPT",
     "complete_domain_pass": "EXHAUSTIVE_EQUIVALENT",
@@ -54,119 +122,22 @@
   },
   "results": [
     {
-      "contract_id": "ichdecision",
-      "counterexample": {
-        "actual": "0",
-        "expected": "1",
-        "index": 0,
-        "inputs": [
-          0,
-          0,
-          1,
-          1,
-          0,
-          2,
-          4,
-          3,
-          3,
-          0,
-          1,
-          0,
-          0,
-          0,
-          0,
-          3,
-          8,
-          8,
-          8,
-          8,
-          0,
-          1,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
-        ],
-        "shard_id": 0
-      },
+      "contract_id": "findmidpoint",
+      "counterexample": null,
       "dependency_evidence": {
-        "call_sites": 1,
+        "call_sites": 3,
         "compile_commands": true,
-        "direct_call_sites": 1,
+        "direct_call_sites": 3,
         "matrix_commands": true,
         "vectors": true
       },
       "dependency_status": "FAIL",
-      "domain_proof_complete": false,
+      "domain_proof_complete": true,
       "executed_shards": 4,
-      "executed_vectors": 187232,
+      "executed_vectors": 8207360,
       "execution_status": "EXECUTED_NOW",
-      "formal_proof_complete": true,
-      "formal_proof_status": "PASS",
+      "formal_proof_complete": false,
+      "formal_proof_status": "NOT_APPLICABLE",
       "library_promotion": {},
       "matrix_modes": {
         "C_ONLY": "PASS",
@@ -174,139 +145,28 @@
         "SHADOW": "NOT_RUN"
       },
       "matrix_status": "COMPOSITION_BLOCKED",
-      "model_calls": 1,
-      "rejected_candidates": [
-        {
-          "bitstream_gate": "FAIL",
-          "candidate": "candidate_02",
-          "composition_gate": "NOT_RUN",
-          "counterexample": {
-            "actual": "0",
-            "expected": "1",
-            "index": 0,
-            "inputs": [
-              0,
-              0,
-              1,
-              1,
-              0,
-              2,
-              4,
-              3,
-              3,
-              0,
-              1,
-              0,
-              0,
-              0,
-              0,
-              3,
-              8,
-              8,
-              8,
-              8,
-              0,
-              1,
-              2,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0,
-              0
-            ],
-            "shard_id": 0
-          },
-          "expected_rejection": true,
-          "matrix_status": "NOT_RUN_UNIT_REJECTED",
-          "receipt": "artifacts/c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919/rejected/candidate_02/rejection-receipt.json",
-          "status": "EXPECTED_REJECTION",
-          "unit_gate": "FAIL",
-          "unit_verification_status": "COUNTEREXAMPLE"
-        }
-      ],
+      "model_calls": 0,
+      "rejected_candidates": [],
+      "rtl_materialization": "REUSED_ACCEPTED_RTL",
       "shard_durations_seconds": [
-        1.054,
-        1.057,
-        0.345,
-        0.346
+        3.327,
+        3.367,
+        2.624,
+        2.697
       ],
       "status": "FAILED",
-      "tokens": 24405,
-      "unit_status": "FORMAL_EQUIVALENT",
-      "vector_strategy": "ich_decision"
+      "tokens": 0,
+      "unit_status": "EXHAUSTIVE_EQUIVALENT",
+      "vector_strategy": "conditional"
     }
   ],
   "schema_version": 2,
   "selected_contracts": [
-    "ichdecision"
+    "findmidpoint"
   ],
-  "selected_new_work": [
-    "ichdecision"
-  ],
+  "selected_new_work": [],
   "shards": [
     4
   ],
-  "tokens": 24405
+  "tokens": 0
 }

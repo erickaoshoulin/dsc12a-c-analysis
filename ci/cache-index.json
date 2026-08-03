@@ -442,6 +442,32 @@
       "updated_at": "2026-08-03T03:05:54Z",
       "valid": false
     },
+    "27eef6180a99d3dcbb4a36a8950cab91fbf40ad60bb115a2a2266ad770027f6c": {
+      "artifact_dir": "artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
+      "cache_key": "27eef6180a99d3dcbb4a36a8950cab91fbf40ad60bb115a2a2266ad770027f6c",
+      "contract_id": "samptolinebuf",
+      "execution_status": "EXECUTED_NOW",
+      "hashes": {
+        "agent": "3f53a7b09fc3ac67be53c77c38f980765cc38a631e6f172d8c26dd8d7d355f83",
+        "contract": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
+        "dependency": "242cb5947e0652925b268a83e82fda05796e637554bfa9fb425f4d261af6fceb",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "7fb3b5713060a02cf0742c4a1c5bf6c912308a7307f96683fa475d3ddb9b6dfa",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "2"
+      },
+      "model_calls": 0,
+      "schema_version": 2,
+      "state": "PROMOTED",
+      "tokens": 0,
+      "updated_at": "2026-08-03T11:33:33Z",
+      "valid": true
+    },
     "2893c16cf2d832b430c66142fd68fb89a673ae7e99641ddd7fd162b1590a6f1e": {
       "artifact_dir": "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
       "cache_key": "2893c16cf2d832b430c66142fd68fb89a673ae7e99641ddd7fd162b1590a6f1e",
@@ -543,6 +569,32 @@
       "tokens": 2194,
       "updated_at": "2026-08-02T18:31:09Z",
       "valid": true
+    },
+    "31d84751b8b3419ea0b1d2524c8cc13d92f5408e8893bb8042e4759343ad04bf": {
+      "artifact_dir": "artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+      "cache_key": "31d84751b8b3419ea0b1d2524c8cc13d92f5408e8893bb8042e4759343ad04bf",
+      "contract_id": "findmidpoint",
+      "execution_status": "EXECUTED_NOW",
+      "hashes": {
+        "agent": "a4974c5928d04979dc5e75304a0a9df0bbf9e2528d3e78c14d962847d9f1b5e4",
+        "contract": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+        "dependency": "f31ebf694a15c841fbcb763dc23e43abe9c95c8b66987812c0521ac805778ebe",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "8b0e89222fa048933c03b067b877755d3f23bf39852e65442a4edf7258ece663",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "2"
+      },
+      "model_calls": 0,
+      "schema_version": 2,
+      "state": "FAILED",
+      "tokens": 0,
+      "updated_at": "2026-08-03T10:53:44Z",
+      "valid": false
     },
     "32f901800b6434de74d6872165b34b26ef93ad9fa7b365f5f72465f3a321dfc1": {
       "artifact_dir": "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa",
@@ -995,6 +1047,32 @@
       "updated_at": "2026-08-02T18:05:47Z",
       "valid": true
     },
+    "4a2a2b444e3aee16fdb1429da878538f1fb43eb4da27cb9b941171f507a22bc8": {
+      "artifact_dir": "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+      "cache_key": "4a2a2b444e3aee16fdb1429da878538f1fb43eb4da27cb9b941171f507a22bc8",
+      "contract_id": "findresidualsize",
+      "execution_status": "EXECUTED_NOW",
+      "hashes": {
+        "agent": "3f53a7b09fc3ac67be53c77c38f980765cc38a631e6f172d8c26dd8d7d355f83",
+        "contract": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+        "dependency": "9e6c1405ec992ffc24fd536b05eaa963645f2cf2cedc93afff3c5d59df2bcaee",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "7fb3b5713060a02cf0742c4a1c5bf6c912308a7307f96683fa475d3ddb9b6dfa",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "4"
+      },
+      "model_calls": 0,
+      "schema_version": 2,
+      "state": "PROMOTED",
+      "tokens": 0,
+      "updated_at": "2026-08-03T11:31:35Z",
+      "valid": true
+    },
     "4a6ffe8e40e730b6a8cd3ed43bdc33c6daed65aca04039b86fc2b37f5de3f81b": {
       "artifact_dir": "artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
       "cache_key": "4a6ffe8e40e730b6a8cd3ed43bdc33c6daed65aca04039b86fc2b37f5de3f81b",
@@ -1290,6 +1368,32 @@
       "updated_at": "2026-08-02T21:23:48Z",
       "valid": true
     },
+    "652e1749de7edfa325a39f78674562187c70d5ad585182082d5475420be15cd9": {
+      "artifact_dir": "artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
+      "cache_key": "652e1749de7edfa325a39f78674562187c70d5ad585182082d5475420be15cd9",
+      "contract_id": "quantizeresidual",
+      "execution_status": "EXECUTED_NOW",
+      "hashes": {
+        "agent": "94afa22e5cca6134b26953e1d5af1b29d6fcb9e4f15aa1a8fad210fc33587e93",
+        "contract": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
+        "dependency": "612f31e78f2dacecfc74eb2644ebc8d6256fd9f74b45383679a7e7405b10048f",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "7fb3b5713060a02cf0742c4a1c5bf6c912308a7307f96683fa475d3ddb9b6dfa",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "2"
+      },
+      "model_calls": 0,
+      "schema_version": 2,
+      "state": "PROMOTED",
+      "tokens": 0,
+      "updated_at": "2026-08-03T11:16:01Z",
+      "valid": true
+    },
     "6797de313a7193dfe0b0c6efe68f451eb354f1a83fc9fa00986c6a610bbff541": {
       "artifact_dir": "artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "cache_key": "6797de313a7193dfe0b0c6efe68f451eb354f1a83fc9fa00986c6a610bbff541",
@@ -1368,6 +1472,32 @@
       "updated_at": "2026-08-02T18:53:42Z",
       "valid": true
     },
+    "6b28128310ab84c396f3f47000d71694837a50c4a7f3ea6b370a3aa9bd826b59": {
+      "artifact_dir": "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+      "cache_key": "6b28128310ab84c396f3f47000d71694837a50c4a7f3ea6b370a3aa9bd826b59",
+      "contract_id": "ceil_log2",
+      "execution_status": "EXECUTED_NOW",
+      "hashes": {
+        "agent": "3f53a7b09fc3ac67be53c77c38f980765cc38a631e6f172d8c26dd8d7d355f83",
+        "contract": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+        "dependency": "3b7f5328839b9a8019d9b2517accb27b5a85150709907f97a39b72fb99dba088",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "7fb3b5713060a02cf0742c4a1c5bf6c912308a7307f96683fa475d3ddb9b6dfa",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "4"
+      },
+      "model_calls": 0,
+      "schema_version": 2,
+      "state": "PROMOTED",
+      "tokens": 0,
+      "updated_at": "2026-08-03T11:31:35Z",
+      "valid": true
+    },
     "6baff9e06adbf7e93f90696a461721d180f6666db491866b3f90be2b60f0eba7": {
       "artifact_dir": "artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
       "cache_key": "6baff9e06adbf7e93f90696a461721d180f6666db491866b3f90be2b60f0eba7",
@@ -1442,6 +1572,32 @@
       "state": "COUNTEREXAMPLE",
       "tokens": 5817,
       "updated_at": "2026-08-02T22:41:46Z",
+      "valid": false
+    },
+    "6f94e913d1146b9f22b88f21b2d10385c7cb0dae094019c2782cba6a75b4a543": {
+      "artifact_dir": "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+      "cache_key": "6f94e913d1146b9f22b88f21b2d10385c7cb0dae094019c2782cba6a75b4a543",
+      "contract_id": "samplepredict",
+      "execution_status": "EXECUTED_NOW",
+      "hashes": {
+        "agent": "94afa22e5cca6134b26953e1d5af1b29d6fcb9e4f15aa1a8fad210fc33587e93",
+        "contract": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+        "dependency": "c342660294a6ba98f6dbc6bc3d2b0ac8e094b34834409158eb72a155344bd6a1",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "7fb3b5713060a02cf0742c4a1c5bf6c912308a7307f96683fa475d3ddb9b6dfa",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "2"
+      },
+      "model_calls": 0,
+      "schema_version": 2,
+      "state": "FAILED",
+      "tokens": 0,
+      "updated_at": "2026-08-03T11:20:54Z",
       "valid": false
     },
     "72b805466967a324ca9fd32be22a66a8d8a70e103b06638604e441132e895ada": {
@@ -1677,6 +1833,110 @@
       "tokens": 989,
       "updated_at": "2026-08-02T19:37:09Z",
       "valid": true
+    },
+    "8094013b64e03f6a367c89f80cec7743e43a50a7ba43b842ca5882bde17ad037": {
+      "artifact_dir": "artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
+      "cache_key": "8094013b64e03f6a367c89f80cec7743e43a50a7ba43b842ca5882bde17ad037",
+      "contract_id": "quantizeresidual",
+      "execution_status": "EXECUTED_NOW",
+      "hashes": {
+        "agent": "3f53a7b09fc3ac67be53c77c38f980765cc38a631e6f172d8c26dd8d7d355f83",
+        "contract": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
+        "dependency": "612f31e78f2dacecfc74eb2644ebc8d6256fd9f74b45383679a7e7405b10048f",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "7fb3b5713060a02cf0742c4a1c5bf6c912308a7307f96683fa475d3ddb9b6dfa",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "2"
+      },
+      "model_calls": 0,
+      "schema_version": 2,
+      "state": "PROMOTED",
+      "tokens": 0,
+      "updated_at": "2026-08-03T11:32:35Z",
+      "valid": true
+    },
+    "80bc6129f22dc8f8a4f5d6ad228bfeacd62fcacaac0bddcb4d761af4cf1152df": {
+      "artifact_dir": "artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
+      "cache_key": "80bc6129f22dc8f8a4f5d6ad228bfeacd62fcacaac0bddcb4d761af4cf1152df",
+      "contract_id": "samptolinebuf",
+      "execution_status": "EXECUTED_NOW",
+      "hashes": {
+        "agent": "94afa22e5cca6134b26953e1d5af1b29d6fcb9e4f15aa1a8fad210fc33587e93",
+        "contract": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
+        "dependency": "242cb5947e0652925b268a83e82fda05796e637554bfa9fb425f4d261af6fceb",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "7fb3b5713060a02cf0742c4a1c5bf6c912308a7307f96683fa475d3ddb9b6dfa",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "2"
+      },
+      "model_calls": 0,
+      "schema_version": 2,
+      "state": "PROMOTED",
+      "tokens": 0,
+      "updated_at": "2026-08-03T11:21:56Z",
+      "valid": true
+    },
+    "80c5e7daf52d749ca39665bd537628757dcb5aaebd8a16989859bf116f444377": {
+      "artifact_dir": "artifacts/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
+      "cache_key": "80c5e7daf52d749ca39665bd537628757dcb5aaebd8a16989859bf116f444377",
+      "contract_id": "predictsize",
+      "execution_status": "EXECUTED_NOW",
+      "hashes": {
+        "agent": "94afa22e5cca6134b26953e1d5af1b29d6fcb9e4f15aa1a8fad210fc33587e93",
+        "contract": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
+        "dependency": "c8cc34c74343eb8209390547dd44c6e1233cac7f43fde90bf8d9bfff4fca8d9f",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "7fb3b5713060a02cf0742c4a1c5bf6c912308a7307f96683fa475d3ddb9b6dfa",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "2"
+      },
+      "model_calls": 0,
+      "schema_version": 2,
+      "state": "FAILED",
+      "tokens": 0,
+      "updated_at": "2026-08-03T11:15:33Z",
+      "valid": false
+    },
+    "8268bf91057798c8215a88a6939744e5a52ced75b53420f24d24de6c0a2039c6": {
+      "artifact_dir": "artifacts/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+      "cache_key": "8268bf91057798c8215a88a6939744e5a52ced75b53420f24d24de6c0a2039c6",
+      "contract_id": "mapqptoqlevel",
+      "execution_status": "EXECUTED_NOW",
+      "hashes": {
+        "agent": "354a0c58dbfc6931cff8ea5dbe507ad07ef151b653d1cc758071e37b58e5523e",
+        "contract": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+        "dependency": "be9e5b87ba35328b2d70aebf14188b8adb9fa98ab9863a8d5f28b00492aebf68",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "7fb3b5713060a02cf0742c4a1c5bf6c912308a7307f96683fa475d3ddb9b6dfa",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "2"
+      },
+      "model_calls": 0,
+      "schema_version": 2,
+      "state": "FAILED",
+      "tokens": 0,
+      "updated_at": "2026-08-03T11:12:26Z",
+      "valid": false
     },
     "84ecf05c739b13f320628981c30f4ef7a89faa2e2d6c162615432b5de9a903fd": {
       "artifact_dir": "artifacts/c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
@@ -2150,6 +2410,32 @@
       "tokens": 12302,
       "updated_at": "2026-08-02T17:56:19Z",
       "valid": true
+    },
+    "9aab692729aee49c9349066849ae381e51f23d24ab2ba95b769b419bcb669fb3": {
+      "artifact_dir": "artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+      "cache_key": "9aab692729aee49c9349066849ae381e51f23d24ab2ba95b769b419bcb669fb3",
+      "contract_id": "findmidpoint",
+      "execution_status": "EXECUTED_NOW",
+      "hashes": {
+        "agent": "3f53a7b09fc3ac67be53c77c38f980765cc38a631e6f172d8c26dd8d7d355f83",
+        "contract": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+        "dependency": "f31ebf694a15c841fbcb763dc23e43abe9c95c8b66987812c0521ac805778ebe",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "7fb3b5713060a02cf0742c4a1c5bf6c912308a7307f96683fa475d3ddb9b6dfa",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "2"
+      },
+      "model_calls": 0,
+      "schema_version": 2,
+      "state": "FAILED",
+      "tokens": 0,
+      "updated_at": "2026-08-03T11:36:29Z",
+      "valid": false
     },
     "9f8fb76397de446d6421d1ae6f39b782660e915e38c7d7f8493e8851ec632f36": {
       "artifact_dir": "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
@@ -2827,6 +3113,58 @@
       "updated_at": "2026-08-02T17:56:19Z",
       "valid": true
     },
+    "ccaca3fe4e4fc37941a8c6f569949c6465f406932e96d4517fb965a50c3d0cd4": {
+      "artifact_dir": "artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+      "cache_key": "ccaca3fe4e4fc37941a8c6f569949c6465f406932e96d4517fb965a50c3d0cd4",
+      "contract_id": "findmidpoint",
+      "execution_status": "EXECUTED_NOW",
+      "hashes": {
+        "agent": "3f53a7b09fc3ac67be53c77c38f980765cc38a631e6f172d8c26dd8d7d355f83",
+        "contract": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+        "dependency": "1f9913cadc3eb819db49c0e68c665c588e76b218efbfc61f6740366854045ec6",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "7fb3b5713060a02cf0742c4a1c5bf6c912308a7307f96683fa475d3ddb9b6dfa",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "4"
+      },
+      "model_calls": 0,
+      "schema_version": 2,
+      "state": "FAILED",
+      "tokens": 0,
+      "updated_at": "2026-08-03T11:31:35Z",
+      "valid": false
+    },
+    "cd7ab6e663214d73f5ad10f2bc2a3bcd8bb89413fb21e91f6d38dc389adc0b7f": {
+      "artifact_dir": "artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
+      "cache_key": "cd7ab6e663214d73f5ad10f2bc2a3bcd8bb89413fb21e91f6d38dc389adc0b7f",
+      "contract_id": "isflatnessinfosent",
+      "execution_status": "EXECUTED_NOW",
+      "hashes": {
+        "agent": "09059b3d65ddae5e158738870da015924988504f1024cd2a51df45d55bcb89e2",
+        "contract": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
+        "dependency": "cdacd46bfe4cae5e584f55fdb16b27c67c2f7fe22a67c58c85f32686e3e2caed",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "8b0e89222fa048933c03b067b877755d3f23bf39852e65442a4edf7258ece663",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "2"
+      },
+      "model_calls": 0,
+      "schema_version": 2,
+      "state": "FAILED",
+      "tokens": 0,
+      "updated_at": "2026-08-03T10:56:17Z",
+      "valid": false
+    },
     "ce1bd82c9834aaa883eda608c0c0dd62d91e45e1c795a2c8248bc2800a48dbb0": {
       "artifact_dir": "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
       "cache_key": "ce1bd82c9834aaa883eda608c0c0dd62d91e45e1c795a2c8248bc2800a48dbb0",
@@ -3370,6 +3708,32 @@
       "tokens": 1696,
       "updated_at": "2026-08-02T13:17:18Z",
       "valid": true
+    },
+    "fc6ba615e265c58fba9a86f57bea4713542e0859623423e19a9fed2cb4b15e2c": {
+      "artifact_dir": "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
+      "cache_key": "fc6ba615e265c58fba9a86f57bea4713542e0859623423e19a9fed2cb4b15e2c",
+      "contract_id": "escapecodesize",
+      "execution_status": "EXECUTED_NOW",
+      "hashes": {
+        "agent": "3f53a7b09fc3ac67be53c77c38f980765cc38a631e6f172d8c26dd8d7d355f83",
+        "contract": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
+        "dependency": "45321616e0c7ed703dd1fa8c249701b85b8ccfe4a35607f923e0a251a9dab3be",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "7fb3b5713060a02cf0742c4a1c5bf6c912308a7307f96683fa475d3ddb9b6dfa",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "4"
+      },
+      "model_calls": 0,
+      "schema_version": 2,
+      "state": "FAILED",
+      "tokens": 0,
+      "updated_at": "2026-08-03T11:31:35Z",
+      "valid": false
     },
     "fee62bbfc4805acacd443f429d1d13bb9f88a8267adb785bdd0d71294eea9b83": {
       "artifact_dir": "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",

@@ -1,33 +1,22 @@
 {
+  "accepted_rtl": {
+    "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+    "library_file": "library/rtl/ceil_log2.sv",
+    "module": "ceil_log2",
+    "module_sha256": "71784bb792966a7e48e98d35cc2e2c3f6052f1c17528ffe1b4256f805c9fda65",
+    "reason": "bounded_stable_refresh"
+  },
   "candidate_limit": 4,
   "candidates": [
     {
       "candidate": "candidate_01",
+      "module": "ceil_log2",
       "path": "generated/candidate_01.sv",
-      "sha256": "42b42477e6d865a48733dba17bac8bdf2aeebccdd54f39d485822abd4a61a1f0",
-      "validation": "PASS",
-      "validation_reasons": []
-    },
-    {
-      "candidate": "candidate_02",
-      "path": "generated/candidate_02.sv",
-      "sha256": "51685c999ebf30cedf22da5e6e2fa9baa516932f9de339db161182f0c7e6d2be",
+      "sha256": "71784bb792966a7e48e98d35cc2e2c3f6052f1c17528ffe1b4256f805c9fda65",
       "validation": "PASS",
       "validation_reasons": []
     }
   ],
-  "command": {
-    "command": [
-      "python3",
-      "tools/generator_fixture.py",
-      "/private/tmp/dsc12a-c-analysis/artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896/generation-request.json",
-      "/private/tmp/dsc12a-c-analysis/artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896/generated"
-    ],
-    "cwd": "/private/tmp/dsc12a-c-analysis",
-    "duration_seconds": 0.069,
-    "output": "",
-    "returncode": 0
-  },
   "context_keys": [
     "locked_contract",
     "frozen_interface",
@@ -35,28 +24,14 @@
     "exact_spec_anchors"
   ],
   "contract_id": "ceil_log2",
-  "execution_status": "EXECUTED_NOW",
-  "hook": "python3 tools/generator_fixture.py",
-  "model_calls": 1,
+  "execution_status": "REUSED_ACCEPTED_RTL",
+  "hook": "NOT_USED",
+  "model_calls": 0,
   "schema_version": 2,
   "source_span": {
     "end_line": 73,
     "start_line": 67
   },
   "status": "PASS",
-  "telemetry": {
-    "candidate_count": 2,
-    "contract_id": "ceil_log2",
-    "generator": "deterministic-fixture-hook",
-    "model_calls": 1,
-    "request_keys": [
-      "c_body",
-      "exact_spec_anchors",
-      "frozen_interface",
-      "locked_contract"
-    ],
-    "tokens_in": 868,
-    "tokens_out": 121
-  },
-  "tokens": 989
+  "tokens": 0
 }

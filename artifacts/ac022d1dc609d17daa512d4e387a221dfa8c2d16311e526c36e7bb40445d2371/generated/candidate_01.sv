@@ -1,4 +1,4 @@
-module mapqptoqlevel_candidate_01 (
+module mapqptoqlevel (
     input logic [1:0] cpnt,
     input logic [4:0] qp,
     input logic [1:0] dsc_version_minor,
