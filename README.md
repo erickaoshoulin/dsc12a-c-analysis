@@ -278,6 +278,27 @@ archives replacements, and updates the manifest under a library write lock;
 stateful callers, line storage, and other non-DUT C logic remain reference
 boundaries.
 
+## Human-readable regression dashboard
+
+The receipt-backed dashboard is a reporting and traceability view; JSON
+receipts remain authoritative and no new RTL regression is launched by the
+dashboard. Build it from the latest indexed run with:
+
+```sh
+python3 tools/dashboard.py build --run latest
+python3 tools/dashboard.py check
+python3 tools/dashboard.py serve
+python3 tools/regression.py report <run-id>
+```
+
+`DSC_REGRESSION_ROOT` is preferred when set. Otherwise the builder uses the
+mounted regression share when available and visibly falls back to repository
+local receipts. Open `dashboard/index.html` for the overview, then use
+`dashboard/functions/<contract-id>.html`, `dashboard/history.html`, and
+`dashboard/traceability.html` for details. `DIRECTORY_LAYOUT.md` explains the
+new run/library meanings and `path-map.json` keeps legacy paths readable
+without copying large RTL or verification files.
+
 ## Environment
 
 Set `DSC_ANALYSIS_TIMEOUT_SECONDS` for compiler/Clang/Frama-C commands,

@@ -1,0 +1,1424 @@
+{
+  "components": [
+    {
+      "canonical_path": "library/accepted/ceil_log2/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+      "contract": {
+        "legacy_path": "contracts/ceil_log2.json",
+        "materialized": false,
+        "path": "library/accepted/ceil_log2/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896/contract/contract.json"
+      },
+      "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+      "contract_id": "ceil_log2",
+      "function": "ceil_log2",
+      "history": [
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T213843Z-scale-41855a25",
+          "status": "PASS",
+          "timestamp": "2026-08-02T22:08:16Z",
+          "vectors": 65536
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T230757Z-scale-7a24e3ac",
+          "status": "PASS",
+          "timestamp": "2026-08-02T23:44:36Z",
+          "vectors": 65536
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260803T014654Z-scale-2b8c6c5c",
+          "status": "PASS",
+          "timestamp": "2026-08-03T03:25:02Z",
+          "vectors": 65536
+        }
+      ],
+      "immutable": true,
+      "provenance": {
+        "artifact_dir": "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+        "authority": "EXACT_SPEC",
+        "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+        "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+        "promoted_at": "2026-08-02T21:15:54Z",
+        "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+      },
+      "rtl": {
+        "legacy_path": "library/rtl/ceil_log2.sv",
+        "materialized": false,
+        "path": "library/accepted/ceil_log2/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896/rtl/ceil_log2.sv",
+        "reference_path": "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+        "sha256": "71784bb792966a7e48e98d35cc2e2c3f6052f1c17528ffe1b4256f805c9fda65"
+      },
+      "stale": false,
+      "stale_reasons": [],
+      "status": "PASS",
+      "verification": {
+        "legacy_path": "library/verification/ceil_log2.json",
+        "materialized": false,
+        "path": "library/accepted/ceil_log2/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896/verification/ceil_log2.json",
+        "reference_path": "verification/ceil_log2.json"
+      }
+    },
+    {
+      "canonical_path": "library/accepted/escapecodesize/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
+      "contract": {
+        "legacy_path": "contracts/escapecodesize.json",
+        "materialized": false,
+        "path": "library/accepted/escapecodesize/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1/contract/contract.json"
+      },
+      "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
+      "contract_id": "escapecodesize",
+      "function": "EscapeCodeSize",
+      "history": [
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "a4141acef069f808dd7751bd953805c2d586c0be5c8d4dbf312ef2274ccd0759",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T115152Z-scale-b9191e5c",
+          "status": "PASS",
+          "timestamp": "2026-08-02T11:59:29Z",
+          "vectors": 16320
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T131813Z-scale-4f72935f",
+          "status": "PASS",
+          "timestamp": "2026-08-02T13:34:30Z",
+          "vectors": 16320
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "57a8e4aaed55ff339fa73fdaa6571457d5438d8a23f474360c12d7a43db68c69",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T133447Z-scale-4b440064",
+          "status": "PASS",
+          "timestamp": "2026-08-02T13:59:19Z",
+          "vectors": 16320
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T230757Z-scale-7a24e3ac",
+          "status": "PASS",
+          "timestamp": "2026-08-02T23:44:36Z",
+          "vectors": 16320
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260803T014654Z-scale-2b8c6c5c",
+          "status": "PASS",
+          "timestamp": "2026-08-03T03:25:02Z",
+          "vectors": 16320
+        }
+      ],
+      "immutable": true,
+      "provenance": {
+        "artifact_dir": "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
+        "authority": "EXACT_SPEC",
+        "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+        "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+        "promoted_at": "2026-08-02T21:21:51Z",
+        "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+      },
+      "rtl": {
+        "legacy_path": "library/rtl/escapecodesize.sv",
+        "materialized": false,
+        "path": "library/accepted/escapecodesize/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1/rtl/escapecodesize.sv",
+        "reference_path": "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
+        "sha256": "582d5e131e638e5a6aa4f9783cf1755b041f9369f9c8c84e57fb413845272167"
+      },
+      "stale": false,
+      "stale_reasons": [],
+      "status": "PASS",
+      "verification": {
+        "legacy_path": "library/verification/escapecodesize.json",
+        "materialized": false,
+        "path": "library/accepted/escapecodesize/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1/verification/escapecodesize.json",
+        "reference_path": "verification/escapecodesize.json"
+      }
+    },
+    {
+      "canonical_path": "library/accepted/estimatebitsforgroup/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
+      "contract": {
+        "legacy_path": "contracts/estimatebitsforgroup.json",
+        "materialized": false,
+        "path": "library/accepted/estimatebitsforgroup/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13/contract/contract.json"
+      },
+      "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
+      "contract_id": "estimatebitsforgroup",
+      "function": "EstimateBitsForGroup",
+      "history": [
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260803T014654Z-scale-2b8c6c5c",
+          "status": "PASS",
+          "timestamp": "2026-08-03T03:25:02Z",
+          "vectors": 1040928
+        }
+      ],
+      "immutable": true,
+      "provenance": {
+        "artifact_dir": "artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
+        "authority": "EXACT_SPEC",
+        "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+        "last_verified_run_id": null,
+        "promoted_at": "2026-08-03T01:29:48Z",
+        "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+      },
+      "rtl": {
+        "legacy_path": "library/rtl/estimatebitsforgroup.sv",
+        "materialized": false,
+        "path": "library/accepted/estimatebitsforgroup/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13/rtl/estimatebitsforgroup.sv",
+        "reference_path": "artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
+        "sha256": "da8e09494b9dad38a4591c81c21adf445cc0b92cdaf4eabc1604aa1ca2db3f9f"
+      },
+      "stale": false,
+      "stale_reasons": [],
+      "status": "PASS",
+      "verification": {
+        "legacy_path": "library/verification/estimatebitsforgroup.json",
+        "materialized": false,
+        "path": "library/accepted/estimatebitsforgroup/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13/verification/estimatebitsforgroup.json",
+        "reference_path": "verification/estimatebitsforgroup.json"
+      }
+    },
+    {
+      "canonical_path": "library/accepted/findmidpoint/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+      "contract": {
+        "legacy_path": "contracts/findmidpoint.json",
+        "materialized": false,
+        "path": "library/accepted/findmidpoint/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/contract/contract.json"
+      },
+      "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+      "contract_id": "findmidpoint",
+      "function": "FindMidpoint",
+      "history": [
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda",
+          "frame_pass_rate": "1/3",
+          "profile": "pilot",
+          "rtl_sha256": null,
+          "run_id": "20260802T062208Z-0ad45a41",
+          "status": "PASS",
+          "timestamp": "2026-08-02T06:22:08Z",
+          "vectors": 0
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T093510Z-scale-22275ebc",
+          "status": "PASS",
+          "timestamp": "2026-08-02T10:14:22Z",
+          "vectors": 8207360
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "4770cb54a401eb81b550fbb5dd3ede2af3c3a4d85ec2f92548125dbd638592cf",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T131813Z-scale-4f72935f",
+          "status": "PASS",
+          "timestamp": "2026-08-02T13:34:30Z",
+          "vectors": 8207360
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "4770cb54a401eb81b550fbb5dd3ede2af3c3a4d85ec2f92548125dbd638592cf",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T133447Z-scale-4b440064",
+          "status": "PASS",
+          "timestamp": "2026-08-02T13:59:19Z",
+          "vectors": 8207360
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T230757Z-scale-7a24e3ac",
+          "status": "PASS",
+          "timestamp": "2026-08-02T23:44:36Z",
+          "vectors": 8207360
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+          "frame_pass_rate": "3/3",
+          "profile": "pilot",
+          "rtl_sha256": null,
+          "run_id": "20260803T013704Z-05a52482",
+          "status": "PASS",
+          "timestamp": "2026-08-03T01:44:52Z",
+          "vectors": 8207360
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260803T014654Z-scale-2b8c6c5c",
+          "status": "PASS",
+          "timestamp": "2026-08-03T03:25:02Z",
+          "vectors": 8207360
+        }
+      ],
+      "immutable": true,
+      "provenance": {
+        "artifact_dir": "artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+        "authority": "EXACT_SPEC",
+        "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+        "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+        "promoted_at": "2026-08-02T21:16:34Z",
+        "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+      },
+      "rtl": {
+        "legacy_path": "library/rtl/findmidpoint.sv",
+        "materialized": false,
+        "path": "library/accepted/findmidpoint/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/rtl/findmidpoint.sv",
+        "reference_path": "artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+        "sha256": "95b00b9f217f19697deb92e6926e102faf48b91af79a9fb6331900a7217d480b"
+      },
+      "stale": false,
+      "stale_reasons": [],
+      "status": "PASS",
+      "verification": {
+        "legacy_path": "library/verification/findmidpoint.json",
+        "materialized": false,
+        "path": "library/accepted/findmidpoint/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632/verification/findmidpoint.json",
+        "reference_path": "verification/findmidpoint.json"
+      }
+    },
+    {
+      "canonical_path": "library/accepted/findresidualsize/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+      "contract": {
+        "legacy_path": "contracts/findresidualsize.json",
+        "materialized": false,
+        "path": "library/accepted/findresidualsize/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b/contract/contract.json"
+      },
+      "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+      "contract_id": "findresidualsize",
+      "function": "FindResidualSize",
+      "history": [
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T213843Z-scale-41855a25",
+          "status": "PASS",
+          "timestamp": "2026-08-02T22:08:16Z",
+          "vectors": 131071
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T230757Z-scale-7a24e3ac",
+          "status": "PASS",
+          "timestamp": "2026-08-02T23:44:36Z",
+          "vectors": 131071
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260803T014654Z-scale-2b8c6c5c",
+          "status": "PASS",
+          "timestamp": "2026-08-03T03:25:02Z",
+          "vectors": 131071
+        }
+      ],
+      "immutable": true,
+      "provenance": {
+        "artifact_dir": "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+        "authority": "EXACT_SPEC",
+        "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+        "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+        "promoted_at": "2026-08-02T21:15:58Z",
+        "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+      },
+      "rtl": {
+        "legacy_path": "library/rtl/findresidualsize.sv",
+        "materialized": false,
+        "path": "library/accepted/findresidualsize/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b/rtl/findresidualsize.sv",
+        "reference_path": "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+        "sha256": "a10d4649d371883b4bdfef25fc99448c5a719e937a93425900ddf00b26474073"
+      },
+      "stale": false,
+      "stale_reasons": [],
+      "status": "PASS",
+      "verification": {
+        "legacy_path": "library/verification/findresidualsize.json",
+        "materialized": false,
+        "path": "library/accepted/findresidualsize/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b/verification/findresidualsize.json",
+        "reference_path": "verification/findresidualsize.json"
+      }
+    },
+    {
+      "canonical_path": "library/accepted/getqpadjpredsize/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
+      "contract": {
+        "legacy_path": "contracts/getqpadjpredsize.json",
+        "materialized": false,
+        "path": "library/accepted/getqpadjpredsize/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c/contract/contract.json"
+      },
+      "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
+      "contract_id": "getqpadjpredsize",
+      "function": "GetQpAdjPredSize",
+      "history": [
+        {
+          "candidate_pass_rate": "0/0",
+          "contract_hash": null,
+          "frame_pass_rate": "0/0",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T122049Z-scale-d2066dca",
+          "status": "INFRASTRUCTURE_FAILURE",
+          "timestamp": "2026-08-02T12:21:32Z",
+          "vectors": 0
+        },
+        {
+          "candidate_pass_rate": "0/0",
+          "contract_hash": null,
+          "frame_pass_rate": "0/0",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T122524Z-scale-ddc3d67c",
+          "status": "INFRASTRUCTURE_FAILURE",
+          "timestamp": "2026-08-02T12:44:01Z",
+          "vectors": 0
+        },
+        {
+          "candidate_pass_rate": "0/0",
+          "contract_hash": null,
+          "frame_pass_rate": "0/0",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T124401Z-scale-e03da363",
+          "status": "INFRASTRUCTURE_FAILURE",
+          "timestamp": "2026-08-02T12:51:31Z",
+          "vectors": 0
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "8b07c0fd527f23cb8db7c5f5ab8bb1c504ea4fbe606febbe118e262ee791e6fe",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T125235Z-scale-31386cb4",
+          "status": "PASS",
+          "timestamp": "2026-08-02T12:59:42Z",
+          "vectors": 14831616
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "8b07c0fd527f23cb8db7c5f5ab8bb1c504ea4fbe606febbe118e262ee791e6fe",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T133447Z-scale-4b440064",
+          "status": "PASS",
+          "timestamp": "2026-08-02T13:59:19Z",
+          "vectors": 14831616
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T230757Z-scale-7a24e3ac",
+          "status": "PASS",
+          "timestamp": "2026-08-02T23:44:36Z",
+          "vectors": 14831616
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260803T014654Z-scale-2b8c6c5c",
+          "status": "PASS",
+          "timestamp": "2026-08-03T03:25:02Z",
+          "vectors": 14831616
+        }
+      ],
+      "immutable": true,
+      "provenance": {
+        "artifact_dir": "artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
+        "authority": "EXACT_SPEC",
+        "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+        "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+        "promoted_at": "2026-08-02T21:23:48Z",
+        "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+      },
+      "rtl": {
+        "legacy_path": "library/rtl/getqpadjpredsize.sv",
+        "materialized": false,
+        "path": "library/accepted/getqpadjpredsize/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c/rtl/getqpadjpredsize.sv",
+        "reference_path": "artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
+        "sha256": "a8a237d111078f013fa7c15edf430b37d8c58a60595b1082166f16b0334c24b4"
+      },
+      "stale": false,
+      "stale_reasons": [],
+      "status": "PASS",
+      "verification": {
+        "legacy_path": "library/verification/getqpadjpredsize.json",
+        "materialized": false,
+        "path": "library/accepted/getqpadjpredsize/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c/verification/getqpadjpredsize.json",
+        "reference_path": "verification/getqpadjpredsize.json"
+      }
+    },
+    {
+      "canonical_path": "library/accepted/isflatnessinfosent/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
+      "contract": {
+        "legacy_path": "contracts/isflatnessinfosent.json",
+        "materialized": false,
+        "path": "library/accepted/isflatnessinfosent/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/contract/contract.json"
+      },
+      "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
+      "contract_id": "isflatnessinfosent",
+      "function": "IsFlatnessInfoSent",
+      "history": [
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T102758Z-scale-45761593",
+          "status": "PASS",
+          "timestamp": "2026-08-02T10:35:14Z",
+          "vectors": 32768
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "f079152437dbf9eea9e1ff9463e03ead04fd354570a45c8df03ce99dd49ee4f6",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T131813Z-scale-4f72935f",
+          "status": "PASS",
+          "timestamp": "2026-08-02T13:34:30Z",
+          "vectors": 32768
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "f079152437dbf9eea9e1ff9463e03ead04fd354570a45c8df03ce99dd49ee4f6",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T133447Z-scale-4b440064",
+          "status": "PASS",
+          "timestamp": "2026-08-02T13:59:19Z",
+          "vectors": 32768
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T230757Z-scale-7a24e3ac",
+          "status": "PASS",
+          "timestamp": "2026-08-02T23:44:36Z",
+          "vectors": 32768
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260803T014654Z-scale-2b8c6c5c",
+          "status": "PASS",
+          "timestamp": "2026-08-03T03:25:02Z",
+          "vectors": 32768
+        }
+      ],
+      "immutable": true,
+      "provenance": {
+        "artifact_dir": "artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
+        "authority": "EXACT_SPEC",
+        "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+        "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+        "promoted_at": "2026-08-02T21:15:54Z",
+        "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+      },
+      "rtl": {
+        "legacy_path": "library/rtl/isflatnessinfosent.sv",
+        "materialized": false,
+        "path": "library/accepted/isflatnessinfosent/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/rtl/isflatnessinfosent.sv",
+        "reference_path": "artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
+        "sha256": "0a4b0d5ee2f45598e3ea1859102a42e3fa2ef66aba94e7049fc1d47876a5c07e"
+      },
+      "stale": false,
+      "stale_reasons": [],
+      "status": "PASS",
+      "verification": {
+        "legacy_path": "library/verification/isflatnessinfosent.json",
+        "materialized": false,
+        "path": "library/accepted/isflatnessinfosent/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d/verification/isflatnessinfosent.json",
+        "reference_path": "verification/isflatnessinfosent.json"
+      }
+    },
+    {
+      "canonical_path": "library/accepted/isorigflathindex/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
+      "contract": {
+        "legacy_path": "contracts/isorigflathindex.json",
+        "materialized": false,
+        "path": "library/accepted/isorigflathindex/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/contract/contract.json"
+      },
+      "contract_hash": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
+      "contract_id": "isorigflathindex",
+      "function": "IsOrigFlatHIndex",
+      "history": [
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T213843Z-scale-41855a25",
+          "status": "PASS",
+          "timestamp": "2026-08-02T22:08:16Z",
+          "vectors": 575552
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T230757Z-scale-7a24e3ac",
+          "status": "PASS",
+          "timestamp": "2026-08-02T23:44:36Z",
+          "vectors": 575552
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260803T014654Z-scale-2b8c6c5c",
+          "status": "PASS",
+          "timestamp": "2026-08-03T03:25:02Z",
+          "vectors": 575552
+        }
+      ],
+      "immutable": true,
+      "provenance": {
+        "artifact_dir": "artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
+        "authority": "EXACT_SPEC",
+        "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+        "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+        "promoted_at": "2026-08-02T21:22:28Z",
+        "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+      },
+      "rtl": {
+        "legacy_path": "library/rtl/isorigflathindex.sv",
+        "materialized": false,
+        "path": "library/accepted/isorigflathindex/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/rtl/isorigflathindex.sv",
+        "reference_path": "artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
+        "sha256": "cfb707d7aa001c86145ecff6476c1fd36b7d2755ecabe5d5af41f817ea22d855"
+      },
+      "stale": false,
+      "stale_reasons": [],
+      "status": "PASS",
+      "verification": {
+        "legacy_path": "library/verification/isorigflathindex.json",
+        "materialized": false,
+        "path": "library/accepted/isorigflathindex/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/verification/isorigflathindex.json",
+        "reference_path": "verification/isorigflathindex.json"
+      }
+    },
+    {
+      "canonical_path": "library/accepted/mapqptoqlevel/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+      "contract": {
+        "legacy_path": "contracts/mapqptoqlevel.json",
+        "materialized": false,
+        "path": "library/accepted/mapqptoqlevel/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371/contract/contract.json"
+      },
+      "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+      "contract_id": "mapqptoqlevel",
+      "function": "MapQpToQlevel",
+      "history": [
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "9dca6ef2ab9731a8e0651276955456e9433b652e6be6714081e97e143c4b30bf",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T113444Z-scale-8ac90c28",
+          "status": "PASS",
+          "timestamp": "2026-08-02T11:40:50Z",
+          "vectors": 5548800
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "9dca6ef2ab9731a8e0651276955456e9433b652e6be6714081e97e143c4b30bf",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T131813Z-scale-4f72935f",
+          "status": "PASS",
+          "timestamp": "2026-08-02T13:34:30Z",
+          "vectors": 5548800
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "9dca6ef2ab9731a8e0651276955456e9433b652e6be6714081e97e143c4b30bf",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T133447Z-scale-4b440064",
+          "status": "PASS",
+          "timestamp": "2026-08-02T13:59:19Z",
+          "vectors": 5548800
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T230757Z-scale-7a24e3ac",
+          "status": "PASS",
+          "timestamp": "2026-08-02T23:44:36Z",
+          "vectors": 5548800
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+          "frame_pass_rate": "3/3",
+          "profile": "pilot",
+          "rtl_sha256": null,
+          "run_id": "20260803T013704Z-05a52482",
+          "status": "PASS",
+          "timestamp": "2026-08-03T01:44:52Z",
+          "vectors": 5548800
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260803T014654Z-scale-2b8c6c5c",
+          "status": "PASS",
+          "timestamp": "2026-08-03T03:25:02Z",
+          "vectors": 5548800
+        }
+      ],
+      "immutable": true,
+      "provenance": {
+        "artifact_dir": "artifacts/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+        "authority": "EXACT_SPEC",
+        "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+        "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+        "promoted_at": "2026-08-02T21:16:36Z",
+        "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+      },
+      "rtl": {
+        "legacy_path": "library/rtl/mapqptoqlevel.sv",
+        "materialized": false,
+        "path": "library/accepted/mapqptoqlevel/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371/rtl/mapqptoqlevel.sv",
+        "reference_path": "artifacts/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+        "sha256": "5dda9dc25483193295e7af8abbd927b209f8e9715f2f4791864200f2fc0a3334"
+      },
+      "stale": false,
+      "stale_reasons": [],
+      "status": "PASS",
+      "verification": {
+        "legacy_path": "library/verification/mapqptoqlevel.json",
+        "materialized": false,
+        "path": "library/accepted/mapqptoqlevel/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371/verification/mapqptoqlevel.json",
+        "reference_path": "verification/mapqptoqlevel.json"
+      }
+    },
+    {
+      "canonical_path": "library/accepted/maxresidualsize/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
+      "contract": {
+        "legacy_path": "contracts/maxresidualsize.json",
+        "materialized": false,
+        "path": "library/accepted/maxresidualsize/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/contract/contract.json"
+      },
+      "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
+      "contract_id": "maxresidualsize",
+      "function": "MaxResidualSize",
+      "history": [
+        {
+          "candidate_pass_rate": "0/0",
+          "contract_hash": null,
+          "frame_pass_rate": "0/0",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T115152Z-scale-b9191e5c",
+          "status": "INFRASTRUCTURE_FAILURE",
+          "timestamp": "2026-08-02T11:59:29Z",
+          "vectors": 0
+        },
+        {
+          "candidate_pass_rate": "0/0",
+          "contract_hash": null,
+          "frame_pass_rate": "0/0",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T120021Z-scale-92d39833",
+          "status": "INFRASTRUCTURE_FAILURE",
+          "timestamp": "2026-08-02T12:07:07Z",
+          "vectors": 0
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "c92b2f1510575eb10503e2bf1e5c6a6f6e0828638e642be95a8d1f9bab460529",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T120730Z-scale-e3f4cdd8",
+          "status": "PASS",
+          "timestamp": "2026-08-02T12:14:34Z",
+          "vectors": 27744000
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "c92b2f1510575eb10503e2bf1e5c6a6f6e0828638e642be95a8d1f9bab460529",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T133447Z-scale-4b440064",
+          "status": "PASS",
+          "timestamp": "2026-08-02T13:59:19Z",
+          "vectors": 27744000
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T230757Z-scale-7a24e3ac",
+          "status": "PASS",
+          "timestamp": "2026-08-02T23:44:36Z",
+          "vectors": 27744000
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260803T014654Z-scale-2b8c6c5c",
+          "status": "PASS",
+          "timestamp": "2026-08-03T03:25:02Z",
+          "vectors": 27744000
+        }
+      ],
+      "immutable": true,
+      "provenance": {
+        "artifact_dir": "artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
+        "authority": "EXACT_SPEC",
+        "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+        "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+        "promoted_at": "2026-08-02T21:22:24Z",
+        "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+      },
+      "rtl": {
+        "legacy_path": "library/rtl/maxresidualsize.sv",
+        "materialized": false,
+        "path": "library/accepted/maxresidualsize/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/rtl/maxresidualsize.sv",
+        "reference_path": "artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
+        "sha256": "cfdb54a0936d5bd70d45ddd9bcb20d05d99b73039a3789c1124ed564ae5aa65b"
+      },
+      "stale": false,
+      "stale_reasons": [],
+      "status": "PASS",
+      "verification": {
+        "legacy_path": "library/verification/maxresidualsize.json",
+        "materialized": false,
+        "path": "library/accepted/maxresidualsize/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/verification/maxresidualsize.json",
+        "reference_path": "verification/maxresidualsize.json"
+      }
+    },
+    {
+      "canonical_path": "library/accepted/predictsize/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
+      "contract": {
+        "legacy_path": "contracts/predictsize.json",
+        "materialized": false,
+        "path": "library/accepted/predictsize/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d/contract/contract.json"
+      },
+      "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
+      "contract_id": "predictsize",
+      "function": "PredictSize",
+      "history": [
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T111122Z-scale-ccc96e95",
+          "status": "PASS",
+          "timestamp": "2026-08-02T11:16:55Z",
+          "vectors": 4913
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T131813Z-scale-4f72935f",
+          "status": "PASS",
+          "timestamp": "2026-08-02T13:34:30Z",
+          "vectors": 4913
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "d7798fbca6a6624438f31c0bc7d44b6e8891c9209ba27fe0991a1947df0fb50c",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T133447Z-scale-4b440064",
+          "status": "PASS",
+          "timestamp": "2026-08-02T13:59:19Z",
+          "vectors": 4913
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T230757Z-scale-7a24e3ac",
+          "status": "PASS",
+          "timestamp": "2026-08-02T23:44:36Z",
+          "vectors": 4913
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260803T014654Z-scale-2b8c6c5c",
+          "status": "PASS",
+          "timestamp": "2026-08-03T03:25:02Z",
+          "vectors": 4913
+        }
+      ],
+      "immutable": true,
+      "provenance": {
+        "artifact_dir": "artifacts/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
+        "authority": "EXACT_SPEC",
+        "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+        "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+        "promoted_at": "2026-08-02T21:15:54Z",
+        "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+      },
+      "rtl": {
+        "legacy_path": "library/rtl/predictsize.sv",
+        "materialized": false,
+        "path": "library/accepted/predictsize/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d/rtl/predictsize.sv",
+        "reference_path": "artifacts/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
+        "sha256": "861239ab7f41e5c98845588cfa54631e2d4449920afe9cdbde2eae0920b09af7"
+      },
+      "stale": false,
+      "stale_reasons": [],
+      "status": "PASS",
+      "verification": {
+        "legacy_path": "library/verification/predictsize.json",
+        "materialized": false,
+        "path": "library/accepted/predictsize/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d/verification/predictsize.json",
+        "reference_path": "verification/predictsize.json"
+      }
+    },
+    {
+      "canonical_path": "library/accepted/qp2qlevel/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+      "contract": {
+        "legacy_path": "contracts/qp2qlevel.json",
+        "materialized": false,
+        "path": "library/accepted/qp2qlevel/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026/contract/contract.json"
+      },
+      "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+      "contract_id": "qp2qlevel",
+      "function": "Qp2Qlevel",
+      "history": [
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T213843Z-scale-41855a25",
+          "status": "PASS",
+          "timestamp": "2026-08-02T22:08:16Z",
+          "vectors": 5760
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T230757Z-scale-7a24e3ac",
+          "status": "PASS",
+          "timestamp": "2026-08-02T23:44:36Z",
+          "vectors": 5760
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260803T014654Z-scale-2b8c6c5c",
+          "status": "PASS",
+          "timestamp": "2026-08-03T03:25:02Z",
+          "vectors": 5760
+        }
+      ],
+      "immutable": true,
+      "provenance": {
+        "artifact_dir": "artifacts/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+        "authority": "EXACT_SPEC",
+        "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+        "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+        "promoted_at": "2026-08-02T21:15:49Z",
+        "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+      },
+      "rtl": {
+        "legacy_path": "library/rtl/qp2qlevel.sv",
+        "materialized": false,
+        "path": "library/accepted/qp2qlevel/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026/rtl/qp2qlevel.sv",
+        "reference_path": "artifacts/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+        "sha256": "18f078d82f020604fbcae57261373e69e9291f7757f81585163bb47fa1d893df"
+      },
+      "stale": false,
+      "stale_reasons": [],
+      "status": "PASS",
+      "verification": {
+        "legacy_path": "library/verification/qp2qlevel.json",
+        "materialized": false,
+        "path": "library/accepted/qp2qlevel/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026/verification/qp2qlevel.json",
+        "reference_path": "verification/qp2qlevel.json"
+      }
+    },
+    {
+      "canonical_path": "library/accepted/quantizeresidual/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
+      "contract": {
+        "legacy_path": "contracts/quantizeresidual.json",
+        "materialized": false,
+        "path": "library/accepted/quantizeresidual/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a/contract/contract.json"
+      },
+      "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
+      "contract_id": "quantizeresidual",
+      "function": "QuantizeResidual",
+      "history": [
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+          "frame_pass_rate": "3/3",
+          "profile": "pilot",
+          "rtl_sha256": null,
+          "run_id": "20260802T062208Z-0ad45a41",
+          "status": "PASS",
+          "timestamp": "2026-08-02T06:22:08Z",
+          "vectors": 2228207
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T093510Z-scale-22275ebc",
+          "status": "PASS",
+          "timestamp": "2026-08-02T10:14:22Z",
+          "vectors": 2228207
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "bd7cac692d0064753250d5ae92776ee7718d8cb222ea52561893438c52e6e30d",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T131813Z-scale-4f72935f",
+          "status": "PASS",
+          "timestamp": "2026-08-02T13:34:30Z",
+          "vectors": 2228207
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "bd7cac692d0064753250d5ae92776ee7718d8cb222ea52561893438c52e6e30d",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T133447Z-scale-4b440064",
+          "status": "PASS",
+          "timestamp": "2026-08-02T13:59:19Z",
+          "vectors": 2228207
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T230757Z-scale-7a24e3ac",
+          "status": "PASS",
+          "timestamp": "2026-08-02T23:44:36Z",
+          "vectors": 2228207
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260803T014654Z-scale-2b8c6c5c",
+          "status": "PASS",
+          "timestamp": "2026-08-03T03:25:02Z",
+          "vectors": 2228207
+        }
+      ],
+      "immutable": true,
+      "provenance": {
+        "artifact_dir": "artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
+        "authority": "EXACT_SPEC",
+        "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+        "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+        "promoted_at": "2026-08-02T21:15:56Z",
+        "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+      },
+      "rtl": {
+        "legacy_path": "library/rtl/quantizeresidual.sv",
+        "materialized": false,
+        "path": "library/accepted/quantizeresidual/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a/rtl/quantizeresidual.sv",
+        "reference_path": "artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
+        "sha256": "7c9d729bbe1ac193b6f355b3d8281a92ab350a9c27a7717145fdea31a863d9cd"
+      },
+      "stale": false,
+      "stale_reasons": [],
+      "status": "PASS",
+      "verification": {
+        "legacy_path": "library/verification/quantizeresidual.json",
+        "materialized": false,
+        "path": "library/accepted/quantizeresidual/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a/verification/quantizeresidual.json",
+        "reference_path": "verification/quantizeresidual.json"
+      }
+    },
+    {
+      "canonical_path": "library/accepted/samplepredict/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+      "contract": {
+        "legacy_path": "contracts/samplepredict.json",
+        "materialized": false,
+        "path": "library/accepted/samplepredict/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509/contract/contract.json"
+      },
+      "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+      "contract_id": "samplepredict",
+      "function": "SamplePredict",
+      "history": [
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T213843Z-scale-41855a25",
+          "status": "PASS",
+          "timestamp": "2026-08-02T22:08:16Z",
+          "vectors": 25960080
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T230757Z-scale-7a24e3ac",
+          "status": "PASS",
+          "timestamp": "2026-08-02T23:44:36Z",
+          "vectors": 25960080
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260803T014654Z-scale-2b8c6c5c",
+          "status": "PASS",
+          "timestamp": "2026-08-03T03:25:02Z",
+          "vectors": 25960080
+        }
+      ],
+      "immutable": true,
+      "provenance": {
+        "artifact_dir": "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+        "authority": "EXACT_SPEC",
+        "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+        "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+        "promoted_at": "2026-08-02T21:21:05Z",
+        "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+      },
+      "rtl": {
+        "legacy_path": "library/rtl/samplepredict.sv",
+        "materialized": false,
+        "path": "library/accepted/samplepredict/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509/rtl/samplepredict.sv",
+        "reference_path": "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+        "sha256": "831411aefb7fd14c630f6a71d75191a62320ce17566d6292637fcdab603e2011"
+      },
+      "stale": false,
+      "stale_reasons": [],
+      "status": "PASS",
+      "verification": {
+        "legacy_path": "library/verification/samplepredict.json",
+        "materialized": false,
+        "path": "library/accepted/samplepredict/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509/verification/samplepredict.json",
+        "reference_path": "verification/samplepredict.json"
+      }
+    },
+    {
+      "canonical_path": "library/accepted/samptolinebuf/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
+      "contract": {
+        "legacy_path": "contracts/samptolinebuf.json",
+        "materialized": false,
+        "path": "library/accepted/samptolinebuf/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/contract/contract.json"
+      },
+      "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
+      "contract_id": "samptolinebuf",
+      "function": "SampToLineBuf",
+      "history": [
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "603022a22fb2cae3733c34ecdced2b658d739b9c3e418fc6cc7c4d89ec6e87bf",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T105600Z-scale-67d0be81",
+          "status": "PASS",
+          "timestamp": "2026-08-02T11:02:22Z",
+          "vectors": 21233664
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "05bcff80920baf0d36d0cfceb95053d2385b1d939a15a173f0e253b27a18900d",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T131813Z-scale-4f72935f",
+          "status": "PASS",
+          "timestamp": "2026-08-02T13:34:30Z",
+          "vectors": 21233664
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "05bcff80920baf0d36d0cfceb95053d2385b1d939a15a173f0e253b27a18900d",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T133447Z-scale-4b440064",
+          "status": "PASS",
+          "timestamp": "2026-08-02T13:59:19Z",
+          "vectors": 21233664
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T230757Z-scale-7a24e3ac",
+          "status": "PASS",
+          "timestamp": "2026-08-02T23:44:36Z",
+          "vectors": 21233664
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260803T014654Z-scale-2b8c6c5c",
+          "status": "PASS",
+          "timestamp": "2026-08-03T03:25:02Z",
+          "vectors": 21233664
+        }
+      ],
+      "immutable": true,
+      "provenance": {
+        "artifact_dir": "artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
+        "authority": "EXACT_SPEC",
+        "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+        "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+        "promoted_at": "2026-08-02T21:17:29Z",
+        "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+      },
+      "rtl": {
+        "legacy_path": "library/rtl/samptolinebuf.sv",
+        "materialized": false,
+        "path": "library/accepted/samptolinebuf/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/rtl/samptolinebuf.sv",
+        "reference_path": "artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
+        "sha256": "971e3b07df907a913544145749bc5303b1c4532af69517ce97ab3bc9bed0cae9"
+      },
+      "stale": false,
+      "stale_reasons": [],
+      "status": "PASS",
+      "verification": {
+        "legacy_path": "library/verification/samptolinebuf.json",
+        "materialized": false,
+        "path": "library/accepted/samptolinebuf/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a/verification/samptolinebuf.json",
+        "reference_path": "verification/samptolinebuf.json"
+      }
+    },
+    {
+      "canonical_path": "library/accepted/usingmidpoint/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
+      "contract": {
+        "legacy_path": "contracts/usingmidpoint.json",
+        "materialized": false,
+        "path": "library/accepted/usingmidpoint/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/contract/contract.json"
+      },
+      "contract_hash": "46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
+      "contract_id": "usingmidpoint",
+      "function": "UsingMidpoint",
+      "history": [
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T225324Z-scale-dc5543ab",
+          "status": "PASS",
+          "timestamp": "2026-08-02T23:01:12Z",
+          "vectors": 385344
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260802T230757Z-scale-7a24e3ac",
+          "status": "PASS",
+          "timestamp": "2026-08-02T23:44:36Z",
+          "vectors": 385344
+        },
+        {
+          "candidate_pass_rate": "1/2",
+          "contract_hash": "46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
+          "frame_pass_rate": "3/3",
+          "profile": "scale",
+          "rtl_sha256": null,
+          "run_id": "20260803T014654Z-scale-2b8c6c5c",
+          "status": "PASS",
+          "timestamp": "2026-08-03T03:25:02Z",
+          "vectors": 385344
+        }
+      ],
+      "immutable": true,
+      "provenance": {
+        "artifact_dir": "artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
+        "authority": "EXACT_SPEC",
+        "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+        "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+        "promoted_at": "2026-08-02T22:48:55Z",
+        "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+      },
+      "rtl": {
+        "legacy_path": "library/rtl/usingmidpoint.sv",
+        "materialized": false,
+        "path": "library/accepted/usingmidpoint/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/rtl/usingmidpoint.sv",
+        "reference_path": "artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
+        "sha256": "fc765032b32c15013196fa87328b8692da41071277c4bdd13ffb941c86132ab8"
+      },
+      "stale": false,
+      "stale_reasons": [],
+      "status": "PASS",
+      "verification": {
+        "legacy_path": "library/verification/usingmidpoint.json",
+        "materialized": false,
+        "path": "library/accepted/usingmidpoint/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf/verification/usingmidpoint.json",
+        "reference_path": "verification/usingmidpoint.json"
+      }
+    }
+  ],
+  "library": "dsc-verilog-library",
+  "schema_version": 1,
+  "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+  "source_of_truth": "durable receipts and immutable content-addressed artifacts",
+  "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+  "stale_artifacts": [],
+  "storage": {
+    "fallback": false,
+    "fallback_reason": null,
+    "mode": "EXPLICIT_ROOT",
+    "mountpoint": null,
+    "requested": "/Users/snow/.svrt-network/dsc12a-regression",
+    "root": "/Users/snow/.svrt-network/dsc12a-regression",
+    "share": null
+  }
+}
