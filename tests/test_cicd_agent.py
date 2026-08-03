@@ -86,6 +86,49 @@ class CicdAgentUnitTests(unittest.TestCase):
         })
         self.assertEqual([port["name"] for port in ports], ["value", "return_value"])
 
+    def test_accepted_library_contracts_reload_without_function_allowlist(self):
+        contract = {
+            "contract_id": "tool_leaf",
+            "status": "LOCKED",
+            "origin": "tool_discovered_reviewed_override",
+            "function": {"name": "ToolLeaf", "clang_usr": "c:@F@ToolLeaf"},
+            "spec_links": [{"status": "EXACT", "anchor_id": "pdf:section:tool_leaf"}],
+            "obligations": [],
+            "dependencies": {"unresolved": []},
+            "interface": {"ports": [
+                {"name": "value", "direction": "input", "width": 8, "signed": False},
+                {"name": "return_value", "direction": "output", "width": 8, "signed": False},
+            ]},
+            "semantics": {"kind": "pure_expression"},
+            "selection": {"new_work": True, "candidate_rank": 1},
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            (root / "library" / "contracts").mkdir(parents=True)
+            (root / "library" / "manifest.json").write_text(json.dumps({
+                "components": [{"contract_id": "tool_leaf", "status": "PASS"}],
+            }), encoding="utf-8")
+            (root / "library" / "contracts" / "tool_leaf.json").write_text(
+                json.dumps(contract), encoding="utf-8"
+            )
+            agent = Agent(root, "plan")
+            loaded = agent.load_accepted_library_contracts([])
+        self.assertEqual([item["contract_id"] for item in loaded], ["tool_leaf"])
+        self.assertEqual(loaded[0]["status"], "LOCKED")
+
+    def test_stable_identity_ignores_library_provenance(self):
+        contract = {"contract_id": "tool_leaf", "semantics": {"kind": "pure_expression"}}
+        promoted = dict(contract)
+        promoted.update({
+            "selection": {"new_work": True},
+            "library_promotion": {"status": "PASS", "artifact_dir": "artifacts/tool_leaf"},
+            "do_not_edit": True,
+        })
+        self.assertEqual(
+            Agent.stable_contract_identity(contract),
+            Agent.stable_contract_identity(promoted),
+        )
+
     def test_promoted_manifest_resolves_dynamic_contract_usr_from_tool_facts(self):
         with tempfile.TemporaryDirectory() as directory:
             root = pathlib.Path(directory)

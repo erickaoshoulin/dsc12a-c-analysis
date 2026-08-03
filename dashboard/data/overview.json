@@ -1,4 +1,100 @@
 {
+  "ci_frontier": {
+    "blocked_contracts": [
+      {
+        "contract_id": "ichdecision",
+        "current_state": "DISCOVERED",
+        "function": "IchDecision",
+        "promotion_status": "AWAITING_HUMAN_APPROVAL",
+        "reasons": [
+          "human_promotion_approval_pending",
+          "human_promotion_approval_required"
+        ],
+        "status": "BLOCKED"
+      }
+    ],
+    "blockers": [
+      {
+        "contract_id": "ichdecision",
+        "current_state": "DISCOVERED",
+        "function": "IchDecision",
+        "promotion_status": "AWAITING_HUMAN_APPROVAL",
+        "reasons": [
+          "human_promotion_approval_pending",
+          "human_promotion_approval_required"
+        ],
+        "status": "BLOCKED"
+      }
+    ],
+    "candidate_queue": [
+      {
+        "contract_id": "ichdecision",
+        "current_state": "DISCOVERED",
+        "current_status": "BLOCKED",
+        "function": "IchDecision",
+        "promotion_status": "AWAITING_HUMAN_APPROVAL",
+        "queue_state": "BLOCKED",
+        "reasons": [
+          "human_promotion_approval_pending",
+          "human_promotion_approval_required"
+        ]
+      }
+    ],
+    "counts": {
+      "blocked": 1,
+      "new_candidates": 1,
+      "ready": 16,
+      "selected": 16
+    },
+    "generator_invocations": 0,
+    "model_calls": 0,
+    "new_candidates": [
+      "ichdecision"
+    ],
+    "ready_contracts": [
+      "ceil_log2",
+      "escapecodesize",
+      "estimatebitsforgroup",
+      "findmidpoint",
+      "findresidualsize",
+      "getqpadjpredsize",
+      "isflatnessinfosent",
+      "isorigflathindex",
+      "mapqptoqlevel",
+      "maxresidualsize",
+      "predictsize",
+      "qp2qlevel",
+      "quantizeresidual",
+      "samplepredict",
+      "samptolinebuf",
+      "usingmidpoint"
+    ],
+    "schema_version": 1,
+    "selected_contracts": [
+      "ceil_log2",
+      "escapecodesize",
+      "estimatebitsforgroup",
+      "findmidpoint",
+      "findresidualsize",
+      "getqpadjpredsize",
+      "isflatnessinfosent",
+      "isorigflathindex",
+      "mapqptoqlevel",
+      "maxresidualsize",
+      "predictsize",
+      "qp2qlevel",
+      "quantizeresidual",
+      "samplepredict",
+      "samptolinebuf",
+      "usingmidpoint"
+    ],
+    "selected_new_work": [],
+    "source_files": [
+      "ci/plan.json",
+      "ci/state.json",
+      "summary.json"
+    ]
+  },
   "counts": {
     "PASS": 16
   },

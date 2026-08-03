@@ -249,9 +249,12 @@ and the adapter must short-circuit unused component lanes before reading
 
 The executable migration agent discovers work from facts, contracts, callgraph,
 frame scripts, reviewed PDF/source evidence, and valid cache receipts. It has
-no function-name allowlist and does not use SVRT, an SMB share, a second
-orchestrator, or a durable external service. Receipts stay in `ci/`,
-`artifacts/`, `integration/`, and `reports/`; large vector shards are temporary.
+no function-name allowlist, SVRT integration, or second orchestrator. The
+durable per-function regression service uses `DSC_REGRESSION_ROOT`; its queue,
+run receipts, vectors, and large logs remain on that configured SMB-backed
+root. The repository stores compact CI receipts, indexes, reports, and
+accepted RTL references under `ci/`, `artifacts/`, `integration/`, and
+`reports/`; temporary vectors and build trees do not enter the checkout.
 
 ```sh
 python3 tools/cicd_agent.py plan
@@ -340,9 +343,12 @@ python3 tools/regression.py report <run-id>
 mounted regression share when available and visibly falls back to repository
 local receipts. Open `dashboard/index.html` for the overview, then use
 `dashboard/functions/<contract-id>.html`, `dashboard/history.html`, and
-`dashboard/traceability.html` for details. `DIRECTORY_LAYOUT.md` explains the
-new run/library meanings and `path-map.json` keeps legacy paths readable
-without copying large RTL or verification files.
+`dashboard/traceability.html` for details. The overview also shows the current
+tool-selected CI ready frontier, candidate queue, and blockers from
+`ci/plan.json`, `ci/state.json`, and `summary.json`; a green selected regression
+run cannot hide a pending human review. `DIRECTORY_LAYOUT.md` explains the new
+run/library meanings and `path-map.json` keeps legacy paths readable without
+copying large RTL or verification files.
 
 ## Environment
 

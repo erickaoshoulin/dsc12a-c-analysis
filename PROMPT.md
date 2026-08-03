@@ -1,4 +1,4 @@
-# Standalone DSC 1.2a auto-discovery, contracts, coverage, and RTL-slice prompt
+# Standalone DSC 1.2a C-model analysis, auto-discovery, and RTL-slice prompt
 
 Work only in this standalone repository. The project is independent of SVRT
 and may generate bounded combinational Verilog library slices, but it does
@@ -24,6 +24,12 @@ model with `make -j1 clean` followed by `make -j1`, require `source/dsc`, and
 run the discovered bit-true smoke/golden check before planning any RTL work.
 This repository is deliberately standalone and must not inspect, import,
 configure, or integrate with SVRT.
+
+The durable regression service is also standalone. When `DSC_REGRESSION_ROOT`
+is set, use that existing external root for queue state, run receipts, vectors,
+and large logs; in this deployment it may be an SMB-backed path. Keep compact
+receipts, reports, and accepted RTL in the repository, and never create a new
+share or add SVRT state merely to provide durable storage.
 
 ## Stable-library boundary (non-negotiable)
 
@@ -78,6 +84,10 @@ make -j1 -C source
 
 Require `source/dsc`. If `bittrue_smoke/run_c_baseline.sh` exists, run it
 and verify its expected golden hash; otherwise run a safe help/smoke command.
+Generate or load the compilation database and run the compiler front-end check
+over every translation unit with `tools/check_compile_commands.py`. A clean
+model build, a passing all-translation-unit compile receipt, and the smoke
+receipt are separate mandatory C gates; record all three.
 Record commands, return codes, warnings, tool versions, timeout/path failures,
 smoke outputs, and binary SHA-256 in `build/build-receipt.json`.
 
@@ -236,14 +246,17 @@ before/after rankings, selected contracts, and the first RTL result. Commit with
 feat: create DSC contracts and first bit-true RTL slice
 ```
 
-Then push the requested branch and open a draft PR with the same title.
+Then push the requested branch and update the existing draft PR; do not create
+a duplicate PR or turn a discovered function name into a selection input.
 
 ## Dependency-aware CI/CD migration agent
 
 The next migration stage is generic and must not add a function-name allowlist.
 Use `python3 tools/cicd_agent.py plan|run|resume|status` and consume the
 existing manifest, Clang facts, coverage, traceability, locked contracts,
-callgraph, and verification receipts.
+callgraph, and verification receipts. Select from the current tool-ready
+frontier while reloading accepted PASS snapshots from `library/contracts/` so
+an ordinary plan cannot discard stable work that is not in the small seed set.
 
 Emit `ci/dag.json`, `ci/plan.json`, `ci/state.json`, and
 `ci/cache-index.json`. Each node records source/spec/contract/dependency
@@ -282,7 +295,11 @@ an LLM call. Write `integration/generated-overlay/`,
 `integration/replacement-plan.yaml`, `integration/bitstream-receipts/`, and
 `reports/pipeline-summary.md`.
 
-For the dependency-aware CI/CD change, commit and open a draft PR with:
+For a dependency-aware CI/CD change, commit the scoped change, push the
+requested branch, and update the existing draft PR rather than creating a
+duplicate. Do not require a function-specific PR title or target list.
+
+The historical implementation title was:
 
 ```text
 feat: add dependency-aware C-to-RTL CI/CD agent
@@ -424,11 +441,8 @@ PDF and upstream C model are immutable external inputs.
    receipts, bitstream receipts, and `reports/pipeline-summary.md`. Report
    candidates, model calls/tokens, shard counts, timings, dependency pair,
    matrix scenarios, cache status, blockers, and counterexamples. Run tests,
-   commit, push the requested branch, and open a draft PR titled exactly:
-
-```text
-feat: execute generic RTL generation and dependency composition
-```
+   commit, push the requested branch, and update the existing draft PR. Do not
+   create a duplicate PR or require a function-specific title.
 
 ## Durable per-function regression service v1
 
@@ -524,14 +538,25 @@ Reject recursive or combinational dependency cycles. A generation authority
 must be `EXACT_SPEC`, `DERIVED`, or `HUMAN_APPROVED`; `AI_PROPOSED` and
 `C_TYPE_FALLBACK` are visible blockers and cannot generate RTL.
 
-The durable service is `tools/cicd_agent.py` and stores mutable state only in
-the repository's JSON receipts under `ci/`, `artifacts/`, and `integration/`.
-Do not add a network share, SQLite queue, SVRT state, or a second orchestration
-service. Publish each receipt atomically, preserve prior receipts for audit,
-and treat missing PDF/source/tools, stale hashes, low disk, or timeout as
-infrastructure failures. `plan` consumes tool-discovered facts and reviewed
-contracts; a target ID is routing metadata and never a source-level function
-allowlist.
+The durable service is `tools/cicd_agent.py`. Its compact controller state is
+JSON under `ci/`, `artifacts/`, and `integration/`; its optional external
+durable queue is the pre-existing `DSC_REGRESSION_ROOT`. Do not add SVRT state,
+SQLite, a second orchestration service, or a new network share. When the
+external root is configured, keep queue/runs/vectors/logs there and retain
+only compact handoff artifacts in the repository. Publish each receipt
+atomically, preserve prior receipts for audit, and treat missing PDF/source/
+tools, stale hashes, low disk, or timeout as infrastructure failures. `plan`
+consumes tool-discovered facts and reviewed contracts; a target ID is routing
+metadata and never a source-level function allowlist.
+
+An ordinary plan must reload every accepted `PASS` contract snapshot from
+`library/contracts/` using the manifest, even when that contract is not part
+of the small human-maintained seed set or is temporarily absent from the new
+candidate ranking. Never collapse the stable DAG to `contracts/locked/` plus
+the current batch. Stable refresh still rechecks current source/spec/tool
+hashes and the manifest-verified RTL. Routing/provenance fields such as
+`selection`, `library_promotion`, and `do_not_edit` do not change semantic
+contract identity; a real interface/semantics/source/spec change does.
 
 A no-work refresh may remove an already-PASS component from the active
 selection, but it must not erase that component's prior DAG nodes, artifact
@@ -607,6 +632,10 @@ Frame links, and per-function width/interface/promotion detail. Prefer
 `DSC_REGRESSION_ROOT`, otherwise inspect the mounted SMB regression root and
 show a visible repository-local fallback when it is unavailable. A missing
 recorded PDF is `SPEC_UNAVAILABLE`; external PDF/C inputs remain read-only.
+The overview must show both the selected regression run and the current
+tool-selected CI frontier (`ready`, `new candidates`, candidate queue, and
+human/infrastructure blockers) so a green regression run cannot hide pending
+migration work.
 
 Before publishing a dashboard or queue snapshot, run the durable poll cycle:
 recover expired jobs, reconcile every run from its function receipts, create

@@ -20,6 +20,20 @@ SMB fallback: none
 - Source/build gate: PASS
 - PDF and C source remain external/immutable inputs.
 
+## Migration frontier
+
+- Ready contracts: ceil_log2, escapecodesize, estimatebitsforgroup, findmidpoint, findresidualsize, getqpadjpredsize, isflatnessinfosent, isorigflathindex, mapqptoqlevel, maxresidualsize, predictsize, qp2qlevel, quantizeresidual, samplepredict, samptolinebuf, usingmidpoint
+- New candidates: ichdecision
+- Generator invocations: 0; model calls: 0
+
+| Candidate | Function | Queue | Current status | Reason / next action |
+|---|---|---|---|---|
+| ichdecision | IchDecision | BLOCKED | BLOCKED | human_promotion_approval_pending; human_promotion_approval_required |
+
+### Current CI blockers
+
+- IchDecision (ichdecision): human_promotion_approval_pending; human_promotion_approval_required
+
 ## Function results
 
 | Function | Status | Stage | Candidates | Vectors | Unit/formal | Frame | Next action |

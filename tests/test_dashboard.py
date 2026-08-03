@@ -300,6 +300,51 @@ class DashboardFixtureTests(unittest.TestCase):
         self.assertIn("SPEC_UNAVAILABLE", summary)
         self.assertIn("SMB fallback", summary)
 
+    def test_ci_frontier_blocker_is_visible_in_dashboard_and_report(self):
+        temp, repo, regression, _ = self.make_fixture()
+        self.addCleanup(temp.cleanup)
+        dashboard.write_json(repo / "ci" / "plan.json", {
+            "schema_version": 2,
+            "selected_contracts": ["fixture_leaf"],
+            "new_candidates": ["pending_leaf"],
+            "blocked_contracts": [{
+                "contract_id": "pending_leaf",
+                "function": "PendingLeaf",
+                "reasons": ["human_promotion_approval_pending"],
+            }],
+        })
+        dashboard.write_json(repo / "ci" / "state.json", {
+            "schema_version": 1,
+            "contracts": [{
+                "contract_id": "pending_leaf",
+                "function": "PendingLeaf",
+                "current_state": "DISCOVERED",
+                "status": "BLOCKED",
+                "failure_reason": "human_promotion_approval_pending",
+            }],
+        })
+        dashboard.write_json(repo / "summary.json", {
+            "ready_contracts": ["fixture_leaf"],
+            "selected_contracts": ["fixture_leaf"],
+            "new_candidates": ["pending_leaf"],
+            "blockers": ["pending_leaf: human_promotion_approval_pending"],
+            "generator_invocations": 0,
+            "model_calls": 0,
+        })
+
+        site = repo / "dashboard"
+        dataset, _ = dashboard.build(repo, str(regression), "latest", output=site, mirror_external=False)
+        frontier = dataset.overview["ci_frontier"]
+        self.assertEqual(frontier["counts"]["blocked"], 1)
+        self.assertEqual(frontier["candidate_queue"][0]["contract_id"], "pending_leaf")
+        self.assertEqual(frontier["candidate_queue"][0]["current_status"], "BLOCKED")
+        self.assertIn("PendingLeaf", (site / "index.html").read_text(encoding="utf-8"))
+        self.assertIn("human_promotion_approval_pending", (site / "index.html").read_text(encoding="utf-8"))
+        self.assertIn("pending_leaf", (repo / "reports" / "regression-summary.md").read_text(encoding="utf-8"))
+        self.assertTrue((site / "data" / "ci-frontier.json").is_file())
+        ok, errors = dashboard.check_site(repo, site)
+        self.assertTrue(ok, errors)
+
     def test_rebuild_is_deterministic_and_links_resolve(self):
         temp, repo, regression, _ = self.make_fixture()
         self.addCleanup(temp.cleanup)

@@ -1234,6 +1234,20 @@
       "source": "facts/callgraph.json"
     },
     {
+      "callee_contract": "findresidualsize",
+      "callee_function": "FindResidualSize",
+      "callee_usr": "c:@F@FindResidualSize",
+      "caller_contract": null,
+      "caller_function": "EstimateBitsForGroup",
+      "caller_usr": "c:@F@EstimateBitsForGroup",
+      "location": {
+        "column": 11,
+        "file": "dsc_codec.c",
+        "line": 411
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
       "callee_contract": null,
       "callee_function": "FindResidualSize",
       "callee_usr": "c:@F@FindResidualSize",
@@ -3352,6 +3366,20 @@
       "callee_function": "FindResidualSize",
       "callee_usr": "c:@F@FindResidualSize",
       "caller_contract": "usingmidpoint",
+      "caller_function": "UsingMidpoint",
+      "caller_usr": "c:@F@UsingMidpoint",
+      "location": {
+        "column": 17,
+        "file": "dsc_codec.c",
+        "line": 467
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "findresidualsize",
+      "callee_function": "FindResidualSize",
+      "callee_usr": "c:@F@FindResidualSize",
+      "caller_contract": null,
       "caller_function": "UsingMidpoint",
       "caller_usr": "c:@F@UsingMidpoint",
       "location": {

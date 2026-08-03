@@ -10,13 +10,13 @@
       "failure_reason": null,
       "function": "ceil_log2",
       "hashes": {
-        "agent": "723c94cb47936fb509333cedcd4f27cedd2675500b4821747d32aff1dba04ac0",
+        "agent": "9a05f531bb8408afbe92d8dde205fa5f56490f86c7948bae84bdc0ed7b150ddf",
         "contract": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
         "dependency": "3b7f5328839b9a8019d9b2517accb27b5a85150709907f97a39b72fb99dba088",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "218da9bb64fb68e3e56ce7befe7428481da235c17abbc9a74f6384ea72e19a3d",
+        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -26,6 +26,88 @@
       "history": [
         {
           "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "71784bb792966a7e48e98d35cc2e2c3f6052f1c17528ffe1b4256f805c9fda65",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "71784bb792966a7e48e98d35cc2e2c3f6052f1c17528ffe1b4256f805c9fda65",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,
@@ -102,13 +184,13 @@
       "failure_reason": null,
       "function": "EscapeCodeSize",
       "hashes": {
-        "agent": "723c94cb47936fb509333cedcd4f27cedd2675500b4821747d32aff1dba04ac0",
+        "agent": "9a05f531bb8408afbe92d8dde205fa5f56490f86c7948bae84bdc0ed7b150ddf",
         "contract": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
         "dependency": "45321616e0c7ed703dd1fa8c249701b85b8ccfe4a35607f923e0a251a9dab3be",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "218da9bb64fb68e3e56ce7befe7428481da235c17abbc9a74f6384ea72e19a3d",
+        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -118,6 +200,88 @@
       "history": [
         {
           "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "582d5e131e638e5a6aa4f9783cf1755b041f9369f9c8c84e57fb413845272167",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "582d5e131e638e5a6aa4f9783cf1755b041f9369f9c8c84e57fb413845272167",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,
@@ -218,13 +382,13 @@
       "failure_reason": null,
       "function": "EstimateBitsForGroup",
       "hashes": {
-        "agent": "723c94cb47936fb509333cedcd4f27cedd2675500b4821747d32aff1dba04ac0",
+        "agent": "9a05f531bb8408afbe92d8dde205fa5f56490f86c7948bae84bdc0ed7b150ddf",
         "contract": "bcf7ded8f7fbfd323e66fc25a51b6489a4fad835d03302af228c3b51be8f9bb2",
         "dependency": "a5b65df5860e2ac8b4f4e56dded393af00e6b6d01f3e173b7913dd173e67f65b",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "218da9bb64fb68e3e56ce7befe7428481da235c17abbc9a74f6384ea72e19a3d",
+        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -234,6 +398,88 @@
       "history": [
         {
           "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "da8e09494b9dad38a4591c81c21adf445cc0b92cdaf4eabc1604aa1ca2db3f9f",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "da8e09494b9dad38a4591c81c21adf445cc0b92cdaf4eabc1604aa1ca2db3f9f",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,
@@ -583,13 +829,13 @@
       "failure_reason": null,
       "function": "FindMidpoint",
       "hashes": {
-        "agent": "723c94cb47936fb509333cedcd4f27cedd2675500b4821747d32aff1dba04ac0",
+        "agent": "9a05f531bb8408afbe92d8dde205fa5f56490f86c7948bae84bdc0ed7b150ddf",
         "contract": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
         "dependency": "1f9913cadc3eb819db49c0e68c665c588e76b218efbfc61f6740366854045ec6",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "218da9bb64fb68e3e56ce7befe7428481da235c17abbc9a74f6384ea72e19a3d",
+        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -1414,6 +1660,88 @@
           "promotion_status": "VERIFIED_REFRESH",
           "state": "BITSTREAM_PASS",
           "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "95b00b9f217f19697deb92e6926e102faf48b91af79a9fb6331900a7217d480b",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "95b00b9f217f19697deb92e6926e102faf48b91af79a9fb6331900a7217d480b",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         }
       ],
       "interface_shape": [
@@ -1467,13 +1795,13 @@
       "failure_reason": null,
       "function": "FindResidualSize",
       "hashes": {
-        "agent": "723c94cb47936fb509333cedcd4f27cedd2675500b4821747d32aff1dba04ac0",
+        "agent": "9a05f531bb8408afbe92d8dde205fa5f56490f86c7948bae84bdc0ed7b150ddf",
         "contract": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
         "dependency": "9e6c1405ec992ffc24fd536b05eaa963645f2cf2cedc93afff3c5d59df2bcaee",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "218da9bb64fb68e3e56ce7befe7428481da235c17abbc9a74f6384ea72e19a3d",
+        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -1483,6 +1811,88 @@
       "history": [
         {
           "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "a10d4649d371883b4bdfef25fc99448c5a719e937a93425900ddf00b26474073",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "a10d4649d371883b4bdfef25fc99448c5a719e937a93425900ddf00b26474073",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,
@@ -1559,13 +1969,13 @@
       "failure_reason": null,
       "function": "GetQpAdjPredSize",
       "hashes": {
-        "agent": "723c94cb47936fb509333cedcd4f27cedd2675500b4821747d32aff1dba04ac0",
+        "agent": "9a05f531bb8408afbe92d8dde205fa5f56490f86c7948bae84bdc0ed7b150ddf",
         "contract": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
         "dependency": "c62aba977da68e4668648b7d361d598777450780ff2ad5a2c6eabd8b9a4044fc",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "218da9bb64fb68e3e56ce7befe7428481da235c17abbc9a74f6384ea72e19a3d",
+        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -1575,6 +1985,88 @@
       "history": [
         {
           "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "a8a237d111078f013fa7c15edf430b37d8c58a60595b1082166f16b0334c24b4",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "a8a237d111078f013fa7c15edf430b37d8c58a60595b1082166f16b0334c24b4",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,
@@ -2679,13 +3171,13 @@
       "failure_reason": null,
       "function": "IsFlatnessInfoSent",
       "hashes": {
-        "agent": "723c94cb47936fb509333cedcd4f27cedd2675500b4821747d32aff1dba04ac0",
+        "agent": "9a05f531bb8408afbe92d8dde205fa5f56490f86c7948bae84bdc0ed7b150ddf",
         "contract": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
         "dependency": "a460ece14ec42ff480ed1c073146d5fea2ab778300d518f25fd8fd15e6d431d3",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "218da9bb64fb68e3e56ce7befe7428481da235c17abbc9a74f6384ea72e19a3d",
+        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -3454,6 +3946,88 @@
           "promotion_status": "VERIFIED_REFRESH",
           "state": "BITSTREAM_PASS",
           "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "0a4b0d5ee2f45598e3ea1859102a42e3fa2ef66aba94e7049fc1d47876a5c07e",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "0a4b0d5ee2f45598e3ea1859102a42e3fa2ef66aba94e7049fc1d47876a5c07e",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         }
       ],
       "interface_shape": [
@@ -3501,13 +4075,13 @@
       "failure_reason": null,
       "function": "IsOrigFlatHIndex",
       "hashes": {
-        "agent": "723c94cb47936fb509333cedcd4f27cedd2675500b4821747d32aff1dba04ac0",
+        "agent": "9a05f531bb8408afbe92d8dde205fa5f56490f86c7948bae84bdc0ed7b150ddf",
         "contract": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
         "dependency": "93b22aef1a39b6d94857c93ea838fd91e13d7e9f69b3ced44e1d182a97fb8d60",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "218da9bb64fb68e3e56ce7befe7428481da235c17abbc9a74f6384ea72e19a3d",
+        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -3517,6 +4091,88 @@
       "history": [
         {
           "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "cfb707d7aa001c86145ecff6476c1fd36b7d2755ecabe5d5af41f817ea22d855",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "cfb707d7aa001c86145ecff6476c1fd36b7d2755ecabe5d5af41f817ea22d855",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,
@@ -3834,13 +4490,13 @@
       "failure_reason": null,
       "function": "MapQpToQlevel",
       "hashes": {
-        "agent": "723c94cb47936fb509333cedcd4f27cedd2675500b4821747d32aff1dba04ac0",
+        "agent": "9a05f531bb8408afbe92d8dde205fa5f56490f86c7948bae84bdc0ed7b150ddf",
         "contract": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
         "dependency": "e5a6860392413bbd0f5397def40f95b887b9f42659701bfeaa8241901a0d791c",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "218da9bb64fb68e3e56ce7befe7428481da235c17abbc9a74f6384ea72e19a3d",
+        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -4554,6 +5210,88 @@
           "promotion_status": "VERIFIED_REFRESH",
           "state": "BITSTREAM_PASS",
           "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "5dda9dc25483193295e7af8abbd927b209f8e9715f2f4791864200f2fc0a3334",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "5dda9dc25483193295e7af8abbd927b209f8e9715f2f4791864200f2fc0a3334",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         }
       ],
       "interface_shape": [
@@ -4631,13 +5369,13 @@
       "failure_reason": null,
       "function": "MaxResidualSize",
       "hashes": {
-        "agent": "723c94cb47936fb509333cedcd4f27cedd2675500b4821747d32aff1dba04ac0",
+        "agent": "9a05f531bb8408afbe92d8dde205fa5f56490f86c7948bae84bdc0ed7b150ddf",
         "contract": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
         "dependency": "6727f24119f8f3a09311eb44dd06409d8a8acc6a6adbe7d5526153bb571c253c",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "218da9bb64fb68e3e56ce7befe7428481da235c17abbc9a74f6384ea72e19a3d",
+        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -4647,6 +5385,88 @@
       "history": [
         {
           "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "cfdb54a0936d5bd70d45ddd9bcb20d05d99b73039a3789c1124ed564ae5aa65b",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "cfdb54a0936d5bd70d45ddd9bcb20d05d99b73039a3789c1124ed564ae5aa65b",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,
@@ -4771,13 +5591,13 @@
       "failure_reason": null,
       "function": "PredictSize",
       "hashes": {
-        "agent": "723c94cb47936fb509333cedcd4f27cedd2675500b4821747d32aff1dba04ac0",
+        "agent": "9a05f531bb8408afbe92d8dde205fa5f56490f86c7948bae84bdc0ed7b150ddf",
         "contract": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
         "dependency": "c3b28ae5c921d80d55c6330c5d0641c722c7128b33188ddc2e910722b1f557a3",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "218da9bb64fb68e3e56ce7befe7428481da235c17abbc9a74f6384ea72e19a3d",
+        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -5483,6 +6303,88 @@
           "promotion_status": "VERIFIED_REFRESH",
           "state": "BITSTREAM_PASS",
           "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "861239ab7f41e5c98845588cfa54631e2d4449920afe9cdbde2eae0920b09af7",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "861239ab7f41e5c98845588cfa54631e2d4449920afe9cdbde2eae0920b09af7",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         }
       ],
       "interface_shape": [
@@ -5530,13 +6432,13 @@
       "failure_reason": null,
       "function": "Qp2Qlevel",
       "hashes": {
-        "agent": "723c94cb47936fb509333cedcd4f27cedd2675500b4821747d32aff1dba04ac0",
+        "agent": "9a05f531bb8408afbe92d8dde205fa5f56490f86c7948bae84bdc0ed7b150ddf",
         "contract": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
         "dependency": "9d92f78af176f09f946ac7b8baba616875e6f609ac1bb13d10d94f398c1141a4",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "218da9bb64fb68e3e56ce7befe7428481da235c17abbc9a74f6384ea72e19a3d",
+        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -5546,6 +6448,88 @@
       "history": [
         {
           "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "18f078d82f020604fbcae57261373e69e9291f7757f81585163bb47fa1d893df",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "18f078d82f020604fbcae57261373e69e9291f7757f81585163bb47fa1d893df",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,
@@ -5653,13 +6637,13 @@
       "failure_reason": null,
       "function": "QuantizeResidual",
       "hashes": {
-        "agent": "723c94cb47936fb509333cedcd4f27cedd2675500b4821747d32aff1dba04ac0",
+        "agent": "9a05f531bb8408afbe92d8dde205fa5f56490f86c7948bae84bdc0ed7b150ddf",
         "contract": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
         "dependency": "857fe95fea923e3faa42d7aa9fcb639618de23b318f08517eb5a3c04c7c2460a",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "218da9bb64fb68e3e56ce7befe7428481da235c17abbc9a74f6384ea72e19a3d",
+        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -6680,6 +7664,88 @@
           "promotion_status": "VERIFIED_REFRESH",
           "state": "BITSTREAM_PASS",
           "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "7c9d729bbe1ac193b6f355b3d8281a92ab350a9c27a7717145fdea31a863d9cd",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "7c9d729bbe1ac193b6f355b3d8281a92ab350a9c27a7717145fdea31a863d9cd",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         }
       ],
       "interface_shape": [
@@ -6721,13 +7787,13 @@
       "failure_reason": null,
       "function": "SamplePredict",
       "hashes": {
-        "agent": "723c94cb47936fb509333cedcd4f27cedd2675500b4821747d32aff1dba04ac0",
+        "agent": "9a05f531bb8408afbe92d8dde205fa5f56490f86c7948bae84bdc0ed7b150ddf",
         "contract": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
         "dependency": "eb410ecfe86d9a7b5c1248c6eaafc2ee7fc455059dba226e354189d01d05b1e0",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "218da9bb64fb68e3e56ce7befe7428481da235c17abbc9a74f6384ea72e19a3d",
+        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -7463,6 +8529,88 @@
           "promotion_status": "VERIFIED_REFRESH",
           "state": "BITSTREAM_PASS",
           "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "831411aefb7fd14c630f6a71d75191a62320ce17566d6292637fcdab603e2011",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "831411aefb7fd14c630f6a71d75191a62320ce17566d6292637fcdab603e2011",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         }
       ],
       "interface_shape": [
@@ -7726,13 +8874,13 @@
       "failure_reason": null,
       "function": "SampToLineBuf",
       "hashes": {
-        "agent": "723c94cb47936fb509333cedcd4f27cedd2675500b4821747d32aff1dba04ac0",
+        "agent": "9a05f531bb8408afbe92d8dde205fa5f56490f86c7948bae84bdc0ed7b150ddf",
         "contract": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
         "dependency": "7dd38b09325dfe416e4485856a353d45973644c674a5b1c2e6ea1194a05b2821",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "218da9bb64fb68e3e56ce7befe7428481da235c17abbc9a74f6384ea72e19a3d",
+        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -8170,6 +9318,88 @@
         },
         {
           "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "971e3b07df907a913544145749bc5303b1c4532af69517ce97ab3bc9bed0cae9",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "971e3b07df907a913544145749bc5303b1c4532af69517ce97ab3bc9bed0cae9",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
           "state": "BITSTREAM_PASS",
           "status": "PASS"
         },
@@ -8430,13 +9660,13 @@
       "failure_reason": null,
       "function": "UsingMidpoint",
       "hashes": {
-        "agent": "723c94cb47936fb509333cedcd4f27cedd2675500b4821747d32aff1dba04ac0",
+        "agent": "9a05f531bb8408afbe92d8dde205fa5f56490f86c7948bae84bdc0ed7b150ddf",
         "contract": "a80e806bc03f18d8ed3285f7fc6c043b0bb487da5921717a8239a344049abab1",
         "dependency": "ed4d1661a6d51b54c7a44d1beb0bea8e26a13899f0f8a28ae68673d4bd0ed631",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "218da9bb64fb68e3e56ce7befe7428481da235c17abbc9a74f6384ea72e19a3d",
+        "prompt": "d7962a3353ab32150c68c1be4eea89cc5093de549976d9ba3858425cf6c97db2",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -8446,6 +9676,88 @@
       "history": [
         {
           "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "fc765032b32c15013196fa87328b8692da41071277c4bdd13ffb941c86132ab8",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "model_calls": 0,
+          "state": "RTL_GENERATED",
+          "status": "PASS",
+          "token_count": 0
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS",
+          "unit_receipt": "EXECUTED_NOW"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "pending_rtl_sha256": "fc765032b32c15013196fa87328b8692da41071277c4bdd13ffb941c86132ab8",
+          "promotion_approval_file": null,
+          "promotion_status": "VERIFIED_REFRESH",
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
         },
         {
           "failure_reason": null,

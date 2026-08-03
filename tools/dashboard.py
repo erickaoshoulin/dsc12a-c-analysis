@@ -345,6 +345,153 @@ def load_library_manifest(repo: Path) -> dict[str, Any]:
     return read_json(repo / "library" / "manifest.json", {}) or {}
 
 
+def load_ci_frontier(repo: Path) -> dict[str, Any]:
+    """Expose the current generic CI queue/blocker frontier to the dashboard.
+
+    The regression service and the executable migration agent have separate
+    receipts.  The selected SMB run can therefore be completely green while
+    a newly discovered contract is waiting for a review or another gate.  A
+    dashboard that only reads function receipts would hide that work.  Merge
+    the current plan, state, and agent summary into one deterministic view;
+    historical state entries are intentionally not treated as current
+    blockers.
+    """
+    plan = read_json(repo / "ci" / "plan.json", {}) or {}
+    state = read_json(repo / "ci" / "state.json", {}) or {}
+    summary = read_json(repo / "summary.json", {}) or {}
+
+    def strings(value: Any) -> list[str]:
+        if not isinstance(value, list):
+            return []
+        result: list[str] = []
+        seen: set[str] = set()
+        for item in value:
+            text = str(item).strip()
+            if text and text not in seen:
+                seen.add(text)
+                result.append(text)
+        return result
+
+    def function_name(value: Any) -> str | None:
+        if isinstance(value, dict):
+            value = value.get("name") or value.get("function")
+        text = str(value or "").strip()
+        return text or None
+
+    def state_entries() -> list[dict[str, Any]]:
+        value = state.get("contracts")
+        return [item for item in value if isinstance(item, dict)] if isinstance(value, list) else []
+
+    state_by_id = {
+        str(item.get("contract_id")): item
+        for item in state_entries()
+        if item.get("contract_id")
+    }
+
+    ready = strings(summary.get("ready_contracts")) or strings(plan.get("selected_contracts"))
+    selected = strings(plan.get("selected_contracts")) or strings(summary.get("selected_contracts"))
+    new_candidates = strings(plan.get("new_candidates")) or strings(summary.get("new_candidates"))
+    selected_new_work = strings(summary.get("selected_new_work"))
+    blockers_by_id: dict[str, dict[str, Any]] = {}
+
+    def add_blocker(value: Any, fallback_contract_id: str | None = None) -> None:
+        if isinstance(value, str):
+            text = value.strip()
+            if ":" in text:
+                contract_id, reason = text.split(":", 1)
+                fallback_contract_id = fallback_contract_id or contract_id.strip()
+                value = {"reasons": [reason.strip()]}
+            else:
+                value = {"reasons": [text]}
+        if not isinstance(value, dict):
+            return
+        contract_id = str(value.get("contract_id") or fallback_contract_id or "").strip()
+        if not contract_id:
+            return
+        entry = blockers_by_id.setdefault(
+            contract_id,
+            {
+                "contract_id": contract_id,
+                "function": None,
+                "status": "BLOCKED",
+                "current_state": None,
+                "promotion_status": None,
+                "reasons": [],
+            },
+        )
+        entry["function"] = entry["function"] or function_name(value.get("function"))
+        entry["current_state"] = entry["current_state"] or value.get("current_state")
+        entry["promotion_status"] = entry["promotion_status"] or value.get("promotion_status")
+        reasons = value.get("reasons")
+        if not isinstance(reasons, list):
+            reasons = [value.get("reason") or value.get("failure_reason")]
+        entry["reasons"] = sorted({
+            *entry["reasons"],
+            *(str(reason).strip() for reason in reasons if reason),
+        })
+
+    for item in plan.get("blocked_contracts", []) if isinstance(plan.get("blocked_contracts"), list) else []:
+        add_blocker(item)
+    for item in summary.get("blocked_contracts", []) if isinstance(summary.get("blocked_contracts"), list) else []:
+        add_blocker(item)
+    for item in summary.get("blockers", []) if isinstance(summary.get("blockers"), list) else []:
+        add_blocker(item)
+    for item in state_entries():
+        if str(item.get("status", "")).upper() == "BLOCKED":
+            add_blocker(item)
+
+    for contract_id, item in blockers_by_id.items():
+        current = state_by_id.get(contract_id, {})
+        item["function"] = item["function"] or function_name(current.get("function"))
+        item["current_state"] = item["current_state"] or current.get("current_state")
+        item["promotion_status"] = item["promotion_status"] or current.get("promotion_status")
+        if not item["reasons"] and current.get("failure_reason"):
+            item["reasons"] = [str(current["failure_reason"])]
+
+    blocked_contracts = [blockers_by_id[key] for key in sorted(blockers_by_id)]
+    queue_ids: list[str] = []
+    for contract_id in [*new_candidates, *(item["contract_id"] for item in blocked_contracts)]:
+        if contract_id not in queue_ids:
+            queue_ids.append(contract_id)
+    candidate_queue: list[dict[str, Any]] = []
+    for contract_id in queue_ids:
+        state_item = state_by_id.get(contract_id, {})
+        current_status = status(
+            state_item.get("status") or state_item.get("current_state"),
+            not_applicable="UNPROVED",
+        )
+        blocked = blockers_by_id.get(contract_id)
+        candidate_queue.append({
+            "contract_id": contract_id,
+            "function": (blocked or {}).get("function") or function_name(state_item.get("function")),
+            "queue_state": "BLOCKED" if blocked else "NEW",
+            "current_status": "BLOCKED" if blocked else current_status,
+            "current_state": state_item.get("current_state"),
+            "reasons": (blocked or {}).get("reasons", []),
+            "promotion_status": state_item.get("promotion_status") or (blocked or {}).get("promotion_status"),
+        })
+
+    return {
+        "schema_version": 1,
+        "source_files": ["ci/plan.json", "ci/state.json", "summary.json"],
+        "ready_contracts": sorted(set(ready)),
+        "selected_contracts": sorted(set(selected)),
+        "new_candidates": sorted(set(new_candidates)),
+        "selected_new_work": sorted(set(selected_new_work)),
+        "candidate_queue": candidate_queue,
+        "blocked_contracts": blocked_contracts,
+        "blockers": blocked_contracts,
+        "counts": {
+            "ready": len(set(ready)),
+            "selected": len(set(selected)),
+            "new_candidates": len(set(new_candidates)),
+            "blocked": len(blocked_contracts),
+        },
+        "generator_invocations": as_int(summary.get("generator_invocations"), 0) or 0,
+        "model_calls": as_int(summary.get("model_calls"), 0) or 0,
+    }
+
+
 def spec_manifest(repo: Path) -> dict[str, Any]:
     return read_json(repo / "spec" / "manifest.json", {}) or {}
 
@@ -1182,6 +1329,7 @@ class Dataset:
     records: list[dict[str, Any]]
     selected_run_id: str | None
     overview: dict[str, Any]
+    ci_frontier: dict[str, Any]
     functions: list[dict[str, Any]]
     runs: list[dict[str, Any]]
     traceability: dict[str, Any]
@@ -1499,6 +1647,8 @@ DSC PDF.
       contract/         locked contract (content-addressed reference)
 
     dashboard/          static HTML and normalized view models
+    dashboard/data/ci-frontier.json
+                        current tool-selected ready/candidate/blocker frontier
     reports/            readable regression-summary.md and per-function reports
     library/index.json  accepted-library index with stale/provenance checks
     path-map.json       legacy-to-new path mapping
@@ -1726,6 +1876,7 @@ def build_dataset(
     source_gate = selected_run.get("source_gate") or (
         functions[0].get("source_gate") if functions else {}
     )
+    ci_frontier = load_ci_frontier(repo)
     overview = {
         "schema_version": 1,
         "selected_run": selected_summary,
@@ -1740,6 +1891,7 @@ def build_dataset(
                 else "SPEC_UNAVAILABLE"
             ),
         },
+        "ci_frontier": ci_frontier,
         "counts": dict(sorted(counts.items())),
         "progress": {
             "functions": {
@@ -1762,6 +1914,7 @@ def build_dataset(
         records=records,
         selected_run_id=selected_id,
         overview=overview,
+        ci_frontier=ci_frontier,
         functions=functions,
         runs=run_summaries,
         traceability=make_traceability_index(functions),
@@ -1887,7 +2040,7 @@ def report_function(item: dict[str, Any]) -> str:
 
 CSS = """
 :root{color-scheme:light;--ink:#17212b;--muted:#64748b;--line:#d8e0e8;--panel:#fff;--bg:#f5f7fa;--blue:#2563eb;--green:#16803c;--red:#b42318;--amber:#a15c00;--purple:#6941c6}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}.wrap{max-width:1500px;margin:0 auto;padding:28px 32px}header{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;margin-bottom:24px}h1{font-size:30px;line-height:1.15;margin:0 0 6px}h2{font-size:20px;margin:28px 0 12px}h3{font-size:16px;margin:22px 0 10px}.muted,.small{color:var(--muted);font-size:12px}.nav{display:flex;flex-wrap:wrap;gap:10px}.nav a,.button{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:7px 10px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}.card,.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:0 1px 2px #00000008}.card strong{font-size:26px;display:block}.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}@media(max-width:900px){.wrap{padding:20px 16px}.grid2{grid-template-columns:1fr}header{display:block}.nav{margin-top:14px}}table{border-collapse:collapse;width:100%;background:var(--panel)}th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}th{position:sticky;top:0;background:#eef3f8;z-index:1;cursor:pointer;font-size:12px}tr:hover td{background:#f8fbff}.table-scroll{overflow:auto;border:1px solid var(--line);border-radius:10px}.pill{display:inline-block;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:700;white-space:nowrap}.PASS{background:#dcfce7;color:#166534}.FAIL,.INFRASTRUCTURE_FAILURE{background:#fee4e2;color:#9b1c1c}.BLOCKED{background:#fff0c2;color:#8a4b00}.RUNNING{background:#dbeafe;color:#1e40af}.UNPROVED{background:#eee9fe;color:#5b35a2}.bar{height:10px;border-radius:999px;background:#e8edf2;overflow:hidden;min-width:120px}.bar>i{height:100%;display:block;background:var(--blue)}.bar.green>i{background:var(--green)}.statline{display:flex;justify-content:space-between;gap:12px;margin:8px 0}.failure{border-left:4px solid var(--red);padding:10px 12px;background:#fff5f4;margin:8px 0}.notice{border-left:4px solid var(--amber);padding:10px 12px;background:#fff9e8;margin:10px 0}.chain{display:grid;grid-template-columns:repeat(6,minmax(100px,1fr));gap:8px}@media(max-width:900px){.chain{grid-template-columns:repeat(2,1fr)}}.chain div{border:1px solid var(--line);border-radius:8px;padding:10px;background:#fbfcfe}.chain b{display:block;margin-bottom:4px}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;word-break:break-word}.nowrap{white-space:nowrap}input,select{padding:8px;border:1px solid var(--line);border-radius:7px;background:#fff}.filters{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}.wrap{max-width:1500px;margin:0 auto;padding:28px 32px}header{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;margin-bottom:24px}h1{font-size:30px;line-height:1.15;margin:0 0 6px}h2{font-size:20px;margin:28px 0 12px}h3{font-size:16px;margin:22px 0 10px}.muted,.small{color:var(--muted);font-size:12px}.nav{display:flex;flex-wrap:wrap;gap:10px}.nav a,.button{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:7px 10px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}.card,.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:0 1px 2px #00000008}.card strong{font-size:26px;display:block}.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}@media(max-width:900px){.wrap{padding:20px 16px}.grid2{grid-template-columns:1fr}header{display:block}.nav{margin-top:14px}}table{border-collapse:collapse;width:100%;background:var(--panel)}th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}th{position:sticky;top:0;background:#eef3f8;z-index:1;cursor:pointer;font-size:12px}tr:hover td{background:#f8fbff}.table-scroll{overflow:auto;border:1px solid var(--line);border-radius:10px}.pill{display:inline-block;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:700;white-space:nowrap}.PASS{background:#dcfce7;color:#166534}.FAIL,.INFRASTRUCTURE_FAILURE{background:#fee4e2;color:#9b1c1c}.BLOCKED{background:#fff0c2;color:#8a4b00}.RUNNING,.NEW,.READY{background:#dbeafe;color:#1e40af}.UNPROVED{background:#eee9fe;color:#5b35a2}.bar{height:10px;border-radius:999px;background:#e8edf2;overflow:hidden;min-width:120px}.bar>i{height:100%;display:block;background:var(--blue)}.bar.green>i{background:var(--green)}.statline{display:flex;justify-content:space-between;gap:12px;margin:8px 0}.failure{border-left:4px solid var(--red);padding:10px 12px;background:#fff5f4;margin:8px 0}.notice{border-left:4px solid var(--amber);padding:10px 12px;background:#fff9e8;margin:8px 0}.chain{display:grid;grid-template-columns:repeat(6,minmax(100px,1fr));gap:8px}@media(max-width:900px){.chain{grid-template-columns:repeat(2,1fr)}}.chain div{border:1px solid var(--line);border-radius:8px;padding:10px;background:#fbfcfe}.chain b{display:block;margin-bottom:4px}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;word-break:break-word}.nowrap{white-space:nowrap}input,select{padding:8px;border:1px solid var(--line);border-radius:7px;background:#fff}.filters{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
 """
 
 
@@ -1938,6 +2091,53 @@ def bar(label: str, passed: int | None, total: int | None, color: str = "") -> s
     )
 
 
+def render_ci_frontier(frontier: dict[str, Any]) -> str:
+    """Render current migration queue and blockers, independent of run status."""
+    counts = frontier.get("counts", {}) if isinstance(frontier, dict) else {}
+    body = (
+        '<section class="grid2"><div class="panel"><h2>Migration frontier</h2>'
+        f'<div class="statline"><span>Ready contracts</span><b>{html.escape(str(counts.get("ready", 0)))}</b></div>'
+        f'<div class="statline"><span>New candidates</span><b>{html.escape(str(counts.get("new_candidates", 0)))}</b></div>'
+        f'<div class="statline"><span>Current blockers</span><b>{html.escape(str(counts.get("blocked", 0)))}</b></div>'
+        f'<p class="small">Source: {html.escape(", ".join(frontier.get("source_files", [])))}</p>'
+        '</div><div class="panel"><h2>Candidate queue</h2>'
+    )
+    queue = frontier.get("candidate_queue", []) if isinstance(frontier, dict) else []
+    if queue:
+        body += (
+            '<div class="table-scroll"><table><thead><tr><th>Contract</th>'
+            '<th>Function</th><th>Queue</th><th>Current status</th><th>Reason / next action</th>'
+            '</tr></thead><tbody>'
+        )
+        for item in queue:
+            reasons = "; ".join(item.get("reasons") or []) or "ready for the next deterministic stage"
+            body += (
+                f'<tr><td class="code">{html.escape(str(item.get("contract_id")))}</td>'
+                f'<td>{html.escape(str(item.get("function") or "—"))}</td>'
+                f'<td>{html_status(item.get("queue_state"))}</td>'
+                f'<td>{html_status(item.get("current_status"))}</td>'
+                f'<td>{html.escape(reasons)}</td></tr>'
+            )
+        body += "</tbody></table></div>"
+    else:
+        body += '<div class="panel">No pending candidate in the current CI frontier.</div>'
+    body += "</div></section>"
+
+    blockers = frontier.get("blockers", []) if isinstance(frontier, dict) else []
+    body += '<section><h2>CI blockers requiring attention</h2>'
+    if blockers:
+        for item in blockers:
+            reasons = "; ".join(item.get("reasons") or []) or "blocked"
+            body += (
+                f'<div class="failure"><b>{html.escape(str(item.get("function") or item.get("contract_id")))}</b> '
+                f'<span class="code">{html.escape(str(item.get("contract_id")))}</span> '
+                f'{html_status(item.get("status"))}<br>{html.escape(reasons)}</div>'
+            )
+    else:
+        body += '<div class="panel">No current CI blocker.</div>'
+    return body + "</section>"
+
+
 def render_index(dataset: Dataset) -> str:
     overview = dataset.overview
     storage = dataset.resolution
@@ -1948,6 +2148,7 @@ def render_index(dataset: Dataset) -> str:
         ("Frame sanity", overview["progress"]["frames"]["display"]),
         ("Vectors", f"{overview['progress']['vectors']:,}"),
         ("Indexed runs", dataset.overview["run_count"]),
+        ("CI blockers", overview["ci_frontier"]["counts"]["blocked"]),
     ]
     card_html = "".join(
         f'<div class="card"><div class="muted">{html.escape(str(label))}</div>'
@@ -1993,6 +2194,7 @@ def render_index(dataset: Dataset) -> str:
         + progress_bars
         + "</div></section>"
     )
+    body += render_ci_frontier(overview["ci_frontier"])
     body += (
         '<h2>Function regression table</h2><div class="filters">'
         '<input id="filter" placeholder="filter function, contract, blocker…">'
@@ -2176,6 +2378,7 @@ def write_site(dataset: Dataset, site_root: Path) -> list[Path]:
         (site_root / "data" / "overview.json", dataset.overview),
         (site_root / "data" / "runs.json", dataset.runs),
         (site_root / "data" / "traceability.json", dataset.traceability),
+        (site_root / "data" / "ci-frontier.json", dataset.ci_frontier),
     ):
         write_json(path, value)
         outputs.append(path)
@@ -2281,6 +2484,13 @@ def check_site(repo: Path, output: Path | None = None) -> tuple[bool, list[str]]
             errors.append(f"missing function view model: {cid}")
         if not (repo / "reports" / "functions" / f"{safe_id(cid)}.md").is_file():
             errors.append(f"missing function report: {cid}")
+    frontier = read_json(site / "data" / "ci-frontier.json", {}) or {}
+    if not isinstance(frontier, dict):
+        errors.append("invalid CI frontier view model")
+    else:
+        for item in frontier.get("blockers", []) if isinstance(frontier.get("blockers"), list) else []:
+            if item.get("status") != "BLOCKED":
+                errors.append(f"invalid CI blocker status: {item.get('contract_id')}")
     if site.is_dir():
         for path in relative_files(site):
             if path.suffix != ".html":
@@ -2572,6 +2782,35 @@ def report_summary(dataset: Dataset) -> str:
         f"- PDF: {source['spec_status']}; {md_escape((source.get('pdf') or {}).get('path'))}",
         f"- Source/build gate: {md_escape((source.get('source_gate') or {}).get('status'))}",
         "- PDF and C source remain external/immutable inputs.", "",
+        "## Migration frontier", "",
+        f"- Ready contracts: {md_escape(', '.join(overview['ci_frontier'].get('ready_contracts', [])) or 'none')}",
+        f"- New candidates: {md_escape(', '.join(overview['ci_frontier'].get('new_candidates', [])) or 'none')}",
+        f"- Generator invocations: {overview['ci_frontier'].get('generator_invocations', 0)}; model calls: {overview['ci_frontier'].get('model_calls', 0)}",
+    ]
+    frontier_queue = overview["ci_frontier"].get("candidate_queue", [])
+    if frontier_queue:
+        lines += [
+            "", "| Candidate | Function | Queue | Current status | Reason / next action |",
+            "|---|---|---|---|---|",
+        ]
+        for item in frontier_queue:
+            lines.append(
+                f"| {md_escape(item.get('contract_id'))} | {md_escape(item.get('function'))} | "
+                f"{md_escape(item.get('queue_state'))} | {md_escape(item.get('current_status'))} | "
+                f"{md_escape('; '.join(item.get('reasons') or []) or 'ready for the next deterministic stage')} |"
+            )
+    if overview["ci_frontier"].get("blockers"):
+        lines += ["", "### Current CI blockers", ""]
+        for item in overview["ci_frontier"]["blockers"]:
+            lines.append(
+                f"- {md_escape(item.get('function') or item.get('contract_id'))} "
+                f"({md_escape(item.get('contract_id'))}): "
+                f"{md_escape('; '.join(item.get('reasons') or []) or 'blocked')}"
+            )
+    else:
+        lines += ["", "There are no current CI blockers."]
+    lines += [
+        "",
         "## Function results", "",
         "| Function | Status | Stage | Candidates | Vectors | Unit/formal | Frame | Next action |",
         "|---|---|---|---|---:|---|---|---|",

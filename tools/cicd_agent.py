@@ -794,6 +794,54 @@ class Agent:
         })
         return ports
 
+    def load_accepted_library_contracts(
+        self,
+        existing: list[dict[str, Any]],
+    ) -> list[dict[str, Any]]:
+        """Reload accepted dynamic contracts for an ordinary plan.
+
+        ``contracts/locked`` is the small, human-maintained seed set.  Once a
+        tool-discovered contract is accepted, its canonical snapshot lives in
+        ``library/contracts`` and the manifest records the accepted frontier.
+        A normal plan must bring those snapshots back into the in-memory set;
+        otherwise it silently degrades the stable DAG to the seed set plus
+        whatever happens to be rediscovered in the current pass.
+        """
+        manifest = read_json(self.root / "library" / "manifest.json", {}) or {}
+        accepted_ids = {
+            str(component.get("contract_id", "")).strip().lower()
+            for component in manifest.get("components", [])
+            if str(component.get("status", "")).upper() == "PASS"
+        }
+        known_ids = {
+            str(contract_id(item)).strip().lower()
+            for item in existing
+            if str(contract_id(item)).strip()
+        }
+        loaded: list[dict[str, Any]] = []
+        contracts_dir = self.root / "library" / "contracts"
+        if not contracts_dir.is_dir():
+            return loaded
+
+        for path in sorted(contracts_dir.glob("*.json")):
+            contract = read_json(path, {}) or {}
+            cid = str(contract_id(contract)).strip().lower()
+            if not cid or cid not in accepted_ids or cid in known_ids:
+                continue
+            clang_usr = str(contract_function(contract).get("clang_usr", "")).strip()
+            if not clang_usr:
+                continue
+            if not contract_exact_links(contract):
+                continue
+
+            # Preserve the accepted snapshot and its identity.  build_plan
+            # classifies accepted manifest entries as retained work below,
+            # without rewriting selection metadata or reopening generation.
+            contract["status"] = "LOCKED"
+            loaded.append(contract)
+            known_ids.add(cid)
+        return loaded
+
     def materialize_new_contracts(self) -> list[dict[str, Any]]:
         if self.input_facts.get("errors"):
             return []
@@ -802,6 +850,12 @@ class Agent:
         overrides = self.reviewed_overrides()
         candidate_facts = self.tool_candidate_facts()
         effective_locked = self.apply_reviewed_overrides()
+        target_contract = safe_identifier(os.environ.get("DSC_CICD_TARGET_CONTRACT", "")).lower()
+        refresh_stable = os.environ.get("DSC_CICD_REFRESH_STABLE", "").lower() in {"1", "true", "yes"}
+        if not refresh_stable:
+            effective_locked.extend(
+                self.load_accepted_library_contracts(effective_locked)
+            )
         known = {str(contract_function(item).get("clang_usr")) for item in effective_locked}
         promoted_usrs = self.promoted_contract_usrs(effective_locked)
         source_usrs = {
@@ -809,8 +863,6 @@ class Agent:
             for item in facts.get("functions", [])
             if item.get("clang_usr")
         }
-        target_contract = safe_identifier(os.environ.get("DSC_CICD_TARGET_CONTRACT", "")).lower()
-        refresh_stable = os.environ.get("DSC_CICD_REFRESH_STABLE", "").lower() in {"1", "true", "yes"}
         discovered = []
         for function in facts.get("functions", []):
             usr = str(function.get("clang_usr", ""))
@@ -1245,9 +1297,10 @@ class Agent:
 
     @staticmethod
     def stable_contract_identity(contract: dict[str, Any]) -> str:
-        """Hash semantic contract facts while excluding queue selection metadata."""
+        """Hash semantic contract facts while excluding routing/provenance metadata."""
         normalized = copy.deepcopy(contract)
-        normalized.pop("selection", None)
+        for key in ("selection", "library_promotion", "do_not_edit"):
+            normalized.pop(key, None)
         return digest(normalized)
 
     def choose_dependency_pair(self, selected: list[str]) -> dict[str, Any] | None:
@@ -1319,6 +1372,16 @@ class Agent:
                     "new_work", cid in discovered and cid not in stable_ids
                 )
             )
+            if (
+                cid in stable_ids
+                and not explicit_force_regenerate
+                and cid != target_contract
+            ):
+                # Accepted library entries retain their canonical snapshot in
+                # an ordinary plan.  Their selection metadata may be from the
+                # original discovery batch, but that must not reopen them as
+                # new work or collapse the stable frontier to the seed set.
+                new_work = False
             stable_refresh_candidate = bool(
                 cid in stable_ids
                 and (
