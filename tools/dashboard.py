@@ -1121,6 +1121,14 @@ def short_receipt(
     _, candidate_ratio = candidate_model(receipt)
     vector = vector_model(receipt)
     matrix = matrix_model(receipt)
+    rtl_sha256 = receipt.get("rtl_sha256") or receipt.get("accepted_rtl_sha256")
+    if not rtl_sha256:
+        accepted = receipt.get("accepted_rtl")
+        if accepted:
+            accepted_path = Path(str(accepted))
+            if not accepted_path.is_absolute() and function_dir:
+                accepted_path = function_dir / accepted_path
+            rtl_sha256 = file_hash(accepted_path)
     result = {
         "run_id": run.get("run_id"),
         "profile": run.get("profile"),
@@ -1129,7 +1137,7 @@ def short_receipt(
         "frame_pass_rate": matrix["frame"].get("display", "0/0"),
         "vectors": vector.get("executed", 0),
         "contract_hash": receipt.get("contract_hash"),
-        "rtl_sha256": receipt.get("rtl_sha256"),
+        "rtl_sha256": rtl_sha256,
         "timestamp": run_timestamp(run, str(run.get("run_id", ""))),
     }
     if include_sort_key:
@@ -1210,6 +1218,18 @@ def normalized_function(
         history.sort(key=lambda item: (str(item.get("_sort_timestamp", item.get("timestamp"))), str(item.get("run_id"))))
     for item in history:
         item.pop("_sort_timestamp", None)
+    if promotion.get("status") == "PASS" and not promotion.get("last_verified_run_id"):
+        verified_history = [
+            item for item in history
+            if item.get("status") == "PASS"
+            and (
+                not component.get("contract_hash")
+                or not item.get("contract_hash")
+                or item.get("contract_hash") == component.get("contract_hash")
+            )
+        ]
+        if verified_history:
+            promotion["last_verified_run_id"] = verified_history[-1].get("run_id")
     comparison_value = comparison(history)
     current_stage = (
         "complete"
@@ -1433,7 +1453,10 @@ def make_library_index(
                 "spec_hash": manifest.get("spec_hash"),
                 "artifact_dir": component.get("artifact_dir"),
                 "promoted_at": component.get("promoted_at"),
-                "last_verified_run_id": component.get("last_verified_run_id"),
+                "last_verified_run_id": (
+                    component.get("last_verified_run_id")
+                    or (item.get("promotion", {}) or {}).get("last_verified_run_id")
+                ),
                 "boundary": component.get("boundary"),
                 "authority": component.get("authority"),
             },

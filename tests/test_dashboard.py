@@ -268,6 +268,41 @@ class DashboardFixtureTests(unittest.TestCase):
         ok, errors = dashboard.check_site(repo, site)
         self.assertTrue(ok, errors)
 
+    def test_pass_history_recovers_missing_rtl_hash_and_verified_run(self):
+        temp, repo, regression, _ = self.make_fixture()
+        self.addCleanup(temp.cleanup)
+        accepted = (
+            regression
+            / "runs"
+            / "fixture-run"
+            / "functions"
+            / "fixture_leaf"
+            / "accepted"
+            / "candidate_01.sv"
+        )
+        accepted.parent.mkdir(parents=True, exist_ok=True)
+        accepted.write_text("module fixture_leaf; endmodule\n", encoding="utf-8")
+        receipt_path = regression / "runs" / "fixture-run" / "functions" / "fixture_leaf" / "receipt.json"
+        receipt = dashboard.read_json(receipt_path)
+        receipt["accepted_rtl"] = str(accepted)
+        receipt.pop("rtl_sha256", None)
+        dashboard.write_json(receipt_path, receipt)
+        manifest_path = repo / "library" / "manifest.json"
+        manifest = dashboard.read_json(manifest_path)
+        manifest["components"][0].pop("last_verified_run_id", None)
+        dashboard.write_json(manifest_path, manifest)
+
+        site = repo / "dashboard"
+        dataset, _ = dashboard.build(repo, str(regression), "latest", output=site, mirror_external=False)
+        model = dashboard.read_json(site / "data" / "functions" / "fixture_leaf.json")
+        expected_hash = dashboard.file_hash(accepted)
+        self.assertEqual(model["promotion"]["last_verified_run_id"], "fixture-run")
+        self.assertEqual(model["history"][0]["rtl_sha256"], expected_hash)
+        indexed = dashboard.read_json(repo / "library" / "index.json")
+        component = indexed["components"][0]
+        self.assertEqual(component["provenance"]["last_verified_run_id"], "fixture-run")
+        self.assertEqual(component["history"][0]["rtl_sha256"], expected_hash)
+
     def test_failed_fixture_is_red_with_cause_and_counterexample(self):
         temp, repo, regression, _ = self.make_fixture(failed=True)
         self.addCleanup(temp.cleanup)

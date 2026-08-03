@@ -1398,6 +1398,16 @@ class RegressionService:
                 stage_results[STAGES[6]]["coverage_warning"] = "cached control receipt does not contain every pilot frame"
                 stage_results[STAGES[6]]["missing_frames"] = missing_frames
             accepted_rtl = self.copy_accepted_rtl(artifact, function_dir, unit)
+            accepted_rtl_sha256 = (
+                file_hash(Path(accepted_rtl))
+                if accepted_rtl and Path(accepted_rtl).is_file()
+                else None
+            )
+            canonical_rtl_sha256 = accepted_rtl_sha256
+            if accepted_rtl and Path(accepted_rtl).is_file():
+                source = Path(accepted_rtl).read_text(encoding="utf-8", errors="replace")
+                canonical_source, _ = self._canonical_library_source(source, cid)
+                canonical_rtl_sha256 = hashlib.sha256(canonical_source.encode("utf-8")).hexdigest()
             blockers = []
             if any(result.get("status") == "FAIL" for result in stage_results.values()):
                 blockers.append("one or more regression gates failed")
@@ -1418,6 +1428,8 @@ class RegressionService:
                 "candidate_pass_rate": f"{sum(1 for item in candidates if item.get('accepted') or item.get('verification_status') in ('EXHAUSTIVE_EQUIVALENT', 'PASS'))}/{len(candidates) or 0}",
                 "frame_pass_rate": f"{sum(1 for frame in frames if all(mode.get('status') == 'PASS' and mode.get('sha256') == mode.get('baseline_sha256') for mode in frame.get('modes', [])))}/{len(frames) or 0}",
                 "accepted_rtl": accepted_rtl,
+                "accepted_rtl_sha256": accepted_rtl_sha256,
+                "rtl_sha256": canonical_rtl_sha256,
                 "source_artifact": str(artifact),
                 "raw_flow": flow,
                 "blockers": blockers,
