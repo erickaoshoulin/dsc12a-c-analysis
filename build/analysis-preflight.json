@@ -1,11 +1,7 @@
 {
-  "blockers": [
-    "missing tool: frama-c"
-  ],
+  "blockers": [],
   "do_not_edit": true,
-  "missing_tools": [
-    "frama-c"
-  ],
+  "missing_tools": [],
   "required_tools": [
     "python",
     "clang",
@@ -15,7 +11,7 @@
     "cmake"
   ],
   "schema_version": 1,
-  "status": "INFRASTRUCTURE_FAILURE",
+  "status": "PASS",
   "tools": {
     "clang": {
       "requested": "clang",
@@ -40,8 +36,10 @@
     },
     "frama-c": {
       "requested": "frama-c",
-      "resolved": null,
-      "status": "MISSING"
+      "resolution": "opam",
+      "resolved": "/Users/snow/.opam/dsc12a-ocaml-5.4.0/bin/frama-c",
+      "status": "PASS",
+      "version": "33.0 (Arsenic)"
     },
     "llvm-config": {
       "requested": "llvm-config",

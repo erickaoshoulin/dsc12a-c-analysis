@@ -1733,10 +1733,10 @@
   "orphan_triage": {
     "do_not_edit": true,
     "input_hashes": {
-      "candidate_facts": "858b671eb8ffb1d69544fd4e6c055a6c9da18a82c5e97079fb81fed963508f3b",
+      "candidate_facts": "623bdae214e7a4cd800b8352f38473601585a1969959d2e49ba72b51507072aa",
       "coverage": "f7faaab37dc4ca79a6f811ab817435cec4dae8dad8bf457a371dc62e786a7892",
       "library_manifest": "3c42a038a8d3367eb7225a40e102f7150495daab672e2de2ea261446cef301d0",
-      "raw_facts": "37b10d77d9c410d3ebc53766d78699da5c02cb8e7e3d176c8808477a29dea09e"
+      "raw_facts": "0482b12a289af5e44cf8a64dcd6bd3b480c2adf904dc087121ef94d75381ae3c"
     },
     "production_code": [
       {
@@ -1842,13 +1842,10 @@
             "READ_ONLY",
             "WRITES_THROUGH"
           ],
-          "proposal_category": "STATEFUL",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -2018,15 +2015,10 @@
             "READ_ONLY",
             "READ_ONLY"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "int",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -2132,13 +2124,10 @@
             "UNKNOWN",
             "UNKNOWN"
           ],
-          "proposal_category": "COMPOSITE_COMB_CANDIDATE",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -2246,13 +2235,10 @@
             "UNKNOWN",
             "UNKNOWN"
           ],
-          "proposal_category": "COMPOSITE_COMB_CANDIDATE",
+          "proposal_category": null,
           "return_type": "int",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -2279,7 +2265,7 @@
           ],
           "production_reachable": true,
           "purity": "IMPURE",
-          "rank": 26,
+          "rank": 25,
           "role": "DUT",
           "score": 60.0,
           "timing": "UNKNOWN",
@@ -2362,15 +2348,10 @@
             "READ_ONLY",
             "WRITES_THROUGH"
           ],
-          "proposal_category": "STATEFUL",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -2477,13 +2458,10 @@
             "UNKNOWN",
             "READ_ONLY"
           ],
-          "proposal_category": "STATEFUL",
+          "proposal_category": null,
           "return_type": "int",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -2592,15 +2570,10 @@
             "READ_ONLY",
             "WRITES_THROUGH"
           ],
-          "proposal_category": "STATEFUL",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -2747,15 +2720,10 @@
             "UNKNOWN",
             "WRITES_THROUGH"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "dsc_state_t *",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -2782,7 +2750,7 @@
           ],
           "production_reachable": true,
           "purity": "IMPURE",
-          "rank": 27,
+          "rank": 26,
           "role": "DUT",
           "score": 60.0,
           "timing": "UNKNOWN",
@@ -2860,15 +2828,10 @@
             "WRITES_THROUGH",
             "READ_ONLY"
           ],
-          "proposal_category": "STATEFUL",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -2974,15 +2937,10 @@
             "UNKNOWN",
             "UNKNOWN"
           ],
-          "proposal_category": "CONFIG_HELPER",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -3091,15 +3049,10 @@
             "UNKNOWN",
             "UNKNOWN"
           ],
-          "proposal_category": "CONFIG_HELPER",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -3126,7 +3079,7 @@
           ],
           "production_reachable": true,
           "purity": "IMPURE",
-          "rank": 24,
+          "rank": 23,
           "role": "DUT",
           "score": 65.0,
           "timing": "STATEFUL",
@@ -3210,13 +3163,10 @@
             "READ_ONLY",
             "WRITES_THROUGH"
           ],
-          "proposal_category": "STATEFUL",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -3324,15 +3274,10 @@
             "UNKNOWN",
             "READ_ONLY"
           ],
-          "proposal_category": "STATEFUL",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -3359,7 +3304,7 @@
           ],
           "production_reachable": true,
           "purity": "IMPURE",
-          "rank": 28,
+          "rank": 27,
           "role": "DUT",
           "score": 60.0,
           "timing": "UNKNOWN",
@@ -3435,15 +3380,10 @@
             "WRITES_THROUGH",
             "WRITES_THROUGH"
           ],
-          "proposal_category": "STATEFUL",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -3548,15 +3488,10 @@
             "UNKNOWN",
             "WRITES_THROUGH"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -3673,15 +3608,10 @@
             "WRITES_THROUGH",
             "UNKNOWN"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -3760,15 +3690,10 @@
           "pointer_modes": [
             "READ_ONLY"
           ],
-          "proposal_category": "PURE_COMB_CANDIDATE",
+          "proposal_category": null,
           "return_type": "float",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -3871,17 +3796,12 @@
           "pointer_modes": [
             "UNKNOWN"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "pic_t *",
           "static_mutable_state": [
             "bit_convert_rounding"
           ],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -3988,13 +3908,10 @@
           "pointer_modes": [
             "WRITES_THROUGH"
           ],
-          "proposal_category": "STATEFUL",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -4103,15 +4020,10 @@
           "pointer_modes": [
             "WRITES_THROUGH"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "int",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -4221,15 +4133,10 @@
           "pointer_modes": [
             "WRITES_THROUGH"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -4256,7 +4163,7 @@
           ],
           "production_reachable": true,
           "purity": "IMPURE",
-          "rank": 15,
+          "rank": 14,
           "role": "DUT",
           "score": 79.95,
           "timing": "COMBINATIONAL",
@@ -4334,13 +4241,10 @@
           "pointer_modes": [
             "UNKNOWN"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -4455,15 +4359,10 @@
           "pointer_modes": [
             "WRITES_THROUGH"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "int",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -4490,7 +4389,7 @@
           ],
           "production_reachable": true,
           "purity": "IMPURE",
-          "rank": 25,
+          "rank": 24,
           "role": "DUT",
           "score": 64.95,
           "timing": "STATEFUL",
@@ -4590,13 +4489,10 @@
           "pointer_modes": [
             "WRITES_THROUGH"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -4713,15 +4609,10 @@
           "pointer_modes": [
             "WRITES_THROUGH"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -4735,22 +4626,22 @@
             "indirect_call": false,
             "io": false,
             "logging": false,
-            "state_write": false,
+            "state_write": true,
             "unknown_facts": []
           },
           "eligible": false,
           "evidence": [
             "production reachability is a graph traversal from linked executable entry symbols",
             "observable output is inferred from output file calls and codec boundary dataflow shape",
-            "direct effects: {\"allocation\": false, \"assertion\": false, \"indirect_call\": false, \"io\": false, \"logging\": false, \"state_write\": false, \"unknown_facts\": []}",
-            "transitive effects: {\"allocation\": false, \"assertion\": false, \"indirect_call\": false, \"io\": false, \"logging\": false, \"state_write\": false, \"unknown_facts\": []}",
+            "direct effects: {\"allocation\": false, \"assertion\": false, \"indirect_call\": false, \"io\": false, \"logging\": false, \"state_write\": true, \"unknown_facts\": []}",
+            "transitive effects: {\"allocation\": false, \"assertion\": false, \"indirect_call\": false, \"io\": false, \"logging\": false, \"state_write\": true, \"unknown_facts\": []}",
             "at least one reachable loop has UNKNOWN bounds"
           ],
           "production_reachable": true,
-          "purity": "PURE",
-          "rank": 12,
+          "purity": "IMPURE",
+          "rank": 28,
           "role": "DUT",
-          "score": 80.0,
+          "score": 60.0,
           "timing": "UNKNOWN",
           "transitive_effects": {
             "allocation": false,
@@ -4758,7 +4649,7 @@
             "indirect_call": false,
             "io": false,
             "logging": false,
-            "state_write": false,
+            "state_write": true,
             "unknown_facts": []
           }
         },
@@ -4823,17 +4714,12 @@
           "parameter_count": 4,
           "pointer_modes": [
             "READ_ONLY",
-            "READ_ONLY"
+            "WRITES_THROUGH"
           ],
-          "proposal_category": "PURE_COMB_CANDIDATE",
+          "proposal_category": null,
           "return_type": "int",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -4916,15 +4802,10 @@
             "UNKNOWN",
             "WRITES_THROUGH"
           ],
-          "proposal_category": "STATEFUL",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -5006,15 +4887,10 @@
             "WRITES_THROUGH",
             "WRITES_THROUGH"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -5097,15 +4973,10 @@
           "loop_count": 1,
           "parameter_count": 2,
           "pointer_modes": [],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "void *",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -5242,13 +5113,10 @@
             "UNKNOWN",
             "WRITES_THROUGH"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -5349,13 +5217,10 @@
             "READ_ONLY",
             "WRITES_THROUGH"
           ],
-          "proposal_category": "STATEFUL",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -5473,14 +5338,10 @@
           "loop_count": 1,
           "parameter_count": 6,
           "pointer_modes": [],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "pic_t *",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -5561,15 +5422,10 @@
           "pointer_modes": [
             "UNKNOWN"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "void *",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -5652,13 +5508,10 @@
             "READ_ONLY",
             "WRITES_THROUGH"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "int",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -5749,13 +5602,10 @@
             "READ_ONLY",
             "UNKNOWN"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "int",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -5848,13 +5698,10 @@
             "UNKNOWN",
             "UNKNOWN"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -5951,13 +5798,10 @@
             "UNKNOWN",
             "UNKNOWN"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -6061,17 +5905,12 @@
           "parameter_count": 4,
           "pointer_modes": [
             "WRITES_THROUGH",
-            "READ_ONLY"
+            "WRITES_THROUGH"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -6160,15 +5999,10 @@
             "UNKNOWN",
             "WRITES_THROUGH"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -6244,15 +6078,12 @@
           "loop_count": 0,
           "parameter_count": 1,
           "pointer_modes": [],
-          "proposal_category": "STATEFUL",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [
             "bit_convert_rounding"
           ],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -6340,15 +6171,10 @@
             "WRITES_THROUGH",
             "UNKNOWN"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "int",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -6430,15 +6256,10 @@
             "READ_ONLY",
             "UNKNOWN"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "int",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -6532,13 +6353,10 @@
             "UNKNOWN",
             "UNKNOWN"
           ],
-          "proposal_category": "CONFIG_HELPER",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -6620,15 +6438,10 @@
             "UNKNOWN",
             "UNKNOWN"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -6718,15 +6531,10 @@
             "UNKNOWN",
             "WRITES_THROUGH"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -6814,15 +6622,10 @@
             "UNKNOWN",
             "WRITES_THROUGH"
           ],
-          "proposal_category": "STATEFUL",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -6913,15 +6716,10 @@
             "UNKNOWN",
             "WRITES_THROUGH"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -7009,15 +6807,10 @@
             "UNKNOWN",
             "WRITES_THROUGH"
           ],
-          "proposal_category": "STATEFUL",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -7044,7 +6837,7 @@
           ],
           "production_reachable": true,
           "purity": "IMPURE",
-          "rank": 17,
+          "rank": 16,
           "role": "DUT",
           "score": 79.9,
           "timing": "COMBINATIONAL",
@@ -7099,13 +6892,10 @@
             "READ_ONLY",
             "READ_ONLY"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -7196,15 +6986,10 @@
             "UNKNOWN",
             "WRITES_THROUGH"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -7231,7 +7016,7 @@
           ],
           "production_reachable": true,
           "purity": "IMPURE",
-          "rank": 18,
+          "rank": 17,
           "role": "DUT",
           "score": 79.9,
           "timing": "COMBINATIONAL",
@@ -7286,13 +7071,10 @@
             "READ_ONLY",
             "READ_ONLY"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "void",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -7388,15 +7170,10 @@
             "WRITES_THROUGH",
             "WRITES_THROUGH"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "int",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       },
       {
@@ -7482,15 +7259,10 @@
             "UNKNOWN",
             "UNKNOWN"
           ],
-          "proposal_category": "IO_OR_DEBUG",
+          "proposal_category": null,
           "return_type": "int",
           "static_mutable_state": [],
-          "unknown_facts": [
-            "Eva result unavailable",
-            "From result unavailable",
-            "at least one loop trip count is not proven fixed",
-            "loop has a potential read/write dependency across iterations"
-          ]
+          "unknown_facts": []
         }
       }
     ],

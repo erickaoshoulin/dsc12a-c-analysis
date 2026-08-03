@@ -19,7 +19,7 @@ SMB fallback: none
 
 - PDF: AVAILABLE; /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf
 - Source/build gate: PASS
-- Analysis-tool preflight: INFRASTRUCTURE_FAILURE; missing: frama-c
+- Analysis-tool preflight: PASS; missing: none
 - PDF and C source remain external/immutable inputs.
 
 ## Handoff storage
@@ -50,11 +50,11 @@ Readable audit: [code_to_spec](../reports/code-to-spec.md), [orphan_triage](../r
 
 | Candidate | Function | Queue | Current status | Reason / next action |
 |---|---|---|---|---|
-| ichdecision | IchDecision | BLOCKED | BLOCKED | human_promotion_approval_pending; human_promotion_approval_required |
+| ichdecision | IchDecision | BLOCKED | BLOCKED | human_promotion_approval_pending |
 
 ### Current CI blockers
 
-- IchDecision (ichdecision): human_promotion_approval_pending; human_promotion_approval_required
+- IchDecision (ichdecision): human_promotion_approval_pending
 
 ## Function results
 

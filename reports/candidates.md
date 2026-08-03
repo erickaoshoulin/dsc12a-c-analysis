@@ -164,21 +164,7 @@ Candidate selection is derived from the linked executable entry symbol, Clang ca
   - transitive effects: {"allocation": false, "assertion": false, "indirect_call": false, "io": false, "logging": false, "state_write": false, "unknown_facts": []}
   - at least one reachable loop has UNKNOWN bounds
 
-### 12. `getbits`
-
-- Score: `80.0`; confidence: `0.75`; role: `DUT`
-- Purity: `PURE`; timing: `UNKNOWN`; bounded: `False`
-- Production reachable: `True`; output contributing: `True`
-- Source: `dsc_utils.c:109`
-- Eligible: `False`
-- Evidence:
-  - production reachability is a graph traversal from linked executable entry symbols
-  - observable output is inferred from output file calls and codec boundary dataflow shape
-  - direct effects: {"allocation": false, "assertion": false, "indirect_call": false, "io": false, "logging": false, "state_write": false, "unknown_facts": []}
-  - transitive effects: {"allocation": false, "assertion": false, "indirect_call": false, "io": false, "logging": false, "state_write": false, "unknown_facts": []}
-  - at least one reachable loop has UNKNOWN bounds
-
-### 13. `FindResidualSize`
+### 12. `FindResidualSize`
 
 - Score: `79.95`; confidence: `0.75`; role: `DUT`
 - Purity: `IMPURE`; timing: `COMBINATIONAL`; bounded: `True`
@@ -192,7 +178,7 @@ Candidate selection is derived from the linked executable entry symbol, Clang ca
   - transitive effects: {"allocation": false, "assertion": false, "indirect_call": false, "io": false, "logging": true, "state_write": false, "unknown_facts": []}
   - all reachable loops have fixed AST bounds
 
-### 14. `IsOrigFlatHIndex`
+### 13. `IsOrigFlatHIndex`
 
 - Score: `79.95`; confidence: `0.75`; role: `DUT`
 - Purity: `PURE`; timing: `UNKNOWN`; bounded: `False`
@@ -206,7 +192,7 @@ Candidate selection is derived from the linked executable entry symbol, Clang ca
   - transitive effects: {"allocation": false, "assertion": false, "indirect_call": false, "io": false, "logging": false, "state_write": false, "unknown_facts": []}
   - at least one reachable loop has UNKNOWN bounds
 
-### 15. `fifo_free`
+### 14. `fifo_free`
 
 - Score: `79.95`; confidence: `0.75`; role: `DUT`
 - Purity: `IMPURE`; timing: `COMBINATIONAL`; bounded: `True`
@@ -220,7 +206,7 @@ Candidate selection is derived from the linked executable entry symbol, Clang ca
   - transitive effects: {"allocation": true, "assertion": false, "indirect_call": false, "io": false, "logging": false, "state_write": false, "unknown_facts": []}
   - all reachable loops have fixed AST bounds
 
-### 16. `UsingMidpoint`
+### 15. `UsingMidpoint`
 
 - Score: `79.9`; confidence: `0.75`; role: `DUT`
 - Purity: `IMPURE`; timing: `COMBINATIONAL`; bounded: `True`
@@ -234,7 +220,7 @@ Candidate selection is derived from the linked executable entry symbol, Clang ca
   - transitive effects: {"allocation": false, "assertion": false, "indirect_call": false, "io": false, "logging": true, "state_write": false, "unknown_facts": []}
   - all reachable loops have fixed AST bounds
 
-### 17. `yuv_422_444_region`
+### 16. `yuv_422_444_region`
 
 - Score: `79.9`; confidence: `0.75`; role: `DUT`
 - Purity: `IMPURE`; timing: `COMBINATIONAL`; bounded: `True`
@@ -248,7 +234,7 @@ Candidate selection is derived from the linked executable entry symbol, Clang ca
   - transitive effects: {"allocation": false, "assertion": false, "indirect_call": false, "io": false, "logging": true, "state_write": false, "unknown_facts": []}
   - all reachable loops have fixed AST bounds
 
-### 18. `yuv_444_422_region`
+### 17. `yuv_444_422_region`
 
 - Score: `79.9`; confidence: `0.75`; role: `DUT`
 - Purity: `IMPURE`; timing: `COMBINATIONAL`; bounded: `True`
@@ -262,7 +248,7 @@ Candidate selection is derived from the linked executable entry symbol, Clang ca
   - transitive effects: {"allocation": false, "assertion": false, "indirect_call": false, "io": false, "logging": true, "state_write": false, "unknown_facts": []}
   - all reachable loops have fixed AST bounds
 
-### 19. `Qp2Qlevel`
+### 18. `Qp2Qlevel`
 
 - Score: `70.0`; confidence: `0.55`; role: `CONFIG`
 - Purity: `PURE`; timing: `COMBINATIONAL`; bounded: `True`
@@ -276,7 +262,7 @@ Candidate selection is derived from the linked executable entry symbol, Clang ca
   - transitive effects: {"allocation": false, "assertion": false, "indirect_call": false, "io": false, "logging": false, "state_write": false, "unknown_facts": []}
   - all reachable loops have fixed AST bounds
 
-### 20. `generate_timecode`
+### 19. `generate_timecode`
 
 - Score: `70.0`; confidence: `0.55`; role: `UNRESOLVED`
 - Purity: `PURE`; timing: `COMBINATIONAL`; bounded: `True`
@@ -290,7 +276,7 @@ Candidate selection is derived from the linked executable entry symbol, Clang ca
   - transitive effects: {"allocation": false, "assertion": false, "indirect_call": false, "io": false, "logging": false, "state_write": false, "unknown_facts": []}
   - all reachable loops have fixed AST bounds
 
-### 21. `hdr_dpx_byte_swap`
+### 20. `hdr_dpx_byte_swap`
 
 - Score: `70.0`; confidence: `0.55`; role: `UNRESOLVED`
 - Purity: `PURE`; timing: `COMBINATIONAL`; bounded: `True`
@@ -304,7 +290,7 @@ Candidate selection is derived from the linked executable entry symbol, Clang ca
   - transitive effects: {"allocation": false, "assertion": false, "indirect_call": false, "io": false, "logging": false, "state_write": false, "unknown_facts": []}
   - all reachable loops have fixed AST bounds
 
-### 22. `splitstring_exact`
+### 21. `splitstring_exact`
 
 - Score: `69.9`; confidence: `0.55`; role: `UNRESOLVED`
 - Purity: `PURE`; timing: `COMBINATIONAL`; bounded: `True`
@@ -318,7 +304,7 @@ Candidate selection is derived from the linked executable entry symbol, Clang ca
   - transitive effects: {"allocation": false, "assertion": false, "indirect_call": false, "io": false, "logging": false, "state_write": false, "unknown_facts": []}
   - all reachable loops have fixed AST bounds
 
-### 23. `CalcFullnessOffset`
+### 22. `CalcFullnessOffset`
 
 - Score: `65.0`; confidence: `0.75`; role: `DUT`
 - Purity: `IMPURE`; timing: `STATEFUL`; bounded: `True`
@@ -332,7 +318,7 @@ Candidate selection is derived from the linked executable entry symbol, Clang ca
   - transitive effects: {"allocation": false, "assertion": false, "indirect_call": false, "io": false, "logging": false, "state_write": true, "unknown_facts": []}
   - all reachable loops have fixed AST bounds
 
-### 24. `RemoveBitsEncoderBuffer`
+### 23. `RemoveBitsEncoderBuffer`
 
 - Score: `65.0`; confidence: `0.75`; role: `DUT`
 - Purity: `IMPURE`; timing: `STATEFUL`; bounded: `True`
@@ -346,7 +332,7 @@ Candidate selection is derived from the linked executable entry symbol, Clang ca
   - transitive effects: {"allocation": false, "assertion": false, "indirect_call": false, "io": false, "logging": false, "state_write": true, "unknown_facts": []}
   - all reachable loops have fixed AST bounds
 
-### 25. `fifo_init`
+### 24. `fifo_init`
 
 - Score: `64.95`; confidence: `0.75`; role: `DUT`
 - Purity: `IMPURE`; timing: `STATEFUL`; bounded: `True`
@@ -360,7 +346,7 @@ Candidate selection is derived from the linked executable entry symbol, Clang ca
   - transitive effects: {"allocation": true, "assertion": false, "indirect_call": false, "io": false, "logging": false, "state_write": true, "unknown_facts": []}
   - all reachable loops have fixed AST bounds
 
-### 26. `ErrorHandler`
+### 25. `ErrorHandler`
 
 - Score: `60.0`; confidence: `0.75`; role: `DUT`
 - Purity: `IMPURE`; timing: `UNKNOWN`; bounded: `False`
@@ -374,7 +360,7 @@ Candidate selection is derived from the linked executable entry symbol, Clang ca
   - transitive effects: {"allocation": false, "assertion": false, "indirect_call": false, "io": false, "logging": false, "state_write": true, "unknown_facts": []}
   - at least one reachable loop has UNKNOWN bounds
 
-### 27. `PopulateOrigLine`
+### 26. `PopulateOrigLine`
 
 - Score: `60.0`; confidence: `0.75`; role: `DUT`
 - Purity: `IMPURE`; timing: `UNKNOWN`; bounded: `False`
@@ -388,12 +374,26 @@ Candidate selection is derived from the linked executable entry symbol, Clang ca
   - transitive effects: {"allocation": false, "assertion": false, "indirect_call": false, "io": false, "logging": false, "state_write": true, "unknown_facts": []}
   - at least one reachable loop has UNKNOWN bounds
 
-### 28. `UpdateMidpoint`
+### 27. `UpdateMidpoint`
 
 - Score: `60.0`; confidence: `0.75`; role: `DUT`
 - Purity: `IMPURE`; timing: `UNKNOWN`; bounded: `False`
 - Production reachable: `True`; output contributing: `True`
 - Source: `dsc_codec.c:875`
+- Eligible: `False`
+- Evidence:
+  - production reachability is a graph traversal from linked executable entry symbols
+  - observable output is inferred from output file calls and codec boundary dataflow shape
+  - direct effects: {"allocation": false, "assertion": false, "indirect_call": false, "io": false, "logging": false, "state_write": true, "unknown_facts": []}
+  - transitive effects: {"allocation": false, "assertion": false, "indirect_call": false, "io": false, "logging": false, "state_write": true, "unknown_facts": []}
+  - at least one reachable loop has UNKNOWN bounds
+
+### 28. `getbits`
+
+- Score: `60.0`; confidence: `0.75`; role: `DUT`
+- Purity: `IMPURE`; timing: `UNKNOWN`; bounded: `False`
+- Production reachable: `True`; output contributing: `True`
+- Source: `dsc_utils.c:109`
 - Eligible: `False`
 - Evidence:
   - production reachability is a graph traversal from linked executable entry symbols
@@ -2372,7 +2372,7 @@ Candidate selection is derived from the linked executable entry symbol, Clang ca
 - Evidence:
   - production reachability is a graph traversal from linked executable entry symbols
   - observable output is inferred from output file calls and codec boundary dataflow shape
-  - direct effects: {"allocation": false, "assertion": true, "indirect_call": false, "io": false, "logging": true, "state_write": false, "unknown_facts": []}
+  - direct effects: {"allocation": false, "assertion": true, "indirect_call": false, "io": false, "logging": true, "state_write": true, "unknown_facts": []}
   - transitive effects: {"allocation": false, "assertion": true, "indirect_call": false, "io": true, "logging": true, "state_write": true, "unknown_facts": []}
   - at least one reachable loop has UNKNOWN bounds
 

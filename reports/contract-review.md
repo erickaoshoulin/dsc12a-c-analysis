@@ -26,6 +26,8 @@ Contracts are generated from tool-discovered production/output leaf functions; n
 - exact spec links: 0
 - unresolved obligations: parameter:qp, field:dsc_cfg_t.flatness_max_qp, field:dsc_cfg_t.flatness_min_qp
 
+  - `REVIEWED` `pdf:section:4.3` page 62
+  - `REVIEWED` `pdf:section:6.6.3` page 94
 
 ## mapqptoqlevel — `MapQpToQlevel`
 
@@ -37,6 +39,7 @@ Contracts are generated from tool-discovered production/output leaf functions; n
 
   - `EXACT` `pdf:model-note:MN_MAP_QP_TO_QLEVEL:p113` page 113
   - `EXACT` `pdf:section:6.8.6` page 113
+  - `REVIEWED` `pdf:table:6-2` page 114
 
 ## predictsize — `PredictSize`
 
@@ -46,6 +49,8 @@ Contracts are generated from tool-discovered production/output leaf functions; n
 - exact spec links: 0
 - unresolved obligations: none
 
+  - `REVIEWED` `pdf:section:6.4.5` page 83
+  - `REVIEWED` `pdf:section:6.6.1` page 91
 
 ## quantizeresidual — `QuantizeResidual`
 

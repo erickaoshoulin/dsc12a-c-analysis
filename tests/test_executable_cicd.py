@@ -62,11 +62,20 @@ class ExecutableCicdTests(unittest.TestCase):
         dependency = json.loads((artifact / "dependency-receipt.json").read_text(encoding="utf-8"))
         matrix_path = artifact / "matrix-receipt.json"
         matrix = json.loads(matrix_path.read_text(encoding="utf-8")) if matrix_path.is_file() else {}
+        promotion_status = str(prior.get("promotion_status") or "")
+        if dependency.get("status") == "PASS" and matrix.get("status") == "PASS":
+            fallback_status = (
+                "AWAITING_HUMAN_APPROVAL"
+                if promotion_status == "AWAITING_HUMAN_APPROVAL"
+                else "PROMOTED"
+            )
+        else:
+            fallback_status = "FAILED"
         fallback.update({
             "contract_id": contract_id,
             "selected": False,
             "artifacts": [str(artifact.relative_to(ROOT))],
-            "status": "PROMOTED" if dependency.get("status") == "PASS" and matrix.get("status") == "PASS" else "FAILED",
+            "status": fallback_status,
         })
         return fallback
 
