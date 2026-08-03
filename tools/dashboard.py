@@ -254,7 +254,19 @@ def resolve_storage(repo: Path, explicit: str | None = None) -> StorageResolutio
 
 
 def run_timestamp(run: dict[str, Any], fallback: str) -> str:
-    return str(first(run, "updated_at", "completed_at", "created_at", default=fallback))
+    """Return the human-facing execution timestamp for a run."""
+    # A reconciliation write updates metadata, not the time the regression
+    # executed.  Prefer completion/creation evidence and use updated_at only
+    # for legacy records that have no execution timestamp.
+    return str(first(run, "completed_at", "created_at", "started_at", "updated_at", default=fallback))
+
+
+def run_sort_timestamp(run: dict[str, Any], fallback: str) -> str:
+    """Return an immutable chronological key for selecting the latest run."""
+    # Reconciliation may update an old queued run today.  Run ordering must
+    # remain chronological by creation time, otherwise a repaired historical
+    # run can incorrectly become the selected `latest` run.
+    return str(first(run, "created_at", "started_at", "updated_at", "completed_at", default=fallback))
 
 
 def load_run_records(storage: Path) -> list[dict[str, Any]]:
@@ -290,9 +302,10 @@ def load_run_records(storage: Path) -> list[dict[str, Any]]:
             "status": run_status,
             "counts": dict(sorted(counts.items())),
             "timestamp": run_timestamp(run, path.name),
+            "sort_timestamp": run_sort_timestamp(run, path.name),
         })
     records.sort(
-        key=lambda item: (str(item["timestamp"]), str(item["run"].get("run_id"))),
+        key=lambda item: (str(item["sort_timestamp"]), str(item["run"].get("run_id"))),
         reverse=True,
     )
     return records
@@ -944,12 +957,16 @@ def strategy_entries(storage: Path, cid: str) -> list[dict[str, Any]]:
 
 
 def short_receipt(
-    receipt: dict[str, Any], run: dict[str, Any], function_dir: Path | None = None
+    receipt: dict[str, Any],
+    run: dict[str, Any],
+    function_dir: Path | None = None,
+    *,
+    include_sort_key: bool = False,
 ) -> dict[str, Any]:
     _, candidate_ratio = candidate_model(receipt)
     vector = vector_model(receipt)
     matrix = matrix_model(receipt)
-    return {
+    result = {
         "run_id": run.get("run_id"),
         "profile": run.get("profile"),
         "status": status(receipt.get("status"), not_applicable="UNPROVED"),
@@ -960,6 +977,9 @@ def short_receipt(
         "rtl_sha256": receipt.get("rtl_sha256"),
         "timestamp": run_timestamp(run, str(run.get("run_id", ""))),
     }
+    if include_sort_key:
+        result["_sort_timestamp"] = run_sort_timestamp(run, str(run.get("run_id", "")))
+    return result
 
 
 def comparison(history: list[dict[str, Any]]) -> str:
@@ -1026,13 +1046,15 @@ def normalized_function(
     promotion = promotion_model(repo, receipt, component, cid)
     if promotion["stale"]:
         blockers.extend(promotion["stale_reasons"])
-    history = [short_receipt(raw, run_value) for run_value, raw in history_receipts]
-    history.sort(key=lambda item: (str(item.get("timestamp")), str(item.get("run_id"))))
+    history = [short_receipt(raw, run_value, include_sort_key=True) for run_value, raw in history_receipts]
+    history.sort(key=lambda item: (str(item.get("_sort_timestamp", item.get("timestamp"))), str(item.get("run_id"))))
     if history:
-        current_summary = short_receipt(receipt, run)
+        current_summary = short_receipt(receipt, run, include_sort_key=True)
         history = [item for item in history if item.get("run_id") != run.get("run_id")]
         history.append(current_summary)
-        history.sort(key=lambda item: (str(item.get("timestamp")), str(item.get("run_id"))))
+        history.sort(key=lambda item: (str(item.get("_sort_timestamp", item.get("timestamp"))), str(item.get("run_id"))))
+    for item in history:
+        item.pop("_sort_timestamp", None)
     comparison_value = comparison(history)
     current_stage = (
         "complete"

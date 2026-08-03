@@ -95,6 +95,40 @@ class RegressionServiceTests(unittest.TestCase):
             self.assertIn("completed_at", refreshed)
             self.assertEqual(read_json(run_dir / "run.json", {})["status"], "COMPLETED")
 
+    def test_poll_reconciles_all_runs_before_publishing_snapshot(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            store = DurableStore(root, validate=False)
+            store.ensure_layout()
+
+            complete_dir = store.run_dir("run-complete")
+            complete_function = complete_dir / "functions" / "contract-a"
+            complete_function.mkdir(parents=True)
+            (complete_dir / "run.json").write_text(
+                json.dumps({"run_id": "run-complete", "profile": "scale", "status": "QUEUED"}),
+                encoding="utf-8",
+            )
+            (complete_function / "receipt.json").write_text(
+                json.dumps({"run_id": "run-complete", "contract_id": "contract-a", "status": "PASS"}),
+                encoding="utf-8",
+            )
+
+            queued_dir = store.run_dir("run-without-receipt")
+            (queued_dir / "functions").mkdir(parents=True)
+            (queued_dir / "run.json").write_text(
+                json.dumps({"run_id": "run-without-receipt", "profile": "scale", "status": "QUEUED"}),
+                encoding="utf-8",
+            )
+
+            service = RegressionService(store, ROOT)
+            snapshot = service.poll()
+
+            self.assertEqual(read_json(complete_dir / "run.json", {})["status"], "COMPLETED")
+            self.assertEqual(read_json(queued_dir / "run.json", {})["status"], "QUEUED")
+            reconciled = {item["run_id"]: item["status"] for item in snapshot["reconciled_runs"]}
+            self.assertEqual(reconciled["run-complete"], "COMPLETED")
+            self.assertEqual(reconciled["run-without-receipt"], "QUEUED")
+
     def test_source_gate_and_function_selection_use_current_facts(self):
         context = LocalContext(ROOT)
         gate = context.source_gate()

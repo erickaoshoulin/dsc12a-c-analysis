@@ -1,309 +1,12 @@
 {
   "agent": "executable-generic-c-to-rtl-cicd",
-  "batches": [
-    [
-      "estimatebitsforgroup"
-    ]
-  ],
+  "batches": [],
   "blocked_contracts": [],
   "contracts": [
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "398bc5c130b6dd51d7ca7faa32ae0ded84659e33bbcb4e79c28597e9097ee69b",
-      "call_sites": [],
-      "clang_usr": "c:@F@EstimateBitsForGroup",
-      "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
-      "contract_id": "estimatebitsforgroup",
-      "deferred": false,
-      "dependencies": [],
-      "force_regenerate": true,
-      "function": "EstimateBitsForGroup",
-      "hashes": {
-        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
-        "contract": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
-        "dependency": "b0b74e666d2d9628c9789b688227db7a48043a32007016c7a0c5881a5acd2ed4",
-        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
-        "model": "external-generator-hook",
-        "pipeline": "executable-cicd-v2",
-        "prompt": "ae67a01882691cd099a2e0c87b44436c9d3ece33399eff8a553fcbdcc1137411",
-        "shards": "4",
-        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
-        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "4"
-      },
-      "initial_state": "CONTRACT_LOCKED",
-      "interface_shape": [
-        [
-          "input",
-          "cpntBitDepth_0",
-          5,
-          false
-        ],
-        [
-          "input",
-          "cpntBitDepth_1",
-          5,
-          false
-        ],
-        [
-          "input",
-          "cpntBitDepth_2",
-          5,
-          false
-        ],
-        [
-          "input",
-          "cpntBitDepth_3",
-          5,
-          false
-        ],
-        [
-          "input",
-          "dsc_version_minor",
-          2,
-          false
-        ],
-        [
-          "input",
-          "hPos",
-          16,
-          false
-        ],
-        [
-          "input",
-          "native_420",
-          1,
-          false
-        ],
-        [
-          "input",
-          "pixels_in_group",
-          2,
-          false
-        ],
-        [
-          "input",
-          "predicted_size_0",
-          5,
-          false
-        ],
-        [
-          "input",
-          "predicted_size_1",
-          5,
-          false
-        ],
-        [
-          "input",
-          "predicted_size_2",
-          5,
-          false
-        ],
-        [
-          "input",
-          "predicted_size_3",
-          5,
-          false
-        ],
-        [
-          "input",
-          "prev_ich_selected",
-          1,
-          false
-        ],
-        [
-          "input",
-          "prev_primary_qp",
-          5,
-          false
-        ],
-        [
-          "input",
-          "primary_qp",
-          5,
-          false
-        ],
-        [
-          "input",
-          "qlevel_chroma_new",
-          5,
-          false
-        ],
-        [
-          "input",
-          "qlevel_chroma_old",
-          5,
-          false
-        ],
-        [
-          "input",
-          "qlevel_luma_new",
-          5,
-          false
-        ],
-        [
-          "input",
-          "qlevel_luma_old",
-          5,
-          false
-        ],
-        [
-          "input",
-          "quantized_residual_0_0",
-          17,
-          true
-        ],
-        [
-          "input",
-          "quantized_residual_0_1",
-          17,
-          true
-        ],
-        [
-          "input",
-          "quantized_residual_0_2",
-          17,
-          true
-        ],
-        [
-          "input",
-          "quantized_residual_1_0",
-          17,
-          true
-        ],
-        [
-          "input",
-          "quantized_residual_1_1",
-          17,
-          true
-        ],
-        [
-          "input",
-          "quantized_residual_1_2",
-          17,
-          true
-        ],
-        [
-          "input",
-          "quantized_residual_2_0",
-          17,
-          true
-        ],
-        [
-          "input",
-          "quantized_residual_2_1",
-          17,
-          true
-        ],
-        [
-          "input",
-          "quantized_residual_2_2",
-          17,
-          true
-        ],
-        [
-          "input",
-          "quantized_residual_3_0",
-          17,
-          true
-        ],
-        [
-          "input",
-          "quantized_residual_3_1",
-          17,
-          true
-        ],
-        [
-          "input",
-          "quantized_residual_3_2",
-          17,
-          true
-        ],
-        [
-          "input",
-          "slice_width",
-          16,
-          false
-        ],
-        [
-          "input",
-          "unit_c_type_0",
-          2,
-          false
-        ],
-        [
-          "input",
-          "unit_c_type_1",
-          2,
-          false
-        ],
-        [
-          "input",
-          "unit_c_type_2",
-          2,
-          false
-        ],
-        [
-          "input",
-          "unit_c_type_3",
-          2,
-          false
-        ],
-        [
-          "input",
-          "unit_start_h_pos_0",
-          16,
-          false
-        ],
-        [
-          "input",
-          "unit_start_h_pos_1",
-          16,
-          false
-        ],
-        [
-          "input",
-          "unit_start_h_pos_2",
-          16,
-          false
-        ],
-        [
-          "input",
-          "unit_start_h_pos_3",
-          16,
-          false
-        ],
-        [
-          "input",
-          "units_per_group",
-          3,
-          false
-        ],
-        [
-          "output",
-          "return_value",
-          9,
-          false
-        ]
-      ],
-      "new_work": true,
-      "origin": "tool_discovered_reviewed_override",
-      "ready": true,
-      "selected": true,
-      "stale": true,
-      "stale_reasons": [
-        "contract",
-        "dependency",
-        "prompt"
-      ],
-      "targeted": true
-    },
-    {
-      "blocked_reasons": [],
-      "cache_hit": false,
-      "cache_key": "084e75b032bdd3bda49734fe6ca55cb4d2a709d7ca23d4a4b36d7a9295ac769f",
+      "cache_key": "3c89f19060374b1c584dc023ac6359f619c653b71f5935dd17962db5fac7ed9b",
       "call_sites": [],
       "clang_usr": "c:@F@FindMidpoint",
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
@@ -313,18 +16,18 @@
       "force_regenerate": false,
       "function": "FindMidpoint",
       "hashes": {
-        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
+        "agent": "c97cf7ec458d639e9c0d9d4ba16f5ee225ccaf0703572028c28405ed7388e0fc",
         "contract": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
-        "dependency": "0293f28a62bf546c833c37e257ffa467a49fc8805e76bc248a7441522c7904ac",
-        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "dependency": "7b6fc56cf6e86de06b71c7a1fed999f25e69337d65236e4336048c586bf26ee6",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ae67a01882691cd099a2e0c87b44436c9d3ece33399eff8a553fcbdcc1137411",
+        "prompt": "fe5a1d7285f23cebff5c00de24b9da5bf0a6c63995642223eb760395d988105c",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "4"
+        "workers": "2"
       },
       "initial_state": "CONTRACT_LOCKED",
       "interface_shape": [
@@ -365,15 +68,18 @@
       "selected": false,
       "stale": true,
       "stale_reasons": [
+        "agent",
         "dependency",
-        "prompt"
+        "prompt",
+        "generator",
+        "workers"
       ],
       "targeted": false
     },
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "44dd2ce924607b5c4770d304213e1dae61f125df1f293ee71c12c09c30e2625e",
+      "cache_key": "416b89fe3ba1cde456610ccd2c69be28c3fadc9a117830270d10485ab155649a",
       "call_sites": [],
       "clang_usr": "c:@F@IsFlatnessInfoSent",
       "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
@@ -383,18 +89,18 @@
       "force_regenerate": false,
       "function": "IsFlatnessInfoSent",
       "hashes": {
-        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
+        "agent": "c97cf7ec458d639e9c0d9d4ba16f5ee225ccaf0703572028c28405ed7388e0fc",
         "contract": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
-        "dependency": "56603bc200cc992f7e1f591f8d7fda9a294179735b0b80f1abc032293e44369f",
-        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "dependency": "69eca8e62d4af75675064065d1ba0278fe43dc581508d639fbd88ca2b5c338b3",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ae67a01882691cd099a2e0c87b44436c9d3ece33399eff8a553fcbdcc1137411",
+        "prompt": "fe5a1d7285f23cebff5c00de24b9da5bf0a6c63995642223eb760395d988105c",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "4"
+        "workers": "2"
       },
       "initial_state": "CONTRACT_LOCKED",
       "interface_shape": [
@@ -429,15 +135,18 @@
       "selected": false,
       "stale": true,
       "stale_reasons": [
+        "agent",
         "dependency",
-        "prompt"
+        "prompt",
+        "generator",
+        "workers"
       ],
       "targeted": false
     },
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "287e0a1d916c19b42502b69aaae124e91d4f3a1226e37ea465a0980a16fd2d43",
+      "cache_key": "52868f04d103eacd65eb23b64166b9fe846dc2c38672c72f86fefd551ab18cc2",
       "call_sites": [],
       "clang_usr": "c:@F@MapQpToQlevel",
       "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
@@ -447,18 +156,18 @@
       "force_regenerate": false,
       "function": "MapQpToQlevel",
       "hashes": {
-        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
+        "agent": "c97cf7ec458d639e9c0d9d4ba16f5ee225ccaf0703572028c28405ed7388e0fc",
         "contract": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
-        "dependency": "47ba2e723f118f99c08c24227c19e77fb1495c86660de40fc78db24ff6359805",
-        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "dependency": "6c0c133027c15fdfa1562d2491430815b1d9124c1f57119b27528ce4bc62833c",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ae67a01882691cd099a2e0c87b44436c9d3ece33399eff8a553fcbdcc1137411",
+        "prompt": "fe5a1d7285f23cebff5c00de24b9da5bf0a6c63995642223eb760395d988105c",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "4"
+        "workers": "2"
       },
       "initial_state": "CONTRACT_LOCKED",
       "interface_shape": [
@@ -523,15 +232,18 @@
       "selected": false,
       "stale": true,
       "stale_reasons": [
+        "agent",
         "dependency",
-        "prompt"
+        "prompt",
+        "generator",
+        "workers"
       ],
       "targeted": false
     },
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "8141e5b83c68de060198699cc475c9657955c5bd5f5f593f87131be12d373a47",
+      "cache_key": "a9d5c34b754bab6c6d73b31d994667e337bfaee0a8fc5d8c4da018d3ea7f70bc",
       "call_sites": [],
       "clang_usr": "c:@F@PredictSize",
       "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
@@ -541,18 +253,18 @@
       "force_regenerate": false,
       "function": "PredictSize",
       "hashes": {
-        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
+        "agent": "c97cf7ec458d639e9c0d9d4ba16f5ee225ccaf0703572028c28405ed7388e0fc",
         "contract": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
-        "dependency": "bc6716c31fb9010446ed24049f5da756059583ff9abad19e1f8dc1ce1783c726",
-        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "dependency": "69de596137f6702b564ed6436d48ecb862c2675fb684f1fad2c05aedb012c316",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ae67a01882691cd099a2e0c87b44436c9d3ece33399eff8a553fcbdcc1137411",
+        "prompt": "fe5a1d7285f23cebff5c00de24b9da5bf0a6c63995642223eb760395d988105c",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "4"
+        "workers": "2"
       },
       "initial_state": "CONTRACT_LOCKED",
       "interface_shape": [
@@ -587,15 +299,18 @@
       "selected": false,
       "stale": true,
       "stale_reasons": [
+        "agent",
         "dependency",
-        "prompt"
+        "prompt",
+        "generator",
+        "workers"
       ],
       "targeted": false
     },
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "c78aeb0be2b00732d2f4c38f1d1c5fd1659808bdf072ffcb81c141f09c9bc983",
+      "cache_key": "61fcc8bf5e70fa157af6b1b212a82073b1e8ed7e36b907c03ab07ef744395b63",
       "call_sites": [],
       "clang_usr": "c:@F@QuantizeResidual",
       "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
@@ -605,18 +320,18 @@
       "force_regenerate": false,
       "function": "QuantizeResidual",
       "hashes": {
-        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
+        "agent": "c97cf7ec458d639e9c0d9d4ba16f5ee225ccaf0703572028c28405ed7388e0fc",
         "contract": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
-        "dependency": "ed24f1ec7846b54710ba1365569b2c1eeec1de601471606ba06181adf5b6e129",
-        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "dependency": "7745ee3080f86b81570ed1952bf6de4f560b1542d8feeb22cfca764dc8fbfc10",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ae67a01882691cd099a2e0c87b44436c9d3ece33399eff8a553fcbdcc1137411",
+        "prompt": "fe5a1d7285f23cebff5c00de24b9da5bf0a6c63995642223eb760395d988105c",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "4"
+        "workers": "2"
       },
       "initial_state": "CONTRACT_LOCKED",
       "interface_shape": [
@@ -645,15 +360,18 @@
       "selected": false,
       "stale": true,
       "stale_reasons": [
+        "agent",
         "dependency",
-        "prompt"
+        "prompt",
+        "generator",
+        "workers"
       ],
       "targeted": false
     },
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "dc075d7bcfb8d16d8cb70ad0248d9f2794cd960ac6a5d055a8c79048e0a97f1c",
+      "cache_key": "46d5a5cac9460cf51e664439351ab7374925b82271c31684156acc9944a4f325",
       "call_sites": [],
       "clang_usr": "c:@F@SamplePredict",
       "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
@@ -663,18 +381,18 @@
       "force_regenerate": false,
       "function": "SamplePredict",
       "hashes": {
-        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
+        "agent": "c97cf7ec458d639e9c0d9d4ba16f5ee225ccaf0703572028c28405ed7388e0fc",
         "contract": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
-        "dependency": "96601a673791e5160dc8d134a7285e53cedee7930b3ff574afc82e3b72c30149",
-        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "dependency": "d908b967b94e50bb66c526b5895082f8c645ff30f152e97011818642fe3fc0d0",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ae67a01882691cd099a2e0c87b44436c9d3ece33399eff8a553fcbdcc1137411",
+        "prompt": "fe5a1d7285f23cebff5c00de24b9da5bf0a6c63995642223eb760395d988105c",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "4"
+        "workers": "2"
       },
       "initial_state": "CONTRACT_LOCKED",
       "interface_shape": [
@@ -925,15 +643,18 @@
       "selected": false,
       "stale": true,
       "stale_reasons": [
+        "agent",
         "dependency",
-        "prompt"
+        "prompt",
+        "generator",
+        "workers"
       ],
       "targeted": false
     },
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "445dfe499604686f7eb117ca3240be6c0d4749f1153e8b0259ddc5d159024f46",
+      "cache_key": "c1f10db6a78c4503fec023f02fcf7b83c6122c13c094b2e31f0f7040dc56f0fb",
       "call_sites": [],
       "clang_usr": "c:@F@SampToLineBuf",
       "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
@@ -943,18 +664,18 @@
       "force_regenerate": false,
       "function": "SampToLineBuf",
       "hashes": {
-        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
+        "agent": "c97cf7ec458d639e9c0d9d4ba16f5ee225ccaf0703572028c28405ed7388e0fc",
         "contract": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
-        "dependency": "a60b3b3f76f4775deb0cff3af831db9f3ec64aae4d1b5bbcaded1dfac9c19363",
-        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "dependency": "387edc77a99ea0783123b2050e0dfc0c646e7c8462f10e4aba8cd906e92b5b50",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "ae67a01882691cd099a2e0c87b44436c9d3ece33399eff8a553fcbdcc1137411",
+        "prompt": "fe5a1d7285f23cebff5c00de24b9da5bf0a6c63995642223eb760395d988105c",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "4"
+        "workers": "2"
       },
       "initial_state": "CONTRACT_LOCKED",
       "interface_shape": [
@@ -995,8 +716,11 @@
       "selected": false,
       "stale": true,
       "stale_reasons": [
+        "agent",
         "dependency",
-        "prompt"
+        "prompt",
+        "generator",
+        "workers"
       ],
       "targeted": false
     }
@@ -1010,39 +734,15 @@
     "samplepredict",
     "samptolinebuf"
   ],
-  "dependency_pair": {
-    "call_sites": [
-      {
-        "callee_contract": "estimatebitsforgroup",
-        "callee_function": "EstimateBitsForGroup",
-        "callee_usr": "c:@F@EstimateBitsForGroup",
-        "caller_contract": null,
-        "caller_function": "IchDecision",
-        "caller_usr": "c:@F@IchDecision",
-        "location": {
-          "column": 16,
-          "file": "dsc_codec.c",
-          "line": 522
-        },
-        "source": "facts/callgraph.json"
-      }
-    ],
-    "callee_contract": "estimatebitsforgroup",
-    "callee_function": "EstimateBitsForGroup",
-    "callee_usr": "c:@F@EstimateBitsForGroup",
-    "caller_contract": null,
-    "caller_function": "IchDecision",
-    "caller_usr": "c:@F@IchDecision",
-    "selection_basis": "smallest acyclic direct call site from facts/callgraph.json"
-  },
-  "force_regenerate": true,
-  "generator_hook": "python3 tools/generator_fixture.py",
-  "input_errors": [],
-  "new_candidates": [
+  "dependency_pair": null,
+  "force_regenerate": false,
+  "generator_hook": null,
+  "historical_contracts": [
     "estimatebitsforgroup"
   ],
+  "input_errors": [],
+  "new_candidates": [],
   "ready_contracts": [
-    "estimatebitsforgroup",
     "findmidpoint",
     "isflatnessinfosent",
     "mapqptoqlevel",
@@ -1053,8 +753,6 @@
   ],
   "refresh_stable": false,
   "schema_version": 2,
-  "selected_contracts": [
-    "estimatebitsforgroup"
-  ],
-  "target_contract": "estimatebitsforgroup"
+  "selected_contracts": [],
+  "target_contract": null
 }

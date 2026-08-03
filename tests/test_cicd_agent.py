@@ -406,6 +406,71 @@ class CicdAgentUnitTests(unittest.TestCase):
         self.assertTrue(plan["force_regenerate"])
         self.assertTrue(all(item["force_regenerate"] for item in plan["contracts"]))
 
+    def test_no_work_plan_preserves_historical_dag_nodes(self):
+        contract = {
+            "contract_id": "current_leaf",
+            "status": "LOCKED",
+            "function": {"name": "CurrentLeaf", "clang_usr": "c:@F@CurrentLeaf"},
+            "spec_links": [{"status": "EXACT", "anchor_id": "pdf:section:current"}],
+            "obligations": [],
+            "dependencies": {"unresolved": []},
+            "interface": {"ports": [
+                {"name": "value", "direction": "input", "width": 8, "signed": False},
+                {"name": "return_value", "direction": "output", "width": 8, "signed": False},
+            ]},
+            "semantics": {"kind": "pure_expression"},
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            (root / "ci").mkdir()
+            (root / "ci" / "dag.json").write_text(json.dumps({
+                "nodes": [{
+                    "node_id": "old_leaf:promote",
+                    "contract_id": "old_leaf",
+                    "stage": "PROMOTED",
+                    "status": "PROMOTED",
+                    "artifacts": ["artifacts/old-hash"],
+                }],
+                "edges": [],
+                "dependency_call_sites": [],
+            }), encoding="utf-8")
+            (root / "ci" / "state.json").write_text(json.dumps({
+                "contracts": [{
+                    "contract_id": "state_only",
+                    "current_state": "PROMOTED",
+                    "status": "PROMOTED",
+                    "hashes": {
+                        "source": "source-hash",
+                        "spec": "spec-hash",
+                        "contract": "contract-hash",
+                        "dependency": "dependency-hash",
+                    },
+                    "artifacts": ["artifacts/state-only"],
+                }],
+            }), encoding="utf-8")
+            agent = Agent(root, "plan")
+            agent.contracts = [contract]
+            agent.dependency_info = {
+                "cycles": [],
+                "adjacency": {"current_leaf": []},
+                "call_sites": [],
+                "all_call_sites": [],
+                "dependency_hashes": {},
+            }
+            plan = agent.build_plan()
+        self.assertIn("old_leaf", plan["historical_contracts"])
+        self.assertIn("state_only", plan["historical_contracts"])
+        old_node = next(node for node in agent.dag["nodes"] if node["node_id"] == "old_leaf:promote")
+        self.assertEqual(old_node["status"], "PROMOTED")
+        self.assertEqual(old_node["artifacts"], ["artifacts/old-hash"])
+        state_node = next(node for node in agent.dag["nodes"] if node["node_id"] == "state_only:promote")
+        self.assertEqual(state_node["status"], "PROMOTED")
+        self.assertEqual(state_node["artifacts"], ["artifacts/state-only"])
+        self.assertEqual(agent.dag["historical_node_count"], 10)
+        node_ids = {node["node_id"] for node in agent.dag["nodes"]}
+        self.assertTrue(agent.dag["edges"])
+        self.assertTrue(all(edge["from"] in node_ids and edge["to"] in node_ids for edge in agent.dag["edges"]))
+
     def test_promoted_candidate_materializes_stable_library_and_archives_replacement(self):
         contract = {
             "contract_id": "fixture_leaf",

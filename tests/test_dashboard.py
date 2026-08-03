@@ -324,6 +324,31 @@ class DashboardFixtureTests(unittest.TestCase):
         self.assertTrue(ok, errors)
         self.assertNotIn("receipt.json", (repo / "reports" / "regression-summary.md").read_text())
 
+    def test_latest_run_uses_creation_time_after_reconciliation(self):
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        root = Path(temp.name)
+        runs = root / "runs"
+        for run_id, created_at, updated_at in (
+            ("old-run", "2026-08-02T06:22:08Z", "2026-08-03T08:00:00Z"),
+            ("new-run", "2026-08-03T01:46:54Z", "2026-08-03T03:25:02Z"),
+        ):
+            run_dir = runs / run_id / "functions"
+            run_dir.mkdir(parents=True)
+            dashboard.write_json(
+                run_dir.parent / "run.json",
+                {
+                    "run_id": run_id,
+                    "status": "COMPLETED",
+                    "created_at": created_at,
+                    "updated_at": updated_at,
+                },
+            )
+        records = dashboard.load_run_records(root)
+        self.assertEqual(dashboard.resolve_run_id(records, "latest"), "new-run")
+        old_record = next(item for item in records if item["run"]["run_id"] == "old-run")
+        self.assertEqual(old_record["timestamp"], "2026-08-02T06:22:08Z")
+
 
 if __name__ == "__main__":
     unittest.main()

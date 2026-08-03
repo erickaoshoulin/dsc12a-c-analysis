@@ -1499,6 +1499,17 @@ class RegressionService:
             atomic_write_json(run_dir / "run.json", redact(run))
         return run
 
+    def reconcile_run_statuses(self) -> list[dict[str, Any]]:
+        """Reconcile every durable run before presenting a queue snapshot."""
+        reconciled: list[dict[str, Any]] = []
+        for run_dir in sorted(self.store.runs.iterdir() if self.store.runs.exists() else []):
+            if not run_dir.is_dir() or run_dir.name.startswith("."):
+                continue
+            if not (run_dir / "run.json").is_file():
+                continue
+            reconciled.append(self.refresh_run_status(run_dir.name))
+        return reconciled
+
     def maybe_create_scale_plans(self) -> None:
         for run_dir in sorted(self.store.runs.iterdir() if self.store.runs.exists() else []):
             if not run_dir.is_dir():
@@ -1998,6 +2009,20 @@ class RegressionService:
         atomic_write_bytes(self.store.dashboard / "index.html", html.encode("utf-8"))
         return latest
 
+    def poll(self) -> dict[str, Any]:
+        """Recover stale jobs, reconcile runs, and publish one queue snapshot."""
+        self.store.ensure_layout()
+        recovered = self.store.recover_stale()
+        reconciled = self.reconcile_run_statuses()
+        self.maybe_create_scale_plans()
+        snapshot = self.refresh_dashboard()
+        snapshot["recovered"] = recovered
+        snapshot["reconciled_runs"] = [
+            {"run_id": item.get("run_id"), "status": item.get("status")}
+            for item in reconciled
+        ]
+        return snapshot
+
     @staticmethod
     def dashboard_html() -> str:
         return """<!doctype html>
@@ -2020,6 +2045,7 @@ async function load(){try{data=await fetch('latest.json?ts='+Date.now()).then(r=
         run_dir = self.store.run_dir(run_id)
         if not run_dir.is_dir():
             raise FileNotFoundError(run_id)
+        self.refresh_run_status(run_id)
         run = read_json(run_dir / "run.json", {}) or {}
         functions = []
         for function_dir in sorted((run_dir / "functions").iterdir() if (run_dir / "functions").is_dir() else []):
@@ -2078,13 +2104,13 @@ def main(argv: list[str] | None = None) -> int:
             if args.watch is not None:
                 deadline = epoch_now() + max(0, args.watch)
                 while True:
-                    print_json(service.refresh_dashboard())
+                    print_json(service.poll())
                     remaining = deadline - epoch_now()
                     if remaining <= 0:
                         break
                     time.sleep(min(5, remaining))
             else:
-                print_json(service.refresh_dashboard())
+                print_json(service.poll())
             return 0
         if args.command == "resume":
             run_dir = service.store.run_dir(args.run_id)

@@ -455,6 +455,13 @@ infrastructure failures. `plan` consumes tool-discovered facts and reviewed
 contracts; a target ID is routing metadata and never a source-level function
 allowlist.
 
+A no-work refresh may remove an already-PASS component from the active
+selection, but it must not erase that component's prior DAG nodes, artifact
+links, or promotion status. Preserve historical nodes from the previous DAG or
+durable CI state and expose them as `historical_contracts`; the current plan
+still controls only new selection. DAG edges must resolve to nodes and remain
+deterministically ordered.
+
 The supported commands are:
 
 ```sh
@@ -504,6 +511,16 @@ Frame links, and per-function width/interface/promotion detail. Prefer
 `DSC_REGRESSION_ROOT`, otherwise inspect the mounted SMB regression root and
 show a visible repository-local fallback when it is unavailable. A missing
 recorded PDF is `SPEC_UNAVAILABLE`; external PDF/C inputs remain read-only.
+
+Before publishing a dashboard or queue snapshot, run the durable poll cycle:
+recover expired jobs, reconcile every run from its function receipts, create
+any bounded scale plans, and only then rebuild the dashboard. A run with
+complete PASS receipts is `COMPLETED`/`PASS` even if an older parent record was
+left `QUEUED`; a run with no receipts remains queued and must not be guessed as
+passing. Reconciliation may update status timestamps, but `latest` and per-
+function history are ordered by immutable run creation/start time so repairing
+an old run cannot move it ahead of a newer run. Reports and normalized views
+must expose the reconciliation result and preserve the raw receipt evidence.
 
 For a bounded regression refresh of already promoted leaves, the queue may use
 `DSC_CICD_REFRESH_STABLE=1` together with `DSC_CICD_MAX_NEW` and

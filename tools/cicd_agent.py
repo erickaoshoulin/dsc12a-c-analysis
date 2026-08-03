@@ -254,6 +254,7 @@ class Agent:
         self.locked_contracts = [item for item in self.locked_contracts if item]
         self.contracts = list(self.locked_contracts)
         self.previous_state = read_json(self.ci / "state.json", {}) or {}
+        self.previous_dag = read_json(self.ci / "dag.json", {}) or {}
         self.cache = read_json(self.ci / "cache-index.json", {}) or {}
         self.input_facts: dict[str, Any] = {}
         self.dependency_info: dict[str, Any] = {}
@@ -1131,6 +1132,11 @@ class Agent:
             "input_errors": self.input_facts.get("errors", []),
         }
         self.make_dag()
+        self.plan["historical_contracts"] = sorted({
+            str(node.get("contract_id"))
+            for node in self.dag.get("nodes", [])
+            if node.get("contract_id") and node.get("contract_id") not in {item["contract_id"] for item in entries}
+        })
         return self.plan
 
     def make_dag(self) -> dict[str, Any]:
@@ -1159,18 +1165,94 @@ class Agent:
                     "artifacts": [],
                     "failure_reason": failure,
                 })
-            for first, second in zip(STATE_ORDER, STATE_ORDER[1:]):
+            stage_names = list(STAGE_TO_STATE)
+            for first, second in zip(stage_names, stage_names[1:]):
                 edges.append({"from": f"{cid}:{first}", "to": f"{cid}:{second}"})
         pair = self.plan.get("dependency_pair")
         if pair:
             edges.append({"from": f"{pair['callee_contract']}:PROMOTED", "to": f"{pair['caller_function']}:COMPOSITION"})
+
+        # A no-work refresh intentionally removes promoted contracts from the
+        # active plan, but it must not erase their prior DAG evidence.  Keep
+        # nodes and edges that are absent from the current tool/spec frontier;
+        # the current plan remains authoritative for new selection while the
+        # previous DAG remains an audit trail for completed promotion gates.
+        current_node_ids = {str(node.get("node_id")) for node in nodes}
+        historical_nodes = [
+            copy.deepcopy(node)
+            for node in self.previous_dag.get("nodes", [])
+            if str(node.get("node_id")) not in current_node_ids
+        ]
+        historical_contract_ids = {
+            str(node.get("contract_id"))
+            for node in historical_nodes
+            if node.get("contract_id")
+        }
+        # A prior plan may already have been refreshed, while ci/state.json
+        # still retains the last executed promotion.  Reconstruct missing
+        # historical nodes from that durable state so one no-work refresh
+        # cannot erase audit evidence even when the previous DAG was compacted.
+        state_by_contract = {
+            str(item.get("contract_id")): item
+            for item in self.previous_state.get("contracts", [])
+            if item.get("contract_id")
+        }
+        state_to_stage = {state: stage for stage, state in STAGE_TO_STATE.items()}
+        for cid, item in sorted(state_by_contract.items()):
+            if cid in {str(value.get("contract_id")) for value in self.plan.get("contracts", [])} or cid in historical_contract_ids:
+                continue
+            hashes = item.get("hashes", {}) or {}
+            current_state = str(item.get("current_state", "DISCOVERED"))
+            current_index = STATE_ORDER.index(current_state) if current_state in STATE_ORDER else -1
+            for index, state_name in enumerate(STATE_ORDER):
+                if index == current_index:
+                    node_status = str(item.get("status") or "PENDING")
+                    failure_reason = item.get("failure_reason")
+                elif 0 <= index < current_index:
+                    node_status = "PASS"
+                    failure_reason = None
+                else:
+                    node_status = "PENDING"
+                    failure_reason = None
+                historical_nodes.append({
+                    "node_id": f"{cid}:{state_to_stage[state_name]}",
+                    "contract_id": cid,
+                    "stage": state_name,
+                    "status": node_status,
+                    "source_hash": hashes.get("source"),
+                    "spec_hash": hashes.get("spec"),
+                    "contract_hash": hashes.get("contract"),
+                    "dependency_hash": hashes.get("dependency"),
+                    "artifacts": sorted(str(value) for value in item.get("artifacts", [])),
+                    "failure_reason": failure_reason,
+                })
+            for first, second in zip(STATE_ORDER, STATE_ORDER[1:]):
+                edges.append({"from": f"{cid}:{state_to_stage[first]}", "to": f"{cid}:{state_to_stage[second]}"})
+            historical_contract_ids.add(cid)
+        all_nodes = nodes + historical_nodes
+        all_node_ids = {str(node.get("node_id")) for node in all_nodes}
+        edge_by_key: dict[tuple[str, str], dict[str, str]] = {}
+        for edge in list(self.previous_dag.get("edges", [])) + edges:
+            source = str(edge.get("from", ""))
+            target = str(edge.get("to", ""))
+            if source in all_node_ids and target in all_node_ids:
+                edge_by_key[(source, target)] = {"from": source, "to": target}
+        call_site_by_key: dict[str, dict[str, Any]] = {}
+        for site in list(self.previous_dag.get("dependency_call_sites", [])) + self.dependency_info.get("all_call_sites", []):
+            call_site_by_key[canonical(site)] = site
         self.dag = {
             "schema_version": 2,
             "state_order": list(STATE_ORDER),
-            "nodes": nodes,
-            "edges": edges,
+            "nodes": all_nodes,
+            "edges": sorted(edge_by_key.values(), key=lambda item: (item["from"], item["to"])),
             "cycles": self.dependency_info.get("cycles", []),
-            "dependency_call_sites": self.dependency_info.get("all_call_sites", []),
+            "dependency_call_sites": sorted(call_site_by_key.values(), key=lambda item: (
+                str(item.get("caller_function")),
+                str(item.get("callee_function")),
+                canonical(item.get("location", {})),
+                canonical(item),
+            )),
+            "historical_node_count": len(historical_nodes),
         }
         return self.dag
 

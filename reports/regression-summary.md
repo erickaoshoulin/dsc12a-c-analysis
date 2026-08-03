@@ -78,7 +78,7 @@ The selected run has no function-level failure or blocker.
 | 20260802T105600Z-scale-67d0be81 | scale | PASS | 1 | 1/2 | 3/3 | 21233664 |
 | 20260802T102758Z-scale-45761593 | scale | PASS | 1 | 1/2 | 3/3 | 32768 |
 | 20260802T093510Z-scale-22275ebc | scale | PASS | 2 | 2/4 | 6/6 | 10435567 |
-| 20260802T062208Z-0ad45a41 | pilot | RUNNING | 2 | 2/4 | 4/6 | 2228207 |
+| 20260802T062208Z-0ad45a41 | pilot | PASS | 2 | 2/4 | 4/6 | 2228207 |
 
 ## How to open
 
