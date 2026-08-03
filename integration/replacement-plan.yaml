@@ -1,6 +1,6 @@
 schema_version: 2
 rollback_mode: C_ONLY
 selected_contracts:
-  - usingmidpoint
+  - estimatebitsforgroup
 promotion_gate: unit + dependency + shadow + rtl_return + bitstream
 source_policy: immutable upstream C; generated overlay lives in isolated copy

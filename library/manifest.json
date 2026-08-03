@@ -72,6 +72,70 @@
       "verification_file": "verification/escapecodesize.json"
     },
     {
+      "artifact_dir": "artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
+        "end_line": 437,
+        "start_line": 390
+      },
+      "contract_file": "contracts/estimatebitsforgroup.json",
+      "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
+      "contract_id": "estimatebitsforgroup",
+      "function": "EstimateBitsForGroup",
+      "module": "estimatebitsforgroup",
+      "module_file": "rtl/estimatebitsforgroup.sv",
+      "module_sha256": "da8e09494b9dad38a4591c81c21adf445cc0b92cdaf4eabc1604aa1ca2db3f9f",
+      "promoted_at": "2026-08-03T01:29:48Z",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:model-note:MN_ENC_ICH_MODE_SELECT:p088",
+          "evidence": "The PDF model note identifies the encoder ICH/P decision and its P-mode cost input.",
+          "page": 88,
+          "section": "6.5.3.2",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.5.3.2",
+          "evidence": "The normative decision section is the exact consumer of the estimated predictive-mode bits.",
+          "page": 88,
+          "section": "6.5.3.2",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.6.1",
+          "evidence": "The normative DSU-VLC section defines residual-size and prefix/sample bit accounting.",
+          "page": 91,
+          "section": "6.6.1",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.6.4",
+          "evidence": "The normative rate-control output section defines codedBits/rcSizeGroup as bit-count outputs.",
+          "page": 94,
+          "section": "6.6.4",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:table:3-1",
+          "evidence": "The normative residual-size threshold table is delegated to FindResidualSize.",
+          "page": 34,
+          "section": "3",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:table:6-2",
+          "evidence": "The normative qLevel table is delegated to MapQpToQlevel and its promoted callers.",
+          "page": 114,
+          "section": "6.8.6",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/estimatebitsforgroup.json"
+    },
+    {
       "artifact_dir": "artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "authority": "EXACT_SPEC",
       "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
@@ -621,5 +685,5 @@
   "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
   "source_policy": "immutable external C model and local DSC 1.2a PDF; no SVRT",
   "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-  "updated_at": "2026-08-02T23:46:34Z"
+  "updated_at": "2026-08-03T01:29:48Z"
 }

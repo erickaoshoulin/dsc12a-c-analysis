@@ -1,0 +1,548 @@
+{
+  "complete": false,
+  "ports": [
+    {
+      "domain": {
+        "basis": "DSC 1.1/1.2 version branches used by MapQpToQlevel",
+        "kind": "set",
+        "range": [
+          1,
+          2
+        ],
+        "values": [
+          1,
+          2
+        ]
+      },
+      "port": "dsc_version_minor",
+      "role": "dsc_version_minor"
+    },
+    {
+      "domain": {
+        "basis": "PPS native_420 flag used by MapQpToQlevel",
+        "kind": "set",
+        "range": [
+          0,
+          1
+        ],
+        "values": [
+          0,
+          1
+        ]
+      },
+      "port": "native_420",
+      "role": "native_420"
+    },
+    {
+      "domain": {
+        "basis": "DSC source initialization and native 4:2:2 group structure",
+        "kind": "set",
+        "range": [
+          3,
+          4
+        ],
+        "values": [
+          3,
+          4
+        ]
+      },
+      "port": "units_per_group",
+      "role": "units_per_group"
+    },
+    {
+      "domain": {
+        "basis": "SAMPLES_PER_UNIT and source pixelsInGroup initialization",
+        "kind": "set",
+        "range": [
+          3,
+          3
+        ],
+        "values": [
+          3
+        ]
+      },
+      "port": "pixels_in_group",
+      "role": "pixels_in_group"
+    },
+    {
+      "domain": {
+        "basis": "DSC slice-relative horizontal position domain",
+        "kind": "range",
+        "range": [
+          0,
+          65534
+        ]
+      },
+      "port": "hPos",
+      "role": "hPos"
+    },
+    {
+      "domain": {
+        "basis": "DSC sliceWidth positive finite source domain",
+        "kind": "range",
+        "range": [
+          1,
+          65535
+        ]
+      },
+      "port": "slice_width",
+      "role": "slice_width"
+    },
+    {
+      "domain": {
+        "basis": "Previous-group ICH selection flag",
+        "kind": "set",
+        "range": [
+          0,
+          1
+        ],
+        "values": [
+          0,
+          1
+        ]
+      },
+      "port": "prev_ich_selected",
+      "role": "prev_ich_selected"
+    },
+    {
+      "domain": {
+        "basis": "Table 6-2 masterQp rows",
+        "kind": "range",
+        "range": [
+          0,
+          31
+        ]
+      },
+      "port": "primary_qp",
+      "role": "primary_qp"
+    },
+    {
+      "domain": {
+        "basis": "Table 6-2 masterQp rows",
+        "kind": "range",
+        "range": [
+          0,
+          31
+        ]
+      },
+      "port": "prev_primary_qp",
+      "role": "prev_primary_qp"
+    },
+    {
+      "domain": {
+        "basis": "DSC supported base component bit depths",
+        "kind": "set",
+        "range": [
+          8,
+          16
+        ],
+        "values": [
+          8,
+          10,
+          12,
+          14,
+          16
+        ]
+      },
+      "port": "cpntBitDepth_0",
+      "role": "cpntBitDepth_0"
+    },
+    {
+      "domain": {
+        "basis": "DSC component bit-depth projection; Table 6-2 base-depth relation is enforced by the vector/formal strategy",
+        "kind": "range",
+        "range": [
+          8,
+          16
+        ]
+      },
+      "port": "cpntBitDepth_1",
+      "role": "cpntBitDepth_1"
+    },
+    {
+      "domain": {
+        "basis": "DSC component bit-depth projection; Table 6-2 base-depth relation is enforced by the vector/formal strategy",
+        "kind": "range",
+        "range": [
+          8,
+          16
+        ]
+      },
+      "port": "cpntBitDepth_2",
+      "role": "cpntBitDepth_2"
+    },
+    {
+      "domain": {
+        "basis": "DSC component bit-depth projection; Table 6-2 base-depth relation is enforced by the vector/formal strategy",
+        "kind": "range",
+        "range": [
+          8,
+          16
+        ]
+      },
+      "port": "cpntBitDepth_3",
+      "role": "cpntBitDepth_3"
+    },
+    {
+      "domain": {
+        "basis": "dsc_state_t unitCType component index domain",
+        "kind": "range",
+        "range": [
+          0,
+          3
+        ]
+      },
+      "port": "unit_c_type_0",
+      "role": "unit_c_type_0"
+    },
+    {
+      "domain": {
+        "basis": "dsc_state_t unitCType component index domain",
+        "kind": "range",
+        "range": [
+          0,
+          3
+        ]
+      },
+      "port": "unit_c_type_1",
+      "role": "unit_c_type_1"
+    },
+    {
+      "domain": {
+        "basis": "dsc_state_t unitCType component index domain",
+        "kind": "range",
+        "range": [
+          0,
+          3
+        ]
+      },
+      "port": "unit_c_type_2",
+      "role": "unit_c_type_2"
+    },
+    {
+      "domain": {
+        "basis": "dsc_state_t unitCType component index domain",
+        "kind": "range",
+        "range": [
+          0,
+          3
+        ]
+      },
+      "port": "unit_c_type_3",
+      "role": "unit_c_type_3"
+    },
+    {
+      "domain": {
+        "basis": "source initialization leaves unitStartHPos at zero",
+        "kind": "set",
+        "range": [
+          0,
+          0
+        ],
+        "values": [
+          0
+        ]
+      },
+      "port": "unit_start_h_pos_0",
+      "role": "unit_start_h_pos_0"
+    },
+    {
+      "domain": {
+        "basis": "source initialization leaves unitStartHPos at zero",
+        "kind": "set",
+        "range": [
+          0,
+          0
+        ],
+        "values": [
+          0
+        ]
+      },
+      "port": "unit_start_h_pos_1",
+      "role": "unit_start_h_pos_1"
+    },
+    {
+      "domain": {
+        "basis": "source initialization leaves unitStartHPos at zero",
+        "kind": "set",
+        "range": [
+          0,
+          0
+        ],
+        "values": [
+          0
+        ]
+      },
+      "port": "unit_start_h_pos_2",
+      "role": "unit_start_h_pos_2"
+    },
+    {
+      "domain": {
+        "basis": "source initialization leaves unitStartHPos at zero",
+        "kind": "set",
+        "range": [
+          0,
+          0
+        ],
+        "values": [
+          0
+        ]
+      },
+      "port": "unit_start_h_pos_3",
+      "role": "unit_start_h_pos_3"
+    },
+    {
+      "domain": {
+        "basis": "DSC DSU predicted size domain",
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "predicted_size_0",
+      "role": "predicted_size_0"
+    },
+    {
+      "domain": {
+        "basis": "DSC DSU predicted size domain",
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "predicted_size_1",
+      "role": "predicted_size_1"
+    },
+    {
+      "domain": {
+        "basis": "DSC DSU predicted size domain",
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "predicted_size_2",
+      "role": "predicted_size_2"
+    },
+    {
+      "domain": {
+        "basis": "DSC DSU predicted size domain",
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "predicted_size_3",
+      "role": "predicted_size_3"
+    },
+    {
+      "domain": {
+        "basis": "DSC signed quantized residual domain used by FindResidualSize",
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_0_0",
+      "role": "quantized_residual_0_0"
+    },
+    {
+      "domain": {
+        "basis": "DSC signed quantized residual domain used by FindResidualSize",
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_0_1",
+      "role": "quantized_residual_0_1"
+    },
+    {
+      "domain": {
+        "basis": "DSC signed quantized residual domain used by FindResidualSize",
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_0_2",
+      "role": "quantized_residual_0_2"
+    },
+    {
+      "domain": {
+        "basis": "DSC signed quantized residual domain used by FindResidualSize",
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_1_0",
+      "role": "quantized_residual_1_0"
+    },
+    {
+      "domain": {
+        "basis": "DSC signed quantized residual domain used by FindResidualSize",
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_1_1",
+      "role": "quantized_residual_1_1"
+    },
+    {
+      "domain": {
+        "basis": "DSC signed quantized residual domain used by FindResidualSize",
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_1_2",
+      "role": "quantized_residual_1_2"
+    },
+    {
+      "domain": {
+        "basis": "DSC signed quantized residual domain used by FindResidualSize",
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_2_0",
+      "role": "quantized_residual_2_0"
+    },
+    {
+      "domain": {
+        "basis": "DSC signed quantized residual domain used by FindResidualSize",
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_2_1",
+      "role": "quantized_residual_2_1"
+    },
+    {
+      "domain": {
+        "basis": "DSC signed quantized residual domain used by FindResidualSize",
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_2_2",
+      "role": "quantized_residual_2_2"
+    },
+    {
+      "domain": {
+        "basis": "DSC signed quantized residual domain used by FindResidualSize",
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_3_0",
+      "role": "quantized_residual_3_0"
+    },
+    {
+      "domain": {
+        "basis": "DSC signed quantized residual domain used by FindResidualSize",
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_3_1",
+      "role": "quantized_residual_3_1"
+    },
+    {
+      "domain": {
+        "basis": "DSC signed quantized residual domain used by FindResidualSize",
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_3_2",
+      "role": "quantized_residual_3_2"
+    },
+    {
+      "domain": {
+        "basis": "Table 6-2 qLevel entry domain",
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "qlevel_luma_new",
+      "role": "qlevel_luma_new"
+    },
+    {
+      "domain": {
+        "basis": "Table 6-2 qLevel entry domain",
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "qlevel_luma_old",
+      "role": "qlevel_luma_old"
+    },
+    {
+      "domain": {
+        "basis": "Table 6-2 qLevel entry domain",
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "qlevel_chroma_new",
+      "role": "qlevel_chroma_new"
+    },
+    {
+      "domain": {
+        "basis": "Table 6-2 qLevel entry domain",
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "qlevel_chroma_old",
+      "role": "qlevel_chroma_old"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          261
+        ]
+      },
+      "port": "return_value",
+      "role": "return_value"
+    }
+  ],
+  "proof_basis": "reviewed spec-domain differential strategy; not a legal-domain proof",
+  "schema_version": 1
+}

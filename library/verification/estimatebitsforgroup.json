@@ -1,0 +1,110 @@
+{
+  "artifact_dir": "artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
+  "candidate": "candidate_01",
+  "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
+  "contract_id": "estimatebitsforgroup",
+  "dependency": {
+    "call_sites": 1,
+    "dependency_ports": 1,
+    "status": "PASS",
+    "vectors": 1040928
+  },
+  "execution_status": "EXECUTED_NOW",
+  "formal_partitions": null,
+  "formal_proof": {
+    "counterexample": null,
+    "proof_complete": true,
+    "reason": null,
+    "receipt": "formal/candidate_01.json",
+    "status": "PASS"
+  },
+  "function": "EstimateBitsForGroup",
+  "kind": "estimate_bits",
+  "matrix": {
+    "modes": {
+      "C_ONLY": "PASS",
+      "RTL_RETURN": "PASS",
+      "SHADOW": "PASS"
+    },
+    "scripts_discovered": 22,
+    "status": "PASS"
+  },
+  "module": "estimatebitsforgroup",
+  "promoted_at": "2026-08-03T01:29:48Z",
+  "rtl_sha256": "da8e09494b9dad38a4591c81c21adf445cc0b92cdaf4eabc1604aa1ca2db3f9f",
+  "schema_version": 2,
+  "source_gate": {
+    "baseline_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+    "pdf_sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+    "source_sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+    "status": "PASS"
+  },
+  "stages": {
+    "dependency_composition": "PASS",
+    "formal": "PASS",
+    "formal_partitions": null,
+    "formal_rtl_equivalence": "PASS",
+    "frame_compare": "PASS",
+    "generator": "PASS",
+    "model_matrix": "PASS",
+    "shards_mutations": "PASS",
+    "unit_equivalence": "FORMAL_EQUIVALENT",
+    "verilator_lint_build": "PASS",
+    "width_spec_gate": "PASS"
+  },
+  "status": "PASS",
+  "traceability": {
+    "authority": "EXACT_SPEC",
+    "c_span": {
+      "end_line": 437,
+      "start_line": 390
+    },
+    "review_status": "REVIEWED",
+    "source_file": "dsc_codec.c",
+    "spec_links": [
+      {
+        "anchor_id": "pdf:model-note:MN_ENC_ICH_MODE_SELECT:p088",
+        "evidence": "The PDF model note identifies the encoder ICH/P decision and its P-mode cost input.",
+        "page": 88,
+        "section": "6.5.3.2",
+        "status": "EXACT"
+      },
+      {
+        "anchor_id": "pdf:section:6.5.3.2",
+        "evidence": "The normative decision section is the exact consumer of the estimated predictive-mode bits.",
+        "page": 88,
+        "section": "6.5.3.2",
+        "status": "EXACT"
+      },
+      {
+        "anchor_id": "pdf:section:6.6.1",
+        "evidence": "The normative DSU-VLC section defines residual-size and prefix/sample bit accounting.",
+        "page": 91,
+        "section": "6.6.1",
+        "status": "EXACT"
+      },
+      {
+        "anchor_id": "pdf:section:6.6.4",
+        "evidence": "The normative rate-control output section defines codedBits/rcSizeGroup as bit-count outputs.",
+        "page": 94,
+        "section": "6.6.4",
+        "status": "EXACT"
+      },
+      {
+        "anchor_id": "pdf:table:3-1",
+        "evidence": "The normative residual-size threshold table is delegated to FindResidualSize.",
+        "page": 34,
+        "section": "3",
+        "status": "EXACT"
+      },
+      {
+        "anchor_id": "pdf:table:6-2",
+        "evidence": "The normative qLevel table is delegated to MapQpToQlevel and its promoted callers.",
+        "page": 114,
+        "section": "6.8.6",
+        "status": "EXACT"
+      }
+    ]
+  },
+  "unit_vectors": 1040928
+}

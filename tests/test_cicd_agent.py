@@ -146,6 +146,60 @@ class CicdAgentUnitTests(unittest.TestCase):
         bad["tool_admission"]["max_iterations"] = 0
         self.assertFalse(Agent.reviewed_bounded_domain_admission(candidate, coverage, bad))
 
+    def test_reviewed_combined_domain_admission_requires_one_proof_per_failed_fact(self):
+        candidate = {
+            "clang_usr": "c:@F@CompositeLeaf",
+            "name": "CompositeLeaf",
+            "eligible": False,
+            "criteria": {
+                "production_reachable": True,
+                "contributes_to_observable_output": True,
+                "no_direct_or_transitive_state_write": True,
+                "no_io_allocation_or_logging": False,
+                "bounded_computation": False,
+            },
+        }
+        coverage = {"coverage_status": "EXECUTED", "covered": True}
+        override = {
+            "review_status": "REVIEWED",
+            "spec_links": [{"anchor_id": "pdf:section:composite", "status": "EXACT"}],
+            "interface": {
+                "inputs": [{
+                    "name": "value",
+                    "legal_domain": {"kind": "range", "range": [-8, 8]},
+                    "unresolved": False,
+                }],
+                "output": {"name": "return_value", "legal_range": [0, 32], "unresolved": False},
+            },
+            "semantics": {"kind": "composite_comb"},
+            "tool_admissions": [
+                {
+                    "kind": "BOUNDED_DOMAIN",
+                    "status": "PASS",
+                    "loop": "for (i = 0; i < 4; ++i)",
+                    "max_iterations": 4,
+                },
+                {
+                    "kind": "DOMAIN_EFFECT",
+                    "status": "PASS",
+                    "discharged_effects": ["logging"],
+                    "unreachable_condition": "value < -100 || value > 100",
+                },
+            ],
+        }
+        admission = Agent.reviewed_domain_admission(candidate, coverage, override)
+        self.assertEqual(admission["kind"], "COMBINED_DOMAIN")
+        self.assertEqual(admission["criteria_discharged"], ["bounded_computation", "no_io_allocation_or_logging"])
+
+        missing = dict(override)
+        missing["tool_admissions"] = [override["tool_admissions"][0]]
+        self.assertIsNone(Agent.reviewed_domain_admission(candidate, coverage, missing))
+
+        stateful = dict(candidate)
+        stateful["criteria"] = dict(candidate["criteria"])
+        stateful["criteria"]["no_direct_or_transitive_state_write"] = False
+        self.assertIsNone(Agent.reviewed_domain_admission(stateful, coverage, override))
+
     def test_tool_candidate_facts_accepts_reviewed_bounded_domain_without_name_queue(self):
         candidate = {
             "clang_usr": "c:@F@BoundedLeaf",

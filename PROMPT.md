@@ -48,6 +48,13 @@ smoke outputs, and binary SHA-256 in `build/build-receipt.json`.
 Any build/tool/path/timeout failure is `INFRASTRUCTURE_FAILURE`. Stop before
 regenerating analysis artifacts and do not invoke an LLM.
 
+For every new work batch, the selector must be the tool-produced candidate
+frontier, never a prompt-supplied function name. First compile the immutable C
+oracle and record its receipt; then require exact local-PDF anchors and a
+frozen finite interface before asking the generator for RTL. Run C-versus-RTL
+differential shards and an independent formal/exhaustive gate, including
+signed intermediate arithmetic and boundary samples, before promotion.
+
 ## Tool-driven discovery
 
 - Generate `compile_commands.json` from the public build inputs.
@@ -408,6 +415,17 @@ indirect calls, output reachability, coverage, or any other failed criterion;
 the RTL contract covers the legal domain only and never models the diagnostic
 branch as DUT behavior. The receipt records
 `coverage_basis: reviewed_domain_effect`.
+
+If the facts show more than one of the narrow, independently reviewable facts
+`bounded_computation` and `no_io_allocation_or_logging` failed, the override
+may use `tool_admissions: [...]` with exactly one `BOUNDED_DOMAIN` proof and/or
+one `DOMAIN_EFFECT` proof, mapped one-to-one to the failed criteria. The
+combined receipt must preserve every proof and records
+`coverage_basis: reviewed_combined_domain`. This is only composition of the
+two existing narrow admissions: it still cannot waive state writes, allocation,
+I/O, indirect calls, output reachability, coverage, or any other failed fact.
+`CONFIG_LIBRARY` remains a single-failure admission and cannot be combined
+with another waiver.
 
 When the only failed candidate criterion is observable-output contribution for
 a tool-discovered `CONFIG` function, a reviewed `CONFIG_LIBRARY` admission may

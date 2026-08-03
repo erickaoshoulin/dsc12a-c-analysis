@@ -3,6 +3,405 @@
   "contracts": [
     {
       "artifacts": [
+        "artifacts/3d66964980dfa45a183e2476b9ffcd790248975873ab0f5cf8156c58b0c7d629",
+        "artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13"
+      ],
+      "contract_id": "estimatebitsforgroup",
+      "current_state": "PROMOTED",
+      "failure_reason": null,
+      "function": "EstimateBitsForGroup",
+      "hashes": {
+        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
+        "contract": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
+        "dependency": "b0b74e666d2d9628c9789b688227db7a48043a32007016c7a0c5881a5acd2ed4",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "ae67a01882691cd099a2e0c87b44436c9d3ece33399eff8a553fcbdcc1137411",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "4"
+      },
+      "history": [
+        {
+          "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "COUNTEREXAMPLE"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "COUNTEREXAMPLE"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        }
+      ],
+      "interface_shape": [
+        [
+          "input",
+          "cpntBitDepth_0",
+          5,
+          false
+        ],
+        [
+          "input",
+          "cpntBitDepth_1",
+          5,
+          false
+        ],
+        [
+          "input",
+          "cpntBitDepth_2",
+          5,
+          false
+        ],
+        [
+          "input",
+          "cpntBitDepth_3",
+          5,
+          false
+        ],
+        [
+          "input",
+          "dsc_version_minor",
+          2,
+          false
+        ],
+        [
+          "input",
+          "hPos",
+          16,
+          false
+        ],
+        [
+          "input",
+          "native_420",
+          1,
+          false
+        ],
+        [
+          "input",
+          "pixels_in_group",
+          2,
+          false
+        ],
+        [
+          "input",
+          "predicted_size_0",
+          5,
+          false
+        ],
+        [
+          "input",
+          "predicted_size_1",
+          5,
+          false
+        ],
+        [
+          "input",
+          "predicted_size_2",
+          5,
+          false
+        ],
+        [
+          "input",
+          "predicted_size_3",
+          5,
+          false
+        ],
+        [
+          "input",
+          "prev_ich_selected",
+          1,
+          false
+        ],
+        [
+          "input",
+          "prev_primary_qp",
+          5,
+          false
+        ],
+        [
+          "input",
+          "primary_qp",
+          5,
+          false
+        ],
+        [
+          "input",
+          "qlevel_chroma_new",
+          5,
+          false
+        ],
+        [
+          "input",
+          "qlevel_chroma_old",
+          5,
+          false
+        ],
+        [
+          "input",
+          "qlevel_luma_new",
+          5,
+          false
+        ],
+        [
+          "input",
+          "qlevel_luma_old",
+          5,
+          false
+        ],
+        [
+          "input",
+          "quantized_residual_0_0",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_0_1",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_0_2",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_1_0",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_1_1",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_1_2",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_2_0",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_2_1",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_2_2",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_3_0",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_3_1",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_3_2",
+          17,
+          true
+        ],
+        [
+          "input",
+          "slice_width",
+          16,
+          false
+        ],
+        [
+          "input",
+          "unit_c_type_0",
+          2,
+          false
+        ],
+        [
+          "input",
+          "unit_c_type_1",
+          2,
+          false
+        ],
+        [
+          "input",
+          "unit_c_type_2",
+          2,
+          false
+        ],
+        [
+          "input",
+          "unit_c_type_3",
+          2,
+          false
+        ],
+        [
+          "input",
+          "unit_start_h_pos_0",
+          16,
+          false
+        ],
+        [
+          "input",
+          "unit_start_h_pos_1",
+          16,
+          false
+        ],
+        [
+          "input",
+          "unit_start_h_pos_2",
+          16,
+          false
+        ],
+        [
+          "input",
+          "unit_start_h_pos_3",
+          16,
+          false
+        ],
+        [
+          "input",
+          "units_per_group",
+          3,
+          false
+        ],
+        [
+          "output",
+          "return_value",
+          9,
+          false
+        ]
+      ],
+      "model_calls": 1,
+      "origin": "tool_discovered_reviewed_override",
+      "selected": true,
+      "status": "PROMOTED",
+      "token_count": 32629,
+      "unit_receipt": "EXECUTED_NOW"
+    },
+    {
+      "artifacts": [
         "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/artifact-manifest.json",
         "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/bitstream-receipt.json",
         "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/dependency-receipt.json",
@@ -43,18 +442,18 @@
       "failure_reason": "bounded selection deferred",
       "function": "FindMidpoint",
       "hashes": {
-        "agent": "5f94d9ff33917ba00e9c57a23263a7b6aeafc7842945ca076f99944eb4daa255",
+        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
         "contract": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
-        "dependency": "a347479a5dd8bbc4a5152e130263213e5a532971600356507caa424b9be38230",
+        "dependency": "0293f28a62bf546c833c37e257ffa467a49fc8805e76bc248a7441522c7904ac",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "fde1c371ac875598d621efe811a54ffd2e153b68ac2d2bb08be72adbf7d3051e",
-        "shards": "8",
+        "prompt": "ae67a01882691cd099a2e0c87b44436c9d3ece33399eff8a553fcbdcc1137411",
+        "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "2"
+        "workers": "4"
       },
       "history": [
         {
@@ -535,18 +934,18 @@
       "failure_reason": "bounded selection deferred",
       "function": "IsFlatnessInfoSent",
       "hashes": {
-        "agent": "5f94d9ff33917ba00e9c57a23263a7b6aeafc7842945ca076f99944eb4daa255",
+        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
         "contract": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
-        "dependency": "7524e15676eddcb08286a147bc229fbef65f70bb1af8a521d4126fedf118a1eb",
+        "dependency": "56603bc200cc992f7e1f591f8d7fda9a294179735b0b80f1abc032293e44369f",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "fde1c371ac875598d621efe811a54ffd2e153b68ac2d2bb08be72adbf7d3051e",
-        "shards": "8",
+        "prompt": "ae67a01882691cd099a2e0c87b44436c9d3ece33399eff8a553fcbdcc1137411",
+        "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "2"
+        "workers": "4"
       },
       "history": [
         {
@@ -1075,18 +1474,18 @@
       "failure_reason": "bounded selection deferred",
       "function": "MapQpToQlevel",
       "hashes": {
-        "agent": "5f94d9ff33917ba00e9c57a23263a7b6aeafc7842945ca076f99944eb4daa255",
+        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
         "contract": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
-        "dependency": "36ed10d39d52d1a7190105456253d18b5aaad7e3e61433008113acef0abdf465",
+        "dependency": "47ba2e723f118f99c08c24227c19e77fb1495c86660de40fc78db24ff6359805",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "fde1c371ac875598d621efe811a54ffd2e153b68ac2d2bb08be72adbf7d3051e",
-        "shards": "8",
+        "prompt": "ae67a01882691cd099a2e0c87b44436c9d3ece33399eff8a553fcbdcc1137411",
+        "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "2"
+        "workers": "4"
       },
       "history": [
         {
@@ -1577,18 +1976,18 @@
       "failure_reason": "bounded selection deferred",
       "function": "PredictSize",
       "hashes": {
-        "agent": "5f94d9ff33917ba00e9c57a23263a7b6aeafc7842945ca076f99944eb4daa255",
+        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
         "contract": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
-        "dependency": "73a44ef55ff9cb13c6da647c47b381fc7acf93c3ea5bc91e7cae82cd5bb792fa",
+        "dependency": "bc6716c31fb9010446ed24049f5da756059583ff9abad19e1f8dc1ce1783c726",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "fde1c371ac875598d621efe811a54ffd2e153b68ac2d2bb08be72adbf7d3051e",
-        "shards": "8",
+        "prompt": "ae67a01882691cd099a2e0c87b44436c9d3ece33399eff8a553fcbdcc1137411",
+        "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "2"
+        "workers": "4"
       },
       "history": [
         {
@@ -2042,18 +2441,18 @@
       "failure_reason": "bounded selection deferred",
       "function": "QuantizeResidual",
       "hashes": {
-        "agent": "5f94d9ff33917ba00e9c57a23263a7b6aeafc7842945ca076f99944eb4daa255",
+        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
         "contract": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
-        "dependency": "1930bef5611d1bbdb83815f80f71fe75b2972044e126cbcfaf72969f1ed53115",
+        "dependency": "ed24f1ec7846b54710ba1365569b2c1eeec1de601471606ba06181adf5b6e129",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "fde1c371ac875598d621efe811a54ffd2e153b68ac2d2bb08be72adbf7d3051e",
-        "shards": "8",
+        "prompt": "ae67a01882691cd099a2e0c87b44436c9d3ece33399eff8a553fcbdcc1137411",
+        "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "2"
+        "workers": "4"
       },
       "history": [
         {
@@ -2795,18 +3194,18 @@
       "failure_reason": "bounded selection deferred",
       "function": "SamplePredict",
       "hashes": {
-        "agent": "5f94d9ff33917ba00e9c57a23263a7b6aeafc7842945ca076f99944eb4daa255",
+        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
         "contract": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
-        "dependency": "1917b8a8637d57445121e58e98185743a80dc9a9d0527eff530ec9912a203c67",
+        "dependency": "96601a673791e5160dc8d134a7285e53cedee7930b3ff574afc82e3b72c30149",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "fde1c371ac875598d621efe811a54ffd2e153b68ac2d2bb08be72adbf7d3051e",
-        "shards": "8",
+        "prompt": "ae67a01882691cd099a2e0c87b44436c9d3ece33399eff8a553fcbdcc1137411",
+        "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "2"
+        "workers": "4"
       },
       "history": [
         {
@@ -3505,18 +3904,18 @@
       "failure_reason": "bounded selection deferred",
       "function": "SampToLineBuf",
       "hashes": {
-        "agent": "5f94d9ff33917ba00e9c57a23263a7b6aeafc7842945ca076f99944eb4daa255",
+        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
         "contract": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
-        "dependency": "00145dd47fb489d7f29a09e5fc5992cefb0a45ff742babc96f229f6097da2aba",
+        "dependency": "a60b3b3f76f4775deb0cff3af831db9f3ec64aae4d1b5bbcaded1dfac9c19363",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "fde1c371ac875598d621efe811a54ffd2e153b68ac2d2bb08be72adbf7d3051e",
-        "shards": "8",
+        "prompt": "ae67a01882691cd099a2e0c87b44436c9d3ece33399eff8a553fcbdcc1137411",
+        "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "2"
+        "workers": "4"
       },
       "history": [
         {
@@ -3925,286 +4324,28 @@
       "selected": false,
       "status": "DEFERRED",
       "token_count": 0
-    },
-    {
-      "artifacts": [
-        "artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
-        "artifacts/cc6a8b114e8698fc3992a8ac7cd9c14c0992ef8641b026eb2d59159e1c6ee07a"
-      ],
-      "contract_id": "usingmidpoint",
-      "current_state": "PROMOTED",
-      "failure_reason": null,
-      "function": "UsingMidpoint",
-      "hashes": {
-        "agent": "5f94d9ff33917ba00e9c57a23263a7b6aeafc7842945ca076f99944eb4daa255",
-        "contract": "46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
-        "dependency": "18389769225ae0479f2a1880efd7e67469d530ef55e878a92c76ba7109f707ac",
-        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
-        "model": "external-generator-hook",
-        "pipeline": "executable-cicd-v2",
-        "prompt": "fde1c371ac875598d621efe811a54ffd2e153b68ac2d2bb08be72adbf7d3051e",
-        "shards": "8",
-        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
-        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
-        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
-        "workers": "2"
-      },
-      "history": [
-        {
-          "state": "DISCOVERED"
-        },
-        {
-          "failure_reason": null,
-          "state": "CONTRACT_LOCKED",
-          "status": "EXECUTING"
-        },
-        {
-          "failure_reason": "unfrozen pointer parameter: dsc_cfg",
-          "state": "DISCOVERED",
-          "status": "INFRASTRUCTURE_FAILURE"
-        },
-        {
-          "failure_reason": null,
-          "state": "CONTRACT_LOCKED",
-          "status": "EXECUTING"
-        },
-        {
-          "failure_reason": "dynamic array index is not an input port: c_0",
-          "state": "DISCOVERED",
-          "status": "INFRASTRUCTURE_FAILURE"
-        },
-        {
-          "failure_reason": null,
-          "state": "CONTRACT_LOCKED",
-          "status": "EXECUTING"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_GENERATED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "CONTRACT_LOCKED",
-          "status": "EXECUTING"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_GENERATED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "CONTRACT_LOCKED",
-          "status": "EXECUTING"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_GENERATED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "UNIT_VERIFIED",
-          "status": "COUNTEREXAMPLE"
-        },
-        {
-          "failure_reason": null,
-          "state": "CONTRACT_LOCKED",
-          "status": "EXECUTING"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_GENERATED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "UNIT_VERIFIED",
-          "status": "COUNTEREXAMPLE"
-        },
-        {
-          "failure_reason": null,
-          "state": "CONTRACT_LOCKED",
-          "status": "EXECUTING"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_GENERATED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "UNIT_VERIFIED",
-          "status": "COUNTEREXAMPLE"
-        },
-        {
-          "failure_reason": null,
-          "state": "CONTRACT_LOCKED",
-          "status": "EXECUTING"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_GENERATED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "UNIT_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "SHADOW_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "RTL_RETURN_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "DEPENDENCIES_VERIFIED",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "BITSTREAM_PASS",
-          "status": "PASS"
-        },
-        {
-          "failure_reason": null,
-          "state": "PROMOTED",
-          "status": "PROMOTED"
-        }
-      ],
-      "interface_shape": [
-        [
-          "input",
-          "cpnt",
-          2,
-          false
-        ],
-        [
-          "input",
-          "cpntBitDepth_0",
-          5,
-          false
-        ],
-        [
-          "input",
-          "cpntBitDepth_1",
-          5,
-          false
-        ],
-        [
-          "input",
-          "cpntBitDepth_2",
-          5,
-          false
-        ],
-        [
-          "input",
-          "cpntBitDepth_3",
-          5,
-          false
-        ],
-        [
-          "input",
-          "cpntBitDepth_selected",
-          5,
-          false
-        ],
-        [
-          "input",
-          "dsc_version_minor",
-          2,
-          false
-        ],
-        [
-          "input",
-          "native_420",
-          1,
-          false
-        ],
-        [
-          "input",
-          "primary_qp",
-          5,
-          false
-        ],
-        [
-          "input",
-          "qlevel_chroma",
-          5,
-          false
-        ],
-        [
-          "input",
-          "qlevel_luma",
-          5,
-          false
-        ],
-        [
-          "input",
-          "quantized_residual_0",
-          17,
-          true
-        ],
-        [
-          "input",
-          "quantized_residual_1",
-          17,
-          true
-        ],
-        [
-          "input",
-          "quantized_residual_2",
-          17,
-          true
-        ],
-        [
-          "input",
-          "unit",
-          2,
-          false
-        ],
-        [
-          "output",
-          "return_value",
-          1,
-          false
-        ]
-      ],
-      "model_calls": 1,
-      "origin": "tool_discovered_reviewed_override",
-      "selected": true,
-      "status": "PROMOTED",
-      "token_count": 7731,
-      "unit_receipt": "EXECUTED_NOW"
     }
   ],
   "dependency_pair": {
     "call_sites": [
       {
-        "callee_contract": "usingmidpoint",
-        "callee_function": "UsingMidpoint",
-        "callee_usr": "c:@F@UsingMidpoint",
+        "callee_contract": "estimatebitsforgroup",
+        "callee_function": "EstimateBitsForGroup",
+        "callee_usr": "c:@F@EstimateBitsForGroup",
         "caller_contract": null,
         "caller_function": "IchDecision",
         "caller_usr": "c:@F@IchDecision",
         "location": {
-          "column": 6,
+          "column": 16,
           "file": "dsc_codec.c",
-          "line": 496
+          "line": 522
         },
         "source": "facts/callgraph.json"
       }
     ],
-    "callee_contract": "usingmidpoint",
-    "callee_function": "UsingMidpoint",
-    "callee_usr": "c:@F@UsingMidpoint",
+    "callee_contract": "estimatebitsforgroup",
+    "callee_function": "EstimateBitsForGroup",
+    "callee_usr": "c:@F@EstimateBitsForGroup",
     "caller_contract": null,
     "caller_function": "IchDecision",
     "caller_usr": "c:@F@IchDecision",
@@ -4215,7 +4356,7 @@
   "rollback_mode": "C_ONLY",
   "schema_version": 2,
   "selected_contracts": [
-    "usingmidpoint"
+    "estimatebitsforgroup"
   ],
   "state_order": [
     "DISCOVERED",
@@ -4228,5 +4369,5 @@
     "BITSTREAM_PASS",
     "PROMOTED"
   ],
-  "token_count": 7731
+  "token_count": 32629
 }

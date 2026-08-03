@@ -381,6 +381,214 @@ def qp_adjusted_pred_size_body(interface: dict[str, object], bad: bool) -> str:
     return "\n".join(lines)
 
 
+def estimate_bits_body(
+    interface: dict[str, object], semantics: dict[str, object], bad: bool
+) -> str:
+    """Emit the fixed-size DSC DSU bit estimator from reviewed contract data.
+
+    ``EstimateBitsForGroup`` has two runtime loops, but the source constants
+    bound the storage to four units and three samples per unit.  The contract
+    freezes those dimensions and the generator unrolls them; the only dynamic
+    loop bound left in the C oracle is ``unitsPerGroup``, which remains an
+    explicit guarded input in both implementations.
+    """
+    ports = {
+        str(port.get("name")): port
+        for port in interface.get("ports", [])
+        if isinstance(port, dict)
+    }
+    strategy = semantics.get("legal_vector_strategy", {})
+    if not isinstance(strategy, dict):
+        raise ValueError("estimate-bits fixture is missing legal vector strategy")
+
+    def require(name: str) -> str:
+        if name not in ports:
+            raise ValueError("estimate-bits fixture is missing port: " + name)
+        return name
+
+    units_name = require(str(strategy.get("units_per_group_port", "units_per_group")))
+    pixels_name = require(str(strategy.get("pixels_in_group_port", "pixels_in_group")))
+    hpos_name = require(str(strategy.get("hpos_port", "hPos")))
+    slice_width_name = require(str(strategy.get("slice_width_port", "slice_width")))
+    prev_ich_name = require(str(strategy.get("prev_ich_selected_port", "prev_ich_selected")))
+    version_name = require(str(strategy.get("version_port", "dsc_version_minor")))
+    native_name = require(str(strategy.get("native_420_port", "native_420")))
+    primary_name = require(str(strategy.get("primary_qp_port", "primary_qp")))
+    previous_name = require(str(strategy.get("prev_primary_qp_port", "prev_primary_qp")))
+    depth_ports = [require(str(value)) for value in strategy.get("component_depth_ports", [])]
+    ctype_ports = [require(str(value)) for value in strategy.get("unit_component_ports", [])]
+    start_ports = [require(str(value)) for value in strategy.get("unit_start_hpos_ports", [])]
+    predicted_ports = [require(str(value)) for value in strategy.get("predicted_size_ports", [])]
+    residual_ports = [require(str(value)) for value in strategy.get("residual_ports", [])]
+    if len(depth_ports) != 4 or len(ctype_ports) != 4 or len(start_ports) != 4 or len(predicted_ports) != 4:
+        raise ValueError("estimate-bits fixture requires four component/unit state lanes")
+    if len(residual_ports) != 12:
+        raise ValueError("estimate-bits fixture requires twelve residual ports")
+
+    table_bindings = strategy.get("table_bindings", {}) or {}
+    table_ports: dict[str, str] = {}
+    primary_table_port = str(strategy.get("primary_qp_port", "primary_qp"))
+    previous_table_port = str(strategy.get("prev_primary_qp_port", "prev_primary_qp"))
+    for port_name, binding in table_bindings.items():
+        table_kind = str((binding or {}).get("table", ""))
+        if table_kind in {"luma", "chroma"}:
+            qp_port = str((binding or {}).get("qp_port", ""))
+            suffix = "_new" if qp_port == primary_table_port else "_old" if qp_port == previous_table_port else ""
+            if not suffix:
+                raise ValueError("estimate-bits table binding has an unknown QP port")
+            table_ports[table_kind + suffix] = require(str(port_name))
+    if set(table_ports) != {"luma_new", "luma_old", "chroma_new", "chroma_old"}:
+        raise ValueError("estimate-bits fixture requires luma/chroma table ports")
+
+    output = next(
+        (
+            str(port.get("name"))
+            for port in interface.get("ports", [])
+            if isinstance(port, dict) and port.get("direction") == "output"
+        ),
+        "return_value",
+    )
+    require(output)
+    thresholds = semantics.get("thresholds") or semantics.get("residual_size_thresholds") or []
+    if not thresholds:
+        raise ValueError("estimate-bits fixture is missing residual-size thresholds")
+
+    def signed_literal(value: int) -> str:
+        value = int(value)
+        if value < 0:
+            return f"32'sh{(value & 0xffffffff):08x}"
+        return str(value)
+
+    def qlevel_lines(target: str, cpnt: str, luma: str, chroma: str) -> list[str]:
+        return [
+            f"        if (({cpnt} % 3) == 0) begin",
+            f"            {target} = {luma};",
+            f"        end else if (({native_name} != 0) && ({cpnt} == 1)) begin",
+            f"            {target} = {luma};",
+            "        end else begin",
+            f"            {target} = {chroma};",
+            f"            if (({version_name} == 2) && ({depth_ports[0]} == {depth_ports[1]}) && ({target} > 0)) begin",
+            f"                {target} = {target} - 1;",
+            "            end",
+            "        end",
+        ]
+
+    lines = [
+        "    integer signed total_size_i;",
+        "    integer signed bit_depth_i;",
+        "    integer signed qlevel_new_i;",
+        "    integer signed qlevel_old_i;",
+        "    integer signed max_residual_size_i;",
+        "    integer signed pred_size_i;",
+        "    integer signed hpos_value_i;",
+        "    integer signed pixels_in_group_value_i;",
+        "    integer signed slice_width_value_i;",
+        "    integer signed unit_start_h_pos_value_i;",
+    ]
+    for unit in range(4):
+        lines.extend([
+            f"    integer signed max_size_{unit}_i;",
+            f"    integer signed sample_hpos_{unit}_i;",
+            f"    integer signed residual_{unit}_i;",
+            f"    integer signed req_size_{unit}_i;",
+        ])
+    lines.extend([
+        "    always_comb begin",
+        "        total_size_i = 0;",
+        f"        hpos_value_i = {hpos_name};",
+        f"        pixels_in_group_value_i = {pixels_name};",
+        f"        slice_width_value_i = {slice_width_name};",
+    ])
+
+    for unit in range(4):
+        lines.extend([
+            f"        max_size_{unit}_i = 0;",
+            f"        unit_start_h_pos_value_i = {start_ports[unit]};",
+        ])
+        for sample in range(3):
+            residual = residual_ports[unit * 3 + sample]
+            lines.extend([
+                f"            sample_hpos_{unit}_i = hpos_value_i + {sample} - (pixels_in_group_value_i - 1) + unit_start_h_pos_value_i;",
+                f"            residual_{unit}_i = $signed({residual});",
+                f"            req_size_{unit}_i = 0;",
+            ])
+            first_threshold = True
+            for threshold in thresholds:
+                if not isinstance(threshold, dict):
+                    continue
+                lower = int(threshold.get("lower", 0))
+                upper = int(threshold.get("upper", lower))
+                size = int(threshold.get("size", 0))
+                keyword = "if" if first_threshold else "else if"
+                if lower == upper:
+                    condition = f"(residual_{unit}_i == {signed_literal(lower)})"
+                else:
+                    condition = (
+                        f"((residual_{unit}_i >= {signed_literal(lower)}) && "
+                        f"(residual_{unit}_i <= {signed_literal(upper)}))"
+                    )
+                lines.append(f"            {keyword} {condition} req_size_{unit}_i = {size};")
+                first_threshold = False
+            lines.extend([
+                f"            if (sample_hpos_{unit}_i < slice_width_value_i) begin",
+                f"                if (req_size_{unit}_i > max_size_{unit}_i) max_size_{unit}_i = req_size_{unit}_i;",
+                "            end",
+            ])
+        lines.extend([
+            f"            case ({ctype_ports[unit]})",
+        ])
+        for index, depth in enumerate(depth_ports):
+            lines.append(f"                {index}: bit_depth_i = {depth};")
+        lines.extend([
+            f"                default: bit_depth_i = {depth_ports[0]};",
+            "            endcase",
+        ])
+        lines.extend(qlevel_lines("qlevel_new_i", ctype_ports[unit], table_ports["luma_new"], table_ports["chroma_new"]))
+        lines.extend([
+            "            max_residual_size_i = bit_depth_i - qlevel_new_i;",
+            f"            if (max_size_{unit}_i > max_residual_size_i) max_size_{unit}_i = max_residual_size_i;",
+        ])
+
+    for unit in range(4):
+        lines.extend([
+            f"        if ({units_name} > {unit}) begin",
+            f"            case ({ctype_ports[unit]})",
+        ])
+        for index, depth in enumerate(depth_ports):
+            lines.append(f"                {index}: bit_depth_i = {depth};")
+        lines.extend([
+            f"                default: bit_depth_i = {depth_ports[0]};",
+            "            endcase",
+        ])
+        lines.extend(qlevel_lines("qlevel_new_i", ctype_ports[unit], table_ports["luma_new"], table_ports["chroma_new"]))
+        lines.extend(qlevel_lines("qlevel_old_i", ctype_ports[unit], table_ports["luma_old"], table_ports["chroma_old"]))
+        lines.extend([
+            f"            pred_size_i = {predicted_ports[unit]} + qlevel_old_i - qlevel_new_i;",
+            "            max_residual_size_i = bit_depth_i - qlevel_new_i;",
+            "            if (pred_size_i < 0) pred_size_i = 0;",
+            "            else if (pred_size_i > (max_residual_size_i - 1)) pred_size_i = max_residual_size_i - 1;",
+            f"            if (max_size_{unit}_i < pred_size_i)",
+            f"                total_size_i = total_size_i + 1 + 3 * pred_size_i;",
+            f"            else if ((max_size_{unit}_i == max_residual_size_i) && ({unit} != 0))",
+            f"                total_size_i = total_size_i + (max_size_{unit}_i - pred_size_i) + 3 * max_size_{unit}_i;",
+            "            else",
+            f"                total_size_i = total_size_i + 1 + (max_size_{unit}_i - pred_size_i) + 3 * max_size_{unit}_i;",
+            "        end",
+        ])
+
+    lines.extend([
+        f"        bit_depth_i = {depth_ports[0]};",
+        f"        qlevel_new_i = {table_ports['luma_new']};",
+        "        max_residual_size_i = bit_depth_i - qlevel_new_i;",
+        f"        if ((max_size_0_i < max_residual_size_i) && ({prev_ich_name} != 0)) total_size_i = total_size_i + 1;",
+        f"        {output} = total_size_i;",
+    ])
+    if bad:
+        lines.append(f"        {output} = {output} + 1;")
+    lines.extend(["    end"])
+    return "\n".join(lines)
+
+
 def windowed_sample_predict_body(
     interface: dict[str, object], semantics: dict[str, object], bad: bool
 ) -> str:
@@ -1156,6 +1364,8 @@ def render_candidate(contract: dict[str, object], interface: dict[str, object], 
         body = residual_size_body(interface, semantics, bad)
     elif kind == "qp_adjusted_pred_size":
         body = qp_adjusted_pred_size_body(interface, bad)
+    elif kind == "estimate_bits":
+        body = estimate_bits_body(interface, semantics, bad)
     elif kind == "windowed_sample_predict" and (
         isinstance(semantics, dict)
         and isinstance(semantics.get("window_spec"), dict)

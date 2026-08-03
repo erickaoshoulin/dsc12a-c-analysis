@@ -10,8 +10,8 @@ contract's exact semantic equations are used as the independent oracle model.
 This is deliberately a semantic-kind adapter, not a function-name selector.
 The candidate is admitted only when the locked contract is already selected by
 the normal facts/coverage pipeline and declares the reviewed
-``windowed_sample_predict``, ``flatness_window``, or ``using_midpoint``
-semantics.
+``windowed_sample_predict``, ``flatness_window``, ``using_midpoint``, or
+``estimate_bits`` semantics.
 """
 
 from __future__ import annotations
@@ -236,15 +236,46 @@ class AstInterpreter:
         env[str(target.get("name"))] = self.expr(first(node.get("rhsp")), env)
 
     def merge(self, base: dict[str, Any], branches: list[tuple[Any, dict[str, Any]]]) -> dict[str, Any]:
-        names = set(base)
+        # Branch environments start as copies of ``base``.  Merging every
+        # binding therefore needlessly wraps all unrelated temporaries in a
+        # fresh If expression at every statement.  A fixed-lane candidate can
+        # contain dozens of threshold branches; that old behaviour made the
+        # symbolic RTL expression grow quadratically/exponentially even when
+        # a branch changed one scalar.  Keep the original environment for
+        # unchanged bindings and merge only actual branch deltas.
+        changed: set[str] = set()
         for _, branch in branches:
-            names.update(branch)
-        merged: dict[str, Any] = {}
-        for name in names:
+            for name, value in branch.items():
+                if name not in base or not z3.eq(value, base[name]):
+                    changed.add(name)
+        merged = dict(base)
+        for name in changed:
             value = base.get(name, z3.IntVal(0))
             for guard, branch in reversed(branches):
                 value = z3.If(guard, branch.get(name, value), value)
             merged[name] = value
+        return merged
+
+    def merge_if(
+        self,
+        base: dict[str, Any],
+        condition: Any,
+        then_env: dict[str, Any],
+        else_env: dict[str, Any],
+    ) -> dict[str, Any]:
+        """Merge an if/else without encoding a redundant ``Not(condition)``."""
+        changed: set[str] = set()
+        for branch in (then_env, else_env):
+            for name, value in branch.items():
+                if name not in base or not z3.eq(value, base[name]):
+                    changed.add(name)
+        merged = dict(base)
+        for name in changed:
+            then_value = then_env.get(name, base.get(name, z3.IntVal(0)))
+            else_value = else_env.get(name, base.get(name, z3.IntVal(0)))
+            merged[name] = then_value if z3.eq(then_value, else_value) else z3.If(
+                condition, then_value, else_value
+            )
         return merged
 
     def execute_if(self, node: dict[str, Any], env: dict[str, Any]) -> dict[str, Any]:
@@ -253,7 +284,7 @@ class AstInterpreter:
         self.exec_nodes(as_list(node.get("thensp")), then_env)
         else_env = dict(env)
         self.exec_nodes(as_list(node.get("elsesp")), else_env)
-        return self.merge(env, [(condition, then_env), (z3.Not(condition), else_env)])
+        return self.merge_if(env, condition, then_env, else_env)
 
     def execute_case(self, node: dict[str, Any], env: dict[str, Any]) -> dict[str, Any]:
         selector = self.expr(first(node.get("exprp")), env)
@@ -610,6 +641,101 @@ def add_using_midpoint_domain_constraints(
     solver.add(variables[selected_depth] == selected)
 
 
+def add_estimate_bits_domain_constraints(
+    solver: Any,
+    contract: dict[str, Any],
+    variables: dict[str, Any],
+) -> None:
+    """Add the reviewed Table 6-2 and component-depth relations for DSU sizing."""
+    semantics = contract.get("semantics", {}) or {}
+    strategy = semantics.get("legal_vector_strategy") or {}
+
+    def required(key: str, fallback: str) -> str:
+        name = str(strategy.get(key, fallback))
+        if name not in variables:
+            raise FormalError(f"estimate-bits proof references missing port {name}")
+        return name
+
+    depth_ports = [str(value) for value in strategy.get("component_depth_ports", [])]
+    if len(depth_ports) != 4 or any(name not in variables for name in depth_ports):
+        raise FormalError("estimate-bits proof requires four component-depth ports")
+    base_depth = variables[str(strategy.get("base_bit_depth_port", depth_ports[0]))]
+    primary_name = required("primary_qp_port", "primary_qp")
+    previous_name = required("prev_primary_qp_port", "prev_primary_qp")
+    tables = strategy.get("tables", {}) or semantics.get("tables", {}) or {}
+    if not tables.get("luma") or not tables.get("chroma"):
+        raise FormalError("estimate-bits proof is missing Table 6-2 rows")
+
+    valid_rows: list[Any] = []
+    for raw_depth, luma_row in (tables.get("luma", {}) or {}).items():
+        chroma_row = (tables.get("chroma", {}) or {}).get(
+            str(raw_depth), (tables.get("chroma", {}) or {}).get(raw_depth, [])
+        )
+        if not isinstance(luma_row, list) or not isinstance(chroma_row, list) or not luma_row or not chroma_row:
+            continue
+        maximum = min(len(luma_row), len(chroma_row)) - 1
+        valid_rows.append(z3.And(
+            base_depth == int(raw_depth),
+            variables[primary_name] >= 0,
+            variables[primary_name] <= maximum,
+            variables[previous_name] >= 0,
+            variables[previous_name] <= maximum,
+        ))
+    if not valid_rows:
+        raise FormalError("estimate-bits proof has no complete Table 6-2 rows")
+    solver.add(z3.Or(valid_rows))
+
+    bindings = strategy.get("table_bindings", {}) or {}
+    seen: set[tuple[str, str]] = set()
+    for port_name, binding in bindings.items():
+        table_kind = str((binding or {}).get("table", ""))
+        qp_name = str((binding or {}).get("qp_port", ""))
+        if table_kind not in {"luma", "chroma"} or qp_name not in {primary_name, previous_name}:
+            raise FormalError("estimate-bits proof has an invalid Table 6-2 binding")
+        if str(port_name) not in variables:
+            raise FormalError(f"estimate-bits proof references missing table port {port_name}")
+        seen.add((table_kind, qp_name))
+        cases = [
+            z3.And(
+                base_depth == int(raw_depth),
+                variables[qp_name] == int(index),
+                variables[str(port_name)] == int(value),
+            )
+            for raw_depth, row in sorted(
+                (tables.get(table_kind, {}) or {}).items(),
+                key=lambda item: int(item[0]),
+            )
+            for index, value in enumerate(row)
+        ]
+        if not cases:
+            raise FormalError(f"estimate-bits table binding has no rows for {port_name}")
+        # An explicit finite relation is equivalent to the table lookup but
+        # gives the QF_LIA solver a compact disjunction instead of a deeply
+        # nested ite chain shared by every unit lane.
+        solver.add(z3.Or(cases))
+    if len(seen) != 4:
+        raise FormalError("estimate-bits proof requires four Table 6-2 bindings")
+
+    related_specs = strategy.get("bit_depth_ports", {}) or {}
+    for port_name, spec in related_specs.items():
+        if str(port_name) not in variables:
+            raise FormalError(f"estimate-bits proof references missing related depth {port_name}")
+        values_by_base = (spec or {}).get("values_by_base") if isinstance(spec, dict) else None
+        if not isinstance(values_by_base, dict):
+            raise FormalError(f"estimate-bits proof requires values_by_base for {port_name}")
+        cases = []
+        for raw_base, raw_values in values_by_base.items():
+            if not isinstance(raw_values, list) or not raw_values:
+                continue
+            cases.append(z3.Implies(
+                base_depth == int(raw_base),
+                z3.Or([variables[str(port_name)] == int(value) for value in raw_values]),
+            ))
+        if not cases:
+            raise FormalError(f"estimate-bits proof has no depth relation for {port_name}")
+        solver.add(*cases)
+
+
 def add_domain_constraints(solver: Any, contract: dict[str, Any], variables: dict[str, Any]) -> None:
     ports = [port for port in contract.get("interface", {}).get("ports", []) if isinstance(port, dict)]
     for port in ports:
@@ -632,6 +758,9 @@ def add_domain_constraints(solver: Any, contract: dict[str, Any], variables: dic
         return
     if strategy.get("kind") == "using_midpoint":
         add_using_midpoint_domain_constraints(solver, contract, variables)
+        return
+    if strategy.get("kind") == "estimate_bits":
+        add_estimate_bits_domain_constraints(solver, contract, variables)
         return
     if strategy.get("kind") != "windowed_boundary":
         raise FormalError("formal window proof requires a reviewed windowed_boundary strategy")
@@ -726,8 +855,139 @@ def using_midpoint_contract_expression(contract: dict[str, Any], variables: dict
     return z3.If(maximum >= selected_depth - qlevel, 1, 0)
 
 
+def estimate_bits_contract_expression(contract: dict[str, Any], variables: dict[str, Any]) -> Any:
+    """Build the exact fixed-lane expansion of EstimateBitsForGroup."""
+    semantics = contract.get("semantics", {}) or {}
+    strategy = semantics.get("legal_vector_strategy") or {}
+
+    def required(key: str, fallback: str) -> str:
+        name = str(strategy.get(key, fallback))
+        if name not in variables:
+            raise FormalError(f"estimate-bits expression references missing port {name}")
+        return name
+
+    units = variables[required("units_per_group_port", "units_per_group")]
+    pixels = variables[required("pixels_in_group_port", "pixels_in_group")]
+    hpos = variables[required("hpos_port", "hPos")]
+    slice_width = variables[required("slice_width_port", "slice_width")]
+    prev_ich = variables[required("prev_ich_selected_port", "prev_ich_selected")]
+    version = variables[required("version_port", "dsc_version_minor")]
+    native420 = variables[required("native_420_port", "native_420")]
+    primary_name = required("primary_qp_port", "primary_qp")
+    previous_name = required("prev_primary_qp_port", "prev_primary_qp")
+    depth_names = [str(value) for value in strategy.get("component_depth_ports", [])]
+    ctype_names = [str(value) for value in strategy.get("unit_component_ports", [])]
+    start_names = [str(value) for value in strategy.get("unit_start_hpos_ports", [])]
+    predicted_names = [str(value) for value in strategy.get("predicted_size_ports", [])]
+    residual_names = [str(value) for value in strategy.get("residual_ports", [])]
+    if any(
+        len(group) != 4 or any(name not in variables for name in group)
+        for group in (depth_names, ctype_names, start_names, predicted_names)
+    ):
+        raise FormalError("estimate-bits expression requires four component/unit lanes")
+    if len(residual_names) != 12 or any(name not in variables for name in residual_names):
+        raise FormalError("estimate-bits expression requires twelve residual ports")
+
+    tables = strategy.get("tables", {}) or semantics.get("tables", {}) or {}
+    bindings = strategy.get("table_bindings", {}) or {}
+    table_ports: dict[tuple[str, str], str] = {}
+    for port_name, binding in bindings.items():
+        key = (str((binding or {}).get("table", "")), str((binding or {}).get("qp_port", "")))
+        if key[0] in {"luma", "chroma"} and key[1] in {primary_name, previous_name}:
+            table_ports[key] = str(port_name)
+    if len(table_ports) != 4:
+        raise FormalError("estimate-bits expression requires four table ports")
+
+    def qlevel(cpnt: Any, raw_luma: Any, raw_chroma: Any) -> Any:
+        chroma = z3.If(
+            z3.And(version == 2, variables[depth_names[0]] == variables[depth_names[1]], raw_chroma > 0),
+            raw_chroma - 1,
+            raw_chroma,
+        )
+        return z3.If(
+            z3.Or(cpnt % 3 == 0, z3.And(native420 != 0, cpnt == 1)),
+            raw_luma,
+            chroma,
+        )
+
+    def selected_depth(cpnt: Any) -> Any:
+        selected = variables[depth_names[0]]
+        for index in reversed(range(1, 4)):
+            selected = z3.If(cpnt == index, variables[depth_names[index]], selected)
+        return selected
+
+    def max_residual(cpnt: Any, raw_luma: Any, raw_chroma: Any) -> Any:
+        return selected_depth(cpnt) - qlevel(cpnt, raw_luma, raw_chroma)
+
+    thresholds = semantics.get("thresholds") or semantics.get("residual_size_thresholds") or []
+    if not thresholds:
+        raise FormalError("estimate-bits expression is missing residual-size thresholds")
+
+    def residual_size(value: Any) -> Any:
+        return using_midpoint_residual_size_expr(value, thresholds)
+
+    max_sizes: list[Any] = []
+    for unit in range(4):
+        maximum: Any = z3.IntVal(0)
+        for sample in range(3):
+            sample_hpos = hpos + sample - (pixels - 1) + variables[start_names[unit]]
+            required_size = residual_size(variables[residual_names[unit * 3 + sample]])
+            maximum = z3.If(
+                z3.And(sample_hpos < slice_width, required_size > maximum),
+                required_size,
+                maximum,
+            )
+        maximum_for_cpnt = max_residual(
+            variables[ctype_names[unit]],
+            variables[table_ports[("luma", primary_name)]],
+            variables[table_ports[("chroma", primary_name)]],
+        )
+        maximum = z3.If(maximum > maximum_for_cpnt, maximum_for_cpnt, maximum)
+        # The reviewed unitsPerGroup domain is {3,4}; inactive lane 3 is
+        # never consumed by the second source loop or the ICH extra-bit test.
+        # Computing its local maximum unconditionally is an exact legal-domain
+        # normalization that avoids duplicating the same guard in every lane.
+        max_sizes.append(maximum)
+
+    total: Any = z3.IntVal(0)
+    for unit in range(4):
+        cpnt = variables[ctype_names[unit]]
+        current_qlevel = qlevel(
+            cpnt,
+            variables[table_ports[("luma", primary_name)]],
+            variables[table_ports[("chroma", primary_name)]],
+        )
+        previous_qlevel = qlevel(
+            cpnt,
+            variables[table_ports[("luma", previous_name)]],
+            variables[table_ports[("chroma", previous_name)]],
+        )
+        maximum_residual = selected_depth(cpnt) - current_qlevel
+        predicted = variables[predicted_names[unit]] + previous_qlevel - current_qlevel
+        predicted = z3.If(predicted < 0, 0, z3.If(predicted > maximum_residual - 1, maximum_residual - 1, predicted))
+        unit_total = z3.If(
+            max_sizes[unit] < predicted,
+            1 + 3 * predicted,
+            z3.If(
+                z3.And(max_sizes[unit] == maximum_residual, unit != 0),
+                max_sizes[unit] - predicted + 3 * max_sizes[unit],
+                1 + max_sizes[unit] - predicted + 3 * max_sizes[unit],
+            ),
+        )
+        total = total + z3.If(units > unit, unit_total, 0)
+
+    luma_max = max_residual(
+        z3.IntVal(0),
+        variables[table_ports[("luma", primary_name)]],
+        variables[table_ports[("chroma", primary_name)]],
+    )
+    return total + z3.If(z3.And(max_sizes[0] < luma_max, prev_ich != 0), 1, 0)
+
+
 def contract_expression(contract: dict[str, Any], variables: dict[str, Any]) -> Any:
     semantics = contract.get("semantics", {}) or {}
+    if semantics.get("kind") == "estimate_bits":
+        return estimate_bits_contract_expression(contract, variables)
     if semantics.get("kind") == "using_midpoint":
         return using_midpoint_contract_expression(contract, variables)
     if semantics.get("kind") == "flatness_window":
@@ -1079,8 +1339,8 @@ def load_candidate_module(path: Path, verilator: str) -> dict[str, Any]:
 def run_proof(contract_path: Path, candidate_path: Path, verilator: str, timeout_ms: int) -> dict[str, Any]:
     contract = json.loads(contract_path.read_text(encoding="utf-8"))
     semantics = contract.get("semantics", {}) or {}
-    if semantics.get("kind") not in {"windowed_sample_predict", "flatness_window", "using_midpoint"}:
-        raise FormalError("formal_rtl requires a reviewed windowed_sample_predict, flatness_window, or using_midpoint contract")
+    if semantics.get("kind") not in {"windowed_sample_predict", "flatness_window", "using_midpoint", "estimate_bits"}:
+        raise FormalError("formal_rtl requires a reviewed windowed_sample_predict, flatness_window, using_midpoint, or estimate_bits contract")
     ports = [port for port in contract.get("interface", {}).get("ports", []) if isinstance(port, dict)]
     inputs = [port for port in ports if port.get("direction") == "input"]
     output = next((port for port in ports if port.get("direction") == "output"), None)
@@ -1158,7 +1418,7 @@ def run_proof(contract_path: Path, candidate_path: Path, verilator: str, timeout
         "solver": "z3",
         "ast_frontend": "verilator --json-only",
         "proof_basis": "locked exact spec-linked window equations versus parsed combinational RTL AST",
-        "proof_strategy": "SYMBOLIC_USING_MIDPOINT" if semantics.get("kind") == "using_midpoint" else "SYMBOLIC_WINDOW",
+        "proof_strategy": "SYMBOLIC_ESTIMATE_BITS" if semantics.get("kind") == "estimate_bits" else "SYMBOLIC_USING_MIDPOINT" if semantics.get("kind") == "using_midpoint" else "SYMBOLIC_WINDOW",
         "timeout_ms": int(timeout_ms),
         "constraint_count": len(solver.assertions()),
         "status": "PASS" if result == z3.unsat else "COUNTEREXAMPLE" if result == z3.sat else "UNKNOWN",

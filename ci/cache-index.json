@@ -312,6 +312,32 @@
       "updated_at": "2026-08-02T17:32:41Z",
       "valid": true
     },
+    "1871b7426c2c6c87bd7762bf04b5cc652eb127bf7de4fcbe2976a90952a38a10": {
+      "artifact_dir": "artifacts/3d66964980dfa45a183e2476b9ffcd790248975873ab0f5cf8156c58b0c7d629",
+      "cache_key": "1871b7426c2c6c87bd7762bf04b5cc652eb127bf7de4fcbe2976a90952a38a10",
+      "contract_id": "estimatebitsforgroup",
+      "execution_status": "EXECUTED_NOW",
+      "hashes": {
+        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
+        "contract": "3d66964980dfa45a183e2476b9ffcd790248975873ab0f5cf8156c58b0c7d629",
+        "dependency": "e1d83d8f983c8bbdc337c4c54f4e253a1b44182b494748a53148e53e95e66f33",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "1b47b70ade808e41fe1f0678639aa4d3937efb378c218580ff2a0e8324debcce",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "4"
+      },
+      "model_calls": 1,
+      "schema_version": 2,
+      "state": "PROMOTED",
+      "tokens": 32630,
+      "updated_at": "2026-08-03T01:26:30Z",
+      "valid": true
+    },
     "1b5484b834b5775d8aaf123cc9842044f16061d2e5b1df2b8f260ef3431fe66b": {
       "artifact_dir": "artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
       "cache_key": "1b5484b834b5775d8aaf123cc9842044f16061d2e5b1df2b8f260ef3431fe66b",
@@ -683,6 +709,58 @@
       "state": "PROMOTED",
       "tokens": 2202,
       "updated_at": "2026-08-02T21:23:48Z",
+      "valid": true
+    },
+    "380b3a94146e919b528ab3a3188d6bdfd07d167afd8bae2a8d24ed061acb51ca": {
+      "artifact_dir": "artifacts/3d66964980dfa45a183e2476b9ffcd790248975873ab0f5cf8156c58b0c7d629",
+      "cache_key": "380b3a94146e919b528ab3a3188d6bdfd07d167afd8bae2a8d24ed061acb51ca",
+      "contract_id": "estimatebitsforgroup",
+      "execution_status": "EXECUTED_NOW",
+      "hashes": {
+        "agent": "ce5650c159330a6c32bd2efbc3307a3319f55525cc8d0e1eb54d2c911cae32a3",
+        "contract": "3d66964980dfa45a183e2476b9ffcd790248975873ab0f5cf8156c58b0c7d629",
+        "dependency": "e1d83d8f983c8bbdc337c4c54f4e253a1b44182b494748a53148e53e95e66f33",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "1b47b70ade808e41fe1f0678639aa4d3937efb378c218580ff2a0e8324debcce",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "4"
+      },
+      "model_calls": 1,
+      "schema_version": 2,
+      "state": "COUNTEREXAMPLE",
+      "tokens": 22385,
+      "updated_at": "2026-08-03T01:10:09Z",
+      "valid": false
+    },
+    "398bc5c130b6dd51d7ca7faa32ae0ded84659e33bbcb4e79c28597e9097ee69b": {
+      "artifact_dir": "artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
+      "cache_key": "398bc5c130b6dd51d7ca7faa32ae0ded84659e33bbcb4e79c28597e9097ee69b",
+      "contract_id": "estimatebitsforgroup",
+      "execution_status": "EXECUTED_NOW",
+      "hashes": {
+        "agent": "36bf2b051309af1cd59a19e1419d8c259303f879fbcbd797f4c42d832a9d1967",
+        "contract": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
+        "dependency": "b0b74e666d2d9628c9789b688227db7a48043a32007016c7a0c5881a5acd2ed4",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "ae67a01882691cd099a2e0c87b44436c9d3ece33399eff8a553fcbdcc1137411",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "4"
+      },
+      "model_calls": 1,
+      "schema_version": 2,
+      "state": "PROMOTED",
+      "tokens": 32629,
+      "updated_at": "2026-08-03T01:29:48Z",
       "valid": true
     },
     "3a14a799a72bc6f27f959c5a866c89e8c2f0fce359484b8ba449304b2965ae46": {

@@ -380,7 +380,7 @@ class Agent:
             "no_io_allocation_or_logging",
             "contributes_to_observable_output",
         }
-        if len(failed) != 1 or failed[0] not in allowed_failures:
+        if not failed or any(item not in allowed_failures for item in failed):
             return None
         covered = coverage.get("covered") is True or (coverage.get("coverage", {}) or {}).get("covered") is True
         if coverage.get("coverage_status") != "EXECUTED" or not covered:
@@ -409,39 +409,67 @@ class Agent:
             and all(isinstance(value, int) for value in output_bounds)
         ):
             return None
-        proof = override.get("tool_admission", {}) or {}
-        if proof.get("status") != "PASS":
+        raw_proofs = override.get("tool_admissions")
+        if raw_proofs is None:
+            raw_proofs = [override.get("tool_admission", {}) or {}]
+        if not isinstance(raw_proofs, list) or len(raw_proofs) != len(failed):
             return None
-        if failed == ["bounded_computation"]:
-            if (
-                proof.get("kind") != "BOUNDED_DOMAIN"
-                or not proof.get("loop")
-                or not isinstance(proof.get("max_iterations"), int)
-                or proof.get("max_iterations") <= 0
-            ):
+        proofs = [copy.deepcopy(item) for item in raw_proofs if isinstance(item, dict)]
+        if len(proofs) != len(raw_proofs) or any(item.get("status") != "PASS" for item in proofs):
+            return None
+
+        expected_kinds = {
+            "bounded_computation": "BOUNDED_DOMAIN",
+            "no_io_allocation_or_logging": "DOMAIN_EFFECT",
+            "contributes_to_observable_output": "CONFIG_LIBRARY",
+        }
+        if sorted(str(item.get("kind")) for item in proofs) != sorted(expected_kinds[item] for item in failed):
+            return None
+        by_kind = {str(item.get("kind")): item for item in proofs}
+        bounded = by_kind.get("BOUNDED_DOMAIN")
+        if bounded is not None and (
+            not bounded.get("loop")
+            or not isinstance(bounded.get("max_iterations"), int)
+            or bounded.get("max_iterations") <= 0
+        ):
+            return None
+        domain_effect = by_kind.get("DOMAIN_EFFECT")
+        if domain_effect is not None:
+            discharged = sorted(str(item) for item in domain_effect.get("discharged_effects", []))
+            if discharged != ["logging"] or not domain_effect.get("unreachable_condition"):
                 return None
-        elif failed == ["no_io_allocation_or_logging"]:
-            discharged = sorted(str(item) for item in proof.get("discharged_effects", []))
-            if proof.get("kind") != "DOMAIN_EFFECT" or discharged != ["logging"]:
-                return None
-            if not proof.get("unreachable_condition"):
-                return None
-        else:
+        config = by_kind.get("CONFIG_LIBRARY")
+        if config is not None:
             # A CONFIG_LIBRARY is deliberately outside the production-output
-            # DUT set.  It may still be promoted as a reusable, spec-defined
-            # combinational library primitive when the tool facts prove every
-            # other admission criterion and the reviewed record explicitly
-            # identifies the boundary as configuration-only.
-            if (
-                proof.get("kind") != "CONFIG_LIBRARY"
-                or proof.get("role") != "CONFIG_HELPER"
-                or not proof.get("non_dut_boundary")
-            ):
+            # DUT set. It is valid only when output contribution is the sole
+            # failed criterion; it cannot be combined with any other waiver.
+            if len(failed) != 1 or config.get("role") != "CONFIG_HELPER" or not config.get("non_dut_boundary"):
                 return None
         spec_links = override.get("spec_links", []) or []
         if not spec_links or not all(link.get("status") == "EXACT" for link in spec_links):
             return None
-        return copy.deepcopy(proof)
+        if len(proofs) == 1:
+            return proofs[0]
+        discharged_effects = sorted({
+            str(effect)
+            for proof in proofs
+            for effect in proof.get("discharged_effects", [])
+        })
+        return {
+            "kind": "COMBINED_DOMAIN",
+            "status": "PASS",
+            "criteria_discharged": failed,
+            "admissions": proofs,
+            "discharged_effects": discharged_effects,
+            "bounded_loops": [
+                {
+                    "loop": proof.get("loop"),
+                    "max_iterations": proof.get("max_iterations"),
+                }
+                for proof in proofs
+                if proof.get("kind") == "BOUNDED_DOMAIN"
+            ],
+        }
 
     @staticmethod
     def reviewed_bounded_domain_admission(
@@ -451,7 +479,17 @@ class Agent:
     ) -> bool:
         """Compatibility predicate for the bounded-domain unit tests."""
         admission = Agent.reviewed_domain_admission(candidate, coverage, override)
-        return bool(admission and admission.get("kind") == "BOUNDED_DOMAIN")
+        return bool(
+            admission
+            and (
+                admission.get("kind") == "BOUNDED_DOMAIN"
+                or any(
+                    item.get("kind") == "BOUNDED_DOMAIN"
+                    for item in admission.get("admissions", [])
+                    if isinstance(item, dict)
+                )
+            )
+        )
 
     def reviewed_overrides(self) -> list[dict[str, Any]]:
         payload = read_json(self.root / "contracts" / "reviewed-overrides.json", {}) or {}
@@ -519,19 +557,22 @@ class Agent:
             coverage = coverage_by_usr.get(usr, {})
             if not usr:
                 continue
-            domain_override = next(
-                (
-                    item for item in overrides
-                    if item.get("review_status") == "REVIEWED"
+            domain_override = None
+            domain_admission = None
+            for item in overrides:
+                if (
+                    item.get("review_status") == "REVIEWED"
                     and self.reviewed_override_matches(
                         {"function": {"clang_usr": usr}}, item, exact
                     )
                     and item.get("interface")
                     and item.get("semantics")
-                    and self.reviewed_domain_admission(candidate, coverage, item)
-                ),
-                None,
-            )
+                ):
+                    admission = self.reviewed_domain_admission(candidate, coverage, item)
+                    if admission:
+                        domain_override = item
+                        domain_admission = admission
+                        break
             if candidate.get("eligible") is not True and domain_override is None:
                 continue
             coverage_override = next(
@@ -563,17 +604,20 @@ class Agent:
                 "candidate": copy.deepcopy(candidate),
                 "coverage": copy.deepcopy(coverage),
                 "coverage_override": copy.deepcopy(coverage_override) if coverage_override else None,
-                "domain_admission": copy.deepcopy(domain_override.get("tool_admission", {})) if domain_override else None,
+                "domain_admission": copy.deepcopy(domain_admission) if domain_admission else None,
                 "coverage_basis": (
                     "reviewed_bounded_domain"
-                    if domain_override and domain_override.get("tool_admission", {}).get("kind") == "BOUNDED_DOMAIN"
+                    if domain_admission and domain_admission.get("kind") == "BOUNDED_DOMAIN"
                     and candidate.get("eligible") is not True
                     else "reviewed_domain_effect"
-                    if domain_override and candidate.get("eligible") is not True
-                    and domain_override.get("tool_admission", {}).get("kind") == "DOMAIN_EFFECT"
+                    if domain_admission and candidate.get("eligible") is not True
+                    and domain_admission.get("kind") == "DOMAIN_EFFECT"
                     else "reviewed_config_library"
-                    if domain_override and candidate.get("eligible") is not True
-                    and domain_override.get("tool_admission", {}).get("kind") == "CONFIG_LIBRARY"
+                    if domain_admission and candidate.get("eligible") is not True
+                    and domain_admission.get("kind") == "CONFIG_LIBRARY"
+                    else "reviewed_combined_domain"
+                    if domain_admission and candidate.get("eligible") is not True
+                    and domain_admission.get("kind") == "COMBINED_DOMAIN"
                     else "reviewed_static_but_uncovered"
                     if reviewed_static_eligible
                     else "dynamic_execution"
@@ -782,6 +826,18 @@ class Agent:
                 admission.get("kind") == "DOMAIN_EFFECT"
                 and sorted(str(item) for item in admission.get("discharged_effects", [])) == ["logging"]
             )
+            if admission.get("kind") == "COMBINED_DOMAIN":
+                combined_kinds = {
+                    str(item.get("kind"))
+                    for item in admission.get("admissions", [])
+                    if isinstance(item, dict)
+                }
+                admission_allows_combinational = (
+                    combined_kinds.issubset({"BOUNDED_DOMAIN", "DOMAIN_EFFECT"})
+                    and "BOUNDED_DOMAIN" in combined_kinds
+                    and "DOMAIN_EFFECT" in combined_kinds
+                    and sorted(str(item) for item in admission.get("discharged_effects", [])) == ["logging"]
+                )
             if (not usr or not candidate or usr in known or not override or not reviewed_links
                     or not (proposal.get("combinational_candidate") or admission_allows_combinational)
                     or not dependencies_ready):
@@ -2845,6 +2901,286 @@ class Agent:
             "residual_relation": "FindResidualSize threshold classes over the reviewed [-65535,65535] residual domain",
         }
 
+    def estimate_bits_vector_iterator(
+        self,
+        contract: dict[str, Any],
+        input_ports: list[dict[str, Any]],
+        values: list[list[int]],
+        strategy: dict[str, Any],
+    ) -> tuple[Iterable[tuple[int, ...]], dict[str, Any]]:
+        """Generate a structural/boundary suite for the fixed DSC DSU estimator.
+
+        The source loops are unrolled to four units and three samples, but the
+        residual values and state controls remain too large for a Cartesian
+        product.  This iterator therefore covers every source/spec branch,
+        every residual-size transition, predicted-size clamps, line-end
+        conditions, and pairwise max-size interactions.  The independent Z3
+        gate proves the complete finite domain before promotion.
+        """
+        names = [str(port.get("name")) for port in input_ports]
+        by_name = {name: values[index] for index, name in enumerate(names)}
+
+        def require(key: str, fallback: str) -> str:
+            name = str(strategy.get(key, fallback))
+            if name not in by_name:
+                raise RuntimeError(f"estimate-bits strategy port is missing: {name}")
+            return name
+
+        units_name = require("units_per_group_port", "units_per_group")
+        pixels_name = require("pixels_in_group_port", "pixels_in_group")
+        hpos_name = require("hpos_port", "hPos")
+        slice_name = require("slice_width_port", "slice_width")
+        prev_ich_name = require("prev_ich_selected_port", "prev_ich_selected")
+        version_name = require("version_port", "dsc_version_minor")
+        native_name = require("native_420_port", "native_420")
+        primary_name = require("primary_qp_port", "primary_qp")
+        previous_name = require("prev_primary_qp_port", "prev_primary_qp")
+        depth_ports = [str(value) for value in strategy.get("component_depth_ports", [])]
+        ctype_ports = [str(value) for value in strategy.get("unit_component_ports", [])]
+        start_ports = [str(value) for value in strategy.get("unit_start_hpos_ports", [])]
+        predicted_ports = [str(value) for value in strategy.get("predicted_size_ports", [])]
+        residual_ports = [str(value) for value in strategy.get("residual_ports", [])]
+        if any(
+            len(group) != 4 or any(name not in by_name for name in group)
+            for group in (depth_ports, ctype_ports, start_ports, predicted_ports)
+        ):
+            raise RuntimeError("estimate-bits strategy requires four component/unit port groups")
+        if len(residual_ports) != 12 or any(name not in by_name for name in residual_ports):
+            raise RuntimeError("estimate-bits strategy requires twelve residual ports")
+
+        table_bindings = strategy.get("table_bindings", {}) or {}
+        table_ports: dict[tuple[str, str], str] = {}
+        for port_name, binding in table_bindings.items():
+            table_kind = str((binding or {}).get("table", ""))
+            qp_port = str((binding or {}).get("qp_port", ""))
+            if table_kind not in {"luma", "chroma"} or qp_port not in {primary_name, previous_name}:
+                raise RuntimeError("estimate-bits strategy has an invalid table binding")
+            if str(port_name) not in by_name:
+                raise RuntimeError(f"estimate-bits table port is missing: {port_name}")
+            table_ports[(table_kind, qp_port)] = str(port_name)
+        if len(table_ports) != 4:
+            raise RuntimeError("estimate-bits strategy requires four Table 6-2 bindings")
+        tables = strategy.get("tables", {}) or (contract.get("semantics", {}) or {}).get("tables", {}) or {}
+        if not tables.get("luma") or not tables.get("chroma"):
+            raise RuntimeError("estimate-bits strategy is missing Table 6-2 rows")
+        base_depth_name = str(strategy.get("base_bit_depth_port", depth_ports[0]))
+        if base_depth_name not in by_name:
+            raise RuntimeError("estimate-bits strategy base bit depth port is missing")
+        related_specs = strategy.get("bit_depth_ports", {}) or {}
+
+        def unique(raw_values: Iterable[int]) -> list[int]:
+            result: list[int] = []
+            seen: set[int] = set()
+            for raw in raw_values:
+                value = int(raw)
+                if value not in seen:
+                    seen.add(value)
+                    result.append(value)
+            return result
+
+        def legal(name: str) -> list[int]:
+            result = [int(value) for value in by_name[name]]
+            if not result:
+                raise RuntimeError(f"estimate-bits strategy has no legal values for {name}")
+            return result
+
+        def table_row(kind: str, bit_depth: int) -> list[int]:
+            raw = tables.get(kind, {}).get(str(bit_depth), tables.get(kind, {}).get(bit_depth))
+            if not isinstance(raw, list) or not raw:
+                raise RuntimeError(f"estimate-bits table {kind} lacks bpc={bit_depth}")
+            return [int(value) for value in raw]
+
+        def related_values(port_name: str, bit_depth: int) -> list[int]:
+            spec = related_specs.get(port_name, {}) or {}
+            values_by_base = spec.get("values_by_base")
+            if isinstance(values_by_base, dict):
+                raw = values_by_base.get(str(bit_depth), values_by_base.get(bit_depth))
+                if raw is None:
+                    raise RuntimeError(f"estimate-bits depth relation lacks base={bit_depth}: {port_name}")
+                return [int(value) for value in raw]
+            offsets = spec.get("offsets")
+            if isinstance(offsets, list):
+                return [int(bit_depth) + int(offset) for offset in offsets]
+            return legal(port_name)
+
+        def table_value(kind: str, bit_depth: int, qp: int) -> int:
+            row = table_row(kind, bit_depth)
+            if qp < 0 or qp >= len(row):
+                raise RuntimeError(f"estimate-bits QP is outside {kind} table: {qp}")
+            return int(row[qp])
+
+        def emit(context: dict[str, int]) -> tuple[int, ...]:
+            return tuple(int(context[name]) for name in names)
+
+        all_depth_values = legal(base_depth_name)
+        units_values = legal(units_name)
+        version_values = legal(version_name)
+        native_values = legal(native_name)
+        prev_ich_values = legal(prev_ich_name)
+        primary_values = legal(primary_name)
+        previous_values = legal(previous_name)
+        hpos_domain = legal(hpos_name)
+        slice_domain = legal(slice_name)
+
+        # With unitStartHPos frozen at zero and pixelsInGroup frozen at three,
+        # the source's three sample guards have only four legal masks: all
+        # samples active, the first two, the first one, or none.  Representatives
+        # for those transitions plus the slice endpoints cover the runtime
+        # branch structure; the complete hPos/sliceWidth ranges remain in the
+        # formal proof and in the C/RTL differential oracle.
+        hpos_min, hpos_max = min(hpos_domain), max(hpos_domain)
+        slice_min, slice_max = min(slice_domain), max(slice_domain)
+        position_representatives: list[tuple[int, int]] = []
+        for hpos, slice_width in [
+            (hpos_min, slice_min),
+            (slice_min, slice_min),
+            (slice_min + 1, slice_min),
+            (slice_min + 2, slice_min),
+            (hpos_min, slice_max),
+            (hpos_max, slice_min),
+        ]:
+            if hpos in hpos_domain and slice_width in slice_domain:
+                pair = (int(hpos), int(slice_width))
+                if pair not in position_representatives:
+                    position_representatives.append(pair)
+        qres_domain = set(legal(residual_ports[0]))
+        residual_boundaries: list[int] = [0, -1, 1, min(qres_domain), max(qres_domain)]
+        for threshold in (contract.get("semantics", {}) or {}).get("thresholds", []):
+            if not isinstance(threshold, dict):
+                continue
+            for key in ("lower", "upper"):
+                if threshold.get(key) is None:
+                    continue
+                value = int(threshold[key])
+                residual_boundaries.extend([value - 1, value, value + 1])
+        residual_boundaries = [value for value in unique(residual_boundaries) if value in qres_domain]
+
+        unit_patterns = {
+            3: [[0, 1, 2], [1, 2, 0], [0, 0, 0]],
+            4: [[0, 1, 2, 3], [3, 2, 1, 0], [0, 2, 1, 3]],
+        }
+        depth_variants: dict[int, list[tuple[int, int, int, int]]] = {}
+        for base in all_depth_values:
+            related = [related_values(name, int(base)) for name in depth_ports[1:]]
+            depth_variants[int(base)] = [
+                tuple([int(base), *values])
+                for values in itertools.product(*related)
+            ]
+
+        def qps_for(kind: str, bit_depth: int, domain: list[int]) -> list[int]:
+            maximum = len(table_row(kind, bit_depth)) - 1
+            return [value for value in domain if int(value) <= maximum]
+
+        def baseline(
+            base_depth: int,
+            depths: tuple[int, int, int, int],
+            units: int,
+            pattern: list[int],
+            primary_qp: int,
+            previous_qp: int,
+            version: int,
+            native420: int,
+            prev_ich: int,
+            hpos: int,
+            slice_width: int,
+        ) -> dict[str, int]:
+            context = {
+                name: int(domain[len(domain) // 2])
+                for name, domain in by_name.items()
+                if domain
+            }
+            context.update({
+                units_name: int(units),
+                pixels_name: int(legal(pixels_name)[0]),
+                version_name: int(version),
+                native_name: int(native420),
+                prev_ich_name: int(prev_ich),
+                primary_name: int(primary_qp),
+                previous_name: int(previous_qp),
+                hpos_name: int(hpos),
+                slice_name: int(slice_width),
+            })
+            for name, value in zip(depth_ports, depths):
+                context[name] = int(value)
+            for name, value in zip(ctype_ports, pattern):
+                context[name] = int(value)
+            for name in start_ports:
+                context[name] = int(legal(name)[0])
+            for name in predicted_ports:
+                context[name] = 0
+            for name in residual_ports:
+                context[name] = 0
+            for kind in ("luma", "chroma"):
+                for qp_name in (primary_name, previous_name):
+                    port_name = table_ports[(kind, qp_name)]
+                    context[port_name] = table_value(kind, int(base_depth), int(context[qp_name]))
+            return context
+
+        structural: list[dict[str, int]] = []
+        for base_depth in all_depth_values:
+            base_depth = int(base_depth)
+            for depths in depth_variants[base_depth]:
+                primary_qps = qps_for("luma", base_depth, primary_values)
+                previous_qps = qps_for("luma", base_depth, previous_values)
+                qp_probes = unique([primary_qps[0], primary_qps[-1], primary_qps[len(primary_qps) // 2]]) if primary_qps else []
+                prev_qp_probes = unique([previous_qps[0], previous_qps[-1], previous_qps[len(previous_qps) // 2]]) if previous_qps else []
+                for units in units_values:
+                    patterns = unit_patterns.get(int(units), [list(range(min(4, int(units))))])
+                    for pattern in patterns:
+                        for primary_qp in qp_probes:
+                            for previous_qp in prev_qp_probes:
+                                for version in version_values:
+                                    for native420 in native_values:
+                                        for prev_ich in prev_ich_values:
+                                            for hpos, slice_width in position_representatives:
+                                                structural.append(baseline(
+                                                    base_depth, depths, int(units), pattern,
+                                                    int(primary_qp), int(previous_qp), int(version),
+                                                    int(native420), int(prev_ich), int(hpos), int(slice_width),
+                                                ))
+
+        selected = structural[: max(64, min(256, len(structural)))]
+
+        def vectors() -> Iterable[tuple[int, ...]]:
+            for context in structural:
+                yield emit(context)
+                for port_name in predicted_ports:
+                    for value in unique([0, 1, 15, 16]):
+                        if value in by_name[port_name]:
+                            case = dict(context)
+                            case[port_name] = value
+                            yield emit(case)
+            for context in selected:
+                for port_name in residual_ports:
+                    for value in residual_boundaries:
+                        case = dict(context)
+                        case[port_name] = int(value)
+                        yield emit(case)
+                endpoints = [residual_boundaries[0], residual_boundaries[-1]]
+                for unit in range(4):
+                    lane = residual_ports[unit * 3:(unit + 1) * 3]
+                    for first, second in itertools.combinations(lane, 2):
+                        for first_value in endpoints:
+                            for second_value in endpoints:
+                                case = dict(context)
+                                case[first] = int(first_value)
+                                case[second] = int(second_value)
+                                yield emit(case)
+
+        return vectors(), {
+            "kind": "estimate_bits",
+            "exhaustive": False,
+            "formal_required": True,
+            "coverage_mode": "STRUCTURAL_PLUS_RESIDUAL_THRESHOLD_AND_PREDICTED_SIZE_BOUNDARIES",
+            "source": strategy.get("source", "DSC 1.2a sections 6.5.3.2, 6.6.1, and 6.6.4"),
+            "structural_cases": len(structural),
+            "boundary_contexts": len(selected),
+            "residual_probe_values": residual_boundaries,
+            "table_relation": "qLevel ports are Table 6-2 rows selected by cpntBitDepth[0] and current/previous primary QP",
+            "unit_relation": "unitsPerGroup is the reviewed {3,4} domain; four source lanes are guarded by the runtime bound",
+            "formal_relation": "full finite scalar domains plus Table 6-2, component-depth, and residual-size relations are checked symbolically",
+        }
+
     def flatness_window_vector_iterator(
         self,
         contract: dict[str, Any],
@@ -3152,6 +3488,8 @@ class Agent:
             return self.flatness_window_vector_iterator(contract, input_ports, values, table_strategy)
         if isinstance(table_strategy, dict) and table_strategy.get("kind") == "using_midpoint":
             return self.using_midpoint_vector_iterator(contract, input_ports, values, table_strategy)
+        if isinstance(table_strategy, dict) and table_strategy.get("kind") == "estimate_bits":
+            return self.estimate_bits_vector_iterator(contract, input_ports, values, table_strategy)
         normalized = {re.sub(r"[^a-z0-9]", "", name.lower()): name for name in names}
         bit_depth_name = normalized.get("cpntbitdepth")
         qlevel_name = normalized.get("qlevel")
@@ -3624,12 +3962,12 @@ class Agent:
         """
         semantics = contract.get("semantics", {}) or {}
         strategy = semantics.get("legal_vector_strategy") or {}
-        if strategy.get("kind") not in {"windowed_boundary", "flatness_window", "using_midpoint"}:
+        if strategy.get("kind") not in {"windowed_boundary", "flatness_window", "using_midpoint", "estimate_bits"}:
             return {
                 "schema_version": 1,
                 "status": "NOT_APPLICABLE",
                 "proof_complete": False,
-                "reason": "formal AST proof is only enabled for reviewed windowed_boundary, flatness_window, or using_midpoint contracts",
+                "reason": "formal AST proof is only enabled for reviewed windowed_boundary, flatness_window, using_midpoint, or estimate_bits contracts",
             }
         helper = self.root / "tools" / "formal_rtl.py"
         if not helper.is_file():
