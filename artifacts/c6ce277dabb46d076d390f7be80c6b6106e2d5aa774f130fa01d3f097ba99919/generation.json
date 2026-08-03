@@ -1,33 +1,6 @@
 {
   "candidate_limit": 4,
-  "candidates": [
-    {
-      "candidate": "candidate_01",
-      "path": "generated/candidate_01.sv",
-      "sha256": "e232d1f066f51a39506fb6e0fc68990b6146ec0aebfc2121ec698cc238e4cf71",
-      "validation": "PASS",
-      "validation_reasons": []
-    },
-    {
-      "candidate": "candidate_02",
-      "path": "generated/candidate_02.sv",
-      "sha256": "81e262f12ae7f120eb99b7802614dcf0e82a6a86e9789db465615691073b76e3",
-      "validation": "PASS",
-      "validation_reasons": []
-    }
-  ],
-  "command": {
-    "command": [
-      "python3",
-      "tools/generator_fixture.py",
-      "/private/tmp/dsc12a-ich/artifacts/c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919/generation-request.json",
-      "/private/tmp/dsc12a-ich/artifacts/c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919/generated"
-    ],
-    "cwd": "/private/tmp/dsc12a-ich",
-    "duration_seconds": 0.036,
-    "output": "",
-    "returncode": 0
-  },
+  "candidates": [],
   "context_keys": [
     "locked_contract",
     "frozen_interface",
@@ -36,27 +9,14 @@
   ],
   "contract_id": "ichdecision",
   "execution_status": "EXECUTED_NOW",
-  "hook": "python3 tools/generator_fixture.py",
-  "model_calls": 1,
+  "hook": "MISSING",
+  "model_calls": 0,
+  "reason": "DSC_CICD_GENERATOR_CMD is not configured",
   "schema_version": 2,
   "source_span": {
     "end_line": 533,
     "start_line": 484
   },
-  "status": "PASS",
-  "telemetry": {
-    "candidate_count": 2,
-    "contract_id": "ichdecision",
-    "generator": "deterministic-fixture-hook",
-    "model_calls": 1,
-    "request_keys": [
-      "c_body",
-      "exact_spec_anchors",
-      "frozen_interface",
-      "locked_contract"
-    ],
-    "tokens_in": 9106,
-    "tokens_out": 15299
-  },
-  "tokens": 24405
+  "status": "GENERATION_REQUIRED",
+  "tokens": 0
 }

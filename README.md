@@ -307,6 +307,14 @@ retry may set `DSC_CICD_RETRY_BLOCKED=1` (or use explicit queue routing). The
 agent never invents a pointer/state adapter or passes dummy caller state just
 to make RTL composition compile.
 
+Composition validation uses the generated deterministic caller adapter, not a
+raw comparison between native C call-site arity and frozen RTL input count. A
+native caller may pass one pointer/state aggregate while a reviewed adapter
+binds its read-only fields or windows to several frozen scalar ports. The
+adapter must bind every frozen port exactly once and record both native arity
+and adapter bindings; only an adapter that cannot provide the complete frozen
+DUT interface remains a `C_BOUNDARY`.
+
 If a process stops after entering an executable stage, durable history requeues
 that exact contract even when hashes are unchanged. If verification completes
 before human approval, the planner retains the exact candidate and resumes it

@@ -420,6 +420,27 @@ class CicdAgentUnitTests(unittest.TestCase):
             self.assertEqual(plan["blocked_contracts"][0]["contract_id"], "boundary_leaf")
             self.assertEqual(item["prior_composition_boundary"]["composition_status"], "C_BOUNDARY")
 
+            changed_controller_hashes = dict(hashes)
+            changed_controller_hashes["agent"] = "prior-controller-version"
+            agent.previous_state = {"contracts": [{
+                "contract_id": "boundary_leaf",
+                "current_state": "BITSTREAM_PASS",
+                "status": "FAILED",
+                "hashes": changed_controller_hashes,
+                "artifacts": [str(artifact.relative_to(root))],
+            }]}
+            with mock.patch.dict(os.environ, {
+                "DSC_CICD_TARGET_CONTRACT": "",
+                "DSC_CICD_RETRY_BLOCKED": "",
+                "DSC_CICD_FORCE_REGENERATE": "",
+                "DSC_CICD_REFRESH_STABLE": "",
+            }, clear=False):
+                controller_plan = agent.build_plan()
+            controller_item = controller_plan["contracts"][0]
+            self.assertEqual(controller_plan["selected_contracts"], ["boundary_leaf"])
+            self.assertTrue(controller_item["prior_composition_boundary"]["controller_changed"])
+            self.assertTrue(controller_item["boundary_retry_requested"])
+
             with mock.patch.dict(os.environ, {"DSC_CICD_RETRY_BLOCKED": "1"}, clear=False):
                 retry_plan = agent.build_plan()
             retry_item = retry_plan["contracts"][0]
@@ -634,6 +655,29 @@ class CicdAgentUnitTests(unittest.TestCase):
             }]}
             agent.initialize_state()
         self.assertEqual(agent.state["contracts"][0]["hashes"]["agent"], "observed-before-batch")
+
+    def test_verified_refresh_is_not_requeued_after_deferred_plan(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            artifact = root / "artifacts" / "stable-refresh"
+            artifact.mkdir(parents=True)
+            (artifact / "generation.json").write_text(json.dumps({
+                "status": "PASS",
+                "execution_status": "REUSED_ACCEPTED_RTL",
+            }), encoding="utf-8")
+            (artifact / "matrix-receipt.json").write_text(json.dumps({
+                "status": "PASS",
+            }), encoding="utf-8")
+            agent = Agent(root, "plan")
+            agent.previous_state = {"contracts": [{
+                "contract_id": "stable_leaf",
+                "artifacts": [str(artifact.relative_to(root))],
+                "history": [
+                    {"state": "BITSTREAM_PASS", "status": "PASS"},
+                    {"state": "CONTRACT_LOCKED", "status": "DEFERRED"},
+                ],
+            }]}
+            self.assertFalse(agent.prior_execution_incomplete("stable_leaf"))
 
     def test_report_blockers_include_current_run_failure_after_no_work_plan(self):
         agent = Agent(pathlib.Path(tempfile.mkdtemp()), "run")
@@ -1318,6 +1362,21 @@ class CicdAgentUnitTests(unittest.TestCase):
             self.assertIn("dsc_cfg->dsc_version_minor", overlay)
             self.assertIn("dsc_state->quantTableLuma[qp]", overlay)
             self.assertIn("dsc_state->cpntBitDepth[0]", overlay)
+
+            paths = agent.write_overlay_sources(
+                contract, root, "map_qp_to_qlevel", root / "candidate.sv"
+            )
+            composition = paths["composition"]
+            self.assertEqual(composition["status"], "PASS")
+            self.assertEqual(composition["adapter_kind"], "flattened_pointer_state")
+            self.assertEqual(
+                composition["rtl_input_count"],
+                len([port for port in contract["interface"]["ports"] if port["direction"] == "input"]),
+            )
+            self.assertEqual(
+                composition["frozen_input_ports"],
+                [port["name"] for port in contract["interface"]["ports"] if port["direction"] == "input"],
+            )
 
     def test_oracle_supports_dynamic_index_into_fixed_struct_array(self):
         contract = {

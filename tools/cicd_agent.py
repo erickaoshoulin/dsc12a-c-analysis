@@ -60,6 +60,12 @@ PROMOTION_REVIEW_GATES = (
     "RTL_RETURN",
     "frame_compare",
 )
+# A prior composition boundary is a durable no-repeat guard only while the
+# composition implementation and its inputs are unchanged.  Controller,
+# pipeline, tool, or prompt changes are legitimate automatic revalidation
+# triggers; semantic source/spec/contract/dependency changes already reopen
+# work through the ordinary planner.
+COMPOSITION_RETRY_HASHES = ("pipeline", "agent", "prompt", "tools")
 STAGE_TO_STATE = {
     "discover": "DISCOVERED",
     "contract": "CONTRACT_LOCKED",
@@ -1025,12 +1031,33 @@ class Agent:
         }:
             return False
         history = prior.get("history", []) or []
+        # Older state snapshots did not retain the final refresh promotion
+        # status on a deferred contract.  A stable refresh is still complete
+        # when its durable accepted-RTL receipt and matrix are both PASS; do
+        # not turn a later bounded no-work plan into a false recovery job.
+        for raw in prior.get("artifacts", []) or []:
+            artifact = pathlib.Path(str(raw))
+            if not artifact.is_absolute():
+                artifact = self.root / artifact
+            generation = read_json(artifact / "generation.json", {}) or {}
+            matrix = read_json(artifact / "matrix-receipt.json", {}) or {}
+            if (
+                generation.get("execution_status") == "REUSED_ACCEPTED_RTL"
+                and generation.get("status") == "PASS"
+                and matrix.get("status") == "PASS"
+            ):
+                return False
         execution_states = set(STATE_ORDER[1:-1])
         for event in reversed(history):
             if not isinstance(event, dict):
                 continue
             state = str(event.get("state", ""))
             status = str(event.get("status", ""))
+            if event.get("promotion_status") in {
+                "AWAITING_HUMAN_APPROVAL",
+                "VERIFIED_REFRESH",
+            }:
+                return False
             if state == "PROMOTED":
                 return False
             if state in execution_states:
@@ -1076,12 +1103,12 @@ class Agent:
         """Find a durable C-boundary result for the same semantic inputs.
 
         A caller/callee composition can be blocked for a structural reason
-        that a generator cannot repair, such as a pointer/state call site not
-        being representable by the frozen scalar DUT interface.  Keep that
-        receipt visible, but do not spend another generator invocation merely
-        because controller/prompt/tool provenance hashes changed.  A changed
-        source, spec, contract, or dependency hash intentionally reopens the
-        work and is handled by the ordinary planner.
+        that the generated adapter cannot safely represent.  Keep that
+        receipt visible while the same composition implementation is active;
+        a controller/pipeline/tool/prompt change intentionally reopens the
+        boundary so a corrected deterministic adapter is exercised.  A
+        changed source, spec, contract, or dependency hash also reopens the
+        work through the ordinary planner.
         """
         prior = self.prior_contract(cid)
         prior_hashes = prior.get("hashes", {}) or {}
@@ -1121,6 +1148,11 @@ class Agent:
                     "composition_status": composition.get("status"),
                     "reason": matrix.get("reason"),
                     "artifact": artifact_ref,
+                    "controller_changed": any(
+                        prior_hashes.get(key)
+                        and str(prior_hashes.get(key)) != str(hashes.get(key))
+                        for key in COMPOSITION_RETRY_HASHES
+                    ),
                 }
         return None
 
@@ -1231,7 +1263,12 @@ class Agent:
             promotion_pending, approval_available, pending_rtl_sha256 = self.prior_promotion_review(cid, hashes["contract"])
             boundary_retry_requested = bool(
                 prior_boundary
-                and (retry_blocked or force_regenerate or cid == target_contract)
+                and (
+                    retry_blocked
+                    or force_regenerate
+                    or cid == target_contract
+                    or prior_boundary.get("controller_changed", False)
+                )
             )
             if prior_boundary and not boundary_retry_requested:
                 reasons.append("prior_composition_boundary_unresolved")
@@ -1345,14 +1382,14 @@ class Agent:
                 # unrelated new work.  This is state-driven orchestration,
                 # not a source-level function selector.
                 selected = recovery_contracts[:max(1, int(os.environ.get("DSC_CICD_MAX_NEW", "1")))]
+            elif stale_stable:
+                # A verified library regression has higher priority than
+                # unrelated new RTL generation.  This keeps controller/tool
+                # changes from opening a new candidate while an accepted
+                # component still needs deterministic revalidation.
+                selected = stale_stable[:max(1, int(os.environ.get("DSC_CICD_MAX_NEW", "1")))]
             else:
                 selected = [item["contract_id"] for item in entries if item["ready"] and item["new_work"] and (not prior_shapes or item["interface_shape"] not in prior_shapes.values())]
-            if not selected:
-                # Accepted leaves must re-enter a bounded regression frontier
-                # when any recorded input/provenance hash is stale.  A valid
-                # cache entry remains untouched; a full stable refresh is
-                # still available through DSC_CICD_REFRESH_STABLE=1.
-                selected = stale_stable[:max(1, int(os.environ.get("DSC_CICD_MAX_NEW", "1")))]
             if not selected:
                 selected = [
                     item["contract_id"]
@@ -1568,6 +1605,9 @@ class Agent:
                 "artifacts": old.get("artifacts", []),
                 "model_calls": 0,
                 "token_count": 0,
+                "promotion_status": old.get("promotion_status"),
+                "pending_rtl_sha256": old.get("pending_rtl_sha256"),
+                "promotion_approval_file": old.get("promotion_approval_file"),
             })
         self.state = {
             "schema_version": 2,
@@ -1598,9 +1638,14 @@ class Agent:
             item["failure_reason"] = failure
             item["artifacts"] = sorted(set(item.get("artifacts", [])).union(str(value) for value in artifacts))
             if not item.get("history") or item["history"][-1].get("state") != state_name:
-                item.setdefault("history", []).append({"state": state_name, "status": status, "failure_reason": failure})
+                event = {"state": state_name, "status": status, "failure_reason": failure}
+                item.setdefault("history", []).append(event)
+            else:
+                event = item["history"][-1]
+                event.update({"status": status, "failure_reason": failure})
             if extra:
                 item.update(extra)
+                event.update(extra)
             self.write_state()
 
     def append_result(self, result: dict[str, Any]) -> None:
@@ -5524,7 +5569,7 @@ class Agent:
         source_dir: pathlib.Path,
         module: str,
         candidate_sv: pathlib.Path,
-    ) -> dict[str, pathlib.Path]:
+    ) -> dict[str, Any]:
         """Write the caller overlay for a reviewed flatness-window leaf."""
         ports = contract.get("interface", {}).get("ports", [])
         inputs = [port for port in ports if port.get("direction") == "input"]
@@ -5675,10 +5720,24 @@ class Agent:
             "}\n",
             encoding="utf-8",
         )
-        return {"header": header, "overlay": overlay, "bridge": bridge, "main": main, "candidate": candidate_sv}
+        return {
+            "header": header,
+            "overlay": overlay,
+            "bridge": bridge,
+            "main": main,
+            "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": "reviewed_window",
+                "caller_parameter_count": len(parameters),
+                "rtl_input_count": len(rtl_arguments),
+                "frozen_input_ports": [str(port.get("name")) for port in inputs],
+                "rtl_bindings": list(rtl_arguments),
+            },
+        }
 
     def write_overlay_sources(self, contract: dict[str, Any], source_dir: pathlib.Path,
-                              module: str, candidate_sv: pathlib.Path) -> dict[str, pathlib.Path]:
+                              module: str, candidate_sv: pathlib.Path) -> dict[str, Any]:
         if (contract.get("semantics", {}) or {}).get("kind") == "flatness_window":
             return self.write_flatness_overlay_sources(contract, source_dir, module, candidate_sv)
         inputs = [
@@ -6040,7 +6099,21 @@ class Agent:
             "}\n",
             encoding="utf-8",
         )
-        return {"header": header, "overlay": overlay, "bridge": bridge, "main": main, "candidate": candidate_sv}
+        return {
+            "header": header,
+            "overlay": overlay,
+            "bridge": bridge,
+            "main": main,
+            "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": "flattened_pointer_state" if flattened else "direct_scalar",
+                "caller_parameter_count": len(self.function_parameters(contract)) or len(inputs),
+                "rtl_input_count": len(rtl_arguments) if flattened else len(inputs),
+                "frozen_input_ports": [str(port.get("name")) for port in inputs],
+                "rtl_bindings": list(rtl_arguments) if flattened else [str(port.get("name")) for port in inputs],
+            },
+        }
 
     def compile_overlay(self, contract: dict[str, Any], source_dir: pathlib.Path,
                         module: str, candidate_sv: pathlib.Path) -> dict[str, Any]:
@@ -6212,7 +6285,36 @@ class Agent:
             overlay_copy_sv = overlay_model / "candidate.sv"
             shutil.copy2(candidate_sv, overlay_copy_sv)
             module = str(candidate.get("module") or self.module_name(candidate_sv.read_text(encoding="utf-8")))
-            overlay_paths = self.write_overlay_sources(contract, overlay_model / "source", module, overlay_copy_sv)
+            try:
+                overlay_paths = self.write_overlay_sources(
+                    contract,
+                    overlay_model / "source",
+                    module,
+                    overlay_copy_sv,
+                )
+            except RuntimeError as error:
+                # An incomplete deterministic binding is a real C boundary,
+                # not permission to pass a guessed pointer or dummy state.
+                return persist_matrix_failure({
+                    "status": "COMPOSITION_BLOCKED",
+                    "reason": f"generated caller adapter could not bind the frozen DUT interface: {error}",
+                    "baseline": baseline_results,
+                    "composition": {
+                        "status": "C_BOUNDARY",
+                        "adapter_status": "UNRESOLVED",
+                        "c_only_status": "PASS",
+                        "rtl_modes": "NOT_RUN",
+                    },
+                    "modes": {
+                        "C_ONLY": {
+                            "status": "PASS",
+                            "execution_status": "BASELINE_ONLY",
+                            "scenarios": baseline_results,
+                        },
+                        "SHADOW": {"status": "NOT_RUN", "scenarios": []},
+                        "RTL_RETURN": {"status": "NOT_RUN", "scenarios": []},
+                    },
+                })
             overlay_receipt = self.run_overlay_rewriter(contract, overlay_model / "source", overlay_paths["header"])
             if overlay_receipt.get("status") != "PASS":
                 return persist_matrix_failure({
@@ -6221,32 +6323,42 @@ class Agent:
                     "baseline": baseline_results,
                     "overlay": overlay_receipt,
                 })
-            frozen_input_count = sum(
-                1 for port in contract.get("interface", {}).get("ports", [])
+            frozen_input_ports = [
+                str(port.get("name"))
+                for port in contract.get("interface", {}).get("ports", [])
                 if port.get("direction") == "input"
-            )
+            ]
+            frozen_input_count = len(frozen_input_ports)
             call_sites = [
                 site for site in overlay_receipt.get("call_sites", [])
                 if isinstance(site, dict)
             ]
             call_site_arities = [len(site.get("arguments", [])) for site in call_sites]
-            if call_sites and any(arity != frozen_input_count for arity in call_site_arities):
-                # The immutable caller still owns a pointer/state projection
-                # that is not represented by the frozen scalar DUT interface.
-                # Keep that caller on C_ONLY; never invent a guessed adapter or
-                # pass dummy state just to make RTL_RETURN compile.
+            composition = dict(overlay_paths.get("composition", {}) or {})
+            composition["native_call_site_argument_counts"] = call_site_arities
+            composition["native_call_site_count"] = len(call_sites)
+            composition["frozen_input_count"] = frozen_input_count
+            composition["adapter_input_count"] = composition.get("rtl_input_count")
+            composition["adapter_status"] = composition.get("status", "UNRESOLVED")
+            adapter_ports = [
+                str(value) for value in composition.get("frozen_input_ports", [])
+            ]
+            if (
+                composition.get("status") != "PASS"
+                or composition.get("rtl_input_count") != frozen_input_count
+                or adapter_ports != frozen_input_ports
+                or len(composition.get("rtl_bindings", [])) != frozen_input_count
+            ):
+                # Native C callsites are allowed to use the function's real
+                # pointer/state signature.  The generated adapter is the
+                # composition boundary: it must bind every frozen RTL input
+                # exactly once, without dummy state or guessed arguments.
                 return persist_matrix_failure({
                     "status": "COMPOSITION_BLOCKED",
-                    "reason": "caller call signature does not provide the frozen DUT interface; retain C boundary",
+                    "reason": "generated caller adapter does not provide the frozen DUT interface; retain C boundary",
                     "baseline": baseline_results,
                     "overlay": overlay_receipt,
-                    "composition": {
-                        "status": "C_BOUNDARY",
-                        "frozen_input_count": frozen_input_count,
-                        "call_site_argument_counts": call_site_arities,
-                        "c_only_status": "PASS",
-                        "rtl_modes": "NOT_RUN",
-                    },
+                    "composition": dict(composition, status="C_BOUNDARY", c_only_status="PASS", rtl_modes="NOT_RUN"),
                     "modes": {
                         "C_ONLY": {
                             "status": "PASS",
@@ -6311,6 +6423,7 @@ class Agent:
                 "baseline": scrub_paths(baseline_results, [base_model, overlay_model, self.root]),
                 "overlay": overlay_receipt,
                 "compile": compile_receipt,
+                "composition": composition,
                 "modes": mode_results,
                 "candidate": candidate.get("candidate"),
                 "execution_status": "EXECUTED_NOW",

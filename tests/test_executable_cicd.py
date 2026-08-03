@@ -255,13 +255,17 @@ class ExecutableCicdTests(unittest.TestCase):
             self.assertEqual(plan["new_candidates"], [])
         elif not selected_plan["selected"]:
             # The current plan may retain a prior run's deterministic
-            # composition boundary as blocked while selecting another bounded
-            # frontier item. A last-run receipt is not a request to regenerate
-            # the same C boundary.
+            # composition boundary as blocked, defer an accepted stable leaf,
+            # or select another tool-discovered frontier item. A last-run
+            # receipt is not a request to regenerate the same C boundary.
             self.assertNotIn(selected["contract_id"], plan["selected_contracts"])
             self.assertTrue(
                 selected_plan.get("prior_composition_boundary")
                 or selected_plan.get("blocked_reasons")
+                or selected_plan.get("deferred")
+                or selected_plan.get("cache_hit")
+                or selected_plan.get("accepted_rtl_available")
+                or selected_plan.get("stale")
             )
         else:
             existing_ready = [
@@ -352,6 +356,18 @@ class ExecutableCicdTests(unittest.TestCase):
             self.assertEqual(summary["generator_invocations"], 0)
             self.assertEqual(summary["model_calls"], 0)
             self.assertEqual(summary["results"][0]["execution_status"], "REUSED_VERIFIED_RECEIPT")
+        elif selected["status"] == "FAILED":
+            # A historical generated candidate can remain the latest fresh
+            # receipt while the current planner is executing a different
+            # tool-discovered contract. In that case the old receipt may be a
+            # deliberate C boundary and is not evidence of a cache failure.
+            artifact = self.selected_artifact(selected)
+            matrix_path = artifact / "matrix-receipt.json"
+            if matrix_path.is_file():
+                matrix = json.loads(matrix_path.read_text(encoding="utf-8"))
+                self.assertIn(matrix.get("status"), {"COMPOSITION_BLOCKED", "FAIL", "INFRASTRUCTURE_FAILURE"})
+            self.assertEqual(summary["generator_invocations"], 0)
+            self.assertEqual(summary["model_calls"], 0)
         else:
             self.assertEqual(selected["status"], "PROMOTED")
             self.assertEqual(summary["results"][0]["execution_status"], "EXECUTED_NOW")

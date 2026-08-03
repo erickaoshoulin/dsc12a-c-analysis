@@ -2,84 +2,43 @@
   "agent": "executable-generic-c-to-rtl-cicd",
   "approval_resume_contracts": [],
   "auto_refresh_contracts": [],
-  "batches": [],
-  "blocked_contracts": [
-    {
-      "contract_id": "findmidpoint",
-      "function": "FindMidpoint",
-      "reasons": [
-        "prior_composition_boundary_unresolved"
-      ]
-    },
-    {
-      "contract_id": "ichdecision",
-      "function": "IchDecision",
-      "reasons": [
-        "prior_composition_boundary_unresolved"
-      ]
-    },
-    {
-      "contract_id": "isflatnessinfosent",
-      "function": "IsFlatnessInfoSent",
-      "reasons": [
-        "prior_composition_boundary_unresolved"
-      ]
-    },
-    {
-      "contract_id": "mapqptoqlevel",
-      "function": "MapQpToQlevel",
-      "reasons": [
-        "prior_composition_boundary_unresolved"
-      ]
-    },
-    {
-      "contract_id": "predictsize",
-      "function": "PredictSize",
-      "reasons": [
-        "prior_composition_boundary_unresolved"
-      ]
-    },
-    {
-      "contract_id": "samplepredict",
-      "function": "SamplePredict",
-      "reasons": [
-        "prior_composition_boundary_unresolved"
-      ]
-    }
+  "batches": [
+    [
+      "ichdecision"
+    ]
   ],
+  "blocked_contracts": [],
   "contracts": [
     {
       "accepted_rtl_available": true,
       "auto_refresh": false,
-      "blocked_reasons": [
-        "prior_composition_boundary_unresolved"
-      ],
+      "blocked_reasons": [],
       "boundary_retry_requested": false,
-      "cache_hit": false,
-      "cache_key": "9aab692729aee49c9349066849ae381e51f23d24ab2ba95b769b419bcb669fb3",
+      "cache_hit": true,
+      "cache_key": "93cd4edf3e804cb718d0e4146aa5457e62708e6037c5ce702faf7e7b470c6a7d",
       "call_sites": [],
       "clang_usr": "c:@F@FindMidpoint",
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
       "contract_id": "findmidpoint",
-      "deferred": false,
+      "deferred": true,
       "dependencies": [],
       "force_regenerate": false,
       "function": "FindMidpoint",
       "hashes": {
-        "agent": "3f53a7b09fc3ac67be53c77c38f980765cc38a631e6f172d8c26dd8d7d355f83",
+        "agent": "5547441d1c6105199df1b5d1bca1559de34d7a23210e2743b14750ca69a9a931",
         "contract": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
         "dependency": "f31ebf694a15c841fbcb763dc23e43abe9c95c8b66987812c0521ac805778ebe",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "7fb3b5713060a02cf0742c4a1c5bf6c912308a7307f96683fa475d3ddb9b6dfa",
+        "prompt": "27621d963bfd51092218b0bcfb03aa58c098a9bd8cc6e0d642ee4bb469b57063",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
         "workers": "2"
       },
-      "initial_state": "DISCOVERED",
+      "initial_state": "PROMOTED",
       "interface_shape": [
         [
           "input",
@@ -115,14 +74,9 @@
       "new_work": false,
       "origin": "locked_contract",
       "pending_rtl_sha256": null,
-      "prior_composition_boundary": {
-        "artifact": "artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
-        "composition_status": "C_BOUNDARY",
-        "reason": "caller call signature does not provide the frozen DUT interface; retain C boundary",
-        "status": "COMPOSITION_BLOCKED"
-      },
+      "prior_composition_boundary": null,
       "promotion_pending": false,
-      "ready": false,
+      "ready": true,
       "recovery": false,
       "resume_human_approval": false,
       "resume_needed": false,
@@ -135,12 +89,10 @@
     {
       "accepted_rtl_available": false,
       "auto_refresh": false,
-      "blocked_reasons": [
-        "prior_composition_boundary_unresolved"
-      ],
-      "boundary_retry_requested": false,
+      "blocked_reasons": [],
+      "boundary_retry_requested": true,
       "cache_hit": false,
-      "cache_key": "56ee9a5224ebbc64388d40c059a113183d3d89282c274bbdf32275a50ea6db0b",
+      "cache_key": "b3202567d2fc712eb468ecefcb4b1a590d3475cfe220cdcf00d7a62dede20bd3",
       "call_sites": [],
       "clang_usr": "c:@F@IchDecision",
       "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
@@ -150,20 +102,20 @@
       "force_regenerate": false,
       "function": "IchDecision",
       "hashes": {
-        "agent": "3f53a7b09fc3ac67be53c77c38f980765cc38a631e6f172d8c26dd8d7d355f83",
+        "agent": "5547441d1c6105199df1b5d1bca1559de34d7a23210e2743b14750ca69a9a931",
         "contract": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
         "dependency": "cf5abbdacefe102de1bd5f0454009786f7795f91e11aab530b78c179dc2c68e3",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "7fb3b5713060a02cf0742c4a1c5bf6c912308a7307f96683fa475d3ddb9b6dfa",
+        "prompt": "27621d963bfd51092218b0bcfb03aa58c098a9bd8cc6e0d642ee4bb469b57063",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
         "workers": "2"
       },
-      "initial_state": "DISCOVERED",
+      "initial_state": "CONTRACT_LOCKED",
       "interface_shape": [
         [
           "input",
@@ -718,52 +670,54 @@
       "prior_composition_boundary": {
         "artifact": "artifacts/c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
         "composition_status": "C_BOUNDARY",
+        "controller_changed": true,
         "reason": "caller call signature does not provide the frozen DUT interface; retain C boundary",
         "status": "COMPOSITION_BLOCKED"
       },
       "promotion_pending": false,
-      "ready": false,
+      "ready": true,
       "recovery": false,
       "resume_human_approval": false,
       "resume_needed": false,
       "reuse_accepted_rtl": false,
-      "selected": false,
-      "stale": false,
-      "stale_reasons": [],
+      "selected": true,
+      "stale": true,
+      "stale_reasons": [
+        "agent",
+        "prompt"
+      ],
       "targeted": false
     },
     {
       "accepted_rtl_available": true,
       "auto_refresh": false,
-      "blocked_reasons": [
-        "prior_composition_boundary_unresolved"
-      ],
+      "blocked_reasons": [],
       "boundary_retry_requested": false,
-      "cache_hit": false,
-      "cache_key": "615b9f253ec3b5336011e07b27634bf7787dce232f1c2f56c26be49e89933fa7",
+      "cache_hit": true,
+      "cache_key": "fe7f8068819dc9787d90237412c4359ce7cdc5ce35b557d961e66c8996a8498f",
       "call_sites": [],
       "clang_usr": "c:@F@IsFlatnessInfoSent",
       "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
       "contract_id": "isflatnessinfosent",
-      "deferred": false,
+      "deferred": true,
       "dependencies": [],
       "force_regenerate": false,
       "function": "IsFlatnessInfoSent",
       "hashes": {
-        "agent": "3f53a7b09fc3ac67be53c77c38f980765cc38a631e6f172d8c26dd8d7d355f83",
+        "agent": "5547441d1c6105199df1b5d1bca1559de34d7a23210e2743b14750ca69a9a931",
         "contract": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
         "dependency": "cdacd46bfe4cae5e584f55fdb16b27c67c2f7fe22a67c58c85f32686e3e2caed",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "7fb3b5713060a02cf0742c4a1c5bf6c912308a7307f96683fa475d3ddb9b6dfa",
+        "prompt": "27621d963bfd51092218b0bcfb03aa58c098a9bd8cc6e0d642ee4bb469b57063",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
         "workers": "2"
       },
-      "initial_state": "DISCOVERED",
+      "initial_state": "PROMOTED",
       "interface_shape": [
         [
           "input",
@@ -793,14 +747,9 @@
       "new_work": false,
       "origin": "tool_discovered_reviewed_override",
       "pending_rtl_sha256": null,
-      "prior_composition_boundary": {
-        "artifact": "artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
-        "composition_status": "C_BOUNDARY",
-        "reason": "caller call signature does not provide the frozen DUT interface; retain C boundary",
-        "status": "COMPOSITION_BLOCKED"
-      },
+      "prior_composition_boundary": null,
       "promotion_pending": false,
-      "ready": false,
+      "ready": true,
       "recovery": false,
       "resume_human_approval": false,
       "resume_needed": false,
@@ -813,35 +762,33 @@
     {
       "accepted_rtl_available": true,
       "auto_refresh": false,
-      "blocked_reasons": [
-        "prior_composition_boundary_unresolved"
-      ],
+      "blocked_reasons": [],
       "boundary_retry_requested": false,
-      "cache_hit": false,
-      "cache_key": "666168caabfeb8b3da434948d21cc303c259018cef5b15dc7d360a80f2567514",
+      "cache_hit": true,
+      "cache_key": "60580065578635b4658683237beee1d0b7242c5f63645307086ace22db1db694",
       "call_sites": [],
       "clang_usr": "c:@F@MapQpToQlevel",
       "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
       "contract_id": "mapqptoqlevel",
-      "deferred": false,
+      "deferred": true,
       "dependencies": [],
       "force_regenerate": false,
       "function": "MapQpToQlevel",
       "hashes": {
-        "agent": "3f53a7b09fc3ac67be53c77c38f980765cc38a631e6f172d8c26dd8d7d355f83",
+        "agent": "5547441d1c6105199df1b5d1bca1559de34d7a23210e2743b14750ca69a9a931",
         "contract": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
         "dependency": "be9e5b87ba35328b2d70aebf14188b8adb9fa98ab9863a8d5f28b00492aebf68",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "7fb3b5713060a02cf0742c4a1c5bf6c912308a7307f96683fa475d3ddb9b6dfa",
+        "prompt": "27621d963bfd51092218b0bcfb03aa58c098a9bd8cc6e0d642ee4bb469b57063",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
         "workers": "2"
       },
-      "initial_state": "DISCOVERED",
+      "initial_state": "PROMOTED",
       "interface_shape": [
         [
           "input",
@@ -901,14 +848,9 @@
       "new_work": false,
       "origin": "tool_discovered_reviewed_override",
       "pending_rtl_sha256": null,
-      "prior_composition_boundary": {
-        "artifact": "artifacts/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
-        "composition_status": "C_BOUNDARY",
-        "reason": "caller call signature does not provide the frozen DUT interface; retain C boundary",
-        "status": "COMPOSITION_BLOCKED"
-      },
+      "prior_composition_boundary": null,
       "promotion_pending": false,
-      "ready": false,
+      "ready": true,
       "recovery": false,
       "resume_human_approval": false,
       "resume_needed": false,
@@ -921,35 +863,33 @@
     {
       "accepted_rtl_available": true,
       "auto_refresh": false,
-      "blocked_reasons": [
-        "prior_composition_boundary_unresolved"
-      ],
+      "blocked_reasons": [],
       "boundary_retry_requested": false,
-      "cache_hit": false,
-      "cache_key": "0dd6c2340114c9c7d71f81421a8aab2221851a861af5f53aec71b971d2fb97b3",
+      "cache_hit": true,
+      "cache_key": "9241d061c1e0e93d1184366a89bdbfd4ad59730e452079844cd3d37f24729023",
       "call_sites": [],
       "clang_usr": "c:@F@PredictSize",
       "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
       "contract_id": "predictsize",
-      "deferred": false,
+      "deferred": true,
       "dependencies": [],
       "force_regenerate": false,
       "function": "PredictSize",
       "hashes": {
-        "agent": "3f53a7b09fc3ac67be53c77c38f980765cc38a631e6f172d8c26dd8d7d355f83",
+        "agent": "5547441d1c6105199df1b5d1bca1559de34d7a23210e2743b14750ca69a9a931",
         "contract": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
         "dependency": "c8cc34c74343eb8209390547dd44c6e1233cac7f43fde90bf8d9bfff4fca8d9f",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "7fb3b5713060a02cf0742c4a1c5bf6c912308a7307f96683fa475d3ddb9b6dfa",
+        "prompt": "27621d963bfd51092218b0bcfb03aa58c098a9bd8cc6e0d642ee4bb469b57063",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
         "workers": "2"
       },
-      "initial_state": "DISCOVERED",
+      "initial_state": "PROMOTED",
       "interface_shape": [
         [
           "input",
@@ -979,14 +919,9 @@
       "new_work": false,
       "origin": "tool_discovered_reviewed_override",
       "pending_rtl_sha256": null,
-      "prior_composition_boundary": {
-        "artifact": "artifacts/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
-        "composition_status": "C_BOUNDARY",
-        "reason": "caller call signature does not provide the frozen DUT interface; retain C boundary",
-        "status": "COMPOSITION_BLOCKED"
-      },
+      "prior_composition_boundary": null,
       "promotion_pending": false,
-      "ready": false,
+      "ready": true,
       "recovery": false,
       "resume_human_approval": false,
       "resume_needed": false,
@@ -1002,7 +937,7 @@
       "blocked_reasons": [],
       "boundary_retry_requested": false,
       "cache_hit": true,
-      "cache_key": "8094013b64e03f6a367c89f80cec7743e43a50a7ba43b842ca5882bde17ad037",
+      "cache_key": "62ddf834be5ad2b23e325ec84148f978763cadf40c8dd7c2594fce3ebd593e50",
       "call_sites": [],
       "clang_usr": "c:@F@QuantizeResidual",
       "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
@@ -1012,13 +947,13 @@
       "force_regenerate": false,
       "function": "QuantizeResidual",
       "hashes": {
-        "agent": "3f53a7b09fc3ac67be53c77c38f980765cc38a631e6f172d8c26dd8d7d355f83",
+        "agent": "5547441d1c6105199df1b5d1bca1559de34d7a23210e2743b14750ca69a9a931",
         "contract": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
         "dependency": "612f31e78f2dacecfc74eb2644ebc8d6256fd9f74b45383679a7e7405b10048f",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "7fb3b5713060a02cf0742c4a1c5bf6c912308a7307f96683fa475d3ddb9b6dfa",
+        "prompt": "27621d963bfd51092218b0bcfb03aa58c098a9bd8cc6e0d642ee4bb469b57063",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -1054,7 +989,7 @@
       "ready": true,
       "recovery": false,
       "resume_human_approval": false,
-      "resume_needed": true,
+      "resume_needed": false,
       "reuse_accepted_rtl": false,
       "selected": false,
       "stale": false,
@@ -1064,35 +999,33 @@
     {
       "accepted_rtl_available": true,
       "auto_refresh": false,
-      "blocked_reasons": [
-        "prior_composition_boundary_unresolved"
-      ],
+      "blocked_reasons": [],
       "boundary_retry_requested": false,
-      "cache_hit": false,
-      "cache_key": "e754b424c73c99cce55d6a9af9f361bd1cf844f4144f29dae25df983e1d33c49",
+      "cache_hit": true,
+      "cache_key": "938b59ee7a2603604130757e7b318f2201214ceb48f40f8e39c629ce3f30997c",
       "call_sites": [],
       "clang_usr": "c:@F@SamplePredict",
       "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
       "contract_id": "samplepredict",
-      "deferred": false,
+      "deferred": true,
       "dependencies": [],
       "force_regenerate": false,
       "function": "SamplePredict",
       "hashes": {
-        "agent": "3f53a7b09fc3ac67be53c77c38f980765cc38a631e6f172d8c26dd8d7d355f83",
+        "agent": "5547441d1c6105199df1b5d1bca1559de34d7a23210e2743b14750ca69a9a931",
         "contract": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
         "dependency": "c342660294a6ba98f6dbc6bc3d2b0ac8e094b34834409158eb72a155344bd6a1",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "7fb3b5713060a02cf0742c4a1c5bf6c912308a7307f96683fa475d3ddb9b6dfa",
+        "prompt": "27621d963bfd51092218b0bcfb03aa58c098a9bd8cc6e0d642ee4bb469b57063",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
         "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
         "workers": "2"
       },
-      "initial_state": "DISCOVERED",
+      "initial_state": "PROMOTED",
       "interface_shape": [
         [
           "input",
@@ -1338,14 +1271,9 @@
       "new_work": false,
       "origin": "tool_discovered_reviewed_override",
       "pending_rtl_sha256": null,
-      "prior_composition_boundary": {
-        "artifact": "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
-        "composition_status": "C_BOUNDARY",
-        "reason": "caller call signature does not provide the frozen DUT interface; retain C boundary",
-        "status": "COMPOSITION_BLOCKED"
-      },
+      "prior_composition_boundary": null,
       "promotion_pending": false,
-      "ready": false,
+      "ready": true,
       "recovery": false,
       "resume_human_approval": false,
       "resume_needed": false,
@@ -1361,7 +1289,7 @@
       "blocked_reasons": [],
       "boundary_retry_requested": false,
       "cache_hit": true,
-      "cache_key": "27eef6180a99d3dcbb4a36a8950cab91fbf40ad60bb115a2a2266ad770027f6c",
+      "cache_key": "4f33b6b9b9acf4a6a07d86c156e832ff8d41b93e58b714fc1b6082675b3ef647",
       "call_sites": [],
       "clang_usr": "c:@F@SampToLineBuf",
       "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
@@ -1371,13 +1299,13 @@
       "force_regenerate": false,
       "function": "SampToLineBuf",
       "hashes": {
-        "agent": "3f53a7b09fc3ac67be53c77c38f980765cc38a631e6f172d8c26dd8d7d355f83",
+        "agent": "5547441d1c6105199df1b5d1bca1559de34d7a23210e2743b14750ca69a9a931",
         "contract": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
         "dependency": "242cb5947e0652925b268a83e82fda05796e637554bfa9fb425f4d261af6fceb",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "7fb3b5713060a02cf0742c4a1c5bf6c912308a7307f96683fa475d3ddb9b6dfa",
+        "prompt": "27621d963bfd51092218b0bcfb03aa58c098a9bd8cc6e0d642ee4bb469b57063",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -1425,7 +1353,7 @@
       "ready": true,
       "recovery": false,
       "resume_human_approval": false,
-      "resume_needed": true,
+      "resume_needed": false,
       "reuse_accepted_rtl": false,
       "selected": false,
       "stale": false,
@@ -1434,10 +1362,39 @@
     }
   ],
   "deferred_ready_contracts": [
+    "findmidpoint",
+    "isflatnessinfosent",
+    "mapqptoqlevel",
+    "predictsize",
     "quantizeresidual",
+    "samplepredict",
     "samptolinebuf"
   ],
-  "dependency_pair": null,
+  "dependency_pair": {
+    "call_sites": [
+      {
+        "callee_contract": "ichdecision",
+        "callee_function": "IchDecision",
+        "callee_usr": "c:@F@IchDecision",
+        "caller_contract": null,
+        "caller_function": "VLCUnit",
+        "caller_usr": "c:@F@VLCUnit",
+        "location": {
+          "column": 28,
+          "file": "dsc_codec.c",
+          "line": 1620
+        },
+        "source": "facts/callgraph.json"
+      }
+    ],
+    "callee_contract": "ichdecision",
+    "callee_function": "IchDecision",
+    "callee_usr": "c:@F@IchDecision",
+    "caller_contract": null,
+    "caller_function": "VLCUnit",
+    "caller_usr": "c:@F@VLCUnit",
+    "selection_basis": "smallest acyclic direct call site from facts/callgraph.json"
+  },
   "explicit_force_regenerate": false,
   "force_regenerate": false,
   "generator_hook": null,
@@ -1457,7 +1414,13 @@
     "ichdecision"
   ],
   "ready_contracts": [
+    "findmidpoint",
+    "ichdecision",
+    "isflatnessinfosent",
+    "mapqptoqlevel",
+    "predictsize",
     "quantizeresidual",
+    "samplepredict",
     "samptolinebuf"
   ],
   "recovery_contracts": [],
@@ -1465,6 +1428,8 @@
   "retry_blocked": false,
   "reuse_accepted_rtl_contracts": [],
   "schema_version": 2,
-  "selected_contracts": [],
+  "selected_contracts": [
+    "ichdecision"
+  ],
   "target_contract": null
 }

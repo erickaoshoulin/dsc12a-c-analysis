@@ -34,6 +34,13 @@ sequential-hardware behavior.
   and exact-spec gates are mandatory. If composition fails, keep the C path
   authoritative and record the candidate as a boundary/blocker; do not add an
   adapter, dummy state, or guessed port merely to make the gate pass.
+- Composition is checked against the generated, deterministic caller adapter,
+  not by comparing raw native call-site arity with the frozen RTL port count.
+  Native C callers may pass one pointer/state object while a reviewed adapter
+  exposes several read-only scalar taps. The adapter must bind every frozen
+  scalar port exactly once and record both the native call-site counts and the
+  resulting bindings. If it cannot do so, retain `C_ONLY` as a `C_BOUNDARY`;
+  never pass dummy state or invent a function-specific port mapping.
 - Generated RTL must be a generic contract-driven slice. Semantic adapters
   may be keyed by reviewed contract semantics, never by a function-name
   recipe or hardcoded source-function list. The C oracle is retained for
@@ -327,6 +334,12 @@ PDF and upstream C model are immutable external inputs.
    samples-per-unit, group offsets, static pointer indices, and per-group
    pairwise tap sets in reviewed data; the generator and adapter derive the
    frozen ports from those facts rather than embedding a single sample index.
+   For caller composition, validate the generated adapter's exact frozen-port
+   bindings. The original C call may have fewer arguments because it passes a
+   pointer/state aggregate; that native arity is traceability evidence, not a
+   reason to reject a valid reviewed scalar adapter. Reject only when the
+   adapter cannot supply the complete frozen DUT interface, and retain the C
+   boundary without dummy state.
    A clean concrete result is `DIFFERENTIAL_PASS`, never a promotion or
    stable-library proof. For a reviewed production-domain relative-window
    contract, keep the complete C line-buffer state at the caller boundary and
