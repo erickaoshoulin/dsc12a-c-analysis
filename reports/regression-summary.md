@@ -13,12 +13,18 @@ SMB fallback: none
 | Frame sanity | 48/48 |
 | Vectors executed | 108011919 |
 | Runs indexed | 20 |
+| Handoff hygiene | PASS |
 
 ## Source gate
 
 - PDF: AVAILABLE; /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf
 - Source/build gate: PASS
 - PDF and C source remain external/immutable inputs.
+
+## Handoff storage
+
+Generated candidates, logs, vectors, and simulator build trees are external durable artifacts; only compact receipts, contracts, reports, and accepted RTL belong in this checkout.
+- Tracked-file gate: PASS
 
 ## Traceability audit
 

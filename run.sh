@@ -309,12 +309,39 @@ if [ -z "$SOURCE_DIR" ] || [ -z "$MODEL_ROOT" ]; then
   exit 1
 fi
 
+BUILD_LOG_DIR="$WORK_DIR/build-logs"
+case "${DSC_REGRESSION_ROOT:-}" in
+  /*)
+    BUILD_LOG_DIR="$DSC_REGRESSION_ROOT/local/build-logs/$(date -u +%Y%m%dT%H%M%SZ)-$$"
+    ;;
+esac
+
 if ! "$PYTHON" "$SCRIPT_DIR/tools/build_model.py" \
     --model-root "$MODEL_ROOT" \
     --output-dir "$OUTPUT_DIR/build" \
     --work-dir "$WORK_DIR/model-build" \
+    --log-dir "$BUILD_LOG_DIR" \
     --timeout "$BUILD_TIMEOUT_SECONDS"; then
   echo "INFRASTRUCTURE_FAILURE: isolated C clean-build/smoke gate failed; see $OUTPUT_DIR/build/build-receipt.json" >&2
+  exit 1
+fi
+
+missing_tools=""
+check_tool() {
+  local label="$1"
+  local tool="$2"
+  if [ -z "$tool" ] || ! command -v "$tool" >/dev/null 2>&1; then
+    missing_tools="${missing_tools}${missing_tools:+, }${label}"
+  fi
+}
+check_tool "Python" "$PYTHON"
+check_tool "Clang" "$CLANG"
+check_tool "Clang++" "$CLANGXX"
+check_tool "Frama-C" "$FRAMA_C"
+check_tool "llvm-config" "$LLVM_CONFIG"
+check_tool "CMake" "$CMAKE"
+if [ -n "$missing_tools" ]; then
+  echo "INFRASTRUCTURE_FAILURE: required analysis tools unavailable; preserving prior generated receipts: $missing_tools" >&2
   exit 1
 fi
 
@@ -406,6 +433,11 @@ if [ "${DSC_RUN_CICD:-0}" = "1" ]; then
   if [ -z "${DSC_CICD_GENERATOR_CMD:-}" ]; then
     echo "GENERATION_REQUIRED: set DSC_CICD_GENERATOR_CMD before running the generic migration agent" >&2
     exit 2
+  fi
+  if [ -z "${DSC_CICD_ARTIFACT_ROOT:-}" ]; then
+    case "${DSC_REGRESSION_ROOT:-}" in
+      /*) export DSC_CICD_ARTIFACT_ROOT="$DSC_REGRESSION_ROOT/local/cicd-artifacts/$(date -u +%Y%m%dT%H%M%SZ)-$$" ;;
+    esac
   fi
   if ! "$PYTHON" "$SCRIPT_DIR/tools/cicd_agent.py" run; then
     echo "INFRASTRUCTURE_FAILURE: executable generic C-to-RTL CI/CD run failed; see $OUTPUT_DIR/reports/pipeline-summary.md" >&2

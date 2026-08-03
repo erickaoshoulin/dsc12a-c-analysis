@@ -6,10 +6,14 @@ DSC PDF.
 
 ## New meanings
 
-    runs/<run-id>/functions/<contract-id>/
-      rtl/              run-local candidate RTL references
-      verification/     run-local receipt/counterexample references
-      logs/             run-local tool logs
+    /Users/snow/.svrt-network/dsc12a-regression/cache/flow/<run-id>/<contract-id>/
+      repo/             isolated source/controller copy
+      artifacts-<attempt>/
+                        external candidate RTL/oracle/harness/build material
+      flow.log          durable flow log
+
+    /Users/snow/.svrt-network/dsc12a-regression/runs/<run-id>/functions/<contract-id>/
+      accepted/         compact accepted-RTL handoff reference
 
     library/accepted/<contract-id>/<contract-hash>/
       rtl/              immutable accepted RTL (content-addressed reference)

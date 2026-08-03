@@ -27,9 +27,12 @@ configure, or integrate with SVRT.
 
 The durable regression service is also standalone. When `DSC_REGRESSION_ROOT`
 is set, use that existing external root for queue state, run receipts, vectors,
-and large logs; in this deployment it may be an SMB-backed path. Keep compact
-receipts, reports, and accepted RTL in the repository, and never create a new
-share or add SVRT state merely to provide durable storage.
+large logs, and per-flow candidate bundles; in this deployment it may be an
+SMB-backed path. Durable FlowRunner jobs set `DSC_CICD_ARTIFACT_ROOT` to a
+run-isolated artifact directory and keep only logical artifact references in
+the checkout. Keep compact receipts, reports, and accepted RTL in the
+repository, and never create a new share or add SVRT state merely to provide
+durable storage.
 
 ## Stable-library boundary (non-negotiable)
 
@@ -89,10 +92,15 @@ over every translation unit with `tools/check_compile_commands.py`. A clean
 model build, a passing all-translation-unit compile receipt, and the smoke
 receipt are separate mandatory C gates; record all three.
 Record commands, return codes, warnings, tool versions, timeout/path failures,
-smoke outputs, and binary SHA-256 in `build/build-receipt.json`.
+smoke outputs, and binary SHA-256 in `build/build-receipt.json`. Verbose
+make/smoke logs use `--log-dir` outside the checkout and appear only as
+`external://build-logs/...` receipt references.
 
 Any build/tool/path/timeout failure is `INFRASTRUCTURE_FAILURE`. Stop before
-regenerating analysis artifacts and do not invoke an LLM.
+regenerating analysis artifacts and do not invoke an LLM. `run.sh` checks
+Python, Clang/Clang++, Frama-C, `llvm-config`, and CMake after the C build but
+before clearing prior facts; a missing tool preserves the last valid compact
+receipts and reports the blocker.
 
 For every new work batch, the selector must be the tool-produced candidate
 frontier, never a prompt-supplied function name. First compile the immutable C
@@ -285,11 +293,15 @@ whose semantics are resolved, execute independent contracts in stable parallel
 batches, and compose callers only after callee RTL passes. Reject recursion and
 combinational dependency cycles.
 
-The contract-driven artifact bundle is under
-`artifacts/<contract-hash>/` and includes a frozen SV interface/stub, C oracle,
-Verilator harness, input packing, legal-domain/vector generator, mutations,
-shadow/replacement wrapper, and receipt schema. The model may generate only a
-combinational RTL body, at most once per function and at most four candidates.
+The contract-driven artifact bundle is materialized under the external
+`DSC_CICD_ARTIFACT_ROOT/<contract-hash>/` for a durable flow. The
+checkout keeps only compact receipts, locked contracts, interfaces, and
+reports; candidate RTL, C oracle, Verilator harness, input/vector generator,
+mutations, shadow/replacement wrapper, and build trees never become tracked
+handoff files. State/cache receipts use the logical `artifacts/<contract-hash>`
+reference and the flow receipt records the external artifact root. The model
+may generate only a combinational RTL body, at most once per function and at
+most four candidates.
 Reject clocks, resets, latches, delays, initial blocks, stateful memory, and
 testbench logic.
 
@@ -617,7 +629,12 @@ receipts; it must not launch a new RTL regression, copy large artifacts, or
 replace the receipt source of truth. Keep the following meanings explicit:
 
 ```text
-runs/<run-id>/functions/<contract-id>/{rtl,verification,logs}/
+DSC_REGRESSION_ROOT/cache/flow/<run-id>/<contract-id>/
+  repo/                         isolated source/controller copy
+  artifacts-<attempt>/          candidate RTL/oracle/harness/build material
+  flow.log                      durable flow log
+DSC_REGRESSION_ROOT/runs/<run-id>/functions/<contract-id>/
+  accepted/                     compact accepted-RTL handoff reference
 library/accepted/<contract-id>/<contract-hash>/{rtl,verification,contract}/
 dashboard/
 reports/
@@ -782,9 +799,12 @@ width/spec
 → frame byte/SHA-256 comparison
 ```
 
-Large logs, build trees, vectors, and flow worktrees stay outside the handoff.
-Compact receipts, traceability, accepted RTL, and pipeline metadata are the
-handoff. Verified shards may be reused only after the current contract input
+Large logs, build trees, candidate RTL, C oracles, harnesses, vectors, and
+flow worktrees stay outside the handoff. `tools/repo_hygiene.py check` is the
+tracked-file gate, and `tools/dashboard.py check` fails if a forbidden path
+enters the checkout. Compact receipts, traceability, accepted RTL, and
+pipeline metadata are the handoff. Verified shards may be reused only after
+the current contract input
 order, vector strategy, and every shard line count match the prior receipt.
 Receipts must include candidate and frame pass rates, shard/vector counts,
 counterexamples, blockers, cache/execution status, model tier/call budget,

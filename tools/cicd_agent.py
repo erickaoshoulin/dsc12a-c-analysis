@@ -263,7 +263,13 @@ class Agent:
         self.root = root.resolve()
         self.mode = mode
         self.ci = self.root / "ci"
-        self.artifacts = self.root / "artifacts"
+        configured_artifacts = os.environ.get("DSC_CICD_ARTIFACT_ROOT", "").strip()
+        self.artifacts = (
+            pathlib.Path(configured_artifacts).expanduser().resolve()
+            if configured_artifacts
+            else self.root / "artifacts"
+        )
+        self.external_artifacts = self.artifacts != (self.root / "artifacts").resolve()
         self.integration = self.root / "integration"
         self.manifest = read_json(self.root / "spec" / "manifest.json", {}) or {}
         self.locked_contracts = [read_json(path, {}) for path in sorted((self.root / "contracts" / "locked").glob("*.json"))]
@@ -288,6 +294,32 @@ class Agent:
         # in parallel.  Keep the stable manifest and archive writes atomic at
         # the agent level without serializing generation or verification.
         self.library_lock = threading.RLock()
+
+    def artifact_reference(self, path: pathlib.Path) -> str:
+        """Return a checkout-portable reference for an artifact path."""
+        resolved = path.resolve()
+        if self.external_artifacts:
+            try:
+                return pathlib.PurePosixPath("artifacts", *resolved.relative_to(self.artifacts).parts).as_posix()
+            except ValueError:
+                pass
+        try:
+            return resolved.relative_to(self.root).as_posix()
+        except ValueError:
+            return str(resolved)
+
+    def resolve_artifact_reference(self, raw: str | pathlib.Path) -> pathlib.Path:
+        """Resolve local or logical artifact references against the active root."""
+        value = str(raw)
+        if value.startswith("external://artifacts/"):
+            return self.artifacts / pathlib.PurePosixPath(value.removeprefix("external://artifacts/"))
+        path = pathlib.Path(value)
+        if path.is_absolute():
+            return path
+        if path.parts and path.parts[0] == "artifacts":
+            suffix = pathlib.Path(*path.parts[1:])
+            return (self.artifacts if self.external_artifacts else self.root / "artifacts") / suffix
+        return self.root / path
 
     def load_inputs(self) -> dict[str, Any]:
         errors: list[str] = []
@@ -848,9 +880,9 @@ class Agent:
             artifact_raw = str(component.get("artifact_dir", ""))
             artifact_dir = pathlib.Path(artifact_raw)
             if artifact_raw and not artifact_dir.is_absolute() and ".." not in artifact_dir.parts:
-                artifact_path = self.root / artifact_dir
+                artifact_path = self.resolve_artifact_reference(artifact_dir)
                 try:
-                    artifact_path.resolve().relative_to(self.root.resolve())
+                    artifact_path.resolve().relative_to(self.artifacts.resolve())
                 except ValueError:
                     artifact_path = None
                 if artifact_path is not None:
@@ -1218,9 +1250,7 @@ class Agent:
 
         artifact_dirs: list[pathlib.Path] = []
         for raw in prior.get("artifacts", []) or []:
-            path = pathlib.Path(str(raw))
-            if not path.is_absolute():
-                path = self.root / path
+            path = self.resolve_artifact_reference(str(raw))
             if path.is_dir():
                 artifact_dirs.append(path)
             elif path.is_file() and path.name in {
@@ -1236,7 +1266,7 @@ class Agent:
                 and composition.get("status") == "C_BOUNDARY"
             ):
                 try:
-                    artifact_ref = str(artifact.relative_to(self.root))
+                    artifact_ref = self.artifact_reference(artifact)
                 except ValueError:
                     artifact_ref = str(artifact)
                 return {
@@ -1261,9 +1291,7 @@ class Agent:
     def cache_valid(self, entry: dict[str, Any], key: str) -> bool:
         if not entry or entry.get("cache_key") != key or entry.get("valid") is not True:
             return False
-        artifact = pathlib.Path(str(entry.get("artifact_dir", "")))
-        if not artifact.is_absolute():
-            artifact = self.root / artifact
+        artifact = self.resolve_artifact_reference(str(entry.get("artifact_dir", "")))
         return artifact.is_dir() and (artifact / "unit-receipt.json").is_file() and (artifact / "bitstream-receipt.json").is_file()
 
     def accepted_rtl_component(
@@ -1308,9 +1336,9 @@ class Agent:
                 or ".." in artifact_dir.parts
             ):
                 return None
-            artifact_path = self.root / artifact_dir
+            artifact_path = self.resolve_artifact_reference(artifact_dir)
             try:
-                artifact_path.resolve().relative_to(self.root.resolve())
+                artifact_path.resolve().relative_to(self.artifacts.resolve())
             except ValueError:
                 return None
             promoted_contract = read_json(artifact_path / "locked-contract.json", {}) or {}
@@ -1960,7 +1988,7 @@ class Agent:
         canonical_bytes = canonical_source.encode("utf-8")
         module_name = safe_identifier(cid).lower()
         contract_hash = str(item.get("contract_hash") or artifact.name)
-        artifact_relative = str(artifact.relative_to(self.root))
+        artifact_relative = self.artifact_reference(artifact)
         accepted = self.accepted_rtl_component(cid, contract_hash, contract=contract)
         if item.get("reuse_accepted_rtl") and accepted and accepted.get("module_sha256") == rtl_sha256:
             return {
@@ -6967,7 +6995,7 @@ class Agent:
                 "composition_gate": composition_status,
                 "matrix_status": matrix_status,
                 "expected_rejection": expected,
-                "receipt": str((rejected_artifact / "rejection-receipt.json").relative_to(self.root)),
+                "receipt": self.artifact_reference(rejected_artifact / "rejection-receipt.json"),
                 "counterexample": candidate_result.get("smallest_counterexample"),
             })
         return results
@@ -7064,7 +7092,7 @@ class Agent:
             try:
                 cached_unit = read_json(artifact / "unit-receipt.json", {}) or {}
                 cached_bitstream = read_json(artifact / "bitstream-receipt.json", {}) or {}
-                self.update_state(cid, "PROMOTED", "CACHE_REUSED", artifacts=[str(artifact.relative_to(self.root))], extra={
+                self.update_state(cid, "PROMOTED", "CACHE_REUSED", artifacts=[self.artifact_reference(artifact)], extra={
                     "model_calls": 0,
                     "token_count": 0,
                     "cache": "REUSED_VERIFIED_RECEIPT",
@@ -7089,7 +7117,7 @@ class Agent:
                         cid,
                         "BITSTREAM_PASS",
                         "PASS",
-                        artifacts=[str(artifact.relative_to(self.root))],
+                        artifacts=[self.artifact_reference(artifact)],
                         extra={
                             "promotion_status": promotion.get("status"),
                             "pending_rtl_sha256": promotion.get("rtl_sha256"),
@@ -7099,14 +7127,14 @@ class Agent:
                 self.append_result(result)
                 return result
             except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as error:
-                self.update_state(cid, "DISCOVERED", "INFRASTRUCTURE_FAILURE", artifacts=[str(artifact.relative_to(self.root))], failure=str(error))
+                self.update_state(cid, "DISCOVERED", "INFRASTRUCTURE_FAILURE", artifacts=[self.artifact_reference(artifact)], failure=str(error))
                 result = {"contract_id": cid, "status": "INFRASTRUCTURE_FAILURE", "reason": str(error)}
                 self.append_result(result)
                 return result
         try:
             self.update_state(cid, "CONTRACT_LOCKED", "EXECUTING")
             generation = self.generate_artifacts(contract, item, artifact)
-            self.update_state(cid, "RTL_GENERATED", generation.get("status", "FAIL"), artifacts=[str(artifact.relative_to(self.root))], extra={
+            self.update_state(cid, "RTL_GENERATED", generation.get("status", "FAIL"), artifacts=[self.artifact_reference(artifact)], extra={
                 "model_calls": generation.get("model_calls", 0),
                 "token_count": generation.get("tokens", 0),
             })
@@ -7116,7 +7144,7 @@ class Agent:
                 return result
             unit = self.unit_verify(contract, artifact)
             unit_status = "PASS" if unit.get("promoted_candidate") else unit.get("verification_status", "UNPROVED")
-            self.update_state(cid, "UNIT_VERIFIED", unit_status, artifacts=[str(artifact.relative_to(self.root))], extra={
+            self.update_state(cid, "UNIT_VERIFIED", unit_status, artifacts=[self.artifact_reference(artifact)], extra={
                 "unit_receipt": "EXECUTED_NOW",
             })
             rejected_candidates = self.verify_rejected_candidates(contract, artifact, generation, unit)
@@ -7141,14 +7169,14 @@ class Agent:
                 cid,
                 "SHADOW_PASS",
                 "PASS" if shadow_status else "FAIL",
-                artifacts=[str(artifact.relative_to(self.root))],
+                artifacts=[self.artifact_reference(artifact)],
                 failure=matrix_failure,
             )
             self.update_state(
                 cid,
                 "RTL_RETURN_PASS",
                 "PASS" if rtl_status else "FAIL",
-                artifacts=[str(artifact.relative_to(self.root))],
+                artifacts=[self.artifact_reference(artifact)],
                 failure=matrix_failure,
             )
             dependency = self.dependency_verify(contract, item, artifact, unit, matrix)
@@ -7156,7 +7184,7 @@ class Agent:
                 cid,
                 "DEPENDENCIES_VERIFIED",
                 dependency.get("status", "FAIL"),
-                artifacts=[str(artifact.relative_to(self.root))],
+                artifacts=[self.artifact_reference(artifact)],
                 failure=dependency.get("failure_reason"),
             )
             bitstream_status = matrix.get("status") == "PASS"
@@ -7164,7 +7192,7 @@ class Agent:
                 cid,
                 "BITSTREAM_PASS",
                 "PASS" if bitstream_status else "FAIL",
-                artifacts=[str(artifact.relative_to(self.root))],
+                artifacts=[self.artifact_reference(artifact)],
                 failure=matrix_failure,
             )
             result = {
@@ -7189,7 +7217,7 @@ class Agent:
                 cid,
                 "PROMOTED" if final == "PROMOTED" else "BITSTREAM_PASS",
                 final,
-                artifacts=[str(artifact.relative_to(self.root))],
+                artifacts=[self.artifact_reference(artifact)],
                 failure=None if final != "FAILED" else (matrix_failure or dependency.get("failure_reason")),
                 extra=(
                     {
@@ -7208,7 +7236,7 @@ class Agent:
                     shutil.rmtree(path, ignore_errors=True)
             return result
         except (OSError, RuntimeError, ValueError, subprocess.SubprocessError) as error:
-            self.update_state(cid, "DISCOVERED", "INFRASTRUCTURE_FAILURE", artifacts=[str(artifact.relative_to(self.root))], failure=str(error))
+            self.update_state(cid, "DISCOVERED", "INFRASTRUCTURE_FAILURE", artifacts=[self.artifact_reference(artifact)], failure=str(error))
             result = {"contract_id": cid, "status": "INFRASTRUCTURE_FAILURE", "reason": str(error)}
             self.append_result(result)
             return result
@@ -7228,7 +7256,7 @@ class Agent:
                 "schema_version": 2,
                 "cache_key": item["cache_key"],
                 "contract_id": item["contract_id"],
-                "artifact_dir": str(artifact.relative_to(self.root)),
+                "artifact_dir": self.artifact_reference(artifact),
                 "state": "PROMOTED" if valid else status,
                 "valid": valid,
                 "execution_status": "REUSED_VERIFIED_RECEIPT" if status == "CACHE_REUSED" else "EXECUTED_NOW",

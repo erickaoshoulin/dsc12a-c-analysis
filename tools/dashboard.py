@@ -24,6 +24,8 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
 
+import repo_hygiene
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 EXPECTED_SHARE = "//kslin@192.168.68.52/homes"
 DEFAULT_REGRESSION_ROOT = Path("/Volumes/homes/dsc12a-regression")
@@ -79,6 +81,28 @@ def file_hash(path: Path) -> str | None:
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def repository_hygiene_model(repo: Path) -> dict[str, Any]:
+    """Expose the tracked-file handoff gate without mutating the checkout."""
+    result = repo_hygiene.check_repo(repo)
+    if result.get("status") == "NOT_A_GIT_REPO":
+        return {
+            "available": False,
+            "status": "NOT_CONFIGURED",
+            "tracked_count": 0,
+            "forbidden_count": 0,
+            "forbidden": [],
+            "reason": result.get("error"),
+        }
+    return {
+        "available": True,
+        "status": result.get("status"),
+        "tracked_count": result.get("tracked_count", 0),
+        "forbidden_count": result.get("forbidden_count", 0),
+        "forbidden": result.get("forbidden", []),
+        "rules": result.get("rules", {}),
+    }
 
 
 def safe_id(value: Any) -> str:
@@ -1847,10 +1871,14 @@ DSC PDF.
 
 ## New meanings
 
-    runs/<run-id>/functions/<contract-id>/
-      rtl/              run-local candidate RTL references
-      verification/     run-local receipt/counterexample references
-      logs/             run-local tool logs
+    {resolution.root}/cache/flow/<run-id>/<contract-id>/
+      repo/             isolated source/controller copy
+      artifacts-<attempt>/
+                        external candidate RTL/oracle/harness/build material
+      flow.log          durable flow log
+
+    {resolution.root}/runs/<run-id>/functions/<contract-id>/
+      accepted/         compact accepted-RTL handoff reference
 
     library/accepted/<contract-id>/<contract-hash>/
       rtl/              immutable accepted RTL (content-addressed reference)
@@ -2093,6 +2121,7 @@ def build_dataset(
     traceability = make_traceability_index(functions)
     traceability_audit = make_traceability_audit(repo)
     traceability["global_audit"] = traceability_audit
+    repository_hygiene = repository_hygiene_model(repo)
     overview = {
         "schema_version": 1,
         "selected_run": selected_summary,
@@ -2112,6 +2141,7 @@ def build_dataset(
             key: traceability_audit[key]
             for key in ("available", "receipt", "receipt_sha256", "counts", "reports")
         },
+        "repository_hygiene": repository_hygiene,
         "counts": dict(sorted(counts.items())),
         "progress": {
             "functions": {
@@ -2580,6 +2610,7 @@ def render_index(dataset: Dataset) -> str:
         ("Vectors", f"{overview['progress']['vectors']:,}"),
         ("Indexed runs", dataset.overview["run_count"]),
         ("CI blockers", overview["ci_frontier"]["counts"]["blocked"]),
+        ("Handoff hygiene", overview.get("repository_hygiene", {}).get("status", "NOT_CONFIGURED")),
     ]
     card_html = "".join(
         f'<div class="card"><div class="muted">{html.escape(str(label))}</div>'
@@ -2624,6 +2655,16 @@ def render_index(dataset: Dataset) -> str:
         + '</div><div class="panel"><h2>Verification progress</h2>'
         + progress_bars
         + "</div></section>"
+    )
+    hygiene = overview.get("repository_hygiene", {})
+    hygiene_class = "panel" if hygiene.get("status") in {"PASS", "NOT_CONFIGURED"} else "failure"
+    body += (
+        f'<section class="{hygiene_class}"><h2>Handoff hygiene</h2>'
+        f'<p>Status: {html_status(hygiene.get("status"))}; '
+        f'{html.escape(str(hygiene.get("forbidden_count", 0)))} forbidden tracked files.</p>'
+        f'<p class="muted">Generated candidates, logs, vectors, and simulator build trees belong at '
+        f'<span class="code">DSC_REGRESSION_ROOT</span>; this checkout keeps compact receipts and accepted RTL.</p>'
+        f'</section>'
     )
     body += render_traceability_summary(overview.get("traceability", {}), link_href="traceability.html")
     body += render_ci_frontier(overview["ci_frontier"])
@@ -2897,6 +2938,15 @@ def relative_files(root: Path) -> list[Path]:
 def check_site(repo: Path, output: Path | None = None) -> tuple[bool, list[str]]:
     site = (output or (repo / "dashboard")).resolve()
     errors: list[str] = []
+    hygiene = repository_hygiene_model(repo)
+    if hygiene.get("available") and hygiene.get("status") != "PASS":
+        forbidden = ", ".join(item.get("path", "") for item in hygiene.get("forbidden", [])[:8])
+        suffix = "…" if hygiene.get("forbidden_count", 0) > 8 else ""
+        errors.append(
+            "handoff hygiene failed: "
+            f"{hygiene.get('forbidden_count', 0)} forbidden tracked files"
+            + (f" ({forbidden}{suffix})" if forbidden else "")
+        )
     required = [
         site / "index.html",
         site / "history.html",
@@ -3250,6 +3300,7 @@ def report_summary(dataset: Dataset) -> str:
         f"| Frame sanity | {overview['progress']['frames']['display']} |",
         f"| Vectors executed | {overview['progress']['vectors']} |",
         f"| Runs indexed | {overview['run_count']} |",
+        f"| Handoff hygiene | {md_escape((overview.get('repository_hygiene') or {}).get('status', 'NOT_CONFIGURED'))} |",
         "", "## Source gate", "",
     ]
     source = overview["source"]
@@ -3257,6 +3308,10 @@ def report_summary(dataset: Dataset) -> str:
         f"- PDF: {source['spec_status']}; {md_escape((source.get('pdf') or {}).get('path'))}",
         f"- Source/build gate: {md_escape((source.get('source_gate') or {}).get('status'))}",
         "- PDF and C source remain external/immutable inputs.", "",
+        "## Handoff storage", "",
+        "Generated candidates, logs, vectors, and simulator build trees are external durable artifacts; only compact receipts, contracts, reports, and accepted RTL belong in this checkout.",
+        f"- Tracked-file gate: {md_escape((overview.get('repository_hygiene') or {}).get('status', 'NOT_CONFIGURED'))}",
+        "",
         "## Traceability audit", "",
     ]
     traceability = overview.get("traceability", {})

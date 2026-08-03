@@ -517,8 +517,9 @@ class Heartbeat:
 
 
 class LocalContext:
-    def __init__(self, repo: Path = REPO_ROOT):
+    def __init__(self, repo: Path = REPO_ROOT, *, artifact_root: Path | None = None):
         self.repo = repo
+        self.artifact_root = artifact_root.resolve() if artifact_root else None
         self.manifest = read_json(repo / "spec" / "manifest.json", {}) or {}
         self.plan = read_json(repo / "ci" / "plan.json", {}) or {}
         self.state = read_json(repo / "ci" / "state.json", {}) or {}
@@ -564,17 +565,25 @@ class LocalContext:
         base = base or self.repo
         state = self.state_item(contract_id)
         for raw in state.get("artifacts", []):
-            path = base / raw if not Path(raw).is_absolute() else Path(raw)
+            path = self._artifact_path(raw, base)
             if path.is_dir():
                 return path
         entries = [item for item in self.cache_entries(contract_id) if item.get("valid")]
         entries.sort(key=lambda item: str(item.get("updated_at", "")), reverse=True)
         for item in entries:
             raw = Path(str(item.get("artifact_dir", "")))
-            path = base / raw if not raw.is_absolute() else raw
+            path = self._artifact_path(raw, base)
             if path.is_dir():
                 return path
         return None
+
+    def _artifact_path(self, raw: str | Path, base: Path) -> Path:
+        path = Path(str(raw))
+        if path.is_absolute():
+            return path
+        if self.artifact_root and path.parts and path.parts[0] == "artifacts":
+            return self.artifact_root / Path(*path.parts[1:])
+        return base / path
 
     def contract_hash(self, contract_id: str) -> str:
         planned = self.plan_item(contract_id)
@@ -1058,6 +1067,7 @@ class FlowRunner:
         existing = read_json(self.receipt_path, {}) or {}
         if existing.get("status") == "PASS":
             return existing
+        artifact_root: Path | None = None
         try:
             self.lock.mkdir()
         except FileExistsError:
@@ -1090,6 +1100,8 @@ class FlowRunner:
             # keeping the repository's large local tmp tree out of the copy
             # avoids duplicating vectors while preserving the flow contract.
             (self.worktree / "tmp").mkdir(parents=True, exist_ok=True)
+            artifact_root = self.directory / f"artifacts-{uuid.uuid4().hex[:8]}"
+            artifact_root.mkdir(parents=True, exist_ok=True)
             log_path = self.directory / "flow.log"
             command = [sys.executable, "tools/cicd_agent.py", "run"]
             env = os.environ.copy()
@@ -1099,6 +1111,7 @@ class FlowRunner:
                 "DSC_CICD_SHARDS": os.environ.get("DSC_CICD_SHARDS", "4"),
                 "DSC_CICD_WORKERS": os.environ.get("DSC_CICD_WORKERS", "2"),
                 "DSC_CICD_TARGET_CONTRACT": self.contract_id,
+                "DSC_CICD_ARTIFACT_ROOT": str(artifact_root),
             })
             if self.refresh:
                 env["DSC_CICD_FORCE_REGENERATE"] = "1"
@@ -1124,6 +1137,7 @@ class FlowRunner:
                 "command": command,
                 "worktree": str(self.worktree),
                 "log": str(log_path),
+                "artifact_root": str(artifact_root) if artifact_root else None,
                 "returncode": process.returncode,
                 "duration_seconds": round(epoch_now() - started, 3),
                 "started_at": utc_now(),
@@ -1142,6 +1156,7 @@ class FlowRunner:
                 "status": "INFRASTRUCTURE_FAILURE",
                 "execution_status": "EXECUTED_NOW",
                 "refresh": self.refresh,
+                "artifact_root": str(artifact_root) if artifact_root else None,
                 "last_error": str(error),
             }
             atomic_write_json(self.receipt_path, redact(receipt))
@@ -1235,7 +1250,11 @@ class RegressionService:
 
     def resolve_artifact_context(self, job: dict[str, Any], flow: dict[str, Any] | None) -> LocalContext:
         if flow and flow.get("worktree"):
-            return LocalContext(Path(str(flow["worktree"])))
+            artifact_root = flow.get("artifact_root")
+            return LocalContext(
+                Path(str(flow["worktree"])),
+                artifact_root=Path(str(artifact_root)) if artifact_root else None,
+            )
         return LocalContext(self.repo)
 
     def load_receipt_bundle(self, context: LocalContext, contract_id: str) -> tuple[Path | None, dict[str, Any]]:

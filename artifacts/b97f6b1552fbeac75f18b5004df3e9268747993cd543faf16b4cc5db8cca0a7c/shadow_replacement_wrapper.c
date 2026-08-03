@@ -1,1 +1,0 @@
-/* Generated overlay wrapper is written only in the isolated source copy. */

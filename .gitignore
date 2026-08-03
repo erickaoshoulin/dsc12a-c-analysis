@@ -3,3 +3,18 @@ tests/__pycache__/
 skills/**/__pycache__/
 tmp/
 .DS_Store
+
+# Large/transient verification material is stored under DSC_REGRESSION_ROOT.
+/build/*.log
+/artifacts/**/candidate-build/
+/artifacts/**/generated/
+/artifacts/**/harness/
+/artifacts/**/rtl/
+/artifacts/**/oracle.c
+/artifacts/**/shadow_replacement_wrapper.c
+/artifacts/**/vector_generator.py
+**/obj_dir/
+**/vectors/
+*.fst
+*.vcd
+*.wlf

@@ -37,6 +37,11 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--model-root", required=True, type=pathlib.Path)
     parser.add_argument("--output-dir", required=True, type=pathlib.Path)
     parser.add_argument("--work-dir", required=True, type=pathlib.Path)
+    parser.add_argument(
+        "--log-dir",
+        type=pathlib.Path,
+        help="external directory for verbose build/smoke logs; defaults under --work-dir",
+    )
     parser.add_argument("--timeout", required=True, type=int)
     return parser.parse_args()
 
@@ -91,9 +96,19 @@ def run_command(
             "duration_seconds": round(time.monotonic() - started, 3),
             "output": str(exc),
         }
+    log_path.parent.mkdir(parents=True, exist_ok=True)
     log_path.write_text(result["output"], encoding="utf-8")
     result.pop("output")
     return result
+
+
+def log_reference(log_dir: pathlib.Path, log_path: pathlib.Path) -> str:
+    """Return a portable receipt reference without leaking a host path."""
+    try:
+        relative = log_path.resolve().relative_to(log_dir.resolve())
+    except ValueError:
+        relative = pathlib.Path(log_path.name)
+    return "external://build-logs/" + relative.as_posix()
 
 
 def copy_model(model_root: pathlib.Path, copy_root: pathlib.Path) -> list[str]:
@@ -195,8 +210,10 @@ def main() -> int:
     model_root = args.model_root.resolve()
     output_dir = args.output_dir.resolve()
     work_dir = args.work_dir.resolve()
+    log_dir = (args.log_dir or (work_dir / "build-logs")).resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
     work_dir.mkdir(parents=True, exist_ok=True)
+    log_dir.mkdir(parents=True, exist_ok=True)
     copy_root = work_dir / "model"
     receipt: dict[str, Any] = {
         "schema_version": 2,
@@ -204,6 +221,10 @@ def main() -> int:
         "do_not_edit": True,
         "model_root": str(model_root),
         "copy_excludes": sorted(COPY_EXCLUDES),
+        "log_storage": {
+            "mode": "external",
+            "reference": "external://build-logs/",
+        },
         "commands": [],
         "warnings": [],
         "tool_versions": {
@@ -222,20 +243,22 @@ def main() -> int:
         source_dir = copy_root / "source"
         binary = source_dir / "dsc"
         clean_command = ["make", "-j1", "-C", str(source_dir), "clean"]
-        clean_result = run_command(clean_command, copy_root, output_dir / "make-clean.log", args.timeout)
+        clean_log = log_dir / "make-clean.log"
+        clean_result = run_command(clean_command, copy_root, clean_log, args.timeout)
         receipt["commands"].append(
-            {"command": command_text(clean_command, copy_root), **clean_result, "log": "make-clean.log"}
+            {"command": command_text(clean_command, copy_root), **clean_result, "log": log_reference(log_dir, clean_log)}
         )
         if clean_result["status"] != "PASS":
             receipt["failure_reason"] = "clean build command failed"
             return write_receipt(receipt_path, receipt)
 
         build_command = ["make", "-j1", "-C", str(source_dir)]
-        build_result = run_command(build_command, copy_root, output_dir / "make-build.log", args.timeout)
+        build_log = log_dir / "make-build.log"
+        build_result = run_command(build_command, copy_root, build_log, args.timeout)
         receipt["commands"].append(
-            {"command": command_text(build_command, copy_root), **build_result, "log": "make-build.log"}
+            {"command": command_text(build_command, copy_root), **build_result, "log": log_reference(log_dir, build_log)}
         )
-        receipt["warnings"] = warning_lines(output_dir / "make-build.log")
+        receipt["warnings"] = warning_lines(build_log)
         if build_result["status"] != "PASS" or not binary.is_file():
             receipt["failure_reason"] = "C build failed or source/dsc was not produced"
             return write_receipt(receipt_path, receipt)
@@ -243,9 +266,10 @@ def main() -> int:
         smoke_script = copy_root / "bittrue_smoke" / "run_c_baseline.sh"
         if smoke_script.is_file():
             smoke_command = [str(smoke_script)]
-            smoke_result = run_command(smoke_command, copy_root, output_dir / "smoke.log", args.timeout)
+            smoke_log = log_dir / "smoke.log"
+            smoke_result = run_command(smoke_command, copy_root, smoke_log, args.timeout)
             receipt["commands"].append(
-                {"command": ["<build-copy>/bittrue_smoke/run_c_baseline.sh"], **smoke_result, "log": "smoke.log"}
+                {"command": ["<build-copy>/bittrue_smoke/run_c_baseline.sh"], **smoke_result, "log": log_reference(log_dir, smoke_log)}
             )
             receipt["smoke"] = {
                 "mode": "bittrue_smoke/run_c_baseline.sh",
@@ -257,9 +281,10 @@ def main() -> int:
                 return write_receipt(receipt_path, receipt)
         else:
             help_command = [str(binary), "-help"]
-            help_result = run_command(help_command, copy_root, output_dir / "smoke.log", args.timeout)
+            smoke_log = log_dir / "smoke.log"
+            help_result = run_command(help_command, copy_root, smoke_log, args.timeout)
             receipt["commands"].append(
-                {"command": ["<build-copy>/source/dsc", "-help"], **help_result, "log": "smoke.log"}
+                {"command": ["<build-copy>/source/dsc", "-help"], **help_result, "log": log_reference(log_dir, smoke_log)}
             )
             receipt["smoke"] = {"mode": "source/dsc -help", "outputs": []}
             if help_result["status"] != "PASS":

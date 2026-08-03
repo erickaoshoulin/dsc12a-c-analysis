@@ -21,7 +21,7 @@
         "clean"
       ],
       "duration_seconds": 0.015,
-      "log": "make-clean.log",
+      "log": "external://build-logs/make-clean.log",
       "returncode": 0,
       "status": "PASS"
     },
@@ -32,8 +32,8 @@
         "-C",
         "<build-copy>/source"
       ],
-      "duration_seconds": 1.903,
-      "log": "make-build.log",
+      "duration_seconds": 1.805,
+      "log": "external://build-logs/make-build.log",
       "returncode": 0,
       "status": "PASS"
     },
@@ -41,8 +41,8 @@
       "command": [
         "<build-copy>/bittrue_smoke/run_c_baseline.sh"
       ],
-      "duration_seconds": 2.158,
-      "log": "smoke.log",
+      "duration_seconds": 1.974,
+      "log": "external://build-logs/smoke.log",
       "returncode": 0,
       "status": "PASS"
     }
@@ -63,6 +63,10 @@
     "target"
   ],
   "do_not_edit": true,
+  "log_storage": {
+    "mode": "external",
+    "reference": "external://build-logs/"
+  },
   "model_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
   "schema_version": 2,
   "smoke": {
@@ -81,8 +85,8 @@
       },
       {
         "path": "bittrue_smoke/out/simple_192x108.dsc.sha256",
-        "sha256": "ddf7948ab87435309184193a250d8cc95beeb1928d6c069335649b13350ed4e8",
-        "size_bytes": 144
+        "sha256": "5e1c09c0ae2279b8224bcf1a4010b2d57a759911d4436f07c5d27f5216681faa",
+        "size_bytes": 201
       }
     ]
   },

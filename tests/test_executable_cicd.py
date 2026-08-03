@@ -213,15 +213,15 @@ class ExecutableCicdTests(unittest.TestCase):
             ("EXECUTED_NOW", "REUSED_VERIFIED_SHARDS", "REUSED_VERIFIED_RECEIPT"),
         )
 
-        oracle = (artifact / "oracle.c").read_text(encoding="utf-8")
+        agent = Agent(ROOT, "test")
+        agent.load_inputs()
+        contract = json.loads((artifact / "locked-contract.json").read_text(encoding="utf-8"))
+        oracle = agent.render_oracle(contract)
         self.assertIn("static int prevLine[65541]", oracle)
         self.assertIn("prevLine[((hPos / 3) * 3 + 5 + -2) + 0]", oracle)
         self.assertIn("currLine[((hPos > 8) ? (hPos - 8) : 0) + 0]", oracle)
 
-        agent = Agent(ROOT, "test")
-        agent.load_inputs()
-        contract = json.loads((artifact / "locked-contract.json").read_text(encoding="utf-8"))
-        candidate = artifact / "generated" / "candidate_01.sv"
+        candidate = ROOT / "library" / "rtl" / "samplepredict.sv"
         with tempfile.TemporaryDirectory() as directory:
             source_dir = pathlib.Path(directory) / "source"
             source_dir.mkdir()
@@ -463,7 +463,7 @@ class ExecutableCicdTests(unittest.TestCase):
         self.assertEqual(unit["candidates"][0]["verification_status"], "FORMAL_EQUIVALENT")
 
         agent = Agent(ROOT, "test")
-        candidate = artifact / "generated" / "candidate_01.sv"
+        candidate = ROOT / "library" / "rtl" / "isorigflathindex.sv"
         with tempfile.TemporaryDirectory() as directory:
             paths = agent.write_overlay_sources(contract, pathlib.Path(directory), "isorigflathindex", candidate)
             overlay = paths["overlay"].read_text(encoding="utf-8")

@@ -170,6 +170,19 @@
     },
     "vectors": 108011919
   },
+  "repository_hygiene": {
+    "available": true,
+    "forbidden": [],
+    "forbidden_count": 0,
+    "rules": {
+      "generated_candidate_material": "artifacts generated candidates, RTL, oracles, harnesses, and vector generators",
+      "obj_dir": "simulator build directories",
+      "transient_log_or_waveform": "tracked logs and simulator waveforms",
+      "vectors": "tracked vector directories"
+    },
+    "status": "PASS",
+    "tracked_count": 1111
+  },
   "run_count": 20,
   "schema_version": 1,
   "selected_run": {

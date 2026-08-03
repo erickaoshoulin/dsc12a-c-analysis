@@ -195,10 +195,15 @@ wrapper, and receipt schema. The integration overlay supports `C_ONLY`,
 DSC smoke stream is checked byte-for-byte and by SHA-256. Rollback is a
 manifest change back to `C_ONLY`.
 
-Generated CI outputs are under `ci/`, `artifacts/<contract-hash>/`,
-`integration/generated-overlay/`, `integration/replacement-plan.yaml`,
-`integration/bitstream-receipts/`, and
+Compact CI outputs are under `ci/`, `artifacts/<contract-hash>`
+(receipts/contracts only), `integration/generated-overlay/`,
+`integration/replacement-plan.yaml`, `integration/bitstream-receipts/`, and
 `reports/pipeline-summary.md`. The upstream C model and PDF are never edited.
+The candidate RTL, C oracle, harness, vector generator, rejected candidates,
+and verbose build logs are external flow material. Durable flows set
+`DSC_CICD_ARTIFACT_ROOT` and `DSC_REGRESSION_ROOT`; state/cache receipts
+retain the logical `artifacts/<contract-hash>` reference without copying the
+large files into this checkout.
 
 Scale dispatch is incremental: after a terminal batch, another `scale
 <pilot-run-id>` call re-reads the current facts/spec plan and enqueues only
@@ -265,7 +270,11 @@ durable per-function regression service uses `DSC_REGRESSION_ROOT`; its queue,
 run receipts, vectors, and large logs remain on that configured SMB-backed
 root. The repository stores compact CI receipts, indexes, reports, and
 accepted RTL references under `ci/`, `artifacts/`, `integration/`, and
-`reports/`; temporary vectors and build trees do not enter the checkout.
+`reports/`; candidate bundles, temporary vectors, build trees, and verbose
+logs stay under the external root. Run
+`python3 tools/repo_hygiene.py check` or `python3 tools/dashboard.py check`
+before handoff; the dashboard check fails if transient/generated material is
+tracked.
 
 ```sh
 python3 tools/cicd_agent.py plan
@@ -369,6 +378,8 @@ Set `DSC_ANALYSIS_TIMEOUT_SECONDS` for compiler/Clang/Frama-C commands,
 `DSC_BUILD_TIMEOUT_SECONDS` for the isolated build/smoke gate, and
 `DSC_ANALYSIS_TOP_N` for the bounded contract/candidate count. The CI/CD verifier also
 accepts `DSC_CICD_SHARDS`, `DSC_CICD_GENERATOR_CMD`, and compile/shard timeout
-variables. Temporary model copies exclude the unrelated `dsc-rs` and
+variables. `DSC_CICD_ARTIFACT_ROOT` may explicitly select an external per-flow
+artifact directory; `run.sh` derives one under `DSC_REGRESSION_ROOT` when
+`DSC_RUN_CICD=1`. Temporary model copies exclude the unrelated `dsc-rs` and
 `operator_bittrue` trees; the local PDF and upstream C source remain outside
 the repository and are never edited.
