@@ -1,8 +1,9 @@
 # Standalone DSC 1.2a auto-discovery, contracts, coverage, and RTL-slice prompt
 
-Work only in this standalone repository. The project is unrelated to SVRT,
-RTL generation, sequential-hardware design, and LLM runtime behavior. Do not
-modify or commit the upstream C model or the local PDF.
+Work only in this standalone repository. The project is independent of SVRT
+and may generate bounded combinational Verilog library slices, but it does
+not generate sequential hardware or an LLM runtime. Do not modify or commit
+the upstream C model or the local PDF.
 
 ## Goal
 
@@ -16,6 +17,27 @@ and parallel shards; only a complete legal-domain proof may enter the stable
 library. This project is not SVRT and must not grow SVRT integration,
 whole-codec RTL generation, an LLM runtime, C/Rust parsing, or
 sequential-hardware behavior.
+
+## Stable-library boundary (non-negotiable)
+
+- Function discovery and ranking are tool outputs. The prompt, environment,
+  reviewed override, or operator must never name a source function to select;
+  a target ID is routing metadata only. Re-run AST, callgraph, effect,
+  coverage, and exact-PDF gates for every batch.
+- The stable Verilog library contains only independently proven,
+  purely-combinational, bounded DUT leaves with frozen scalar interfaces.
+  Stateful logic, mutable line buffers, pointer-owned storage, I/O,
+  allocation, logging, host/test code, unresolved table/state projections,
+  and other non-DUT behavior remain in the immutable C model.
+- A unit differential or formal pass is not permission to promote. Caller
+  composition, `C_ONLY`/`SHADOW`/`RTL_RETURN`, frame byte/SHA, source-hash,
+  and exact-spec gates are mandatory. If composition fails, keep the C path
+  authoritative and record the candidate as a boundary/blocker; do not add an
+  adapter, dummy state, or guessed port merely to make the gate pass.
+- Generated RTL must be a generic contract-driven slice. Semantic adapters
+  may be keyed by reviewed contract semantics, never by a function-name
+  recipe or hardcoded source-function list. The C oracle is retained for
+  stateful/non-DUT behavior and for every rollback path.
 
 ## Input discovery
 

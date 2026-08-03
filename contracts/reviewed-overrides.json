@@ -2900,6 +2900,265 @@
         "unresolved": []
       },
       "obligations": []
+    },
+    {
+      "match": {
+        "clang_usr": "c:@F@IchDecision"
+      },
+      "review_status": "REVIEWED",
+      "reviewed_by": "codex",
+      "evidence": [
+        {
+          "kind": "EXACT_SPEC",
+          "anchor_id": "pdf:model-note:MN_ENC_ICH_MODE_SELECT:p088",
+          "page": 88,
+          "section": "6.5.3.2",
+          "reason": "The source decision is the encoder ICH/P-mode cost comparison covered by the exact model note and the surrounding DSC 1.2a mode-selection text."
+        },
+        {
+          "kind": "EXACT_SPEC",
+          "anchor_id": "pdf:section:6.5.3.2",
+          "page": 88,
+          "section": "6.5.3.2",
+          "reason": "Section 6.5.3.2 defines the ICH/P-mode syntax and cost decision boundary."
+        },
+        {
+          "kind": "SOURCE_SEMANTICS",
+          "source_file": "dsc_codec.c",
+          "c_span": {
+            "start_line": 484,
+            "end_line": 533
+          },
+          "reason": "IchDecision has no state writes or host I/O; its three unit loops are bounded by MAX_UNITS_PER_GROUP=4 and its direct callees are already PASS components."
+        },
+        {
+          "kind": "DOMAIN_EFFECT",
+          "source_file": "dsc_codec.c",
+          "c_span": {
+            "start_line": 1078,
+            "end_line": 1120
+          },
+          "reason": "The reviewed residual domain [-65535,65535] covers the legal signed quantized residual range; FindResidualSize's diagnostic branch begins at the disjoint [-131702,-65536] / [65536,131701] region."
+        }
+      ],
+      "spec_links": [
+        {
+          "anchor_id": "pdf:model-note:MN_ENC_ICH_MODE_SELECT:p088",
+          "page": 88,
+          "section": "6.5.3.2",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.5.3.2",
+          "page": 88,
+          "section": "6.5.3.2",
+          "status": "EXACT"
+        }
+      ],
+      "tool_admissions": [
+        {
+          "kind": "BOUNDED_DOMAIN",
+          "status": "PASS",
+          "loop": "IchDecision's three unit loops are bounded by dsc_state->unitsPerGroup in the exact source domain {3,4}; MAX_UNITS_PER_GROUP is 4.",
+          "max_iterations": 4,
+          "proof": "The source initializes and consumes four-element arrays, and the DSC group model admits only three or four units. Generated RTL explicitly guards four lanes."
+        },
+        {
+          "kind": "DOMAIN_EFFECT",
+          "status": "PASS",
+          "discharged_effects": [
+            "logging"
+          ],
+          "unreachable_condition": "FindResidualSize's unexpectedly-large-residual printf is reachable only outside the reviewed signed quantized residual domain [-65535,65535].",
+          "proof": "All residual ports are bounded to [-65535,65535], so every legal call selects a normative size branch before the diagnostic printf."
+        }
+      ],
+      "interface": {
+        "inputs": [
+          {"name":"adj_predicted_size","logical_width":6,"legal_domain":{"kind":"range","range":[0,31]}},
+          {"name":"alt_pfx","logical_width":6,"legal_domain":{"kind":"range","range":[0,31]}},
+          {"name":"alt_size_to_generate","logical_width":6,"legal_domain":{"kind":"range","range":[1,31]}},
+          {"name":"dsc_version_minor","logical_width":2,"legal_domain":{"kind":"set","range":[1,2],"values":[1,2]}},
+          {"name":"native_420","logical_width":1,"legal_domain":{"kind":"set","range":[0,1],"values":[0,1]}},
+          {"name":"flatness_det_thresh","logical_width":10,"legal_domain":{"kind":"set","range":[2,512],"values":[2,4,8,16,32,64,128,256,512]}},
+          {"name":"somewhat_flat_qp_delta","logical_width":3,"legal_domain":{"kind":"set","range":[4,4],"values":[4]}},
+          {"name":"units_per_group","logical_width":3,"legal_domain":{"kind":"set","range":[3,4],"values":[3,4]}},
+          {"name":"pixels_in_group","logical_width":2,"legal_domain":{"kind":"set","range":[3,3],"values":[3]}},
+          {"name":"hPos","logical_width":16,"legal_domain":{"kind":"range","range":[0,65534]}},
+          {"name":"slice_width","logical_width":16,"legal_domain":{"kind":"range","range":[1,65535]}},
+          {"name":"prev_ich_selected","logical_width":1,"legal_domain":{"kind":"set","range":[0,1],"values":[0,1]}},
+          {"name":"primary_qp","logical_width":5,"legal_domain":{"kind":"range","range":[0,31]}},
+          {"name":"prev_primary_qp","logical_width":5,"legal_domain":{"kind":"range","range":[0,31]}},
+          {"name":"ich_indices_in_group","logical_width":3,"legal_domain":{"kind":"range","range":[0,6]}},
+          {"name":"num_components","logical_width":3,"legal_domain":{"kind":"set","range":[3,4],"values":[3,4]}},
+          {"name":"cpnt_bit_depth_0","logical_width":5,"legal_domain":{"kind":"set","range":[8,16],"values":[8,10,12,14,16]}},
+          {"name":"cpnt_bit_depth_1","logical_width":5,"legal_domain":{"kind":"range","range":[8,17]}},
+          {"name":"cpnt_bit_depth_2","logical_width":5,"legal_domain":{"kind":"range","range":[8,17]}},
+          {"name":"cpnt_bit_depth_3","logical_width":5,"legal_domain":{"kind":"range","range":[8,17]}},
+          {"name":"unit_c_type_0","logical_width":2,"legal_domain":{"kind":"range","range":[0,3]}},
+          {"name":"unit_c_type_1","logical_width":2,"legal_domain":{"kind":"range","range":[0,3]}},
+          {"name":"unit_c_type_2","logical_width":2,"legal_domain":{"kind":"range","range":[0,3]}},
+          {"name":"unit_c_type_3","logical_width":2,"legal_domain":{"kind":"range","range":[0,3]}},
+          {"name":"unit_start_h_pos_0","logical_width":16,"legal_domain":{"kind":"set","range":[0,0],"values":[0]}},
+          {"name":"unit_start_h_pos_1","logical_width":16,"legal_domain":{"kind":"set","range":[0,0],"values":[0]}},
+          {"name":"unit_start_h_pos_2","logical_width":16,"legal_domain":{"kind":"set","range":[0,0],"values":[0]}},
+          {"name":"unit_start_h_pos_3","logical_width":16,"legal_domain":{"kind":"set","range":[0,0],"values":[0]}},
+          {"name":"predicted_size_0","logical_width":5,"legal_domain":{"kind":"range","range":[0,16]}},
+          {"name":"predicted_size_1","logical_width":5,"legal_domain":{"kind":"range","range":[0,16]}},
+          {"name":"predicted_size_2","logical_width":5,"legal_domain":{"kind":"range","range":[0,16]}},
+          {"name":"predicted_size_3","logical_width":5,"legal_domain":{"kind":"range","range":[0,16]}},
+          {"name":"max_error_0","logical_width":17,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"max_error_1","logical_width":17,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"max_error_2","logical_width":17,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"max_error_3","logical_width":17,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"max_mid_error_0","logical_width":17,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"max_mid_error_1","logical_width":17,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"max_mid_error_2","logical_width":17,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"max_mid_error_3","logical_width":17,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"max_ich_error_0","logical_width":17,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"max_ich_error_1","logical_width":17,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"max_ich_error_2","logical_width":17,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"max_ich_error_3","logical_width":17,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"quantized_residual_0_0","logical_width":17,"signed":true,"legal_domain":{"kind":"range","range":[-65535,65535]}},
+          {"name":"quantized_residual_0_1","logical_width":17,"signed":true,"legal_domain":{"kind":"range","range":[-65535,65535]}},
+          {"name":"quantized_residual_0_2","logical_width":17,"signed":true,"legal_domain":{"kind":"range","range":[-65535,65535]}},
+          {"name":"quantized_residual_1_0","logical_width":17,"signed":true,"legal_domain":{"kind":"range","range":[-65535,65535]}},
+          {"name":"quantized_residual_1_1","logical_width":17,"signed":true,"legal_domain":{"kind":"range","range":[-65535,65535]}},
+          {"name":"quantized_residual_1_2","logical_width":17,"signed":true,"legal_domain":{"kind":"range","range":[-65535,65535]}},
+          {"name":"quantized_residual_2_0","logical_width":17,"signed":true,"legal_domain":{"kind":"range","range":[-65535,65535]}},
+          {"name":"quantized_residual_2_1","logical_width":17,"signed":true,"legal_domain":{"kind":"range","range":[-65535,65535]}},
+          {"name":"quantized_residual_2_2","logical_width":17,"signed":true,"legal_domain":{"kind":"range","range":[-65535,65535]}},
+          {"name":"quantized_residual_3_0","logical_width":17,"signed":true,"legal_domain":{"kind":"range","range":[-65535,65535]}},
+          {"name":"quantized_residual_3_1","logical_width":17,"signed":true,"legal_domain":{"kind":"range","range":[-65535,65535]}},
+          {"name":"quantized_residual_3_2","logical_width":17,"signed":true,"legal_domain":{"kind":"range","range":[-65535,65535]}},
+          {"name":"qlevel_luma_primary","logical_width":5,"legal_domain":{"kind":"range","range":[0,16]}},
+          {"name":"qlevel_chroma_primary","logical_width":5,"legal_domain":{"kind":"range","range":[0,16]}},
+          {"name":"qlevel_luma_previous","logical_width":5,"legal_domain":{"kind":"range","range":[0,16]}},
+          {"name":"qlevel_chroma_previous","logical_width":5,"legal_domain":{"kind":"range","range":[0,16]}},
+          {"name":"qlevel_luma_flat","logical_width":5,"legal_domain":{"kind":"range","range":[0,16]}},
+          {"name":"qlevel_chroma_flat","logical_width":5,"legal_domain":{"kind":"range","range":[0,16]}},
+          {"name":"orig_0_0","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_0_1","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_0_2","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_0_3","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_0_4","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_0_5","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_0_6","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_1_0","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_1_1","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_1_2","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_1_3","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_1_4","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_1_5","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_1_6","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_2_0","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_2_1","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_2_2","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_2_3","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_2_4","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_2_5","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_2_6","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_3_0","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_3_1","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_3_2","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_3_3","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_3_4","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_3_5","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}},
+          {"name":"orig_3_6","logical_width":16,"legal_domain":{"kind":"range","range":[0,65535]}}
+        ],
+        "output": {
+          "name": "return_value",
+          "c_type": "int",
+          "signed": false,
+          "logical_width": 1,
+          "legal_range": [0,1]
+        }
+      },
+      "semantics": {
+        "kind": "ich_decision",
+        "expression": "DSC_1_2A_ENCODER_ICH_P_MODE_COST_DECISION",
+        "verilog_expression": "DSC_1_2A_ENCODER_ICH_P_MODE_COST_DECISION",
+        "signedness": "All cost temporaries are signed C integers; the returned decision is exactly 0 or 1.",
+        "overflow": "The reviewed domains fit signed 32-bit arithmetic; generated RTL uses integer temporaries.",
+        "thresholds": [
+          {"lower":0,"upper":0,"size":0},
+          {"lower":-1,"upper":0,"size":1},
+          {"lower":-2,"upper":1,"size":2},
+          {"lower":-4,"upper":3,"size":3},
+          {"lower":-8,"upper":7,"size":4},
+          {"lower":-16,"upper":15,"size":5},
+          {"lower":-32,"upper":31,"size":6},
+          {"lower":-64,"upper":63,"size":7},
+          {"lower":-128,"upper":127,"size":8},
+          {"lower":-256,"upper":255,"size":9},
+          {"lower":-512,"upper":511,"size":10},
+          {"lower":-1024,"upper":1023,"size":11},
+          {"lower":-2048,"upper":2047,"size":12},
+          {"lower":-4096,"upper":4095,"size":13},
+          {"lower":-8192,"upper":8191,"size":14},
+          {"lower":-16384,"upper":16383,"size":15},
+          {"lower":-32768,"upper":32767,"size":16},
+          {"lower":-65536,"upper":65535,"size":17}
+        ],
+        "legal_vector_strategy": {
+          "kind": "ich_decision",
+          "formal_required": true,
+          "exhaustive": false,
+          "source": "DSC 1.2a section 6.5.3.2 and MN_ENC_ICH_MODE_SELECT; direct dependencies are verified library components",
+          "version_port": "dsc_version_minor",
+          "native_420_port": "native_420",
+          "units_per_group_port": "units_per_group",
+          "pixels_in_group_port": "pixels_in_group",
+          "hpos_port": "hPos",
+          "slice_width_port": "slice_width",
+          "prev_ich_selected_port": "prev_ich_selected",
+          "primary_qp_port": "primary_qp",
+          "prev_primary_qp_port": "prev_primary_qp",
+          "adj_predicted_size_port": "adj_predicted_size",
+          "alt_pfx_port": "alt_pfx",
+          "alt_size_to_generate_port": "alt_size_to_generate",
+          "ich_indices_in_group_port": "ich_indices_in_group",
+          "num_components_port": "num_components",
+          "flatness_det_thresh_port": "flatness_det_thresh",
+          "somewhat_flat_qp_delta_port": "somewhat_flat_qp_delta",
+          "component_depth_ports": ["cpnt_bit_depth_0","cpnt_bit_depth_1","cpnt_bit_depth_2","cpnt_bit_depth_3"],
+          "unit_component_ports": ["unit_c_type_0","unit_c_type_1","unit_c_type_2","unit_c_type_3"],
+          "unit_start_hpos_ports": ["unit_start_h_pos_0","unit_start_h_pos_1","unit_start_h_pos_2","unit_start_h_pos_3"],
+          "predicted_size_ports": ["predicted_size_0","predicted_size_1","predicted_size_2","predicted_size_3"],
+          "max_error_ports": ["max_error_0","max_error_1","max_error_2","max_error_3"],
+          "max_mid_error_ports": ["max_mid_error_0","max_mid_error_1","max_mid_error_2","max_mid_error_3"],
+          "max_ich_error_ports": ["max_ich_error_0","max_ich_error_1","max_ich_error_2","max_ich_error_3"],
+          "residual_ports": ["quantized_residual_0_0","quantized_residual_0_1","quantized_residual_0_2","quantized_residual_1_0","quantized_residual_1_1","quantized_residual_1_2","quantized_residual_2_0","quantized_residual_2_1","quantized_residual_2_2","quantized_residual_3_0","quantized_residual_3_1","quantized_residual_3_2"],
+          "qlevel_ports": {
+            "luma_primary": "qlevel_luma_primary",
+            "chroma_primary": "qlevel_chroma_primary",
+            "luma_previous": "qlevel_luma_previous",
+            "chroma_previous": "qlevel_chroma_previous",
+            "luma_flat": "qlevel_luma_flat",
+            "chroma_flat": "qlevel_chroma_flat"
+          },
+          "orig_ports_by_component": {
+            "0": ["orig_0_0","orig_0_1","orig_0_2","orig_0_3","orig_0_4","orig_0_5","orig_0_6"],
+            "1": ["orig_1_0","orig_1_1","orig_1_2","orig_1_3","orig_1_4","orig_1_5","orig_1_6"],
+            "2": ["orig_2_0","orig_2_1","orig_2_2","orig_2_3","orig_2_4","orig_2_5","orig_2_6"],
+            "3": ["orig_3_0","orig_3_1","orig_3_2","orig_3_3","orig_3_4","orig_3_5","orig_3_6"]
+          },
+          "qlevel_relation": "For each primary/previous/flat QP, raw luma/chroma values are frozen MapQpToQlevel outputs; equal QP indices carry equal witnesses and selected qLevel never exceeds the selected component bit depth.",
+          "unit_relation": "The legal unitsPerGroup domain is {3,4}; inactive lane 3 is ignored by all source reductions when unitsPerGroup is 3.",
+          "flatness_relation": "IsOrigFlatHIndex uses original taps 0..3 and 1..6, flatness_det_thresh, QuantDivisor(qLevel at max(primaryQp-delta,0)), and slice-end guards exactly as the C source."
+        }
+      },
+      "dependencies": {
+        "promotion_gate": "all direct callees PASS in library/manifest.json",
+        "direct_callees": [
+          {"clang_usr":"c:@F@EstimateBitsForGroup","name":"EstimateBitsForGroup"},
+          {"clang_usr":"c:@F@IsOrigFlatHIndex","name":"IsOrigFlatHIndex"},
+          {"clang_usr":"c:@F@UsingMidpoint","name":"UsingMidpoint"},
+          {"clang_usr":"c:@F@ceil_log2","name":"ceil_log2"}
+        ],
+        "unresolved": []
+      },
+      "obligations": []
     }
     ,
     {

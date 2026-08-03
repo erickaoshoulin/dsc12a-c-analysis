@@ -1,12 +1,16 @@
 {
   "agent": "executable-generic-c-to-rtl-cicd",
-  "batches": [],
+  "batches": [
+    [
+      "ichdecision"
+    ]
+  ],
   "blocked_contracts": [],
   "contracts": [
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "3c89f19060374b1c584dc023ac6359f619c653b71f5935dd17962db5fac7ed9b",
+      "cache_key": "abf37c95b42184c5ebce6ef2243eabe3fa2be64a8af3a76a600d8265e5780bbc",
       "call_sites": [],
       "clang_usr": "c:@F@FindMidpoint",
       "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
@@ -16,13 +20,13 @@
       "force_regenerate": false,
       "function": "FindMidpoint",
       "hashes": {
-        "agent": "c97cf7ec458d639e9c0d9d4ba16f5ee225ccaf0703572028c28405ed7388e0fc",
+        "agent": "f30fc16bfb09910c43c4283a7afe9d1b247a70061b4d54e7e7bde0622d3f89ba",
         "contract": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
-        "dependency": "7b6fc56cf6e86de06b71c7a1fed999f25e69337d65236e4336048c586bf26ee6",
+        "dependency": "f31ebf694a15c841fbcb763dc23e43abe9c95c8b66987812c0521ac805778ebe",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "fe5a1d7285f23cebff5c00de24b9da5bf0a6c63995642223eb760395d988105c",
+        "prompt": "ba0a277fc2b5ce0bf137e6ca70c5f9f4913ce62870b2979a78ec4c60e6b9efd0",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -69,17 +73,602 @@
       "stale": true,
       "stale_reasons": [
         "agent",
-        "dependency",
         "prompt",
-        "generator",
-        "workers"
+        "generator"
       ],
       "targeted": false
     },
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "416b89fe3ba1cde456610ccd2c69be28c3fadc9a117830270d10485ab155649a",
+      "cache_key": "4db24ed0d04a7f985cc1b1168eac93df045cd2494d33a5b8216d991b6c45b80c",
+      "call_sites": [],
+      "clang_usr": "c:@F@IchDecision",
+      "contract_hash": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
+      "contract_id": "ichdecision",
+      "deferred": false,
+      "dependencies": [],
+      "force_regenerate": false,
+      "function": "IchDecision",
+      "hashes": {
+        "agent": "f30fc16bfb09910c43c4283a7afe9d1b247a70061b4d54e7e7bde0622d3f89ba",
+        "contract": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
+        "dependency": "cf5abbdacefe102de1bd5f0454009786f7795f91e11aab530b78c179dc2c68e3",
+        "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "ba0a277fc2b5ce0bf137e6ca70c5f9f4913ce62870b2979a78ec4c60e6b9efd0",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "2"
+      },
+      "initial_state": "CONTRACT_LOCKED",
+      "interface_shape": [
+        [
+          "input",
+          "adj_predicted_size",
+          6,
+          false
+        ],
+        [
+          "input",
+          "alt_pfx",
+          6,
+          false
+        ],
+        [
+          "input",
+          "alt_size_to_generate",
+          6,
+          false
+        ],
+        [
+          "input",
+          "cpnt_bit_depth_0",
+          5,
+          false
+        ],
+        [
+          "input",
+          "cpnt_bit_depth_1",
+          5,
+          false
+        ],
+        [
+          "input",
+          "cpnt_bit_depth_2",
+          5,
+          false
+        ],
+        [
+          "input",
+          "cpnt_bit_depth_3",
+          5,
+          false
+        ],
+        [
+          "input",
+          "dsc_version_minor",
+          2,
+          false
+        ],
+        [
+          "input",
+          "flatness_det_thresh",
+          10,
+          false
+        ],
+        [
+          "input",
+          "hPos",
+          16,
+          false
+        ],
+        [
+          "input",
+          "ich_indices_in_group",
+          3,
+          false
+        ],
+        [
+          "input",
+          "max_error_0",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_error_1",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_error_2",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_error_3",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_ich_error_0",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_ich_error_1",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_ich_error_2",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_ich_error_3",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_mid_error_0",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_mid_error_1",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_mid_error_2",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_mid_error_3",
+          17,
+          false
+        ],
+        [
+          "input",
+          "native_420",
+          1,
+          false
+        ],
+        [
+          "input",
+          "num_components",
+          3,
+          false
+        ],
+        [
+          "input",
+          "orig_0_0",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_0_1",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_0_2",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_0_3",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_0_4",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_0_5",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_0_6",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_0",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_1",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_2",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_3",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_4",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_5",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_6",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_0",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_1",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_2",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_3",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_4",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_5",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_6",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_0",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_1",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_2",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_3",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_4",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_5",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_6",
+          16,
+          false
+        ],
+        [
+          "input",
+          "pixels_in_group",
+          2,
+          false
+        ],
+        [
+          "input",
+          "predicted_size_0",
+          5,
+          false
+        ],
+        [
+          "input",
+          "predicted_size_1",
+          5,
+          false
+        ],
+        [
+          "input",
+          "predicted_size_2",
+          5,
+          false
+        ],
+        [
+          "input",
+          "predicted_size_3",
+          5,
+          false
+        ],
+        [
+          "input",
+          "prev_ich_selected",
+          1,
+          false
+        ],
+        [
+          "input",
+          "prev_primary_qp",
+          5,
+          false
+        ],
+        [
+          "input",
+          "primary_qp",
+          5,
+          false
+        ],
+        [
+          "input",
+          "qlevel_chroma_flat",
+          5,
+          false
+        ],
+        [
+          "input",
+          "qlevel_chroma_previous",
+          5,
+          false
+        ],
+        [
+          "input",
+          "qlevel_chroma_primary",
+          5,
+          false
+        ],
+        [
+          "input",
+          "qlevel_luma_flat",
+          5,
+          false
+        ],
+        [
+          "input",
+          "qlevel_luma_previous",
+          5,
+          false
+        ],
+        [
+          "input",
+          "qlevel_luma_primary",
+          5,
+          false
+        ],
+        [
+          "input",
+          "quantized_residual_0_0",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_0_1",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_0_2",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_1_0",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_1_1",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_1_2",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_2_0",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_2_1",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_2_2",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_3_0",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_3_1",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_3_2",
+          17,
+          true
+        ],
+        [
+          "input",
+          "slice_width",
+          16,
+          false
+        ],
+        [
+          "input",
+          "somewhat_flat_qp_delta",
+          3,
+          false
+        ],
+        [
+          "input",
+          "unit_c_type_0",
+          2,
+          false
+        ],
+        [
+          "input",
+          "unit_c_type_1",
+          2,
+          false
+        ],
+        [
+          "input",
+          "unit_c_type_2",
+          2,
+          false
+        ],
+        [
+          "input",
+          "unit_c_type_3",
+          2,
+          false
+        ],
+        [
+          "input",
+          "unit_start_h_pos_0",
+          16,
+          false
+        ],
+        [
+          "input",
+          "unit_start_h_pos_1",
+          16,
+          false
+        ],
+        [
+          "input",
+          "unit_start_h_pos_2",
+          16,
+          false
+        ],
+        [
+          "input",
+          "unit_start_h_pos_3",
+          16,
+          false
+        ],
+        [
+          "input",
+          "units_per_group",
+          3,
+          false
+        ],
+        [
+          "output",
+          "return_value",
+          1,
+          false
+        ]
+      ],
+      "new_work": true,
+      "origin": "tool_discovered_reviewed_override",
+      "ready": true,
+      "selected": true,
+      "stale": true,
+      "stale_reasons": [
+        "agent",
+        "prompt",
+        "generator"
+      ],
+      "targeted": false
+    },
+    {
+      "blocked_reasons": [],
+      "cache_hit": false,
+      "cache_key": "e267abccfaea3efd0d030d655dadf3f88f591bb9d2548fd3e80a67fe66c5c1d3",
       "call_sites": [],
       "clang_usr": "c:@F@IsFlatnessInfoSent",
       "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
@@ -89,13 +678,13 @@
       "force_regenerate": false,
       "function": "IsFlatnessInfoSent",
       "hashes": {
-        "agent": "c97cf7ec458d639e9c0d9d4ba16f5ee225ccaf0703572028c28405ed7388e0fc",
+        "agent": "f30fc16bfb09910c43c4283a7afe9d1b247a70061b4d54e7e7bde0622d3f89ba",
         "contract": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
-        "dependency": "69eca8e62d4af75675064065d1ba0278fe43dc581508d639fbd88ca2b5c338b3",
+        "dependency": "cdacd46bfe4cae5e584f55fdb16b27c67c2f7fe22a67c58c85f32686e3e2caed",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "fe5a1d7285f23cebff5c00de24b9da5bf0a6c63995642223eb760395d988105c",
+        "prompt": "ba0a277fc2b5ce0bf137e6ca70c5f9f4913ce62870b2979a78ec4c60e6b9efd0",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -136,17 +725,15 @@
       "stale": true,
       "stale_reasons": [
         "agent",
-        "dependency",
         "prompt",
-        "generator",
-        "workers"
+        "generator"
       ],
       "targeted": false
     },
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "52868f04d103eacd65eb23b64166b9fe846dc2c38672c72f86fefd551ab18cc2",
+      "cache_key": "0f71ef88a7f28f8237278cd2cdb049676d63d72ad8b3a57ff53c8ae74592ae2c",
       "call_sites": [],
       "clang_usr": "c:@F@MapQpToQlevel",
       "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
@@ -156,13 +743,13 @@
       "force_regenerate": false,
       "function": "MapQpToQlevel",
       "hashes": {
-        "agent": "c97cf7ec458d639e9c0d9d4ba16f5ee225ccaf0703572028c28405ed7388e0fc",
+        "agent": "f30fc16bfb09910c43c4283a7afe9d1b247a70061b4d54e7e7bde0622d3f89ba",
         "contract": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
-        "dependency": "6c0c133027c15fdfa1562d2491430815b1d9124c1f57119b27528ce4bc62833c",
+        "dependency": "be9e5b87ba35328b2d70aebf14188b8adb9fa98ab9863a8d5f28b00492aebf68",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "fe5a1d7285f23cebff5c00de24b9da5bf0a6c63995642223eb760395d988105c",
+        "prompt": "ba0a277fc2b5ce0bf137e6ca70c5f9f4913ce62870b2979a78ec4c60e6b9efd0",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -233,17 +820,15 @@
       "stale": true,
       "stale_reasons": [
         "agent",
-        "dependency",
         "prompt",
-        "generator",
-        "workers"
+        "generator"
       ],
       "targeted": false
     },
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "a9d5c34b754bab6c6d73b31d994667e337bfaee0a8fc5d8c4da018d3ea7f70bc",
+      "cache_key": "1e7af4bab43c01883d6d9c0c6b979b4f497340055da526a8516478afb20a1ad7",
       "call_sites": [],
       "clang_usr": "c:@F@PredictSize",
       "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
@@ -253,13 +838,13 @@
       "force_regenerate": false,
       "function": "PredictSize",
       "hashes": {
-        "agent": "c97cf7ec458d639e9c0d9d4ba16f5ee225ccaf0703572028c28405ed7388e0fc",
+        "agent": "f30fc16bfb09910c43c4283a7afe9d1b247a70061b4d54e7e7bde0622d3f89ba",
         "contract": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
-        "dependency": "69de596137f6702b564ed6436d48ecb862c2675fb684f1fad2c05aedb012c316",
+        "dependency": "c8cc34c74343eb8209390547dd44c6e1233cac7f43fde90bf8d9bfff4fca8d9f",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "fe5a1d7285f23cebff5c00de24b9da5bf0a6c63995642223eb760395d988105c",
+        "prompt": "ba0a277fc2b5ce0bf137e6ca70c5f9f4913ce62870b2979a78ec4c60e6b9efd0",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -300,17 +885,15 @@
       "stale": true,
       "stale_reasons": [
         "agent",
-        "dependency",
         "prompt",
-        "generator",
-        "workers"
+        "generator"
       ],
       "targeted": false
     },
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "61fcc8bf5e70fa157af6b1b212a82073b1e8ed7e36b907c03ab07ef744395b63",
+      "cache_key": "090b39adbf6a680029fb2e6a472e2f76812442d136b7316a8a43512a37cd9b28",
       "call_sites": [],
       "clang_usr": "c:@F@QuantizeResidual",
       "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
@@ -320,13 +903,13 @@
       "force_regenerate": false,
       "function": "QuantizeResidual",
       "hashes": {
-        "agent": "c97cf7ec458d639e9c0d9d4ba16f5ee225ccaf0703572028c28405ed7388e0fc",
+        "agent": "f30fc16bfb09910c43c4283a7afe9d1b247a70061b4d54e7e7bde0622d3f89ba",
         "contract": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
-        "dependency": "7745ee3080f86b81570ed1952bf6de4f560b1542d8feeb22cfca764dc8fbfc10",
+        "dependency": "612f31e78f2dacecfc74eb2644ebc8d6256fd9f74b45383679a7e7405b10048f",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "fe5a1d7285f23cebff5c00de24b9da5bf0a6c63995642223eb760395d988105c",
+        "prompt": "ba0a277fc2b5ce0bf137e6ca70c5f9f4913ce62870b2979a78ec4c60e6b9efd0",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -361,17 +944,15 @@
       "stale": true,
       "stale_reasons": [
         "agent",
-        "dependency",
         "prompt",
-        "generator",
-        "workers"
+        "generator"
       ],
       "targeted": false
     },
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "46d5a5cac9460cf51e664439351ab7374925b82271c31684156acc9944a4f325",
+      "cache_key": "bd0a2e24380f12d0d1eac9293b9eef4edc5b7a17fcb52c8ea6fbefdff6992a9a",
       "call_sites": [],
       "clang_usr": "c:@F@SamplePredict",
       "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
@@ -381,13 +962,13 @@
       "force_regenerate": false,
       "function": "SamplePredict",
       "hashes": {
-        "agent": "c97cf7ec458d639e9c0d9d4ba16f5ee225ccaf0703572028c28405ed7388e0fc",
+        "agent": "f30fc16bfb09910c43c4283a7afe9d1b247a70061b4d54e7e7bde0622d3f89ba",
         "contract": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
-        "dependency": "d908b967b94e50bb66c526b5895082f8c645ff30f152e97011818642fe3fc0d0",
+        "dependency": "c342660294a6ba98f6dbc6bc3d2b0ac8e094b34834409158eb72a155344bd6a1",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "fe5a1d7285f23cebff5c00de24b9da5bf0a6c63995642223eb760395d988105c",
+        "prompt": "ba0a277fc2b5ce0bf137e6ca70c5f9f4913ce62870b2979a78ec4c60e6b9efd0",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -644,17 +1225,15 @@
       "stale": true,
       "stale_reasons": [
         "agent",
-        "dependency",
         "prompt",
-        "generator",
-        "workers"
+        "generator"
       ],
       "targeted": false
     },
     {
       "blocked_reasons": [],
       "cache_hit": false,
-      "cache_key": "c1f10db6a78c4503fec023f02fcf7b83c6122c13c094b2e31f0f7040dc56f0fb",
+      "cache_key": "45551b5e416d7bef3acac055173eb81aae374217057b93f811a12a7e9cff99c3",
       "call_sites": [],
       "clang_usr": "c:@F@SampToLineBuf",
       "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
@@ -664,13 +1243,13 @@
       "force_regenerate": false,
       "function": "SampToLineBuf",
       "hashes": {
-        "agent": "c97cf7ec458d639e9c0d9d4ba16f5ee225ccaf0703572028c28405ed7388e0fc",
+        "agent": "f30fc16bfb09910c43c4283a7afe9d1b247a70061b4d54e7e7bde0622d3f89ba",
         "contract": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
-        "dependency": "387edc77a99ea0783123b2050e0dfc0c646e7c8462f10e4aba8cd906e92b5b50",
+        "dependency": "242cb5947e0652925b268a83e82fda05796e637554bfa9fb425f4d261af6fceb",
         "generator": "12ae32cb1ec02d01eda3581b127c1fee3b0dc53572ed6baf239721a03d82e126",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "fe5a1d7285f23cebff5c00de24b9da5bf0a6c63995642223eb760395d988105c",
+        "prompt": "ba0a277fc2b5ce0bf137e6ca70c5f9f4913ce62870b2979a78ec4c60e6b9efd0",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -717,10 +1296,8 @@
       "stale": true,
       "stale_reasons": [
         "agent",
-        "dependency",
         "prompt",
-        "generator",
-        "workers"
+        "generator"
       ],
       "targeted": false
     }
@@ -734,16 +1311,43 @@
     "samplepredict",
     "samptolinebuf"
   ],
-  "dependency_pair": null,
+  "dependency_pair": {
+    "call_sites": [
+      {
+        "callee_contract": "ichdecision",
+        "callee_function": "IchDecision",
+        "callee_usr": "c:@F@IchDecision",
+        "caller_contract": null,
+        "caller_function": "VLCUnit",
+        "caller_usr": "c:@F@VLCUnit",
+        "location": {
+          "column": 28,
+          "file": "dsc_codec.c",
+          "line": 1620
+        },
+        "source": "facts/callgraph.json"
+      }
+    ],
+    "callee_contract": "ichdecision",
+    "callee_function": "IchDecision",
+    "callee_usr": "c:@F@IchDecision",
+    "caller_contract": null,
+    "caller_function": "VLCUnit",
+    "caller_usr": "c:@F@VLCUnit",
+    "selection_basis": "smallest acyclic direct call site from facts/callgraph.json"
+  },
   "force_regenerate": false,
   "generator_hook": null,
   "historical_contracts": [
     "estimatebitsforgroup"
   ],
   "input_errors": [],
-  "new_candidates": [],
+  "new_candidates": [
+    "ichdecision"
+  ],
   "ready_contracts": [
     "findmidpoint",
+    "ichdecision",
     "isflatnessinfosent",
     "mapqptoqlevel",
     "predictsize",
@@ -753,6 +1357,8 @@
   ],
   "refresh_stable": false,
   "schema_version": 2,
-  "selected_contracts": [],
+  "selected_contracts": [
+    "ichdecision"
+  ],
   "target_contract": null
 }

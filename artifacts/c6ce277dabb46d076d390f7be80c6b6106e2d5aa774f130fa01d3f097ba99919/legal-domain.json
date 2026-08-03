@@ -1,0 +1,1064 @@
+{
+  "complete": false,
+  "ports": [
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          31
+        ]
+      },
+      "port": "adj_predicted_size",
+      "role": "adj_predicted_size"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          31
+        ]
+      },
+      "port": "alt_pfx",
+      "role": "alt_pfx"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          1,
+          31
+        ]
+      },
+      "port": "alt_size_to_generate",
+      "role": "alt_size_to_generate"
+    },
+    {
+      "domain": {
+        "kind": "set",
+        "range": [
+          1,
+          2
+        ],
+        "values": [
+          1,
+          2
+        ]
+      },
+      "port": "dsc_version_minor",
+      "role": "dsc_version_minor"
+    },
+    {
+      "domain": {
+        "kind": "set",
+        "range": [
+          0,
+          1
+        ],
+        "values": [
+          0,
+          1
+        ]
+      },
+      "port": "native_420",
+      "role": "native_420"
+    },
+    {
+      "domain": {
+        "kind": "set",
+        "range": [
+          2,
+          512
+        ],
+        "values": [
+          2,
+          4,
+          8,
+          16,
+          32,
+          64,
+          128,
+          256,
+          512
+        ]
+      },
+      "port": "flatness_det_thresh",
+      "role": "flatness_det_thresh"
+    },
+    {
+      "domain": {
+        "kind": "set",
+        "range": [
+          4,
+          4
+        ],
+        "values": [
+          4
+        ]
+      },
+      "port": "somewhat_flat_qp_delta",
+      "role": "somewhat_flat_qp_delta"
+    },
+    {
+      "domain": {
+        "kind": "set",
+        "range": [
+          3,
+          4
+        ],
+        "values": [
+          3,
+          4
+        ]
+      },
+      "port": "units_per_group",
+      "role": "units_per_group"
+    },
+    {
+      "domain": {
+        "kind": "set",
+        "range": [
+          3,
+          3
+        ],
+        "values": [
+          3
+        ]
+      },
+      "port": "pixels_in_group",
+      "role": "pixels_in_group"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65534
+        ]
+      },
+      "port": "hPos",
+      "role": "hPos"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          1,
+          65535
+        ]
+      },
+      "port": "slice_width",
+      "role": "slice_width"
+    },
+    {
+      "domain": {
+        "kind": "set",
+        "range": [
+          0,
+          1
+        ],
+        "values": [
+          0,
+          1
+        ]
+      },
+      "port": "prev_ich_selected",
+      "role": "prev_ich_selected"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          31
+        ]
+      },
+      "port": "primary_qp",
+      "role": "primary_qp"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          31
+        ]
+      },
+      "port": "prev_primary_qp",
+      "role": "prev_primary_qp"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          6
+        ]
+      },
+      "port": "ich_indices_in_group",
+      "role": "ich_indices_in_group"
+    },
+    {
+      "domain": {
+        "kind": "set",
+        "range": [
+          3,
+          4
+        ],
+        "values": [
+          3,
+          4
+        ]
+      },
+      "port": "num_components",
+      "role": "num_components"
+    },
+    {
+      "domain": {
+        "kind": "set",
+        "range": [
+          8,
+          16
+        ],
+        "values": [
+          8,
+          10,
+          12,
+          14,
+          16
+        ]
+      },
+      "port": "cpnt_bit_depth_0",
+      "role": "cpnt_bit_depth_0"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          8,
+          17
+        ]
+      },
+      "port": "cpnt_bit_depth_1",
+      "role": "cpnt_bit_depth_1"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          8,
+          17
+        ]
+      },
+      "port": "cpnt_bit_depth_2",
+      "role": "cpnt_bit_depth_2"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          8,
+          17
+        ]
+      },
+      "port": "cpnt_bit_depth_3",
+      "role": "cpnt_bit_depth_3"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          3
+        ]
+      },
+      "port": "unit_c_type_0",
+      "role": "unit_c_type_0"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          3
+        ]
+      },
+      "port": "unit_c_type_1",
+      "role": "unit_c_type_1"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          3
+        ]
+      },
+      "port": "unit_c_type_2",
+      "role": "unit_c_type_2"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          3
+        ]
+      },
+      "port": "unit_c_type_3",
+      "role": "unit_c_type_3"
+    },
+    {
+      "domain": {
+        "kind": "set",
+        "range": [
+          0,
+          0
+        ],
+        "values": [
+          0
+        ]
+      },
+      "port": "unit_start_h_pos_0",
+      "role": "unit_start_h_pos_0"
+    },
+    {
+      "domain": {
+        "kind": "set",
+        "range": [
+          0,
+          0
+        ],
+        "values": [
+          0
+        ]
+      },
+      "port": "unit_start_h_pos_1",
+      "role": "unit_start_h_pos_1"
+    },
+    {
+      "domain": {
+        "kind": "set",
+        "range": [
+          0,
+          0
+        ],
+        "values": [
+          0
+        ]
+      },
+      "port": "unit_start_h_pos_2",
+      "role": "unit_start_h_pos_2"
+    },
+    {
+      "domain": {
+        "kind": "set",
+        "range": [
+          0,
+          0
+        ],
+        "values": [
+          0
+        ]
+      },
+      "port": "unit_start_h_pos_3",
+      "role": "unit_start_h_pos_3"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "predicted_size_0",
+      "role": "predicted_size_0"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "predicted_size_1",
+      "role": "predicted_size_1"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "predicted_size_2",
+      "role": "predicted_size_2"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "predicted_size_3",
+      "role": "predicted_size_3"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "max_error_0",
+      "role": "max_error_0"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "max_error_1",
+      "role": "max_error_1"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "max_error_2",
+      "role": "max_error_2"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "max_error_3",
+      "role": "max_error_3"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "max_mid_error_0",
+      "role": "max_mid_error_0"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "max_mid_error_1",
+      "role": "max_mid_error_1"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "max_mid_error_2",
+      "role": "max_mid_error_2"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "max_mid_error_3",
+      "role": "max_mid_error_3"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "max_ich_error_0",
+      "role": "max_ich_error_0"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "max_ich_error_1",
+      "role": "max_ich_error_1"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "max_ich_error_2",
+      "role": "max_ich_error_2"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "max_ich_error_3",
+      "role": "max_ich_error_3"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_0_0",
+      "role": "quantized_residual_0_0"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_0_1",
+      "role": "quantized_residual_0_1"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_0_2",
+      "role": "quantized_residual_0_2"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_1_0",
+      "role": "quantized_residual_1_0"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_1_1",
+      "role": "quantized_residual_1_1"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_1_2",
+      "role": "quantized_residual_1_2"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_2_0",
+      "role": "quantized_residual_2_0"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_2_1",
+      "role": "quantized_residual_2_1"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_2_2",
+      "role": "quantized_residual_2_2"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_3_0",
+      "role": "quantized_residual_3_0"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_3_1",
+      "role": "quantized_residual_3_1"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          -65535,
+          65535
+        ]
+      },
+      "port": "quantized_residual_3_2",
+      "role": "quantized_residual_3_2"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "qlevel_luma_primary",
+      "role": "qlevel_luma_primary"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "qlevel_chroma_primary",
+      "role": "qlevel_chroma_primary"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "qlevel_luma_previous",
+      "role": "qlevel_luma_previous"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "qlevel_chroma_previous",
+      "role": "qlevel_chroma_previous"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "qlevel_luma_flat",
+      "role": "qlevel_luma_flat"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "qlevel_chroma_flat",
+      "role": "qlevel_chroma_flat"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_0_0",
+      "role": "orig_0_0"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_0_1",
+      "role": "orig_0_1"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_0_2",
+      "role": "orig_0_2"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_0_3",
+      "role": "orig_0_3"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_0_4",
+      "role": "orig_0_4"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_0_5",
+      "role": "orig_0_5"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_0_6",
+      "role": "orig_0_6"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_1_0",
+      "role": "orig_1_0"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_1_1",
+      "role": "orig_1_1"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_1_2",
+      "role": "orig_1_2"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_1_3",
+      "role": "orig_1_3"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_1_4",
+      "role": "orig_1_4"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_1_5",
+      "role": "orig_1_5"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_1_6",
+      "role": "orig_1_6"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_2_0",
+      "role": "orig_2_0"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_2_1",
+      "role": "orig_2_1"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_2_2",
+      "role": "orig_2_2"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_2_3",
+      "role": "orig_2_3"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_2_4",
+      "role": "orig_2_4"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_2_5",
+      "role": "orig_2_5"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_2_6",
+      "role": "orig_2_6"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_3_0",
+      "role": "orig_3_0"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_3_1",
+      "role": "orig_3_1"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_3_2",
+      "role": "orig_3_2"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_3_3",
+      "role": "orig_3_3"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_3_4",
+      "role": "orig_3_4"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_3_5",
+      "role": "orig_3_5"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_3_6",
+      "role": "orig_3_6"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          1
+        ]
+      },
+      "port": "return_value",
+      "role": "return_value"
+    }
+  ],
+  "proof_basis": "reviewed spec-domain differential strategy; not a legal-domain proof",
+  "schema_version": 1
+}

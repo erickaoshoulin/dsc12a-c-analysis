@@ -1796,6 +1796,8 @@ class Agent:
         )
         if (contract.get("semantics", {}) or {}).get("kind") == "flatness_window":
             return self.render_flatness_window_oracle(contract, inputs, output)
+        if (contract.get("semantics", {}) or {}).get("kind") == "ich_decision":
+            return self.render_ich_decision_oracle(contract, inputs, output)
         if isinstance(dynamic_window, dict) and dynamic_window:
             return self.render_dynamic_window_oracle(
                 contract,
@@ -2161,6 +2163,228 @@ class Agent:
                     dsc_state_t {state_name} = {{0}};
                     {setup}
                     int {output} = {name}({', '.join(call_arguments)});
+                    printf("%d\\n", {output});
+                }}
+                if (input != stdin) fclose(input);
+                return 0;
+            }}
+            """
+        ).strip() + "\n"
+
+    def render_ich_decision_oracle(
+        self,
+        contract: dict[str, Any],
+        inputs: list[dict[str, Any]],
+        output: str,
+    ) -> str:
+        """Freeze the read-only DSC state projection for IchDecision.
+
+        The C function itself remains the oracle.  This adapter supplies only
+        scalar state/config fields and the original-pixel taps it reads
+        transitively through IsOrigFlatHIndex.  The qLevel ports are frozen
+        outputs of the already-promoted MapQpToQlevel component; placing them
+        into the C model's lookup tables keeps this composite check modular
+        without copying the table implementation into the adapter.
+        """
+        function = contract_function(contract)
+        name = str(function.get("name"))
+        parameters = self.function_parameters(contract)
+        if not parameters:
+            raise RuntimeError("ich-decision oracle requires original C parameter facts")
+        semantics = contract.get("semantics", {}) or {}
+        strategy = semantics.get("legal_vector_strategy", {}) or {}
+        input_names = {str(port.get("name")) for port in inputs}
+
+        def require(key: str, fallback: str) -> str:
+            value = str(strategy.get(key, fallback))
+            if value not in input_names:
+                raise RuntimeError(f"ich-decision binding is not an input port: {value}")
+            return value
+
+        cfg_fields = {
+            "dsc_version_minor": require("version_port", "dsc_version_minor"),
+            "native_420": require("native_420_port", "native_420"),
+            "flatness_det_thresh": require("flatness_det_thresh_port", "flatness_det_thresh"),
+            "somewhat_flat_qp_delta": require("somewhat_flat_qp_delta_port", "somewhat_flat_qp_delta"),
+        }
+        state_fields = {
+            "unitsPerGroup": require("units_per_group_port", "units_per_group"),
+            "pixelsInGroup": require("pixels_in_group_port", "pixels_in_group"),
+            "hPos": require("hpos_port", "hPos"),
+            "sliceWidth": require("slice_width_port", "slice_width"),
+            "prevIchSelected": require("prev_ich_selected_port", "prev_ich_selected"),
+            "primaryQp": require("primary_qp_port", "primary_qp"),
+            "prevPrimaryQp": require("prev_primary_qp_port", "prev_primary_qp"),
+            "ichIndicesInGroup": require("ich_indices_in_group_port", "ich_indices_in_group"),
+            "numComponents": require("num_components_port", "num_components"),
+        }
+
+        def require_group(key: str, length: int) -> list[str]:
+            values = strategy.get(key, [])
+            if not isinstance(values, list) or len(values) != length:
+                raise RuntimeError(f"ich-decision binding requires {length} ports for {key}")
+            result = [str(value) for value in values]
+            if any(value not in input_names for value in result):
+                raise RuntimeError(f"ich-decision binding has a missing port for {key}")
+            return result
+
+        depth_ports = require_group("component_depth_ports", 4)
+        ctype_ports = require_group("unit_component_ports", 4)
+        start_ports = require_group("unit_start_hpos_ports", 4)
+        predicted_ports = require_group("predicted_size_ports", 4)
+        max_error_ports = require_group("max_error_ports", 4)
+        max_mid_error_ports = require_group("max_mid_error_ports", 4)
+        max_ich_error_ports = require_group("max_ich_error_ports", 4)
+        residual_ports = require_group("residual_ports", 12)
+        qlevel_ports = strategy.get("qlevel_ports", {}) or {}
+        qlevel_names = {
+            key: str(qlevel_ports.get(key, ""))
+            for key in ("luma_primary", "chroma_primary", "luma_previous",
+                        "chroma_previous", "luma_flat", "chroma_flat")
+        }
+        if any(value not in input_names for value in qlevel_names.values()):
+            raise RuntimeError("ich-decision oracle is missing a qLevel port")
+        orig_ports = strategy.get("orig_ports_by_component", {}) or {}
+        if not isinstance(orig_ports, dict):
+            raise RuntimeError("ich-decision oracle is missing original-pixel bindings")
+        orig_names: dict[int, list[str]] = {}
+        for component in range(4):
+            raw = orig_ports.get(str(component), orig_ports.get(component, []))
+            if not isinstance(raw, list) or len(raw) != 7:
+                raise RuntimeError("ich-decision oracle requires seven original taps per component")
+            values = [str(value) for value in raw]
+            if any(value not in input_names for value in values):
+                raise RuntimeError("ich-decision oracle has a missing original tap")
+            orig_names[component] = values
+
+        input_declarations = ", ".join(f"int {port['name']}" for port in inputs)
+        local_declarations = ", ".join(str(port["name"]) for port in inputs)
+        arguments = ", ".join(f"&{port['name']}" for port in inputs)
+        format_string = " ".join(["%d"] * len(inputs))
+        call_arguments = ", ".join([
+            "&dsc_cfg",
+            "&dsc_state",
+            str(strategy.get("adj_predicted_size_port", "adj_predicted_size")),
+            str(strategy.get("alt_pfx_port", "alt_pfx")),
+            str(strategy.get("alt_size_to_generate_port", "alt_size_to_generate")),
+        ])
+        assignments = [
+            f"dsc_cfg.{field} = {port};" for field, port in cfg_fields.items()
+        ]
+        assignments.extend([
+            f"dsc_state.{field} = {port};" for field, port in state_fields.items()
+        ])
+        assignments.extend([
+            f"dsc_state.cpntBitDepth[{index}] = {port};"
+            for index, port in enumerate(depth_ports)
+        ])
+        assignments.extend([
+            f"dsc_state.unitCType[{index}] = {port};"
+            for index, port in enumerate(ctype_ports)
+        ])
+        assignments.extend([
+            f"dsc_state.unitStartHPos[{index}] = {port};"
+            for index, port in enumerate(start_ports)
+        ])
+        assignments.extend([
+            f"dsc_state.predictedSize[{index}] = {port};"
+            for index, port in enumerate(predicted_ports)
+        ])
+        assignments.extend([
+            f"dsc_state.maxError[{index}] = {port};"
+            for index, port in enumerate(max_error_ports)
+        ])
+        assignments.extend([
+            f"dsc_state.maxMidError[{index}] = {port};"
+            for index, port in enumerate(max_mid_error_ports)
+        ])
+        assignments.extend([
+            f"dsc_state.maxIchError[{index}] = {port};"
+            for index, port in enumerate(max_ich_error_ports)
+        ])
+        assignments.extend([
+            f"dsc_state.quantizedResidual[{unit}][{sample}] = {residual_ports[unit * 3 + sample]};"
+            for unit in range(4) for sample in range(3)
+        ])
+        assignments.extend([
+            f"orig_line[{component}][PADDING_LEFT + {state_fields['hPos']} + {offset}] = {port};"
+            for component in range(4)
+            for offset, port in enumerate(orig_names[component])
+        ])
+        qlevel_primary_luma = qlevel_names["luma_primary"]
+        qlevel_primary_chroma = qlevel_names["chroma_primary"]
+        qlevel_previous_luma = qlevel_names["luma_previous"]
+        qlevel_previous_chroma = qlevel_names["chroma_previous"]
+        qlevel_flat_luma = qlevel_names["luma_flat"]
+        qlevel_flat_chroma = qlevel_names["chroma_flat"]
+        assignments.extend([
+            f"quant_luma[{state_fields['primaryQp']}] = {qlevel_primary_luma};",
+            f"quant_chroma[{state_fields['primaryQp']}] = {qlevel_primary_chroma};",
+            f"quant_luma[{state_fields['prevPrimaryQp']}] = {qlevel_previous_luma};",
+            f"quant_chroma[{state_fields['prevPrimaryQp']}] = {qlevel_previous_chroma};",
+            f"quant_luma[flat_qp] = {qlevel_flat_luma};",
+            f"quant_chroma[flat_qp] = {qlevel_flat_chroma};",
+        ])
+        setup = "\n                        ".join(assignments)
+        record_declarations = "\n                        ".join([
+            "dsc_cfg_t dsc_cfg = {0};",
+            "dsc_state_t dsc_state = {0};",
+            "int quant_luma[32] = {0};",
+            "int quant_chroma[32] = {0};",
+            "static int orig_line[NUM_COMPONENTS][PADDING_LEFT + 65535 + 8];",
+            "int flat_qp = dsc_state.primaryQp - dsc_cfg.somewhat_flat_qp_delta;",
+            "if (flat_qp < 0) flat_qp = 0;",
+            "dsc_state.quantTableLuma = quant_luma;",
+            "dsc_state.quantTableChroma = quant_chroma;",
+        ])
+        # Recompute flat_qp after the input assignments; the declaration above
+        # intentionally stays scalar, while the assignment is written after
+        # cfg/state binding in the generated loop.
+        record_declarations = "\n                        ".join([
+            "dsc_cfg_t dsc_cfg = {0};",
+            "dsc_state_t dsc_state = {0};",
+            "int quant_luma[32] = {0};",
+            "int quant_chroma[32] = {0};",
+            "static int orig_line[NUM_COMPONENTS][PADDING_LEFT + 65535 + 8];",
+        ])
+        setup = "\n                        ".join([
+            *[f"{field}" for field in assignments[:len(cfg_fields) + len(state_fields) + len(depth_ports) + len(ctype_ports) + len(start_ports) + len(predicted_ports) + len(max_error_ports) + len(max_mid_error_ports) + len(max_ich_error_ports) + len(residual_ports)]],
+            "dsc_state.quantTableLuma = quant_luma;",
+            "dsc_state.quantTableChroma = quant_chroma;",
+            "for (int table_i = 0; table_i < 32; ++table_i) { quant_luma[table_i] = 0; quant_chroma[table_i] = 0; }",
+            f"quant_luma[{state_fields['primaryQp']}] = {qlevel_primary_luma};",
+            f"quant_chroma[{state_fields['primaryQp']}] = {qlevel_primary_chroma};",
+            f"quant_luma[{state_fields['prevPrimaryQp']}] = {qlevel_previous_luma};",
+            f"quant_chroma[{state_fields['prevPrimaryQp']}] = {qlevel_previous_chroma};",
+            f"int flat_qp = {state_fields['primaryQp']} - {cfg_fields['somewhat_flat_qp_delta']};",
+            "if (flat_qp < 0) flat_qp = 0;",
+            f"quant_luma[flat_qp] = {qlevel_flat_luma};",
+            f"quant_chroma[flat_qp] = {qlevel_flat_chroma};",
+            *[f"dsc_state.origLine[{component}] = orig_line[{component}];" for component in range(4)],
+            *[f"orig_line[{component}][PADDING_LEFT + {state_fields['hPos']} + {offset}] = {port};"
+              for component in range(4)
+              for offset, port in enumerate(orig_names[component])],
+            *[f"dsc_state.quantizedResidual[{unit}][{sample}] = {residual_ports[unit * 3 + sample]};"
+              for unit in range(4) for sample in range(3)],
+        ])
+        return textwrap.dedent(
+            f"""
+            #include <stdio.h>
+            #include <string.h>
+            #include "dsc_types.h"
+            extern int {name}(dsc_cfg_t *, dsc_state_t *, int, int, int);
+            int main(int argc, char **argv) {{
+                FILE *input = stdin;
+                if (argc > 1) {{
+                    input = fopen(argv[1], "rb");
+                    if (!input) return 2;
+                }}
+                int {local_declarations};
+                int {output};
+                while (fscanf(input, "{format_string}", {arguments}) == {len(inputs)}) {{
+                    {record_declarations}
+                    {setup}
+                    {output} = {name}({call_arguments});
                     printf("%d\\n", {output});
                 }}
                 if (input != stdin) fclose(input);
@@ -3267,6 +3491,320 @@ class Agent:
             "formal_relation": "full finite scalar domains plus Table 6-2, component-depth, and residual-size relations are checked symbolically",
         }
 
+    def ich_decision_vector_iterator(
+        self,
+        contract: dict[str, Any],
+        input_ports: list[dict[str, Any]],
+        values: list[list[int]],
+        strategy: dict[str, Any],
+    ) -> tuple[Iterable[tuple[int, ...]], dict[str, Any]]:
+        """Generate structural and boundary vectors for the ICH decision.
+
+        The qLevel ports are frozen outputs of MapQpToQlevel, so vectors keep
+        equal QP table entries equal while allowing the composite to be
+        exercised over the complete scalar qLevel range.  Large residual,
+        sample, and horizontal-position ranges are represented by threshold
+        and geometry boundaries here; the formal gate retains the full finite
+        domains.
+        """
+        names = [str(port.get("name")) for port in input_ports]
+        by_name = {name: values[index] for index, name in enumerate(names)}
+
+        def require(key: str, fallback: str) -> str:
+            name = str(strategy.get(key, fallback))
+            if name not in by_name:
+                raise RuntimeError(f"ich-decision strategy port is missing: {name}")
+            return name
+
+        units_name = require("units_per_group_port", "units_per_group")
+        pixels_name = require("pixels_in_group_port", "pixels_in_group")
+        hpos_name = require("hpos_port", "hPos")
+        slice_name = require("slice_width_port", "slice_width")
+        version_name = require("version_port", "dsc_version_minor")
+        native_name = require("native_420_port", "native_420")
+        prev_ich_name = require("prev_ich_selected_port", "prev_ich_selected")
+        primary_name = require("primary_qp_port", "primary_qp")
+        previous_name = require("prev_primary_qp_port", "prev_primary_qp")
+        delta_name = require("somewhat_flat_qp_delta_port", "somewhat_flat_qp_delta")
+        flatness_name = require("flatness_det_thresh_port", "flatness_det_thresh")
+        adj_name = require("adj_predicted_size_port", "adj_predicted_size")
+        alt_pfx_name = require("alt_pfx_port", "alt_pfx")
+        alt_size_name = require("alt_size_to_generate_port", "alt_size_to_generate")
+        ich_indices_name = require("ich_indices_in_group_port", "ich_indices_in_group")
+        num_components_name = require("num_components_port", "num_components")
+        depth_ports = [str(value) for value in strategy.get("component_depth_ports", [])]
+        ctype_ports = [str(value) for value in strategy.get("unit_component_ports", [])]
+        start_ports = [str(value) for value in strategy.get("unit_start_hpos_ports", [])]
+        predicted_ports = [str(value) for value in strategy.get("predicted_size_ports", [])]
+        max_error_ports = [str(value) for value in strategy.get("max_error_ports", [])]
+        max_mid_error_ports = [str(value) for value in strategy.get("max_mid_error_ports", [])]
+        max_ich_error_ports = [str(value) for value in strategy.get("max_ich_error_ports", [])]
+        residual_ports = [str(value) for value in strategy.get("residual_ports", [])]
+        if any(
+            len(group) != 4 or any(name not in by_name for name in group)
+            for group in (depth_ports, ctype_ports, start_ports, predicted_ports,
+                          max_error_ports, max_mid_error_ports, max_ich_error_ports)
+        ):
+            raise RuntimeError("ich-decision strategy requires four lane groups")
+        if len(residual_ports) != 12 or any(name not in by_name for name in residual_ports):
+            raise RuntimeError("ich-decision strategy requires twelve residual ports")
+        qlevel_ports = strategy.get("qlevel_ports", {}) or {}
+        qlevel_names = {
+            key: str(qlevel_ports.get(key, ""))
+            for key in ("luma_primary", "chroma_primary", "luma_previous",
+                        "chroma_previous", "luma_flat", "chroma_flat")
+        }
+        if any(name not in by_name for name in qlevel_names.values()):
+            raise RuntimeError("ich-decision strategy requires six qLevel ports")
+        orig_ports = strategy.get("orig_ports_by_component", {}) or {}
+        sample_names = {
+            component: [str(value) for value in orig_ports.get(str(component), orig_ports.get(component, []))]
+            for component in range(4)
+        }
+        if any(len(group) != 7 or any(name not in by_name for name in group) for group in sample_names.values()):
+            raise RuntimeError("ich-decision strategy requires seven taps per component")
+
+        def unique(raw_values: Iterable[int]) -> list[int]:
+            result: list[int] = []
+            seen: set[int] = set()
+            for raw in raw_values:
+                value = int(raw)
+                if value not in seen:
+                    seen.add(value)
+                    result.append(value)
+            return result
+
+        def domain(name: str) -> list[int]:
+            result = [int(value) for value in by_name[name]]
+            if not result:
+                raise RuntimeError(f"ich-decision strategy has no legal values for {name}")
+            return result
+
+        def probes(name: str, preferred: Iterable[int] = ()) -> list[int]:
+            legal_values = domain(name)
+            legal_set = set(legal_values) if len(legal_values) <= 200000 else None
+            raw = [min(legal_values), max(legal_values), legal_values[len(legal_values) // 2], *preferred]
+            if len(legal_values) > 2:
+                raw.extend([legal_values[1], legal_values[-2]])
+            if legal_set is not None:
+                return unique(value for value in raw if value in legal_set)
+            lower, upper = min(legal_values), max(legal_values)
+            return unique(value for value in raw if lower <= value <= upper)
+
+        def set_if_legal(context: dict[str, int], name: str, value: int) -> None:
+            legal_values = by_name[name]
+            if value in legal_values:
+                context[name] = int(value)
+
+        def selected_qlevel(component: int, raw_luma: int, raw_chroma: int,
+                            version: int, native420: int, depths: tuple[int, int, int, int]) -> int:
+            if component % 3 == 0 or (native420 != 0 and component == 1):
+                return int(raw_luma)
+            if version == 2 and depths[0] == depths[1] and raw_chroma > 0:
+                return int(raw_chroma) - 1
+            return int(raw_chroma)
+
+        def qlevels_legal(context: dict[str, int], depths: tuple[int, int, int, int]) -> bool:
+            version = int(context[version_name])
+            native420 = int(context[native_name])
+            for raw_luma, raw_chroma in (
+                (context[qlevel_names["luma_primary"]], context[qlevel_names["chroma_primary"]]),
+                (context[qlevel_names["luma_previous"]], context[qlevel_names["chroma_previous"]]),
+                (context[qlevel_names["luma_flat"]], context[qlevel_names["chroma_flat"]]),
+            ):
+                for component, depth in enumerate(depths):
+                    if selected_qlevel(component, raw_luma, raw_chroma, version, native420, depths) > depth:
+                        return False
+            return True
+
+        def qps_consistent(context: dict[str, int]) -> bool:
+            primary = int(context[primary_name])
+            previous = int(context[previous_name])
+            delta = int(context[delta_name])
+            flat = max(primary - delta, 0)
+            pairs = [
+                (primary, previous, "primary", "previous"),
+                (primary, flat, "primary", "flat"),
+                (previous, flat, "previous", "flat"),
+            ]
+            for left_qp, right_qp, left, right in pairs:
+                if left_qp != right_qp:
+                    continue
+                if context[qlevel_names[f"luma_{left}"]] != context[qlevel_names[f"luma_{right}"]]:
+                    return False
+                if context[qlevel_names[f"chroma_{left}"]] != context[qlevel_names[f"chroma_{right}"]]:
+                    return False
+            return True
+
+        def emit(context: dict[str, int]) -> tuple[int, ...]:
+            return tuple(int(context[name]) for name in names)
+
+        default_values = {
+            name: int(domain(name)[len(domain(name)) // 2])
+            for name in names
+        }
+        for name in start_ports:
+            default_values[name] = int(domain(name)[0])
+        for name in residual_ports:
+            default_values[name] = 0
+        for names_group in (max_error_ports, max_mid_error_ports, max_ich_error_ports):
+            for name in names_group:
+                default_values[name] = 0
+        for name in predicted_ports:
+            default_values[name] = 0
+        for component in range(4):
+            for name in sample_names[component]:
+                default_values[name] = 0
+
+        depth_variants = [
+            tuple(int(value) for value in values)
+            for values in (
+                (8, 8, 8, 8),
+                (10, 11, 10, 10),
+                (12, 13, 12, 12),
+                (16, 16, 16, 16),
+                (16, 17, 16, 17),
+            )
+            if all(values[index] in by_name[depth_ports[index]] for index in range(4))
+        ]
+        if not depth_variants:
+            depth_variants = [tuple(int(domain(name)[0]) for name in depth_ports)]
+        qlevel_profiles = [
+            (0, 0, 0, 0, 0, 0),
+            (1, 2, 3, 4, 5, 6),
+            (8, 8, 8, 8, 8, 8),
+            (16, 16, 16, 16, 16, 16),
+            (0, 16, 4, 12, 0, 16),
+        ]
+        qlevel_profiles = [
+            profile for profile in qlevel_profiles
+            if all(profile[index] in by_name[qlevel_names[key]]
+                   for index, key in enumerate(("luma_primary", "chroma_primary",
+                                                "luma_previous", "chroma_previous",
+                                                "luma_flat", "chroma_flat")))
+        ]
+        if not qlevel_profiles:
+            qlevel_profiles = [tuple(0 for _ in range(6))]
+
+        structural: list[dict[str, int]] = []
+        primary_values = unique([min(domain(primary_name)), 0, 16, max(domain(primary_name))])
+        previous_values = unique([min(domain(previous_name)), 0, 16, max(domain(previous_name))])
+        hpos_values = unique([min(domain(hpos_name)), 0, 1, 2, 5, max(domain(hpos_name))])
+        slice_values = unique([min(domain(slice_name)), 1, 2, 3, 8, max(domain(slice_name))])
+        flatness_values = probes(flatness_name, [2, 4, 8, 32, 512])
+        unit_patterns = {
+            3: ((0, 1, 2, 0), (2, 1, 0, 0), (0, 0, 0, 0)),
+            4: ((0, 1, 2, 3), (3, 2, 1, 0), (0, 2, 1, 3)),
+        }
+        for depths in depth_variants:
+            for primary in primary_values:
+                for previous in previous_values:
+                    for version in probes(version_name):
+                        for native420 in probes(native_name):
+                            for units in probes(units_name):
+                                patterns = unit_patterns.get(int(units), ((0, 1, 2, 3),))
+                                for pattern in patterns:
+                                    if any(pattern[index] not in by_name[ctype_ports[index]] for index in range(4)):
+                                        continue
+                                    for num_components in probes(num_components_name):
+                                        for prev_ich in probes(prev_ich_name):
+                                            for hpos in hpos_values:
+                                                for slice_width in slice_values:
+                                                    for profile in qlevel_profiles:
+                                                        if len(structural) >= 12000:
+                                                            break
+                                                        context = dict(default_values)
+                                                        context.update({
+                                                            primary_name: int(primary),
+                                                            previous_name: int(previous),
+                                                            version_name: int(version),
+                                                            native_name: int(native420),
+                                                            units_name: int(units),
+                                                            pixels_name: int(domain(pixels_name)[0]),
+                                                            num_components_name: int(num_components),
+                                                            prev_ich_name: int(prev_ich),
+                                                            hpos_name: int(hpos),
+                                                            slice_name: int(slice_width),
+                                                            flatness_name: int(flatness_values[0]),
+                                                            delta_name: int(domain(delta_name)[0]),
+                                                            adj_name: int(probes(adj_name, [0, 1, 8, 16])[0]),
+                                                            alt_pfx_name: int(probes(alt_pfx_name, [0, 1, 8])[0]),
+                                                            alt_size_name: int(probes(alt_size_name, [1, 8, 17])[0]),
+                                                            ich_indices_name: int(probes(ich_indices_name, [0, 1, 3, 6])[0]),
+                                                        })
+                                                        for qlevel_name, qlevel_value in zip(qlevel_names.values(), profile):
+                                                            context[qlevel_name] = int(qlevel_value)
+                                                        for index, port in enumerate(ctype_ports):
+                                                            context[port] = int(pattern[index])
+                                                        if qlevels_legal(context, depths) and qps_consistent(context):
+                                                            for index, port in enumerate(depth_ports):
+                                                                context[port] = int(depths[index])
+                                                            structural.append(context)
+
+        residual_values = [0, -1, 1, -2, 2, -4, 3, -8, 7, -16, 15,
+                           -32768, 32767, -65535, 65535]
+        for threshold in (contract.get("semantics", {}) or {}).get("thresholds", []):
+            if not isinstance(threshold, dict):
+                continue
+            for key in ("lower", "upper"):
+                if threshold.get(key) is not None:
+                    residual_values.extend([int(threshold[key]), int(threshold[key]) - 1, int(threshold[key]) + 1])
+        residual_values = [value for value in unique(residual_values) if value in set(domain(residual_ports[0]))]
+        error_values = [value for value in (0, 1, 2, 16, 255, 65535)
+                        if value in by_name[max_error_ports[0]]]
+        orig_values = [value for value in (0, 1, 2, 4, 8, 16, 32, 255, 65535)
+                       if value in by_name[sample_names[0][0]]]
+        structural_probe = structural[: min(len(structural), 128)]
+
+        def vectors() -> Iterable[tuple[int, ...]]:
+            seen: set[tuple[int, ...]] = set()
+
+            def yield_case(context: dict[str, int]) -> Iterable[tuple[int, ...]]:
+                vector = emit(context)
+                if vector not in seen:
+                    seen.add(vector)
+                    yield vector
+
+            for context in structural:
+                yield from yield_case(context)
+            for context in structural_probe:
+                for port_name in residual_ports:
+                    for value in residual_values:
+                        case = dict(context)
+                        case[port_name] = int(value)
+                        yield from yield_case(case)
+                for port_name in max_error_ports + max_mid_error_ports + max_ich_error_ports:
+                    for value in error_values:
+                        case = dict(context)
+                        case[port_name] = int(value)
+                        yield from yield_case(case)
+                for component in range(4):
+                    taps = sample_names[component]
+                    for offset, port_name in enumerate(taps):
+                        for value in orig_values:
+                            case = dict(context)
+                            case[port_name] = int(value)
+                            yield from yield_case(case)
+                for threshold in flatness_values:
+                    case = dict(context)
+                    case[flatness_name] = int(threshold)
+                    yield from yield_case(case)
+
+        return vectors(), {
+            "kind": "ich_decision",
+            "exhaustive": False,
+            "formal_required": True,
+            "coverage_mode": "STRUCTURAL_PLUS_RESIDUAL_ERROR_AND_ORIGINAL_PIXEL_BOUNDARIES",
+            "source": strategy.get("source", "DSC 1.2a section 6.5.3.2 / MN_ENC_ICH_MODE_SELECT"),
+            "structural_cases": len(structural),
+            "boundary_contexts": len(structural_probe),
+            "residual_probe_values": residual_values,
+            "error_probe_values": error_values,
+            "qlevel_relation": "qLevel ports are frozen MapQpToQlevel outputs; equal QP table indices must carry equal values",
+            "unit_relation": "unitsPerGroup is the reviewed {3,4} domain and source loops are unrolled to four lanes",
+            "formal_relation": "full finite scalar domains plus qLevel/depth and equal-QP witness relations are checked symbolically",
+        }
+
     def flatness_window_vector_iterator(
         self,
         contract: dict[str, Any],
@@ -3576,6 +4114,8 @@ class Agent:
             return self.using_midpoint_vector_iterator(contract, input_ports, values, table_strategy)
         if isinstance(table_strategy, dict) and table_strategy.get("kind") == "estimate_bits":
             return self.estimate_bits_vector_iterator(contract, input_ports, values, table_strategy)
+        if isinstance(table_strategy, dict) and table_strategy.get("kind") == "ich_decision":
+            return self.ich_decision_vector_iterator(contract, input_ports, values, table_strategy)
         normalized = {re.sub(r"[^a-z0-9]", "", name.lower()): name for name in names}
         bit_depth_name = normalized.get("cpntbitdepth")
         qlevel_name = normalized.get("qlevel")
@@ -4048,12 +4588,12 @@ class Agent:
         """
         semantics = contract.get("semantics", {}) or {}
         strategy = semantics.get("legal_vector_strategy") or {}
-        if strategy.get("kind") not in {"windowed_boundary", "flatness_window", "using_midpoint", "estimate_bits"}:
+        if strategy.get("kind") not in {"windowed_boundary", "flatness_window", "using_midpoint", "estimate_bits", "ich_decision"}:
             return {
                 "schema_version": 1,
                 "status": "NOT_APPLICABLE",
                 "proof_complete": False,
-                "reason": "formal AST proof is only enabled for reviewed windowed_boundary, flatness_window, using_midpoint, or estimate_bits contracts",
+                "reason": "formal AST proof is only enabled for reviewed windowed_boundary, flatness_window, using_midpoint, estimate_bits, or ich_decision contracts",
             }
         helper = self.root / "tools" / "formal_rtl.py"
         if not helper.is_file():
@@ -5112,7 +5652,9 @@ class Agent:
 
     def copy_model(self, label: str) -> pathlib.Path:
         model_root = pathlib.Path(str(self.input_facts["source_root"]))
-        temp_root = pathlib.Path(tempfile.mkdtemp(prefix=f"dsc-cicd-{label}-", dir=str(self.root / "tmp")))
+        temp_parent = self.root / "tmp"
+        temp_parent.mkdir(parents=True, exist_ok=True)
+        temp_root = pathlib.Path(tempfile.mkdtemp(prefix=f"dsc-cicd-{label}-", dir=str(temp_parent)))
         destination = temp_root / model_root.name
         ignore = shutil.ignore_patterns(".git", "__pycache__", "target", "build", "dsc-rs", "operator_bittrue")
         shutil.copytree(model_root, destination, ignore=ignore)
@@ -5122,9 +5664,24 @@ class Agent:
                    candidate: dict[str, Any]) -> dict[str, Any]:
         scenarios = self.discover_matrix()
         if len(scenarios) < 1:
-            return {"status": "INFRASTRUCTURE_FAILURE", "reason": "no baseline scripts discovered"}
+            result = {"status": "INFRASTRUCTURE_FAILURE", "reason": "no baseline scripts discovered"}
+            write_json(artifact / "matrix-receipt.json", result)
+            return result
         base_model = self.copy_model("baseline")
         overlay_model: pathlib.Path | None = None
+
+        def persist_matrix_failure(result: dict[str, Any]) -> dict[str, Any]:
+            roots: list[pathlib.Path] = [base_model, self.root]
+            if overlay_model is not None:
+                roots.insert(1, overlay_model)
+            scrubbed = scrub_paths(result, roots)
+            write_json(artifact / "matrix-receipt.json", scrubbed)
+            if isinstance(scrubbed.get("overlay"), dict):
+                write_json(artifact / "overlay-receipt.json", scrubbed["overlay"])
+            if isinstance(scrubbed.get("compile"), dict):
+                write_json(artifact / "overlay-compile-receipt.json", scrubbed["compile"])
+            return scrubbed
+
         baseline_results = []
         try:
             for scenario in scenarios:
@@ -5140,11 +5697,11 @@ class Agent:
                     "size_bytes": golden.stat().st_size if golden.is_file() else None,
                 })
             if not all(item["status"] == "PASS" for item in baseline_results):
-                return {
+                return persist_matrix_failure({
                     "status": "INFRASTRUCTURE_FAILURE",
                     "reason": "baseline matrix failed",
                     "baseline": baseline_results,
-                }
+                })
             overlay_temp = pathlib.Path(tempfile.mkdtemp(prefix="dsc-cicd-overlay-", dir=str(self.root / "tmp")))
             overlay_model = overlay_temp / base_model.name
             shutil.copytree(base_model, overlay_model, ignore=shutil.ignore_patterns(".git", "__pycache__", "target", "build", "dsc-rs", "operator_bittrue"))
@@ -5155,21 +5712,57 @@ class Agent:
             overlay_paths = self.write_overlay_sources(contract, overlay_model / "source", module, overlay_copy_sv)
             overlay_receipt = self.run_overlay_rewriter(contract, overlay_model / "source", overlay_paths["header"])
             if overlay_receipt.get("status") != "PASS":
-                return {
+                return persist_matrix_failure({
                     "status": "INFRASTRUCTURE_FAILURE",
                     "reason": "Clang overlay rewrite failed",
                     "baseline": baseline_results,
                     "overlay": overlay_receipt,
-                }
+                })
+            frozen_input_count = sum(
+                1 for port in contract.get("interface", {}).get("ports", [])
+                if port.get("direction") == "input"
+            )
+            call_sites = [
+                site for site in overlay_receipt.get("call_sites", [])
+                if isinstance(site, dict)
+            ]
+            call_site_arities = [len(site.get("arguments", [])) for site in call_sites]
+            if call_sites and any(arity != frozen_input_count for arity in call_site_arities):
+                # The immutable caller still owns a pointer/state projection
+                # that is not represented by the frozen scalar DUT interface.
+                # Keep that caller on C_ONLY; never invent a guessed adapter or
+                # pass dummy state just to make RTL_RETURN compile.
+                return persist_matrix_failure({
+                    "status": "COMPOSITION_BLOCKED",
+                    "reason": "caller call signature does not provide the frozen DUT interface; retain C boundary",
+                    "baseline": baseline_results,
+                    "overlay": overlay_receipt,
+                    "composition": {
+                        "status": "C_BOUNDARY",
+                        "frozen_input_count": frozen_input_count,
+                        "call_site_argument_counts": call_site_arities,
+                        "c_only_status": "PASS",
+                        "rtl_modes": "NOT_RUN",
+                    },
+                    "modes": {
+                        "C_ONLY": {
+                            "status": "PASS",
+                            "execution_status": "BASELINE_ONLY",
+                            "scenarios": baseline_results,
+                        },
+                        "SHADOW": {"status": "NOT_RUN", "scenarios": []},
+                        "RTL_RETURN": {"status": "NOT_RUN", "scenarios": []},
+                    },
+                })
             compile_receipt = self.compile_overlay(contract, overlay_model / "source", module, overlay_copy_sv)
             if compile_receipt.get("status") != "PASS":
-                return {
+                return persist_matrix_failure({
                     "status": "INFRASTRUCTURE_FAILURE",
                     "reason": "caller/callee overlay compile failed",
                     "baseline": baseline_results,
                     "overlay": overlay_receipt,
                     "compile": compile_receipt,
-                }
+                })
             mode_results: dict[str, Any] = {}
             binary = overlay_model / "source" / "dsc"
             for mode in ("C_ONLY", "SHADOW", "RTL_RETURN"):
@@ -5223,6 +5816,7 @@ class Agent:
             write_json(artifact / "rtl-return-receipt.json", result["modes"]["RTL_RETURN"])
             write_json(artifact / "bitstream-receipt.json", result)
             write_json(artifact / "overlay-receipt.json", result["overlay"])
+            write_json(artifact / "matrix-receipt.json", result)
             return scrub_paths(result, [base_model, overlay_model, self.root])
         finally:
             shutil.rmtree(base_model.parent, ignore_errors=True)
@@ -5252,7 +5846,11 @@ class Agent:
             candidate_copy = dict(candidate)
             candidate_copy["path"] = str(candidate_path.relative_to(rejected_artifact))
             candidate_copy["module"] = candidate_result.get("module") or candidate.get("module")
-            if not source.is_file() or not candidate_copy.get("module"):
+            skip_matrix = unit_status in {"COUNTEREXAMPLE", "INFRASTRUCTURE_FAILURE", "UNPROVED"}
+            if skip_matrix:
+                matrix_status = "NOT_RUN_UNIT_REJECTED"
+                bitstream_gate = "FAIL"
+            elif not source.is_file() or not candidate_copy.get("module"):
                 matrix_status = "NOT_RUN_COMPILE_FAILURE"
                 bitstream_gate = "FAIL"
             else:
@@ -5260,7 +5858,7 @@ class Agent:
                 matrix = self.run_matrix(contract, rejected_artifact, candidate_copy)
                 matrix_status = str(matrix.get("status", "INFRASTRUCTURE_FAILURE"))
                 bitstream_gate = "PASS" if matrix_status == "PASS" else "FAIL"
-            composition_status = "FAIL"
+            composition_status = "NOT_RUN" if skip_matrix else "FAIL"
             if matrix:
                 composition_status = "PASS" if (
                     matrix.get("modes", {}).get("SHADOW", {}).get("status") == "PASS"
@@ -5283,6 +5881,7 @@ class Agent:
                     "status": bitstream_gate,
                     "matrix_status": matrix_status,
                     "receipt": "bitstream-receipt.json" if matrix else None,
+                    "reason": "unit rejection is already decisive" if skip_matrix else None,
                 },
                 "composition_gate": {
                     "status": composition_status,
@@ -5454,16 +6053,47 @@ class Agent:
                 return result
             candidate = next(item for item in generation.get("candidates", []) if item.get("candidate") == unit["promoted_candidate"])
             matrix = self.run_matrix(contract, artifact, candidate)
+            matrix_failure = matrix.get("reason") if matrix.get("status") != "PASS" else None
             shadow_status = matrix.get("modes", {}).get("SHADOW", {}).get("status") == "PASS"
             rtl_status = matrix.get("modes", {}).get("RTL_RETURN", {}).get("status") == "PASS"
-            self.update_state(cid, "SHADOW_PASS", "PASS" if shadow_status else "FAIL", artifacts=[str(artifact.relative_to(self.root))])
-            self.update_state(cid, "RTL_RETURN_PASS", "PASS" if rtl_status else "FAIL", artifacts=[str(artifact.relative_to(self.root))])
+            self.update_state(
+                cid,
+                "SHADOW_PASS",
+                "PASS" if shadow_status else "FAIL",
+                artifacts=[str(artifact.relative_to(self.root))],
+                failure=matrix_failure,
+            )
+            self.update_state(
+                cid,
+                "RTL_RETURN_PASS",
+                "PASS" if rtl_status else "FAIL",
+                artifacts=[str(artifact.relative_to(self.root))],
+                failure=matrix_failure,
+            )
             dependency = self.dependency_verify(contract, item, artifact, unit, matrix)
-            self.update_state(cid, "DEPENDENCIES_VERIFIED", dependency.get("status", "FAIL"), artifacts=[str(artifact.relative_to(self.root))])
+            self.update_state(
+                cid,
+                "DEPENDENCIES_VERIFIED",
+                dependency.get("status", "FAIL"),
+                artifacts=[str(artifact.relative_to(self.root))],
+                failure=dependency.get("failure_reason"),
+            )
             bitstream_status = matrix.get("status") == "PASS"
-            self.update_state(cid, "BITSTREAM_PASS", "PASS" if bitstream_status else "FAIL", artifacts=[str(artifact.relative_to(self.root))])
+            self.update_state(
+                cid,
+                "BITSTREAM_PASS",
+                "PASS" if bitstream_status else "FAIL",
+                artifacts=[str(artifact.relative_to(self.root))],
+                failure=matrix_failure,
+            )
             final = "PROMOTED" if bitstream_status and dependency.get("status") == "PASS" else "FAILED"
-            self.update_state(cid, "PROMOTED" if final == "PROMOTED" else "BITSTREAM_PASS", final, artifacts=[str(artifact.relative_to(self.root))])
+            self.update_state(
+                cid,
+                "PROMOTED" if final == "PROMOTED" else "BITSTREAM_PASS",
+                final,
+                artifacts=[str(artifact.relative_to(self.root))],
+                failure=None if final == "PROMOTED" else (matrix_failure or dependency.get("failure_reason")),
+            )
             result = {
                 "contract_id": cid,
                 "status": final,

@@ -1,0 +1,26 @@
+{
+  "mutations": [
+    {
+      "description": "interpret signed input as unsigned",
+      "id": "signedness_flip"
+    },
+    {
+      "description": "subtract one at each lower legal boundary",
+      "id": "boundary_minus_one"
+    },
+    {
+      "description": "add one at each upper legal boundary",
+      "id": "boundary_plus_one"
+    },
+    {
+      "description": "change quantization rounding table entry",
+      "id": "rounding_off_by_one"
+    },
+    {
+      "description": "select adjacent table element",
+      "id": "array_index_off_by_one"
+    }
+  ],
+  "schema_version": 1,
+  "status": "PLANNED_AND_USED_BY_VERIFIER"
+}
