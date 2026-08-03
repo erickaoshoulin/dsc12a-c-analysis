@@ -1,7 +1,7 @@
 # Traceability orphans
 
-- Untraced spec anchors: 159
-- Untraced production functions: 61
+- Untraced spec anchors: 156
+- Untraced production functions: 59
 
 ## Spec anchors
 
@@ -19,7 +19,6 @@
 - `pdf:table:1-3`
 - `pdf:section:1.6`
 - `pdf:section:1.6.1`
-- `pdf:section:1.6.2`
 - `pdf:section:1.7`
 - `pdf:section:1.8`
 - `pdf:table:1-4`
@@ -113,7 +112,6 @@
 - `pdf:figure:6-9`
 - `pdf:section:6.5.3`
 - `pdf:section:6.5.3.3`
-- `pdf:section:6.6.1`
 - `pdf:section:6.6.2`
 - `pdf:table:6-1`
 - `pdf:section:6.6.3`
@@ -134,7 +132,6 @@
 - `pdf:figure:6-16`
 - `pdf:figure:6-18`
 - `pdf:section:7`
-- `pdf:table:6-2`
 - `pdf:figure:7-1`
 - `pdf:section:7.1`
 - `pdf:section:7.3`
@@ -174,7 +171,6 @@
 - `code:function:c:@F@ErrorHandler`
 - `code:function:c:@F@EscapeCodeSize`
 - `code:function:c:@F@EstimateBitsForGroup`
-- `code:function:c:@F@FindResidualSize`
 - `code:function:c:@F@GetBits`
 - `code:function:c:@F@HistoryLookup`
 - `code:function:c:@F@InitializeDSCState`
@@ -190,7 +186,6 @@
 - `code:function:c:@F@UseICHistory`
 - `code:function:c:@F@UsingMidpoint`
 - `code:function:c:@F@VLCGroup`
-- `code:function:c:@F@ceil_log2`
 - `code:function:c:@F@conv`
 - `code:function:c:@F@convertbits`
 - `code:function:c:@F@fifo_clear`

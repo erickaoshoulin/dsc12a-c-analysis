@@ -16,6 +16,10 @@
 - `EXACT` page 80 `pdf:model-note:MN_MIDPOINT_PRED:p080` (exact_mn_id)
 - `EXACT` page 80 `pdf:section:6.4.3` (exact_mn_id)
 
+## `FindResidualSize`
+
+- `REVIEWED` page 91 `pdf:section:6.6.1` (reviewed_exact_spec)
+
 ## `FlatnessAdjustment`
 
 - `EXACT` page 111 `pdf:model-note:MN_ENC_FLATNESS_DECISION:p111` (exact_mn_id)
@@ -34,7 +38,8 @@
 
 ## `IsOrigFlatHIndex`
 
-- `PROPOSED` page 111 `pdf:figure:6-19` (normalized_function_identifier)
+- `REVIEWED` page 111 `pdf:figure:6-19` (normalized_function_identifier)
+- `REVIEWED` page 111 `pdf:section:6.8.5.1` (reviewed_exact_spec)
 
 ## `IsOrigWithinQerr`
 
@@ -54,6 +59,10 @@
 
 - `EXACT` page 83 `pdf:model-note:MN_IQ_RECON:p083` (exact_mn_id)
 - `EXACT` page 83 `pdf:section:6.4.6` (exact_mn_id)
+
+## `Qp2Qlevel`
+
+- `REVIEWED` page 114 `pdf:table:6-2` (reviewed_exact_spec)
 
 ## `QuantizeResidual`
 
@@ -106,6 +115,10 @@
 
 - `EXACT` page 118 `pdf:model-note:MN_DEC_MPP_SELECT:p118` (exact_mn_id)
 - `EXACT` page 118 `pdf:section:7.5.2.2` (exact_mn_id)
+
+## `ceil_log2`
+
+- `REVIEWED` page 22 `pdf:section:1.6.2` (reviewed_exact_spec)
 
 ## `make_qp_table`
 

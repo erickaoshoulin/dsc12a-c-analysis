@@ -1,0 +1,287 @@
+{
+  "arithmetic_semantics": {
+    "overflow": "no signed overflow on the locked legal domain; outside-domain behavior is not contracted",
+    "rounding": "integer division by two truncates toward zero; modulo is C remainder on non-negative operands",
+    "saturation": "none",
+    "shifts": "left shifts have operands in [8,16], qlevel is [0,16], and all shifted values are non-negative",
+    "signedness": "C int operands are signed, but the legal-domain inputs and output are non-negative"
+  },
+  "contract_id": "quantizeresidual",
+  "coverage": {
+    "branch_coverage_percent": 100.0,
+    "execution_count": 2426112,
+    "line_coverage_percent": 85.714,
+    "production_reachable": true,
+    "status": "EXECUTED"
+  },
+  "dependencies": {
+    "direct_callees": [],
+    "read_fields": [],
+    "return_dependencies": [],
+    "unresolved": []
+  },
+  "do_not_edit": true,
+  "function": {
+    "clang_usr": "c:@F@QuantizeResidual",
+    "name": "QuantizeResidual",
+    "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/dsc_codec.c#L245-L255",
+    "qualified_name": "QuantizeResidual",
+    "source_body_sha256": "530349291cfeb32a0b9974bec45fda9796ff9aaab3e67709cc9aad82644cdd0c",
+    "source_file": "dsc_codec.c",
+    "source_file_sha256": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf",
+    "source_span": {
+      "end_column": 1,
+      "end_line": 255,
+      "start_column": 5,
+      "start_line": 245
+    }
+  },
+  "interface": {
+    "inputs": [
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "runtime sample-domain evidence for 16bpc residuals",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "e",
+        "signed": true
+      },
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "EXACT Table 6-2 qLevel domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "qlevel",
+        "signed": false
+      }
+    ],
+    "output": {
+      "c_type": "int",
+      "legal_range": [
+        -65535,
+        65535
+      ],
+      "logical_width": 17,
+      "name": "return_value",
+      "signed": true
+    },
+    "ports": [
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "runtime sample-domain evidence for 16bpc residuals",
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "e",
+        "role": "e",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "EXACT Table 6-2 qLevel domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "qlevel",
+        "role": "qlevel",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "output",
+        "name": "return_value",
+        "role": "return_value",
+        "signed": true,
+        "width": 17
+      }
+    ]
+  },
+  "library_promotion": {
+    "artifact_dir": "artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
+    "module": "quantizeresidual",
+    "promoted_at": "2026-08-02T21:15:56Z",
+    "rtl_sha256": "7c9d729bbe1ac193b6f355b3d8281a92ab350a9c27a7717145fdea31a863d9cd",
+    "status": "PASS"
+  },
+  "lock": {
+    "contract_sha256": "2f39bceab220d9ab24e47825f51f0c80f9b59ef2c586eb96e113343d53ba6364",
+    "do_not_edit": true,
+    "locked_from": "proposed/quantizeresidual.yaml"
+  },
+  "lock_status": "LOCKED_GENERATED_REVIEWED",
+  "obligations": [],
+  "origin": "tool_discovered_reviewed_override",
+  "provenance": {
+    "coverage_sha256": "f7faaab37dc4ca79a6f811ab817435cec4dae8dad8bf457a371dc62e786a7892",
+    "source_hashes_sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+    "spec_sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+  },
+  "read_struct_fields": [],
+  "reviewed_evidence": [
+    {
+      "anchor_id": "pdf:model-note:MN_ENC_QUANTIZATION:p083",
+      "kind": "EXACT_SPEC",
+      "reason": "DSC 1.2a 6.4.5 defines signed residual E, qLevel, ROUND and truncating shift semantics."
+    },
+    {
+      "anchor_id": "pdf:section:6.4.5",
+      "kind": "EXACT_TABLE",
+      "reason": "The legal qLevel domain is the Table 6-2 qLevel range [0,16]."
+    },
+    {
+      "kind": "RUNTIME_EVIDENCE",
+      "reason": "A residual is the difference of two component samples; the widest supported sample domain is [-(2^16-1), 2^16-1].",
+      "source": "8..16 bpc smoke input domains"
+    }
+  ],
+  "reviewed_override_applied": {
+    "match": {
+      "exact_anchor_id": "pdf:model-note:MN_ENC_QUANTIZATION:p083"
+    },
+    "review_status": "REVIEWED",
+    "reviewed_by": "codex"
+  },
+  "schema_version": 1,
+  "selection": {
+    "candidate_rank": 5,
+    "eligible_after_coverage": true,
+    "eligible_static": true,
+    "leaf": true,
+    "rank": 5,
+    "score": 100.0,
+    "selection_basis": "tool-ranked production/output leaf candidate after dynamic coverage join"
+  },
+  "semantics": {
+    "expression": "e > 0 ? ((e + QuantOffset[qlevel]) >> qlevel) : -((QuantOffset[qlevel] - e) >> qlevel)",
+    "kind": "quantization",
+    "quant_offset": [
+      0,
+      0,
+      1,
+      3,
+      7,
+      15,
+      31,
+      63,
+      127,
+      255,
+      511,
+      1023,
+      2047,
+      4095,
+      8191,
+      16383,
+      32767
+    ],
+    "rounding": "QuantOffset[qlevel] = (qlevel > 0) ? ((1 << qlevel) / 2 - 1) : 0",
+    "signedness": "C signed int arithmetic; legal residual and result ranges fit signed 17 bits"
+  },
+  "spec_links": [
+    {
+      "anchor_id": "pdf:model-note:MN_ENC_QUANTIZATION:p083",
+      "evidence": "C comment and PDF anchor both contain MN_ENC_QUANTIZATION",
+      "page": 83,
+      "section": "6.4.5",
+      "short_anchor": "pdf:model-note:MN_ENC_QUANTIZATION:p083",
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:section:6.4.5",
+      "evidence": "C comment and PDF anchor both contain MN_ENC_QUANTIZATION",
+      "page": 83,
+      "section": "6.4.5",
+      "short_anchor": "pdf:section:6.4.5",
+      "status": "EXACT"
+    }
+  ],
+  "static_analysis": {
+    "callees": [],
+    "contributes_to_observable_output": true,
+    "direct_effects": {
+      "allocation": false,
+      "assertion": false,
+      "indirect_call": false,
+      "io": false,
+      "logging": false,
+      "state_write": false,
+      "unknown_facts": []
+    },
+    "globals_read": [
+      {
+        "context": "expression",
+        "location": {
+          "column": 13,
+          "file": "dsc_codec.c",
+          "line": 251
+        },
+        "name": "QuantOffset",
+        "record": "",
+        "role": "READ",
+        "type": "const int[17]"
+      },
+      {
+        "context": "expression",
+        "location": {
+          "column": 11,
+          "file": "dsc_codec.c",
+          "line": 253
+        },
+        "name": "QuantOffset",
+        "record": "",
+        "role": "READ",
+        "type": "const int[17]"
+      }
+    ],
+    "globals_write": [],
+    "production_reachable": true,
+    "purity": "PURE",
+    "role": "DUT",
+    "timing": "COMBINATIONAL",
+    "transitive_effects": {
+      "allocation": false,
+      "assertion": false,
+      "indirect_call": false,
+      "io": false,
+      "logging": false,
+      "state_write": false,
+      "unknown_facts": []
+    }
+  },
+  "status": "LOCKED",
+  "verification_plan": {
+    "legal_domain": "cpnt in [0,3], cpntBitDepth in {8..16}, qlevel <= table-derived maximum for the selected component depth, leftRecon in [0,(1<<cpntBitDepth)-1]",
+    "mutations": [
+      "signedness",
+      "boundary",
+      "array-index",
+      "off-by-one"
+    ],
+    "oracle": "call the immutable C function through a generated wrapper with flattened state dependencies",
+    "rtl": "at most four generated combinational SystemVerilog candidates",
+    "simulator": "Verilator lint/compile plus exhaustive legal-domain comparison"
+  }
+}

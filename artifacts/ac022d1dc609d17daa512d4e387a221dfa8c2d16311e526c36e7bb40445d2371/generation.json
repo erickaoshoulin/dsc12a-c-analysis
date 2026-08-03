@@ -1,0 +1,62 @@
+{
+  "candidate_limit": 4,
+  "candidates": [
+    {
+      "candidate": "candidate_01",
+      "path": "generated/candidate_01.sv",
+      "sha256": "07c359b82d2214494a0d88f0a1342c887161dce5c940b0d281789bb0cedb81b7",
+      "validation": "PASS",
+      "validation_reasons": []
+    },
+    {
+      "candidate": "candidate_02",
+      "path": "generated/candidate_02.sv",
+      "sha256": "93b63c7e4bcd01779a7c0512e958e2f431b39bf9e64e93840be97368ed366298",
+      "validation": "PASS",
+      "validation_reasons": []
+    }
+  ],
+  "command": {
+    "command": [
+      "python3",
+      "tools/generator_fixture.py",
+      "/private/tmp/dsc12a-c-analysis/artifacts/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371/generation-request.json",
+      "/private/tmp/dsc12a-c-analysis/artifacts/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371/generated"
+    ],
+    "cwd": "/private/tmp/dsc12a-c-analysis",
+    "duration_seconds": 0.071,
+    "output": "",
+    "returncode": 0
+  },
+  "context_keys": [
+    "locked_contract",
+    "frozen_interface",
+    "c_body",
+    "exact_spec_anchors"
+  ],
+  "contract_id": "mapqptoqlevel",
+  "execution_status": "EXECUTED_NOW",
+  "hook": "python3 tools/generator_fixture.py",
+  "model_calls": 1,
+  "schema_version": 2,
+  "source_span": {
+    "end_line": 238,
+    "start_line": 221
+  },
+  "status": "PASS",
+  "telemetry": {
+    "candidate_count": 2,
+    "contract_id": "mapqptoqlevel",
+    "generator": "deterministic-fixture-hook",
+    "model_calls": 1,
+    "request_keys": [
+      "c_body",
+      "exact_spec_anchors",
+      "frozen_interface",
+      "locked_contract"
+    ],
+    "tokens_in": 3262,
+    "tokens_out": 435
+  },
+  "tokens": 3697
+}

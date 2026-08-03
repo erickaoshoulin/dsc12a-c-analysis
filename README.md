@@ -3,9 +3,10 @@
 This standalone repository analyzes the local DSC 1.2a C reference model and
 links tool-discovered C facts back to the local PDF specification. It is
 isolated from SVRT and unrelated projects. It does not modify the upstream
-model or copy the PDF. The pipeline also uses LLVM coverage, creates three
-tool-selected contracts, and verifies one small combinational RTL slice; it
-does not generate whole-codec RTL or add sequential hardware.
+model or copy the PDF. The pipeline uses LLVM coverage, creates bounded
+tool-selected contract batches, and incrementally verifies a designer-facing
+combinational RTL library; it does not generate whole-codec RTL or add
+sequential hardware.
 
 ## Inputs
 
@@ -48,8 +49,28 @@ Candidates are ranked without a function-name allowlist. Each function gets
 purity, timing, role, production reachability, observable-output contribution,
 confidence, and evidence. The eligible criteria are production reachability,
 output contribution, no direct/transitive state write, no I/O/allocation/logging,
-and bounded computation. The top 10 (configurable with
+and bounded computation. If Clang proves every criterion except a loop bound,
+the CI/CD agent may accept a tool-ranked, executed candidate only through a
+reviewed `BOUNDED_DOMAIN` admission containing exact PDF authority, a complete
+finite input/output domain, and a finite loop proof; this never selects a
+function by name or waives any other effect/coverage criterion. The top 10
+(configurable with
 `DSC_ANALYSIS_TOP_N`) are passed to Frama-C Eva/From when analyzable.
+
+A reviewed `DOMAIN_EFFECT` admission can discharge only a logging effect that
+is proven unreachable over the complete contracted domain. It must name exact
+PDF authority, finite input/output domains, the unreachable condition, and
+`discharged_effects: ["logging"]`; it cannot waive any other criterion or turn
+the diagnostic branch into DUT logic. Its receipt is marked
+`coverage_basis: reviewed_domain_effect`.
+
+The production-output criterion has one explicit library boundary: a
+tool-ranked, executed pure/combinational `CONFIG` helper whose only failed
+criterion is observable-output contribution may be admitted as a reusable
+configuration primitive. It requires a complete finite exact-spec domain and
+reviewed `CONFIG_LIBRARY` evidence with `role: CONFIG_HELPER` and
+`non_dut_boundary: true`; it never turns configuration plumbing into codec DUT
+logic or waives effects, boundedness, coverage, dependency, or source gates.
 
 ## Specification traceability
 
@@ -66,13 +87,16 @@ permalinks are recorded in `facts/comments.json`.
 never overwritten. A reviewed link becomes `STALE` if either input hash
 changes. Reports are bidirectional and retain visible unknowns/orphans.
 
-After C facts are assembled, an instrumented temporary copy runs the existing
-bit-true smoke and is analyzed with `llvm-profdata`/`llvm-cov`. Contracts are
-selected without a function-name allowlist. A selected exact-link contract is
-checked with a generated C oracle, up to four combinational SystemVerilog
-candidates, Verilator, and exhaustive legal-domain enumeration. Deliberate
-signedness, boundary, index, and off-by-one mutations remain visible as
-counterexamples.
+After C facts are assembled, an instrumented temporary copy automatically
+discovers and runs every `bittrue_smoke/run_c_baseline*.sh` profile, retaining a
+separate LLVM profile prefix and expected-output receipt for each script. Set
+`DSC_COVERAGE_SCRIPTS=default` only for a deliberately bounded smoke run.
+Contracts are selected without a function-name allowlist. A selected exact-link
+contract is checked with a generated C oracle, up to four combinational
+SystemVerilog candidates, Verilator, and either exhaustive legal-domain
+enumeration or the independent proof required by a reviewed finite window.
+Deliberate signedness, boundary, index, and off-by-one mutations remain
+visible as counterexamples.
 
 ## Outputs
 
@@ -148,7 +172,9 @@ bitstream baseline; hashes source/spec/contract/dependency/prompt/model/tool
 inputs; detects cycles; and schedules every locked contract whose semantics
 are resolved. Independent ready contracts use stable parallel batches.
 `resume` reuses a valid cache entry with zero model calls. Stale hashes are
-visible in `ci/plan.json` and cannot silently reuse old artifacts.
+visible in `ci/plan.json` and cannot silently reuse old artifacts. Reviewed
+domain evidence can enrich a tool-selected eligible leaf under
+`ci/reviewed-contracts/` without editing the immutable generated lock.
 
 The state machine is recorded in `ci/dag.json` and `ci/state.json`. Each
 contract hash gets an artifact bundle containing its frozen interface, C
@@ -163,12 +189,18 @@ Generated CI outputs are under `ci/`, `artifacts/<contract-hash>/`,
 `integration/bitstream-receipts/`, and
 `reports/pipeline-summary.md`. The upstream C model and PDF are never edited.
 
+Scale dispatch is incremental: after a terminal batch, another `scale
+<pilot-run-id>` call re-reads the current facts/spec plan and enqueues only
+ready contracts without a prior PASS scale receipt. It returns `NO_NEW_WORK`
+when the current ready frontier is already proven.
+
 ### Executable generator contract
 
 The migration agent has no function-name target or implicit model stub. Tool
-facts, exact traceability, and reviewed domain evidence discover the next ready
-leaf; the reviewed override is matched by an exact spec anchor, not by a
-function-name allowlist. A ready cache miss requires an external hook:
+facts and coverage first select an eligible leaf; exact traceability and
+reviewed domain evidence only enrich that leaf. A reviewed override cannot
+materialize a function absent from `facts/candidates.json` and
+`coverage/coverage.json`. A ready cache miss requires an external hook:
 
 ```sh
 DSC_CICD_GENERATOR_CMD='python3 tools/generator_fixture.py' \
@@ -191,11 +223,66 @@ sampling scenarios; promotion requires all byte/SHA bitstream gates. A second
 run exercises the valid cache and reports `REUSED_VERIFIED_RECEIPT` with zero
 generator/model calls.
 
+Windowed/pointer-heavy DUTs use a reviewed scalar-tap adapter only for the
+read-only values consumed by the C body. The `windowed_boundary` strategy
+currently drives all structural modes plus deterministic boundary and
+pairwise tap cases. Its result is `DIFFERENTIAL_PASS` when every generated
+vector matches; it is deliberately not `EXHAUSTIVE_EQUIVALENT`. The independent
+Verilator-AST/Z3 gate may upgrade a complete reviewed window to
+`FORMAL_EQUIVALENT`, but production dependency, frame, and source gates still
+must pass before promotion. This keeps the designer-facing library
+combinational and stable while stateful line storage and non-DUT C logic
+remain reference boundaries.
+
+Reviewed spec-defined flatness windows use the data-driven `flatness_window`
+strategy. The contract declares the four component lanes, seven original-pixel
+taps per lane, Figure 6-19 offsets, Table 6-2 qLevel rows, and the exact
+`flatnessDetThresh` relation. Concrete tests cover structural modes, line-end
+and per-tap boundaries, and pairwise taps; Verilator AST plus Z3 proves the
+complete reviewed relation. The line buffer stays at the C caller boundary,
+and the adapter must short-circuit unused component lanes before reading
+`origLine`. This is now the 14-component stable library frontier.
+
+## Continuous CI/CD library loop
+
+The executable migration agent discovers work from facts, contracts, callgraph,
+frame scripts, reviewed PDF/source evidence, and valid cache receipts. It has
+no function-name allowlist and does not use SVRT, an SMB share, a second
+orchestrator, or a durable external service. Receipts stay in `ci/`,
+`artifacts/`, `integration/`, and `reports/`; large vector shards are temporary.
+
+```sh
+python3 tools/cicd_agent.py plan
+python3 tools/cicd_agent.py run
+python3 tools/cicd_agent.py status
+```
+
+For a bounded parallel refresh of the currently reviewed stable frontier, use
+routing metadata only; the contract IDs still come from the tool-selected
+ready plan:
+
+```sh
+DSC_CICD_REFRESH_STABLE=1 DSC_CICD_MAX_NEW=4 \
+DSC_CICD_CONTRACT_WORKERS=4 DSC_CICD_WORKERS=8 \
+DSC_CICD_SHARDS=8 DSC_CICD_GENERATOR_CMD='python3 tools/generator_fixture.py' \
+python3 tools/cicd_agent.py run
+```
+
+Each selected contract gets its own generator invocation, C oracle, Verilator
+candidate build, parallel differential shards, caller composition check, and
+frame matrix. Promotion requires unit, formal-or-exhaustive, dependency,
+`C_ONLY`/`SHADOW`/`RTL_RETURN`, source, and exact spec gates. Only stable,
+purely combinational DUT leaves are promoted into `library/rtl/` with their
+locked contract and verification receipt. The agent canonicalizes the module,
+archives replacements, and updates the manifest under a library write lock;
+stateful callers, line storage, and other non-DUT C logic remain reference
+boundaries.
+
 ## Environment
 
 Set `DSC_ANALYSIS_TIMEOUT_SECONDS` for compiler/Clang/Frama-C commands,
 `DSC_BUILD_TIMEOUT_SECONDS` for the isolated build/smoke gate, and
-`DSC_ANALYSIS_TOP_N` for the Frama-C candidate count. The CI/CD verifier also
+`DSC_ANALYSIS_TOP_N` for the bounded contract/candidate count. The CI/CD verifier also
 accepts `DSC_CICD_SHARDS`, `DSC_CICD_GENERATOR_CMD`, and compile/shard timeout
 variables. Temporary model copies exclude the unrelated `dsc-rs` and
 `operator_bittrue` trees; the local PDF and upstream C source remain outside

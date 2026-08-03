@@ -1,0 +1,46 @@
+{
+  "bit_order": "little-endian integer text to packed Verilator port",
+  "ports": [
+    {
+      "direction": "input",
+      "name": "x",
+      "packing": "bits[15:0]",
+      "role": "x",
+      "signed": false,
+      "width": 16
+    },
+    {
+      "direction": "input",
+      "name": "cpnt",
+      "packing": "bits[1:0]",
+      "role": "cpnt",
+      "signed": false,
+      "width": 2
+    },
+    {
+      "direction": "input",
+      "name": "cpntBitDepth",
+      "packing": "bits[4:0]",
+      "role": "CONFIG_STATIC",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "linebuf_depth",
+      "packing": "bits[3:0]",
+      "role": "CONFIG_STATIC",
+      "signed": false,
+      "width": 4
+    },
+    {
+      "direction": "output",
+      "name": "return_value",
+      "packing": "bits[15:0]",
+      "role": "return_value",
+      "signed": false,
+      "width": 16
+    }
+  ],
+  "schema_version": 1
+}

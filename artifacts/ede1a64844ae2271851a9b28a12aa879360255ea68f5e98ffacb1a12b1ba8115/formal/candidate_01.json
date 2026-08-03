@@ -1,0 +1,37 @@
+{
+  "ast_frontend": "verilator --json-only",
+  "candidate": "candidate_01.sv",
+  "candidate_path": "/private/tmp/dsc12a-c-analysis/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/generated/candidate_01.sv",
+  "candidate_sha256": "b8c9707be766f5c3c9c01c41f425b2051b1e836f0dd551c63b78c4e8c95152f3",
+  "command": {
+    "command": [
+      "/opt/homebrew/opt/python@3.14/bin/python3.14",
+      "/private/tmp/dsc12a-c-analysis/tools/formal_rtl.py",
+      "--contract",
+      "/private/tmp/dsc12a-c-analysis/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/locked-contract.json",
+      "--candidate",
+      "/private/tmp/dsc12a-c-analysis/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/generated/candidate_01.sv",
+      "--output",
+      "/private/tmp/dsc12a-c-analysis/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/formal/candidate_01.json",
+      "--verilator",
+      "/opt/homebrew/bin/verilator",
+      "--timeout-ms",
+      "180000"
+    ],
+    "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
+    "duration_seconds": 29.728,
+    "output": "{\n  \"ast_frontend\": \"verilator --json-only\",\n  \"candidate\": \"candidate_01.sv\",\n  \"candidate_path\": \"/private/tmp/dsc12a-c-analysis/artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115/generated/candidate_01.sv\",\n  \"candidate_sha256\": \"b8c9707be766f5c3c9c01c41f425b2051b1e836f0dd551c63b78c4e8c95152f3\",\n  \"constraint_count\": 128,\n  \"contract_id\": \"isorigflathindex\",\n  \"contract_sha256\": \"7d99ea172ec373f47dac880475886066938d8816b9d5a1126236e2fe65dae29c\",\n  \"proof_basis\": \"locked exact flatness equations and Table 6-2 relation versus parsed combinational RTL AST\",\n  \"proof_complete\": true,\n  \"proof_strategy\": \"SYMBOLIC_FLATNESS_WINDOW\",\n  \"schema_version\": 1,\n  \"solver\": \"z3\",\n  \"status\": \"PASS\",\n  \"timeout_ms\": 180000\n}\n",
+    "returncode": 0
+  },
+  "constraint_count": 128,
+  "contract_id": "isorigflathindex",
+  "contract_sha256": "7d99ea172ec373f47dac880475886066938d8816b9d5a1126236e2fe65dae29c",
+  "execution_status": "EXECUTED_NOW",
+  "proof_basis": "locked exact flatness equations and Table 6-2 relation versus parsed combinational RTL AST",
+  "proof_complete": true,
+  "proof_strategy": "SYMBOLIC_FLATNESS_WINDOW",
+  "schema_version": 1,
+  "solver": "z3",
+  "status": "PASS",
+  "timeout_ms": 180000
+}

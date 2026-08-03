@@ -173,7 +173,7 @@ Generated links are EXACT only when anchored by a direct MN/spec reference; heur
 - `EXACT` `pdf:page:006` page 6 -> `readppm` `utl.c:1068`
   - method: explicit_c_reference; evidence: C comment explicitly references p6
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/utl.c#L1068-L1204
-- `PROPOSED` `pdf:figure:6-19` page 111 -> `IsOrigFlatHIndex` `dsc_codec.c:1126`
+- `REVIEWED` `pdf:figure:6-19` page 111 -> `IsOrigFlatHIndex` `dsc_codec.c:1126`
   - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: flat, is
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1126-L1195
 - `PROPOSED` `pdf:figure:6-17` page 107 -> `make_qp_tables` `rc_tables.h:414`
@@ -182,3 +182,15 @@ Generated links are EXACT only when anchored by a direct MN/spec reference; heur
 - `PROPOSED` `pdf:figure:6-17` page 107 -> `make_qp_table` `rc_tables.h:404`
   - method: normalized_function_identifier; evidence: Shared normalized identifier tokens: qp, quantization
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/rc_tables.h#L404-L412
+- `REVIEWED` `pdf:section:1.6.2` page 22 -> `ceil_log2` `dsc_utils.c:67`
+  - method: reviewed_exact_spec; evidence: The PDF defines ceil(log2(X+1)) and the immutable C body is the same shift-based algorithm.
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_utils.c#L67-L73
+- `REVIEWED` `pdf:section:6.6.1` page 91 -> `FindResidualSize` `dsc_codec.c:1078`
+  - method: reviewed_exact_spec; evidence: Table 3-1 gives normative residual-size examples and section 6.6.1 uses the residual size for DSU-VLC; the C threshold chain matches that relation over the reviewed domain.
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1078-L1109
+- `REVIEWED` `pdf:table:6-2` page 114 -> `Qp2Qlevel` `codec_main.c:816`
+  - method: reviewed_exact_spec; evidence: The immutable Qp2Qlevel body selects the luma/chroma Table 6-2 row by bits_per_component and applies the DSC 1.2 chroma adjustment.
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/codec_main.c#L816-L844
+- `REVIEWED` `pdf:section:6.8.5.1` page 111 -> `IsOrigFlatHIndex` `dsc_codec.c:1126`
+  - method: reviewed_exact_spec; evidence: The reviewed C body reads only flatness configuration, primary QP, component count, slice width, and original-line samples; the generated boundary keeps line storage in the caller.
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1126-L1195

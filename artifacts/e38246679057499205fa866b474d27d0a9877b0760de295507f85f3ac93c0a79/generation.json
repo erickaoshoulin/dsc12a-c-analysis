@@ -1,0 +1,62 @@
+{
+  "candidate_limit": 4,
+  "candidates": [
+    {
+      "candidate": "candidate_01",
+      "path": "generated/candidate_01.sv",
+      "sha256": "736cdd217a5f8ba034d0ad3333c0a9b9094eaf35ef54af0aa030c36ee4211eed",
+      "validation": "PASS",
+      "validation_reasons": []
+    },
+    {
+      "candidate": "candidate_02",
+      "path": "generated/candidate_02.sv",
+      "sha256": "0049ef1087318ef7f050f870d8b98b67276aaf3ab9830d7ad9e36c3d3b75c8cf",
+      "validation": "PASS",
+      "validation_reasons": []
+    }
+  ],
+  "command": {
+    "command": [
+      "python3",
+      "tools/generator_fixture.py",
+      "/private/tmp/dsc12a-c-analysis/artifacts/e38246679057499205fa866b474d27d0a9877b0760de295507f85f3ac93c0a79/generation-request.json",
+      "/private/tmp/dsc12a-c-analysis/artifacts/e38246679057499205fa866b474d27d0a9877b0760de295507f85f3ac93c0a79/generated"
+    ],
+    "cwd": "/private/tmp/dsc12a-c-analysis",
+    "duration_seconds": 0.028,
+    "output": "",
+    "returncode": 0
+  },
+  "context_keys": [
+    "locked_contract",
+    "frozen_interface",
+    "c_body",
+    "exact_spec_anchors"
+  ],
+  "contract_id": "findresidualsize",
+  "execution_status": "EXECUTED_NOW",
+  "hook": "python3 tools/generator_fixture.py",
+  "model_calls": 1,
+  "schema_version": 2,
+  "source_span": {
+    "end_line": 1109,
+    "start_line": 1078
+  },
+  "status": "PASS",
+  "telemetry": {
+    "candidate_count": 2,
+    "contract_id": "findresidualsize",
+    "generator": "deterministic-fixture-hook",
+    "model_calls": 1,
+    "request_keys": [
+      "c_body",
+      "exact_spec_anchors",
+      "frozen_interface",
+      "locked_contract"
+    ],
+    "tokens_in": 1430,
+    "tokens_out": 772
+  },
+  "tokens": 2202
+}

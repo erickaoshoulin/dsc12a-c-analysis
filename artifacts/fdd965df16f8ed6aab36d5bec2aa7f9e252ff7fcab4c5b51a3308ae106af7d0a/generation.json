@@ -1,0 +1,62 @@
+{
+  "candidate_limit": 4,
+  "candidates": [
+    {
+      "candidate": "candidate_01",
+      "path": "generated/candidate_01.sv",
+      "sha256": "8593d7a41127e4b7bbbbcfa564260f21055febe196ce294a428233eff5d9991c",
+      "validation": "PASS",
+      "validation_reasons": []
+    },
+    {
+      "candidate": "candidate_02",
+      "path": "generated/candidate_02.sv",
+      "sha256": "850343c6ca7d1c98abf43a39324927ab6ace329b607292bf7824e42e92a66758",
+      "validation": "PASS",
+      "validation_reasons": []
+    }
+  ],
+  "command": {
+    "command": [
+      "python3",
+      "tools/generator_fixture.py",
+      "/private/tmp/dsc12a-c-analysis/artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a/generation-request.json",
+      "/private/tmp/dsc12a-c-analysis/artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a/generated"
+    ],
+    "cwd": "/private/tmp/dsc12a-c-analysis",
+    "duration_seconds": 0.07,
+    "output": "",
+    "returncode": 0
+  },
+  "context_keys": [
+    "locked_contract",
+    "frozen_interface",
+    "c_body",
+    "exact_spec_anchors"
+  ],
+  "contract_id": "quantizeresidual",
+  "execution_status": "EXECUTED_NOW",
+  "hook": "python3 tools/generator_fixture.py",
+  "model_calls": 1,
+  "schema_version": 2,
+  "source_span": {
+    "end_line": 255,
+    "start_line": 245
+  },
+  "status": "PASS",
+  "telemetry": {
+    "candidate_count": 2,
+    "contract_id": "quantizeresidual",
+    "generator": "deterministic-fixture-hook",
+    "model_calls": 1,
+    "request_keys": [
+      "c_body",
+      "exact_spec_anchors",
+      "frozen_interface",
+      "locked_contract"
+    ],
+    "tokens_in": 1601,
+    "tokens_out": 507
+  },
+  "tokens": 2108
+}

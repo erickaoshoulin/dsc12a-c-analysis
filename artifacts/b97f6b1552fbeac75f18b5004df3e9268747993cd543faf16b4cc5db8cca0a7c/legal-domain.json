@@ -1,0 +1,30 @@
+{
+  "complete": true,
+  "ports": [
+    {
+      "domain": {
+        "basis": "DSC 1.2a component sample/error maximum for the widest supported 16bpc path",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "val",
+      "role": "val"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "return_value",
+      "role": "return_value"
+    }
+  ],
+  "proof_basis": "exact spec/table plus reviewed runtime range override",
+  "schema_version": 1
+}

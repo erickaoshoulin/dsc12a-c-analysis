@@ -1,0 +1,94 @@
+{
+  "complete": true,
+  "ports": [
+    {
+      "domain": {
+        "basis": "Table 6-2 masterQp rows",
+        "kind": "range",
+        "range": [
+          0,
+          31
+        ]
+      },
+      "port": "qp",
+      "role": "qp"
+    },
+    {
+      "domain": {
+        "basis": "DSC 1.1/1.2 version branches used by the called mapping function",
+        "kind": "set",
+        "range": [
+          0,
+          2
+        ],
+        "values": [
+          0,
+          1,
+          2
+        ]
+      },
+      "port": "dsc_version_minor",
+      "role": "CONFIG_STATIC"
+    },
+    {
+      "domain": {
+        "basis": "PPS native_420 flag used by the called mapping function",
+        "kind": "set",
+        "range": [
+          0,
+          1
+        ],
+        "values": [
+          0,
+          1
+        ]
+      },
+      "port": "native_420",
+      "role": "CONFIG_STATIC"
+    },
+    {
+      "domain": {
+        "basis": "DSC supported luma component bit depths",
+        "kind": "set",
+        "range": [
+          8,
+          16
+        ],
+        "values": [
+          8,
+          10,
+          12,
+          14,
+          16
+        ]
+      },
+      "port": "cpntBitDepth_0",
+      "role": "CONFIG_STATIC"
+    },
+    {
+      "domain": {
+        "basis": "Table 6-2 qLevelY entry domain",
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "qlevel_luma",
+      "role": "TABLE_LOOKUP_LUMA"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          -8,
+          17
+        ]
+      },
+      "port": "return_value",
+      "role": "return_value"
+    }
+  ],
+  "proof_basis": "exact spec/table plus reviewed runtime range override",
+  "schema_version": 1
+}

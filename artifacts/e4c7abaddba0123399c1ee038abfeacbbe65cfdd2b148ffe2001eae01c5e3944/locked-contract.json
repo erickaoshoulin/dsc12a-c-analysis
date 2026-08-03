@@ -1,0 +1,677 @@
+{
+  "contract_id": "qp2qlevel",
+  "dependencies": {
+    "direct_callees": [],
+    "promotion_gate": null,
+    "read_fields": [],
+    "unresolved": []
+  },
+  "function": {
+    "clang_usr": "c:@F@Qp2Qlevel",
+    "name": "Qp2Qlevel",
+    "parameters": [
+      {
+        "name": "dsc_cfg",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_cfg_t *"
+      },
+      {
+        "name": "qp",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "cpnt",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      }
+    ],
+    "qualified_name": "Qp2Qlevel",
+    "return_type": "int",
+    "source_body_sha256": "9491a54f10bb06e67a0792ee106152b1a58360eee6e1001ac2b8a28c36c233dd",
+    "source_file": "codec_main.c",
+    "source_span": {
+      "end_line": 844,
+      "start_line": 816
+    }
+  },
+  "interface": {
+    "flattened_pointer_dependencies": [
+      {
+        "access": "READ_ONLY",
+        "c_type": "int",
+        "field": "bits_per_component",
+        "logical_width": 5,
+        "port_name": "bits_per_component",
+        "record": "dsc_cfg_t",
+        "unresolved": false
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int",
+        "field": "convert_rgb",
+        "logical_width": 1,
+        "port_name": "convert_rgb",
+        "record": "dsc_cfg_t",
+        "unresolved": false
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int",
+        "field": "dsc_version_minor",
+        "logical_width": 2,
+        "port_name": "dsc_version_minor",
+        "record": "dsc_cfg_t",
+        "unresolved": false
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int",
+        "field": "native_420",
+        "logical_width": 1,
+        "port_name": "native_420",
+        "record": "dsc_cfg_t",
+        "unresolved": false
+      }
+    ],
+    "inputs": [
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "DSC component index domain for native 4:4:4/4:2:2/4:2:0 container components",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "logical_width": 2,
+        "name": "cpnt",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "Table 6-2 masterQp rows, constrained by the selected bits_per_component table row",
+          "kind": "range",
+          "range": [
+            0,
+            31
+          ]
+        },
+        "logical_width": 5,
+        "name": "qp",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "DSC supported component bit depths",
+          "kind": "set",
+          "range": [
+            8,
+            16
+          ],
+          "values": [
+            8,
+            10,
+            12,
+            14,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "bits_per_component",
+        "role": "CONFIG_STATIC",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "PPS convert_rgb flag",
+          "kind": "set",
+          "range": [
+            0,
+            1
+          ],
+          "values": [
+            0,
+            1
+          ]
+        },
+        "logical_width": 1,
+        "name": "convert_rgb",
+        "role": "CONFIG_STATIC",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "DSC minor-version branch domain used by the C model",
+          "kind": "set",
+          "range": [
+            0,
+            2
+          ],
+          "values": [
+            0,
+            1,
+            2
+          ]
+        },
+        "logical_width": 2,
+        "name": "dsc_version_minor",
+        "role": "CONFIG_STATIC",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "PPS native_420 flag",
+          "kind": "set",
+          "range": [
+            0,
+            1
+          ],
+          "values": [
+            0,
+            1
+          ]
+        },
+        "logical_width": 1,
+        "name": "native_420",
+        "role": "CONFIG_STATIC",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      }
+    ],
+    "output": {
+      "c_type": "int",
+      "legal_range": [
+        0,
+        16
+      ],
+      "logical_width": 5,
+      "name": "return_value",
+      "role": "return_value",
+      "signed": false,
+      "unresolved": false,
+      "width_source": "EXACT_SPEC"
+    },
+    "ports": [
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC component index domain for native 4:4:4/4:2:2/4:2:0 container components",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "name": "cpnt",
+        "role": "cpnt",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "Table 6-2 masterQp rows, constrained by the selected bits_per_component table row",
+          "kind": "range",
+          "range": [
+            0,
+            31
+          ]
+        },
+        "name": "qp",
+        "role": "qp",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC supported component bit depths",
+          "kind": "set",
+          "range": [
+            8,
+            16
+          ],
+          "values": [
+            8,
+            10,
+            12,
+            14,
+            16
+          ]
+        },
+        "name": "bits_per_component",
+        "role": "bits_per_component",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "PPS convert_rgb flag",
+          "kind": "set",
+          "range": [
+            0,
+            1
+          ],
+          "values": [
+            0,
+            1
+          ]
+        },
+        "name": "convert_rgb",
+        "role": "convert_rgb",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC minor-version branch domain used by the C model",
+          "kind": "set",
+          "range": [
+            0,
+            2
+          ],
+          "values": [
+            0,
+            1,
+            2
+          ]
+        },
+        "name": "dsc_version_minor",
+        "role": "dsc_version_minor",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "PPS native_420 flag",
+          "kind": "set",
+          "range": [
+            0,
+            1
+          ],
+          "values": [
+            0,
+            1
+          ]
+        },
+        "name": "native_420",
+        "role": "native_420",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "c_type": "int",
+        "direction": "output",
+        "name": "return_value",
+        "role": "return_value",
+        "signed": false,
+        "width": 5
+      }
+    ]
+  },
+  "obligations": [],
+  "origin": "tool_discovered_reviewed_override",
+  "reviewed_evidence": [
+    {
+      "anchor_id": "pdf:table:6-2",
+      "kind": "EXACT_SPEC",
+      "page": 114,
+      "reason": "DSC 1.2a Table 6-2 gives the complete normative qLevelY and qLevelC lookup rows for the supported component bit depths.",
+      "section": "6.8.6"
+    },
+    {
+      "c_span": {
+        "end_line": 844,
+        "start_line": 816
+      },
+      "kind": "SOURCE_SEMANTICS",
+      "reason": "The immutable Qp2Qlevel helper selects the luma/chroma table by bits_per_component and applies the DSC 1.2 chroma adjustment.",
+      "source_file": "codec_main.c"
+    },
+    {
+      "kind": "CONFIG_LIBRARY_BOUNDARY",
+      "reason": "Tool facts classify this pure helper as CONFIG and not observable-output-contributing; it is admitted only as a reusable configuration LUT, not as codec DUT output logic."
+    }
+  ],
+  "schema_version": 2,
+  "selection": {
+    "basis": "tool-ranked candidate and coverage facts + exact traceability + reviewed domain evidence",
+    "candidate_rank": 19,
+    "candidate_score": 70.0,
+    "candidate_source": "facts/candidates.json",
+    "coverage_basis": "reviewed_config_library",
+    "coverage_source": "coverage/coverage.json",
+    "domain_admission": {
+      "kind": "CONFIG_LIBRARY",
+      "non_dut_boundary": true,
+      "proof": "The generated candidate is a finite, pure, combinational configuration lookup. It is intentionally outside the production-output DUT set and is promoted only as a spec-defined reusable LUT.",
+      "role": "CONFIG_HELPER",
+      "status": "PASS"
+    },
+    "fact_source": "facts/functions.json",
+    "new_work": true,
+    "promoted_existing": true
+  },
+  "semantics": {
+    "expression": "TABLE_6_2_QLEVEL_BY_BPC_AND_COMPONENT",
+    "kind": "qp_table_lookup",
+    "legal_vector_strategy": {
+      "base_bit_depth_port": "bits_per_component",
+      "exhaustive": true,
+      "kind": "qp_table",
+      "qp_port": "qp",
+      "source": "DSC 1.2a Table 6-2; QP rows are constrained to the selected table length"
+    },
+    "overflow": "No overflow occurs on the finite Table 6-2 domain; unsupported table rows are outside the contract.",
+    "signedness": "All Table 6-2 entries and the DSC 1.2 chroma adjustment are non-negative; the output is unsigned 0..16.",
+    "tables": {
+      "chroma": {
+        "10": [
+          0,
+          1,
+          2,
+          2,
+          3,
+          3,
+          4,
+          4,
+          5,
+          5,
+          6,
+          6,
+          7,
+          7,
+          8,
+          8,
+          9,
+          10,
+          10,
+          10
+        ],
+        "12": [
+          0,
+          1,
+          2,
+          2,
+          3,
+          3,
+          4,
+          4,
+          5,
+          5,
+          6,
+          6,
+          7,
+          7,
+          8,
+          8,
+          9,
+          9,
+          10,
+          10,
+          11,
+          12,
+          12,
+          12
+        ],
+        "14": [
+          0,
+          1,
+          2,
+          2,
+          3,
+          3,
+          4,
+          4,
+          5,
+          5,
+          6,
+          6,
+          7,
+          7,
+          8,
+          8,
+          9,
+          9,
+          10,
+          10,
+          11,
+          11,
+          12,
+          12,
+          13,
+          14,
+          14,
+          14
+        ],
+        "16": [
+          0,
+          1,
+          2,
+          2,
+          3,
+          3,
+          4,
+          4,
+          5,
+          5,
+          6,
+          6,
+          7,
+          7,
+          8,
+          8,
+          9,
+          9,
+          10,
+          10,
+          11,
+          11,
+          12,
+          12,
+          13,
+          13,
+          14,
+          14,
+          15,
+          16,
+          16,
+          16
+        ],
+        "8": [
+          0,
+          1,
+          2,
+          2,
+          3,
+          3,
+          4,
+          4,
+          5,
+          5,
+          6,
+          6,
+          7,
+          8,
+          8,
+          8
+        ]
+      },
+      "luma": {
+        "10": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          2,
+          2,
+          3,
+          3,
+          4,
+          4,
+          5,
+          5,
+          6,
+          6,
+          7,
+          7,
+          7,
+          8,
+          9
+        ],
+        "12": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          2,
+          2,
+          3,
+          3,
+          4,
+          4,
+          5,
+          5,
+          6,
+          6,
+          7,
+          7,
+          8,
+          8,
+          9,
+          9,
+          9,
+          10,
+          11
+        ],
+        "14": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          2,
+          2,
+          3,
+          3,
+          4,
+          4,
+          5,
+          5,
+          6,
+          6,
+          7,
+          7,
+          8,
+          8,
+          9,
+          9,
+          10,
+          10,
+          11,
+          11,
+          11,
+          12,
+          13
+        ],
+        "16": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          2,
+          2,
+          3,
+          3,
+          4,
+          4,
+          5,
+          5,
+          6,
+          6,
+          7,
+          7,
+          8,
+          8,
+          9,
+          9,
+          10,
+          10,
+          11,
+          11,
+          12,
+          12,
+          13,
+          13,
+          13,
+          14,
+          15
+        ],
+        "8": [
+          0,
+          0,
+          0,
+          1,
+          1,
+          2,
+          2,
+          3,
+          3,
+          4,
+          4,
+          5,
+          5,
+          5,
+          6,
+          7
+        ]
+      }
+    },
+    "verilog_expression": "TABLE_6_2_QLEVEL_BY_BPC_AND_COMPONENT"
+  },
+  "spec_links": [
+    {
+      "anchor_id": "pdf:table:6-2",
+      "evidence": "The normative Table 6-2 rows are copied into the reviewed semantic table below.",
+      "page": 114,
+      "section": "6.8.6",
+      "status": "EXACT"
+    }
+  ],
+  "status": "LOCKED"
+}

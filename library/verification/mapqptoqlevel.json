@@ -1,0 +1,419 @@
+{
+  "artifact_dir": "artifacts/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+  "candidate": "candidate_01",
+  "candidate_pass_rate": "1/2",
+  "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+  "contract_id": "mapqptoqlevel",
+  "dependency": {
+    "call_sites": 12,
+    "dependency_ports": 12,
+    "status": "PASS",
+    "vectors": 5548800
+  },
+  "execution_status": "EXECUTED_NOW",
+  "formal_partitions": null,
+  "formal_proof": {
+    "counterexample": null,
+    "proof_complete": false,
+    "reason": "formal AST proof is only enabled for reviewed windowed_boundary or flatness_window contracts",
+    "receipt": null,
+    "status": "NOT_APPLICABLE"
+  },
+  "frame_pass_rate": "3/3",
+  "function": "MapQpToQlevel",
+  "kind": "qp_mapping",
+  "last_regression": {
+    "candidate": "candidate_01",
+    "candidate_pass_rate": "1/2",
+    "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+    "contract_id": "mapqptoqlevel",
+    "execution_status": "EXECUTED_NOW",
+    "frame_pass_rate": "3/3",
+    "function": "MapQpToQlevel",
+    "kind": "table_config",
+    "module": "mapqptoqlevel",
+    "parent_run_id": "20260802T062208Z-0ad45a41",
+    "profile": "scale",
+    "promoted_at": "2026-08-02T23:46:34Z",
+    "rtl_sha256": "5dda9dc25483193295e7af8abbd927b209f8e9715f2f4791864200f2fc0a3334",
+    "run_id": "20260802T230757Z-scale-7a24e3ac",
+    "run_kind": "table_config",
+    "schema_version": 1,
+    "source_gate": {
+      "blockers": [],
+      "build": {
+        "binary": {
+          "path": "source/dsc",
+          "sha256": "1aa30a5c49f7b87bc18c2150f94ad620bc005f3aa935327d63799cb3f674216c",
+          "size_bytes": 246352
+        },
+        "smoke": {
+          "expected_hash": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+          "matching_outputs": [
+            {
+              "path": "bittrue_smoke/out/simple_192x108.dsc",
+              "sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+              "size_bytes": 31236
+            }
+          ],
+          "mode": "bittrue_smoke/run_c_baseline.sh"
+        },
+        "status": "PASS"
+      },
+      "compile_check": {
+        "status": "PASS",
+        "translation_units": 11
+      },
+      "pdf": {
+        "pages": 145,
+        "path": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf",
+        "sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+      },
+      "source": {
+        "path": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf"
+      },
+      "status": "PASS"
+    },
+    "stages": {
+      "dependency_composition": "NOT_APPLICABLE",
+      "frame_compare": "PASS",
+      "generator_cache": "PASS",
+      "model_matrix": "PASS",
+      "shards_mutations": "PASS",
+      "verilator_lint_build": "PASS",
+      "width_spec_gate": "PASS"
+    },
+    "status": "PASS",
+    "traceability": {
+      "authority": "EXACT_SPEC",
+      "c_span": {
+        "end_column": 1,
+        "end_line": 238,
+        "start_column": 5,
+        "start_line": 221
+      },
+      "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+      "ports": [
+        {
+          "authority": "EXACT_SPEC",
+          "c_span": {
+            "end_column": 1,
+            "end_line": 238,
+            "start_column": 5,
+            "start_line": 221
+          },
+          "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+          "derivation": "dsc_state_t component index domain",
+          "domain": {
+            "basis": "dsc_state_t component index domain",
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ]
+          },
+          "name": "cpnt",
+          "review_status": "REVIEWED",
+          "role": "cpnt",
+          "signed": false,
+          "spec_pages": [
+            113,
+            114
+          ],
+          "spec_sections": [
+            "6.8.6"
+          ],
+          "spec_tables": [],
+          "width": 2
+        },
+        {
+          "authority": "EXACT_SPEC",
+          "c_span": {
+            "end_column": 1,
+            "end_line": 238,
+            "start_column": 5,
+            "start_line": 221
+          },
+          "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+          "derivation": "Table 6-2 masterQp rows",
+          "domain": {
+            "basis": "Table 6-2 masterQp rows",
+            "kind": "range",
+            "range": [
+              0,
+              31
+            ]
+          },
+          "name": "qp",
+          "review_status": "REVIEWED",
+          "role": "qp",
+          "signed": false,
+          "spec_pages": [
+            113,
+            114
+          ],
+          "spec_sections": [
+            "6.8.6"
+          ],
+          "spec_tables": [],
+          "width": 5
+        },
+        {
+          "authority": "EXACT_SPEC",
+          "c_span": {
+            "end_column": 1,
+            "end_line": 238,
+            "start_column": 5,
+            "start_line": 221
+          },
+          "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+          "derivation": "locked contract interface",
+          "domain": {
+            "range": [
+              0,
+              16
+            ]
+          },
+          "name": "return_value",
+          "review_status": "REVIEWED",
+          "role": "return_value",
+          "signed": false,
+          "spec_pages": [
+            113,
+            114
+          ],
+          "spec_sections": [
+            "6.8.6"
+          ],
+          "spec_tables": [],
+          "width": 5
+        }
+      ],
+      "review_status": "REVIEWED",
+      "source_file": "dsc_codec.c",
+      "source_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:model-note:MN_MAP_QP_TO_QLEVEL:p113",
+          "page": 113,
+          "section": "6.8.6",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.8.6",
+          "page": 113,
+          "section": "6.8.6",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:table:6-2",
+          "page": 114,
+          "section": "6.8.6",
+          "status": "EXACT"
+        }
+      ],
+      "spec_pdf": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf"
+    }
+  },
+  "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+  "matrix": {
+    "modes": {
+      "C_ONLY": "PASS",
+      "RTL_RETURN": "PASS",
+      "SHADOW": "PASS"
+    },
+    "scripts_discovered": 22,
+    "status": "PASS"
+  },
+  "module": "mapqptoqlevel",
+  "parent_run_id": "20260802T062208Z-0ad45a41",
+  "profile": "scale",
+  "promoted_at": "2026-08-02T21:16:36Z",
+  "rtl_sha256": "5dda9dc25483193295e7af8abbd927b209f8e9715f2f4791864200f2fc0a3334",
+  "run_id": "20260802T230757Z-scale-7a24e3ac",
+  "run_kind": "table_config",
+  "schema_version": 2,
+  "source_gate": {
+    "blockers": [],
+    "build": {
+      "binary": {
+        "path": "source/dsc",
+        "sha256": "1aa30a5c49f7b87bc18c2150f94ad620bc005f3aa935327d63799cb3f674216c",
+        "size_bytes": 246352
+      },
+      "smoke": {
+        "expected_hash": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+        "matching_outputs": [
+          {
+            "path": "bittrue_smoke/out/simple_192x108.dsc",
+            "sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+            "size_bytes": 31236
+          }
+        ],
+        "mode": "bittrue_smoke/run_c_baseline.sh"
+      },
+      "status": "PASS"
+    },
+    "compile_check": {
+      "status": "PASS",
+      "translation_units": 11
+    },
+    "pdf": {
+      "pages": 145,
+      "path": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf",
+      "sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+    },
+    "source": {
+      "path": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+      "sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf"
+    },
+    "status": "PASS"
+  },
+  "stages": {
+    "dependency_composition": "NOT_APPLICABLE",
+    "formal": "NOT_APPLICABLE",
+    "formal_partitions": null,
+    "formal_rtl_equivalence": "NOT_APPLICABLE",
+    "frame_compare": "PASS",
+    "generator": "PASS",
+    "generator_cache": "PASS",
+    "model_matrix": "PASS",
+    "shards_mutations": "PASS",
+    "unit_equivalence": "EXHAUSTIVE_EQUIVALENT",
+    "verilator_lint_build": "PASS",
+    "width_spec_gate": "PASS"
+  },
+  "status": "PASS",
+  "traceability": {
+    "authority": "EXACT_SPEC",
+    "c_span": {
+      "end_column": 1,
+      "end_line": 238,
+      "start_column": 5,
+      "start_line": 221
+    },
+    "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+    "ports": [
+      {
+        "authority": "EXACT_SPEC",
+        "c_span": {
+          "end_column": 1,
+          "end_line": 238,
+          "start_column": 5,
+          "start_line": 221
+        },
+        "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+        "derivation": "dsc_state_t component index domain",
+        "domain": {
+          "basis": "dsc_state_t component index domain",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "name": "cpnt",
+        "review_status": "REVIEWED",
+        "role": "cpnt",
+        "signed": false,
+        "spec_pages": [
+          113,
+          114
+        ],
+        "spec_sections": [
+          "6.8.6"
+        ],
+        "spec_tables": [],
+        "width": 2
+      },
+      {
+        "authority": "EXACT_SPEC",
+        "c_span": {
+          "end_column": 1,
+          "end_line": 238,
+          "start_column": 5,
+          "start_line": 221
+        },
+        "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+        "derivation": "Table 6-2 masterQp rows",
+        "domain": {
+          "basis": "Table 6-2 masterQp rows",
+          "kind": "range",
+          "range": [
+            0,
+            31
+          ]
+        },
+        "name": "qp",
+        "review_status": "REVIEWED",
+        "role": "qp",
+        "signed": false,
+        "spec_pages": [
+          113,
+          114
+        ],
+        "spec_sections": [
+          "6.8.6"
+        ],
+        "spec_tables": [],
+        "width": 5
+      },
+      {
+        "authority": "EXACT_SPEC",
+        "c_span": {
+          "end_column": 1,
+          "end_line": 238,
+          "start_column": 5,
+          "start_line": 221
+        },
+        "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+        "derivation": "locked contract interface",
+        "domain": {
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "return_value",
+        "review_status": "REVIEWED",
+        "role": "return_value",
+        "signed": false,
+        "spec_pages": [
+          113,
+          114
+        ],
+        "spec_sections": [
+          "6.8.6"
+        ],
+        "spec_tables": [],
+        "width": 5
+      }
+    ],
+    "review_status": "REVIEWED",
+    "source_file": "dsc_codec.c",
+    "source_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
+    "spec_links": [
+      {
+        "anchor_id": "pdf:model-note:MN_MAP_QP_TO_QLEVEL:p113",
+        "page": 113,
+        "section": "6.8.6",
+        "status": "EXACT"
+      },
+      {
+        "anchor_id": "pdf:section:6.8.6",
+        "page": 113,
+        "section": "6.8.6",
+        "status": "EXACT"
+      },
+      {
+        "anchor_id": "pdf:table:6-2",
+        "page": 114,
+        "section": "6.8.6",
+        "status": "EXACT"
+      }
+    ],
+    "spec_pdf": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf"
+  },
+  "unit_vectors": 5548800
+}

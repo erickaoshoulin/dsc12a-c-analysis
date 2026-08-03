@@ -1,0 +1,689 @@
+{
+  "components": [
+    {
+      "artifact_dir": "artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
+        "end_line": 73,
+        "start_line": 67
+      },
+      "contract_file": "contracts/ceil_log2.json",
+      "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
+      "contract_id": "ceil_log2",
+      "function": "ceil_log2",
+      "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+      "module": "ceil_log2",
+      "module_file": "rtl/ceil_log2.sv",
+      "module_sha256": "71784bb792966a7e48e98d35cc2e2c3f6052f1c17528ffe1b4256f805c9fda65",
+      "promoted_at": "2026-08-02T21:15:54Z",
+      "source_file": "dsc_utils.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:section:1.6.2",
+          "evidence": "The normative section contains the ceil_log2 definition verbatim in C-like syntax.",
+          "page": 22,
+          "section": "1.6.2",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/ceil_log2.json"
+    },
+    {
+      "artifact_dir": "artifacts/919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
+        "end_line": 451,
+        "start_line": 443
+      },
+      "contract_file": "contracts/escapecodesize.json",
+      "contract_hash": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
+      "contract_id": "escapecodesize",
+      "function": "EscapeCodeSize",
+      "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+      "module": "escapecodesize",
+      "module_file": "rtl/escapecodesize.sv",
+      "module_sha256": "582d5e131e638e5a6aa4f9783cf1755b041f9369f9c8c84e57fb413845272167",
+      "promoted_at": "2026-08-02T21:21:51Z",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:section:3.5.1",
+          "page": 34,
+          "section": "3.5.1",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.6.2",
+          "page": 93,
+          "section": "6.6.2",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.8.6",
+          "page": 113,
+          "section": "6.8.6",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/escapecodesize.json"
+    },
+    {
+      "artifact_dir": "artifacts/c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
+        "end_line": 437,
+        "start_line": 390
+      },
+      "contract_file": "contracts/estimatebitsforgroup.json",
+      "contract_hash": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
+      "contract_id": "estimatebitsforgroup",
+      "function": "EstimateBitsForGroup",
+      "module": "estimatebitsforgroup",
+      "module_file": "rtl/estimatebitsforgroup.sv",
+      "module_sha256": "da8e09494b9dad38a4591c81c21adf445cc0b92cdaf4eabc1604aa1ca2db3f9f",
+      "promoted_at": "2026-08-03T01:29:48Z",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:model-note:MN_ENC_ICH_MODE_SELECT:p088",
+          "evidence": "The PDF model note identifies the encoder ICH/P decision and its P-mode cost input.",
+          "page": 88,
+          "section": "6.5.3.2",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.5.3.2",
+          "evidence": "The normative decision section is the exact consumer of the estimated predictive-mode bits.",
+          "page": 88,
+          "section": "6.5.3.2",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.6.1",
+          "evidence": "The normative DSU-VLC section defines residual-size and prefix/sample bit accounting.",
+          "page": 91,
+          "section": "6.6.1",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.6.4",
+          "evidence": "The normative rate-control output section defines codedBits/rcSizeGroup as bit-count outputs.",
+          "page": 94,
+          "section": "6.6.4",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:table:3-1",
+          "evidence": "The normative residual-size threshold table is delegated to FindResidualSize.",
+          "page": 34,
+          "section": "3",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:table:6-2",
+          "evidence": "The normative qLevel table is delegated to MapQpToQlevel and its promoted callers.",
+          "page": 114,
+          "section": "6.8.6",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/estimatebitsforgroup.json"
+    },
+    {
+      "artifact_dir": "artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
+        "end_column": 1,
+        "end_line": 914,
+        "start_column": 5,
+        "start_line": 906
+      },
+      "contract_file": "contracts/findmidpoint.json",
+      "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+      "contract_id": "findmidpoint",
+      "function": "FindMidpoint",
+      "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+      "module": "findmidpoint",
+      "module_file": "rtl/findmidpoint.sv",
+      "module_sha256": "95b00b9f217f19697deb92e6926e102faf48b91af79a9fb6331900a7217d480b",
+      "promoted_at": "2026-08-02T21:16:34Z",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:model-note:MN_MIDPOINT_PRED:p080",
+          "evidence": "C comment and PDF anchor both contain MN_MIDPOINT_PRED",
+          "method": "exact_mn_id",
+          "page": 80,
+          "section": "6.4.3",
+          "short_anchor": "6.4.3 Midpoint Prediction; model note: MN_MIDPOINT_PRED in dsc_codec.c",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.4.3",
+          "evidence": "C comment and PDF anchor both contain MN_MIDPOINT_PRED",
+          "method": "exact_mn_id",
+          "page": 80,
+          "section": "6.4.3",
+          "short_anchor": "6.4.3 Midpoint Prediction",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/findmidpoint.json"
+    },
+    {
+      "artifact_dir": "artifacts/38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
+        "end_line": 1109,
+        "start_line": 1078
+      },
+      "contract_file": "contracts/findresidualsize.json",
+      "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+      "contract_id": "findresidualsize",
+      "function": "FindResidualSize",
+      "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+      "module": "findresidualsize",
+      "module_file": "rtl/findresidualsize.sv",
+      "module_sha256": "a10d4649d371883b4bdfef25fc99448c5a719e937a93425900ddf00b26474073",
+      "promoted_at": "2026-08-02T21:15:58Z",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:section:6.6.1",
+          "evidence": "The normative section defines the residual-size quantity used by DSU-VLC.",
+          "page": 91,
+          "section": "6.6.1",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:table:3-1",
+          "evidence": "The normative table lists residual values and their coded sizes.",
+          "page": 34,
+          "section": "3",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/findresidualsize.json"
+    },
+    {
+      "artifact_dir": "artifacts/dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
+        "end_line": 297,
+        "start_line": 278
+      },
+      "contract_file": "contracts/getqpadjpredsize.json",
+      "contract_hash": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
+      "contract_id": "getqpadjpredsize",
+      "function": "GetQpAdjPredSize",
+      "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+      "module": "getqpadjpredsize",
+      "module_file": "rtl/getqpadjpredsize.sv",
+      "module_sha256": "a8a237d111078f013fa7c15edf430b37d8c58a60595b1082166f16b0334c24b4",
+      "promoted_at": "2026-08-02T21:23:48Z",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:section:6.8.5.2",
+          "page": 113,
+          "section": "6.8.5.2",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.6.1",
+          "page": 91,
+          "section": "6.6.1",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.8.6",
+          "page": 113,
+          "section": "6.8.6",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/getqpadjpredsize.json"
+    },
+    {
+      "artifact_dir": "artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
+        "end_column": 1,
+        "end_line": 1119,
+        "start_column": 5,
+        "start_line": 1116
+      },
+      "contract_file": "contracts/isflatnessinfosent.json",
+      "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
+      "contract_id": "isflatnessinfosent",
+      "function": "IsFlatnessInfoSent",
+      "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+      "module": "isflatnessinfosent",
+      "module_file": "rtl/isflatnessinfosent.sv",
+      "module_sha256": "0a4b0d5ee2f45598e3ea1859102a42e3fa2ef66aba94e7049fc1d47876a5c07e",
+      "promoted_at": "2026-08-02T21:15:54Z",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:section:4.3",
+          "page": 54,
+          "section": "4.3",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.6.3",
+          "page": 93,
+          "section": "6.6.3",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/isflatnessinfosent.json"
+    },
+    {
+      "artifact_dir": "artifacts/ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
+        "end_line": 1195,
+        "start_line": 1126
+      },
+      "contract_file": "contracts/isorigflathindex.json",
+      "contract_hash": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
+      "contract_id": "isorigflathindex",
+      "function": "IsOrigFlatHIndex",
+      "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+      "module": "isorigflathindex",
+      "module_file": "rtl/isorigflathindex.sv",
+      "module_sha256": "cfb707d7aa001c86145ecff6476c1fd36b7d2755ecabe5d5af41f817ea22d855",
+      "promoted_at": "2026-08-02T21:22:28Z",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:section:6.8.5.1",
+          "page": 111,
+          "section": "6.8.5.1",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:figure:6-19",
+          "page": 111,
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/isorigflathindex.json"
+    },
+    {
+      "artifact_dir": "artifacts/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
+        "end_column": 1,
+        "end_line": 238,
+        "start_column": 5,
+        "start_line": 221
+      },
+      "contract_file": "contracts/mapqptoqlevel.json",
+      "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+      "contract_id": "mapqptoqlevel",
+      "function": "MapQpToQlevel",
+      "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+      "module": "mapqptoqlevel",
+      "module_file": "rtl/mapqptoqlevel.sv",
+      "module_sha256": "5dda9dc25483193295e7af8abbd927b209f8e9715f2f4791864200f2fc0a3334",
+      "promoted_at": "2026-08-02T21:16:36Z",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:model-note:MN_MAP_QP_TO_QLEVEL:p113",
+          "page": 113,
+          "section": "6.8.6",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.8.6",
+          "page": 113,
+          "section": "6.8.6",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:table:6-2",
+          "page": 114,
+          "section": "6.8.6",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/mapqptoqlevel.json"
+    },
+    {
+      "artifact_dir": "artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
+        "end_line": 270,
+        "start_line": 263
+      },
+      "contract_file": "contracts/maxresidualsize.json",
+      "contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
+      "contract_id": "maxresidualsize",
+      "function": "MaxResidualSize",
+      "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+      "module": "maxresidualsize",
+      "module_file": "rtl/maxresidualsize.sv",
+      "module_sha256": "cfdb54a0936d5bd70d45ddd9bcb20d05d99b73039a3789c1124ed564ae5aa65b",
+      "promoted_at": "2026-08-02T21:22:24Z",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:section:3.5.1",
+          "page": 34,
+          "section": "3.5.1",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.6.1",
+          "page": 91,
+          "section": "6.6.1",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.8.6",
+          "page": 113,
+          "section": "6.8.6",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/maxresidualsize.json"
+    },
+    {
+      "artifact_dir": "artifacts/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
+        "end_column": 1,
+        "end_line": 1486,
+        "start_column": 5,
+        "start_line": 1476
+      },
+      "contract_file": "contracts/predictsize.json",
+      "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
+      "contract_id": "predictsize",
+      "function": "PredictSize",
+      "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+      "module": "predictsize",
+      "module_file": "rtl/predictsize.sv",
+      "module_sha256": "861239ab7f41e5c98845588cfa54631e2d4449920afe9cdbde2eae0920b09af7",
+      "promoted_at": "2026-08-02T21:15:54Z",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:section:6.6.1",
+          "page": 91,
+          "section": "6.6.1",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.4.5",
+          "page": 83,
+          "section": "6.4.5",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/predictsize.json"
+    },
+    {
+      "artifact_dir": "artifacts/ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
+        "end_line": 844,
+        "start_line": 816
+      },
+      "contract_file": "contracts/qp2qlevel.json",
+      "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
+      "contract_id": "qp2qlevel",
+      "function": "Qp2Qlevel",
+      "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+      "module": "qp2qlevel",
+      "module_file": "rtl/qp2qlevel.sv",
+      "module_sha256": "18f078d82f020604fbcae57261373e69e9291f7757f81585163bb47fa1d893df",
+      "promoted_at": "2026-08-02T21:15:49Z",
+      "source_file": "codec_main.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:table:6-2",
+          "evidence": "The normative Table 6-2 rows are copied into the reviewed semantic table below.",
+          "page": 114,
+          "section": "6.8.6",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/qp2qlevel.json"
+    },
+    {
+      "artifact_dir": "artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
+        "end_line": 255,
+        "start_line": 245
+      },
+      "contract_file": "contracts/quantizeresidual.json",
+      "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
+      "contract_id": "quantizeresidual",
+      "function": "QuantizeResidual",
+      "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+      "module": "quantizeresidual",
+      "module_file": "rtl/quantizeresidual.sv",
+      "module_sha256": "7c9d729bbe1ac193b6f355b3d8281a92ab350a9c27a7717145fdea31a863d9cd",
+      "promoted_at": "2026-08-02T21:15:56Z",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:model-note:MN_ENC_QUANTIZATION:p083",
+          "evidence": "C comment and PDF anchor both contain MN_ENC_QUANTIZATION",
+          "page": 83,
+          "section": "6.4.5",
+          "short_anchor": "pdf:model-note:MN_ENC_QUANTIZATION:p083",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.4.5",
+          "evidence": "C comment and PDF anchor both contain MN_ENC_QUANTIZATION",
+          "page": 83,
+          "section": "6.4.5",
+          "short_anchor": "pdf:section:6.4.5",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/quantizeresidual.json"
+    },
+    {
+      "artifact_dir": "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
+        "end_column": 1,
+        "end_line": 383,
+        "start_column": 5,
+        "start_line": 308
+      },
+      "contract_file": "contracts/samplepredict.json",
+      "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+      "contract_id": "samplepredict",
+      "function": "SamplePredict",
+      "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+      "module": "samplepredict",
+      "module_file": "rtl/samplepredict.sv",
+      "module_sha256": "831411aefb7fd14c630f6a71d75191a62320ce17566d6292637fcdab603e2011",
+      "promoted_at": "2026-08-02T21:21:05Z",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:model-note:MN_MMAP:p076",
+          "page": 76,
+          "section": "6.4.1",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.4.1",
+          "page": 76,
+          "section": "6.4.1",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:model-note:MN_MMAP:p078",
+          "page": 78,
+          "section": "6.4.1.1",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:model-note:MN_MMAP:p079",
+          "page": 79,
+          "section": "6.4.1.2",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:model-note:MN_BLOCK_PRED:p079",
+          "page": 79,
+          "section": "6.4.2",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.4.2",
+          "page": 79,
+          "section": "6.4.2",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/samplepredict.json"
+    },
+    {
+      "artifact_dir": "artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
+        "end_column": 1,
+        "end_line": 2049,
+        "start_column": 5,
+        "start_line": 2036
+      },
+      "contract_file": "contracts/samptolinebuf.json",
+      "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
+      "contract_id": "samptolinebuf",
+      "function": "SampToLineBuf",
+      "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+      "module": "samptolinebuf",
+      "module_file": "rtl/samptolinebuf.sv",
+      "module_sha256": "971e3b07df907a913544145749bc5303b1c4532af69517ce97ab3bc9bed0cae9",
+      "promoted_at": "2026-08-02T21:17:29Z",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:model-note:MN_LINE_STORAGE:p075",
+          "page": 75,
+          "section": "6.3",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.3",
+          "page": 75,
+          "section": "6.3",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:model-note:MN_LINE_STORAGE:p117",
+          "page": 117,
+          "section": "7.4",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:7.4",
+          "page": 117,
+          "section": "7.4",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/samptolinebuf.json"
+    },
+    {
+      "artifact_dir": "artifacts/46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
+      "authority": "EXACT_SPEC",
+      "boundary": "verified combinational leaf; C_ONLY remains rollback/reference",
+      "c_span": {
+        "end_line": 476,
+        "start_line": 457
+      },
+      "contract_file": "contracts/usingmidpoint.json",
+      "contract_hash": "46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
+      "contract_id": "usingmidpoint",
+      "function": "UsingMidpoint",
+      "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+      "module": "usingmidpoint",
+      "module_file": "rtl/usingmidpoint.sv",
+      "module_sha256": "fc765032b32c15013196fa87328b8692da41071277c4bdd13ffb941c86132ab8",
+      "promoted_at": "2026-08-02T22:48:55Z",
+      "source_file": "dsc_codec.c",
+      "spec_links": [
+        {
+          "anchor_id": "pdf:model-note:MN_ENC_MPP_SELECT:p082",
+          "evidence": "PDF model note MN_ENC_MPP_SELECT defines the encoder midpoint-selection decision used by this helper.",
+          "page": 82,
+          "section": "6.4.4.2",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:section:6.4.4.2",
+          "evidence": "PDF section 6.4.4.2 states that MPP is selected when maximum residual size is at least cpntBitDepth minus qLevel.",
+          "page": 82,
+          "section": "6.4.4.2",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:table:3-1",
+          "evidence": "PDF Table 3-1 supplies the residual-size threshold relation delegated to FindResidualSize.",
+          "page": 34,
+          "section": "3",
+          "status": "EXACT"
+        },
+        {
+          "anchor_id": "pdf:table:6-2",
+          "evidence": "PDF Table 6-2 supplies the qLevel table relation delegated to MapQpToQlevel.",
+          "page": 114,
+          "section": "6.8.6",
+          "status": "EXACT"
+        }
+      ],
+      "status": "PASS",
+      "verification_file": "verification/usingmidpoint.json"
+    }
+  ],
+  "library": "dsc-verilog-library",
+  "policy": "Only spec-traceable PASS leaf RTL is canonical; stateful callers remain C until separately contracted and verified.",
+  "schema_version": 2,
+  "source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+  "source_policy": "immutable external C model and local DSC 1.2a PDF; no SVRT",
+  "spec_hash": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+  "updated_at": "2026-08-03T01:29:48Z"
+}

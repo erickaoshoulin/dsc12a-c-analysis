@@ -1,0 +1,637 @@
+{
+  "c_body": "int FindMidpoint(dsc_state_t *dsc_state, int cpnt, int qlevel)\n{\n\tint range;\n\n\t// *MODEL NOTE* MN_MIDPOINT_PRED\n\trange = 1<<dsc_state->cpntBitDepth[cpnt];\n\n\treturn (range/2 + (dsc_state->leftRecon[cpnt]%(1<<qlevel)));\n}",
+  "exact_spec_anchors": [
+    {
+      "anchor_id": "pdf:model-note:MN_MIDPOINT_PRED:p080",
+      "evidence": "C comment and PDF anchor both contain MN_MIDPOINT_PRED",
+      "page": 80,
+      "section": "6.4.3",
+      "short_anchor": "6.4.3 Midpoint Prediction; model note: MN_MIDPOINT_PRED in dsc_codec.c",
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:section:6.4.3",
+      "evidence": "C comment and PDF anchor both contain MN_MIDPOINT_PRED",
+      "page": 80,
+      "section": "6.4.3",
+      "short_anchor": "6.4.3 Midpoint Prediction",
+      "status": "EXACT"
+    }
+  ],
+  "frozen_interface": {
+    "flattened_pointer_dependencies": [
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "conditional": "selected component bit depth; leftRecon range is conditional on this value",
+        "field": "cpntBitDepth",
+        "legal_domain": {
+          "basis": "PPS bits_per_component plus one-bit RGB chroma extension",
+          "kind": "set",
+          "range": [
+            8,
+            16
+          ],
+          "values": [
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "record": "dsc_state_t",
+        "role": "CONFIG_STATIC",
+        "unresolved": false,
+        "width_source": "NORMATIVE_COMPONENT_BIT_DEPTH_DOMAIN"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "conditional": "upper bound is (1 << cpntBitDepth) - 1",
+        "field": "leftRecon",
+        "legal_domain": {
+          "basis": "0 <= leftRecon < (1 << cpntBitDepth)",
+          "kind": "conditional_range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "record": "dsc_state_t",
+        "role": "RUNTIME_INPUT",
+        "unresolved": false,
+        "width_source": "NORMATIVE_SAMPLE_DOMAIN"
+      }
+    ],
+    "input_bit_count": 28,
+    "inputs": [
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "dsc_state_t component arrays have extent 4",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ],
+          "values": []
+        },
+        "logical_width": 2,
+        "name": "cpnt",
+        "pointer": false,
+        "role": "RUNTIME_INPUT",
+        "unresolved": false,
+        "width_source": "C_ARRAY_EXTENT"
+      },
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "Table 6-2 qLevel columns",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ],
+          "values": []
+        },
+        "logical_width": 5,
+        "name": "qlevel",
+        "pointer": false,
+        "role": "RUNTIME_INPUT",
+        "spec_domain_anchor": "pdf:table:6-2",
+        "unresolved": false,
+        "width_source": "NORMATIVE_TABLE_DOMAIN"
+      }
+    ],
+    "output": {
+      "c_type": "int",
+      "legal_range": [
+        128,
+        131071
+      ],
+      "logical_width": 17,
+      "name": "return_value",
+      "range_formula": "(1 << (cpntBitDepth - 1)) + ((leftRecon) % (1 << qlevel))",
+      "signed": false,
+      "unresolved": false,
+      "width_source": "NORMATIVE_FORMULA_RANGE"
+    },
+    "ports": [
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "dsc_state_t component arrays have extent 4",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ],
+          "values": []
+        },
+        "name": "cpnt",
+        "role": "cpnt",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "Table 6-2 qLevel columns",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ],
+          "values": []
+        },
+        "name": "qlevel",
+        "role": "qlevel",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int[4]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "PPS bits_per_component plus one-bit RGB chroma extension",
+          "kind": "set",
+          "range": [
+            8,
+            16
+          ],
+          "values": [
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16
+          ]
+        },
+        "name": "cpntBitDepth",
+        "role": "CONFIG_STATIC",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int[4]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "0 <= leftRecon < (1 << cpntBitDepth)",
+          "kind": "conditional_range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "leftRecon",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "output",
+        "name": "return_value",
+        "role": "return_value",
+        "signed": false,
+        "width": 17
+      }
+    ]
+  },
+  "locked_contract": {
+    "arithmetic_semantics": {
+      "overflow": "no signed overflow on the locked legal domain; outside-domain behavior is not contracted",
+      "rounding": "integer division by two truncates toward zero; modulo is C remainder on non-negative operands",
+      "saturation": "none",
+      "shifts": "left shifts have operands in [8,16], qlevel is [0,16], and all shifted values are non-negative",
+      "signedness": "C int operands are signed, but the legal-domain inputs and output are non-negative"
+    },
+    "contract_id": "findmidpoint",
+    "coverage": {
+      "branch_coverage_percent": 100.0,
+      "execution_count": 2426112,
+      "line_coverage_percent": 33.333,
+      "production_reachable": true,
+      "status": "EXECUTED"
+    },
+    "dependencies": {
+      "direct_callees": [],
+      "read_fields": [
+        "dsc_state_t.cpntBitDepth",
+        "dsc_state_t.leftRecon"
+      ],
+      "return_dependencies": [
+        {
+          "kind": "field",
+          "location": {
+            "column": 32,
+            "file": "dsc_codec.c",
+            "line": 913
+          },
+          "name": "dsc_state_t.leftRecon"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 42,
+            "file": "dsc_codec.c",
+            "line": 913
+          },
+          "name": "cpnt"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 21,
+            "file": "dsc_codec.c",
+            "line": 913
+          },
+          "name": "dsc_state"
+        },
+        {
+          "kind": "parameter",
+          "location": {
+            "column": 52,
+            "file": "dsc_codec.c",
+            "line": 913
+          },
+          "name": "qlevel"
+        }
+      ],
+      "unresolved": []
+    },
+    "do_not_edit": true,
+    "function": {
+      "clang_usr": "c:@F@FindMidpoint",
+      "name": "FindMidpoint",
+      "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/dsc_codec.c#L906-L914",
+      "qualified_name": "FindMidpoint",
+      "source_body_sha256": "f77f26c7cda5744cb7ca68eaa76b559defebe33173ed0a18d53d4cd52f345349",
+      "source_file": "dsc_codec.c",
+      "source_file_sha256": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf",
+      "source_span": {
+        "end_column": 1,
+        "end_line": 914,
+        "start_column": 5,
+        "start_line": 906
+      }
+    },
+    "interface": {
+      "flattened_pointer_dependencies": [
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4]",
+          "conditional": "selected component bit depth; leftRecon range is conditional on this value",
+          "field": "cpntBitDepth",
+          "legal_domain": {
+            "basis": "PPS bits_per_component plus one-bit RGB chroma extension",
+            "kind": "set",
+            "range": [
+              8,
+              16
+            ],
+            "values": [
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "record": "dsc_state_t",
+          "role": "CONFIG_STATIC",
+          "unresolved": false,
+          "width_source": "NORMATIVE_COMPONENT_BIT_DEPTH_DOMAIN"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4]",
+          "conditional": "upper bound is (1 << cpntBitDepth) - 1",
+          "field": "leftRecon",
+          "legal_domain": {
+            "basis": "0 <= leftRecon < (1 << cpntBitDepth)",
+            "kind": "conditional_range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "record": "dsc_state_t",
+          "role": "RUNTIME_INPUT",
+          "unresolved": false,
+          "width_source": "NORMATIVE_SAMPLE_DOMAIN"
+        }
+      ],
+      "input_bit_count": 28,
+      "inputs": [
+        {
+          "c_type": "int",
+          "legal_domain": {
+            "basis": "dsc_state_t component arrays have extent 4",
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ],
+            "values": []
+          },
+          "logical_width": 2,
+          "name": "cpnt",
+          "pointer": false,
+          "role": "RUNTIME_INPUT",
+          "unresolved": false,
+          "width_source": "C_ARRAY_EXTENT"
+        },
+        {
+          "c_type": "int",
+          "legal_domain": {
+            "basis": "Table 6-2 qLevel columns",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ],
+            "values": []
+          },
+          "logical_width": 5,
+          "name": "qlevel",
+          "pointer": false,
+          "role": "RUNTIME_INPUT",
+          "spec_domain_anchor": "pdf:table:6-2",
+          "unresolved": false,
+          "width_source": "NORMATIVE_TABLE_DOMAIN"
+        }
+      ],
+      "output": {
+        "c_type": "int",
+        "legal_range": [
+          128,
+          131071
+        ],
+        "logical_width": 17,
+        "name": "return_value",
+        "range_formula": "(1 << (cpntBitDepth - 1)) + ((leftRecon) % (1 << qlevel))",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "NORMATIVE_FORMULA_RANGE"
+      },
+      "ports": [
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "dsc_state_t component arrays have extent 4",
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ],
+            "values": []
+          },
+          "name": "cpnt",
+          "role": "cpnt",
+          "signed": false,
+          "width": 2
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "Table 6-2 qLevel columns",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ],
+            "values": []
+          },
+          "name": "qlevel",
+          "role": "qlevel",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int[4]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "PPS bits_per_component plus one-bit RGB chroma extension",
+            "kind": "set",
+            "range": [
+              8,
+              16
+            ],
+            "values": [
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14,
+              15,
+              16
+            ]
+          },
+          "name": "cpntBitDepth",
+          "role": "CONFIG_STATIC",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int[4]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "0 <= leftRecon < (1 << cpntBitDepth)",
+            "kind": "conditional_range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "leftRecon",
+          "role": "RUNTIME_INPUT",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "output",
+          "name": "return_value",
+          "role": "return_value",
+          "signed": false,
+          "width": 17
+        }
+      ]
+    },
+    "lock": {
+      "contract_sha256": "c16d88f4d44f6f9ec9a6036e8dfc3121db8cff21542762938512892cf7d0824f",
+      "do_not_edit": true,
+      "locked_from": "proposed/findmidpoint.yaml"
+    },
+    "lock_status": "LOCKED_GENERATED",
+    "obligations": [],
+    "provenance": {
+      "coverage_sha256": "f7faaab37dc4ca79a6f811ab817435cec4dae8dad8bf457a371dc62e786a7892",
+      "source_hashes_sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+    },
+    "read_struct_fields": [
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "conditional": "selected component bit depth; leftRecon range is conditional on this value",
+        "field": "cpntBitDepth",
+        "legal_domain": {
+          "basis": "PPS bits_per_component plus one-bit RGB chroma extension",
+          "kind": "set",
+          "range": [
+            8,
+            16
+          ],
+          "values": [
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "record": "dsc_state_t",
+        "role": "CONFIG_STATIC",
+        "unresolved": false,
+        "width_source": "NORMATIVE_COMPONENT_BIT_DEPTH_DOMAIN"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "conditional": "upper bound is (1 << cpntBitDepth) - 1",
+        "field": "leftRecon",
+        "legal_domain": {
+          "basis": "0 <= leftRecon < (1 << cpntBitDepth)",
+          "kind": "conditional_range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "record": "dsc_state_t",
+        "role": "RUNTIME_INPUT",
+        "unresolved": false,
+        "width_source": "NORMATIVE_SAMPLE_DOMAIN"
+      }
+    ],
+    "schema_version": 1,
+    "selection": {
+      "candidate_rank": 1,
+      "eligible_after_coverage": true,
+      "eligible_static": true,
+      "leaf": true,
+      "rank": 1,
+      "score": 100.0,
+      "selection_basis": "tool-ranked production/output leaf candidate after dynamic coverage join"
+    },
+    "semantics": {
+      "expression": "(1 << (cpnt_bit_depth - 1)) + (left_recon % (1 << qlevel))",
+      "kind": "midpoint_prediction",
+      "qlevel_max_by_cpnt_bit_depth": {
+        "10": 10,
+        "11": 10,
+        "12": 12,
+        "13": 12,
+        "14": 14,
+        "15": 14,
+        "16": 16,
+        "8": 8,
+        "9": 8
+      },
+      "spec_formula_anchor": "pdf:model-note:MN_MIDPOINT_PRED:p080",
+      "spec_table_anchor": "pdf:table:6-2"
+    },
+    "spec_links": [
+      {
+        "anchor_id": "pdf:model-note:MN_MIDPOINT_PRED:p080",
+        "evidence": "C comment and PDF anchor both contain MN_MIDPOINT_PRED",
+        "method": "exact_mn_id",
+        "page": 80,
+        "section": "6.4.3",
+        "short_anchor": "6.4.3 Midpoint Prediction; model note: MN_MIDPOINT_PRED in dsc_codec.c",
+        "status": "EXACT"
+      },
+      {
+        "anchor_id": "pdf:section:6.4.3",
+        "evidence": "C comment and PDF anchor both contain MN_MIDPOINT_PRED",
+        "method": "exact_mn_id",
+        "page": 80,
+        "section": "6.4.3",
+        "short_anchor": "6.4.3 Midpoint Prediction",
+        "status": "EXACT"
+      }
+    ],
+    "static_analysis": {
+      "callees": [],
+      "contributes_to_observable_output": true,
+      "direct_effects": {
+        "allocation": false,
+        "assertion": false,
+        "indirect_call": false,
+        "io": false,
+        "logging": false,
+        "state_write": false,
+        "unknown_facts": []
+      },
+      "globals_read": [],
+      "globals_write": [],
+      "production_reachable": true,
+      "purity": "PURE",
+      "role": "DUT",
+      "timing": "COMBINATIONAL",
+      "transitive_effects": {
+        "allocation": false,
+        "assertion": false,
+        "indirect_call": false,
+        "io": false,
+        "logging": false,
+        "state_write": false,
+        "unknown_facts": []
+      }
+    },
+    "status": "LOCKED",
+    "verification_plan": {
+      "legal_domain": "cpnt in [0,3], cpntBitDepth in {8..16}, qlevel <= table-derived maximum for the selected component depth, leftRecon in [0,(1<<cpntBitDepth)-1]",
+      "mutations": [
+        "signedness",
+        "boundary",
+        "array-index",
+        "off-by-one"
+      ],
+      "oracle": "call the immutable C function through a generated wrapper with flattened state dependencies",
+      "rtl": "at most four generated combinational SystemVerilog candidates",
+      "simulator": "Verilator lint/compile plus exhaustive legal-domain comparison"
+    }
+  }
+}

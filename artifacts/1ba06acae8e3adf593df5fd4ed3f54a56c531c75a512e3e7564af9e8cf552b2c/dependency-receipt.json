@@ -1,0 +1,984 @@
+{
+  "call_sites_from_callgraph": [
+    {
+      "callee_contract": "maxresidualsize",
+      "callee_function": "MaxResidualSize",
+      "callee_usr": "c:@F@MaxResidualSize",
+      "caller_contract": null,
+      "caller_function": "EstimateBitsForGroup",
+      "caller_usr": "c:@F@EstimateBitsForGroup",
+      "location": {
+        "column": 21,
+        "file": "dsc_codec.c",
+        "line": 433
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "maxresidualsize",
+      "callee_function": "MaxResidualSize",
+      "callee_usr": "c:@F@MaxResidualSize",
+      "caller_contract": null,
+      "caller_function": "EstimateBitsForGroup",
+      "caller_usr": "c:@F@EstimateBitsForGroup",
+      "location": {
+        "column": 23,
+        "file": "dsc_codec.c",
+        "line": 415
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "maxresidualsize",
+      "callee_function": "MaxResidualSize",
+      "callee_usr": "c:@F@MaxResidualSize",
+      "caller_contract": null,
+      "caller_function": "EstimateBitsForGroup",
+      "caller_usr": "c:@F@EstimateBitsForGroup",
+      "location": {
+        "column": 30,
+        "file": "dsc_codec.c",
+        "line": 426
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "maxresidualsize",
+      "callee_function": "MaxResidualSize",
+      "callee_usr": "c:@F@MaxResidualSize",
+      "caller_contract": "getqpadjpredsize",
+      "caller_function": "GetQpAdjPredSize",
+      "caller_usr": "c:@F@GetQpAdjPredSize",
+      "location": {
+        "column": 13,
+        "file": "dsc_codec.c",
+        "line": 293
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "maxresidualsize",
+      "callee_function": "MaxResidualSize",
+      "callee_usr": "c:@F@MaxResidualSize",
+      "caller_contract": null,
+      "caller_function": "PredictionLoop",
+      "caller_usr": "c:@F@PredictionLoop",
+      "location": {
+        "column": 86,
+        "file": "dsc_codec.c",
+        "line": 2435
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "maxresidualsize",
+      "callee_function": "MaxResidualSize",
+      "callee_usr": "c:@F@MaxResidualSize",
+      "caller_contract": null,
+      "caller_function": "PredictionLoop",
+      "caller_usr": "c:@F@PredictionLoop",
+      "location": {
+        "column": 86,
+        "file": "dsc_codec.c",
+        "line": 2438
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "maxresidualsize",
+      "callee_function": "MaxResidualSize",
+      "callee_usr": "c:@F@MaxResidualSize",
+      "caller_contract": null,
+      "caller_function": "VLCUnit",
+      "caller_usr": "c:@F@VLCUnit",
+      "location": {
+        "column": 17,
+        "file": "dsc_codec.c",
+        "line": 1650
+      },
+      "source": "facts/callgraph.json"
+    },
+    {
+      "callee_contract": "maxresidualsize",
+      "callee_function": "MaxResidualSize",
+      "callee_usr": "c:@F@MaxResidualSize",
+      "caller_contract": null,
+      "caller_function": "VLDUnit",
+      "caller_usr": "c:@F@VLDUnit",
+      "location": {
+        "column": 15,
+        "file": "dsc_codec.c",
+        "line": 1889
+      },
+      "source": "facts/callgraph.json"
+    }
+  ],
+  "checks": {
+    "callee_RTL_against_callee_C": true,
+    "caller_core_plus_callee_RTL": true,
+    "caller_core_with_callee_C": true,
+    "direct_call_sites_discovered": true,
+    "overlay_rewritten_call_sites": true
+  },
+  "counterexample": {
+    "actual": "9",
+    "expected": "8",
+    "index": 0,
+    "inputs": [
+      0,
+      0,
+      0,
+      0,
+      8,
+      8,
+      8,
+      0,
+      0
+    ],
+    "shard_id": 0
+  },
+  "dependency_ports": [
+    {
+      "arguments": [
+        "dsc_cfg",
+        "dsc_state",
+        "cpnt",
+        "dsc_state->primaryQp"
+      ],
+      "callee_usr": "c:@F@MaxResidualSize",
+      "caller_function": "IchDecision",
+      "location": "<overlay-work>/source/dsc_codec.c:293:13",
+      "result": "max_size",
+      "transport": "direct argument/result ports"
+    },
+    {
+      "arguments": [
+        "dsc_cfg",
+        "dsc_state",
+        "dsc_state->unitCType[unit]",
+        "dsc_state->primaryQp"
+      ],
+      "callee_usr": "c:@F@MaxResidualSize",
+      "caller_function": "IchDecision",
+      "location": "<overlay-work>/source/dsc_codec.c:415:23",
+      "result": "max_residual_size",
+      "transport": "direct argument/result ports"
+    },
+    {
+      "arguments": [
+        "dsc_cfg",
+        "dsc_state",
+        "cpnt",
+        "dsc_state->primaryQp"
+      ],
+      "callee_usr": "c:@F@MaxResidualSize",
+      "caller_function": "IchDecision",
+      "location": "<overlay-work>/source/dsc_codec.c:426:30",
+      "result": "discarded",
+      "transport": "direct argument/result ports"
+    },
+    {
+      "arguments": [
+        "dsc_cfg",
+        "dsc_state",
+        "0",
+        "dsc_state->primaryQp"
+      ],
+      "callee_usr": "c:@F@MaxResidualSize",
+      "caller_function": "IchDecision",
+      "location": "<overlay-work>/source/dsc_codec.c:433:21",
+      "result": "discarded",
+      "transport": "direct argument/result ports"
+    },
+    {
+      "arguments": [
+        "dsc_cfg",
+        "dsc_state",
+        "cpnt",
+        "dsc_state->primaryQp"
+      ],
+      "callee_usr": "c:@F@MaxResidualSize",
+      "caller_function": "IchDecision",
+      "location": "<overlay-work>/source/dsc_codec.c:1650:17",
+      "result": "max_pfx_size",
+      "transport": "direct argument/result ports"
+    },
+    {
+      "arguments": [
+        "dsc_cfg",
+        "dsc_state",
+        "cpnt",
+        "dsc_state->primaryQp"
+      ],
+      "callee_usr": "c:@F@MaxResidualSize",
+      "caller_function": "IchDecision",
+      "location": "<overlay-work>/source/dsc_codec.c:1889:15",
+      "result": "max_prefix",
+      "transport": "direct argument/result ports"
+    },
+    {
+      "arguments": [
+        "dsc_cfg",
+        "dsc_state",
+        "cpnt",
+        "qp"
+      ],
+      "callee_usr": "c:@F@MaxResidualSize",
+      "caller_function": "IchDecision",
+      "location": "<overlay-work>/source/dsc_codec.c:2435:86",
+      "result": "discarded",
+      "transport": "direct argument/result ports"
+    },
+    {
+      "arguments": [
+        "dsc_cfg",
+        "dsc_state",
+        "cpnt",
+        "qp"
+      ],
+      "callee_usr": "c:@F@MaxResidualSize",
+      "caller_function": "IchDecision",
+      "location": "<overlay-work>/source/dsc_codec.c:2438:86",
+      "result": "discarded",
+      "transport": "direct argument/result ports"
+    }
+  ],
+  "execution_evidence": {
+    "callee_candidate_compile": [
+      {
+        "binary": "candidate-build/candidate_01/obj/Vmaxresidualsize_candidate_01",
+        "candidate": "candidate_01",
+        "command": {
+          "command": [
+            "/opt/homebrew/bin/verilator",
+            "--cc",
+            "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/generated/candidate_01.sv",
+            "--exe",
+            "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/candidate-build/candidate_01/harness.cpp",
+            "--build",
+            "-j",
+            "1",
+            "--Mdir",
+            "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/candidate-build/candidate_01/obj",
+            "--top-module",
+            "maxresidualsize_candidate_01",
+            "--Wno-fatal"
+          ],
+          "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
+          "duration_seconds": 2.963,
+          "output": "%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/generated/candidate_01.sv:17:20: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'cpntBitDepth_selected' generates 5 bits.\n                                                                                                                                                               : ... note: In instance 'maxresidualsize_candidate_01'\n   17 |         max_size_i = cpntBitDepth_selected;\n      |                    ^\n                      ... For warning description see https://verilator.org/warn/WIDTHEXPAND?v=5.050\n                      ... Use \"/* verilator lint_off WIDTHEXPAND */\" and lint_on around source to disable this message.\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/generated/candidate_01.sv:19:22: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'qlevel_luma' generates 5 bits.\n                                                                                                                                                               : ... note: In instance 'maxresidualsize_candidate_01'\n   19 |             qlevel_i = qlevel_luma;\n      |                      ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/generated/candidate_01.sv:21:22: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'qlevel_luma' generates 5 bits.\n                                                                                                                                                               : ... note: In instance 'maxresidualsize_candidate_01'\n   21 |             qlevel_i = qlevel_luma;\n      |                      ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/generated/candidate_01.sv:23:22: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'qlevel_chroma' generates 5 bits.\n                                                                                                                                                               : ... note: In instance 'maxresidualsize_candidate_01'\n   23 |             chroma_i = qlevel_chroma;\n      |                      ^\n%Warning-WIDTHTRUNC: /private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/generated/candidate_01.sv:30:22: Operator ASSIGN expects 6 bits on the Assign RHS, but Assign RHS's VARREF 'max_size_i' generates 32 bits.\n                                                                                                                                                              : ... note: In instance 'maxresidualsize_candidate_01'\n   30 |         return_value = max_size_i;\n      |                      ^\n                     ... For warning description see https://verilator.org/warn/WIDTHTRUNC?v=5.050\n                     ... Use \"/* verilator lint_off WIDTHTRUNC */\" and lint_on around source to disable this message.\n%Warning-LATCH: /private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/generated/candidate_01.sv:16:5: Latch inferred for signal 'maxresidualsize_candidate_01.chroma_i' (not all control paths of combinational always assign a value)\n                                                                                                                                                        : ... Suggest use of always_latch for intentional latches\n   16 |     always_comb begin\n      |     ^~~~~~~~~~~\n                ... For warning description see https://verilator.org/warn/LATCH?v=5.050\n                ... Use \"/* verilator lint_off LATCH */\" and lint_on around source to disable this message.\n%Warning-LATCH: /private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/generated/candidate_01.sv:16:5: Latch inferred for signal 'return_value' (not all control paths of combinational always assign a value)\n                                                                                                                                                        : ... Suggest use of always_latch for intentional latches\n   16 |     always_comb begin\n      |     ^~~~~~~~~~~\nc++  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -Os  -c -o harness.o /private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/candidate-build/candidate_01/harness.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\npython3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vmaxresidualsize_candidate_01.cpp Vmaxresidualsize_candidate_01___024root__0.cpp Vmaxresidualsize_candidate_01___024root__Slow.cpp Vmaxresidualsize_candidate_01___024root__0__Slow.cpp Vmaxresidualsize_candidate_01__Syms__Slow.cpp > Vmaxresidualsize_candidate_01__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o Vmaxresidualsize_candidate_01__ALL.o Vmaxresidualsize_candidate_01__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++  -Wl,-U,__Z15vl_time_stamp64v,-U,__Z13sc_time_stampv,-U,_vlog_startup_routines   harness.o verilated.o verilated_threads.o Vmaxresidualsize_candidate_01__ALL.a    -pthread -lpthread   -o Vmaxresidualsize_candidate_01\nrm Vmaxresidualsize_candidate_01__ALL.verilator_deplist.tmp\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.032 MB sources in 2 modules, into 0.038 MB in 5 C++ files needing 0.000 MB\n- Verilator: Walltime 2.913 s (elab=0.000, cvt=0.003, bld=2.906); cpu 0.007 s on 1 threads; allocated 9.703 MB\n",
+          "returncode": 0
+        },
+        "compile_once": true,
+        "module": "maxresidualsize_candidate_01",
+        "status": "PASS"
+      },
+      {
+        "binary": "candidate-build/candidate_02/obj/Vmaxresidualsize_candidate_02",
+        "candidate": "candidate_02",
+        "command": {
+          "command": [
+            "/opt/homebrew/bin/verilator",
+            "--cc",
+            "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/generated/candidate_02.sv",
+            "--exe",
+            "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/candidate-build/candidate_02/harness.cpp",
+            "--build",
+            "-j",
+            "1",
+            "--Mdir",
+            "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/candidate-build/candidate_02/obj",
+            "--top-module",
+            "maxresidualsize_candidate_02",
+            "--Wno-fatal"
+          ],
+          "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
+          "duration_seconds": 2.992,
+          "output": "%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/generated/candidate_02.sv:17:20: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'cpntBitDepth_selected' generates 5 bits.\n                                                                                                                                                               : ... note: In instance 'maxresidualsize_candidate_02'\n   17 |         max_size_i = cpntBitDepth_selected;\n      |                    ^\n                      ... For warning description see https://verilator.org/warn/WIDTHEXPAND?v=5.050\n                      ... Use \"/* verilator lint_off WIDTHEXPAND */\" and lint_on around source to disable this message.\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/generated/candidate_02.sv:19:22: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'qlevel_luma' generates 5 bits.\n                                                                                                                                                               : ... note: In instance 'maxresidualsize_candidate_02'\n   19 |             qlevel_i = qlevel_luma;\n      |                      ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/generated/candidate_02.sv:21:22: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'qlevel_luma' generates 5 bits.\n                                                                                                                                                               : ... note: In instance 'maxresidualsize_candidate_02'\n   21 |             qlevel_i = qlevel_luma;\n      |                      ^\n%Warning-WIDTHEXPAND: /private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/generated/candidate_02.sv:23:22: Operator ASSIGN expects 32 bits on the Assign RHS, but Assign RHS's VARREF 'qlevel_chroma' generates 5 bits.\n                                                                                                                                                               : ... note: In instance 'maxresidualsize_candidate_02'\n   23 |             chroma_i = qlevel_chroma;\n      |                      ^\n%Warning-WIDTHTRUNC: /private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/generated/candidate_02.sv:30:22: Operator ASSIGN expects 6 bits on the Assign RHS, but Assign RHS's VARREF 'max_size_i' generates 32 bits.\n                                                                                                                                                              : ... note: In instance 'maxresidualsize_candidate_02'\n   30 |         return_value = max_size_i;\n      |                      ^\n                     ... For warning description see https://verilator.org/warn/WIDTHTRUNC?v=5.050\n                     ... Use \"/* verilator lint_off WIDTHTRUNC */\" and lint_on around source to disable this message.\n%Warning-LATCH: /private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/generated/candidate_02.sv:16:5: Latch inferred for signal 'maxresidualsize_candidate_02.chroma_i' (not all control paths of combinational always assign a value)\n                                                                                                                                                        : ... Suggest use of always_latch for intentional latches\n   16 |     always_comb begin\n      |     ^~~~~~~~~~~\n                ... For warning description see https://verilator.org/warn/LATCH?v=5.050\n                ... Use \"/* verilator lint_off LATCH */\" and lint_on around source to disable this message.\n%Warning-LATCH: /private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/generated/candidate_02.sv:16:5: Latch inferred for signal 'return_value' (not all control paths of combinational always assign a value)\n                                                                                                                                                        : ... Suggest use of always_latch for intentional latches\n   16 |     always_comb begin\n      |     ^~~~~~~~~~~\nc++  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -Os  -c -o harness.o /private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/candidate-build/candidate_02/harness.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\npython3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vmaxresidualsize_candidate_02.cpp Vmaxresidualsize_candidate_02___024root__0.cpp Vmaxresidualsize_candidate_02___024root__Slow.cpp Vmaxresidualsize_candidate_02___024root__0__Slow.cpp Vmaxresidualsize_candidate_02__Syms__Slow.cpp > Vmaxresidualsize_candidate_02__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o Vmaxresidualsize_candidate_02__ALL.o Vmaxresidualsize_candidate_02__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++  -Wl,-U,__Z15vl_time_stamp64v,-U,__Z13sc_time_stampv,-U,_vlog_startup_routines   harness.o verilated.o verilated_threads.o Vmaxresidualsize_candidate_02__ALL.a    -pthread -lpthread   -o Vmaxresidualsize_candidate_02\nrm Vmaxresidualsize_candidate_02__ALL.verilator_deplist.tmp\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.032 MB sources in 2 modules, into 0.038 MB in 5 C++ files needing 0.000 MB\n- Verilator: Walltime 2.938 s (elab=0.001, cvt=0.004, bld=2.930); cpu 0.008 s on 1 threads; allocated 9.875 MB\n",
+          "returncode": 0
+        },
+        "compile_once": true,
+        "module": "maxresidualsize_candidate_02",
+        "status": "PASS"
+      }
+    ],
+    "callee_oracle_compile": [
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c99",
+          "-O0",
+          "-g",
+          "-I",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+          "-c",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/cmd_parse.c",
+          "-o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/cmd_parse.o"
+        ],
+        "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "duration_seconds": 0.056,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c99",
+          "-O0",
+          "-g",
+          "-I",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+          "-Dmain=dsc_cicd_original_main",
+          "-c",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/codec_main.c",
+          "-o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/codec_main.o"
+        ],
+        "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "duration_seconds": 0.062,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c99",
+          "-O0",
+          "-g",
+          "-I",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+          "-c",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dpx.c",
+          "-o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/dpx.o"
+        ],
+        "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "duration_seconds": 0.057,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c99",
+          "-O0",
+          "-g",
+          "-I",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+          "-c",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_codec.c",
+          "-o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/dsc_codec.o"
+        ],
+        "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "duration_seconds": 0.072,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c99",
+          "-O0",
+          "-g",
+          "-I",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+          "-c",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/dsc_utils.c",
+          "-o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/dsc_utils.o"
+        ],
+        "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "duration_seconds": 0.048,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c99",
+          "-O0",
+          "-g",
+          "-I",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+          "-c",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/fifo.c",
+          "-o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/fifo.o"
+        ],
+        "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "duration_seconds": 0.035,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c99",
+          "-O0",
+          "-g",
+          "-I",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+          "-c",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c",
+          "-o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/hdr_dpx.o"
+        ],
+        "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "duration_seconds": 0.067,
+        "output": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/hdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n2 warnings generated.\n",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c99",
+          "-O0",
+          "-g",
+          "-I",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+          "-c",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/logging.c",
+          "-o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/logging.o"
+        ],
+        "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "duration_seconds": 0.036,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c99",
+          "-O0",
+          "-g",
+          "-I",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+          "-c",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/multiplex.c",
+          "-o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/multiplex.o"
+        ],
+        "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "duration_seconds": 0.036,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c99",
+          "-O0",
+          "-g",
+          "-I",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+          "-c",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/psnr.c",
+          "-o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/psnr.o"
+        ],
+        "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "duration_seconds": 0.037,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c99",
+          "-O0",
+          "-g",
+          "-I",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+          "-c",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source/utl.c",
+          "-o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/utl.o"
+        ],
+        "cwd": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+        "duration_seconds": 0.065,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=c99",
+          "-O0",
+          "-I",
+          "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+          "-c",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle.c",
+          "-o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/oracle.o"
+        ],
+        "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
+        "duration_seconds": 0.032,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-O0",
+          "-o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/c_oracle",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/cmd_parse.o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/codec_main.o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/dpx.o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/dsc_codec.o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/dsc_utils.o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/fifo.o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/hdr_dpx.o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/logging.o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/multiplex.o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/psnr.o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/utl.o",
+          "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/oracle.o"
+        ],
+        "cwd": "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
+        "duration_seconds": 0.042,
+        "output": "",
+        "returncode": 0
+      }
+    ],
+    "callee_rtl_against_c": [
+      {
+        "cancellation": {
+          "futures_cancelled": 0,
+          "requested_after_counterexample": false,
+          "worker_count": 8
+        },
+        "candidate": "candidate_01",
+        "formal_proof": {
+          "counterexample": null,
+          "proof_complete": false,
+          "reason": "formal AST proof is only enabled for reviewed windowed_boundary or flatness_window contracts",
+          "receipt": null,
+          "status": "NOT_APPLICABLE"
+        },
+        "module": "maxresidualsize_candidate_01",
+        "shards": [
+          {
+            "commands": {
+              "oracle": [
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/c_oracle",
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/shards/shard-000.vectors"
+              ],
+              "rtl": [
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/candidate-build/candidate_01/obj/Vmaxresidualsize_candidate_01",
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/shards/shard-000.vectors"
+              ]
+            },
+            "duration_seconds": 8.352,
+            "shard_id": 0,
+            "status": "PASS",
+            "vectors": 3468000
+          },
+          {
+            "commands": {
+              "oracle": [
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/c_oracle",
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/shards/shard-001.vectors"
+              ],
+              "rtl": [
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/candidate-build/candidate_01/obj/Vmaxresidualsize_candidate_01",
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/shards/shard-001.vectors"
+              ]
+            },
+            "duration_seconds": 9.881,
+            "shard_id": 1,
+            "status": "PASS",
+            "vectors": 3468000
+          },
+          {
+            "commands": {
+              "oracle": [
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/c_oracle",
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/shards/shard-002.vectors"
+              ],
+              "rtl": [
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/candidate-build/candidate_01/obj/Vmaxresidualsize_candidate_01",
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/shards/shard-002.vectors"
+              ]
+            },
+            "duration_seconds": 10.257,
+            "shard_id": 2,
+            "status": "PASS",
+            "vectors": 3468000
+          },
+          {
+            "commands": {
+              "oracle": [
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/c_oracle",
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/shards/shard-003.vectors"
+              ],
+              "rtl": [
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/candidate-build/candidate_01/obj/Vmaxresidualsize_candidate_01",
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/shards/shard-003.vectors"
+              ]
+            },
+            "duration_seconds": 10.116,
+            "shard_id": 3,
+            "status": "PASS",
+            "vectors": 3468000
+          },
+          {
+            "commands": {
+              "oracle": [
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/c_oracle",
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/shards/shard-004.vectors"
+              ],
+              "rtl": [
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/candidate-build/candidate_01/obj/Vmaxresidualsize_candidate_01",
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/shards/shard-004.vectors"
+              ]
+            },
+            "duration_seconds": 10.003,
+            "shard_id": 4,
+            "status": "PASS",
+            "vectors": 3468000
+          },
+          {
+            "commands": {
+              "oracle": [
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/c_oracle",
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/shards/shard-005.vectors"
+              ],
+              "rtl": [
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/candidate-build/candidate_01/obj/Vmaxresidualsize_candidate_01",
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/shards/shard-005.vectors"
+              ]
+            },
+            "duration_seconds": 10.29,
+            "shard_id": 5,
+            "status": "PASS",
+            "vectors": 3468000
+          },
+          {
+            "commands": {
+              "oracle": [
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/c_oracle",
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/shards/shard-006.vectors"
+              ],
+              "rtl": [
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/candidate-build/candidate_01/obj/Vmaxresidualsize_candidate_01",
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/shards/shard-006.vectors"
+              ]
+            },
+            "duration_seconds": 9.688,
+            "shard_id": 6,
+            "status": "PASS",
+            "vectors": 3468000
+          },
+          {
+            "commands": {
+              "oracle": [
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/oracle-build/c_oracle",
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/shards/shard-007.vectors"
+              ],
+              "rtl": [
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/candidate-build/candidate_01/obj/Vmaxresidualsize_candidate_01",
+                "/private/tmp/dsc12a-c-analysis/artifacts/1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c/shards/shard-007.vectors"
+              ]
+            },
+            "duration_seconds": 9.45,
+            "shard_id": 7,
+            "status": "PASS",
+            "vectors": 3468000
+          }
+        ],
+        "smallest_counterexample": null,
+        "vectors_executed": 27744000,
+        "verification_status": "EXHAUSTIVE_EQUIVALENT"
+      }
+    ],
+    "caller_core_plus_callee_rtl": {
+      "scenarios": [
+        {
+          "baseline_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+          "command": {
+            "command": [
+              "<overlay-work>/source/dsc",
+              "-F",
+              "<overlay-work>/bittrue_smoke/simple_8bpc_rgb.cfg"
+            ],
+            "cwd": "<overlay-work>",
+            "duration_seconds": 0.105,
+            "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
+            "returncode": 0
+          },
+          "mismatch_count": 0,
+          "scenario": {
+            "config": "bittrue_smoke/simple_8bpc_rgb.cfg",
+            "expected_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+            "golden": "bittrue_smoke/out/simple_192x108.dsc",
+            "name": "run_c_baseline",
+            "script": "bittrue_smoke/run_c_baseline.sh"
+          },
+          "sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+          "size_bytes": 31236,
+          "status": "PASS"
+        },
+        {
+          "baseline_sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
+          "command": {
+            "command": [
+              "<overlay-work>/source/dsc",
+              "-F",
+              "<overlay-work>/bittrue_smoke/simple_10bpc_rgb.cfg"
+            ],
+            "cwd": "<overlay-work>",
+            "duration_seconds": 0.101,
+            "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
+            "returncode": 0
+          },
+          "mismatch_count": 0,
+          "scenario": {
+            "config": "bittrue_smoke/simple_10bpc_rgb.cfg",
+            "expected_sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
+            "golden": "bittrue_smoke/out/simple_192x108_10bpc.dsc",
+            "name": "run_c_baseline_10bpc",
+            "script": "bittrue_smoke/run_c_baseline_10bpc.sh"
+          },
+          "sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
+          "size_bytes": 31236,
+          "status": "PASS"
+        },
+        {
+          "baseline_sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
+          "command": {
+            "command": [
+              "<overlay-work>/source/dsc",
+              "-F",
+              "<overlay-work>/bittrue_smoke/native_8bpc_420.cfg"
+            ],
+            "cwd": "<overlay-work>",
+            "duration_seconds": 0.053,
+            "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
+            "returncode": 0
+          },
+          "mismatch_count": 0,
+          "scenario": {
+            "config": "bittrue_smoke/native_8bpc_420.cfg",
+            "expected_sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
+            "golden": "bittrue_smoke/out/native_192x108_420.dsc",
+            "name": "run_c_baseline_native420",
+            "script": "bittrue_smoke/run_c_baseline_native420.sh"
+          },
+          "sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
+          "size_bytes": 15684,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    "caller_core_with_callee_c": {
+      "scenarios": [
+        {
+          "baseline_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+          "command": {
+            "command": [
+              "<overlay-work>/source/dsc",
+              "-F",
+              "<overlay-work>/bittrue_smoke/simple_8bpc_rgb.cfg"
+            ],
+            "cwd": "<overlay-work>",
+            "duration_seconds": 0.412,
+            "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
+            "returncode": 0
+          },
+          "mismatch_count": 0,
+          "scenario": {
+            "config": "bittrue_smoke/simple_8bpc_rgb.cfg",
+            "expected_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+            "golden": "bittrue_smoke/out/simple_192x108.dsc",
+            "name": "run_c_baseline",
+            "script": "bittrue_smoke/run_c_baseline.sh"
+          },
+          "sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+          "size_bytes": 31236,
+          "status": "PASS"
+        },
+        {
+          "baseline_sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
+          "command": {
+            "command": [
+              "<overlay-work>/source/dsc",
+              "-F",
+              "<overlay-work>/bittrue_smoke/simple_10bpc_rgb.cfg"
+            ],
+            "cwd": "<overlay-work>",
+            "duration_seconds": 0.035,
+            "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
+            "returncode": 0
+          },
+          "mismatch_count": 0,
+          "scenario": {
+            "config": "bittrue_smoke/simple_10bpc_rgb.cfg",
+            "expected_sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
+            "golden": "bittrue_smoke/out/simple_192x108_10bpc.dsc",
+            "name": "run_c_baseline_10bpc",
+            "script": "bittrue_smoke/run_c_baseline_10bpc.sh"
+          },
+          "sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
+          "size_bytes": 31236,
+          "status": "PASS"
+        },
+        {
+          "baseline_sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
+          "command": {
+            "command": [
+              "<overlay-work>/source/dsc",
+              "-F",
+              "<overlay-work>/bittrue_smoke/native_8bpc_420.cfg"
+            ],
+            "cwd": "<overlay-work>",
+            "duration_seconds": 0.02,
+            "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
+            "returncode": 0
+          },
+          "mismatch_count": 0,
+          "scenario": {
+            "config": "bittrue_smoke/native_8bpc_420.cfg",
+            "expected_sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
+            "golden": "bittrue_smoke/out/native_192x108_420.dsc",
+            "name": "run_c_baseline_native420",
+            "script": "bittrue_smoke/run_c_baseline_native420.sh"
+          },
+          "sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
+          "size_bytes": 15684,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    "counterexamples": [
+      {
+        "actual": "9",
+        "expected": "8",
+        "index": 0,
+        "inputs": [
+          0,
+          0,
+          0,
+          0,
+          8,
+          8,
+          8,
+          0,
+          0
+        ],
+        "shard_id": 0
+      }
+    ],
+    "vectors": {
+      "complete": true,
+      "input_ports": [
+        "cpnt",
+        "qp",
+        "dsc_version_minor",
+        "native_420",
+        "cpntBitDepth_0",
+        "cpntBitDepth_1",
+        "cpntBitDepth_selected",
+        "qlevel_luma",
+        "qlevel_chroma"
+      ],
+      "proof_complete": true,
+      "shard_count": 8,
+      "shards": [
+        {
+          "path": "shards/shard-000.vectors",
+          "shard_id": 0,
+          "vectors": 3468000
+        },
+        {
+          "path": "shards/shard-001.vectors",
+          "shard_id": 1,
+          "vectors": 3468000
+        },
+        {
+          "path": "shards/shard-002.vectors",
+          "shard_id": 2,
+          "vectors": 3468000
+        },
+        {
+          "path": "shards/shard-003.vectors",
+          "shard_id": 3,
+          "vectors": 3468000
+        },
+        {
+          "path": "shards/shard-004.vectors",
+          "shard_id": 4,
+          "vectors": 3468000
+        },
+        {
+          "path": "shards/shard-005.vectors",
+          "shard_id": 5,
+          "vectors": 3468000
+        },
+        {
+          "path": "shards/shard-006.vectors",
+          "shard_id": 6,
+          "vectors": 3468000
+        },
+        {
+          "path": "shards/shard-007.vectors",
+          "shard_id": 7,
+          "vectors": 3468000
+        }
+      ],
+      "total_vectors": 27744000,
+      "vector_strategy": {
+        "kind": "cartesian",
+        "source": "frozen per-port legal domains"
+      }
+    }
+  },
+  "execution_status": "EXECUTED_NOW",
+  "failure_reason": null,
+  "pair": {
+    "call_sites": [
+      {
+        "callee_contract": "ceil_log2",
+        "callee_function": "ceil_log2",
+        "callee_usr": "c:@F@ceil_log2",
+        "caller_contract": null,
+        "caller_function": "IchDecision",
+        "caller_usr": "c:@F@IchDecision",
+        "location": {
+          "column": 21,
+          "file": "dsc_codec.c",
+          "line": 513
+        },
+        "source": "facts/callgraph.json"
+      },
+      {
+        "callee_contract": "ceil_log2",
+        "callee_function": "ceil_log2",
+        "callee_usr": "c:@F@ceil_log2",
+        "caller_contract": null,
+        "caller_function": "IchDecision",
+        "caller_usr": "c:@F@IchDecision",
+        "location": {
+          "column": 23,
+          "file": "dsc_codec.c",
+          "line": 514
+        },
+        "source": "facts/callgraph.json"
+      }
+    ],
+    "callee_contract": "ceil_log2",
+    "callee_function": "ceil_log2",
+    "callee_usr": "c:@F@ceil_log2",
+    "caller_contract": null,
+    "caller_function": "IchDecision",
+    "caller_usr": "c:@F@IchDecision",
+    "selection_basis": "smallest acyclic direct call site from facts/callgraph.json"
+  },
+  "schema_version": 2,
+  "status": "PASS"
+}

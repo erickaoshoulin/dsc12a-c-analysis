@@ -1,0 +1,54 @@
+{
+  "complete": true,
+  "ports": [
+    {
+      "domain": {
+        "basis": "requiredSize is a non-negative residual size bounded by maxSize <= 16",
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "req_size_0",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "requiredSize is a non-negative residual size bounded by maxSize <= 16",
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "req_size_1",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "basis": "requiredSize is a non-negative residual size bounded by maxSize <= 16",
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "req_size_2",
+      "role": "RUNTIME_INPUT"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          16
+        ]
+      },
+      "port": "return_value",
+      "role": "return_value"
+    }
+  ],
+  "proof_basis": "exact spec/table plus reviewed runtime range override",
+  "schema_version": 1
+}

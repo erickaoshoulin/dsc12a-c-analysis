@@ -1,0 +1,62 @@
+{
+  "bit_order": "little-endian integer text to packed Verilator port",
+  "ports": [
+    {
+      "direction": "input",
+      "name": "cpnt",
+      "packing": "bits[1:0]",
+      "role": "cpnt",
+      "signed": false,
+      "width": 2
+    },
+    {
+      "direction": "input",
+      "name": "qp",
+      "packing": "bits[4:0]",
+      "role": "qp",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "bits_per_component",
+      "packing": "bits[4:0]",
+      "role": "bits_per_component",
+      "signed": false,
+      "width": 5
+    },
+    {
+      "direction": "input",
+      "name": "convert_rgb",
+      "packing": "bits[0:0]",
+      "role": "convert_rgb",
+      "signed": false,
+      "width": 1
+    },
+    {
+      "direction": "input",
+      "name": "dsc_version_minor",
+      "packing": "bits[1:0]",
+      "role": "dsc_version_minor",
+      "signed": false,
+      "width": 2
+    },
+    {
+      "direction": "input",
+      "name": "native_420",
+      "packing": "bits[0:0]",
+      "role": "native_420",
+      "signed": false,
+      "width": 1
+    },
+    {
+      "direction": "output",
+      "name": "return_value",
+      "packing": "bits[4:0]",
+      "role": "return_value",
+      "signed": false,
+      "width": 5
+    }
+  ],
+  "schema_version": 1
+}

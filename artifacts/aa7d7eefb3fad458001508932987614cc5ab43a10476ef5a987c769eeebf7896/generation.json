@@ -1,0 +1,62 @@
+{
+  "candidate_limit": 4,
+  "candidates": [
+    {
+      "candidate": "candidate_01",
+      "path": "generated/candidate_01.sv",
+      "sha256": "42b42477e6d865a48733dba17bac8bdf2aeebccdd54f39d485822abd4a61a1f0",
+      "validation": "PASS",
+      "validation_reasons": []
+    },
+    {
+      "candidate": "candidate_02",
+      "path": "generated/candidate_02.sv",
+      "sha256": "51685c999ebf30cedf22da5e6e2fa9baa516932f9de339db161182f0c7e6d2be",
+      "validation": "PASS",
+      "validation_reasons": []
+    }
+  ],
+  "command": {
+    "command": [
+      "python3",
+      "tools/generator_fixture.py",
+      "/private/tmp/dsc12a-c-analysis/artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896/generation-request.json",
+      "/private/tmp/dsc12a-c-analysis/artifacts/aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896/generated"
+    ],
+    "cwd": "/private/tmp/dsc12a-c-analysis",
+    "duration_seconds": 0.069,
+    "output": "",
+    "returncode": 0
+  },
+  "context_keys": [
+    "locked_contract",
+    "frozen_interface",
+    "c_body",
+    "exact_spec_anchors"
+  ],
+  "contract_id": "ceil_log2",
+  "execution_status": "EXECUTED_NOW",
+  "hook": "python3 tools/generator_fixture.py",
+  "model_calls": 1,
+  "schema_version": 2,
+  "source_span": {
+    "end_line": 73,
+    "start_line": 67
+  },
+  "status": "PASS",
+  "telemetry": {
+    "candidate_count": 2,
+    "contract_id": "ceil_log2",
+    "generator": "deterministic-fixture-hook",
+    "model_calls": 1,
+    "request_keys": [
+      "c_body",
+      "exact_spec_anchors",
+      "frozen_interface",
+      "locked_contract"
+    ],
+    "tokens_in": 868,
+    "tokens_out": 121
+  },
+  "tokens": 989
+}

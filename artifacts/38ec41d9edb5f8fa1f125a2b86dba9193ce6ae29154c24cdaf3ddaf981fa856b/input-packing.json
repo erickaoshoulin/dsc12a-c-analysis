@@ -1,0 +1,22 @@
+{
+  "bit_order": "little-endian integer text to packed Verilator port",
+  "ports": [
+    {
+      "direction": "input",
+      "name": "eq",
+      "packing": "bits[16:0]",
+      "role": "eq",
+      "signed": true,
+      "width": 17
+    },
+    {
+      "direction": "output",
+      "name": "return_value",
+      "packing": "bits[4:0]",
+      "role": "return_value",
+      "signed": false,
+      "width": 5
+    }
+  ],
+  "schema_version": 1
+}

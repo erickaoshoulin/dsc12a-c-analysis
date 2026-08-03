@@ -1,0 +1,538 @@
+{
+  "complete": false,
+  "ports": [
+    {
+      "domain": {
+        "basis": "DSC slice horizontal position domain; hPos + 1 is compared against the positive slice width",
+        "kind": "range",
+        "range": [
+          0,
+          65534
+        ]
+      },
+      "port": "hPos",
+      "role": "hPos"
+    },
+    {
+      "domain": {
+        "basis": "DSC supported component bit depths",
+        "kind": "set",
+        "range": [
+          8,
+          16
+        ],
+        "values": [
+          8,
+          10,
+          12,
+          14,
+          16
+        ]
+      },
+      "port": "bits_per_component",
+      "role": "bits_per_component"
+    },
+    {
+      "domain": {
+        "basis": "DSC masterQp/Table 6-2 index domain",
+        "kind": "range",
+        "range": [
+          0,
+          31
+        ]
+      },
+      "port": "primary_qp",
+      "role": "primary_qp"
+    },
+    {
+      "domain": {
+        "basis": "DSC model component count: three components except native 4:2:2's four component lanes",
+        "kind": "set",
+        "range": [
+          3,
+          4
+        ],
+        "values": [
+          3,
+          4
+        ]
+      },
+      "port": "num_components",
+      "role": "num_components"
+    },
+    {
+      "domain": {
+        "basis": "Positive DSC slice width domain used by the line-end decision",
+        "kind": "range",
+        "range": [
+          1,
+          65535
+        ]
+      },
+      "port": "slice_width",
+      "role": "slice_width"
+    },
+    {
+      "domain": {
+        "basis": "DSC 1.2a flatnessDetThresh = 2 << (bits_per_component - 8)",
+        "kind": "set",
+        "range": [
+          2,
+          512
+        ],
+        "values": [
+          2,
+          4,
+          8,
+          16,
+          32,
+          64,
+          128,
+          256,
+          512
+        ]
+      },
+      "port": "flatness_det_thresh",
+      "role": "flatness_det_thresh"
+    },
+    {
+      "domain": {
+        "basis": "DSC 1.2a section 6.8.5.1 normative somewhatFlatQpDelta",
+        "kind": "set",
+        "range": [
+          4,
+          4
+        ],
+        "values": [
+          4
+        ]
+      },
+      "port": "somewhat_flat_qp_delta",
+      "role": "somewhat_flat_qp_delta"
+    },
+    {
+      "domain": {
+        "basis": "DSC native_420 configuration flag",
+        "kind": "set",
+        "range": [
+          0,
+          1
+        ],
+        "values": [
+          0,
+          1
+        ]
+      },
+      "port": "native_420",
+      "role": "native_420"
+    },
+    {
+      "domain": {
+        "basis": "DSC 1.1/1.2 model modes; the 1.2 chroma qLevel adjustment is active only at minor version 2",
+        "kind": "set",
+        "range": [
+          1,
+          2
+        ],
+        "values": [
+          1,
+          2
+        ]
+      },
+      "port": "dsc_version_minor",
+      "role": "dsc_version_minor"
+    },
+    {
+      "domain": {
+        "basis": "DSC luma component bit depth used by MapQpToQlevel's YCbCr adjustment",
+        "kind": "set",
+        "range": [
+          8,
+          16
+        ],
+        "values": [
+          8,
+          10,
+          12,
+          14,
+          16
+        ]
+      },
+      "port": "cpnt_bit_depth_0",
+      "role": "cpnt_bit_depth_0"
+    },
+    {
+      "domain": {
+        "basis": "DSC component bit depth, including the RGB-conversion +1 component depth used by the model",
+        "kind": "set",
+        "range": [
+          8,
+          17
+        ],
+        "values": [
+          8,
+          9,
+          10,
+          11,
+          12,
+          13,
+          14,
+          15,
+          16,
+          17
+        ]
+      },
+      "port": "cpnt_bit_depth_1",
+      "role": "cpnt_bit_depth_1"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_0_0",
+      "role": "orig_0_0"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_0_1",
+      "role": "orig_0_1"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_0_2",
+      "role": "orig_0_2"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_0_3",
+      "role": "orig_0_3"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_0_4",
+      "role": "orig_0_4"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_0_5",
+      "role": "orig_0_5"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_0_6",
+      "role": "orig_0_6"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_1_0",
+      "role": "orig_1_0"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_1_1",
+      "role": "orig_1_1"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_1_2",
+      "role": "orig_1_2"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_1_3",
+      "role": "orig_1_3"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_1_4",
+      "role": "orig_1_4"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_1_5",
+      "role": "orig_1_5"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_1_6",
+      "role": "orig_1_6"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_2_0",
+      "role": "orig_2_0"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_2_1",
+      "role": "orig_2_1"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_2_2",
+      "role": "orig_2_2"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_2_3",
+      "role": "orig_2_3"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_2_4",
+      "role": "orig_2_4"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_2_5",
+      "role": "orig_2_5"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_2_6",
+      "role": "orig_2_6"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_3_0",
+      "role": "orig_3_0"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_3_1",
+      "role": "orig_3_1"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_3_2",
+      "role": "orig_3_2"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_3_3",
+      "role": "orig_3_3"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_3_4",
+      "role": "orig_3_4"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_3_5",
+      "role": "orig_3_5"
+    },
+    {
+      "domain": {
+        "basis": "DSC component sample domain",
+        "kind": "range",
+        "range": [
+          0,
+          65535
+        ]
+      },
+      "port": "orig_3_6",
+      "role": "orig_3_6"
+    },
+    {
+      "domain": {
+        "kind": "range",
+        "range": [
+          0,
+          2
+        ]
+      },
+      "port": "return_value",
+      "role": "return_value"
+    }
+  ],
+  "proof_basis": "reviewed spec-domain differential strategy; not a legal-domain proof",
+  "schema_version": 1
+}

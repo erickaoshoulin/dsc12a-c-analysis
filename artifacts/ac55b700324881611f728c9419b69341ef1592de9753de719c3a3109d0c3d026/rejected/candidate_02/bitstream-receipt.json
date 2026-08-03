@@ -1,0 +1,760 @@
+{
+  "baseline": [
+    {
+      "command": {
+        "command": [
+          "<overlay-work>/bittrue_smoke/run_c_baseline.sh"
+        ],
+        "cwd": "<overlay-work>",
+        "duration_seconds": 3.491,
+        "output": "wrote <overlay-work>/bittrue_smoke/simple_192x108.ppm (62223 bytes)\nrm -f *.o\nrm -f dsc\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dsc_codec.c -o dsc_codec.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dsc_utils.c -o dsc_utils.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c cmd_parse.c -o cmd_parse.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c codec_main.c -o codec_main.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dpx.c -o dpx.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c fifo.c -o fifo.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c hdr_dpx.c -o hdr_dpx.o\nhdr_dpx.c:90:6: warning: variable 'yidx' set but not used [-Wunused-but-set-variable]\n   90 |         int yidx = 0;\n      |             ^\nhdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\nhdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n3 warnings generated.\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c logging.c -o logging.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c multiplex.c -o multiplex.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c psnr.c -o psnr.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c utl.c -o utl.o\ngcc dsc_codec.o dsc_utils.o cmd_parse.o codec_main.o dpx.o fifo.o hdr_dpx.o logging.o multiplex.o psnr.o utl.o -lm -o dsc\nDisplay Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nC baseline OK: 2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797\n",
+        "returncode": 0
+      },
+      "scenario": {
+        "config": "bittrue_smoke/simple_8bpc_rgb.cfg",
+        "expected_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+        "golden": "bittrue_smoke/out/simple_192x108.dsc",
+        "name": "run_c_baseline",
+        "script": "bittrue_smoke/run_c_baseline.sh"
+      },
+      "sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+      "size_bytes": 31236,
+      "status": "PASS"
+    },
+    {
+      "command": {
+        "command": [
+          "<overlay-work>/bittrue_smoke/run_c_baseline_10bpc.sh"
+        ],
+        "cwd": "<overlay-work>",
+        "duration_seconds": 4.662,
+        "output": "wrote <overlay-work>/bittrue_smoke/simple_192x108_10bpc.ppm (124432 bytes)\nrm -f *.o\nrm -f dsc\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dsc_codec.c -o dsc_codec.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dsc_utils.c -o dsc_utils.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c cmd_parse.c -o cmd_parse.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c codec_main.c -o codec_main.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dpx.c -o dpx.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c fifo.c -o fifo.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c hdr_dpx.c -o hdr_dpx.o\nhdr_dpx.c:90:6: warning: variable 'yidx' set but not used [-Wunused-but-set-variable]\n   90 |         int yidx = 0;\n      |             ^\nhdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\nhdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n3 warnings generated.\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c logging.c -o logging.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c multiplex.c -o multiplex.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c psnr.c -o psnr.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c utl.c -o utl.o\ngcc dsc_codec.o dsc_utils.o cmd_parse.o codec_main.o dpx.o fifo.o hdr_dpx.o logging.o multiplex.o psnr.o utl.o -lm -o dsc\nDisplay Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nC 10bpc baseline OK: 696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13\n",
+        "returncode": 0
+      },
+      "scenario": {
+        "config": "bittrue_smoke/simple_10bpc_rgb.cfg",
+        "expected_sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
+        "golden": "bittrue_smoke/out/simple_192x108_10bpc.dsc",
+        "name": "run_c_baseline_10bpc",
+        "script": "bittrue_smoke/run_c_baseline_10bpc.sh"
+      },
+      "sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
+      "size_bytes": 31236,
+      "status": "PASS"
+    },
+    {
+      "command": {
+        "command": [
+          "<overlay-work>/bittrue_smoke/run_c_baseline_native420.sh"
+        ],
+        "cwd": "<overlay-work>",
+        "duration_seconds": 3.55,
+        "output": "wrote <overlay-work>/bittrue_smoke/native_192x108_420.yuv (51840 bytes)\nrm -f *.o\nrm -f dsc\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dsc_codec.c -o dsc_codec.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dsc_utils.c -o dsc_utils.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c cmd_parse.c -o cmd_parse.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c codec_main.c -o codec_main.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c dpx.c -o dpx.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c fifo.c -o fifo.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c hdr_dpx.c -o hdr_dpx.o\nhdr_dpx.c:90:6: warning: variable 'yidx' set but not used [-Wunused-but-set-variable]\n   90 |         int yidx = 0;\n      |             ^\nhdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\nhdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n3 warnings generated.\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c logging.c -o logging.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c multiplex.c -o multiplex.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c psnr.c -o psnr.o\ngcc -std=gnu99 -O3 -Wall -D_FILE_OFFSET_BITS=64 -c utl.c -o utl.o\ngcc dsc_codec.o dsc_utils.o cmd_parse.o codec_main.o dpx.o fifo.o hdr_dpx.o logging.o multiplex.o psnr.o utl.o -lm -o dsc\nDisplay Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nC native420 baseline OK: 0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533\n",
+        "returncode": 0
+      },
+      "scenario": {
+        "config": "bittrue_smoke/native_8bpc_420.cfg",
+        "expected_sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
+        "golden": "bittrue_smoke/out/native_192x108_420.dsc",
+        "name": "run_c_baseline_native420",
+        "script": "bittrue_smoke/run_c_baseline_native420.sh"
+      },
+      "sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
+      "size_bytes": 15684,
+      "status": "PASS"
+    }
+  ],
+  "candidate": "candidate_02",
+  "compile": {
+    "binary": "<overlay-work>/source/dsc",
+    "candidate": "candidate.sv",
+    "commands": [
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=gnu99",
+          "-O3",
+          "-I",
+          "<overlay-work>/source",
+          "-c",
+          "<overlay-work>/source/cmd_parse.c",
+          "-o",
+          "<overlay-work>/overlay-build/cmd_parse.o"
+        ],
+        "cwd": "<overlay-work>/source",
+        "duration_seconds": 0.348,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=gnu99",
+          "-O3",
+          "-I",
+          "<overlay-work>/source",
+          "-Dmain=dsc_cicd_original_main",
+          "-c",
+          "<overlay-work>/source/codec_main.c",
+          "-o",
+          "<overlay-work>/overlay-build/codec_main.o"
+        ],
+        "cwd": "<overlay-work>/source",
+        "duration_seconds": 0.406,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=gnu99",
+          "-O3",
+          "-I",
+          "<overlay-work>/source",
+          "-c",
+          "<overlay-work>/source/dpx.c",
+          "-o",
+          "<overlay-work>/overlay-build/dpx.o"
+        ],
+        "cwd": "<overlay-work>/source",
+        "duration_seconds": 0.366,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=gnu99",
+          "-O3",
+          "-I",
+          "<overlay-work>/source",
+          "-c",
+          "<overlay-work>/source/dsc_cicd_main.c",
+          "-o",
+          "<overlay-work>/overlay-build/dsc_cicd_main.o"
+        ],
+        "cwd": "<overlay-work>/source",
+        "duration_seconds": 0.044,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=gnu99",
+          "-O3",
+          "-I",
+          "<overlay-work>/source",
+          "-c",
+          "<overlay-work>/source/dsc_cicd_overlay.c",
+          "-o",
+          "<overlay-work>/overlay-build/dsc_cicd_overlay.o"
+        ],
+        "cwd": "<overlay-work>/source",
+        "duration_seconds": 0.05,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=gnu99",
+          "-O3",
+          "-I",
+          "<overlay-work>/source",
+          "-c",
+          "<overlay-work>/source/dsc_codec.c",
+          "-o",
+          "<overlay-work>/overlay-build/dsc_codec.o"
+        ],
+        "cwd": "<overlay-work>/source",
+        "duration_seconds": 0.939,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=gnu99",
+          "-O3",
+          "-I",
+          "<overlay-work>/source",
+          "-c",
+          "<overlay-work>/source/dsc_utils.c",
+          "-o",
+          "<overlay-work>/overlay-build/dsc_utils.o"
+        ],
+        "cwd": "<overlay-work>/source",
+        "duration_seconds": 0.252,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=gnu99",
+          "-O3",
+          "-I",
+          "<overlay-work>/source",
+          "-c",
+          "<overlay-work>/source/fifo.c",
+          "-o",
+          "<overlay-work>/overlay-build/fifo.o"
+        ],
+        "cwd": "<overlay-work>/source",
+        "duration_seconds": 0.081,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=gnu99",
+          "-O3",
+          "-I",
+          "<overlay-work>/source",
+          "-c",
+          "<overlay-work>/source/hdr_dpx.c",
+          "-o",
+          "<overlay-work>/overlay-build/hdr_dpx.o"
+        ],
+        "cwd": "<overlay-work>/source",
+        "duration_seconds": 0.347,
+        "output": "<overlay-work>/source/hdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n<overlay-work>/source/hdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n2 warnings generated.\n",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=gnu99",
+          "-O3",
+          "-I",
+          "<overlay-work>/source",
+          "-c",
+          "<overlay-work>/source/logging.c",
+          "-o",
+          "<overlay-work>/overlay-build/logging.o"
+        ],
+        "cwd": "<overlay-work>/source",
+        "duration_seconds": 0.054,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=gnu99",
+          "-O3",
+          "-I",
+          "<overlay-work>/source",
+          "-c",
+          "<overlay-work>/source/multiplex.c",
+          "-o",
+          "<overlay-work>/overlay-build/multiplex.o"
+        ],
+        "cwd": "<overlay-work>/source",
+        "duration_seconds": 0.058,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=gnu99",
+          "-O3",
+          "-I",
+          "<overlay-work>/source",
+          "-c",
+          "<overlay-work>/source/psnr.c",
+          "-o",
+          "<overlay-work>/overlay-build/psnr.o"
+        ],
+        "cwd": "<overlay-work>/source",
+        "duration_seconds": 0.063,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang",
+          "-std=gnu99",
+          "-O3",
+          "-I",
+          "<overlay-work>/source",
+          "-c",
+          "<overlay-work>/source/utl.c",
+          "-o",
+          "<overlay-work>/overlay-build/utl.o"
+        ],
+        "cwd": "<overlay-work>/source",
+        "duration_seconds": 0.566,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang++",
+          "-std=c++17",
+          "-O2",
+          "-I",
+          "<overlay-work>/overlay-build/rtl-object",
+          "-I",
+          "/opt/homebrew/Cellar/verilator/5.050/share/verilator/include",
+          "-c",
+          "<overlay-work>/source/rtl_bridge.cpp",
+          "-o",
+          "<overlay-work>/overlay-build/rtl_bridge.o"
+        ],
+        "cwd": "<overlay-work>/source",
+        "duration_seconds": 0.641,
+        "output": "",
+        "returncode": 0
+      },
+      {
+        "command": [
+          "/usr/bin/clang++",
+          "-O2",
+          "-o",
+          "<overlay-work>/source/dsc",
+          "<overlay-work>/overlay-build/cmd_parse.o",
+          "<overlay-work>/overlay-build/codec_main.o",
+          "<overlay-work>/overlay-build/dpx.o",
+          "<overlay-work>/overlay-build/dsc_cicd_main.o",
+          "<overlay-work>/overlay-build/dsc_cicd_overlay.o",
+          "<overlay-work>/overlay-build/dsc_codec.o",
+          "<overlay-work>/overlay-build/dsc_utils.o",
+          "<overlay-work>/overlay-build/fifo.o",
+          "<overlay-work>/overlay-build/hdr_dpx.o",
+          "<overlay-work>/overlay-build/logging.o",
+          "<overlay-work>/overlay-build/multiplex.o",
+          "<overlay-work>/overlay-build/psnr.o",
+          "<overlay-work>/overlay-build/utl.o",
+          "<overlay-work>/overlay-build/rtl_bridge.o",
+          "<overlay-work>/overlay-build/rtl-object/Vqp2qlevel_candidate_02__ALL.a",
+          "<overlay-work>/overlay-build/rtl-object/libverilated.a"
+        ],
+        "cwd": "<overlay-work>/source",
+        "duration_seconds": 0.115,
+        "output": "",
+        "returncode": 0
+      }
+    ],
+    "make_archive": {
+      "command": [
+        "make",
+        "-C",
+        "<overlay-work>/overlay-build/rtl-object",
+        "-f",
+        "Vqp2qlevel_candidate_02.mk",
+        "-j",
+        "1"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 5.346,
+      "output": "python3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vqp2qlevel_candidate_02.cpp Vqp2qlevel_candidate_02___024root__0.cpp Vqp2qlevel_candidate_02__ConstPool__0__Slow.cpp Vqp2qlevel_candidate_02___024root__Slow.cpp Vqp2qlevel_candidate_02___024root__0__Slow.cpp Vqp2qlevel_candidate_02__Syms__Slow.cpp > Vqp2qlevel_candidate_02__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o Vqp2qlevel_candidate_02__ALL.o Vqp2qlevel_candidate_02__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nrm libVqp2qlevel_candidate_02.verilator_deplist.tmp Vqp2qlevel_candidate_02__ALL.verilator_deplist.tmp libverilated.verilator_deplist.tmp\n",
+      "returncode": 0
+    },
+    "module": "qp2qlevel_candidate_02",
+    "status": "PASS",
+    "verilator": {
+      "command": [
+        "/opt/homebrew/bin/verilator",
+        "--cc",
+        "<overlay-work>/candidate.sv",
+        "--Mdir",
+        "<overlay-work>/overlay-build/rtl-object",
+        "--top-module",
+        "qp2qlevel_candidate_02",
+        "--Wno-fatal"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.088,
+      "output": "- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.043 MB sources in 2 modules, into 0.041 MB in 6 C++ files needing 0.000 MB\n- Verilator: Walltime 0.018 s (elab=0.002, cvt=0.007, bld=0.000); cpu 0.015 s on 1 threads; allocated 10.766 MB\n",
+      "returncode": 0
+    }
+  },
+  "execution_status": "EXECUTED_NOW",
+  "matrix_scripts_discovered": 22,
+  "modes": {
+    "C_ONLY": {
+      "scenarios": [
+        {
+          "baseline_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+          "command": {
+            "command": [
+              "<overlay-work>/source/dsc",
+              "-F",
+              "<overlay-work>/bittrue_smoke/simple_8bpc_rgb.cfg"
+            ],
+            "cwd": "<overlay-work>",
+            "duration_seconds": 0.35,
+            "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
+            "returncode": 0
+          },
+          "mismatch_count": 0,
+          "scenario": {
+            "config": "bittrue_smoke/simple_8bpc_rgb.cfg",
+            "expected_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+            "golden": "bittrue_smoke/out/simple_192x108.dsc",
+            "name": "run_c_baseline",
+            "script": "bittrue_smoke/run_c_baseline.sh"
+          },
+          "sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+          "size_bytes": 31236,
+          "status": "PASS"
+        },
+        {
+          "baseline_sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
+          "command": {
+            "command": [
+              "<overlay-work>/source/dsc",
+              "-F",
+              "<overlay-work>/bittrue_smoke/simple_10bpc_rgb.cfg"
+            ],
+            "cwd": "<overlay-work>",
+            "duration_seconds": 0.028,
+            "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
+            "returncode": 0
+          },
+          "mismatch_count": 0,
+          "scenario": {
+            "config": "bittrue_smoke/simple_10bpc_rgb.cfg",
+            "expected_sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
+            "golden": "bittrue_smoke/out/simple_192x108_10bpc.dsc",
+            "name": "run_c_baseline_10bpc",
+            "script": "bittrue_smoke/run_c_baseline_10bpc.sh"
+          },
+          "sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
+          "size_bytes": 31236,
+          "status": "PASS"
+        },
+        {
+          "baseline_sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
+          "command": {
+            "command": [
+              "<overlay-work>/source/dsc",
+              "-F",
+              "<overlay-work>/bittrue_smoke/native_8bpc_420.cfg"
+            ],
+            "cwd": "<overlay-work>",
+            "duration_seconds": 0.016,
+            "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
+            "returncode": 0
+          },
+          "mismatch_count": 0,
+          "scenario": {
+            "config": "bittrue_smoke/native_8bpc_420.cfg",
+            "expected_sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
+            "golden": "bittrue_smoke/out/native_192x108_420.dsc",
+            "name": "run_c_baseline_native420",
+            "script": "bittrue_smoke/run_c_baseline_native420.sh"
+          },
+          "sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
+          "size_bytes": 15684,
+          "status": "PASS"
+        }
+      ],
+      "status": "PASS"
+    },
+    "RTL_RETURN": {
+      "scenarios": [
+        {
+          "baseline_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+          "command": {
+            "command": [
+              "<overlay-work>/source/dsc",
+              "-F",
+              "<overlay-work>/bittrue_smoke/simple_8bpc_rgb.cfg"
+            ],
+            "cwd": "<overlay-work>",
+            "duration_seconds": 0.024,
+            "output": "C/RTL mismatch: c=5 rtl=6\nC/RTL mismatch: c=6 rtl=7\nC/RTL mismatch: c=6 rtl=7\nC/RTL mismatch: c=5 rtl=6\nC/RTL mismatch: c=6 rtl=7\nC/RTL mismatch: c=6 rtl=7\nDisplay Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
+            "returncode": 0
+          },
+          "mismatch_count": 6,
+          "scenario": {
+            "config": "bittrue_smoke/simple_8bpc_rgb.cfg",
+            "expected_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+            "golden": "bittrue_smoke/out/simple_192x108.dsc",
+            "name": "run_c_baseline",
+            "script": "bittrue_smoke/run_c_baseline.sh"
+          },
+          "sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+          "size_bytes": 31236,
+          "status": "FAIL"
+        },
+        {
+          "baseline_sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
+          "command": {
+            "command": [
+              "<overlay-work>/source/dsc",
+              "-F",
+              "<overlay-work>/bittrue_smoke/simple_10bpc_rgb.cfg"
+            ],
+            "cwd": "<overlay-work>",
+            "duration_seconds": 0.034,
+            "output": "C/RTL mismatch: c=7 rtl=8\nC/RTL mismatch: c=8 rtl=9\nC/RTL mismatch: c=8 rtl=9\nC/RTL mismatch: c=7 rtl=8\nC/RTL mismatch: c=8 rtl=9\nC/RTL mismatch: c=8 rtl=9\nDisplay Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
+            "returncode": 0
+          },
+          "mismatch_count": 6,
+          "scenario": {
+            "config": "bittrue_smoke/simple_10bpc_rgb.cfg",
+            "expected_sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
+            "golden": "bittrue_smoke/out/simple_192x108_10bpc.dsc",
+            "name": "run_c_baseline_10bpc",
+            "script": "bittrue_smoke/run_c_baseline_10bpc.sh"
+          },
+          "sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
+          "size_bytes": 31236,
+          "status": "FAIL"
+        },
+        {
+          "baseline_sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
+          "command": {
+            "command": [
+              "<overlay-work>/source/dsc",
+              "-F",
+              "<overlay-work>/bittrue_smoke/native_8bpc_420.cfg"
+            ],
+            "cwd": "<overlay-work>",
+            "duration_seconds": 0.019,
+            "output": "C/RTL mismatch: c=5 rtl=6\nC/RTL mismatch: c=5 rtl=6\nC/RTL mismatch: c=6 rtl=7\nC/RTL mismatch: c=5 rtl=6\nC/RTL mismatch: c=5 rtl=6\nC/RTL mismatch: c=6 rtl=7\nDisplay Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
+            "returncode": 0
+          },
+          "mismatch_count": 6,
+          "scenario": {
+            "config": "bittrue_smoke/native_8bpc_420.cfg",
+            "expected_sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
+            "golden": "bittrue_smoke/out/native_192x108_420.dsc",
+            "name": "run_c_baseline_native420",
+            "script": "bittrue_smoke/run_c_baseline_native420.sh"
+          },
+          "sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
+          "size_bytes": 15684,
+          "status": "FAIL"
+        }
+      ],
+      "status": "FAIL"
+    },
+    "SHADOW": {
+      "scenarios": [
+        {
+          "baseline_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+          "command": {
+            "command": [
+              "<overlay-work>/source/dsc",
+              "-F",
+              "<overlay-work>/bittrue_smoke/simple_8bpc_rgb.cfg"
+            ],
+            "cwd": "<overlay-work>",
+            "duration_seconds": 0.033,
+            "output": "C/RTL mismatch: c=5 rtl=6\nC/RTL mismatch: c=6 rtl=7\nC/RTL mismatch: c=6 rtl=7\nC/RTL mismatch: c=5 rtl=6\nC/RTL mismatch: c=6 rtl=7\nC/RTL mismatch: c=6 rtl=7\nDisplay Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
+            "returncode": 0
+          },
+          "mismatch_count": 6,
+          "scenario": {
+            "config": "bittrue_smoke/simple_8bpc_rgb.cfg",
+            "expected_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+            "golden": "bittrue_smoke/out/simple_192x108.dsc",
+            "name": "run_c_baseline",
+            "script": "bittrue_smoke/run_c_baseline.sh"
+          },
+          "sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+          "size_bytes": 31236,
+          "status": "FAIL"
+        },
+        {
+          "baseline_sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
+          "command": {
+            "command": [
+              "<overlay-work>/source/dsc",
+              "-F",
+              "<overlay-work>/bittrue_smoke/simple_10bpc_rgb.cfg"
+            ],
+            "cwd": "<overlay-work>",
+            "duration_seconds": 0.029,
+            "output": "C/RTL mismatch: c=7 rtl=8\nC/RTL mismatch: c=8 rtl=9\nC/RTL mismatch: c=8 rtl=9\nC/RTL mismatch: c=7 rtl=8\nC/RTL mismatch: c=8 rtl=9\nC/RTL mismatch: c=8 rtl=9\nDisplay Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
+            "returncode": 0
+          },
+          "mismatch_count": 6,
+          "scenario": {
+            "config": "bittrue_smoke/simple_10bpc_rgb.cfg",
+            "expected_sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
+            "golden": "bittrue_smoke/out/simple_192x108_10bpc.dsc",
+            "name": "run_c_baseline_10bpc",
+            "script": "bittrue_smoke/run_c_baseline_10bpc.sh"
+          },
+          "sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
+          "size_bytes": 31236,
+          "status": "FAIL"
+        },
+        {
+          "baseline_sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
+          "command": {
+            "command": [
+              "<overlay-work>/source/dsc",
+              "-F",
+              "<overlay-work>/bittrue_smoke/native_8bpc_420.cfg"
+            ],
+            "cwd": "<overlay-work>",
+            "duration_seconds": 0.017,
+            "output": "C/RTL mismatch: c=5 rtl=6\nC/RTL mismatch: c=5 rtl=6\nC/RTL mismatch: c=6 rtl=7\nC/RTL mismatch: c=5 rtl=6\nC/RTL mismatch: c=5 rtl=6\nC/RTL mismatch: c=6 rtl=7\nDisplay Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\n",
+            "returncode": 0
+          },
+          "mismatch_count": 6,
+          "scenario": {
+            "config": "bittrue_smoke/native_8bpc_420.cfg",
+            "expected_sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
+            "golden": "bittrue_smoke/out/native_192x108_420.dsc",
+            "name": "run_c_baseline_native420",
+            "script": "bittrue_smoke/run_c_baseline_native420.sh"
+          },
+          "sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
+          "size_bytes": 15684,
+          "status": "FAIL"
+        }
+      ],
+      "status": "FAIL"
+    }
+  },
+  "overlay": {
+    "call_sites": [
+      {
+        "arguments": [
+          "dsc_cfg",
+          "dsc_cfg->rc_range_parameters[14].range_max_qp",
+          "cpnt"
+        ],
+        "call_text": "Qp2Qlevel(dsc_cfg, dsc_cfg->rc_range_parameters[14].range_max_qp, cpnt)",
+        "callee_usr": "c:@F@Qp2Qlevel",
+        "location": "<overlay-work>/source/codec_main.c:877:39",
+        "result": "max_res_size"
+      },
+      {
+        "arguments": [
+          "dsc_cfg",
+          "dsc_cfg->rc_range_parameters[14].range_max_qp",
+          "cpnt"
+        ],
+        "call_text": "Qp2Qlevel(dsc_cfg, dsc_cfg->rc_range_parameters[14].range_max_qp, cpnt)",
+        "callee_usr": "c:@F@Qp2Qlevel",
+        "location": "<overlay-work>/source/codec_main.c:886:39",
+        "result": "max_res_size"
+      }
+    ],
+    "changed_files": [
+      {
+        "new_sha256": "55743689b4124175a0f31b38a18a6b9a72df928d22c8942afbc9f652f0dcf7f8",
+        "old_sha256": "6f10916c2e72e3b6c5e8d578fb607954b6b501f309ba3735f8ec4ec61c689500",
+        "path": "codec_main.c"
+      }
+    ],
+    "command": {
+      "command": [
+        "<overlay-work>/tmp/cicd-clang-rewriter/dsc-clang-rewrite",
+        "--compdb",
+        "<overlay-work>/source/compile_commands.json",
+        "--target-usr",
+        "c:@F@Qp2Qlevel",
+        "--original-name",
+        "Qp2Qlevel_original",
+        "--dispatcher-name",
+        "dsc_cicd_invoke",
+        "--receipt",
+        "<overlay-work>/source/clang-overlay-receipt.json",
+        "<overlay-work>/source/cmd_parse.c",
+        "<overlay-work>/source/codec_main.c",
+        "<overlay-work>/source/dpx.c",
+        "<overlay-work>/source/dsc_cicd_main.c",
+        "<overlay-work>/source/dsc_cicd_overlay.c",
+        "<overlay-work>/source/dsc_codec.c",
+        "<overlay-work>/source/dsc_utils.c",
+        "<overlay-work>/source/fifo.c",
+        "<overlay-work>/source/hdr_dpx.c",
+        "<overlay-work>/source/logging.c",
+        "<overlay-work>/source/multiplex.c",
+        "<overlay-work>/source/psnr.c",
+        "<overlay-work>/source/utl.c"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.156,
+      "output": "[1/13] Processing file <overlay-work>/source/cmd_parse.c.\n[2/13] Processing file <overlay-work>/source/codec_main.c.\n[3/13] Processing file <overlay-work>/source/dpx.c.\n[4/13] Processing file <overlay-work>/source/dsc_cicd_main.c.\n[5/13] Processing file <overlay-work>/source/dsc_cicd_overlay.c.\n[6/13] Processing file <overlay-work>/source/dsc_codec.c.\n[7/13] Processing file <overlay-work>/source/dsc_utils.c.\n[8/13] Processing file <overlay-work>/source/fifo.c.\n[9/13] Processing file <overlay-work>/source/hdr_dpx.c.\n[10/13] Processing file <overlay-work>/source/logging.c.\n[11/13] Processing file <overlay-work>/source/multiplex.c.\n[12/13] Processing file <overlay-work>/source/psnr.c.\n[13/13] Processing file <overlay-work>/source/utl.c.\n",
+      "returncode": 0
+    },
+    "contract_id": "qp2qlevel",
+    "definitions_seen": 1,
+    "direct_calls_seen": 2,
+    "dispatcher_name": "dsc_cicd_invoke",
+    "failures": [],
+    "indirect_locations": [],
+    "macro_locations": [],
+    "original_name": "Qp2Qlevel_original",
+    "rewritten_calls": 2,
+    "rewritten_usrs": [
+      "c:@F@Qp2Qlevel"
+    ],
+    "schema_version": 2,
+    "source_copy_hashes_after": {
+      "cmd_parse.c": "aa6f8ca2ed1cd62c73007b920f2561d690643a3a63381c3777d04b1b59c08b01",
+      "codec_main.c": "55743689b4124175a0f31b38a18a6b9a72df928d22c8942afbc9f652f0dcf7f8",
+      "dpx.c": "cf8b5216b23015de699935536163fc47d8ccf2e42df3e0ae3e85dba6eee6e17d",
+      "dsc_cicd_main.c": "e1aac2224ec67466dbc9673d913e98bb5cae31a077f78356970016e0c95f6f58",
+      "dsc_cicd_overlay.c": "c9f2b194d0d7d9af8998274bd6bd30f11d6e08d419724bc4822b67f34a1b1dba",
+      "dsc_codec.c": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf",
+      "dsc_utils.c": "8aadcb1ecff2586892f385255a73fea367eec9afb6e14608d1010c08b7aca14e",
+      "fifo.c": "6a886eaffd01b6651703da54bbb90e9cf77d6503131ab419644e0ad3e50a3e6e",
+      "hdr_dpx.c": "655820d0da1f2e68565030fe674eb708e1dc53df231e69c3ed403f1867930f3d",
+      "logging.c": "9194d16f129d5c92e7fca52a7c34de5d0312f64f33d2e069accc85f33913919c",
+      "multiplex.c": "ab549255599fbdf1f69dd9fa8013ed39c044c3b8f591b187e2e056a5f1f5ab50",
+      "psnr.c": "331f5e3f4ec62c51a184c1e766d073a348a45301745b06b84dc20cda6ad9e438",
+      "utl.c": "c673e2e5cd8dd6c5f91461908f628977644a8ad424d2e8a9fe9ba575bfcbffed"
+    },
+    "source_copy_hashes_before": {
+      "cmd_parse.c": "aa6f8ca2ed1cd62c73007b920f2561d690643a3a63381c3777d04b1b59c08b01",
+      "codec_main.c": "6f10916c2e72e3b6c5e8d578fb607954b6b501f309ba3735f8ec4ec61c689500",
+      "dpx.c": "cf8b5216b23015de699935536163fc47d8ccf2e42df3e0ae3e85dba6eee6e17d",
+      "dsc_cicd_main.c": "e1aac2224ec67466dbc9673d913e98bb5cae31a077f78356970016e0c95f6f58",
+      "dsc_cicd_overlay.c": "c9f2b194d0d7d9af8998274bd6bd30f11d6e08d419724bc4822b67f34a1b1dba",
+      "dsc_codec.c": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf",
+      "dsc_utils.c": "8aadcb1ecff2586892f385255a73fea367eec9afb6e14608d1010c08b7aca14e",
+      "fifo.c": "6a886eaffd01b6651703da54bbb90e9cf77d6503131ab419644e0ad3e50a3e6e",
+      "hdr_dpx.c": "655820d0da1f2e68565030fe674eb708e1dc53df231e69c3ed403f1867930f3d",
+      "logging.c": "9194d16f129d5c92e7fca52a7c34de5d0312f64f33d2e069accc85f33913919c",
+      "multiplex.c": "ab549255599fbdf1f69dd9fa8013ed39c044c3b8f591b187e2e056a5f1f5ab50",
+      "psnr.c": "331f5e3f4ec62c51a184c1e766d073a348a45301745b06b84dc20cda6ad9e438",
+      "utl.c": "c673e2e5cd8dd6c5f91461908f628977644a8ad424d2e8a9fe9ba575bfcbffed"
+    },
+    "status": "PASS",
+    "target_usr": "c:@F@Qp2Qlevel",
+    "tool": {
+      "binary": "<overlay-work>/tmp/cicd-clang-rewriter/dsc-clang-rewrite",
+      "status": "REUSED_BUILD"
+    },
+    "upstream_source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+    "upstream_source_unchanged": true
+  },
+  "scenarios": [
+    {
+      "config": "bittrue_smoke/simple_8bpc_rgb.cfg",
+      "expected_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+      "golden": "bittrue_smoke/out/simple_192x108.dsc",
+      "name": "run_c_baseline",
+      "script": "bittrue_smoke/run_c_baseline.sh"
+    },
+    {
+      "config": "bittrue_smoke/simple_10bpc_rgb.cfg",
+      "expected_sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
+      "golden": "bittrue_smoke/out/simple_192x108_10bpc.dsc",
+      "name": "run_c_baseline_10bpc",
+      "script": "bittrue_smoke/run_c_baseline_10bpc.sh"
+    },
+    {
+      "config": "bittrue_smoke/native_8bpc_420.cfg",
+      "expected_sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
+      "golden": "bittrue_smoke/out/native_192x108_420.dsc",
+      "name": "run_c_baseline_native420",
+      "script": "bittrue_smoke/run_c_baseline_native420.sh"
+    }
+  ],
+  "status": "FAIL"
+}

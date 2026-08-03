@@ -1,0 +1,2165 @@
+{
+  "c_body": "int SamplePredict(\n\tdsc_state_t *dsc_state,\n\tint* prevLine,          // reconstructed samples for previous line\n\tint* currLine,          // reconstructed samples for current line\n\tint hPos,               // horizontal position for sample to predict\n\tPRED_TYPE predType,     // predictor to use\n\tint qLevel,\n\tint unit)\n{\n\tint a, b, c, d, e;\n\tint filt_b, filt_c, filt_d, filt_e;\n\tint blend_b, blend_c, blend_d, blend_e;\n\tint p;\n\tint bp_offset;\n\tint diff = 0;\n\tint h_offset_array_idx;\n\tint cpnt;\n\n\tcpnt = dsc_state->unitCType[unit];\n\th_offset_array_idx = (hPos / SAMPLES_PER_UNIT) * SAMPLES_PER_UNIT + PADDING_LEFT; \n\n\t// organize samples into variable array defined in dsc spec\n\tc = prevLine[h_offset_array_idx-1];\n\tb = prevLine[h_offset_array_idx];\n\td = prevLine[h_offset_array_idx+1];\n\te = prevLine[h_offset_array_idx+2];\n\ta = currLine[h_offset_array_idx-1];\n\n#define FILT3(a,b,c) (((a)+2*(b)+(c)+2)>>2)\n\tfilt_c = FILT3(prevLine[h_offset_array_idx-2], prevLine[h_offset_array_idx-1], prevLine[h_offset_array_idx]);\n\tfilt_b = FILT3(prevLine[h_offset_array_idx-1], prevLine[h_offset_array_idx], prevLine[h_offset_array_idx+1]);\n\tfilt_d = FILT3(prevLine[h_offset_array_idx], prevLine[h_offset_array_idx+1], prevLine[h_offset_array_idx+2]);\n\tfilt_e = FILT3(prevLine[h_offset_array_idx+1], prevLine[h_offset_array_idx+2], prevLine[h_offset_array_idx+3]);\n\n\tswitch (predType) {\n\tcase PT_MAP:\t// MAP prediction\n\t\t// *MODEL NOTE* MN_MMAP\n\t\tdiff = CLAMP(filt_c - c, -(QuantDivisor[qLevel]/2), QuantDivisor[qLevel]/2);\n\t\tblend_c = c + diff;\n\t\tdiff = CLAMP(filt_b - b, -(QuantDivisor[qLevel]/2), QuantDivisor[qLevel]/2);\n\t\tblend_b = b + diff;\n\t\tdiff = CLAMP(filt_d - d, -(QuantDivisor[qLevel]/2), QuantDivisor[qLevel]/2);\n\t\tblend_d = d + diff;\n\t\tdiff = CLAMP(filt_e - e, -(QuantDivisor[qLevel]/2), QuantDivisor[qLevel]/2);\n\t\tblend_e = e + diff;\n\t\t\n\t\t// Pixel on line above off the raster to the left gets same value as pixel below (ie., midpoint)\n\t\tif (hPos/SAMPLES_PER_UNIT == 0)\n\t\t\tblend_c = a;\n\t\t\n\t\tif ((hPos % SAMPLES_PER_UNIT)==0)  // First pixel of group\n\t\t\tp = CLAMP(a + blend_b - blend_c, MIN(a, blend_b), MAX(a, blend_b));\n\t\telse if ((hPos % SAMPLES_PER_UNIT)==1)   // Second pixel of group\n\t\t\tp = CLAMP(a + blend_d - blend_c + (dsc_state->quantizedResidual[unit][0] * QuantDivisor[qLevel]),\n\t\t\t\t        MIN(MIN(a, blend_b), blend_d), MAX(MAX(a, blend_b), blend_d));\n\t\telse    // Third pixel of group\n\t\t\tp = CLAMP(a + blend_e - blend_c + (dsc_state->quantizedResidual[unit][0] + dsc_state->quantizedResidual[unit][1])*QuantDivisor[qLevel],\n\t\t\t\t\t\tMIN(MIN(a,blend_b), MIN(blend_d, blend_e)), MAX(MAX(a,blend_b), MAX(blend_d, blend_e)));\n\t\tbreak;\n\tcase PT_LEFT:\n\t\tp = a;    // First pixel of group\n\t\tif ((hPos % SAMPLES_PER_UNIT)==1)   // Second pixel of group\n\t\t\tp = CLAMP(a + (dsc_state->quantizedResidual[unit][0] * QuantDivisor[qLevel]), 0, (1<<dsc_state->cpntBitDepth[cpnt])-1);\n\t\telse if((hPos % SAMPLES_PER_UNIT)==2)  // Third pixel of group\n\t\t\tp = CLAMP(a + (dsc_state->quantizedResidual[unit][0] + dsc_state->quantizedResidual[unit][1])*QuantDivisor[qLevel],\n\t\t\t\t\t\t0, (1<<dsc_state->cpntBitDepth[cpnt])-1);\n\t\tbreak;\n\tdefault:  // PT_BLOCK+ofs = BLOCK predictor, starts at -1\n\t\t// *MODEL NOTE* MN_BLOCK_PRED\n\t\tbp_offset = (int)predType - (int)PT_BLOCK;\n\t\tp = currLine[MAX(hPos + PADDING_LEFT - 1 - bp_offset,0)];\n\t\tbreak;\n\t}\n\n\treturn p;\n}",
+  "exact_spec_anchors": [
+    {
+      "anchor_id": "pdf:model-note:MN_MMAP:p076",
+      "evidence": null,
+      "page": 76,
+      "section": "6.4.1",
+      "short_anchor": null,
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:section:6.4.1",
+      "evidence": null,
+      "page": 76,
+      "section": "6.4.1",
+      "short_anchor": null,
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:model-note:MN_MMAP:p078",
+      "evidence": null,
+      "page": 78,
+      "section": "6.4.1.1",
+      "short_anchor": null,
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:model-note:MN_MMAP:p079",
+      "evidence": null,
+      "page": 79,
+      "section": "6.4.1.2",
+      "short_anchor": null,
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:model-note:MN_BLOCK_PRED:p079",
+      "evidence": null,
+      "page": 79,
+      "section": "6.4.2",
+      "short_anchor": null,
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:section:6.4.2",
+      "evidence": null,
+      "page": 79,
+      "section": "6.4.2",
+      "short_anchor": null,
+      "status": "EXACT"
+    }
+  ],
+  "frozen_interface": {
+    "flattened_pointer_dependencies": [
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "field": "cpntBitDepth",
+        "index_name": "unit_c_type",
+        "legal_domain": {
+          "basis": "DSC supported component bit depths; RGB extension is kept for a later component-specific contract",
+          "kind": "set",
+          "range": [
+            8,
+            16
+          ],
+          "values": [
+            8,
+            10,
+            12,
+            14,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "parameter": "dsc_state",
+        "port_name": "cpnt_bit_depth",
+        "record": "dsc_state_t",
+        "role": "CONFIG_STATIC",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "field": "unitCType",
+        "index_name": "unit",
+        "legal_domain": {
+          "basis": "dsc_state_t.unitCType component-index domain",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "logical_width": 2,
+        "parameter": "dsc_state",
+        "port_name": "unit_c_type",
+        "record": "dsc_state_t",
+        "role": "RUNTIME_INPUT",
+        "unresolved": false,
+        "width_source": "EXACT_SOURCE_CONSTANTS"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4][3]",
+        "field": "quantizedResidual",
+        "index_names": [
+          "unit",
+          0
+        ],
+        "legal_domain": {
+          "basis": "signed decoded residual envelope; vector strategy narrows to cpntBitDepth-qLevel signed n-bit boundaries",
+          "kind": "range",
+          "range": [
+            -32768,
+            32767
+          ]
+        },
+        "logical_width": 16,
+        "parameter": "dsc_state",
+        "port_name": "quantized_residual_0",
+        "record": "dsc_state_t",
+        "role": "RUNTIME_INPUT",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_RUNTIME_RELATION"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4][3]",
+        "field": "quantizedResidual",
+        "index_names": [
+          "unit",
+          1
+        ],
+        "legal_domain": {
+          "basis": "signed decoded residual envelope; vector strategy narrows to cpntBitDepth-qLevel signed n-bit boundaries",
+          "kind": "range",
+          "range": [
+            -32768,
+            32767
+          ]
+        },
+        "logical_width": 16,
+        "parameter": "dsc_state",
+        "port_name": "quantized_residual_1",
+        "record": "dsc_state_t",
+        "role": "RUNTIME_INPUT",
+        "signed": true,
+        "unresolved": false,
+        "width_source": "EXACT_RUNTIME_RELATION"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int *",
+        "field": "prevLine[3]",
+        "index": 3,
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "parameter": "prevLine",
+        "port_name": "prev_3",
+        "role": "RUNTIME_INPUT",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int *",
+        "field": "prevLine[4]",
+        "index": 4,
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "parameter": "prevLine",
+        "port_name": "prev_4",
+        "role": "RUNTIME_INPUT",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int *",
+        "field": "prevLine[5]",
+        "index": 5,
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "parameter": "prevLine",
+        "port_name": "prev_5",
+        "role": "RUNTIME_INPUT",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int *",
+        "field": "prevLine[6]",
+        "index": 6,
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "parameter": "prevLine",
+        "port_name": "prev_6",
+        "role": "RUNTIME_INPUT",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int *",
+        "field": "prevLine[7]",
+        "index": 7,
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "parameter": "prevLine",
+        "port_name": "prev_7",
+        "role": "RUNTIME_INPUT",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int *",
+        "field": "prevLine[8]",
+        "index": 8,
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "parameter": "prevLine",
+        "port_name": "prev_8",
+        "role": "RUNTIME_INPUT",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int *",
+        "field": "currLine[0]",
+        "index": 0,
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "parameter": "currLine",
+        "port_name": "curr_0",
+        "role": "RUNTIME_INPUT",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int *",
+        "field": "currLine[1]",
+        "index": 1,
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "parameter": "currLine",
+        "port_name": "curr_1",
+        "role": "RUNTIME_INPUT",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int *",
+        "field": "currLine[2]",
+        "index": 2,
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "parameter": "currLine",
+        "port_name": "curr_2",
+        "role": "RUNTIME_INPUT",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int *",
+        "field": "currLine[3]",
+        "index": 3,
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "parameter": "currLine",
+        "port_name": "curr_3",
+        "role": "RUNTIME_INPUT",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int *",
+        "field": "currLine[4]",
+        "index": 4,
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "parameter": "currLine",
+        "port_name": "curr_4",
+        "role": "RUNTIME_INPUT",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int *",
+        "field": "currLine[5]",
+        "index": 5,
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "parameter": "currLine",
+        "port_name": "curr_5",
+        "role": "RUNTIME_INPUT",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int *",
+        "field": "currLine[6]",
+        "index": 6,
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "parameter": "currLine",
+        "port_name": "curr_6",
+        "role": "RUNTIME_INPUT",
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      }
+    ],
+    "ignored_pointer_dependencies": [
+      {
+        "access": "READ_ONLY",
+        "c_type": "dsc_state_t *",
+        "parameter": "dsc_state",
+        "reason": "state record is initialized by the generated adapter and only selected read fields are frozen",
+        "role": "DEPENDENCY"
+      }
+    ],
+    "inputs": [
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "first three samples of the DSC three-sample group; window adapter keeps all taps statically addressable",
+          "kind": "set",
+          "range": [
+            0,
+            2
+          ],
+          "values": [
+            0,
+            1,
+            2
+          ]
+        },
+        "logical_width": 2,
+        "name": "hPos",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SOURCE_CONSTANTS"
+      },
+      {
+        "c_type": "PRED_TYPE",
+        "legal_domain": {
+          "basis": "PT_MAP/PT_LEFT plus NUM_PRED_TYPES from dsc_types.h; BP_RANGE=13",
+          "kind": "set",
+          "range": [
+            0,
+            14
+          ],
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14
+          ]
+        },
+        "logical_width": 4,
+        "name": "predType",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SOURCE_CONSTANTS"
+      },
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "QuantDivisor[17] and Table 6-2 qLevel output domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "qLevel",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC_TABLE"
+      },
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "MAX_UNITS_PER_GROUP=4",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "logical_width": 2,
+        "name": "unit",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SOURCE_CONSTANTS"
+      }
+    ],
+    "output": {
+      "c_type": "int",
+      "legal_range": [
+        0,
+        65535
+      ],
+      "logical_width": 16,
+      "name": "return_value",
+      "signed": false,
+      "unresolved": false,
+      "width_source": "EXACT_SPEC_SAMPLE_DOMAIN"
+    },
+    "ports": [
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "first three samples of the DSC three-sample group; window adapter keeps all taps statically addressable",
+          "kind": "set",
+          "range": [
+            0,
+            2
+          ],
+          "values": [
+            0,
+            1,
+            2
+          ]
+        },
+        "name": "hPos",
+        "role": "hPos",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "c_type": "PRED_TYPE",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "PT_MAP/PT_LEFT plus NUM_PRED_TYPES from dsc_types.h; BP_RANGE=13",
+          "kind": "set",
+          "range": [
+            0,
+            14
+          ],
+          "values": [
+            0,
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14
+          ]
+        },
+        "name": "predType",
+        "role": "predType",
+        "signed": false,
+        "width": 4
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "QuantDivisor[17] and Table 6-2 qLevel output domain",
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "qLevel",
+        "role": "qLevel",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "MAX_UNITS_PER_GROUP=4",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "name": "unit",
+        "role": "unit",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "c_type": "int[4]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC supported component bit depths; RGB extension is kept for a later component-specific contract",
+          "kind": "set",
+          "range": [
+            8,
+            16
+          ],
+          "values": [
+            8,
+            10,
+            12,
+            14,
+            16
+          ]
+        },
+        "name": "cpnt_bit_depth",
+        "role": "CONFIG_STATIC",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int[4]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "dsc_state_t.unitCType component-index domain",
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "name": "unit_c_type",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "c_type": "int[4][3]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "signed decoded residual envelope; vector strategy narrows to cpntBitDepth-qLevel signed n-bit boundaries",
+          "kind": "range",
+          "range": [
+            -32768,
+            32767
+          ]
+        },
+        "name": "quantized_residual_0",
+        "role": "RUNTIME_INPUT",
+        "signed": true,
+        "width": 16
+      },
+      {
+        "c_type": "int[4][3]",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "signed decoded residual envelope; vector strategy narrows to cpntBitDepth-qLevel signed n-bit boundaries",
+          "kind": "range",
+          "range": [
+            -32768,
+            32767
+          ]
+        },
+        "name": "quantized_residual_1",
+        "role": "RUNTIME_INPUT",
+        "signed": true,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "prev_3",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "prev_4",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "prev_5",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "prev_6",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "prev_7",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "prev_8",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "curr_0",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "curr_1",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "curr_2",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "curr_3",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "curr_4",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "curr_5",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int *",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "reconstructed sample range for 8..16 bpc",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "curr_6",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "output",
+        "name": "return_value",
+        "role": "return_value",
+        "signed": false,
+        "width": 16
+      }
+    ]
+  },
+  "locked_contract": {
+    "arithmetic_semantics": {
+      "overflow": "no signed overflow on the locked legal domain; outside-domain behavior is not contracted",
+      "rounding": "integer division by two truncates toward zero; modulo is C remainder on non-negative operands",
+      "saturation": "none",
+      "shifts": "left shifts have operands in [8,16], qlevel is [0,16], and all shifted values are non-negative",
+      "signedness": "C int operands are signed, but the legal-domain inputs and output are non-negative"
+    },
+    "contract_id": "samplepredict",
+    "coverage": {
+      "branch_coverage_percent": 96.825,
+      "execution_count": 15870816,
+      "line_coverage_percent": 77.358,
+      "production_reachable": true,
+      "status": "EXECUTED"
+    },
+    "dependencies": {
+      "direct_callees": [],
+      "read_fields": [
+        "dsc_state_t.cpntBitDepth",
+        "dsc_state_t.quantizedResidual",
+        "dsc_state_t.unitCType"
+      ],
+      "return_dependencies": [],
+      "unresolved": []
+    },
+    "do_not_edit": true,
+    "function": {
+      "clang_usr": "c:@F@SamplePredict",
+      "name": "SamplePredict",
+      "permalink": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/dsc_codec.c#L308-L383",
+      "qualified_name": "SamplePredict",
+      "source_body_sha256": "7768bd4e161fdec9757a0205141e0dcbfb372b5a259ca152ae5c056c428e4993",
+      "source_file": "dsc_codec.c",
+      "source_file_sha256": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf",
+      "source_span": {
+        "end_column": 1,
+        "end_line": 383,
+        "start_column": 5,
+        "start_line": 308
+      }
+    },
+    "interface": {
+      "flattened_pointer_dependencies": [
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4]",
+          "field": "cpntBitDepth",
+          "index_name": "unit_c_type",
+          "legal_domain": {
+            "basis": "DSC supported component bit depths; RGB extension is kept for a later component-specific contract",
+            "kind": "set",
+            "range": [
+              8,
+              16
+            ],
+            "values": [
+              8,
+              10,
+              12,
+              14,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "parameter": "dsc_state",
+          "port_name": "cpnt_bit_depth",
+          "record": "dsc_state_t",
+          "role": "CONFIG_STATIC",
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4]",
+          "field": "unitCType",
+          "index_name": "unit",
+          "legal_domain": {
+            "basis": "dsc_state_t.unitCType component-index domain",
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ]
+          },
+          "logical_width": 2,
+          "parameter": "dsc_state",
+          "port_name": "unit_c_type",
+          "record": "dsc_state_t",
+          "role": "RUNTIME_INPUT",
+          "unresolved": false,
+          "width_source": "EXACT_SOURCE_CONSTANTS"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4][3]",
+          "field": "quantizedResidual",
+          "index_names": [
+            "unit",
+            0
+          ],
+          "legal_domain": {
+            "basis": "signed decoded residual envelope; vector strategy narrows to cpntBitDepth-qLevel signed n-bit boundaries",
+            "kind": "range",
+            "range": [
+              -32768,
+              32767
+            ]
+          },
+          "logical_width": 16,
+          "parameter": "dsc_state",
+          "port_name": "quantized_residual_0",
+          "record": "dsc_state_t",
+          "role": "RUNTIME_INPUT",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_RUNTIME_RELATION"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int[4][3]",
+          "field": "quantizedResidual",
+          "index_names": [
+            "unit",
+            1
+          ],
+          "legal_domain": {
+            "basis": "signed decoded residual envelope; vector strategy narrows to cpntBitDepth-qLevel signed n-bit boundaries",
+            "kind": "range",
+            "range": [
+              -32768,
+              32767
+            ]
+          },
+          "logical_width": 16,
+          "parameter": "dsc_state",
+          "port_name": "quantized_residual_1",
+          "record": "dsc_state_t",
+          "role": "RUNTIME_INPUT",
+          "signed": true,
+          "unresolved": false,
+          "width_source": "EXACT_RUNTIME_RELATION"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int *",
+          "field": "prevLine[3]",
+          "index": 3,
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "parameter": "prevLine",
+          "port_name": "prev_3",
+          "role": "RUNTIME_INPUT",
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int *",
+          "field": "prevLine[4]",
+          "index": 4,
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "parameter": "prevLine",
+          "port_name": "prev_4",
+          "role": "RUNTIME_INPUT",
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int *",
+          "field": "prevLine[5]",
+          "index": 5,
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "parameter": "prevLine",
+          "port_name": "prev_5",
+          "role": "RUNTIME_INPUT",
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int *",
+          "field": "prevLine[6]",
+          "index": 6,
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "parameter": "prevLine",
+          "port_name": "prev_6",
+          "role": "RUNTIME_INPUT",
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int *",
+          "field": "prevLine[7]",
+          "index": 7,
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "parameter": "prevLine",
+          "port_name": "prev_7",
+          "role": "RUNTIME_INPUT",
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int *",
+          "field": "prevLine[8]",
+          "index": 8,
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "parameter": "prevLine",
+          "port_name": "prev_8",
+          "role": "RUNTIME_INPUT",
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int *",
+          "field": "currLine[0]",
+          "index": 0,
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "parameter": "currLine",
+          "port_name": "curr_0",
+          "role": "RUNTIME_INPUT",
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int *",
+          "field": "currLine[1]",
+          "index": 1,
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "parameter": "currLine",
+          "port_name": "curr_1",
+          "role": "RUNTIME_INPUT",
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int *",
+          "field": "currLine[2]",
+          "index": 2,
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "parameter": "currLine",
+          "port_name": "curr_2",
+          "role": "RUNTIME_INPUT",
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int *",
+          "field": "currLine[3]",
+          "index": 3,
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "parameter": "currLine",
+          "port_name": "curr_3",
+          "role": "RUNTIME_INPUT",
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int *",
+          "field": "currLine[4]",
+          "index": 4,
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "parameter": "currLine",
+          "port_name": "curr_4",
+          "role": "RUNTIME_INPUT",
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int *",
+          "field": "currLine[5]",
+          "index": 5,
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "parameter": "currLine",
+          "port_name": "curr_5",
+          "role": "RUNTIME_INPUT",
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        },
+        {
+          "access": "READ_ONLY",
+          "c_type": "int *",
+          "field": "currLine[6]",
+          "index": 6,
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "parameter": "currLine",
+          "port_name": "curr_6",
+          "role": "RUNTIME_INPUT",
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        }
+      ],
+      "ignored_pointer_dependencies": [
+        {
+          "access": "READ_ONLY",
+          "c_type": "dsc_state_t *",
+          "parameter": "dsc_state",
+          "reason": "state record is initialized by the generated adapter and only selected read fields are frozen",
+          "role": "DEPENDENCY"
+        }
+      ],
+      "inputs": [
+        {
+          "c_type": "int",
+          "legal_domain": {
+            "basis": "first three samples of the DSC three-sample group; window adapter keeps all taps statically addressable",
+            "kind": "set",
+            "range": [
+              0,
+              2
+            ],
+            "values": [
+              0,
+              1,
+              2
+            ]
+          },
+          "logical_width": 2,
+          "name": "hPos",
+          "role": "RUNTIME_INPUT",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SOURCE_CONSTANTS"
+        },
+        {
+          "c_type": "PRED_TYPE",
+          "legal_domain": {
+            "basis": "PT_MAP/PT_LEFT plus NUM_PRED_TYPES from dsc_types.h; BP_RANGE=13",
+            "kind": "set",
+            "range": [
+              0,
+              14
+            ],
+            "values": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14
+            ]
+          },
+          "logical_width": 4,
+          "name": "predType",
+          "role": "RUNTIME_INPUT",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SOURCE_CONSTANTS"
+        },
+        {
+          "c_type": "int",
+          "legal_domain": {
+            "basis": "QuantDivisor[17] and Table 6-2 qLevel output domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "name": "qLevel",
+          "role": "RUNTIME_INPUT",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC_TABLE"
+        },
+        {
+          "c_type": "int",
+          "legal_domain": {
+            "basis": "MAX_UNITS_PER_GROUP=4",
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ]
+          },
+          "logical_width": 2,
+          "name": "unit",
+          "role": "RUNTIME_INPUT",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SOURCE_CONSTANTS"
+        }
+      ],
+      "output": {
+        "c_type": "int",
+        "legal_range": [
+          0,
+          65535
+        ],
+        "logical_width": 16,
+        "name": "return_value",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC_SAMPLE_DOMAIN"
+      },
+      "ports": [
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "first three samples of the DSC three-sample group; window adapter keeps all taps statically addressable",
+            "kind": "set",
+            "range": [
+              0,
+              2
+            ],
+            "values": [
+              0,
+              1,
+              2
+            ]
+          },
+          "name": "hPos",
+          "role": "hPos",
+          "signed": false,
+          "width": 2
+        },
+        {
+          "c_type": "PRED_TYPE",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "PT_MAP/PT_LEFT plus NUM_PRED_TYPES from dsc_types.h; BP_RANGE=13",
+            "kind": "set",
+            "range": [
+              0,
+              14
+            ],
+            "values": [
+              0,
+              1,
+              2,
+              3,
+              4,
+              5,
+              6,
+              7,
+              8,
+              9,
+              10,
+              11,
+              12,
+              13,
+              14
+            ]
+          },
+          "name": "predType",
+          "role": "predType",
+          "signed": false,
+          "width": 4
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "QuantDivisor[17] and Table 6-2 qLevel output domain",
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "name": "qLevel",
+          "role": "qLevel",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "MAX_UNITS_PER_GROUP=4",
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ]
+          },
+          "name": "unit",
+          "role": "unit",
+          "signed": false,
+          "width": 2
+        },
+        {
+          "c_type": "int[4]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC supported component bit depths; RGB extension is kept for a later component-specific contract",
+            "kind": "set",
+            "range": [
+              8,
+              16
+            ],
+            "values": [
+              8,
+              10,
+              12,
+              14,
+              16
+            ]
+          },
+          "name": "cpnt_bit_depth",
+          "role": "CONFIG_STATIC",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int[4]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "dsc_state_t.unitCType component-index domain",
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ]
+          },
+          "name": "unit_c_type",
+          "role": "RUNTIME_INPUT",
+          "signed": false,
+          "width": 2
+        },
+        {
+          "c_type": "int[4][3]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "signed decoded residual envelope; vector strategy narrows to cpntBitDepth-qLevel signed n-bit boundaries",
+            "kind": "range",
+            "range": [
+              -32768,
+              32767
+            ]
+          },
+          "name": "quantized_residual_0",
+          "role": "RUNTIME_INPUT",
+          "signed": true,
+          "width": 16
+        },
+        {
+          "c_type": "int[4][3]",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "signed decoded residual envelope; vector strategy narrows to cpntBitDepth-qLevel signed n-bit boundaries",
+            "kind": "range",
+            "range": [
+              -32768,
+              32767
+            ]
+          },
+          "name": "quantized_residual_1",
+          "role": "RUNTIME_INPUT",
+          "signed": true,
+          "width": 16
+        },
+        {
+          "c_type": "int *",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "prev_3",
+          "role": "RUNTIME_INPUT",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int *",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "prev_4",
+          "role": "RUNTIME_INPUT",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int *",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "prev_5",
+          "role": "RUNTIME_INPUT",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int *",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "prev_6",
+          "role": "RUNTIME_INPUT",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int *",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "prev_7",
+          "role": "RUNTIME_INPUT",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int *",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "prev_8",
+          "role": "RUNTIME_INPUT",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int *",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "curr_0",
+          "role": "RUNTIME_INPUT",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int *",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "curr_1",
+          "role": "RUNTIME_INPUT",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int *",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "curr_2",
+          "role": "RUNTIME_INPUT",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int *",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "curr_3",
+          "role": "RUNTIME_INPUT",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int *",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "curr_4",
+          "role": "RUNTIME_INPUT",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int *",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "curr_5",
+          "role": "RUNTIME_INPUT",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int *",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "reconstructed sample range for 8..16 bpc",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "curr_6",
+          "role": "RUNTIME_INPUT",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "output",
+          "name": "return_value",
+          "role": "return_value",
+          "signed": false,
+          "width": 16
+        }
+      ]
+    },
+    "lock": {
+      "contract_sha256": "cf35191099cb52e65bd5ca84a7f36d0f132ef6400c379c01db93a01cfc51a058",
+      "do_not_edit": true,
+      "locked_from": "proposed/samplepredict.yaml"
+    },
+    "lock_status": "LOCKED_GENERATED_REVIEWED",
+    "obligations": [],
+    "origin": "tool_discovered_reviewed_override",
+    "provenance": {
+      "coverage_sha256": "f7faaab37dc4ca79a6f811ab817435cec4dae8dad8bf457a371dc62e786a7892",
+      "source_hashes_sha256": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+      "spec_sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd"
+    },
+    "read_struct_fields": [
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "conditional": "selected component bit depth; leftRecon range is conditional on this value",
+        "field": "cpntBitDepth",
+        "legal_domain": {
+          "basis": "PPS bits_per_component plus one-bit RGB chroma extension",
+          "kind": "set",
+          "range": [
+            8,
+            16
+          ],
+          "values": [
+            8,
+            9,
+            10,
+            11,
+            12,
+            13,
+            14,
+            15,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "record": "dsc_state_t",
+        "role": "CONFIG_STATIC",
+        "unresolved": false,
+        "width_source": "NORMATIVE_COMPONENT_BIT_DEPTH_DOMAIN"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4][3]",
+        "field": "quantizedResidual",
+        "legal_domain": {
+          "kind": "unresolved",
+          "range": null,
+          "values": []
+        },
+        "logical_width": 32,
+        "record": "dsc_state_t",
+        "role": "RUNTIME_INPUT",
+        "unresolved": true,
+        "width_source": "C_TYPE_FALLBACK"
+      },
+      {
+        "access": "READ_ONLY",
+        "c_type": "int[4]",
+        "field": "unitCType",
+        "legal_domain": {
+          "kind": "unresolved",
+          "range": null,
+          "values": []
+        },
+        "logical_width": 32,
+        "record": "dsc_state_t",
+        "role": "RUNTIME_INPUT",
+        "unresolved": true,
+        "width_source": "C_TYPE_FALLBACK"
+      }
+    ],
+    "reviewed_evidence": [
+      {
+        "anchor_id": "pdf:model-note:MN_MMAP:p076",
+        "kind": "EXACT_SPEC",
+        "page": 76,
+        "reason": "DSC 1.2a defines the MMAP taps, three-sample groups, filtered neighbours, quantization clamp, and reconstructed-left sample used by SamplePredict.",
+        "section": "6.4.1"
+      },
+      {
+        "anchor_id": "pdf:model-note:MN_BLOCK_PRED:p079",
+        "kind": "EXACT_SPEC",
+        "page": 79,
+        "reason": "DSC 1.2a defines block prediction as selecting a reconstructed sample from the current line at a bounded negative vector.",
+        "section": "6.4.2"
+      },
+      {
+        "c_span": {
+          "end_line": 383,
+          "start_line": 308
+        },
+        "kind": "SOURCE_SEMANTICS",
+        "reason": "Clang facts identify SamplePredict as a production-reachable pure combinational leaf; the adapter freezes only read-only scalar taps and selected state entries.",
+        "source_file": "dsc_codec.c"
+      },
+      {
+        "kind": "RUNTIME_EVIDENCE",
+        "reason": "SAMPLES_PER_UNIT=3, PADDING_LEFT=5, BP_RANGE=13, component arrays have extent 4, and reconstructed samples are bounded by the selected 8..16 bit component range.",
+        "source": "immutable dsc_types.h and dsc_codec.c"
+      }
+    ],
+    "reviewed_override_applied": {
+      "match": {
+        "clang_usr": "c:@F@SamplePredict",
+        "exact_anchor_id": "pdf:model-note:MN_MMAP:p076"
+      },
+      "review_status": "REVIEWED",
+      "reviewed_by": "codex"
+    },
+    "schema_version": 1,
+    "selection": {
+      "candidate_rank": 7,
+      "eligible_after_coverage": true,
+      "eligible_static": true,
+      "leaf": true,
+      "rank": 7,
+      "score": 100.0,
+      "selection_basis": "tool-ranked production/output leaf candidate after dynamic coverage join"
+    },
+    "semantics": {
+      "expression": "DSC_1_2A_MMAP_LEFT_BLOCK_PREDICTION",
+      "kind": "windowed_sample_predict",
+      "legal_vector_strategy": {
+        "bit_depth_port": "cpnt_bit_depth",
+        "component_type_port": "unit_c_type",
+        "exhaustive": false,
+        "hpos_port": "hPos",
+        "kind": "windowed_boundary",
+        "pairwise_ports": [
+          "prev_3",
+          "prev_4",
+          "prev_5",
+          "prev_6",
+          "prev_7",
+          "prev_8",
+          "curr_4"
+        ],
+        "pred_type_port": "predType",
+        "probe_qlevels": "endpoints",
+        "probe_units": [
+          0,
+          3
+        ],
+        "qlevel_max_by_component": {
+          "chroma": {
+            "10": 10,
+            "12": 12,
+            "14": 14,
+            "16": 16,
+            "8": 8
+          },
+          "luma": {
+            "10": 9,
+            "12": 9,
+            "14": 13,
+            "16": 15,
+            "8": 7
+          }
+        },
+        "qlevel_port": "qLevel",
+        "residual_ports": [
+          "quantized_residual_0",
+          "quantized_residual_1"
+        ],
+        "sample_ports": [
+          "prev_3",
+          "prev_4",
+          "prev_5",
+          "prev_6",
+          "prev_7",
+          "prev_8",
+          "curr_0",
+          "curr_1",
+          "curr_2",
+          "curr_3",
+          "curr_4",
+          "curr_5",
+          "curr_6"
+        ],
+        "source": "DSC 1.2a sections 6.4.1, 6.4.1.1, 6.4.1.2, and 6.4.2 plus immutable source constants",
+        "unit_port": "unit"
+      },
+      "overflow": "no signed overflow on the reviewed 8..16 bpc differential domain; outside-domain behavior is not contracted",
+      "rounding": "FILT3 uses the normative [1,2,1] filter with +2 before arithmetic right shift by two",
+      "saturation": "MMAP and left prediction use the C CLAMP bounds; block prediction selects a current-line sample",
+      "signedness": "C signed int arithmetic; all reconstructed samples are non-negative and legal intermediates fit signed 32-bit arithmetic"
+    },
+    "spec_links": [
+      {
+        "anchor_id": "pdf:model-note:MN_MMAP:p076",
+        "page": 76,
+        "section": "6.4.1",
+        "status": "EXACT"
+      },
+      {
+        "anchor_id": "pdf:section:6.4.1",
+        "page": 76,
+        "section": "6.4.1",
+        "status": "EXACT"
+      },
+      {
+        "anchor_id": "pdf:model-note:MN_MMAP:p078",
+        "page": 78,
+        "section": "6.4.1.1",
+        "status": "EXACT"
+      },
+      {
+        "anchor_id": "pdf:model-note:MN_MMAP:p079",
+        "page": 79,
+        "section": "6.4.1.2",
+        "status": "EXACT"
+      },
+      {
+        "anchor_id": "pdf:model-note:MN_BLOCK_PRED:p079",
+        "page": 79,
+        "section": "6.4.2",
+        "status": "EXACT"
+      },
+      {
+        "anchor_id": "pdf:section:6.4.2",
+        "page": 79,
+        "section": "6.4.2",
+        "status": "EXACT"
+      }
+    ],
+    "static_analysis": {
+      "callees": [],
+      "contributes_to_observable_output": true,
+      "direct_effects": {
+        "allocation": false,
+        "assertion": false,
+        "indirect_call": false,
+        "io": false,
+        "logging": false,
+        "state_write": false,
+        "unknown_facts": []
+      },
+      "globals_read": [
+        {
+          "context": "expression",
+          "location": {
+            "column": 10,
+            "file": "dsc_codec.c",
+            "line": 345
+          },
+          "name": "QuantDivisor",
+          "record": "",
+          "role": "READ",
+          "type": "const int[17]"
+        },
+        {
+          "context": "expression",
+          "location": {
+            "column": 10,
+            "file": "dsc_codec.c",
+            "line": 347
+          },
+          "name": "QuantDivisor",
+          "record": "",
+          "role": "READ",
+          "type": "const int[17]"
+        },
+        {
+          "context": "expression",
+          "location": {
+            "column": 10,
+            "file": "dsc_codec.c",
+            "line": 349
+          },
+          "name": "QuantDivisor",
+          "record": "",
+          "role": "READ",
+          "type": "const int[17]"
+        },
+        {
+          "context": "expression",
+          "location": {
+            "column": 10,
+            "file": "dsc_codec.c",
+            "line": 351
+          },
+          "name": "QuantDivisor",
+          "record": "",
+          "role": "READ",
+          "type": "const int[17]"
+        },
+        {
+          "context": "expression",
+          "location": {
+            "column": 8,
+            "file": "dsc_codec.c",
+            "line": 361
+          },
+          "name": "QuantDivisor",
+          "record": "",
+          "role": "READ",
+          "type": "const int[17]"
+        },
+        {
+          "context": "expression",
+          "location": {
+            "column": 8,
+            "file": "dsc_codec.c",
+            "line": 364
+          },
+          "name": "QuantDivisor",
+          "record": "",
+          "role": "READ",
+          "type": "const int[17]"
+        },
+        {
+          "context": "expression",
+          "location": {
+            "column": 8,
+            "file": "dsc_codec.c",
+            "line": 370
+          },
+          "name": "QuantDivisor",
+          "record": "",
+          "role": "READ",
+          "type": "const int[17]"
+        },
+        {
+          "context": "expression",
+          "location": {
+            "column": 8,
+            "file": "dsc_codec.c",
+            "line": 372
+          },
+          "name": "QuantDivisor",
+          "record": "",
+          "role": "READ",
+          "type": "const int[17]"
+        }
+      ],
+      "globals_write": [],
+      "production_reachable": true,
+      "purity": "PURE",
+      "role": "DUT",
+      "timing": "COMBINATIONAL",
+      "transitive_effects": {
+        "allocation": false,
+        "assertion": false,
+        "indirect_call": false,
+        "io": false,
+        "logging": false,
+        "state_write": false,
+        "unknown_facts": []
+      }
+    },
+    "status": "LOCKED",
+    "verification_plan": {
+      "legal_domain": "cpnt in [0,3], cpntBitDepth in {8..16}, qlevel <= table-derived maximum for the selected component depth, leftRecon in [0,(1<<cpntBitDepth)-1]",
+      "mutations": [
+        "signedness",
+        "boundary",
+        "array-index",
+        "off-by-one"
+      ],
+      "oracle": "call the immutable C function through a generated wrapper with flattened state dependencies",
+      "rtl": "at most four generated combinational SystemVerilog candidates",
+      "simulator": "Verilator lint/compile plus exhaustive legal-domain comparison"
+    }
+  }
+}

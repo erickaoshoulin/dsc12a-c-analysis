@@ -32,6 +32,12 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--functions", required=True, type=pathlib.Path)
     parser.add_argument("--candidates", required=True, type=pathlib.Path)
     parser.add_argument("--build-receipt", required=True, type=pathlib.Path)
+    parser.add_argument(
+        "--coverage-scripts",
+        choices=("default", "all"),
+        default=os.environ.get("DSC_COVERAGE_SCRIPTS", "all"),
+        help="profile the default smoke script or every discovered run_c_baseline*.sh script",
+    )
     return parser.parse_args()
 
 
@@ -92,6 +98,16 @@ def compact_command(command: list[str], copy_root: pathlib.Path) -> list[str]:
     return [item.replace(str(copy_root), "<coverage-copy>") for item in command]
 
 
+def discover_coverage_scripts(copy_root: pathlib.Path, mode: str = "all") -> list[pathlib.Path]:
+    """Discover the existing smoke profiles without a function-name allowlist."""
+    smoke_dir = copy_root / "bittrue_smoke"
+    if mode == "default":
+        scripts = [smoke_dir / "run_c_baseline.sh"]
+    else:
+        scripts = sorted(smoke_dir.glob("run_c_baseline*.sh"))
+    return [script for script in scripts if script.is_file()]
+
+
 def function_key(value: dict[str, Any]) -> tuple[str, int, str]:
     source = pathlib.Path(value.get("source_file", value.get("filename", ""))).name
     line = int(value.get("line", value.get("start_line", 0)) or 0)
@@ -122,6 +138,10 @@ def percent(summary: dict[str, Any], key: str) -> float | None:
 def coverage_function_record(value: dict[str, Any], file_summary: dict[str, Any]) -> dict[str, Any]:
     execution_count = int(value.get("count", value.get("execution_count", 0)) or 0)
     regions = value.get("regions", [])
+    primary_regions = [
+        region for region in regions
+        if len(region) > 5 and isinstance(region[5], int) and region[5] == 0
+    ] or regions
     region_counts = [int(region[4]) for region in regions if len(region) > 4 and isinstance(region[4], int)]
     covered = execution_count > 0 or any(count > 0 for count in region_counts)
     line_regions = {(int(region[0]), int(region[2])) for region in regions if len(region) > 4}
@@ -141,8 +161,8 @@ def coverage_function_record(value: dict[str, Any], file_summary: dict[str, Any]
     return {
         "name": value.get("name", ""),
         "source_file": pathlib.Path((value.get("filenames") or [""])[0]).name,
-        "start_line": int(regions[0][0]) if regions else None,
-        "end_line": int(regions[-1][2]) if regions else None,
+        "start_line": min(int(region[0]) for region in primary_regions) if primary_regions else None,
+        "end_line": max(int(region[2]) for region in primary_regions) if primary_regions else None,
         "execution_count": execution_count,
         "line_coverage_percent": round(len(covered_line_regions) * 100.0 / len(line_regions), 3) if line_regions else 0.0,
         "branch_coverage_percent": round(branch_covered * 100.0 / branch_total, 3) if branch_total else 100.0,
@@ -177,14 +197,15 @@ def join_coverage(
         key = source, int(function.get("line", 0) or 0), function.get("name", "")
         cov = coverage_by_key.get(key)
         if cov is None:
-            # LLVM may report an enclosing inline-expanded line.  Name plus
-            # source and a small line window is a deterministic fallback.
+            # LLVM may report the first executable body line instead of the
+            # declaration line recorded by Clang.  C has no overloaded
+            # functions, so source plus name is a deterministic fallback even
+            # when the span begins more than a few lines apart.
             matches = [
                 item for item in coverage_by_key.values()
                 if item.get("source_file") == source
                 and item.get("name") == function.get("name")
                 and item.get("start_line") is not None
-                and abs(int(item["start_line"]) - int(function.get("line", 0))) <= 2
             ]
             cov = sorted(matches, key=lambda item: (abs(int(item["start_line"]) - int(function.get("line", 0))), item["start_line"]))[0] if matches else None
         candidate = candidate_by_usr.get(function.get("clang_usr"), {})
@@ -297,18 +318,49 @@ def main() -> int:
                 receipt["failure_reason"] = "instrumented C build failed"
                 receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
                 return 1
-        smoke_script = copy_root / "bittrue_smoke" / "run_c_baseline.sh"
-        if smoke_script.is_file():
-            command = [str(smoke_script)]
-            result = run(command, copy_root, env, args.timeout)
-            receipt["commands"].append({"command": ["<coverage-copy>/bittrue_smoke/run_c_baseline.sh"], **result})
-            receipt["smoke"] = {
-                "mode": "bittrue_smoke/run_c_baseline.sh",
+        coverage_scripts = discover_coverage_scripts(copy_root, args.coverage_scripts)
+        if not coverage_scripts:
+            raise RuntimeError(
+                f"no coverage scripts discovered in {copy_root / 'bittrue_smoke'}"
+            )
+        receipt["coverage_script_mode"] = args.coverage_scripts
+        receipt["coverage_scripts"] = []
+        for index, smoke_script in enumerate(coverage_scripts, start=1):
+            # Give every profile a unique prefix.  Several scripts rebuild the
+            # same binary and the operating system may reuse a PID between
+            # sequential runs; a per-script prefix prevents profile overwrite.
+            script_env = env.copy()
+            script_env["LLVM_PROFILE_FILE"] = str(
+                profile_dir / f"{index:02d}-{smoke_script.stem}-%p.profraw"
+            )
+            command = ["bash", str(smoke_script)]
+            result = run(command, copy_root, script_env, args.timeout)
+            command_record = {
+                "command": compact_command(command, copy_root),
+                **result,
+            }
+            receipt["commands"].append(command_record)
+            script_record = {
+                "script": smoke_script.relative_to(copy_root).as_posix(),
                 "expected_hash": expected_smoke_hash(smoke_script),
+                "result": result,
                 "outputs": smoke_outputs(copy_root),
             }
+            receipt["coverage_scripts"].append(script_record)
+            # Keep the historical single-smoke field as a compatibility alias
+            # for consumers that only understand the original receipt schema.
+            if smoke_script.name == "run_c_baseline.sh":
+                receipt["smoke"] = {
+                    "mode": smoke_script.relative_to(copy_root).as_posix(),
+                    "expected_hash": expected_smoke_hash(smoke_script),
+                    "outputs": smoke_outputs(copy_root),
+                    "result": result,
+                }
             if result["status"] != "PASS":
-                receipt["failure_reason"] = "instrumented C smoke failed"
+                receipt["failure_reason"] = (
+                    f"instrumented C coverage script failed: "
+                    f"{smoke_script.relative_to(copy_root).as_posix()}"
+                )
                 receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
                 return 1
         if not binary.is_file():
@@ -364,6 +416,8 @@ def main() -> int:
             "profdata_sha256": sha256_file(profdata),
             "instrumented_binary_sha256": sha256_file(binary),
         }
+        coverage["coverage_script_mode"] = args.coverage_scripts
+        coverage["coverage_scripts"] = receipt["coverage_scripts"]
         (output_dir / "coverage.json").write_text(json.dumps(coverage, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         receipt.update(
             {

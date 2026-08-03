@@ -1,0 +1,5391 @@
+{
+  "c_body": "int IchDecision(dsc_cfg_t *dsc_cfg, dsc_state_t *dsc_state, int adj_predicted_size,\tint alt_pfx, int alt_size_to_generate)\n{\n\tint p_mode_cost, ich_mode_cost;\n\tint bits_ich_mode, bits_p_mode;\n\tint log_err_ich_mode, log_err_p_mode;\n\tint max_err_p_mode[MAX_UNITS_PER_GROUP];\n\tint i;\n\n\tfor (i=0; i<dsc_state->unitsPerGroup; ++i)\n\t\tmax_err_p_mode[i] = 0;\n\tfor (i=0; i<dsc_state->unitsPerGroup; ++i)\n\t{\n\t\tif(UsingMidpoint(dsc_cfg, dsc_state, i, dsc_state->unitCType[i]))\n\t\t\tmax_err_p_mode[i] = MAX(max_err_p_mode[i], dsc_state->maxMidError[i]);\n\t\telse\n\t\t\tmax_err_p_mode[i] = MAX(max_err_p_mode[i], dsc_state->maxError[i]);\n\t}\n\n\t// *MODEL NOTE* MN_ENC_ICH_MODE_SELECT\n\tif (dsc_state->prevIchSelected)\n\t\tbits_ich_mode = 1;\n\telse  // For escape code, no need to send trailing one for prefix\n\t\tbits_ich_mode = alt_size_to_generate - adj_predicted_size;\n\tbits_ich_mode += ICH_BITS * dsc_state->ichIndicesInGroup;  // ICH indices\n\n\tlog_err_p_mode = 0;\n\tlog_err_ich_mode = 0;\n\tfor (i=0; i<dsc_state->unitsPerGroup; ++i)\n\t{\n\t\tlog_err_p_mode += ceil_log2(max_err_p_mode[i]);\n\t\tlog_err_ich_mode += ceil_log2(dsc_state->maxIchError[i]);\n\t\tif((dsc_cfg->dsc_version_minor == 1) && i==0)\n\t\t{\n\t\t\tlog_err_p_mode *= 2;\n\t\t\tlog_err_ich_mode *= 2;\n\t\t}\n\t}\n\n\tbits_p_mode = EstimateBitsForGroup(dsc_cfg, dsc_state);\n\tp_mode_cost = bits_p_mode + ICH_LAMBDA * log_err_p_mode;\n\tich_mode_cost = bits_ich_mode + ICH_LAMBDA * log_err_ich_mode;\n\n\tif (dsc_cfg->dsc_version_minor == 2) {   // Original DSC 1.2 mode\n\t\tif(IsOrigFlatHIndex(dsc_cfg, dsc_state, dsc_state->hPos) == 2)\n\t\t\treturn (log_err_ich_mode <= log_err_p_mode) && (ich_mode_cost < p_mode_cost);\n\t\telse\n\t\t\treturn (ich_mode_cost < p_mode_cost);\n\t} else\t\t\t// DSC 1.1 mode\n\t\treturn (log_err_ich_mode <= log_err_p_mode) && (ich_mode_cost < p_mode_cost);\n}",
+  "exact_spec_anchors": [
+    {
+      "anchor_id": "pdf:model-note:MN_ENC_ICH_MODE_SELECT:p088",
+      "evidence": null,
+      "page": 88,
+      "section": "6.5.3.2",
+      "short_anchor": null,
+      "status": "EXACT"
+    },
+    {
+      "anchor_id": "pdf:section:6.5.3.2",
+      "evidence": null,
+      "page": 88,
+      "section": "6.5.3.2",
+      "short_anchor": null,
+      "status": "EXACT"
+    }
+  ],
+  "frozen_interface": {
+    "inputs": [
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            31
+          ]
+        },
+        "logical_width": 6,
+        "name": "adj_predicted_size"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            31
+          ]
+        },
+        "logical_width": 6,
+        "name": "alt_pfx"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            1,
+            31
+          ]
+        },
+        "logical_width": 6,
+        "name": "alt_size_to_generate"
+      },
+      {
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            1,
+            2
+          ],
+          "values": [
+            1,
+            2
+          ]
+        },
+        "logical_width": 2,
+        "name": "dsc_version_minor"
+      },
+      {
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            0,
+            1
+          ],
+          "values": [
+            0,
+            1
+          ]
+        },
+        "logical_width": 1,
+        "name": "native_420"
+      },
+      {
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            2,
+            512
+          ],
+          "values": [
+            2,
+            4,
+            8,
+            16,
+            32,
+            64,
+            128,
+            256,
+            512
+          ]
+        },
+        "logical_width": 10,
+        "name": "flatness_det_thresh"
+      },
+      {
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            4,
+            4
+          ],
+          "values": [
+            4
+          ]
+        },
+        "logical_width": 3,
+        "name": "somewhat_flat_qp_delta"
+      },
+      {
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            3,
+            4
+          ],
+          "values": [
+            3,
+            4
+          ]
+        },
+        "logical_width": 3,
+        "name": "units_per_group"
+      },
+      {
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            3,
+            3
+          ],
+          "values": [
+            3
+          ]
+        },
+        "logical_width": 2,
+        "name": "pixels_in_group"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65534
+          ]
+        },
+        "logical_width": 16,
+        "name": "hPos"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            1,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "slice_width"
+      },
+      {
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            0,
+            1
+          ],
+          "values": [
+            0,
+            1
+          ]
+        },
+        "logical_width": 1,
+        "name": "prev_ich_selected"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            31
+          ]
+        },
+        "logical_width": 5,
+        "name": "primary_qp"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            31
+          ]
+        },
+        "logical_width": 5,
+        "name": "prev_primary_qp"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            6
+          ]
+        },
+        "logical_width": 3,
+        "name": "ich_indices_in_group"
+      },
+      {
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            3,
+            4
+          ],
+          "values": [
+            3,
+            4
+          ]
+        },
+        "logical_width": 3,
+        "name": "num_components"
+      },
+      {
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            8,
+            16
+          ],
+          "values": [
+            8,
+            10,
+            12,
+            14,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "cpnt_bit_depth_0"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            8,
+            17
+          ]
+        },
+        "logical_width": 5,
+        "name": "cpnt_bit_depth_1"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            8,
+            17
+          ]
+        },
+        "logical_width": 5,
+        "name": "cpnt_bit_depth_2"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            8,
+            17
+          ]
+        },
+        "logical_width": 5,
+        "name": "cpnt_bit_depth_3"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "logical_width": 2,
+        "name": "unit_c_type_0"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "logical_width": 2,
+        "name": "unit_c_type_1"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "logical_width": 2,
+        "name": "unit_c_type_2"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "logical_width": 2,
+        "name": "unit_c_type_3"
+      },
+      {
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            0,
+            0
+          ],
+          "values": [
+            0
+          ]
+        },
+        "logical_width": 16,
+        "name": "unit_start_h_pos_0"
+      },
+      {
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            0,
+            0
+          ],
+          "values": [
+            0
+          ]
+        },
+        "logical_width": 16,
+        "name": "unit_start_h_pos_1"
+      },
+      {
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            0,
+            0
+          ],
+          "values": [
+            0
+          ]
+        },
+        "logical_width": 16,
+        "name": "unit_start_h_pos_2"
+      },
+      {
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            0,
+            0
+          ],
+          "values": [
+            0
+          ]
+        },
+        "logical_width": 16,
+        "name": "unit_start_h_pos_3"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "predicted_size_0"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "predicted_size_1"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "predicted_size_2"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "predicted_size_3"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "max_error_0"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "max_error_1"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "max_error_2"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "max_error_3"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "max_mid_error_0"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "max_mid_error_1"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "max_mid_error_2"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "max_mid_error_3"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "max_ich_error_0"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "max_ich_error_1"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "max_ich_error_2"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "max_ich_error_3"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "quantized_residual_0_0",
+        "signed": true
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "quantized_residual_0_1",
+        "signed": true
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "quantized_residual_0_2",
+        "signed": true
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "quantized_residual_1_0",
+        "signed": true
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "quantized_residual_1_1",
+        "signed": true
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "quantized_residual_1_2",
+        "signed": true
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "quantized_residual_2_0",
+        "signed": true
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "quantized_residual_2_1",
+        "signed": true
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "quantized_residual_2_2",
+        "signed": true
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "quantized_residual_3_0",
+        "signed": true
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "quantized_residual_3_1",
+        "signed": true
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "logical_width": 17,
+        "name": "quantized_residual_3_2",
+        "signed": true
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "qlevel_luma_primary"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "qlevel_chroma_primary"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "qlevel_luma_previous"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "qlevel_chroma_previous"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "qlevel_luma_flat"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "logical_width": 5,
+        "name": "qlevel_chroma_flat"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_0_0"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_0_1"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_0_2"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_0_3"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_0_4"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_0_5"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_0_6"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_1_0"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_1_1"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_1_2"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_1_3"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_1_4"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_1_5"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_1_6"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_2_0"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_2_1"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_2_2"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_2_3"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_2_4"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_2_5"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_2_6"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_3_0"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_3_1"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_3_2"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_3_3"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_3_4"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_3_5"
+      },
+      {
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "orig_3_6"
+      }
+    ],
+    "output": {
+      "c_type": "int",
+      "legal_range": [
+        0,
+        1
+      ],
+      "logical_width": 1,
+      "name": "return_value",
+      "signed": false
+    },
+    "ports": [
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            31
+          ]
+        },
+        "name": "adj_predicted_size",
+        "role": "adj_predicted_size",
+        "signed": false,
+        "width": 6
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            31
+          ]
+        },
+        "name": "alt_pfx",
+        "role": "alt_pfx",
+        "signed": false,
+        "width": 6
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            1,
+            31
+          ]
+        },
+        "name": "alt_size_to_generate",
+        "role": "alt_size_to_generate",
+        "signed": false,
+        "width": 6
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            1,
+            2
+          ],
+          "values": [
+            1,
+            2
+          ]
+        },
+        "name": "dsc_version_minor",
+        "role": "dsc_version_minor",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            0,
+            1
+          ],
+          "values": [
+            0,
+            1
+          ]
+        },
+        "name": "native_420",
+        "role": "native_420",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            2,
+            512
+          ],
+          "values": [
+            2,
+            4,
+            8,
+            16,
+            32,
+            64,
+            128,
+            256,
+            512
+          ]
+        },
+        "name": "flatness_det_thresh",
+        "role": "flatness_det_thresh",
+        "signed": false,
+        "width": 10
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            4,
+            4
+          ],
+          "values": [
+            4
+          ]
+        },
+        "name": "somewhat_flat_qp_delta",
+        "role": "somewhat_flat_qp_delta",
+        "signed": false,
+        "width": 3
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            3,
+            4
+          ],
+          "values": [
+            3,
+            4
+          ]
+        },
+        "name": "units_per_group",
+        "role": "units_per_group",
+        "signed": false,
+        "width": 3
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            3,
+            3
+          ],
+          "values": [
+            3
+          ]
+        },
+        "name": "pixels_in_group",
+        "role": "pixels_in_group",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65534
+          ]
+        },
+        "name": "hPos",
+        "role": "hPos",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            1,
+            65535
+          ]
+        },
+        "name": "slice_width",
+        "role": "slice_width",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            0,
+            1
+          ],
+          "values": [
+            0,
+            1
+          ]
+        },
+        "name": "prev_ich_selected",
+        "role": "prev_ich_selected",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            31
+          ]
+        },
+        "name": "primary_qp",
+        "role": "primary_qp",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            31
+          ]
+        },
+        "name": "prev_primary_qp",
+        "role": "prev_primary_qp",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            6
+          ]
+        },
+        "name": "ich_indices_in_group",
+        "role": "ich_indices_in_group",
+        "signed": false,
+        "width": 3
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            3,
+            4
+          ],
+          "values": [
+            3,
+            4
+          ]
+        },
+        "name": "num_components",
+        "role": "num_components",
+        "signed": false,
+        "width": 3
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            8,
+            16
+          ],
+          "values": [
+            8,
+            10,
+            12,
+            14,
+            16
+          ]
+        },
+        "name": "cpnt_bit_depth_0",
+        "role": "cpnt_bit_depth_0",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            8,
+            17
+          ]
+        },
+        "name": "cpnt_bit_depth_1",
+        "role": "cpnt_bit_depth_1",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            8,
+            17
+          ]
+        },
+        "name": "cpnt_bit_depth_2",
+        "role": "cpnt_bit_depth_2",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            8,
+            17
+          ]
+        },
+        "name": "cpnt_bit_depth_3",
+        "role": "cpnt_bit_depth_3",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "name": "unit_c_type_0",
+        "role": "unit_c_type_0",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "name": "unit_c_type_1",
+        "role": "unit_c_type_1",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "name": "unit_c_type_2",
+        "role": "unit_c_type_2",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            3
+          ]
+        },
+        "name": "unit_c_type_3",
+        "role": "unit_c_type_3",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            0,
+            0
+          ],
+          "values": [
+            0
+          ]
+        },
+        "name": "unit_start_h_pos_0",
+        "role": "unit_start_h_pos_0",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            0,
+            0
+          ],
+          "values": [
+            0
+          ]
+        },
+        "name": "unit_start_h_pos_1",
+        "role": "unit_start_h_pos_1",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            0,
+            0
+          ],
+          "values": [
+            0
+          ]
+        },
+        "name": "unit_start_h_pos_2",
+        "role": "unit_start_h_pos_2",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "set",
+          "range": [
+            0,
+            0
+          ],
+          "values": [
+            0
+          ]
+        },
+        "name": "unit_start_h_pos_3",
+        "role": "unit_start_h_pos_3",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "predicted_size_0",
+        "role": "predicted_size_0",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "predicted_size_1",
+        "role": "predicted_size_1",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "predicted_size_2",
+        "role": "predicted_size_2",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "predicted_size_3",
+        "role": "predicted_size_3",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "max_error_0",
+        "role": "max_error_0",
+        "signed": false,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "max_error_1",
+        "role": "max_error_1",
+        "signed": false,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "max_error_2",
+        "role": "max_error_2",
+        "signed": false,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "max_error_3",
+        "role": "max_error_3",
+        "signed": false,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "max_mid_error_0",
+        "role": "max_mid_error_0",
+        "signed": false,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "max_mid_error_1",
+        "role": "max_mid_error_1",
+        "signed": false,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "max_mid_error_2",
+        "role": "max_mid_error_2",
+        "signed": false,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "max_mid_error_3",
+        "role": "max_mid_error_3",
+        "signed": false,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "max_ich_error_0",
+        "role": "max_ich_error_0",
+        "signed": false,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "max_ich_error_1",
+        "role": "max_ich_error_1",
+        "signed": false,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "max_ich_error_2",
+        "role": "max_ich_error_2",
+        "signed": false,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "max_ich_error_3",
+        "role": "max_ich_error_3",
+        "signed": false,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "quantized_residual_0_0",
+        "role": "quantized_residual_0_0",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "quantized_residual_0_1",
+        "role": "quantized_residual_0_1",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "quantized_residual_0_2",
+        "role": "quantized_residual_0_2",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "quantized_residual_1_0",
+        "role": "quantized_residual_1_0",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "quantized_residual_1_1",
+        "role": "quantized_residual_1_1",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "quantized_residual_1_2",
+        "role": "quantized_residual_1_2",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "quantized_residual_2_0",
+        "role": "quantized_residual_2_0",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "quantized_residual_2_1",
+        "role": "quantized_residual_2_1",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "quantized_residual_2_2",
+        "role": "quantized_residual_2_2",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "quantized_residual_3_0",
+        "role": "quantized_residual_3_0",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "quantized_residual_3_1",
+        "role": "quantized_residual_3_1",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            -65535,
+            65535
+          ]
+        },
+        "name": "quantized_residual_3_2",
+        "role": "quantized_residual_3_2",
+        "signed": true,
+        "width": 17
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "qlevel_luma_primary",
+        "role": "qlevel_luma_primary",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "qlevel_chroma_primary",
+        "role": "qlevel_chroma_primary",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "qlevel_luma_previous",
+        "role": "qlevel_luma_previous",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "qlevel_chroma_previous",
+        "role": "qlevel_chroma_previous",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "qlevel_luma_flat",
+        "role": "qlevel_luma_flat",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            16
+          ]
+        },
+        "name": "qlevel_chroma_flat",
+        "role": "qlevel_chroma_flat",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_0_0",
+        "role": "orig_0_0",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_0_1",
+        "role": "orig_0_1",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_0_2",
+        "role": "orig_0_2",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_0_3",
+        "role": "orig_0_3",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_0_4",
+        "role": "orig_0_4",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_0_5",
+        "role": "orig_0_5",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_0_6",
+        "role": "orig_0_6",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_1_0",
+        "role": "orig_1_0",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_1_1",
+        "role": "orig_1_1",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_1_2",
+        "role": "orig_1_2",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_1_3",
+        "role": "orig_1_3",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_1_4",
+        "role": "orig_1_4",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_1_5",
+        "role": "orig_1_5",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_1_6",
+        "role": "orig_1_6",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_2_0",
+        "role": "orig_2_0",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_2_1",
+        "role": "orig_2_1",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_2_2",
+        "role": "orig_2_2",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_2_3",
+        "role": "orig_2_3",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_2_4",
+        "role": "orig_2_4",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_2_5",
+        "role": "orig_2_5",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_2_6",
+        "role": "orig_2_6",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_3_0",
+        "role": "orig_3_0",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_3_1",
+        "role": "orig_3_1",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_3_2",
+        "role": "orig_3_2",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_3_3",
+        "role": "orig_3_3",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_3_4",
+        "role": "orig_3_4",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_3_5",
+        "role": "orig_3_5",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "orig_3_6",
+        "role": "orig_3_6",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "output",
+        "name": "return_value",
+        "role": "return_value",
+        "signed": false,
+        "width": 1
+      }
+    ]
+  },
+  "locked_contract": {
+    "contract_id": "ichdecision",
+    "dependencies": {
+      "direct_callees": [
+        {
+          "clang_usr": "c:@F@EstimateBitsForGroup",
+          "name": "EstimateBitsForGroup"
+        },
+        {
+          "clang_usr": "c:@F@IsOrigFlatHIndex",
+          "name": "IsOrigFlatHIndex"
+        },
+        {
+          "clang_usr": "c:@F@UsingMidpoint",
+          "name": "UsingMidpoint"
+        },
+        {
+          "clang_usr": "c:@F@ceil_log2",
+          "name": "ceil_log2"
+        }
+      ],
+      "promotion_gate": "all direct callees PASS in library/manifest.json",
+      "read_fields": [],
+      "unresolved": []
+    },
+    "function": {
+      "clang_usr": "c:@F@IchDecision",
+      "name": "IchDecision",
+      "parameters": [
+        {
+          "name": "dsc_cfg",
+          "pointee_const": false,
+          "pointer": true,
+          "type": "dsc_cfg_t *"
+        },
+        {
+          "name": "dsc_state",
+          "pointee_const": false,
+          "pointer": true,
+          "type": "dsc_state_t *"
+        },
+        {
+          "name": "adj_predicted_size",
+          "pointee_const": false,
+          "pointer": false,
+          "type": "int"
+        },
+        {
+          "name": "alt_pfx",
+          "pointee_const": false,
+          "pointer": false,
+          "type": "int"
+        },
+        {
+          "name": "alt_size_to_generate",
+          "pointee_const": false,
+          "pointer": false,
+          "type": "int"
+        }
+      ],
+      "qualified_name": "IchDecision",
+      "return_type": "int",
+      "source_body_sha256": "6167b06055129bf185f17d225273a1922aca61ada201d123181ba39bf982c02d",
+      "source_file": "dsc_codec.c",
+      "source_span": {
+        "end_line": 533,
+        "start_line": 484
+      }
+    },
+    "interface": {
+      "inputs": [
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              31
+            ]
+          },
+          "logical_width": 6,
+          "name": "adj_predicted_size"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              31
+            ]
+          },
+          "logical_width": 6,
+          "name": "alt_pfx"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              1,
+              31
+            ]
+          },
+          "logical_width": 6,
+          "name": "alt_size_to_generate"
+        },
+        {
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              1,
+              2
+            ],
+            "values": [
+              1,
+              2
+            ]
+          },
+          "logical_width": 2,
+          "name": "dsc_version_minor"
+        },
+        {
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              0,
+              1
+            ],
+            "values": [
+              0,
+              1
+            ]
+          },
+          "logical_width": 1,
+          "name": "native_420"
+        },
+        {
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              2,
+              512
+            ],
+            "values": [
+              2,
+              4,
+              8,
+              16,
+              32,
+              64,
+              128,
+              256,
+              512
+            ]
+          },
+          "logical_width": 10,
+          "name": "flatness_det_thresh"
+        },
+        {
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              4,
+              4
+            ],
+            "values": [
+              4
+            ]
+          },
+          "logical_width": 3,
+          "name": "somewhat_flat_qp_delta"
+        },
+        {
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              3,
+              4
+            ],
+            "values": [
+              3,
+              4
+            ]
+          },
+          "logical_width": 3,
+          "name": "units_per_group"
+        },
+        {
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              3,
+              3
+            ],
+            "values": [
+              3
+            ]
+          },
+          "logical_width": 2,
+          "name": "pixels_in_group"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65534
+            ]
+          },
+          "logical_width": 16,
+          "name": "hPos"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              1,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "slice_width"
+        },
+        {
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              0,
+              1
+            ],
+            "values": [
+              0,
+              1
+            ]
+          },
+          "logical_width": 1,
+          "name": "prev_ich_selected"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              31
+            ]
+          },
+          "logical_width": 5,
+          "name": "primary_qp"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              31
+            ]
+          },
+          "logical_width": 5,
+          "name": "prev_primary_qp"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              6
+            ]
+          },
+          "logical_width": 3,
+          "name": "ich_indices_in_group"
+        },
+        {
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              3,
+              4
+            ],
+            "values": [
+              3,
+              4
+            ]
+          },
+          "logical_width": 3,
+          "name": "num_components"
+        },
+        {
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              8,
+              16
+            ],
+            "values": [
+              8,
+              10,
+              12,
+              14,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "name": "cpnt_bit_depth_0"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              8,
+              17
+            ]
+          },
+          "logical_width": 5,
+          "name": "cpnt_bit_depth_1"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              8,
+              17
+            ]
+          },
+          "logical_width": 5,
+          "name": "cpnt_bit_depth_2"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              8,
+              17
+            ]
+          },
+          "logical_width": 5,
+          "name": "cpnt_bit_depth_3"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ]
+          },
+          "logical_width": 2,
+          "name": "unit_c_type_0"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ]
+          },
+          "logical_width": 2,
+          "name": "unit_c_type_1"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ]
+          },
+          "logical_width": 2,
+          "name": "unit_c_type_2"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ]
+          },
+          "logical_width": 2,
+          "name": "unit_c_type_3"
+        },
+        {
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              0,
+              0
+            ],
+            "values": [
+              0
+            ]
+          },
+          "logical_width": 16,
+          "name": "unit_start_h_pos_0"
+        },
+        {
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              0,
+              0
+            ],
+            "values": [
+              0
+            ]
+          },
+          "logical_width": 16,
+          "name": "unit_start_h_pos_1"
+        },
+        {
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              0,
+              0
+            ],
+            "values": [
+              0
+            ]
+          },
+          "logical_width": 16,
+          "name": "unit_start_h_pos_2"
+        },
+        {
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              0,
+              0
+            ],
+            "values": [
+              0
+            ]
+          },
+          "logical_width": 16,
+          "name": "unit_start_h_pos_3"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "name": "predicted_size_0"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "name": "predicted_size_1"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "name": "predicted_size_2"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "name": "predicted_size_3"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "max_error_0"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "max_error_1"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "max_error_2"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "max_error_3"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "max_mid_error_0"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "max_mid_error_1"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "max_mid_error_2"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "max_mid_error_3"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "max_ich_error_0"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "max_ich_error_1"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "max_ich_error_2"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "max_ich_error_3"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "quantized_residual_0_0",
+          "signed": true
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "quantized_residual_0_1",
+          "signed": true
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "quantized_residual_0_2",
+          "signed": true
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "quantized_residual_1_0",
+          "signed": true
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "quantized_residual_1_1",
+          "signed": true
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "quantized_residual_1_2",
+          "signed": true
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "quantized_residual_2_0",
+          "signed": true
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "quantized_residual_2_1",
+          "signed": true
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "quantized_residual_2_2",
+          "signed": true
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "quantized_residual_3_0",
+          "signed": true
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "quantized_residual_3_1",
+          "signed": true
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "logical_width": 17,
+          "name": "quantized_residual_3_2",
+          "signed": true
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "name": "qlevel_luma_primary"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "name": "qlevel_chroma_primary"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "name": "qlevel_luma_previous"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "name": "qlevel_chroma_previous"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "name": "qlevel_luma_flat"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "logical_width": 5,
+          "name": "qlevel_chroma_flat"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_0_0"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_0_1"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_0_2"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_0_3"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_0_4"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_0_5"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_0_6"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_1_0"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_1_1"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_1_2"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_1_3"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_1_4"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_1_5"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_1_6"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_2_0"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_2_1"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_2_2"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_2_3"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_2_4"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_2_5"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_2_6"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_3_0"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_3_1"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_3_2"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_3_3"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_3_4"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_3_5"
+        },
+        {
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "orig_3_6"
+        }
+      ],
+      "output": {
+        "c_type": "int",
+        "legal_range": [
+          0,
+          1
+        ],
+        "logical_width": 1,
+        "name": "return_value",
+        "signed": false
+      },
+      "ports": [
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              31
+            ]
+          },
+          "name": "adj_predicted_size",
+          "role": "adj_predicted_size",
+          "signed": false,
+          "width": 6
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              31
+            ]
+          },
+          "name": "alt_pfx",
+          "role": "alt_pfx",
+          "signed": false,
+          "width": 6
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              1,
+              31
+            ]
+          },
+          "name": "alt_size_to_generate",
+          "role": "alt_size_to_generate",
+          "signed": false,
+          "width": 6
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              1,
+              2
+            ],
+            "values": [
+              1,
+              2
+            ]
+          },
+          "name": "dsc_version_minor",
+          "role": "dsc_version_minor",
+          "signed": false,
+          "width": 2
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              0,
+              1
+            ],
+            "values": [
+              0,
+              1
+            ]
+          },
+          "name": "native_420",
+          "role": "native_420",
+          "signed": false,
+          "width": 1
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              2,
+              512
+            ],
+            "values": [
+              2,
+              4,
+              8,
+              16,
+              32,
+              64,
+              128,
+              256,
+              512
+            ]
+          },
+          "name": "flatness_det_thresh",
+          "role": "flatness_det_thresh",
+          "signed": false,
+          "width": 10
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              4,
+              4
+            ],
+            "values": [
+              4
+            ]
+          },
+          "name": "somewhat_flat_qp_delta",
+          "role": "somewhat_flat_qp_delta",
+          "signed": false,
+          "width": 3
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              3,
+              4
+            ],
+            "values": [
+              3,
+              4
+            ]
+          },
+          "name": "units_per_group",
+          "role": "units_per_group",
+          "signed": false,
+          "width": 3
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              3,
+              3
+            ],
+            "values": [
+              3
+            ]
+          },
+          "name": "pixels_in_group",
+          "role": "pixels_in_group",
+          "signed": false,
+          "width": 2
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65534
+            ]
+          },
+          "name": "hPos",
+          "role": "hPos",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              1,
+              65535
+            ]
+          },
+          "name": "slice_width",
+          "role": "slice_width",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              0,
+              1
+            ],
+            "values": [
+              0,
+              1
+            ]
+          },
+          "name": "prev_ich_selected",
+          "role": "prev_ich_selected",
+          "signed": false,
+          "width": 1
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              31
+            ]
+          },
+          "name": "primary_qp",
+          "role": "primary_qp",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              31
+            ]
+          },
+          "name": "prev_primary_qp",
+          "role": "prev_primary_qp",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              6
+            ]
+          },
+          "name": "ich_indices_in_group",
+          "role": "ich_indices_in_group",
+          "signed": false,
+          "width": 3
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              3,
+              4
+            ],
+            "values": [
+              3,
+              4
+            ]
+          },
+          "name": "num_components",
+          "role": "num_components",
+          "signed": false,
+          "width": 3
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              8,
+              16
+            ],
+            "values": [
+              8,
+              10,
+              12,
+              14,
+              16
+            ]
+          },
+          "name": "cpnt_bit_depth_0",
+          "role": "cpnt_bit_depth_0",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              8,
+              17
+            ]
+          },
+          "name": "cpnt_bit_depth_1",
+          "role": "cpnt_bit_depth_1",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              8,
+              17
+            ]
+          },
+          "name": "cpnt_bit_depth_2",
+          "role": "cpnt_bit_depth_2",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              8,
+              17
+            ]
+          },
+          "name": "cpnt_bit_depth_3",
+          "role": "cpnt_bit_depth_3",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ]
+          },
+          "name": "unit_c_type_0",
+          "role": "unit_c_type_0",
+          "signed": false,
+          "width": 2
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ]
+          },
+          "name": "unit_c_type_1",
+          "role": "unit_c_type_1",
+          "signed": false,
+          "width": 2
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ]
+          },
+          "name": "unit_c_type_2",
+          "role": "unit_c_type_2",
+          "signed": false,
+          "width": 2
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              3
+            ]
+          },
+          "name": "unit_c_type_3",
+          "role": "unit_c_type_3",
+          "signed": false,
+          "width": 2
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              0,
+              0
+            ],
+            "values": [
+              0
+            ]
+          },
+          "name": "unit_start_h_pos_0",
+          "role": "unit_start_h_pos_0",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              0,
+              0
+            ],
+            "values": [
+              0
+            ]
+          },
+          "name": "unit_start_h_pos_1",
+          "role": "unit_start_h_pos_1",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              0,
+              0
+            ],
+            "values": [
+              0
+            ]
+          },
+          "name": "unit_start_h_pos_2",
+          "role": "unit_start_h_pos_2",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "set",
+            "range": [
+              0,
+              0
+            ],
+            "values": [
+              0
+            ]
+          },
+          "name": "unit_start_h_pos_3",
+          "role": "unit_start_h_pos_3",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "name": "predicted_size_0",
+          "role": "predicted_size_0",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "name": "predicted_size_1",
+          "role": "predicted_size_1",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "name": "predicted_size_2",
+          "role": "predicted_size_2",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "name": "predicted_size_3",
+          "role": "predicted_size_3",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "max_error_0",
+          "role": "max_error_0",
+          "signed": false,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "max_error_1",
+          "role": "max_error_1",
+          "signed": false,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "max_error_2",
+          "role": "max_error_2",
+          "signed": false,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "max_error_3",
+          "role": "max_error_3",
+          "signed": false,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "max_mid_error_0",
+          "role": "max_mid_error_0",
+          "signed": false,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "max_mid_error_1",
+          "role": "max_mid_error_1",
+          "signed": false,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "max_mid_error_2",
+          "role": "max_mid_error_2",
+          "signed": false,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "max_mid_error_3",
+          "role": "max_mid_error_3",
+          "signed": false,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "max_ich_error_0",
+          "role": "max_ich_error_0",
+          "signed": false,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "max_ich_error_1",
+          "role": "max_ich_error_1",
+          "signed": false,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "max_ich_error_2",
+          "role": "max_ich_error_2",
+          "signed": false,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "max_ich_error_3",
+          "role": "max_ich_error_3",
+          "signed": false,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "quantized_residual_0_0",
+          "role": "quantized_residual_0_0",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "quantized_residual_0_1",
+          "role": "quantized_residual_0_1",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "quantized_residual_0_2",
+          "role": "quantized_residual_0_2",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "quantized_residual_1_0",
+          "role": "quantized_residual_1_0",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "quantized_residual_1_1",
+          "role": "quantized_residual_1_1",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "quantized_residual_1_2",
+          "role": "quantized_residual_1_2",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "quantized_residual_2_0",
+          "role": "quantized_residual_2_0",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "quantized_residual_2_1",
+          "role": "quantized_residual_2_1",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "quantized_residual_2_2",
+          "role": "quantized_residual_2_2",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "quantized_residual_3_0",
+          "role": "quantized_residual_3_0",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "quantized_residual_3_1",
+          "role": "quantized_residual_3_1",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              -65535,
+              65535
+            ]
+          },
+          "name": "quantized_residual_3_2",
+          "role": "quantized_residual_3_2",
+          "signed": true,
+          "width": 17
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "name": "qlevel_luma_primary",
+          "role": "qlevel_luma_primary",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "name": "qlevel_chroma_primary",
+          "role": "qlevel_chroma_primary",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "name": "qlevel_luma_previous",
+          "role": "qlevel_luma_previous",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "name": "qlevel_chroma_previous",
+          "role": "qlevel_chroma_previous",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "name": "qlevel_luma_flat",
+          "role": "qlevel_luma_flat",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              16
+            ]
+          },
+          "name": "qlevel_chroma_flat",
+          "role": "qlevel_chroma_flat",
+          "signed": false,
+          "width": 5
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_0_0",
+          "role": "orig_0_0",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_0_1",
+          "role": "orig_0_1",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_0_2",
+          "role": "orig_0_2",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_0_3",
+          "role": "orig_0_3",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_0_4",
+          "role": "orig_0_4",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_0_5",
+          "role": "orig_0_5",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_0_6",
+          "role": "orig_0_6",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_1_0",
+          "role": "orig_1_0",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_1_1",
+          "role": "orig_1_1",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_1_2",
+          "role": "orig_1_2",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_1_3",
+          "role": "orig_1_3",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_1_4",
+          "role": "orig_1_4",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_1_5",
+          "role": "orig_1_5",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_1_6",
+          "role": "orig_1_6",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_2_0",
+          "role": "orig_2_0",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_2_1",
+          "role": "orig_2_1",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_2_2",
+          "role": "orig_2_2",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_2_3",
+          "role": "orig_2_3",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_2_4",
+          "role": "orig_2_4",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_2_5",
+          "role": "orig_2_5",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_2_6",
+          "role": "orig_2_6",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_3_0",
+          "role": "orig_3_0",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_3_1",
+          "role": "orig_3_1",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_3_2",
+          "role": "orig_3_2",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_3_3",
+          "role": "orig_3_3",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_3_4",
+          "role": "orig_3_4",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_3_5",
+          "role": "orig_3_5",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "orig_3_6",
+          "role": "orig_3_6",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "output",
+          "name": "return_value",
+          "role": "return_value",
+          "signed": false,
+          "width": 1
+        }
+      ]
+    },
+    "obligations": [],
+    "origin": "tool_discovered_reviewed_override",
+    "reviewed_evidence": [
+      {
+        "anchor_id": "pdf:model-note:MN_ENC_ICH_MODE_SELECT:p088",
+        "kind": "EXACT_SPEC",
+        "page": 88,
+        "reason": "The source decision is the encoder ICH/P-mode cost comparison covered by the exact model note and the surrounding DSC 1.2a mode-selection text.",
+        "section": "6.5.3.2"
+      },
+      {
+        "anchor_id": "pdf:section:6.5.3.2",
+        "kind": "EXACT_SPEC",
+        "page": 88,
+        "reason": "Section 6.5.3.2 defines the ICH/P-mode syntax and cost decision boundary.",
+        "section": "6.5.3.2"
+      },
+      {
+        "c_span": {
+          "end_line": 533,
+          "start_line": 484
+        },
+        "kind": "SOURCE_SEMANTICS",
+        "reason": "IchDecision has no state writes or host I/O; its three unit loops are bounded by MAX_UNITS_PER_GROUP=4 and its direct callees are already PASS components.",
+        "source_file": "dsc_codec.c"
+      },
+      {
+        "c_span": {
+          "end_line": 1120,
+          "start_line": 1078
+        },
+        "kind": "DOMAIN_EFFECT",
+        "reason": "The reviewed residual domain [-65535,65535] covers the legal signed quantized residual range; FindResidualSize's diagnostic branch begins at the disjoint [-131702,-65536] / [65536,131701] region.",
+        "source_file": "dsc_codec.c"
+      }
+    ],
+    "schema_version": 2,
+    "selection": {
+      "basis": "tool-ranked candidate and coverage facts + exact traceability + reviewed domain evidence",
+      "candidate_rank": 50,
+      "candidate_score": 59.8,
+      "candidate_source": "facts/candidates.json",
+      "coverage_basis": "reviewed_combined_domain",
+      "coverage_source": "coverage/coverage.json",
+      "domain_admission": {
+        "admissions": [
+          {
+            "kind": "BOUNDED_DOMAIN",
+            "loop": "IchDecision's three unit loops are bounded by dsc_state->unitsPerGroup in the exact source domain {3,4}; MAX_UNITS_PER_GROUP is 4.",
+            "max_iterations": 4,
+            "proof": "The source initializes and consumes four-element arrays, and the DSC group model admits only three or four units. Generated RTL explicitly guards four lanes.",
+            "status": "PASS"
+          },
+          {
+            "discharged_effects": [
+              "logging"
+            ],
+            "kind": "DOMAIN_EFFECT",
+            "proof": "All residual ports are bounded to [-65535,65535], so every legal call selects a normative size branch before the diagnostic printf.",
+            "status": "PASS",
+            "unreachable_condition": "FindResidualSize's unexpectedly-large-residual printf is reachable only outside the reviewed signed quantized residual domain [-65535,65535]."
+          }
+        ],
+        "bounded_loops": [
+          {
+            "loop": "IchDecision's three unit loops are bounded by dsc_state->unitsPerGroup in the exact source domain {3,4}; MAX_UNITS_PER_GROUP is 4.",
+            "max_iterations": 4
+          }
+        ],
+        "criteria_discharged": [
+          "bounded_computation",
+          "no_io_allocation_or_logging"
+        ],
+        "discharged_effects": [
+          "logging"
+        ],
+        "kind": "COMBINED_DOMAIN",
+        "status": "PASS"
+      },
+      "fact_source": "facts/functions.json",
+      "new_work": true,
+      "promoted_existing": false
+    },
+    "semantics": {
+      "expression": "DSC_1_2A_ENCODER_ICH_P_MODE_COST_DECISION",
+      "kind": "ich_decision",
+      "legal_vector_strategy": {
+        "adj_predicted_size_port": "adj_predicted_size",
+        "alt_pfx_port": "alt_pfx",
+        "alt_size_to_generate_port": "alt_size_to_generate",
+        "component_depth_ports": [
+          "cpnt_bit_depth_0",
+          "cpnt_bit_depth_1",
+          "cpnt_bit_depth_2",
+          "cpnt_bit_depth_3"
+        ],
+        "exhaustive": false,
+        "flatness_det_thresh_port": "flatness_det_thresh",
+        "flatness_relation": "IsOrigFlatHIndex uses original taps 0..3 and 1..6, flatness_det_thresh, QuantDivisor(qLevel at max(primaryQp-delta,0)), and slice-end guards exactly as the C source.",
+        "formal_required": true,
+        "hpos_port": "hPos",
+        "ich_indices_in_group_port": "ich_indices_in_group",
+        "kind": "ich_decision",
+        "max_error_ports": [
+          "max_error_0",
+          "max_error_1",
+          "max_error_2",
+          "max_error_3"
+        ],
+        "max_ich_error_ports": [
+          "max_ich_error_0",
+          "max_ich_error_1",
+          "max_ich_error_2",
+          "max_ich_error_3"
+        ],
+        "max_mid_error_ports": [
+          "max_mid_error_0",
+          "max_mid_error_1",
+          "max_mid_error_2",
+          "max_mid_error_3"
+        ],
+        "native_420_port": "native_420",
+        "num_components_port": "num_components",
+        "orig_ports_by_component": {
+          "0": [
+            "orig_0_0",
+            "orig_0_1",
+            "orig_0_2",
+            "orig_0_3",
+            "orig_0_4",
+            "orig_0_5",
+            "orig_0_6"
+          ],
+          "1": [
+            "orig_1_0",
+            "orig_1_1",
+            "orig_1_2",
+            "orig_1_3",
+            "orig_1_4",
+            "orig_1_5",
+            "orig_1_6"
+          ],
+          "2": [
+            "orig_2_0",
+            "orig_2_1",
+            "orig_2_2",
+            "orig_2_3",
+            "orig_2_4",
+            "orig_2_5",
+            "orig_2_6"
+          ],
+          "3": [
+            "orig_3_0",
+            "orig_3_1",
+            "orig_3_2",
+            "orig_3_3",
+            "orig_3_4",
+            "orig_3_5",
+            "orig_3_6"
+          ]
+        },
+        "pixels_in_group_port": "pixels_in_group",
+        "predicted_size_ports": [
+          "predicted_size_0",
+          "predicted_size_1",
+          "predicted_size_2",
+          "predicted_size_3"
+        ],
+        "prev_ich_selected_port": "prev_ich_selected",
+        "prev_primary_qp_port": "prev_primary_qp",
+        "primary_qp_port": "primary_qp",
+        "qlevel_ports": {
+          "chroma_flat": "qlevel_chroma_flat",
+          "chroma_previous": "qlevel_chroma_previous",
+          "chroma_primary": "qlevel_chroma_primary",
+          "luma_flat": "qlevel_luma_flat",
+          "luma_previous": "qlevel_luma_previous",
+          "luma_primary": "qlevel_luma_primary"
+        },
+        "qlevel_relation": "For each primary/previous/flat QP, raw luma/chroma values are frozen MapQpToQlevel outputs; equal QP indices carry equal witnesses and selected qLevel never exceeds the selected component bit depth.",
+        "residual_ports": [
+          "quantized_residual_0_0",
+          "quantized_residual_0_1",
+          "quantized_residual_0_2",
+          "quantized_residual_1_0",
+          "quantized_residual_1_1",
+          "quantized_residual_1_2",
+          "quantized_residual_2_0",
+          "quantized_residual_2_1",
+          "quantized_residual_2_2",
+          "quantized_residual_3_0",
+          "quantized_residual_3_1",
+          "quantized_residual_3_2"
+        ],
+        "slice_width_port": "slice_width",
+        "somewhat_flat_qp_delta_port": "somewhat_flat_qp_delta",
+        "source": "DSC 1.2a section 6.5.3.2 and MN_ENC_ICH_MODE_SELECT; direct dependencies are verified library components",
+        "unit_component_ports": [
+          "unit_c_type_0",
+          "unit_c_type_1",
+          "unit_c_type_2",
+          "unit_c_type_3"
+        ],
+        "unit_relation": "The legal unitsPerGroup domain is {3,4}; inactive lane 3 is ignored by all source reductions when unitsPerGroup is 3.",
+        "unit_start_hpos_ports": [
+          "unit_start_h_pos_0",
+          "unit_start_h_pos_1",
+          "unit_start_h_pos_2",
+          "unit_start_h_pos_3"
+        ],
+        "units_per_group_port": "units_per_group",
+        "version_port": "dsc_version_minor"
+      },
+      "overflow": "The reviewed domains fit signed 32-bit arithmetic; generated RTL uses integer temporaries.",
+      "signedness": "All cost temporaries are signed C integers; the returned decision is exactly 0 or 1.",
+      "thresholds": [
+        {
+          "lower": 0,
+          "size": 0,
+          "upper": 0
+        },
+        {
+          "lower": -1,
+          "size": 1,
+          "upper": 0
+        },
+        {
+          "lower": -2,
+          "size": 2,
+          "upper": 1
+        },
+        {
+          "lower": -4,
+          "size": 3,
+          "upper": 3
+        },
+        {
+          "lower": -8,
+          "size": 4,
+          "upper": 7
+        },
+        {
+          "lower": -16,
+          "size": 5,
+          "upper": 15
+        },
+        {
+          "lower": -32,
+          "size": 6,
+          "upper": 31
+        },
+        {
+          "lower": -64,
+          "size": 7,
+          "upper": 63
+        },
+        {
+          "lower": -128,
+          "size": 8,
+          "upper": 127
+        },
+        {
+          "lower": -256,
+          "size": 9,
+          "upper": 255
+        },
+        {
+          "lower": -512,
+          "size": 10,
+          "upper": 511
+        },
+        {
+          "lower": -1024,
+          "size": 11,
+          "upper": 1023
+        },
+        {
+          "lower": -2048,
+          "size": 12,
+          "upper": 2047
+        },
+        {
+          "lower": -4096,
+          "size": 13,
+          "upper": 4095
+        },
+        {
+          "lower": -8192,
+          "size": 14,
+          "upper": 8191
+        },
+        {
+          "lower": -16384,
+          "size": 15,
+          "upper": 16383
+        },
+        {
+          "lower": -32768,
+          "size": 16,
+          "upper": 32767
+        },
+        {
+          "lower": -65536,
+          "size": 17,
+          "upper": 65535
+        }
+      ],
+      "verilog_expression": "DSC_1_2A_ENCODER_ICH_P_MODE_COST_DECISION"
+    },
+    "spec_links": [
+      {
+        "anchor_id": "pdf:model-note:MN_ENC_ICH_MODE_SELECT:p088",
+        "page": 88,
+        "section": "6.5.3.2",
+        "status": "EXACT"
+      },
+      {
+        "anchor_id": "pdf:section:6.5.3.2",
+        "page": 88,
+        "section": "6.5.3.2",
+        "status": "EXACT"
+      }
+    ],
+    "status": "LOCKED"
+  }
+}

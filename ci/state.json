@@ -27,6 +27,7 @@
         "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/shadow_replacement_wrapper.c",
         "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/unit-receipt.json",
         "artifacts/7819b53d51c247b64e11897bf1b7a074ddb531e2824dc630cec02e98a44d6eda/vector_generator.py",
+        "artifacts/b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
         "integration/generated-overlay/findmidpoint/c-only.json",
         "integration/generated-overlay/findmidpoint/call-sites.json",
         "integration/generated-overlay/findmidpoint/dsc_cicd_overlay.c",
@@ -42,13 +43,13 @@
       "failure_reason": "bounded selection deferred",
       "function": "FindMidpoint",
       "hashes": {
-        "agent": "e9800d5bdd133c61ff87e13424d5a732ba29455d20895c9e8d872653256a3c87",
-        "contract": "ddf6b008659477f8b63803b7d5b599f7227e5f363ae460be83a305e5b39d0dea",
-        "dependency": "1891d53f1908a01fb0e98ee5a0f36f704f41968cf7f669234fd8d3a766b10fdd",
+        "agent": "e8bb0bf2f56e779355bc162653c33130adee79900ecda3196ef980faaeb1b4d5",
+        "contract": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+        "dependency": "f31ebf694a15c841fbcb763dc23e43abe9c95c8b66987812c0521ac805778ebe",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "52046cde6759294b04e2e32ae56cb5d9873f873c6bd03b84f2e8ea9a7d5db353",
+        "prompt": "2e0c2f7df4c3dafcb10c510eee553db98a14b1ab2c0ff9bf9970e23af248df56",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -66,6 +67,406 @@
           "failure_reason": null,
           "state": "PROMOTED",
           "status": "PASS"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
         },
         {
           "failure_reason": "bounded selection deferred",
@@ -113,6 +514,818 @@
     },
     {
       "artifacts": [
+        "artifacts/c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919"
+      ],
+      "contract_id": "ichdecision",
+      "current_state": "BITSTREAM_PASS",
+      "failure_reason": "caller call signature does not provide the frozen DUT interface; retain C boundary",
+      "function": "IchDecision",
+      "hashes": {
+        "agent": "e8bb0bf2f56e779355bc162653c33130adee79900ecda3196ef980faaeb1b4d5",
+        "contract": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
+        "dependency": "cf5abbdacefe102de1bd5f0454009786f7795f91e11aab530b78c179dc2c68e3",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "2e0c2f7df4c3dafcb10c510eee553db98a14b1ab2c0ff9bf9970e23af248df56",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "2"
+      },
+      "history": [
+        {
+          "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "COUNTEREXAMPLE"
+        },
+        {
+          "failure_reason": "[Errno 2] No such file or directory: '/private/tmp/dsc12a-ich/tmp/dsc-cicd-baseline-o41bdl8p'",
+          "state": "DISCOVERED",
+          "status": "INFRASTRUCTURE_FAILURE"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "COUNTEREXAMPLE"
+        },
+        {
+          "failure_reason": "[Errno 2] No such file or directory: '/private/tmp/dsc12a-ich/tmp/dsc-cicd-baseline-gpqz_8p4'",
+          "state": "DISCOVERED",
+          "status": "INFRASTRUCTURE_FAILURE"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": "[Errno 2] No such file or directory: '/private/tmp/dsc12a-ich/tmp/dsc-cicd-baseline-gldj9nzl'",
+          "state": "DISCOVERED",
+          "status": "INFRASTRUCTURE_FAILURE"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": "[Errno 2] No such file or directory: '/private/tmp/dsc12a-ich/tmp/dsc-cicd-baseline-1b2c7f3q'",
+          "state": "DISCOVERED",
+          "status": "INFRASTRUCTURE_FAILURE"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "FAIL"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "FAIL"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "FAIL"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "FAIL"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "GENERATION_REQUIRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "FAIL"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "FAIL"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "FAIL"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "FAIL"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "FAIL"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "FAIL"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "FAIL"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "FAIL"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": "caller call signature does not provide the frozen DUT interface; retain C boundary",
+          "state": "SHADOW_PASS",
+          "status": "FAIL"
+        },
+        {
+          "failure_reason": "caller call signature does not provide the frozen DUT interface; retain C boundary",
+          "state": "RTL_RETURN_PASS",
+          "status": "FAIL"
+        },
+        {
+          "failure_reason": "dependency composition did not pass all real gates",
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "FAIL"
+        },
+        {
+          "failure_reason": "caller call signature does not provide the frozen DUT interface; retain C boundary",
+          "state": "BITSTREAM_PASS",
+          "status": "FAIL"
+        }
+      ],
+      "interface_shape": [
+        [
+          "input",
+          "adj_predicted_size",
+          6,
+          false
+        ],
+        [
+          "input",
+          "alt_pfx",
+          6,
+          false
+        ],
+        [
+          "input",
+          "alt_size_to_generate",
+          6,
+          false
+        ],
+        [
+          "input",
+          "cpnt_bit_depth_0",
+          5,
+          false
+        ],
+        [
+          "input",
+          "cpnt_bit_depth_1",
+          5,
+          false
+        ],
+        [
+          "input",
+          "cpnt_bit_depth_2",
+          5,
+          false
+        ],
+        [
+          "input",
+          "cpnt_bit_depth_3",
+          5,
+          false
+        ],
+        [
+          "input",
+          "dsc_version_minor",
+          2,
+          false
+        ],
+        [
+          "input",
+          "flatness_det_thresh",
+          10,
+          false
+        ],
+        [
+          "input",
+          "hPos",
+          16,
+          false
+        ],
+        [
+          "input",
+          "ich_indices_in_group",
+          3,
+          false
+        ],
+        [
+          "input",
+          "max_error_0",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_error_1",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_error_2",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_error_3",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_ich_error_0",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_ich_error_1",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_ich_error_2",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_ich_error_3",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_mid_error_0",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_mid_error_1",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_mid_error_2",
+          17,
+          false
+        ],
+        [
+          "input",
+          "max_mid_error_3",
+          17,
+          false
+        ],
+        [
+          "input",
+          "native_420",
+          1,
+          false
+        ],
+        [
+          "input",
+          "num_components",
+          3,
+          false
+        ],
+        [
+          "input",
+          "orig_0_0",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_0_1",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_0_2",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_0_3",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_0_4",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_0_5",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_0_6",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_0",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_1",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_2",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_3",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_4",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_5",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_1_6",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_0",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_1",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_2",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_3",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_4",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_5",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_2_6",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_0",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_1",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_2",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_3",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_4",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_5",
+          16,
+          false
+        ],
+        [
+          "input",
+          "orig_3_6",
+          16,
+          false
+        ],
+        [
+          "input",
+          "pixels_in_group",
+          2,
+          false
+        ],
+        [
+          "input",
+          "predicted_size_0",
+          5,
+          false
+        ],
+        [
+          "input",
+          "predicted_size_1",
+          5,
+          false
+        ],
+        [
+          "input",
+          "predicted_size_2",
+          5,
+          false
+        ],
+        [
+          "input",
+          "predicted_size_3",
+          5,
+          false
+        ],
+        [
+          "input",
+          "prev_ich_selected",
+          1,
+          false
+        ],
+        [
+          "input",
+          "prev_primary_qp",
+          5,
+          false
+        ],
+        [
+          "input",
+          "primary_qp",
+          5,
+          false
+        ],
+        [
+          "input",
+          "qlevel_chroma_flat",
+          5,
+          false
+        ],
+        [
+          "input",
+          "qlevel_chroma_previous",
+          5,
+          false
+        ],
+        [
+          "input",
+          "qlevel_chroma_primary",
+          5,
+          false
+        ],
+        [
+          "input",
+          "qlevel_luma_flat",
+          5,
+          false
+        ],
+        [
+          "input",
+          "qlevel_luma_previous",
+          5,
+          false
+        ],
+        [
+          "input",
+          "qlevel_luma_primary",
+          5,
+          false
+        ],
+        [
+          "input",
+          "quantized_residual_0_0",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_0_1",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_0_2",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_1_0",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_1_1",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_1_2",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_2_0",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_2_1",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_2_2",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_3_0",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_3_1",
+          17,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_3_2",
+          17,
+          true
+        ],
+        [
+          "input",
+          "slice_width",
+          16,
+          false
+        ],
+        [
+          "input",
+          "somewhat_flat_qp_delta",
+          3,
+          false
+        ],
+        [
+          "input",
+          "unit_c_type_0",
+          2,
+          false
+        ],
+        [
+          "input",
+          "unit_c_type_1",
+          2,
+          false
+        ],
+        [
+          "input",
+          "unit_c_type_2",
+          2,
+          false
+        ],
+        [
+          "input",
+          "unit_c_type_3",
+          2,
+          false
+        ],
+        [
+          "input",
+          "unit_start_h_pos_0",
+          16,
+          false
+        ],
+        [
+          "input",
+          "unit_start_h_pos_1",
+          16,
+          false
+        ],
+        [
+          "input",
+          "unit_start_h_pos_2",
+          16,
+          false
+        ],
+        [
+          "input",
+          "unit_start_h_pos_3",
+          16,
+          false
+        ],
+        [
+          "input",
+          "units_per_group",
+          3,
+          false
+        ],
+        [
+          "output",
+          "return_value",
+          1,
+          false
+        ]
+      ],
+      "model_calls": 1,
+      "origin": "tool_discovered_reviewed_override",
+      "selected": true,
+      "status": "FAILED",
+      "token_count": 24405,
+      "unit_receipt": "EXECUTED_NOW"
+    },
+    {
+      "artifacts": [
         "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/artifact-manifest.json",
         "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/generation.json",
         "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/harness/harness.cpp",
@@ -125,20 +1338,22 @@
         "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/receipt-schema.json",
         "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/rtl/candidate_01.sv",
         "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/shadow_replacement_wrapper.c",
-        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/vector_generator.py"
+        "artifacts/15e537a6d953cb393b119a72e2c1ecf1944862289090cadb9016ac842e0d1697/vector_generator.py",
+        "artifacts/60ce2907e7323bd6841b496b2d0109ba05b244c47de52ab037daa087916113e2",
+        "artifacts/bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d"
       ],
       "contract_id": "isflatnessinfosent",
-      "current_state": "DISCOVERED",
-      "failure_reason": "arithmetic_semantics; field:dsc_cfg_t.flatness_max_qp; field:dsc_cfg_t.flatness_min_qp; interface:flatness_max_qp; interface:flatness_min_qp; interface:qp; interface:return_value; no_exact_spec_link; parameter:qp",
+      "current_state": "CONTRACT_LOCKED",
+      "failure_reason": "bounded selection deferred",
       "function": "IsFlatnessInfoSent",
       "hashes": {
-        "agent": "e9800d5bdd133c61ff87e13424d5a732ba29455d20895c9e8d872653256a3c87",
-        "contract": "1d9bc596110ec2ebf4b21ff142ebe4b2af3aa65b3c765f87f7cd65348002b945",
-        "dependency": "49155ca440c27e1656a93d039885d9f2399cf15e0fbf6773c25c5bc91914c8f1",
+        "agent": "e8bb0bf2f56e779355bc162653c33130adee79900ecda3196ef980faaeb1b4d5",
+        "contract": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
+        "dependency": "cdacd46bfe4cae5e584f55fdb16b27c67c2f7fe22a67c58c85f32686e3e2caed",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "52046cde6759294b04e2e32ae56cb5d9873f873c6bd03b84f2e8ea9a7d5db353",
+        "prompt": "2e0c2f7df4c3dafcb10c510eee553db98a14b1ab2c0ff9bf9970e23af248df56",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -156,42 +1371,503 @@
           "failure_reason": "arithmetic_semantics; field:dsc_cfg_t.flatness_max_qp; field:dsc_cfg_t.flatness_min_qp; interface:flatness_max_qp; interface:flatness_min_qp; interface:qp; interface:return_value; no_exact_spec_link; parameter:qp",
           "state": "DISCOVERED",
           "status": "BLOCKED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "INFRASTRUCTURE_FAILURE"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
         }
       ],
       "interface_shape": [
         [
           "input",
           "flatness_max_qp",
-          32,
+          5,
           false
         ],
         [
           "input",
           "flatness_min_qp",
-          32,
+          5,
           false
         ],
         [
           "input",
           "qp",
-          32,
+          5,
           false
         ],
         [
           "output",
           "return_value",
-          32,
-          true
+          1,
+          false
         ]
       ],
       "model_calls": 0,
-      "origin": "locked_contract",
+      "origin": "tool_discovered_reviewed_override",
       "selected": false,
-      "status": "BLOCKED",
+      "status": "DEFERRED",
       "token_count": 0
     },
     {
       "artifacts": [
+        "artifacts/ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/artifact-manifest.json",
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/generation.json",
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/harness/harness.cpp",
@@ -207,17 +1883,17 @@
         "artifacts/ebfd2f7dde93fff6baa2ab850648cd34da183cf491d85dc89ef39c541a77ecaa/vector_generator.py"
       ],
       "contract_id": "mapqptoqlevel",
-      "current_state": "DISCOVERED",
-      "failure_reason": "arithmetic_semantics; field:dsc_cfg_t.dsc_version_minor; field:dsc_cfg_t.native_420; field:dsc_state_t.quantTableChroma; field:dsc_state_t.quantTableLuma; interface:dsc_version_minor; interface:native_420; interface:qp; interface:quantTableChroma; interface:quantTableLuma; interface:return_value; parameter:qp",
+      "current_state": "CONTRACT_LOCKED",
+      "failure_reason": "bounded selection deferred",
       "function": "MapQpToQlevel",
       "hashes": {
-        "agent": "e9800d5bdd133c61ff87e13424d5a732ba29455d20895c9e8d872653256a3c87",
-        "contract": "b5d32e96c0ef357adad943e57b6e785389935d2b3a7265a6a709013ecb3e9a9f",
-        "dependency": "c2fb87ed47a776f205dfcceb73d42a6191bdd017a16e637a5a98791cb117908b",
+        "agent": "e8bb0bf2f56e779355bc162653c33130adee79900ecda3196ef980faaeb1b4d5",
+        "contract": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+        "dependency": "be9e5b87ba35328b2d70aebf14188b8adb9fa98ab9863a8d5f28b00492aebf68",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "52046cde6759294b04e2e32ae56cb5d9873f873c6bd03b84f2e8ea9a7d5db353",
+        "prompt": "2e0c2f7df4c3dafcb10c510eee553db98a14b1ab2c0ff9bf9970e23af248df56",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -235,6 +1911,411 @@
           "failure_reason": "arithmetic_semantics; field:dsc_cfg_t.dsc_version_minor; field:dsc_cfg_t.native_420; field:dsc_state_t.quantTableChroma; field:dsc_state_t.quantTableLuma; interface:dsc_version_minor; interface:native_420; interface:qp; interface:quantTableChroma; interface:quantTableLuma; interface:return_value; parameter:qp",
           "state": "DISCOVERED",
           "status": "BLOCKED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
         }
       ],
       "interface_shape": [
@@ -246,70 +2327,540 @@
         ],
         [
           "input",
-          "cpntBitDepth",
+          "cpntBitDepth_0",
+          5,
+          false
+        ],
+        [
+          "input",
+          "cpntBitDepth_1",
           5,
           false
         ],
         [
           "input",
           "dsc_version_minor",
-          32,
+          2,
           false
         ],
         [
           "input",
           "native_420",
-          32,
+          1,
           false
         ],
         [
           "input",
-          "qp",
-          32,
-          false
-        ],
-        [
-          "input",
-          "quantTableChroma",
+          "qlevel_chroma",
           5,
           false
         ],
         [
           "input",
-          "quantTableLuma",
+          "qlevel_luma",
+          5,
+          false
+        ],
+        [
+          "input",
+          "qp",
           5,
           false
         ],
         [
           "output",
           "return_value",
-          32,
-          true
+          5,
+          false
         ]
       ],
       "model_calls": 0,
-      "origin": "locked_contract",
+      "origin": "tool_discovered_reviewed_override",
       "selected": false,
-      "status": "BLOCKED",
+      "status": "DEFERRED",
       "token_count": 0
     },
     {
       "artifacts": [
-        "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2"
+        "artifacts/19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d"
       ],
-      "cache": "REUSED_VERIFIED_RECEIPT",
-      "contract_id": "quantizeresidual",
-      "current_state": "PROMOTED",
-      "failure_reason": null,
-      "function": "QuantizeResidual",
+      "contract_id": "predictsize",
+      "current_state": "CONTRACT_LOCKED",
+      "failure_reason": "bounded selection deferred",
+      "function": "PredictSize",
       "hashes": {
-        "agent": "e9800d5bdd133c61ff87e13424d5a732ba29455d20895c9e8d872653256a3c87",
-        "contract": "fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
-        "dependency": "9c0a6bc17523a90470b5a5c08efd38b7e73cdb740ff92fd681932484ff71d3e6",
+        "agent": "e8bb0bf2f56e779355bc162653c33130adee79900ecda3196ef980faaeb1b4d5",
+        "contract": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
+        "dependency": "c8cc34c74343eb8209390547dd44c6e1233cac7f43fde90bf8d9bfff4fca8d9f",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "52046cde6759294b04e2e32ae56cb5d9873f873c6bd03b84f2e8ea9a7d5db353",
+        "prompt": "2e0c2f7df4c3dafcb10c510eee553db98a14b1ab2c0ff9bf9970e23af248df56",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "2"
+      },
+      "history": [
+        {
+          "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        }
+      ],
+      "interface_shape": [
+        [
+          "input",
+          "req_size_0",
+          5,
+          false
+        ],
+        [
+          "input",
+          "req_size_1",
+          5,
+          false
+        ],
+        [
+          "input",
+          "req_size_2",
+          5,
+          false
+        ],
+        [
+          "output",
+          "return_value",
+          5,
+          false
+        ]
+      ],
+      "model_calls": 0,
+      "origin": "tool_discovered_reviewed_override",
+      "selected": false,
+      "status": "DEFERRED",
+      "token_count": 0
+    },
+    {
+      "artifacts": [
+        "artifacts/fa7bad1d4165aa6912b83c77ce46b6856c11019d21b91da8d407ac61a62f6cb2",
+        "artifacts/fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a"
+      ],
+      "contract_id": "quantizeresidual",
+      "current_state": "CONTRACT_LOCKED",
+      "failure_reason": "bounded selection deferred",
+      "function": "QuantizeResidual",
+      "hashes": {
+        "agent": "e8bb0bf2f56e779355bc162653c33130adee79900ecda3196ef980faaeb1b4d5",
+        "contract": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
+        "dependency": "612f31e78f2dacecfc74eb2644ebc8d6256fd9f74b45383679a7e7405b10048f",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "2e0c2f7df4c3dafcb10c510eee553db98a14b1ab2c0ff9bf9970e23af248df56",
         "shards": "4",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -654,6 +3205,371 @@
           "failure_reason": null,
           "state": "PROMOTED",
           "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
         }
       ],
       "interface_shape": [
@@ -678,70 +3594,1182 @@
       ],
       "model_calls": 0,
       "origin": "tool_discovered_reviewed_override",
-      "selected": true,
-      "status": "CACHE_REUSED",
+      "selected": false,
+      "status": "DEFERRED",
+      "token_count": 0
+    },
+    {
+      "artifacts": [
+        "artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509"
+      ],
+      "contract_id": "samplepredict",
+      "current_state": "CONTRACT_LOCKED",
+      "failure_reason": "bounded selection deferred",
+      "function": "SamplePredict",
+      "hashes": {
+        "agent": "e8bb0bf2f56e779355bc162653c33130adee79900ecda3196ef980faaeb1b4d5",
+        "contract": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+        "dependency": "c342660294a6ba98f6dbc6bc3d2b0ac8e094b34834409158eb72a155344bd6a1",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "2e0c2f7df4c3dafcb10c510eee553db98a14b1ab2c0ff9bf9970e23af248df56",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "2"
+      },
+      "history": [
+        {
+          "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "UNPROVED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "COUNTEREXAMPLE"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        }
+      ],
+      "interface_shape": [
+        [
+          "input",
+          "cpnt_bit_depth",
+          5,
+          false
+        ],
+        [
+          "input",
+          "curr_0",
+          16,
+          false
+        ],
+        [
+          "input",
+          "curr_1",
+          16,
+          false
+        ],
+        [
+          "input",
+          "curr_10",
+          16,
+          false
+        ],
+        [
+          "input",
+          "curr_11",
+          16,
+          false
+        ],
+        [
+          "input",
+          "curr_12",
+          16,
+          false
+        ],
+        [
+          "input",
+          "curr_13",
+          16,
+          false
+        ],
+        [
+          "input",
+          "curr_14",
+          16,
+          false
+        ],
+        [
+          "input",
+          "curr_15",
+          16,
+          false
+        ],
+        [
+          "input",
+          "curr_2",
+          16,
+          false
+        ],
+        [
+          "input",
+          "curr_3",
+          16,
+          false
+        ],
+        [
+          "input",
+          "curr_4",
+          16,
+          false
+        ],
+        [
+          "input",
+          "curr_5",
+          16,
+          false
+        ],
+        [
+          "input",
+          "curr_6",
+          16,
+          false
+        ],
+        [
+          "input",
+          "curr_7",
+          16,
+          false
+        ],
+        [
+          "input",
+          "curr_8",
+          16,
+          false
+        ],
+        [
+          "input",
+          "curr_9",
+          16,
+          false
+        ],
+        [
+          "input",
+          "hPos",
+          16,
+          false
+        ],
+        [
+          "input",
+          "predType",
+          4,
+          false
+        ],
+        [
+          "input",
+          "prev_10",
+          16,
+          false
+        ],
+        [
+          "input",
+          "prev_11",
+          16,
+          false
+        ],
+        [
+          "input",
+          "prev_12",
+          16,
+          false
+        ],
+        [
+          "input",
+          "prev_13",
+          16,
+          false
+        ],
+        [
+          "input",
+          "prev_14",
+          16,
+          false
+        ],
+        [
+          "input",
+          "prev_15",
+          16,
+          false
+        ],
+        [
+          "input",
+          "prev_16",
+          16,
+          false
+        ],
+        [
+          "input",
+          "prev_17",
+          16,
+          false
+        ],
+        [
+          "input",
+          "prev_3",
+          16,
+          false
+        ],
+        [
+          "input",
+          "prev_4",
+          16,
+          false
+        ],
+        [
+          "input",
+          "prev_5",
+          16,
+          false
+        ],
+        [
+          "input",
+          "prev_6",
+          16,
+          false
+        ],
+        [
+          "input",
+          "prev_7",
+          16,
+          false
+        ],
+        [
+          "input",
+          "prev_8",
+          16,
+          false
+        ],
+        [
+          "input",
+          "prev_9",
+          16,
+          false
+        ],
+        [
+          "input",
+          "qLevel",
+          5,
+          false
+        ],
+        [
+          "input",
+          "quantized_residual_0",
+          16,
+          true
+        ],
+        [
+          "input",
+          "quantized_residual_1",
+          16,
+          true
+        ],
+        [
+          "input",
+          "unit",
+          2,
+          false
+        ],
+        [
+          "input",
+          "unit_c_type",
+          2,
+          false
+        ],
+        [
+          "output",
+          "return_value",
+          16,
+          false
+        ]
+      ],
+      "model_calls": 0,
+      "origin": "tool_discovered_reviewed_override",
+      "selected": false,
+      "status": "DEFERRED",
+      "token_count": 0
+    },
+    {
+      "artifacts": [
+        "artifacts/cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a"
+      ],
+      "contract_id": "samptolinebuf",
+      "current_state": "CONTRACT_LOCKED",
+      "failure_reason": "bounded selection deferred",
+      "function": "SampToLineBuf",
+      "hashes": {
+        "agent": "e8bb0bf2f56e779355bc162653c33130adee79900ecda3196ef980faaeb1b4d5",
+        "contract": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
+        "dependency": "242cb5947e0652925b268a83e82fda05796e637554bfa9fb425f4d261af6fceb",
+        "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
+        "model": "external-generator-hook",
+        "pipeline": "executable-cicd-v2",
+        "prompt": "2e0c2f7df4c3dafcb10c510eee553db98a14b1ab2c0ff9bf9970e23af248df56",
+        "shards": "4",
+        "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+        "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
+        "tools": "8a195354f80e2ada31d4d7947c244daf0966192785817d2911cf64d84e0dcaa4",
+        "workers": "2"
+      },
+      "history": [
+        {
+          "state": "DISCOVERED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": null,
+          "state": "CONTRACT_LOCKED",
+          "status": "EXECUTING"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_GENERATED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "UNIT_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "SHADOW_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "RTL_RETURN_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "DEPENDENCIES_VERIFIED",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "BITSTREAM_PASS",
+          "status": "PASS"
+        },
+        {
+          "failure_reason": null,
+          "state": "PROMOTED",
+          "status": "PROMOTED"
+        },
+        {
+          "failure_reason": "bounded selection deferred",
+          "state": "CONTRACT_LOCKED",
+          "status": "DEFERRED"
+        }
+      ],
+      "interface_shape": [
+        [
+          "input",
+          "cpnt",
+          2,
+          false
+        ],
+        [
+          "input",
+          "cpntBitDepth",
+          5,
+          false
+        ],
+        [
+          "input",
+          "linebuf_depth",
+          4,
+          false
+        ],
+        [
+          "input",
+          "x",
+          16,
+          false
+        ],
+        [
+          "output",
+          "return_value",
+          16,
+          false
+        ]
+      ],
+      "model_calls": 0,
+      "origin": "tool_discovered_reviewed_override",
+      "selected": false,
+      "status": "DEFERRED",
       "token_count": 0
     }
   ],
   "dependency_pair": {
     "call_sites": [
       {
-        "callee_contract": "quantizeresidual",
-        "callee_function": "QuantizeResidual",
-        "callee_usr": "c:@F@QuantizeResidual",
+        "callee_contract": "ichdecision",
+        "callee_function": "IchDecision",
+        "callee_usr": "c:@F@IchDecision",
         "caller_contract": null,
-        "caller_function": "PredictionLoop",
-        "caller_usr": "c:@F@PredictionLoop",
+        "caller_function": "VLCUnit",
+        "caller_usr": "c:@F@VLCUnit",
         "location": {
-          "column": 12,
+          "column": 28,
           "file": "dsc_codec.c",
-          "line": 2419
-        },
-        "source": "facts/callgraph.json"
-      },
-      {
-        "callee_contract": "quantizeresidual",
-        "callee_function": "QuantizeResidual",
-        "callee_usr": "c:@F@QuantizeResidual",
-        "caller_contract": null,
-        "caller_function": "PredictionLoop",
-        "caller_usr": "c:@F@PredictionLoop",
-        "location": {
-          "column": 130,
-          "file": "dsc_codec.c",
-          "line": 2424
-        },
-        "source": "facts/callgraph.json"
-      },
-      {
-        "callee_contract": "quantizeresidual",
-        "callee_function": "QuantizeResidual",
-        "callee_usr": "c:@F@QuantizeResidual",
-        "caller_contract": null,
-        "caller_function": "PredictionLoop",
-        "caller_usr": "c:@F@PredictionLoop",
-        "location": {
-          "column": 60,
-          "file": "dsc_codec.c",
-          "line": 2431
+          "line": 1620
         },
         "source": "facts/callgraph.json"
       }
     ],
-    "callee_contract": "quantizeresidual",
-    "callee_function": "QuantizeResidual",
-    "callee_usr": "c:@F@QuantizeResidual",
+    "callee_contract": "ichdecision",
+    "callee_function": "IchDecision",
+    "callee_usr": "c:@F@IchDecision",
     "caller_contract": null,
-    "caller_function": "PredictionLoop",
-    "caller_usr": "c:@F@PredictionLoop",
+    "caller_function": "VLCUnit",
+    "caller_usr": "c:@F@VLCUnit",
     "selection_basis": "smallest acyclic direct call site from facts/callgraph.json"
   },
-  "generator_invocations": 0,
-  "model_calls": 0,
+  "generator_invocations": 1,
+  "model_calls": 1,
   "rollback_mode": "C_ONLY",
   "schema_version": 2,
   "selected_contracts": [
-    "quantizeresidual"
+    "ichdecision"
   ],
   "state_order": [
     "DISCOVERED",
@@ -754,5 +4782,5 @@
     "BITSTREAM_PASS",
     "PROMOTED"
   ],
-  "token_count": 0
+  "token_count": 24405
 }

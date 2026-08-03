@@ -355,6 +355,7 @@ if ! "$PYTHON" "$SCRIPT_DIR/tools/run_coverage.py" \
     --output-dir "$OUTPUT_DIR/coverage" \
     --work-dir "$WORK_DIR/coverage" \
     --timeout "$BUILD_TIMEOUT_SECONDS" \
+    --coverage-scripts "${DSC_COVERAGE_SCRIPTS:-all}" \
     --functions "$OUTPUT_DIR/facts/functions.json" \
     --candidates "$OUTPUT_DIR/facts/candidates.json" \
     --build-receipt "$OUTPUT_DIR/build/build-receipt.json"; then
@@ -370,7 +371,7 @@ if ! "$PYTHON" "$SCRIPT_DIR/tools/create_contracts.py" \
     --traceability "$OUTPUT_DIR/traceability/traceability.json" \
     --anchors "$OUTPUT_DIR/spec/anchors.json" \
     --output-dir "$OUTPUT_DIR/contracts" \
-    --top-n 3; then
+    --top-n "$TOP_N"; then
   echo "INFRASTRUCTURE_FAILURE: tool-selected contract generation failed" >&2
   exit 1
 fi

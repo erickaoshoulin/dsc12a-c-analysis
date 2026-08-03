@@ -1,0 +1,25 @@
+module samplepredict_interface (
+    input logic [1:0] hPos,
+    input logic [3:0] predType,
+    input logic [4:0] qLevel,
+    input logic [1:0] unit,
+    input logic [4:0] cpnt_bit_depth,
+    input logic [1:0] unit_c_type,
+    input logic signed [15:0] quantized_residual_0,
+    input logic signed [15:0] quantized_residual_1,
+    input logic [15:0] prev_3,
+    input logic [15:0] prev_4,
+    input logic [15:0] prev_5,
+    input logic [15:0] prev_6,
+    input logic [15:0] prev_7,
+    input logic [15:0] prev_8,
+    input logic [15:0] curr_0,
+    input logic [15:0] curr_1,
+    input logic [15:0] curr_2,
+    input logic [15:0] curr_3,
+    input logic [15:0] curr_4,
+    input logic [15:0] curr_5,
+    input logic [15:0] curr_6,
+    output logic [15:0] return_value
+);
+endmodule

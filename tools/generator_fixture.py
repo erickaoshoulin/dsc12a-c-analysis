@@ -21,6 +21,10 @@ def safe(value: str) -> str:
     return value if value and not value[0].isdigit() else "c_" + value
 
 
+def normalized_identifier(value: object) -> str:
+    return re.sub(r"[^a-z0-9]", "", str(value).lower())
+
+
 def port_decl(port: dict[str, object]) -> str:
     width = int(port.get("width", 1))
     signed = " signed" if port.get("signed") else ""
@@ -57,15 +61,1667 @@ def quantization_body(interface: dict[str, object], semantics: dict[str, object]
     return "\n".join(lines)
 
 
+def line_storage_body(interface: dict[str, object], bad: bool) -> str:
+    ports = interface.get("ports", [])
+    names = {
+        normalized_identifier(str(port.get("role", port.get("name")))): str(port.get("name"))
+        for port in ports if isinstance(port, dict)
+    }
+    x_name = names.get("x", "x")
+    bit_depth_name = names.get("cpntbitdepth", "cpntBitDepth")
+    linebuf_name = names.get("linebufdepth", "linebuf_depth")
+    out_name = names.get("returnvalue", "return_value")
+    lines = [
+        "    integer signed shift_amount_i;",
+        "    integer signed round_i;",
+        "    integer signed stored_sample_i;",
+        "    always_comb begin",
+        f"        shift_amount_i = {bit_depth_name} - {linebuf_name};",
+        "        if (shift_amount_i < 0) shift_amount_i = 0;",
+        "        round_i = shift_amount_i > 0 ? (1 <<< (shift_amount_i - 1)) : 0;",
+        f"        stored_sample_i = ({x_name} + round_i) >>> shift_amount_i;",
+        f"        if (stored_sample_i > ((1 <<< {linebuf_name}) - 1)) stored_sample_i = (1 <<< {linebuf_name}) - 1;",
+        f"        {out_name} = stored_sample_i <<< shift_amount_i;",
+    ]
+    if bad:
+        lines.append(f"        {out_name} = {out_name} + 1;")
+    lines.append("    end")
+    return "\n".join(lines)
+
+
+def qp_mapping_body(interface: dict[str, object], bad: bool) -> str:
+    ports = interface.get("ports", [])
+    names = {
+        normalized_identifier(str(port.get("role", port.get("name")))): str(port.get("name"))
+        for port in ports if isinstance(port, dict)
+    }
+    version_name = names.get("dscversionminor", "dsc_version_minor")
+    native_name = names.get("native420", "native_420")
+    bit_depth_0_name = names.get("cpntbitdepth0", "cpntBitDepth_0")
+    bit_depth_1_name = names.get("cpntbitdepth1", "cpntBitDepth_1")
+    luma_name = names.get("tablelookupluma", "qlevel_luma")
+    chroma_name = names.get("tablelookupchroma", "qlevel_chroma")
+    cpnt_name = names.get("cpnt", "cpnt")
+    out_name = names.get("returnvalue", "return_value")
+    lines = [
+        "    integer signed qlevel_i;",
+        "    always_comb begin",
+        f"        if (({cpnt_name} % 3) == 0) begin",
+        f"            qlevel_i = {luma_name};",
+        f"        end else if (({native_name} != 0) && ({cpnt_name} == 1)) begin",
+        f"            qlevel_i = {luma_name};",
+        "        end else begin",
+        f"            qlevel_i = {chroma_name};",
+        f"            if (({version_name} == 2) && ({bit_depth_0_name} == {bit_depth_1_name}) && (qlevel_i > 0)) begin",
+        "                qlevel_i = qlevel_i - 1;",
+        "            end",
+        "        end",
+        f"        {out_name} = qlevel_i;",
+    ]
+    if bad:
+        lines.append(f"        {out_name} = {out_name} + 1;")
+    lines.append("    end")
+    return "\n".join(lines)
+
+
+def qp_table_lookup_body(
+    interface: dict[str, object], semantics: dict[str, object], bad: bool
+) -> str:
+    """Emit a self-contained Table 6-2 qLevel lookup.
+
+    The C helper reads immutable global qLevel tables selected by
+    bits_per_component.  The RTL library exposes the same normative lookup
+    directly, so the generated interface contains only configuration and
+    lookup inputs; no host/configuration pointer or C table storage crosses
+    the DUT boundary.
+    """
+    ports = interface.get("ports", [])
+    names = {
+        normalized_identifier(str(port.get("role", port.get("name")))): str(port.get("name"))
+        for port in ports
+        if isinstance(port, dict)
+    }
+    bpc_name = names.get("bitspercomponent", "bits_per_component")
+    convert_name = names.get("convertrgb", "convert_rgb")
+    version_name = names.get("dscversionminor", "dsc_version_minor")
+    native_name = names.get("native420", "native_420")
+    cpnt_name = names.get("cpnt", "cpnt")
+    qp_name = names.get("qp", "qp")
+    out_name = names.get("returnvalue", "return_value")
+    tables = semantics.get("tables", {}) or {}
+
+    def table_case(table_name: str) -> list[str]:
+        table = tables.get(table_name, {}) or {}
+        lines = ["            case (bits_per_component_i)"]
+        for raw_bpc, raw_values in sorted(table.items(), key=lambda item: int(item[0])):
+            values = [int(value) for value in raw_values]
+            lines.append(f"                {int(raw_bpc)}: begin")
+            lines.append("                    case (qp_i)")
+            for index, value in enumerate(values):
+                lines.append(f"                        {index}: qlevel_i = {value};")
+            lines.extend([
+                "                        default: qlevel_i = 0;",
+                "                    endcase",
+                "                end",
+            ])
+        lines.extend([
+            "                default: qlevel_i = 0;",
+            "            endcase",
+        ])
+        return lines
+
+    lines = [
+        "    logic [4:0] bits_per_component_i;",
+        "    logic [4:0] qp_i;",
+        "    logic [4:0] qlevel_i;",
+        "    always_comb begin",
+        f"        bits_per_component_i = {bpc_name};",
+        f"        qp_i = {qp_name};",
+        "        qlevel_i = 0;",
+        f"        if ((({cpnt_name} % 3) == 0) || (({native_name} != 0) && ({cpnt_name} == 1))) begin",
+        *table_case("luma"),
+        "        end else begin",
+        *[line.replace("            ", "            ", 1) for line in table_case("chroma")],
+        f"            if (({version_name} == 2) && ({convert_name} == 0) && (qlevel_i > 0)) begin",
+        "                qlevel_i = qlevel_i - 1;",
+        "            end",
+        "        end",
+        f"        {out_name} = qlevel_i;",
+    ]
+    if bad:
+        lines.append(f"        {out_name} = {out_name} + 1;")
+    lines.append("    end")
+    return "\n".join(lines)
+
+
+def max_residual_size_body(interface: dict[str, object], bad: bool) -> str:
+    ports = interface.get("ports", [])
+    names = {
+        normalized_identifier(str(port.get("role", port.get("name")))): str(port.get("name"))
+        for port in ports if isinstance(port, dict)
+    }
+    version_name = names.get("dscversionminor", "dsc_version_minor")
+    native_name = names.get("native420", "native_420")
+    bit_depth_name = names.get("configselected", "cpntBitDepth_selected")
+    bit_depth_0_name = names.get("cpntbitdepth0", "cpntBitDepth_0")
+    bit_depth_1_name = names.get("cpntbitdepth1", "cpntBitDepth_1")
+    luma_name = names.get("tablelookupluma", "qlevel_luma")
+    chroma_name = names.get("tablelookupchroma", "qlevel_chroma")
+    cpnt_name = names.get("cpnt", "cpnt")
+    out_name = names.get("returnvalue", "return_value")
+    lines = [
+        "    integer signed qlevel_i;",
+        "    integer signed chroma_i;",
+        "    integer signed max_size_i;",
+        "    always_comb begin",
+        f"        max_size_i = {bit_depth_name};",
+        f"        if (({cpnt_name} % 3) == 0) begin",
+        f"            qlevel_i = {luma_name};",
+        f"        end else if (({native_name} != 0) && ({cpnt_name} == 1)) begin",
+        f"            qlevel_i = {luma_name};",
+        "        end else begin",
+        f"            chroma_i = {chroma_name};",
+        f"            if (({version_name} == 2) && ({bit_depth_0_name} == (({cpnt_name} == 1) ? {bit_depth_name} : {bit_depth_1_name}))) begin",
+        "                chroma_i = chroma_i - 1;",
+        "            end",
+        "            qlevel_i = chroma_i < 0 ? 0 : chroma_i;",
+        "        end",
+        f"        max_size_i = max_size_i - qlevel_i;",
+        f"        {out_name} = max_size_i;",
+    ]
+    if bad:
+        lines.append(f"        {out_name} = {out_name} + 1;")
+    lines.append("    end")
+    return "\n".join(lines)
+
+
+def residual_size_body(
+    interface: dict[str, object], semantics: dict[str, object], bad: bool
+) -> str:
+    """Emit the reviewed residual-size threshold function.
+
+    The threshold table is carried by the contract semantics so the fixture
+    remains driven by the reviewed interface/spec data rather than a function
+    name.  The default table is the DSC 1.2a signed residual-size relation.
+    """
+    ports = interface.get("ports", [])
+    names = {
+        normalized_identifier(str(port.get("role", port.get("name")))): str(port.get("name"))
+        for port in ports
+        if isinstance(port, dict)
+    }
+    input_names = [
+        str(port.get("name"))
+        for port in ports
+        if isinstance(port, dict) and port.get("direction") == "input"
+    ]
+    eq_name = names.get("eq") or (input_names[0] if input_names else "eq")
+    input_port = next(
+        (
+            port
+            for port in ports
+            if isinstance(port, dict) and str(port.get("name")) == eq_name
+        ),
+        {},
+    )
+    input_width = int(input_port.get("width", 32))
+    out_name = names.get("returnvalue", "return_value")
+    thresholds = semantics.get("thresholds", [])
+    if not thresholds:
+        thresholds = [{"lower": 0, "upper": 0, "size": 0}]
+        thresholds.extend(
+            {
+                "lower": -(1 << (size - 1)),
+                "upper": (1 << (size - 1)) - 1,
+                "size": size,
+            }
+            for size in range(1, 19)
+        )
+    if 0 < input_width < 32:
+        sign_extended = "{{" + str(32 - input_width) + "{" + f"{eq_name}[{input_width - 1}]" + "}}, " + eq_name + "}"
+        eq_assignment = f"        eq_i = $signed({sign_extended});"
+    else:
+        eq_assignment = f"        eq_i = $signed({eq_name});"
+    lines = [
+        "    integer signed eq_i;",
+        "    always_comb begin",
+        eq_assignment,
+        f"        {out_name} = 0;",
+    ]
+    for index, threshold in enumerate(thresholds):
+        lower = int(threshold["lower"])
+        upper = int(threshold["upper"])
+        size = int(threshold["size"])
+        keyword = "if" if index == 0 else "else if"
+        if lower == upper:
+            condition = f"(eq_i == {lower})"
+        else:
+            condition = f"((eq_i >= {lower}) && (eq_i <= {upper}))"
+        lines.extend([
+            f"        {keyword} {condition} {out_name} = {size};",
+        ])
+    if bad:
+        lines.append(f"        {out_name} = {out_name} + 1;")
+    lines.append("    end")
+    return "\n".join(lines)
+
+
+def qp_adjusted_pred_size_body(interface: dict[str, object], bad: bool) -> str:
+    ports = interface.get("ports", [])
+    names = {
+        normalized_identifier(str(port.get("role", port.get("name")))): str(port.get("name"))
+        for port in ports if isinstance(port, dict)
+    }
+    version_name = names.get("dscversionminor", "dsc_version_minor")
+    native_name = names.get("native420", "native_420")
+    unit_name = names.get("unit", "unit")
+    cpnt_name = names.get("stateselected", "unit_c_type_selected")
+    pred_size_name = names.get("stateselected", "predicted_size_selected")
+    primary_qp_name = names.get("stateruntime", "primary_qp")
+    prev_qp_name = names.get("stateruntime", "prev_primary_qp")
+    bpc_names = [names.get(f"configstatic", f"cpntBitDepth_{index}") for index in range(4)]
+    luma_new_name = "qlevel_luma_new"
+    chroma_new_name = "qlevel_chroma_new"
+    luma_old_name = "qlevel_luma_old"
+    chroma_old_name = "qlevel_chroma_old"
+    out_name = names.get("returnvalue", "return_value")
+    # Roles are not unique for the four static bit-depth ports and for the two
+    # state-runtime QPs, so use their frozen names when selecting those ports.
+    port_names = {str(port.get("name")): str(port.get("name")) for port in ports if isinstance(port, dict)}
+    cpnt_name = port_names.get("unit_c_type_selected", cpnt_name)
+    pred_size_name = port_names.get("predicted_size_selected", pred_size_name)
+    primary_qp_name = port_names.get("primary_qp", primary_qp_name)
+    prev_qp_name = port_names.get("prev_primary_qp", prev_qp_name)
+    bpc_names = [port_names.get(f"cpntBitDepth_{index}", f"cpntBitDepth_{index}") for index in range(4)]
+    lines = [
+        "    integer signed cpnt_i;",
+        "    integer signed bit_depth_i;",
+        "    integer signed qlevel_new_i;",
+        "    integer signed qlevel_old_i;",
+        "    integer signed pred_size_i;",
+        "    integer signed max_size_i;",
+        "    always_comb begin",
+        f"        cpnt_i = {cpnt_name};",
+        "        case (cpnt_i)",
+    ]
+    for index, bpc_name in enumerate(bpc_names):
+        lines.append(f"            {index}: bit_depth_i = {bpc_name};")
+    lines.extend([
+        f"            default: bit_depth_i = {bpc_names[0]};",
+        "        endcase",
+        f"        if ((cpnt_i % 3) == 0) begin",
+        f"            qlevel_new_i = {luma_new_name};",
+        f"        end else if (({native_name} != 0) && (cpnt_i == 1)) begin",
+        f"            qlevel_new_i = {luma_new_name};",
+        "        end else begin",
+        f"            qlevel_new_i = {chroma_new_name};",
+        f"            if (({version_name} == 2) && ({bpc_names[0]} == {bpc_names[1]}) && (qlevel_new_i > 0)) begin",
+        "                qlevel_new_i = qlevel_new_i - 1;",
+        "            end",
+        "        end",
+        f"        if ((cpnt_i % 3) == 0) begin",
+        f"            qlevel_old_i = {luma_old_name};",
+        f"        end else if (({native_name} != 0) && (cpnt_i == 1)) begin",
+        f"            qlevel_old_i = {luma_old_name};",
+        "        end else begin",
+        f"            qlevel_old_i = {chroma_old_name};",
+        f"            if (({version_name} == 2) && ({bpc_names[0]} == {bpc_names[1]}) && (qlevel_old_i > 0)) begin",
+        "                qlevel_old_i = qlevel_old_i - 1;",
+        "            end",
+        "        end",
+        f"        pred_size_i = {pred_size_name} + qlevel_old_i - qlevel_new_i;",
+        f"        max_size_i = bit_depth_i - qlevel_new_i;",
+        "        if (pred_size_i < 0) pred_size_i = 0;",
+        "        else if (pred_size_i > (max_size_i - 1)) pred_size_i = max_size_i - 1;",
+        f"        {out_name} = pred_size_i;",
+    ])
+    if bad:
+        lines.append(f"        {out_name} = {out_name} + 1;")
+    lines.append("    end")
+    return "\n".join(lines)
+
+
+def estimate_bits_body(
+    interface: dict[str, object], semantics: dict[str, object], bad: bool
+) -> str:
+    """Emit the fixed-size DSC DSU bit estimator from reviewed contract data.
+
+    ``EstimateBitsForGroup`` has two runtime loops, but the source constants
+    bound the storage to four units and three samples per unit.  The contract
+    freezes those dimensions and the generator unrolls them; the only dynamic
+    loop bound left in the C oracle is ``unitsPerGroup``, which remains an
+    explicit guarded input in both implementations.
+    """
+    ports = {
+        str(port.get("name")): port
+        for port in interface.get("ports", [])
+        if isinstance(port, dict)
+    }
+    strategy = semantics.get("legal_vector_strategy", {})
+    if not isinstance(strategy, dict):
+        raise ValueError("estimate-bits fixture is missing legal vector strategy")
+
+    def require(name: str) -> str:
+        if name not in ports:
+            raise ValueError("estimate-bits fixture is missing port: " + name)
+        return name
+
+    units_name = require(str(strategy.get("units_per_group_port", "units_per_group")))
+    pixels_name = require(str(strategy.get("pixels_in_group_port", "pixels_in_group")))
+    hpos_name = require(str(strategy.get("hpos_port", "hPos")))
+    slice_width_name = require(str(strategy.get("slice_width_port", "slice_width")))
+    prev_ich_name = require(str(strategy.get("prev_ich_selected_port", "prev_ich_selected")))
+    version_name = require(str(strategy.get("version_port", "dsc_version_minor")))
+    native_name = require(str(strategy.get("native_420_port", "native_420")))
+    primary_name = require(str(strategy.get("primary_qp_port", "primary_qp")))
+    previous_name = require(str(strategy.get("prev_primary_qp_port", "prev_primary_qp")))
+    depth_ports = [require(str(value)) for value in strategy.get("component_depth_ports", [])]
+    ctype_ports = [require(str(value)) for value in strategy.get("unit_component_ports", [])]
+    start_ports = [require(str(value)) for value in strategy.get("unit_start_hpos_ports", [])]
+    predicted_ports = [require(str(value)) for value in strategy.get("predicted_size_ports", [])]
+    residual_ports = [require(str(value)) for value in strategy.get("residual_ports", [])]
+    if len(depth_ports) != 4 or len(ctype_ports) != 4 or len(start_ports) != 4 or len(predicted_ports) != 4:
+        raise ValueError("estimate-bits fixture requires four component/unit state lanes")
+    if len(residual_ports) != 12:
+        raise ValueError("estimate-bits fixture requires twelve residual ports")
+
+    table_bindings = strategy.get("table_bindings", {}) or {}
+    table_ports: dict[str, str] = {}
+    primary_table_port = str(strategy.get("primary_qp_port", "primary_qp"))
+    previous_table_port = str(strategy.get("prev_primary_qp_port", "prev_primary_qp"))
+    for port_name, binding in table_bindings.items():
+        table_kind = str((binding or {}).get("table", ""))
+        if table_kind in {"luma", "chroma"}:
+            qp_port = str((binding or {}).get("qp_port", ""))
+            suffix = "_new" if qp_port == primary_table_port else "_old" if qp_port == previous_table_port else ""
+            if not suffix:
+                raise ValueError("estimate-bits table binding has an unknown QP port")
+            table_ports[table_kind + suffix] = require(str(port_name))
+    if set(table_ports) != {"luma_new", "luma_old", "chroma_new", "chroma_old"}:
+        raise ValueError("estimate-bits fixture requires luma/chroma table ports")
+
+    output = next(
+        (
+            str(port.get("name"))
+            for port in interface.get("ports", [])
+            if isinstance(port, dict) and port.get("direction") == "output"
+        ),
+        "return_value",
+    )
+    require(output)
+    thresholds = semantics.get("thresholds") or semantics.get("residual_size_thresholds") or []
+    if not thresholds:
+        raise ValueError("estimate-bits fixture is missing residual-size thresholds")
+
+    def signed_literal(value: int) -> str:
+        value = int(value)
+        if value < 0:
+            return f"32'sh{(value & 0xffffffff):08x}"
+        return str(value)
+
+    def qlevel_lines(target: str, cpnt: str, luma: str, chroma: str) -> list[str]:
+        return [
+            f"        if (({cpnt} % 3) == 0) begin",
+            f"            {target} = {luma};",
+            f"        end else if (({native_name} != 0) && ({cpnt} == 1)) begin",
+            f"            {target} = {luma};",
+            "        end else begin",
+            f"            {target} = {chroma};",
+            f"            if (({version_name} == 2) && ({depth_ports[0]} == {depth_ports[1]}) && ({target} > 0)) begin",
+            f"                {target} = {target} - 1;",
+            "            end",
+            "        end",
+        ]
+
+    lines = [
+        "    integer signed total_size_i;",
+        "    integer signed bit_depth_i;",
+        "    integer signed qlevel_new_i;",
+        "    integer signed qlevel_old_i;",
+        "    integer signed max_residual_size_i;",
+        "    integer signed pred_size_i;",
+        "    integer signed hpos_value_i;",
+        "    integer signed pixels_in_group_value_i;",
+        "    integer signed slice_width_value_i;",
+        "    integer signed unit_start_h_pos_value_i;",
+    ]
+    for unit in range(4):
+        lines.extend([
+            f"    integer signed max_size_{unit}_i;",
+            f"    integer signed sample_hpos_{unit}_i;",
+            f"    integer signed residual_{unit}_i;",
+            f"    integer signed req_size_{unit}_i;",
+        ])
+    lines.extend([
+        "    always_comb begin",
+        "        total_size_i = 0;",
+        f"        hpos_value_i = {hpos_name};",
+        f"        pixels_in_group_value_i = {pixels_name};",
+        f"        slice_width_value_i = {slice_width_name};",
+    ])
+
+    for unit in range(4):
+        lines.extend([
+            f"        max_size_{unit}_i = 0;",
+            f"        unit_start_h_pos_value_i = {start_ports[unit]};",
+        ])
+        for sample in range(3):
+            residual = residual_ports[unit * 3 + sample]
+            lines.extend([
+                f"            sample_hpos_{unit}_i = hpos_value_i + {sample} - (pixels_in_group_value_i - 1) + unit_start_h_pos_value_i;",
+                f"            residual_{unit}_i = $signed({residual});",
+                f"            req_size_{unit}_i = 0;",
+            ])
+            first_threshold = True
+            for threshold in thresholds:
+                if not isinstance(threshold, dict):
+                    continue
+                lower = int(threshold.get("lower", 0))
+                upper = int(threshold.get("upper", lower))
+                size = int(threshold.get("size", 0))
+                keyword = "if" if first_threshold else "else if"
+                if lower == upper:
+                    condition = f"(residual_{unit}_i == {signed_literal(lower)})"
+                else:
+                    condition = (
+                        f"((residual_{unit}_i >= {signed_literal(lower)}) && "
+                        f"(residual_{unit}_i <= {signed_literal(upper)}))"
+                    )
+                lines.append(f"            {keyword} {condition} req_size_{unit}_i = {size};")
+                first_threshold = False
+            lines.extend([
+                f"            if (sample_hpos_{unit}_i < slice_width_value_i) begin",
+                f"                if (req_size_{unit}_i > max_size_{unit}_i) max_size_{unit}_i = req_size_{unit}_i;",
+                "            end",
+            ])
+        lines.extend([
+            f"            case ({ctype_ports[unit]})",
+        ])
+        for index, depth in enumerate(depth_ports):
+            lines.append(f"                {index}: bit_depth_i = {depth};")
+        lines.extend([
+            f"                default: bit_depth_i = {depth_ports[0]};",
+            "            endcase",
+        ])
+        lines.extend(qlevel_lines("qlevel_new_i", ctype_ports[unit], table_ports["luma_new"], table_ports["chroma_new"]))
+        lines.extend([
+            "            max_residual_size_i = bit_depth_i - qlevel_new_i;",
+            f"            if (max_size_{unit}_i > max_residual_size_i) max_size_{unit}_i = max_residual_size_i;",
+        ])
+
+    for unit in range(4):
+        lines.extend([
+            f"        if ({units_name} > {unit}) begin",
+            f"            case ({ctype_ports[unit]})",
+        ])
+        for index, depth in enumerate(depth_ports):
+            lines.append(f"                {index}: bit_depth_i = {depth};")
+        lines.extend([
+            f"                default: bit_depth_i = {depth_ports[0]};",
+            "            endcase",
+        ])
+        lines.extend(qlevel_lines("qlevel_new_i", ctype_ports[unit], table_ports["luma_new"], table_ports["chroma_new"]))
+        lines.extend(qlevel_lines("qlevel_old_i", ctype_ports[unit], table_ports["luma_old"], table_ports["chroma_old"]))
+        lines.extend([
+            f"            pred_size_i = {predicted_ports[unit]} + qlevel_old_i - qlevel_new_i;",
+            "            max_residual_size_i = bit_depth_i - qlevel_new_i;",
+            "            if (pred_size_i < 0) pred_size_i = 0;",
+            "            else if (pred_size_i > (max_residual_size_i - 1)) pred_size_i = max_residual_size_i - 1;",
+            f"            if (max_size_{unit}_i < pred_size_i)",
+            f"                total_size_i = total_size_i + 1 + 3 * pred_size_i;",
+            f"            else if ((max_size_{unit}_i == max_residual_size_i) && ({unit} != 0))",
+            f"                total_size_i = total_size_i + (max_size_{unit}_i - pred_size_i) + 3 * max_size_{unit}_i;",
+            "            else",
+            f"                total_size_i = total_size_i + 1 + (max_size_{unit}_i - pred_size_i) + 3 * max_size_{unit}_i;",
+            "        end",
+        ])
+
+    lines.extend([
+        f"        bit_depth_i = {depth_ports[0]};",
+        f"        qlevel_new_i = {table_ports['luma_new']};",
+        "        max_residual_size_i = bit_depth_i - qlevel_new_i;",
+        f"        if ((max_size_0_i < max_residual_size_i) && ({prev_ich_name} != 0)) total_size_i = total_size_i + 1;",
+        f"        {output} = total_size_i;",
+    ])
+    if bad:
+        lines.append(f"        {output} = {output} + 1;")
+    lines.extend(["    end"])
+    return "\n".join(lines)
+
+
+def ich_decision_body(
+    interface: dict[str, object], semantics: dict[str, object], bad: bool
+) -> str:
+    """Emit the fixed-lane DSC ICH/P-mode decision from reviewed data.
+
+    The source function is a small architecture-level composition of already
+    promoted leaves.  The generated implementation keeps the four-unit and
+    three-sample dimensions explicit, while retaining the same guarded lane
+    behavior as the C model.  Q-level inputs are frozen outputs of the
+    promoted MapQpToQlevel component; this adapter therefore does not invent a
+    second copy of the normative Table 6-2 lookup.
+    """
+    ports = {
+        str(port.get("name")): port
+        for port in interface.get("ports", [])
+        if isinstance(port, dict)
+    }
+    strategy = semantics.get("legal_vector_strategy", {})
+    if not isinstance(strategy, dict):
+        raise ValueError("ich-decision fixture is missing legal vector strategy")
+
+    def require(name: str) -> str:
+        if name not in ports:
+            raise ValueError("ich-decision fixture is missing port: " + name)
+        return name
+
+    def required(key: str, fallback: str) -> str:
+        return require(str(strategy.get(key, fallback)))
+
+    units_name = required("units_per_group_port", "units_per_group")
+    pixels_name = required("pixels_in_group_port", "pixels_in_group")
+    hpos_name = required("hpos_port", "hPos")
+    slice_name = required("slice_width_port", "slice_width")
+    version_name = required("version_port", "dsc_version_minor")
+    native_name = required("native_420_port", "native_420")
+    prev_ich_name = required("prev_ich_selected_port", "prev_ich_selected")
+    primary_name = required("primary_qp_port", "primary_qp")
+    adj_name = required("adj_predicted_size_port", "adj_predicted_size")
+    alt_size_name = required("alt_size_to_generate_port", "alt_size_to_generate")
+    ich_indices_name = required("ich_indices_in_group_port", "ich_indices_in_group")
+    num_components_name = required("num_components_port", "num_components")
+    flatness_name = required("flatness_det_thresh_port", "flatness_det_thresh")
+    flat_delta_name = required("somewhat_flat_qp_delta_port", "somewhat_flat_qp_delta")
+    depth_ports = [require(str(value)) for value in strategy.get("component_depth_ports", [])]
+    ctype_ports = [require(str(value)) for value in strategy.get("unit_component_ports", [])]
+    start_ports = [require(str(value)) for value in strategy.get("unit_start_hpos_ports", [])]
+    predicted_ports = [require(str(value)) for value in strategy.get("predicted_size_ports", [])]
+    max_error_ports = [require(str(value)) for value in strategy.get("max_error_ports", [])]
+    max_mid_error_ports = [require(str(value)) for value in strategy.get("max_mid_error_ports", [])]
+    max_ich_error_ports = [require(str(value)) for value in strategy.get("max_ich_error_ports", [])]
+    residual_ports = [require(str(value)) for value in strategy.get("residual_ports", [])]
+    if any(len(group) != 4 for group in (depth_ports, ctype_ports, start_ports, predicted_ports,
+                                         max_error_ports, max_mid_error_ports, max_ich_error_ports)):
+        raise ValueError("ich-decision fixture requires four unit/component lanes")
+    if len(residual_ports) != 12:
+        raise ValueError("ich-decision fixture requires twelve residual ports")
+
+    qlevel_ports = strategy.get("qlevel_ports", {})
+    if not isinstance(qlevel_ports, dict):
+        raise ValueError("ich-decision fixture is missing qlevel ports")
+    qlevel_names = {
+        key: require(str(qlevel_ports[key]))
+        for key in ("luma_primary", "chroma_primary", "luma_previous",
+                    "chroma_previous", "luma_flat", "chroma_flat")
+    }
+    sample_ports = strategy.get("orig_ports_by_component", {})
+    if not isinstance(sample_ports, dict):
+        raise ValueError("ich-decision fixture is missing original-pixel ports")
+    sample_names: dict[int, list[str]] = {}
+    for component in range(4):
+        raw = sample_ports.get(str(component), sample_ports.get(component, []))
+        if not isinstance(raw, list) or len(raw) != 7:
+            raise ValueError("ich-decision fixture requires seven original taps per component")
+        sample_names[component] = [require(str(value)) for value in raw]
+    output = next(
+        (
+            str(port.get("name"))
+            for port in interface.get("ports", [])
+            if isinstance(port, dict) and port.get("direction") == "output"
+        ),
+        "return_value",
+    )
+    require(output)
+    thresholds = semantics.get("thresholds") or semantics.get("residual_size_thresholds") or []
+    if not thresholds:
+        raise ValueError("ich-decision fixture is missing residual-size thresholds")
+
+    def signed_literal(value: int) -> str:
+        value = int(value)
+        if value < 0:
+            return f"32'sh{(value & 0xffffffff):08x}"
+        return str(value)
+
+    lines = [
+        "    function automatic integer min_i;",
+        "        input integer left;",
+        "        input integer right;",
+        "        begin min_i = (left < right) ? left : right; end",
+        "    endfunction",
+        "    function automatic integer max_i;",
+        "        input integer left;",
+        "        input integer right;",
+        "        begin max_i = (left > right) ? left : right; end",
+        "    endfunction",
+        "    function automatic integer quant_divisor_i;",
+        "        input integer qlevel;",
+        "        begin",
+        "            quant_divisor_i = 1;",
+        "            case (qlevel)",
+    ]
+    for qlevel in range(17):
+        lines.append(f"                {qlevel}: quant_divisor_i = {1 << qlevel};")
+    lines.extend([
+        "                default: quant_divisor_i = 1;",
+        "            endcase",
+        "        end",
+        "    endfunction",
+        "    function automatic integer residual_size_i;",
+        "        input integer value;",
+        "        begin",
+        "            residual_size_i = 0;",
+    ])
+    first_threshold = True
+    for threshold in thresholds:
+        if not isinstance(threshold, dict):
+            continue
+        lower = int(threshold.get("lower", 0))
+        upper = int(threshold.get("upper", lower))
+        size = int(threshold.get("size", 0))
+        keyword = "if" if first_threshold else "else if"
+        if lower == upper:
+            condition = f"(value == {signed_literal(lower)})"
+        else:
+            condition = f"((value >= {signed_literal(lower)}) && (value <= {signed_literal(upper)}))"
+        lines.append(f"            {keyword} {condition} residual_size_i = {size};")
+        first_threshold = False
+    lines.extend([
+        "        end",
+        "    endfunction",
+        "    function automatic integer ceil_log2_i;",
+        "        input integer value;",
+        "        begin",
+        "            if (value <= 0) ceil_log2_i = 0;",
+        "            else if (value <= 1) ceil_log2_i = 1;",
+        "            else if (value <= 3) ceil_log2_i = 2;",
+        "            else if (value <= 7) ceil_log2_i = 3;",
+        "            else if (value <= 15) ceil_log2_i = 4;",
+        "            else if (value <= 31) ceil_log2_i = 5;",
+        "            else if (value <= 63) ceil_log2_i = 6;",
+        "            else if (value <= 127) ceil_log2_i = 7;",
+        "            else if (value <= 255) ceil_log2_i = 8;",
+        "            else if (value <= 511) ceil_log2_i = 9;",
+        "            else if (value <= 1023) ceil_log2_i = 10;",
+        "            else if (value <= 2047) ceil_log2_i = 11;",
+        "            else if (value <= 4095) ceil_log2_i = 12;",
+        "            else if (value <= 8191) ceil_log2_i = 13;",
+        "            else if (value <= 16383) ceil_log2_i = 14;",
+        "            else if (value <= 32767) ceil_log2_i = 15;",
+        "            else ceil_log2_i = 16;",
+        "        end",
+        "    endfunction",
+        "    function automatic integer qlevel_for_i;",
+        "        input integer component;",
+        "        input integer luma_value;",
+        "        input integer chroma_value;",
+        "        begin",
+        "            if ((component % 3) == 0) qlevel_for_i = luma_value;",
+        f"            else if (({native_name} != 0) && (component == 1)) qlevel_for_i = luma_value;",
+        "            else begin",
+        "                qlevel_for_i = chroma_value;",
+        f"                if (({version_name} == 2) && ({depth_ports[0]} == {depth_ports[1]}) && (qlevel_for_i > 0)) qlevel_for_i = qlevel_for_i - 1;",
+        "            end",
+        "        end",
+        "    endfunction",
+        "    function automatic integer depth_for_i;",
+        "        input integer component;",
+        "        begin",
+        f"            case (component)",
+    ])
+    for component, port in enumerate(depth_ports):
+        lines.append(f"                {component}: depth_for_i = {port};")
+    lines.extend([
+        f"                default: depth_for_i = {depth_ports[0]};",
+        "            endcase",
+        "        end",
+        "    endfunction",
+        "    function automatic integer orig_sample_i;",
+        "        input integer component;",
+        "        input integer offset;",
+        "        begin",
+        "            orig_sample_i = 0;",
+        "            case (component)",
+    ])
+    for component in range(4):
+        lines.extend([
+            f"                {component}: begin",
+            "                    case (offset)",
+        ])
+        for offset, port in enumerate(sample_names[component]):
+            lines.append(f"                        {offset}: orig_sample_i = {port};")
+        lines.extend([
+            "                        default: orig_sample_i = 0;",
+            "                    endcase",
+            "                end",
+        ])
+    lines.extend([
+        "                default: orig_sample_i = 0;",
+        "            endcase",
+        "        end",
+        "    endfunction",
+    ])
+    for name, offsets in (("spread4_i", [0, 1, 2, 3]), ("spread6_i", [1, 2, 3, 4, 5, 6])):
+        values_for_spread = [f"orig_sample_i(component, {offset})" for offset in offsets]
+        maximum = values_for_spread[0]
+        minimum = values_for_spread[0]
+        for value in values_for_spread[1:]:
+            maximum = f"max_i({maximum}, {value})"
+            minimum = f"min_i({minimum}, {value})"
+        lines.extend([
+            f"    function automatic integer {name};",
+            "        input integer component;",
+            "        begin",
+            f"            {name} = {maximum} - {minimum};",
+            "        end",
+            "    endfunction",
+        ])
+
+    lines.extend([
+        "    integer signed total_size_i;",
+        "    integer signed bits_p_mode_i;",
+        "    integer signed bits_ich_mode_i;",
+        "    integer signed log_err_p_mode_i;",
+        "    integer signed log_err_ich_mode_i;",
+        "    integer signed p_mode_cost_i;",
+        "    integer signed ich_mode_cost_i;",
+        "    integer signed qlevel_new_i;",
+        "    integer signed qlevel_old_i;",
+        "    integer signed qlevel_flat_i;",
+        "    integer signed bit_depth_i;",
+        "    integer signed max_residual_size_i;",
+        "    integer signed pred_size_i;",
+        "    integer signed sample_hpos_i;",
+        "    integer signed req_size_i;",
+        "    integer signed flat_index_i;",
+        "    integer signed first_somewhat_i;",
+        "    integer signed first_very_i;",
+        "    integer signed second_somewhat_i;",
+        "    integer signed second_very_i;",
+    ])
+    for unit in range(4):
+        lines.extend([
+            f"    integer signed max_size_{unit}_i;",
+            f"    integer signed max_p_error_{unit}_i;",
+            f"    integer signed midpoint_{unit}_i;",
+            f"    integer signed residual_{unit}_i;",
+            f"    integer signed req_size_{unit}_i;",
+        ])
+    lines.extend([
+        "    always_comb begin",
+        "        total_size_i = 0;",
+        "        log_err_p_mode_i = 0;",
+        "        log_err_ich_mode_i = 0;",
+        f"        bits_ich_mode_i = ({prev_ich_name} != 0) ? 1 : ({alt_size_name} - {adj_name});",
+        f"        bits_ich_mode_i = bits_ich_mode_i + 5 * {ich_indices_name};",
+    ])
+
+    def qlevel_lines(target: str, cpnt: str, luma: str, chroma: str) -> list[str]:
+        return [f"        {target} = qlevel_for_i({cpnt}, {luma}, {chroma});"]
+
+    for unit in range(4):
+        lines.extend([
+            f"        max_size_{unit}_i = 0;",
+            f"        midpoint_{unit}_i = 0;",
+            f"        max_p_error_{unit}_i = 0;",
+        ])
+        lines.extend(qlevel_lines("qlevel_new_i", ctype_ports[unit], qlevel_names["luma_primary"], qlevel_names["chroma_primary"]))
+        lines.extend([
+            f"        bit_depth_i = depth_for_i({ctype_ports[unit]});",
+        ])
+        for sample in range(3):
+            residual = residual_ports[unit * 3 + sample]
+            lines.extend([
+                f"        residual_{unit}_i = $signed({residual});",
+                f"        req_size_{unit}_i = residual_size_i(residual_{unit}_i);",
+                f"        if (req_size_{unit}_i > max_size_{unit}_i) max_size_{unit}_i = req_size_{unit}_i;",
+            ])
+        lines.extend([
+            f"        if (max_size_{unit}_i >= (bit_depth_i - qlevel_new_i)) midpoint_{unit}_i = 1;",
+            f"        max_p_error_{unit}_i = (midpoint_{unit}_i != 0) ? {max_mid_error_ports[unit]} : {max_error_ports[unit]};",
+        ])
+
+    for unit in range(4):
+        lines.extend([
+            f"        if ({units_name} > {unit}) begin",
+            f"            max_size_{unit}_i = 0;",
+        ])
+        for sample in range(3):
+            residual = residual_ports[unit * 3 + sample]
+            lines.extend([
+                f"            residual_{unit}_i = $signed({residual});",
+                f"            req_size_{unit}_i = residual_size_i(residual_{unit}_i);",
+                f"            sample_hpos_i = {hpos_name} + {sample} - ({pixels_name} - 1) + {start_ports[unit]};",
+                f"            if ((sample_hpos_i < {slice_name}) && (req_size_{unit}_i > max_size_{unit}_i)) max_size_{unit}_i = req_size_{unit}_i;",
+            ])
+        lines.extend(qlevel_lines("qlevel_new_i", ctype_ports[unit], qlevel_names["luma_primary"], qlevel_names["chroma_primary"]))
+        lines.extend([
+            f"            bit_depth_i = depth_for_i({ctype_ports[unit]});",
+            "            max_residual_size_i = bit_depth_i - qlevel_new_i;",
+            "            if (max_size_" + str(unit) + "_i > max_residual_size_i) max_size_" + str(unit) + "_i = max_residual_size_i;",
+        ])
+        lines.extend(qlevel_lines("qlevel_old_i", ctype_ports[unit], qlevel_names["luma_previous"], qlevel_names["chroma_previous"]))
+        lines.extend([
+            f"            pred_size_i = {predicted_ports[unit]} + qlevel_old_i - qlevel_new_i;",
+            "            if (pred_size_i < 0) pred_size_i = 0;",
+            "            else if (pred_size_i > (max_residual_size_i - 1)) pred_size_i = max_residual_size_i - 1;",
+            f"            if (max_size_{unit}_i < pred_size_i)",
+            f"                total_size_i = total_size_i + 1 + 3 * pred_size_i;",
+            f"            else if ((max_size_{unit}_i == max_residual_size_i) && ({unit} != 0))",
+            f"                total_size_i = total_size_i + (max_size_{unit}_i - pred_size_i) + 3 * max_size_{unit}_i;",
+            "            else",
+            f"                total_size_i = total_size_i + 1 + (max_size_{unit}_i - pred_size_i) + 3 * max_size_{unit}_i;",
+            "        end",
+        ])
+
+    lines.extend([
+        f"        qlevel_new_i = {qlevel_names['luma_primary']};",
+        f"        max_residual_size_i = {depth_ports[0]} - qlevel_new_i;",
+        f"        if ((max_size_0_i < max_residual_size_i) && ({prev_ich_name} != 0)) total_size_i = total_size_i + 1;",
+        "        bits_p_mode_i = total_size_i;",
+    ])
+    for unit in range(4):
+        lines.extend([
+            f"        if ({units_name} > {unit}) begin",
+            f"            log_err_p_mode_i = log_err_p_mode_i + ceil_log2_i(max_p_error_{unit}_i);",
+            f"            log_err_ich_mode_i = log_err_ich_mode_i + ceil_log2_i({max_ich_error_ports[unit]});",
+            f"            if (({version_name} == 1) && ({unit} == 0)) begin",
+            "                log_err_p_mode_i = log_err_p_mode_i + ceil_log2_i(max_p_error_" + str(unit) + "_i);",
+            "                log_err_ich_mode_i = log_err_ich_mode_i + ceil_log2_i(" + max_ich_error_ports[unit] + ");",
+            "            end",
+            "        end",
+        ])
+    lines.extend([
+        "        p_mode_cost_i = bits_p_mode_i + 4 * log_err_p_mode_i;",
+        "        ich_mode_cost_i = bits_ich_mode_i + 4 * log_err_ich_mode_i;",
+        f"        first_somewhat_i = 1;",
+        f"        first_very_i = 1;",
+        f"        second_somewhat_i = 1;",
+        f"        second_very_i = 1;",
+    ])
+    lines.extend(qlevel_lines("qlevel_flat_i", "0", qlevel_names["luma_flat"], qlevel_names["chroma_flat"]))
+    for component in range(4):
+        lines.extend([
+            f"        qlevel_flat_i = qlevel_for_i({component}, {qlevel_names['luma_flat']}, {qlevel_names['chroma_flat']});",
+            f"        if ({num_components_name} > {component}) begin",
+            f"            if (spread4_i({component}) > max_i({flatness_name}, quant_divisor_i(qlevel_flat_i))) first_somewhat_i = 0;",
+            f"            if (spread4_i({component}) > {flatness_name}) first_very_i = 0;",
+            f"            if (spread6_i({component}) > max_i({flatness_name}, quant_divisor_i(qlevel_flat_i))) second_somewhat_i = 0;",
+            f"            if (spread6_i({component}) > {flatness_name}) second_very_i = 0;",
+            "        end",
+        ])
+    lines.extend([
+        f"        flat_index_i = 0;",
+        f"        if ({hpos_name} + 1 < {slice_name}) begin",
+        "            if (first_very_i != 0) flat_index_i = 2;",
+        "            else if (first_somewhat_i != 0) flat_index_i = 1;",
+        f"            else if ({hpos_name} + 2 < {slice_name}) begin",
+        "                if (second_very_i != 0) flat_index_i = 2;",
+        "                else if (second_somewhat_i != 0) flat_index_i = 1;",
+        "            end",
+        "        end",
+        f"        if ({version_name} == 2) begin",
+        "            if (flat_index_i == 2) return_value = ((log_err_ich_mode_i <= log_err_p_mode_i) && (ich_mode_cost_i < p_mode_cost_i)) ? 1 : 0;",
+        "            else return_value = (ich_mode_cost_i < p_mode_cost_i) ? 1 : 0;",
+        "        end else return_value = ((log_err_ich_mode_i <= log_err_p_mode_i) && (ich_mode_cost_i < p_mode_cost_i)) ? 1 : 0;",
+    ])
+    if bad:
+        lines.append(f"        {output} = {output} + 1;")
+    lines.append("    end")
+    return "\n".join(lines)
+
+
+def windowed_sample_predict_body(
+    interface: dict[str, object], semantics: dict[str, object], bad: bool
+) -> str:
+    """Emit the deterministic fixture candidate for a flattened sample window.
+
+    The production path supplies the same frozen interface to an external
+    generator.  This fixture keeps CI executable offline while implementing
+    the reviewed DSC MMAP/left/block equations rather than replaying a stored
+    candidate.
+    """
+    ports = interface.get("ports", [])
+    names = {str(port.get("name")): str(port.get("name")) for port in ports if isinstance(port, dict)}
+    required = [
+        "hPos", "predType", "qLevel", "unit", "unit_c_type", "cpnt_bit_depth",
+        "quantized_residual_0", "quantized_residual_1", "return_value",
+    ]
+    missing = [name for name in required if name not in names]
+    if missing:
+        raise ValueError("windowed sample-predict fixture is missing ports: " + ", ".join(missing))
+
+    window = semantics.get("window_spec", {}) if isinstance(semantics, dict) else {}
+    if not isinstance(window, dict):
+        window = {}
+    samples_per_unit = int(window.get("samples_per_unit", 3))
+    padding_left = int(window.get("padding_left", 5))
+    group_h_offsets = [int(value) for value in window.get("group_h_offsets", [])]
+    if not group_h_offsets:
+        group_count = int(window.get("group_count", 1))
+        group_h_offsets = [padding_left + index * samples_per_unit for index in range(group_count)]
+    prev_indices = [int(value) for value in window.get("prev_tap_indices", [])]
+    curr_indices = [int(value) for value in window.get("curr_tap_indices", [])]
+    if not prev_indices:
+        prev_indices = list(range(group_h_offsets[0] - 2, group_h_offsets[0] + 4))
+    if not curr_indices:
+        curr_indices = list(range(0, group_h_offsets[-1] + samples_per_unit + 2))
+    prev_names = {index: f"prev_{index}" for index in prev_indices}
+    curr_names = {index: f"curr_{index}" for index in curr_indices}
+    required_taps = set(prev_names.values()) | set(curr_names.values())
+    missing_taps = sorted(required_taps - set(names))
+    if missing_taps:
+        raise ValueError("windowed sample-predict fixture is missing tap ports: " + ", ".join(missing_taps))
+
+    for h_offset in group_h_offsets:
+        needed_prev = {h_offset - 2, h_offset - 1, h_offset, h_offset + 1, h_offset + 2, h_offset + 3}
+        needed_curr = {h_offset - 1}
+        if not needed_prev.issubset(prev_indices) or not needed_curr.issubset(curr_indices):
+            raise ValueError("windowed sample-predict fixture has an incomplete static group window")
+    block_max_hpos = (len(group_h_offsets) * samples_per_unit) - 1
+    block_indices = {
+        max(block_max_hpos + padding_left - 1 - offset, 0)
+        for offset in range(int(window.get("bp_range", 13)))
+    }
+    if not block_indices.issubset(curr_indices):
+        raise ValueError("windowed sample-predict fixture has an incomplete block-prediction window")
+
+    def port(name: str) -> str:
+        if name not in names:
+            raise ValueError("windowed sample-predict fixture is missing port: " + name)
+        return name
+
+    group_lines: list[str] = [f"        case (hPos / {samples_per_unit})"]
+    for group_index, h_offset in enumerate(group_h_offsets):
+        a_index = h_offset - 1
+        c_index = h_offset - 1
+        b_index = h_offset
+        d_index = h_offset + 1
+        e_index = h_offset + 2
+        filt_c = (h_offset - 2, h_offset - 1, h_offset)
+        filt_b = (h_offset - 1, h_offset, h_offset + 1)
+        filt_d = (h_offset, h_offset + 1, h_offset + 2)
+        filt_e = (h_offset + 1, h_offset + 2, h_offset + 3)
+        group_lines.extend([
+            f"            {group_index}: begin",
+            f"                a_i = {port(curr_names[a_index])};",
+            f"                b_i = {port(prev_names[b_index])};",
+            f"                c_i = {port(prev_names[c_index])};",
+            f"                d_i = {port(prev_names[d_index])};",
+            f"                e_i = {port(prev_names[e_index])};",
+            f"                filt_c_i = ({port(prev_names[filt_c[0]])} + (2 * {port(prev_names[filt_c[1]])}) + {port(prev_names[filt_c[2]])} + 2) >>> 2;",
+            f"                filt_b_i = ({port(prev_names[filt_b[0]])} + (2 * {port(prev_names[filt_b[1]])}) + {port(prev_names[filt_b[2]])} + 2) >>> 2;",
+            f"                filt_d_i = ({port(prev_names[filt_d[0]])} + (2 * {port(prev_names[filt_d[1]])}) + {port(prev_names[filt_d[2]])} + 2) >>> 2;",
+            f"                filt_e_i = ({port(prev_names[filt_e[0]])} + (2 * {port(prev_names[filt_e[1]])}) + {port(prev_names[filt_e[2]])} + 2) >>> 2;",
+            "            end",
+        ])
+    first_h_offset = group_h_offsets[0]
+    group_lines.extend([
+        "            default: begin",
+        f"                a_i = {port(curr_names[first_h_offset - 1])};",
+        f"                b_i = {port(prev_names[first_h_offset])};",
+        f"                c_i = {port(prev_names[first_h_offset - 1])};",
+        f"                d_i = {port(prev_names[first_h_offset + 1])};",
+        f"                e_i = {port(prev_names[first_h_offset + 2])};",
+        f"                filt_c_i = ({port(prev_names[first_h_offset - 2])} + (2 * {port(prev_names[first_h_offset - 1])}) + {port(prev_names[first_h_offset])} + 2) >>> 2;",
+        f"                filt_b_i = ({port(prev_names[first_h_offset - 1])} + (2 * {port(prev_names[first_h_offset])}) + {port(prev_names[first_h_offset + 1])} + 2) >>> 2;",
+        f"                filt_d_i = ({port(prev_names[first_h_offset])} + (2 * {port(prev_names[first_h_offset + 1])}) + {port(prev_names[first_h_offset + 2])} + 2) >>> 2;",
+        f"                filt_e_i = ({port(prev_names[first_h_offset + 1])} + (2 * {port(prev_names[first_h_offset + 2])}) + {port(prev_names[first_h_offset + 3])} + 2) >>> 2;",
+        "            end",
+        "        endcase",
+    ])
+
+    block_lines: list[str] = ["        case (bp_index_i)"]
+    for index in sorted(curr_indices):
+        block_lines.append(f"            {index}: block_value_i = {port(curr_names[index])};")
+    block_lines.extend(["            default: block_value_i = 0;", "        endcase"])
+
+    lines = [
+        "    integer signed a_i;",
+        "    integer signed b_i;",
+        "    integer signed c_i;",
+        "    integer signed d_i;",
+        "    integer signed e_i;",
+        "    integer signed filt_c_i;",
+        "    integer signed filt_b_i;",
+        "    integer signed filt_d_i;",
+        "    integer signed filt_e_i;",
+        "    integer signed blend_b_i;",
+        "    integer signed blend_c_i;",
+        "    integer signed blend_d_i;",
+        "    integer signed blend_e_i;",
+        "    integer signed diff_i;",
+        "    integer signed qdiv_i;",
+        "    integer signed qhalf_i;",
+        "    integer signed cpnt_max_i;",
+        "    integer signed bp_index_i;",
+        "    integer signed result_i;",
+        "    integer signed qr0_i;",
+        "    integer signed qr1_i;",
+        "    integer signed block_value_i;",
+        "    function automatic integer clamp_i;",
+        "        input integer value;",
+        "        input integer lower;",
+        "        input integer upper;",
+        "        begin",
+        "            if (value < lower) clamp_i = lower;",
+        "            else if (value > upper) clamp_i = upper;",
+        "            else clamp_i = value;",
+        "        end",
+        "    endfunction",
+        "    function automatic integer min_i;",
+        "        input integer left;",
+        "        input integer right;",
+        "        begin min_i = (left < right) ? left : right; end",
+        "    endfunction",
+        "    function automatic integer max_i;",
+        "        input integer left;",
+        "        input integer right;",
+        "        begin max_i = (left > right) ? left : right; end",
+        "    endfunction",
+        "    always_comb begin",
+        *group_lines,
+        "        qdiv_i = 1 <<< qLevel;",
+        "        qhalf_i = qdiv_i / 2;",
+        "        cpnt_max_i = (1 <<< cpnt_bit_depth) - 1;",
+        "        qr0_i = $signed(quantized_residual_0);",
+        "        qr1_i = $signed(quantized_residual_1);",
+        "        diff_i = 0;",
+        "        blend_b_i = b_i;",
+        "        blend_c_i = c_i;",
+        "        blend_d_i = d_i;",
+        "        blend_e_i = e_i;",
+        "        result_i = 0;",
+        "        block_value_i = 0;",
+        f"        bp_index_i = hPos + {padding_left - 1} - (predType - 2);",
+        "        if (bp_index_i < 0) bp_index_i = 0;",
+        *block_lines,
+        "        diff_i = clamp_i(filt_c_i - c_i, -qhalf_i, qhalf_i);",
+        "        blend_c_i = c_i + diff_i;",
+        "        diff_i = clamp_i(filt_b_i - b_i, -qhalf_i, qhalf_i);",
+        "        blend_b_i = b_i + diff_i;",
+        "        diff_i = clamp_i(filt_d_i - d_i, -qhalf_i, qhalf_i);",
+        "        blend_d_i = d_i + diff_i;",
+        "        diff_i = clamp_i(filt_e_i - e_i, -qhalf_i, qhalf_i);",
+        "        blend_e_i = e_i + diff_i;",
+        f"        if ((hPos / {samples_per_unit}) == 0) blend_c_i = a_i;",
+        "        if (predType == 0) begin",
+        f"            if ((hPos % {samples_per_unit}) == 0)",
+        "                result_i = clamp_i(a_i + blend_b_i - blend_c_i, min_i(a_i, blend_b_i), max_i(a_i, blend_b_i));",
+        f"            else if ((hPos % {samples_per_unit}) == 1)",
+        "                result_i = clamp_i(a_i + blend_d_i - blend_c_i + (qr0_i * qdiv_i), min_i(a_i, min_i(blend_b_i, blend_d_i)), max_i(a_i, max_i(blend_b_i, blend_d_i)));",
+        "            else",
+        "                result_i = clamp_i(a_i + blend_e_i - blend_c_i + ((qr0_i + qr1_i) * qdiv_i), min_i(a_i, min_i(blend_b_i, min_i(blend_d_i, blend_e_i))), max_i(a_i, max_i(blend_b_i, max_i(blend_d_i, blend_e_i))));",
+        "        end else if (predType == 1) begin",
+        f"            if ((hPos % {samples_per_unit}) == 0) result_i = a_i;",
+        f"            else if ((hPos % {samples_per_unit}) == 1) result_i = clamp_i(a_i + (qr0_i * qdiv_i), 0, cpnt_max_i);",
+        "            else result_i = clamp_i(a_i + ((qr0_i + qr1_i) * qdiv_i), 0, cpnt_max_i);",
+        "        end else begin",
+        "            result_i = block_value_i;",
+        "        end",
+        "        return_value = result_i;",
+    ]
+    if bad:
+        lines.append("        return_value = return_value + 1;")
+    lines.append("    end")
+    return "\n".join(lines)
+
+
+def dynamic_window_sample_predict_body(
+    interface: dict[str, object], semantics: dict[str, object], bad: bool
+) -> str:
+    """Emit a production-domain candidate with a relative line-buffer window.
+
+    The C overlay supplies the six previous-line MMAP taps and a thirteen
+    sample current-line window for the current hPos.  The line-buffer storage
+    remains outside the DUT; the RTL only evaluates the spec-defined
+    predictor over that read-only window.
+    """
+    ports = interface.get("ports", [])
+    names = {
+        str(port.get("name")): str(port.get("name"))
+        for port in ports
+        if isinstance(port, dict)
+    }
+    strategy = semantics.get("legal_vector_strategy", {})
+    window = semantics.get("window_spec", {})
+    dynamic = window.get("dynamic_line_window", {}) if isinstance(window, dict) else {}
+    if not isinstance(strategy, dict) or not isinstance(dynamic, dict):
+        raise ValueError("dynamic sample-predict fixture is missing reviewed strategy metadata")
+
+    hpos_name = str(strategy.get("hpos_port", "hPos"))
+    pred_name = str(strategy.get("pred_type_port", "predType"))
+    qlevel_name = str(strategy.get("qlevel_port", "qLevel"))
+    bit_depth_name = str(strategy.get("bit_depth_port", "cpnt_bit_depth"))
+    residual_ports = [str(value) for value in strategy.get("residual_ports", [])]
+    prev_ports = [str(value) for value in dynamic.get("prev_window_ports", [])]
+    curr_ports = [str(value) for value in dynamic.get("curr_window_ports", [])]
+    if len(prev_ports) != 6:
+        raise ValueError("dynamic sample-predict fixture requires six previous-line window ports")
+    if len(curr_ports) != 13:
+        raise ValueError("dynamic sample-predict fixture requires thirteen current-line window ports")
+    required = [
+        hpos_name,
+        pred_name,
+        qlevel_name,
+        bit_depth_name,
+        *residual_ports,
+        *prev_ports,
+        *curr_ports,
+        "return_value",
+    ]
+    missing = [name for name in required if name not in names]
+    if missing:
+        raise ValueError("dynamic sample-predict fixture is missing ports: " + ", ".join(missing))
+
+    samples_per_unit = int(dynamic.get("samples_per_unit", 3))
+    padding_left = int(dynamic.get("padding_left", 5))
+    current_window_left = int(dynamic.get("current_window_left", 8))
+
+    lines = [
+        "    integer signed a_i;",
+        "    integer signed b_i;",
+        "    integer signed c_i;",
+        "    integer signed d_i;",
+        "    integer signed e_i;",
+        "    integer signed filt_c_i;",
+        "    integer signed filt_b_i;",
+        "    integer signed filt_d_i;",
+        "    integer signed filt_e_i;",
+        "    integer signed blend_b_i;",
+        "    integer signed blend_c_i;",
+        "    integer signed blend_d_i;",
+        "    integer signed blend_e_i;",
+        "    integer signed diff_i;",
+        "    integer signed qdiv_i;",
+        "    integer signed qhalf_i;",
+        "    integer signed cpnt_max_i;",
+        "    integer signed window_start_i;",
+        "    integer signed group_a_index_i;",
+        "    integer signed block_global_index_i;",
+        "    integer signed block_window_index_i;",
+        "    integer signed result_i;",
+        "    integer signed qr0_i;",
+        "    integer signed qr1_i;",
+        "    integer signed block_value_i;",
+        "    function automatic integer current_at_i;",
+        "        input integer index;",
+        "        begin",
+        "            case (index)",
+    ]
+    for index, port_name in enumerate(curr_ports):
+        lines.append(f"                {index}: current_at_i = {port_name};")
+    lines.extend([
+        "                default: current_at_i = 0;",
+        "            endcase",
+        "        end",
+        "    endfunction",
+        "    function automatic integer clamp_i;",
+        "        input integer value;",
+        "        input integer lower;",
+        "        input integer upper;",
+        "        begin",
+        "            if (value < lower) clamp_i = lower;",
+        "            else if (value > upper) clamp_i = upper;",
+        "            else clamp_i = value;",
+        "        end",
+        "    endfunction",
+        "    function automatic integer min_i;",
+        "        input integer left;",
+        "        input integer right;",
+        "        begin min_i = (left < right) ? left : right; end",
+        "    endfunction",
+        "    function automatic integer max_i;",
+        "        input integer left;",
+        "        input integer right;",
+        "        begin max_i = (left > right) ? left : right; end",
+        "    endfunction",
+        "    always_comb begin",
+        f"        window_start_i = ({hpos_name} > {current_window_left}) ? ({hpos_name} - {current_window_left}) : 0;",
+        f"        group_a_index_i = (({hpos_name} / {samples_per_unit}) * {samples_per_unit}) + {padding_left} - 1 - window_start_i;",
+        "        a_i = current_at_i(group_a_index_i);",
+        f"        b_i = {prev_ports[2]};",
+        f"        c_i = {prev_ports[1]};",
+        f"        d_i = {prev_ports[3]};",
+        f"        e_i = {prev_ports[4]};",
+        f"        filt_c_i = ({prev_ports[0]} + (2 * {prev_ports[1]}) + {prev_ports[2]} + 2) >>> 2;",
+        f"        filt_b_i = ({prev_ports[1]} + (2 * {prev_ports[2]}) + {prev_ports[3]} + 2) >>> 2;",
+        f"        filt_d_i = ({prev_ports[2]} + (2 * {prev_ports[3]}) + {prev_ports[4]} + 2) >>> 2;",
+        f"        filt_e_i = ({prev_ports[3]} + (2 * {prev_ports[4]}) + {prev_ports[5]} + 2) >>> 2;",
+        f"        block_global_index_i = {hpos_name} + {padding_left} - 1 - ({pred_name} - 2);",
+        "        if (block_global_index_i < 0) block_global_index_i = 0;",
+        "        block_window_index_i = block_global_index_i - window_start_i;",
+        "        block_value_i = current_at_i(block_window_index_i);",
+        f"        qdiv_i = 1 <<< {qlevel_name};",
+        "        qhalf_i = qdiv_i / 2;",
+        f"        cpnt_max_i = (1 <<< {bit_depth_name}) - 1;",
+        f"        qr0_i = $signed({residual_ports[0]});",
+        f"        qr1_i = $signed({residual_ports[1]});",
+        "        diff_i = 0;",
+        "        blend_b_i = b_i;",
+        "        blend_c_i = c_i;",
+        "        blend_d_i = d_i;",
+        "        blend_e_i = e_i;",
+        "        result_i = 0;",
+        f"        diff_i = clamp_i(filt_c_i - c_i, -qhalf_i, qhalf_i);",
+        "        blend_c_i = c_i + diff_i;",
+        f"        diff_i = clamp_i(filt_b_i - b_i, -qhalf_i, qhalf_i);",
+        "        blend_b_i = b_i + diff_i;",
+        f"        diff_i = clamp_i(filt_d_i - d_i, -qhalf_i, qhalf_i);",
+        "        blend_d_i = d_i + diff_i;",
+        f"        diff_i = clamp_i(filt_e_i - e_i, -qhalf_i, qhalf_i);",
+        "        blend_e_i = e_i + diff_i;",
+        f"        if (({hpos_name} / {samples_per_unit}) == 0) blend_c_i = a_i;",
+        f"        if ({pred_name} == 0) begin",
+        f"            if (({hpos_name} % {samples_per_unit}) == 0)",
+        "                result_i = clamp_i(a_i + blend_b_i - blend_c_i, min_i(a_i, blend_b_i), max_i(a_i, blend_b_i));",
+        f"            else if (({hpos_name} % {samples_per_unit}) == 1)",
+        "                result_i = clamp_i(a_i + blend_d_i - blend_c_i + (qr0_i * qdiv_i), min_i(a_i, min_i(blend_b_i, blend_d_i)), max_i(a_i, max_i(blend_b_i, blend_d_i)));",
+        "            else",
+        "                result_i = clamp_i(a_i + blend_e_i - blend_c_i + ((qr0_i + qr1_i) * qdiv_i), min_i(a_i, min_i(blend_b_i, min_i(blend_d_i, blend_e_i))), max_i(a_i, max_i(blend_b_i, max_i(blend_d_i, blend_e_i))));",
+        f"        end else if ({pred_name} == 1) begin",
+        f"            if (({hpos_name} % {samples_per_unit}) == 0) result_i = a_i;",
+        f"            else if (({hpos_name} % {samples_per_unit}) == 1) result_i = clamp_i(a_i + (qr0_i * qdiv_i), 0, cpnt_max_i);",
+        "            else result_i = clamp_i(a_i + ((qr0_i + qr1_i) * qdiv_i), 0, cpnt_max_i);",
+        "        end else begin",
+        "            result_i = block_value_i;",
+        "        end",
+        "        return_value = result_i;",
+    ])
+    if bad:
+        lines.append("        return_value = return_value + 1;")
+    lines.append("    end")
+    return "\n".join(lines)
+
+
+def flatness_window_body(
+    interface: dict[str, object], semantics: dict[str, object], bad: bool
+) -> str:
+    """Emit a spec-driven flatness decision over a frozen original-pixel window.
+
+    The C helper receives a state record because the model owns the original
+    line storage and the qLevel tables.  The library boundary exposes only the
+    fields and taps that the reviewed contract names.  All loops in the C body
+    are unrolled here through fixed-size helper functions: four components and
+    the normative four/six-sample flatness windows.
+    """
+    ports = {
+        str(port.get("name")): port
+        for port in interface.get("ports", [])
+        if isinstance(port, dict)
+    }
+    strategy = semantics.get("legal_vector_strategy", {}) if isinstance(semantics, dict) else {}
+    window = semantics.get("window_spec", {}) if isinstance(semantics, dict) else {}
+    bindings = semantics.get("bindings", {}) if isinstance(semantics, dict) else {}
+    if not isinstance(strategy, dict):
+        strategy = {}
+    if not isinstance(window, dict):
+        window = {}
+    if not isinstance(bindings, dict):
+        bindings = {}
+
+    def unsigned_integer(name: str) -> str:
+        """Zero-extend a frozen unsigned port before passing it to integer helpers."""
+        width = int(ports[name].get("width", 1))
+        if width >= 32:
+            return name
+        return f"{{{32 - width}'b0, {name}}}"
+
+    def require(name: str) -> str:
+        value = str(name)
+        if value not in ports:
+            raise ValueError("flatness fixture is missing port: " + value)
+        return value
+
+    hpos_name = require(bindings.get("hpos_port", strategy.get("hpos_port", "hPos")))
+    bpc_name = require(bindings.get("bits_per_component_port", "bits_per_component"))
+    primary_qp_name = require(bindings.get("primary_qp_port", "primary_qp"))
+    num_components_name = require(bindings.get("num_components_port", "num_components"))
+    slice_width_name = require(bindings.get("slice_width_port", "slice_width"))
+    flatness_thresh_name = require(bindings.get("flatness_det_thresh_port", "flatness_det_thresh"))
+    flatness_delta_name = require(bindings.get("somewhat_flat_qp_delta_port", "somewhat_flat_qp_delta"))
+    native420_name = require(bindings.get("native_420_port", "native_420"))
+    version_name = require(bindings.get("dsc_version_minor_port", "dsc_version_minor"))
+    cpnt0_name = require(bindings.get("cpnt_bit_depth_0_port", "cpnt_bit_depth_0"))
+    cpnt1_name = require(bindings.get("cpnt_bit_depth_1_port", "cpnt_bit_depth_1"))
+    out_name = require("return_value")
+
+    sample_ports_by_component = window.get("sample_ports_by_component", {})
+    if not isinstance(sample_ports_by_component, dict):
+        raise ValueError("flatness fixture is missing sample_ports_by_component")
+    sample_names: dict[int, list[str]] = {}
+    for raw_component in range(4):
+        raw_ports = sample_ports_by_component.get(str(raw_component), sample_ports_by_component.get(raw_component, []))
+        values = [require(value) for value in raw_ports]
+        if len(values) != 7:
+            raise ValueError("flatness fixture requires seven taps per component")
+        sample_names[raw_component] = values
+
+    tables = semantics.get("tables", {}) if isinstance(semantics, dict) else {}
+    luma_tables = tables.get("luma", {}) if isinstance(tables, dict) else {}
+    chroma_tables = tables.get("chroma", {}) if isinstance(tables, dict) else {}
+
+    def table_function(name: str, table: object) -> list[str]:
+        lines = [
+            f"    function automatic integer {name};",
+            "        input integer bit_depth;",
+            "        input integer qp;",
+            "        begin",
+            f"            {name} = 0;",
+            "            case (bit_depth)",
+        ]
+        if isinstance(table, dict):
+            for raw_bpc, raw_values in sorted(table.items(), key=lambda item: int(item[0])):
+                values = [int(value) for value in raw_values]
+                lines.extend([
+                    f"                {int(raw_bpc)}: begin",
+                    "                    case (qp)",
+                ])
+                for index, value in enumerate(values):
+                    lines.append(f"                        {index}: {name} = {value};")
+                lines.extend([
+                    f"                        default: {name} = 0;",
+                    "                    endcase",
+                    "                end",
+                ])
+        lines.extend([
+            f"                default: {name} = 0;",
+            "            endcase",
+            "        end",
+            "    endfunction",
+        ])
+        return lines
+
+    def sample_function() -> list[str]:
+        lines = [
+            "    function automatic integer sample_i;",
+            "        input integer component;",
+            "        input integer offset;",
+            "        begin",
+            "            sample_i = 0;",
+            "            case (component)",
+        ]
+        for component in range(4):
+            lines.extend([
+                f"                {component}: begin",
+                "                    case (offset)",
+            ])
+            for offset, port in enumerate(sample_names[component]):
+                lines.append(f"                        {offset}: sample_i = {unsigned_integer(port)};")
+            lines.extend([
+                "                        default: sample_i = 0;",
+                "                    endcase",
+                "                end",
+            ])
+        lines.extend([
+            "                default: sample_i = 0;",
+            "            endcase",
+            "        end",
+            "    endfunction",
+        ])
+        return lines
+
+    def spread_function(name: str, offsets: list[int]) -> list[str]:
+        values = [f"sample_i(component, {offset})" for offset in offsets]
+        maximum = values[0]
+        minimum = values[0]
+        for value in values[1:]:
+            maximum = f"max_i({maximum}, {value})"
+            minimum = f"min_i({minimum}, {value})"
+        return [
+            f"    function automatic integer {name};",
+            "        input integer component;",
+            "        begin",
+            f"            {name} = {maximum} - {minimum};",
+            "        end",
+            "    endfunction",
+        ]
+
+    lines = [
+        "    function automatic integer min_i;",
+        "        input integer left;",
+        "        input integer right;",
+        "        begin min_i = (left < right) ? left : right; end",
+        "    endfunction",
+        "    function automatic integer max_i;",
+        "        input integer left;",
+        "        input integer right;",
+        "        begin max_i = (left > right) ? left : right; end",
+        "    endfunction",
+        "    function automatic integer quant_divisor_i;",
+        "        input integer qlevel;",
+        "        begin",
+        "            quant_divisor_i = 1;",
+        "            case (qlevel)",
+    ]
+    for qlevel in range(17):
+        lines.append(f"                {qlevel}: quant_divisor_i = {1 << qlevel};")
+    lines.extend([
+        "                default: quant_divisor_i = 1;",
+        "            endcase",
+        "        end",
+        "    endfunction",
+    ])
+    lines.extend(table_function("luma_qlevel_i", luma_tables))
+    lines.extend(table_function("chroma_qlevel_i", chroma_tables))
+    lines.extend(sample_function())
+    lines.extend(spread_function("spread4_i", [0, 1, 2, 3]))
+    lines.extend(spread_function("spread6_i", [1, 2, 3, 4, 5, 6]))
+    lines.extend([
+        "    function automatic integer qlevel_i;",
+        "        input integer component;",
+        "        integer adjusted_qp;",
+        "        begin",
+        f"            adjusted_qp = {unsigned_integer(primary_qp_name)} - {unsigned_integer(flatness_delta_name)};",
+        "            if (adjusted_qp < 0) adjusted_qp = 0;",
+        f"            if ((component % 3) == 0) qlevel_i = luma_qlevel_i({unsigned_integer(bpc_name)}, adjusted_qp);",
+        f"            else if (({native420_name} != 0) && (component == 1)) qlevel_i = luma_qlevel_i({unsigned_integer(bpc_name)}, adjusted_qp);",
+        f"            else begin qlevel_i = chroma_qlevel_i({unsigned_integer(bpc_name)}, adjusted_qp);",
+        f"                if (({version_name} == 2) && ({cpnt0_name} == {cpnt1_name}) && (qlevel_i > 0)) qlevel_i = qlevel_i - 1;",
+        "            end",
+        "        end",
+        "    endfunction",
+        "    function automatic bit somewhat_flat4_i;",
+        "        input integer component;",
+        "        begin",
+        f"            somewhat_flat4_i = spread4_i(component) <= max_i({unsigned_integer(flatness_thresh_name)}, quant_divisor_i(qlevel_i(component)));",
+        "        end",
+        "    endfunction",
+        "    function automatic bit very_flat4_i;",
+        "        input integer component;",
+        "        begin",
+        f"            very_flat4_i = spread4_i(component) <= {unsigned_integer(flatness_thresh_name)};",
+        "        end",
+        "    endfunction",
+        "    function automatic bit somewhat_flat6_i;",
+        "        input integer component;",
+        "        begin",
+        f"            somewhat_flat6_i = spread6_i(component) <= max_i({unsigned_integer(flatness_thresh_name)}, quant_divisor_i(qlevel_i(component)));",
+        "        end",
+        "    endfunction",
+        "    function automatic bit very_flat6_i;",
+        "        input integer component;",
+        "        begin",
+        f"            very_flat6_i = spread6_i(component) <= {unsigned_integer(flatness_thresh_name)};",
+        "        end",
+        "    endfunction",
+        "    integer first_somewhat_i;",
+        "    integer first_very_i;",
+        "    integer second_somewhat_i;",
+        "    integer second_very_i;",
+        "    always_comb begin",
+        "        first_somewhat_i = 1;",
+        "        first_very_i = 1;",
+        "        second_somewhat_i = 1;",
+        "        second_very_i = 1;",
+    ])
+    for component in range(4):
+        lines.extend([
+            f"        if ({num_components_name} > {component}) begin",
+            f"            if (somewhat_flat4_i({component}) == 0) first_somewhat_i = 0;",
+            f"            if (very_flat4_i({component}) == 0) first_very_i = 0;",
+            f"            if (somewhat_flat6_i({component}) == 0) second_somewhat_i = 0;",
+            f"            if (very_flat6_i({component}) == 0) second_very_i = 0;",
+            "        end",
+        ])
+    lines.extend([
+        f"        {out_name} = 0;",
+        f"        if ({hpos_name} + 1 < {slice_width_name}) begin",
+        f"            if (first_very_i != 0) {out_name} = 2;",
+        f"            else if (first_somewhat_i != 0) {out_name} = 1;",
+        f"            else if ({hpos_name} + 2 < {slice_width_name}) begin",
+        f"                if (second_very_i != 0) {out_name} = 2;",
+        f"                else if (second_somewhat_i != 0) {out_name} = 1;",
+        "            end",
+        "        end",
+    ])
+    if bad:
+        lines.append(f"        {out_name} = {out_name} + 1;")
+    lines.extend(["    end"])
+    return "\n".join(lines)
+
+
 def generic_body(interface: dict[str, object], semantics: dict[str, object], bad: bool) -> str:
     ports = interface.get("ports", [])
     out = next((p for p in ports if isinstance(p, dict) and p.get("role") == "return_value"), None)
     out_name = str(out.get("name", "return_value")) if isinstance(out, dict) else "return_value"
-    expression = str(semantics.get("verilog_expression", "0"))
+    expression = str(semantics.get("verilog_expression") or semantics.get("expression") or "0")
+    identifiers = {}
+    for port in ports:
+        if not isinstance(port, dict) or port.get("direction") != "input":
+            continue
+        name = str(port.get("name"))
+        identifiers[normalized_identifier(name)] = name
+        if port.get("role"):
+            identifiers[normalized_identifier(port.get("role"))] = name
+
+    def replace_identifier(match: re.Match[str]) -> str:
+        token = match.group(0)
+        return identifiers.get(normalized_identifier(token), token)
+
+    # Semantic expressions are authored in a C-style vocabulary (for example
+    # left_recon/cpnt_bit_depth). Rewrite only identifiers that are present in
+    # the frozen interface; operators and literals remain untouched.
+    expression = re.sub(r"[A-Za-z_][A-Za-z0-9_]*", replace_identifier, expression)
     value = f"({expression})"
+    if "$clog2" in expression:
+        output_width = int(out.get("width", 1)) if isinstance(out, dict) else 1
+        output_slice = f"expression_wide[{output_width - 1}:0]" if output_width > 1 else "expression_wide[0]"
+        assigned = f"{output_slice} + {output_width}'d1" if bad else output_slice
+        return "\n".join([
+            "    logic [31:0] expression_wide;",
+            f"    assign expression_wide = {value};",
+            f"    assign {out_name} = {assigned};",
+        ])
     if bad:
         value = f"({value}) + 1"
     return f"    assign {out_name} = {value};"
+
+
+def using_midpoint_body(
+    interface: dict[str, object], semantics: dict[str, object], bad: bool
+) -> str:
+    """Emit the DSC 6.4.4.2 midpoint-selection predicate from contract data."""
+    ports = {
+        str(port.get("name")): port
+        for port in interface.get("ports", [])
+        if isinstance(port, dict)
+    }
+
+    def require(name: str) -> str:
+        if name not in ports:
+            raise ValueError("using-midpoint fixture is missing port: " + name)
+        return name
+
+    strategy = semantics.get("legal_vector_strategy", {})
+    if not isinstance(strategy, dict):
+        raise ValueError("using-midpoint fixture is missing legal vector strategy")
+    cpnt_name = require(str(strategy.get("component_port", "cpnt")))
+    version_name = require(str(strategy.get("version_port", "dsc_version_minor")))
+    native_name = require(str(strategy.get("native_420_port", "native_420")))
+    selected_depth_name = require(str(strategy.get("selected_depth_port", "cpntBitDepth_selected")))
+    depth_ports = [require(str(value)) for value in strategy.get("component_depth_ports", [])]
+    if len(depth_ports) != 4:
+        raise ValueError("using-midpoint fixture requires four component depth ports")
+    residual_ports = [require(str(value)) for value in strategy.get("residual_ports", [])]
+    if len(residual_ports) != 3:
+        raise ValueError("using-midpoint fixture requires three residual ports")
+    table_bindings = strategy.get("table_bindings", {}) or {}
+    table_ports: dict[str, str] = {}
+    for port_name, binding in table_bindings.items():
+        table_kind = str((binding or {}).get("table", ""))
+        if table_kind in {"luma", "chroma"}:
+            table_ports[table_kind] = require(str(port_name))
+    if set(table_ports) != {"luma", "chroma"}:
+        raise ValueError("using-midpoint fixture requires luma and chroma table ports")
+    output = next(
+        (str(port.get("name")) for port in interface.get("ports", [])
+         if isinstance(port, dict) and port.get("direction") == "output"),
+        "return_value",
+    )
+    require(output)
+    thresholds = semantics.get("residual_size_thresholds") or semantics.get("thresholds") or []
+    if not thresholds:
+        raise ValueError("using-midpoint fixture is missing residual-size thresholds")
+
+    def signed_literal(value: int) -> str:
+        if int(value) < 0:
+            return f"32'sh{(int(value) & 0xffffffff):08x}"
+        return str(int(value))
+
+    lines = [
+        "    integer signed qlevel_i;",
+        "    integer signed residual_0_i;",
+        "    integer signed residual_1_i;",
+        "    integer signed residual_2_i;",
+        "    integer signed req_size_0_i;",
+        "    integer signed req_size_1_i;",
+        "    integer signed req_size_2_i;",
+        "    integer signed max_size_i;",
+        "    integer signed threshold_i;",
+    ]
+    lines.extend([
+        "    always_comb begin",
+        f"        if (({cpnt_name} % 3) == 0) begin",
+        f"            qlevel_i = {table_ports['luma']};",
+        f"        end else if (({native_name} != 0) && ({cpnt_name} == 1)) begin",
+        f"            qlevel_i = {table_ports['luma']};",
+        "        end else begin",
+        f"            qlevel_i = {table_ports['chroma']};",
+        f"            if (({version_name} == 2) && ({depth_ports[0]} == {depth_ports[1]}) && (qlevel_i > 0)) begin",
+        "                qlevel_i = qlevel_i - 1;",
+        "            end",
+        "        end",
+    ])
+    for index, port_name in enumerate(residual_ports):
+        lines.append(f"        residual_{index}_i = $signed({port_name});")
+        lines.append(f"        req_size_{index}_i = 0;")
+        first_threshold = True
+        for threshold in thresholds:
+            if not isinstance(threshold, dict):
+                continue
+            lower = int(threshold.get("lower", 0))
+            upper = int(threshold.get("upper", lower))
+            size = int(threshold.get("size", 0))
+            keyword = "if" if first_threshold else "else if"
+            condition = (
+                f"(residual_{index}_i == {signed_literal(lower)})"
+                if lower == upper
+                else f"((residual_{index}_i >= {signed_literal(lower)}) && (residual_{index}_i <= {signed_literal(upper)}))"
+            )
+            lines.append(f"        {keyword} {condition} req_size_{index}_i = {size};")
+            first_threshold = False
+    lines.extend([
+        "        max_size_i = req_size_0_i;",
+        "        if (req_size_1_i > max_size_i) max_size_i = req_size_1_i;",
+        "        if (req_size_2_i > max_size_i) max_size_i = req_size_2_i;",
+        f"        threshold_i = {selected_depth_name};",
+        "        threshold_i = threshold_i - qlevel_i;",
+        f"        {output} = (max_size_i >= threshold_i) ? 1 : 0;",
+    ])
+    if bad:
+        lines.append(f"        {output} = {output} + 1;")
+    lines.append("    end")
+    return "\n".join(lines)
 
 
 def render_candidate(contract: dict[str, object], interface: dict[str, object], bad: bool) -> str:
@@ -77,6 +1733,34 @@ def render_candidate(contract: dict[str, object], interface: dict[str, object], 
     kind = str(semantics.get("kind", "")) if isinstance(semantics, dict) else ""
     if kind == "quantization":
         body = quantization_body(interface, semantics, bad)
+    elif kind == "line_storage":
+        body = line_storage_body(interface, bad)
+    elif kind == "qp_mapping":
+        body = qp_mapping_body(interface, bad)
+    elif kind == "qp_table_lookup":
+        body = qp_table_lookup_body(interface, semantics, bad)
+    elif kind == "max_residual_size":
+        body = max_residual_size_body(interface, bad)
+    elif kind == "residual_size":
+        body = residual_size_body(interface, semantics, bad)
+    elif kind == "qp_adjusted_pred_size":
+        body = qp_adjusted_pred_size_body(interface, bad)
+    elif kind == "estimate_bits":
+        body = estimate_bits_body(interface, semantics, bad)
+    elif kind == "ich_decision":
+        body = ich_decision_body(interface, semantics, bad)
+    elif kind == "windowed_sample_predict" and (
+        isinstance(semantics, dict)
+        and isinstance(semantics.get("window_spec"), dict)
+        and semantics["window_spec"].get("dynamic_line_window")
+    ):
+        body = dynamic_window_sample_predict_body(interface, semantics, bad)
+    elif kind == "windowed_sample_predict":
+        body = windowed_sample_predict_body(interface, semantics, bad)
+    elif kind == "flatness_window":
+        body = flatness_window_body(interface, semantics, bad)
+    elif kind == "using_midpoint":
+        body = using_midpoint_body(interface, semantics, bad)
     else:
         body = generic_body(interface, semantics if isinstance(semantics, dict) else {}, bad)
     return "module " + module + " (\n" + declarations + "\n);\n" + body + "\nendmodule\n"

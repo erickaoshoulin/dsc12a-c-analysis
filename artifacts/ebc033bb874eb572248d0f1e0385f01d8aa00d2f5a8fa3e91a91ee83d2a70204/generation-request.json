@@ -1,0 +1,313 @@
+{
+  "c_body": "int ceil_log2(int val)\n{\n\tint ret = 0, x;\n\tx = val;\n\twhile(x) { ret++; x>>=1; }\n\treturn(ret);\n}",
+  "exact_spec_anchors": [
+    {
+      "anchor_id": "pdf:section:1.6.2",
+      "evidence": "The normative section contains the ceil_log2 definition verbatim in C-like syntax.",
+      "page": 22,
+      "section": "1.6.2",
+      "short_anchor": null,
+      "status": "EXACT"
+    }
+  ],
+  "frozen_interface": {
+    "inputs": [
+      {
+        "c_type": "int",
+        "legal_domain": {
+          "basis": "DSC 1.2a component sample/error maximum for the widest supported 16bpc path",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "logical_width": 16,
+        "name": "val",
+        "role": "RUNTIME_INPUT",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      }
+    ],
+    "output": {
+      "c_type": "int",
+      "legal_range": [
+        0,
+        16
+      ],
+      "logical_width": 5,
+      "name": "return_value",
+      "role": "return_value",
+      "signed": false,
+      "unresolved": false,
+      "width_source": "EXACT_SPEC"
+    },
+    "ports": [
+      {
+        "c_type": "int",
+        "direction": "input",
+        "legal_domain": {
+          "basis": "DSC 1.2a component sample/error maximum for the widest supported 16bpc path",
+          "kind": "range",
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "val",
+        "role": "val",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "c_type": "int",
+        "direction": "output",
+        "name": "return_value",
+        "role": "return_value",
+        "signed": false,
+        "width": 5
+      }
+    ]
+  },
+  "locked_contract": {
+    "contract_id": "ceil_log2",
+    "dependencies": {
+      "direct_callees": [],
+      "promotion_gate": null,
+      "read_fields": [],
+      "unresolved": []
+    },
+    "function": {
+      "clang_usr": "c:@F@ceil_log2",
+      "name": "ceil_log2",
+      "parameters": [
+        {
+          "name": "val",
+          "pointee_const": false,
+          "pointer": false,
+          "type": "int"
+        }
+      ],
+      "qualified_name": "ceil_log2",
+      "return_type": "int",
+      "source_body_sha256": "f1c3d75096b333cb5db125b48b56647d0d7106246db943d42e4c26d4cb8d4d88",
+      "source_file": "dsc_utils.c",
+      "source_span": {
+        "end_line": 73,
+        "start_line": 67
+      }
+    },
+    "interface": {
+      "inputs": [
+        {
+          "c_type": "int",
+          "legal_domain": {
+            "basis": "DSC 1.2a component sample/error maximum for the widest supported 16bpc path",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "logical_width": 16,
+          "name": "val",
+          "role": "RUNTIME_INPUT",
+          "signed": false,
+          "unresolved": false,
+          "width_source": "EXACT_SPEC"
+        }
+      ],
+      "output": {
+        "c_type": "int",
+        "legal_range": [
+          0,
+          16
+        ],
+        "logical_width": 5,
+        "name": "return_value",
+        "role": "return_value",
+        "signed": false,
+        "unresolved": false,
+        "width_source": "EXACT_SPEC"
+      },
+      "ports": [
+        {
+          "c_type": "int",
+          "direction": "input",
+          "legal_domain": {
+            "basis": "DSC 1.2a component sample/error maximum for the widest supported 16bpc path",
+            "kind": "range",
+            "range": [
+              0,
+              65535
+            ]
+          },
+          "name": "val",
+          "role": "val",
+          "signed": false,
+          "width": 16
+        },
+        {
+          "c_type": "int",
+          "direction": "output",
+          "name": "return_value",
+          "role": "return_value",
+          "signed": false,
+          "width": 5
+        }
+      ]
+    },
+    "obligations": [],
+    "origin": "tool_discovered_reviewed_override",
+    "reviewed_evidence": [
+      {
+        "anchor_id": "pdf:section:1.6.2",
+        "kind": "EXACT_SPEC",
+        "page": 22,
+        "reason": "DSC 1.2a gives the fixed-point ceil(log2(X+1)) definition, including the shift-based loop used by the immutable C model.",
+        "section": "1.6.2"
+      },
+      {
+        "c_span": {
+          "end_line": 73,
+          "start_line": 67
+        },
+        "kind": "SOURCE_SEMANTICS",
+        "reason": "The C body initializes ret and repeatedly increments it while right-shifting a non-negative copy of val.",
+        "source_file": "dsc_utils.c"
+      },
+      {
+        "kind": "RUNTIME_DOMAIN",
+        "reason": "The ICH error terms passed to ceil_log2 are non-negative absolute differences bounded by the 16-bit component sample maximum.",
+        "source": "DSC component/error sample domain"
+      }
+    ],
+    "schema_version": 2,
+    "selection": {
+      "basis": "tool-ranked candidate and coverage facts + exact traceability + reviewed domain evidence",
+      "bounded_domain_admission": {
+        "dependencies": {
+          "direct_callees": [],
+          "read_fields": [],
+          "unresolved": []
+        },
+        "evidence": [
+          {
+            "anchor_id": "pdf:section:1.6.2",
+            "kind": "EXACT_SPEC",
+            "page": 22,
+            "reason": "DSC 1.2a gives the fixed-point ceil(log2(X+1)) definition, including the shift-based loop used by the immutable C model.",
+            "section": "1.6.2"
+          },
+          {
+            "c_span": {
+              "end_line": 73,
+              "start_line": 67
+            },
+            "kind": "SOURCE_SEMANTICS",
+            "reason": "The C body initializes ret and repeatedly increments it while right-shifting a non-negative copy of val.",
+            "source_file": "dsc_utils.c"
+          },
+          {
+            "kind": "RUNTIME_DOMAIN",
+            "reason": "The ICH error terms passed to ceil_log2 are non-negative absolute differences bounded by the 16-bit component sample maximum.",
+            "source": "DSC component/error sample domain"
+          }
+        ],
+        "interface": {
+          "inputs": [
+            {
+              "c_type": "int",
+              "legal_domain": {
+                "basis": "DSC 1.2a component sample/error maximum for the widest supported 16bpc path",
+                "kind": "range",
+                "range": [
+                  0,
+                  65535
+                ]
+              },
+              "logical_width": 16,
+              "name": "val",
+              "role": "RUNTIME_INPUT",
+              "signed": false,
+              "unresolved": false,
+              "width_source": "EXACT_SPEC"
+            }
+          ],
+          "output": {
+            "c_type": "int",
+            "legal_range": [
+              0,
+              16
+            ],
+            "logical_width": 5,
+            "name": "return_value",
+            "role": "return_value",
+            "signed": false,
+            "unresolved": false,
+            "width_source": "EXACT_SPEC"
+          }
+        },
+        "match": {
+          "clang_usr": "c:@F@ceil_log2",
+          "spec_anchor_id": "pdf:section:1.6.2"
+        },
+        "obligations": [],
+        "review_status": "REVIEWED",
+        "reviewed_by": "codex",
+        "semantics": {
+          "expression": "$clog2(val + 1)",
+          "kind": "pure_expression",
+          "rounding": "ceil(log2(val + 1)) as defined by DSC 1.2a section 1.6.2",
+          "signedness": "The reviewed input is unsigned and non-negative; the returned bit count is unsigned 0..16.",
+          "verilog_expression": "$clog2(val + 1)"
+        },
+        "spec_links": [
+          {
+            "anchor_id": "pdf:section:1.6.2",
+            "evidence": "The normative section contains the ceil_log2 definition verbatim in C-like syntax.",
+            "page": 22,
+            "section": "1.6.2",
+            "status": "EXACT"
+          }
+        ],
+        "tool_admission": {
+          "bounded_input_ports": [
+            "val"
+          ],
+          "kind": "BOUNDED_DOMAIN",
+          "loop": "while (x) { ret++; x >>= 1; }",
+          "max_iterations": 16,
+          "proof": "The reviewed legal domain is 0..65535; each non-zero iteration removes one binary magnitude bit, so the loop terminates in at most 16 iterations.",
+          "status": "PASS"
+        }
+      },
+      "candidate_rank": 11,
+      "candidate_score": 80.0,
+      "candidate_source": "facts/candidates.json",
+      "coverage_basis": "reviewed_bounded_domain",
+      "coverage_source": "coverage/coverage.json",
+      "fact_source": "facts/functions.json",
+      "new_work": true,
+      "promoted_existing": false
+    },
+    "semantics": {
+      "expression": "$clog2(val + 1)",
+      "kind": "pure_expression",
+      "rounding": "ceil(log2(val + 1)) as defined by DSC 1.2a section 1.6.2",
+      "signedness": "The reviewed input is unsigned and non-negative; the returned bit count is unsigned 0..16.",
+      "verilog_expression": "$clog2(val + 1)"
+    },
+    "spec_links": [
+      {
+        "anchor_id": "pdf:section:1.6.2",
+        "evidence": "The normative section contains the ceil_log2 definition verbatim in C-like syntax.",
+        "page": 22,
+        "section": "1.6.2",
+        "status": "EXACT"
+      }
+    ],
+    "status": "LOCKED"
+  }
+}

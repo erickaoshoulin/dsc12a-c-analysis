@@ -106,6 +106,72 @@ class AutoDiscoveryTests(unittest.TestCase):
         )
         self.assertEqual(result[0]["status"], "STALE")
 
+    def test_reviewed_exact_link_materializes_when_heuristics_have_no_proposal(self):
+        reviewed = [{
+            "link_id": "reviewed-one",
+            "spec_anchor_id": "pdf:section:1.6.2",
+            "code_anchor_id": "code:function:U_leaf",
+            "spec_sha256": "pdf",
+            "source_hashes_sha256": "src",
+            "method": "reviewed_exact_spec",
+            "evidence": "normative helper definition",
+        }]
+        anchors = [{
+            "anchor_id": "pdf:section:1.6.2",
+            "kind": "section",
+            "identifier": "1.6.2",
+            "title": "Functions",
+            "page": 22,
+        }]
+        code = [{
+            "code_anchor_id": "code:function:U_leaf",
+            "clang_usr": "U_leaf",
+            "function": "ceil_log2",
+            "file": "dsc_utils.c",
+            "line": 67,
+            "permalink": "https://example.invalid/ceil_log2",
+        }]
+        result = traceability.apply_reviewed(
+            [], reviewed, {"spec": {"sha256": "pdf"}, "source": {"source_hashes_sha256": "src"}}, anchors, code
+        )
+        self.assertEqual(result[0]["status"], "REVIEWED")
+        self.assertEqual(result[0]["function"], "ceil_log2")
+
+    def test_reviewed_exact_link_can_resolve_excluded_function_from_raw_facts(self):
+        reviewed = [{
+            "link_id": "reviewed-config",
+            "spec_anchor_id": "pdf:table:6-2",
+            "code_anchor_id": "code:function:U_config",
+            "spec_sha256": "pdf",
+            "source_hashes_sha256": "src",
+            "method": "reviewed_exact_spec",
+            "evidence": "normative configuration table",
+        }]
+        anchors = [{
+            "anchor_id": "pdf:table:6-2",
+            "kind": "table",
+            "identifier": "6-2",
+            "title": "qLevel mapping",
+            "page": 114,
+        }]
+        result = traceability.apply_reviewed(
+            [],
+            reviewed,
+            {"spec": {"sha256": "pdf"}, "source": {"source_hashes_sha256": "src"}},
+            anchors,
+            [],
+            [{
+                "clang_usr": "U_config",
+                "name": "Qp2Qlevel",
+                "source_file": "codec_main.c",
+                "line": 816,
+                "end_line": 844,
+            }],
+        )
+        self.assertEqual(result[0]["status"], "REVIEWED")
+        self.assertEqual(result[0]["function"], "Qp2Qlevel")
+        self.assertEqual(result[0]["code_file"], "codec_main.c")
+
     def test_every_shared_model_note_has_an_exact_link(self):
         payload = json.loads((ROOT / "traceability" / "traceability.json").read_text(encoding="utf-8"))
         shared = payload["counts"]["shared_model_note_ids"]

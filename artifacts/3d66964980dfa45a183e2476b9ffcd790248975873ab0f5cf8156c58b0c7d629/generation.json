@@ -1,0 +1,62 @@
+{
+  "candidate_limit": 4,
+  "candidates": [
+    {
+      "candidate": "candidate_01",
+      "path": "generated/candidate_01.sv",
+      "sha256": "c6410c0d87682154aea43931d0c855e5c20b93e72410cf686bccf42376380178",
+      "validation": "PASS",
+      "validation_reasons": []
+    },
+    {
+      "candidate": "candidate_02",
+      "path": "generated/candidate_02.sv",
+      "sha256": "6d59d07e9e0e227a0b3d6485475e04d34ef3ad06bfe0b809ea066f5b58885473",
+      "validation": "PASS",
+      "validation_reasons": []
+    }
+  ],
+  "command": {
+    "command": [
+      "python3",
+      "tools/generator_fixture.py",
+      "/private/tmp/dsc12a-c-analysis/artifacts/3d66964980dfa45a183e2476b9ffcd790248975873ab0f5cf8156c58b0c7d629/generation-request.json",
+      "/private/tmp/dsc12a-c-analysis/artifacts/3d66964980dfa45a183e2476b9ffcd790248975873ab0f5cf8156c58b0c7d629/generated"
+    ],
+    "cwd": "/private/tmp/dsc12a-c-analysis",
+    "duration_seconds": 0.037,
+    "output": "",
+    "returncode": 0
+  },
+  "context_keys": [
+    "locked_contract",
+    "frozen_interface",
+    "c_body",
+    "exact_spec_anchors"
+  ],
+  "contract_id": "estimatebitsforgroup",
+  "execution_status": "EXECUTED_NOW",
+  "hook": "python3 tools/generator_fixture.py",
+  "model_calls": 1,
+  "schema_version": 2,
+  "source_span": {
+    "end_line": 437,
+    "start_line": 390
+  },
+  "status": "PASS",
+  "telemetry": {
+    "candidate_count": 2,
+    "contract_id": "estimatebitsforgroup",
+    "generator": "deterministic-fixture-hook",
+    "model_calls": 1,
+    "request_keys": [
+      "c_body",
+      "exact_spec_anchors",
+      "frozen_interface",
+      "locked_contract"
+    ],
+    "tokens_in": 12160,
+    "tokens_out": 20470
+  },
+  "tokens": 32630
+}
