@@ -1,0 +1,47 @@
+{
+  "data": [
+    "data/overview.json",
+    "data/runs.json",
+    "data/traceability.json",
+    "data/functions/escapecodesize.json",
+    "data/functions/estimatebitsforgroup.json",
+    "data/functions/findmidpoint.json",
+    "data/functions/findresidualsize.json",
+    "data/functions/getqpadjpredsize.json",
+    "data/functions/isflatnessinfosent.json",
+    "data/functions/isorigflathindex.json",
+    "data/functions/mapqptoqlevel.json",
+    "data/functions/maxresidualsize.json",
+    "data/functions/predictsize.json",
+    "data/functions/qp2qlevel.json",
+    "data/functions/quantizeresidual.json",
+    "data/functions/samptolinebuf.json",
+    "data/functions/samplepredict.json",
+    "data/functions/usingmidpoint.json",
+    "data/functions/ceil_log2.json"
+  ],
+  "functions": [
+    "escapecodesize",
+    "estimatebitsforgroup",
+    "findmidpoint",
+    "findresidualsize",
+    "getqpadjpredsize",
+    "isflatnessinfosent",
+    "isorigflathindex",
+    "mapqptoqlevel",
+    "maxresidualsize",
+    "predictsize",
+    "qp2qlevel",
+    "quantizeresidual",
+    "samptolinebuf",
+    "samplepredict",
+    "usingmidpoint",
+    "ceil_log2"
+  ],
+  "pages": [
+    "index.html",
+    "history.html",
+    "traceability.html"
+  ],
+  "schema_version": 1
+}

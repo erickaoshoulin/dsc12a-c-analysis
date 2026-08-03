@@ -336,6 +336,10 @@ class Agent:
         }
         return self.input_facts
 
+    def discover_inputs(self) -> dict[str, Any]:
+        """Compatibility entry point for the tool-driven input discovery gate."""
+        return self.load_inputs()
+
     def exact_links_by_usr(self) -> dict[str, list[dict[str, Any]]]:
         payload = read_json(self.root / "traceability" / "traceability.json", {}) or {}
         result: dict[str, list[dict[str, Any]]] = {}

@@ -1,0 +1,739 @@
+{
+  "code_to_spec": {
+    "codec_main.c:816": [
+      {
+        "contract_id": "qp2qlevel",
+        "function": "Qp2Qlevel",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_model_20210623/codec_main.c#L816",
+        "page": "functions/qp2qlevel.html",
+        "source_file": "codec_main.c",
+        "span": {
+          "end_line": 844,
+          "start_line": 816
+        }
+      }
+    ],
+    "dsc_codec.c:1078": [
+      {
+        "contract_id": "findresidualsize",
+        "function": "FindResidualSize",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_model_20210623/dsc_codec.c#L1078",
+        "page": "functions/findresidualsize.html",
+        "source_file": "dsc_codec.c",
+        "span": {
+          "end_line": 1109,
+          "start_line": 1078
+        }
+      }
+    ],
+    "dsc_codec.c:1116": [
+      {
+        "contract_id": "isflatnessinfosent",
+        "function": "IsFlatnessInfoSent",
+        "href": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/dsc_codec.c#L1116-L1119",
+        "page": "functions/isflatnessinfosent.html",
+        "source_file": "dsc_codec.c",
+        "span": {
+          "end_line": 1119,
+          "start_line": 1116
+        }
+      }
+    ],
+    "dsc_codec.c:1126": [
+      {
+        "contract_id": "isorigflathindex",
+        "function": "IsOrigFlatHIndex",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_model_20210623/dsc_codec.c#L1126",
+        "page": "functions/isorigflathindex.html",
+        "source_file": "dsc_codec.c",
+        "span": {
+          "end_line": 1195,
+          "start_line": 1126
+        }
+      }
+    ],
+    "dsc_codec.c:1476": [
+      {
+        "contract_id": "predictsize",
+        "function": "PredictSize",
+        "href": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/dsc_codec.c#L1476-L1486",
+        "page": "functions/predictsize.html",
+        "source_file": "dsc_codec.c",
+        "span": {
+          "end_line": 1486,
+          "start_line": 1476
+        }
+      }
+    ],
+    "dsc_codec.c:2036": [
+      {
+        "contract_id": "samptolinebuf",
+        "function": "SampToLineBuf",
+        "href": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/dsc_codec.c#L2036-L2049",
+        "page": "functions/samptolinebuf.html",
+        "source_file": "dsc_codec.c",
+        "span": {
+          "end_line": 2049,
+          "start_line": 2036
+        }
+      }
+    ],
+    "dsc_codec.c:221": [
+      {
+        "contract_id": "mapqptoqlevel",
+        "function": "MapQpToQlevel",
+        "href": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/dsc_codec.c#L221-L238",
+        "page": "functions/mapqptoqlevel.html",
+        "source_file": "dsc_codec.c",
+        "span": {
+          "end_line": 238,
+          "start_line": 221
+        }
+      }
+    ],
+    "dsc_codec.c:245": [
+      {
+        "contract_id": "quantizeresidual",
+        "function": "QuantizeResidual",
+        "href": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/dsc_codec.c#L245-L255",
+        "page": "functions/quantizeresidual.html",
+        "source_file": "dsc_codec.c",
+        "span": {
+          "end_line": 255,
+          "start_line": 245
+        }
+      }
+    ],
+    "dsc_codec.c:263": [
+      {
+        "contract_id": "maxresidualsize",
+        "function": "MaxResidualSize",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_model_20210623/dsc_codec.c#L263",
+        "page": "functions/maxresidualsize.html",
+        "source_file": "dsc_codec.c",
+        "span": {
+          "end_line": 270,
+          "start_line": 263
+        }
+      }
+    ],
+    "dsc_codec.c:278": [
+      {
+        "contract_id": "getqpadjpredsize",
+        "function": "GetQpAdjPredSize",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_model_20210623/dsc_codec.c#L278",
+        "page": "functions/getqpadjpredsize.html",
+        "source_file": "dsc_codec.c",
+        "span": {
+          "end_line": 297,
+          "start_line": 278
+        }
+      }
+    ],
+    "dsc_codec.c:308": [
+      {
+        "contract_id": "samplepredict",
+        "function": "SamplePredict",
+        "href": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/dsc_codec.c#L308-L383",
+        "page": "functions/samplepredict.html",
+        "source_file": "dsc_codec.c",
+        "span": {
+          "end_line": 383,
+          "start_line": 308
+        }
+      }
+    ],
+    "dsc_codec.c:390": [
+      {
+        "contract_id": "estimatebitsforgroup",
+        "function": "EstimateBitsForGroup",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_model_20210623/dsc_codec.c#L390",
+        "page": "functions/estimatebitsforgroup.html",
+        "source_file": "dsc_codec.c",
+        "span": {
+          "end_line": 437,
+          "start_line": 390
+        }
+      }
+    ],
+    "dsc_codec.c:443": [
+      {
+        "contract_id": "escapecodesize",
+        "function": "EscapeCodeSize",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_model_20210623/dsc_codec.c#L443",
+        "page": "functions/escapecodesize.html",
+        "source_file": "dsc_codec.c",
+        "span": {
+          "end_line": 451,
+          "start_line": 443
+        }
+      }
+    ],
+    "dsc_codec.c:457": [
+      {
+        "contract_id": "usingmidpoint",
+        "function": "UsingMidpoint",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_model_20210623/dsc_codec.c#L457",
+        "page": "functions/usingmidpoint.html",
+        "source_file": "dsc_codec.c",
+        "span": {
+          "end_line": 476,
+          "start_line": 457
+        }
+      }
+    ],
+    "dsc_codec.c:906": [
+      {
+        "contract_id": "findmidpoint",
+        "function": "FindMidpoint",
+        "href": "https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/dsc_codec.c#L906-L914",
+        "page": "functions/findmidpoint.html",
+        "source_file": "dsc_codec.c",
+        "span": {
+          "end_line": 914,
+          "start_line": 906
+        }
+      }
+    ],
+    "dsc_utils.c:67": [
+      {
+        "contract_id": "ceil_log2",
+        "function": "ceil_log2",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_model_20210623/dsc_utils.c#L67",
+        "page": "functions/ceil_log2.html",
+        "source_file": "dsc_utils.c",
+        "span": {
+          "end_line": 73,
+          "start_line": 67
+        }
+      }
+    ]
+  },
+  "schema_version": 1,
+  "spec_to_code": {
+    "pdf:figure:6-19": [
+      {
+        "contract_id": "isorigflathindex",
+        "function": "IsOrigFlatHIndex",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=111",
+        "page": "functions/isorigflathindex.html",
+        "page_number": 111,
+        "section": null,
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:model-note:MN_BLOCK_PRED:p079": [
+      {
+        "contract_id": "samplepredict",
+        "function": "SamplePredict",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=79",
+        "page": "functions/samplepredict.html",
+        "page_number": 79,
+        "section": "6.4.2",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:model-note:MN_ENC_ICH_MODE_SELECT:p088": [
+      {
+        "contract_id": "estimatebitsforgroup",
+        "function": "EstimateBitsForGroup",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=88",
+        "page": "functions/estimatebitsforgroup.html",
+        "page_number": 88,
+        "section": "6.5.3.2",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:model-note:MN_ENC_MPP_SELECT:p082": [
+      {
+        "contract_id": "usingmidpoint",
+        "function": "UsingMidpoint",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=82",
+        "page": "functions/usingmidpoint.html",
+        "page_number": 82,
+        "section": "6.4.4.2",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:model-note:MN_ENC_QUANTIZATION:p083": [
+      {
+        "contract_id": "quantizeresidual",
+        "function": "QuantizeResidual",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=83",
+        "page": "functions/quantizeresidual.html",
+        "page_number": 83,
+        "section": "6.4.5",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:model-note:MN_LINE_STORAGE:p075": [
+      {
+        "contract_id": "samptolinebuf",
+        "function": "SampToLineBuf",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=75",
+        "page": "functions/samptolinebuf.html",
+        "page_number": 75,
+        "section": "6.3",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:model-note:MN_LINE_STORAGE:p117": [
+      {
+        "contract_id": "samptolinebuf",
+        "function": "SampToLineBuf",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=117",
+        "page": "functions/samptolinebuf.html",
+        "page_number": 117,
+        "section": "7.4",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:model-note:MN_MAP_QP_TO_QLEVEL:p113": [
+      {
+        "contract_id": "mapqptoqlevel",
+        "function": "MapQpToQlevel",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=113",
+        "page": "functions/mapqptoqlevel.html",
+        "page_number": 113,
+        "section": "6.8.6",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:model-note:MN_MIDPOINT_PRED:p080": [
+      {
+        "contract_id": "findmidpoint",
+        "function": "FindMidpoint",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=80",
+        "page": "functions/findmidpoint.html",
+        "page_number": 80,
+        "section": "6.4.3",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:model-note:MN_MMAP:p076": [
+      {
+        "contract_id": "samplepredict",
+        "function": "SamplePredict",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=76",
+        "page": "functions/samplepredict.html",
+        "page_number": 76,
+        "section": "6.4.1",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:model-note:MN_MMAP:p078": [
+      {
+        "contract_id": "samplepredict",
+        "function": "SamplePredict",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=78",
+        "page": "functions/samplepredict.html",
+        "page_number": 78,
+        "section": "6.4.1.1",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:model-note:MN_MMAP:p079": [
+      {
+        "contract_id": "samplepredict",
+        "function": "SamplePredict",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=79",
+        "page": "functions/samplepredict.html",
+        "page_number": 79,
+        "section": "6.4.1.2",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:section:1.6.2": [
+      {
+        "contract_id": "ceil_log2",
+        "function": "ceil_log2",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=22",
+        "page": "functions/ceil_log2.html",
+        "page_number": 22,
+        "section": "1.6.2",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:section:3.5.1": [
+      {
+        "contract_id": "escapecodesize",
+        "function": "EscapeCodeSize",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=34",
+        "page": "functions/escapecodesize.html",
+        "page_number": 34,
+        "section": "3.5.1",
+        "status": "EXACT",
+        "table": null
+      },
+      {
+        "contract_id": "maxresidualsize",
+        "function": "MaxResidualSize",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=34",
+        "page": "functions/maxresidualsize.html",
+        "page_number": 34,
+        "section": "3.5.1",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:section:4.3": [
+      {
+        "contract_id": "isflatnessinfosent",
+        "function": "IsFlatnessInfoSent",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=54",
+        "page": "functions/isflatnessinfosent.html",
+        "page_number": 54,
+        "section": "4.3",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:section:6.3": [
+      {
+        "contract_id": "samptolinebuf",
+        "function": "SampToLineBuf",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=75",
+        "page": "functions/samptolinebuf.html",
+        "page_number": 75,
+        "section": "6.3",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:section:6.4.1": [
+      {
+        "contract_id": "samplepredict",
+        "function": "SamplePredict",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=76",
+        "page": "functions/samplepredict.html",
+        "page_number": 76,
+        "section": "6.4.1",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:section:6.4.2": [
+      {
+        "contract_id": "samplepredict",
+        "function": "SamplePredict",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=79",
+        "page": "functions/samplepredict.html",
+        "page_number": 79,
+        "section": "6.4.2",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:section:6.4.3": [
+      {
+        "contract_id": "findmidpoint",
+        "function": "FindMidpoint",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=80",
+        "page": "functions/findmidpoint.html",
+        "page_number": 80,
+        "section": "6.4.3",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:section:6.4.4.2": [
+      {
+        "contract_id": "usingmidpoint",
+        "function": "UsingMidpoint",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=82",
+        "page": "functions/usingmidpoint.html",
+        "page_number": 82,
+        "section": "6.4.4.2",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:section:6.4.5": [
+      {
+        "contract_id": "predictsize",
+        "function": "PredictSize",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=83",
+        "page": "functions/predictsize.html",
+        "page_number": 83,
+        "section": "6.4.5",
+        "status": "EXACT",
+        "table": null
+      },
+      {
+        "contract_id": "quantizeresidual",
+        "function": "QuantizeResidual",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=83",
+        "page": "functions/quantizeresidual.html",
+        "page_number": 83,
+        "section": "6.4.5",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:section:6.5.3.2": [
+      {
+        "contract_id": "estimatebitsforgroup",
+        "function": "EstimateBitsForGroup",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=88",
+        "page": "functions/estimatebitsforgroup.html",
+        "page_number": 88,
+        "section": "6.5.3.2",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:section:6.6.1": [
+      {
+        "contract_id": "estimatebitsforgroup",
+        "function": "EstimateBitsForGroup",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=91",
+        "page": "functions/estimatebitsforgroup.html",
+        "page_number": 91,
+        "section": "6.6.1",
+        "status": "EXACT",
+        "table": null
+      },
+      {
+        "contract_id": "findresidualsize",
+        "function": "FindResidualSize",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=91",
+        "page": "functions/findresidualsize.html",
+        "page_number": 91,
+        "section": "6.6.1",
+        "status": "EXACT",
+        "table": null
+      },
+      {
+        "contract_id": "getqpadjpredsize",
+        "function": "GetQpAdjPredSize",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=91",
+        "page": "functions/getqpadjpredsize.html",
+        "page_number": 91,
+        "section": "6.6.1",
+        "status": "EXACT",
+        "table": null
+      },
+      {
+        "contract_id": "maxresidualsize",
+        "function": "MaxResidualSize",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=91",
+        "page": "functions/maxresidualsize.html",
+        "page_number": 91,
+        "section": "6.6.1",
+        "status": "EXACT",
+        "table": null
+      },
+      {
+        "contract_id": "predictsize",
+        "function": "PredictSize",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=91",
+        "page": "functions/predictsize.html",
+        "page_number": 91,
+        "section": "6.6.1",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:section:6.6.2": [
+      {
+        "contract_id": "escapecodesize",
+        "function": "EscapeCodeSize",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=93",
+        "page": "functions/escapecodesize.html",
+        "page_number": 93,
+        "section": "6.6.2",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:section:6.6.3": [
+      {
+        "contract_id": "isflatnessinfosent",
+        "function": "IsFlatnessInfoSent",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=93",
+        "page": "functions/isflatnessinfosent.html",
+        "page_number": 93,
+        "section": "6.6.3",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:section:6.6.4": [
+      {
+        "contract_id": "estimatebitsforgroup",
+        "function": "EstimateBitsForGroup",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=94",
+        "page": "functions/estimatebitsforgroup.html",
+        "page_number": 94,
+        "section": "6.6.4",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:section:6.8.5.1": [
+      {
+        "contract_id": "isorigflathindex",
+        "function": "IsOrigFlatHIndex",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=111",
+        "page": "functions/isorigflathindex.html",
+        "page_number": 111,
+        "section": "6.8.5.1",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:section:6.8.5.2": [
+      {
+        "contract_id": "getqpadjpredsize",
+        "function": "GetQpAdjPredSize",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=113",
+        "page": "functions/getqpadjpredsize.html",
+        "page_number": 113,
+        "section": "6.8.5.2",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:section:6.8.6": [
+      {
+        "contract_id": "escapecodesize",
+        "function": "EscapeCodeSize",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=113",
+        "page": "functions/escapecodesize.html",
+        "page_number": 113,
+        "section": "6.8.6",
+        "status": "EXACT",
+        "table": null
+      },
+      {
+        "contract_id": "getqpadjpredsize",
+        "function": "GetQpAdjPredSize",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=113",
+        "page": "functions/getqpadjpredsize.html",
+        "page_number": 113,
+        "section": "6.8.6",
+        "status": "EXACT",
+        "table": null
+      },
+      {
+        "contract_id": "mapqptoqlevel",
+        "function": "MapQpToQlevel",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=113",
+        "page": "functions/mapqptoqlevel.html",
+        "page_number": 113,
+        "section": "6.8.6",
+        "status": "EXACT",
+        "table": null
+      },
+      {
+        "contract_id": "maxresidualsize",
+        "function": "MaxResidualSize",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=113",
+        "page": "functions/maxresidualsize.html",
+        "page_number": 113,
+        "section": "6.8.6",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:section:7.4": [
+      {
+        "contract_id": "samptolinebuf",
+        "function": "SampToLineBuf",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=117",
+        "page": "functions/samptolinebuf.html",
+        "page_number": 117,
+        "section": "7.4",
+        "status": "EXACT",
+        "table": null
+      }
+    ],
+    "pdf:table:3-1": [
+      {
+        "contract_id": "estimatebitsforgroup",
+        "function": "EstimateBitsForGroup",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=34",
+        "page": "functions/estimatebitsforgroup.html",
+        "page_number": 34,
+        "section": "3",
+        "status": "EXACT",
+        "table": "pdf:table:3-1"
+      },
+      {
+        "contract_id": "findresidualsize",
+        "function": "FindResidualSize",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=34",
+        "page": "functions/findresidualsize.html",
+        "page_number": 34,
+        "section": "3",
+        "status": "EXACT",
+        "table": "pdf:table:3-1"
+      },
+      {
+        "contract_id": "usingmidpoint",
+        "function": "UsingMidpoint",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=34",
+        "page": "functions/usingmidpoint.html",
+        "page_number": 34,
+        "section": "3",
+        "status": "EXACT",
+        "table": "pdf:table:3-1"
+      }
+    ],
+    "pdf:table:6-2": [
+      {
+        "contract_id": "estimatebitsforgroup",
+        "function": "EstimateBitsForGroup",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=114",
+        "page": "functions/estimatebitsforgroup.html",
+        "page_number": 114,
+        "section": "6.8.6",
+        "status": "EXACT",
+        "table": "pdf:table:6-2"
+      },
+      {
+        "contract_id": "mapqptoqlevel",
+        "function": "MapQpToQlevel",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=114",
+        "page": "functions/mapqptoqlevel.html",
+        "page_number": 114,
+        "section": "6.8.6",
+        "status": "EXACT",
+        "table": "pdf:table:6-2"
+      },
+      {
+        "contract_id": "qp2qlevel",
+        "function": "Qp2Qlevel",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=114",
+        "page": "functions/qp2qlevel.html",
+        "page_number": 114,
+        "section": "6.8.6",
+        "status": "EXACT",
+        "table": "pdf:table:6-2"
+      },
+      {
+        "contract_id": "usingmidpoint",
+        "function": "UsingMidpoint",
+        "href": "file:///Users/snow/Desktop/Display%20Stream%20Compression%20%28DSC%29/DSC%201.2a/DSC_v1.2a.pdf#page=114",
+        "page": "functions/usingmidpoint.html",
+        "page_number": 114,
+        "section": "6.8.6",
+        "status": "EXACT",
+        "table": "pdf:table:6-2"
+      }
+    ]
+  }
+}
