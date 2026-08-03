@@ -82,10 +82,20 @@ C comments, `MN_*` model notes, explicit page/section/table references,
 function ranges, constants, tables, USRs, source hashes, and fixed-commit
 permalinks are recorded in `facts/comments.json`.
 
-`traceability/links.proposed.yaml` contains generated exact/proposed links.
+`traceability/links.proposed.yaml` contains generated exact/proposed links plus
+`REVIEWED` links projected from accepted library contracts. A `PASS` component
+with `authority: EXACT_SPEC` is joined by its contract's Clang USR and exact PDF
+anchors only after the library manifest's source/spec hashes match; this is
+traceability enrichment, never a function-name selector or new-work admission.
 `traceability/links.reviewed.yaml` is the human-edited review surface and is
 never overwritten. A reviewed link becomes `STALE` if either input hash
-changes. Reports are bidirectional and retain visible unknowns/orphans.
+changes. Reports are bidirectional and retain visible unknowns/orphans. The
+dashboard traceability page also shows repository-wide exact/proposed/reviewed
+counts, accepted-library projection status, the proposal queue, linked-versus-total
+anchors, and complete orphan lists. `reports/orphan-triage.md` and the dashboard triage tables add
+evidence-backed next actions from Clang, candidate, coverage, comment, and PDF
+facts without creating links or RTL targets, so raw JSON is not required to
+find the next review work.
 
 After C facts are assembled, an instrumented temporary copy automatically
 discovers and runs every `bittrue_smoke/run_c_baseline*.sh` profile, retaining a
@@ -127,6 +137,7 @@ reports/
   candidate-functions.md
   spec-to-code.md
   code-to-spec.md
+  orphan-triage.md
   orphans.md
   function-summary.md
   field-summary.md
@@ -184,10 +195,15 @@ wrapper, and receipt schema. The integration overlay supports `C_ONLY`,
 DSC smoke stream is checked byte-for-byte and by SHA-256. Rollback is a
 manifest change back to `C_ONLY`.
 
-Generated CI outputs are under `ci/`, `artifacts/<contract-hash>/`,
-`integration/generated-overlay/`, `integration/replacement-plan.yaml`,
-`integration/bitstream-receipts/`, and
+Compact CI outputs are under `ci/`, `artifacts/<contract-hash>`
+(receipts/contracts only), `integration/generated-overlay/`,
+`integration/replacement-plan.yaml`, `integration/bitstream-receipts/`, and
 `reports/pipeline-summary.md`. The upstream C model and PDF are never edited.
+The candidate RTL, C oracle, harness, vector generator, rejected candidates,
+and verbose build logs are external flow material. Durable flows set
+`DSC_CICD_ARTIFACT_ROOT` and `DSC_REGRESSION_ROOT`; state/cache receipts
+retain the logical `artifacts/<contract-hash>` reference without copying the
+large files into this checkout.
 
 Scale dispatch is incremental: after a terminal batch, another `scale
 <pilot-run-id>` call re-reads the current facts/spec plan and enqueues only
@@ -211,8 +227,10 @@ The hook receives only `locked_contract`, `frozen_interface`, `c_body`, and
 short `exact_spec_anchors`. It emits at most four combinational `.sv`
 candidates plus telemetry. The fixture emits one correct and one deliberately
 wrong candidate so the verifier records both an exhaustive pass and a
-smallest counterexample. A missing hook records `GENERATION_REQUIRED` and
-makes no model call.
+smallest counterexample. The planner preflights the hook for new/repair work;
+a missing hook records `GENERATION_REQUIRED` in `ci/plan.json` as an
+infrastructure blocker, stops before any generator/model call, and does not
+reselect the same contract until the hook is configured.
 
 The verifier compiles the immutable C oracle and every candidate once, runs
 the complete legal domain through parallel shards, and writes `EXECUTED_NOW`
@@ -241,15 +259,22 @@ taps per lane, Figure 6-19 offsets, Table 6-2 qLevel rows, and the exact
 and per-tap boundaries, and pairwise taps; Verilator AST plus Z3 proves the
 complete reviewed relation. The line buffer stays at the C caller boundary,
 and the adapter must short-circuit unused component lanes before reading
-`origLine`. This is now the 14-component stable library frontier.
+`origLine`. This is now the 16-component stable library frontier.
 
 ## Continuous CI/CD library loop
 
 The executable migration agent discovers work from facts, contracts, callgraph,
 frame scripts, reviewed PDF/source evidence, and valid cache receipts. It has
-no function-name allowlist and does not use SVRT, an SMB share, a second
-orchestrator, or a durable external service. Receipts stay in `ci/`,
-`artifacts/`, `integration/`, and `reports/`; large vector shards are temporary.
+no function-name allowlist, SVRT integration, or second orchestrator. The
+durable per-function regression service uses `DSC_REGRESSION_ROOT`; its queue,
+run receipts, vectors, and large logs remain on that configured SMB-backed
+root. The repository stores compact CI receipts, indexes, reports, and
+accepted RTL references under `ci/`, `artifacts/`, `integration/`, and
+`reports/`; candidate bundles, temporary vectors, build trees, and verbose
+logs stay under the external root. Run
+`python3 tools/repo_hygiene.py check` or `python3 tools/dashboard.py check`
+before handoff; the dashboard check fails if transient/generated material is
+tracked.
 
 ```sh
 python3 tools/cicd_agent.py plan
@@ -268,15 +293,58 @@ DSC_CICD_SHARDS=8 DSC_CICD_GENERATOR_CMD='python3 tools/generator_fixture.py' \
 python3 tools/cicd_agent.py run
 ```
 
-Each selected contract gets its own generator invocation, C oracle, Verilator
+New/repair contracts get their own generator invocation, C oracle, Verilator
 candidate build, parallel differential shards, caller composition check, and
-frame matrix. Promotion requires unit, formal-or-exhaustive, dependency,
-`C_ONLY`/`SHADOW`/`RTL_RETURN`, source, and exact spec gates. Only stable,
-purely combinational DUT leaves are promoted into `library/rtl/` with their
-locked contract and verification receipt. The agent canonicalizes the module,
-archives replacements, and updates the manifest under a library write lock;
-stateful callers, line storage, and other non-DUT C logic remain reference
-boundaries.
+frame matrix. A stable refresh first hash-checks the matching PASS component
+in `library/manifest.json` and reuses its accepted `library/rtl/` file as the
+sole candidate, so it runs the same deterministic gates with zero generator or
+model calls. A missing or changed accepted file is an infrastructure failure,
+not an implicit regeneration request. A candidate becomes promotion-eligible
+only after unit, formal-or-exhaustive, dependency,
+`C_ONLY`/`SHADOW`/`RTL_RETURN`, source, and exact spec gates. Stable-library
+promotion additionally requires an explicit human approval receipt at
+`ci/promotion-approvals/<contract-id>/<contract-hash>.json`, bound to the
+exact canonical RTL, source/spec/interface hashes, design intent, QoR review,
+reviewer, and all gate decisions. The agent never creates that receipt and
+never auto-promotes a new or repaired candidate: without it the result is
+`AWAITING_HUMAN_APPROVAL` and the library is unchanged. After approval, only
+stable, purely combinational DUT leaves are written to `library/rtl/` with
+their locked contract and verification receipt. The agent canonicalizes the
+module, archives replacements, and updates the manifest under a library write
+lock; stateful callers, line storage, and other non-DUT C logic remain
+reference boundaries. Existing PASS manifest entries are a grandfathered
+stable baseline; their accepted-RTL refresh is verification-only and reports
+`VERIFIED_REFRESH` without rewriting the library.
+
+Accepted leaves with stale source/spec/contract/dependency, controller, prompt,
+generator, or tool hashes automatically enter a bounded regression frontier;
+valid cache entries are reused without regeneration. Stale stable entries reuse
+accepted RTL and rerun verification rather than regenerating RTL. A deliberate
+new RTL attempt requires explicit queue routing with
+`DSC_CICD_FORCE_REGENERATE=1`. `DSC_CICD_REFRESH_STABLE=1` is available when
+the entire reviewed stable frontier must be verification-refreshed.
+
+If a completed receipt records `COMPOSITION_BLOCKED` with a `C_BOUNDARY`
+composition, the planner keeps that boundary visible and does not invoke the
+generator again for the same source/spec/contract/dependency identity. A
+changed semantic input reopens the contract automatically; an intentional
+retry may set `DSC_CICD_RETRY_BLOCKED=1` (or use explicit queue routing). The
+agent never invents a pointer/state adapter or passes dummy caller state just
+to make RTL composition compile.
+
+Composition validation uses the generated deterministic caller adapter, not a
+raw comparison between native C call-site arity and frozen RTL input count. A
+native caller may pass one pointer/state aggregate while a reviewed adapter
+binds its read-only fields or windows to several frozen scalar ports. The
+adapter must bind every frozen port exactly once and record both native arity
+and adapter bindings; only an adapter that cannot provide the complete frozen
+DUT interface remains a `C_BOUNDARY`.
+
+If a process stops after entering an executable stage, durable history requeues
+that exact contract even when hashes are unchanged. If verification completes
+before human approval, the planner retains the exact candidate and resumes it
+after the matching approval receipt appears without a generator or model call;
+a missing or mismatched pending artifact fails closed as infrastructure.
 
 ## Human-readable regression dashboard
 
@@ -295,9 +363,14 @@ python3 tools/regression.py report <run-id>
 mounted regression share when available and visibly falls back to repository
 local receipts. Open `dashboard/index.html` for the overview, then use
 `dashboard/functions/<contract-id>.html`, `dashboard/history.html`, and
-`dashboard/traceability.html` for details. `DIRECTORY_LAYOUT.md` explains the
-new run/library meanings and `path-map.json` keeps legacy paths readable
-without copying large RTL or verification files.
+`dashboard/traceability.html` for details. The overview also shows the current
+tool-selected CI ready frontier, candidate queue, and blockers from
+`ci/plan.json`, `ci/state.json`, and `summary.json`; a green selected regression
+run cannot hide a pending human review or traceability orphan. The traceability
+page keeps `PROPOSED` links and orphan lists visibly unresolved until human
+review. `DIRECTORY_LAYOUT.md` explains the new
+run/library meanings and `path-map.json` keeps legacy paths readable without
+copying large RTL or verification files.
 
 ## Environment
 
@@ -305,6 +378,17 @@ Set `DSC_ANALYSIS_TIMEOUT_SECONDS` for compiler/Clang/Frama-C commands,
 `DSC_BUILD_TIMEOUT_SECONDS` for the isolated build/smoke gate, and
 `DSC_ANALYSIS_TOP_N` for the bounded contract/candidate count. The CI/CD verifier also
 accepts `DSC_CICD_SHARDS`, `DSC_CICD_GENERATOR_CMD`, and compile/shard timeout
-variables. Temporary model copies exclude the unrelated `dsc-rs` and
+variables. `DSC_CICD_ARTIFACT_ROOT` may explicitly select an external per-flow
+artifact directory; `run.sh` derives one under `DSC_REGRESSION_ROOT` when
+`DSC_RUN_CICD=1`. Temporary model copies exclude the unrelated `dsc-rs` and
 `operator_bittrue` trees; the local PDF and upstream C source remain outside
-the repository and are never edited.
+the repository and are never edited. `run.sh` records the analysis-tool
+preflight in compact `build/analysis-preflight.json` after the C gate and
+before clearing facts; both `run.sh` and the receipt producer resolve the
+standard Homebrew LLVM paths and record whether each tool came from explicit
+configuration, Homebrew, `PATH`, or an already-installed Opam switch for
+Frama-C. They never install or initialize a package manager during a run.
+Missing Frama-C/LLVM tools are visible in the dashboard/report. `run.sh`
+refreshes and checks the static dashboard after a successful run and after a
+preflight failure, so the latest blocker is visible without hand-editing
+receipts.

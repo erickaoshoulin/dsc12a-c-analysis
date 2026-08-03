@@ -32,13 +32,11 @@
     "function": "ceil_log2",
     "kind": "arithmetic",
     "module": "ceil_log2",
-    "parent_run_id": "20260802T062208Z-0ad45a41",
+    "parent_run_id": "20260803T013704Z-05a52482",
     "profile": "scale",
-    "promoted_at": "2026-08-02T23:46:34Z",
     "rtl_sha256": "71784bb792966a7e48e98d35cc2e2c3f6052f1c17528ffe1b4256f805c9fda65",
-    "run_id": "20260802T230757Z-scale-7a24e3ac",
+    "run_id": "20260803T014654Z-scale-2b8c6c5c",
     "run_kind": "arithmetic",
-    "schema_version": 1,
     "source_gate": {
       "blockers": [],
       "build": {
@@ -84,88 +82,9 @@
       "verilator_lint_build": "PASS",
       "width_spec_gate": "PASS"
     },
-    "status": "PASS",
-    "traceability": {
-      "authority": "EXACT_SPEC",
-      "c_span": {
-        "end_line": 73,
-        "start_line": 67
-      },
-      "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
-      "ports": [
-        {
-          "authority": "EXACT_SPEC",
-          "c_span": {
-            "end_line": 73,
-            "start_line": 67
-          },
-          "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
-          "derivation": "DSC 1.2a component sample/error maximum for the widest supported 16bpc path",
-          "domain": {
-            "basis": "DSC 1.2a component sample/error maximum for the widest supported 16bpc path",
-            "kind": "range",
-            "range": [
-              0,
-              65535
-            ]
-          },
-          "name": "val",
-          "review_status": "REVIEWED",
-          "role": "val",
-          "signed": false,
-          "spec_pages": [
-            22
-          ],
-          "spec_sections": [
-            "1.6.2"
-          ],
-          "spec_tables": [],
-          "width": 16
-        },
-        {
-          "authority": "EXACT_SPEC",
-          "c_span": {
-            "end_line": 73,
-            "start_line": 67
-          },
-          "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
-          "derivation": "locked contract interface",
-          "domain": {
-            "range": [
-              0,
-              16
-            ]
-          },
-          "name": "return_value",
-          "review_status": "REVIEWED",
-          "role": "return_value",
-          "signed": false,
-          "spec_pages": [
-            22
-          ],
-          "spec_sections": [
-            "1.6.2"
-          ],
-          "spec_tables": [],
-          "width": 5
-        }
-      ],
-      "review_status": "REVIEWED",
-      "source_file": "dsc_utils.c",
-      "source_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
-      "spec_links": [
-        {
-          "anchor_id": "pdf:section:1.6.2",
-          "evidence": "The normative section contains the ceil_log2 definition verbatim in C-like syntax.",
-          "page": 22,
-          "section": "1.6.2",
-          "status": "EXACT"
-        }
-      ],
-      "spec_pdf": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf"
-    }
+    "status": "PASS"
   },
-  "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+  "last_verified_run_id": "20260803T014654Z-scale-2b8c6c5c",
   "matrix": {
     "modes": {
       "C_ONLY": "PASS",
@@ -176,11 +95,11 @@
     "status": "PASS"
   },
   "module": "ceil_log2",
-  "parent_run_id": "20260802T062208Z-0ad45a41",
+  "parent_run_id": "20260803T013704Z-05a52482",
   "profile": "scale",
   "promoted_at": "2026-08-02T21:15:54Z",
   "rtl_sha256": "71784bb792966a7e48e98d35cc2e2c3f6052f1c17528ffe1b4256f805c9fda65",
-  "run_id": "20260802T230757Z-scale-7a24e3ac",
+  "run_id": "20260803T014654Z-scale-2b8c6c5c",
   "run_kind": "arithmetic",
   "schema_version": 2,
   "source_gate": {

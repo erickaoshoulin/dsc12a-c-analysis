@@ -24,6 +24,8 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from typing import Any
 
+import repo_hygiene
+
 REPO_ROOT = Path(__file__).resolve().parents[1]
 EXPECTED_SHARE = "//kslin@192.168.68.52/homes"
 DEFAULT_REGRESSION_ROOT = Path("/Volumes/homes/dsc12a-regression")
@@ -79,6 +81,28 @@ def file_hash(path: Path) -> str | None:
         for chunk in iter(lambda: stream.read(1024 * 1024), b""):
             digest.update(chunk)
     return digest.hexdigest()
+
+
+def repository_hygiene_model(repo: Path) -> dict[str, Any]:
+    """Expose the tracked-file handoff gate without mutating the checkout."""
+    result = repo_hygiene.check_repo(repo)
+    if result.get("status") == "NOT_A_GIT_REPO":
+        return {
+            "available": False,
+            "status": "NOT_CONFIGURED",
+            "tracked_count": 0,
+            "forbidden_count": 0,
+            "forbidden": [],
+            "reason": result.get("error"),
+        }
+    return {
+        "available": True,
+        "status": result.get("status"),
+        "tracked_count": result.get("tracked_count", 0),
+        "forbidden_count": result.get("forbidden_count", 0),
+        "forbidden": result.get("forbidden", []),
+        "rules": result.get("rules", {}),
+    }
 
 
 def safe_id(value: Any) -> str:
@@ -254,7 +278,19 @@ def resolve_storage(repo: Path, explicit: str | None = None) -> StorageResolutio
 
 
 def run_timestamp(run: dict[str, Any], fallback: str) -> str:
-    return str(first(run, "updated_at", "completed_at", "created_at", default=fallback))
+    """Return the human-facing execution timestamp for a run."""
+    # A reconciliation write updates metadata, not the time the regression
+    # executed.  Prefer completion/creation evidence and use updated_at only
+    # for legacy records that have no execution timestamp.
+    return str(first(run, "completed_at", "created_at", "started_at", "updated_at", default=fallback))
+
+
+def run_sort_timestamp(run: dict[str, Any], fallback: str) -> str:
+    """Return an immutable chronological key for selecting the latest run."""
+    # Reconciliation may update an old queued run today.  Run ordering must
+    # remain chronological by creation time, otherwise a repaired historical
+    # run can incorrectly become the selected `latest` run.
+    return str(first(run, "created_at", "started_at", "updated_at", "completed_at", default=fallback))
 
 
 def load_run_records(storage: Path) -> list[dict[str, Any]]:
@@ -290,9 +326,10 @@ def load_run_records(storage: Path) -> list[dict[str, Any]]:
             "status": run_status,
             "counts": dict(sorted(counts.items())),
             "timestamp": run_timestamp(run, path.name),
+            "sort_timestamp": run_sort_timestamp(run, path.name),
         })
     records.sort(
-        key=lambda item: (str(item["timestamp"]), str(item["run"].get("run_id"))),
+        key=lambda item: (str(item["sort_timestamp"]), str(item["run"].get("run_id"))),
         reverse=True,
     )
     return records
@@ -332,8 +369,190 @@ def load_library_manifest(repo: Path) -> dict[str, Any]:
     return read_json(repo / "library" / "manifest.json", {}) or {}
 
 
+def load_ci_frontier(repo: Path) -> dict[str, Any]:
+    """Expose the current generic CI queue/blocker frontier to the dashboard.
+
+    The regression service and the executable migration agent have separate
+    receipts.  The selected SMB run can therefore be completely green while
+    a newly discovered contract is waiting for a review or another gate.  A
+    dashboard that only reads function receipts would hide that work.  Merge
+    the current plan, state, and agent summary into one deterministic view;
+    historical state entries are intentionally not treated as current
+    blockers.
+    """
+    plan = read_json(repo / "ci" / "plan.json", {}) or {}
+    state = read_json(repo / "ci" / "state.json", {}) or {}
+    summary = read_json(repo / "summary.json", {}) or {}
+
+    def strings(value: Any) -> list[str]:
+        if not isinstance(value, list):
+            return []
+        result: list[str] = []
+        seen: set[str] = set()
+        for item in value:
+            text = str(item).strip()
+            if text and text not in seen:
+                seen.add(text)
+                result.append(text)
+        return result
+
+    def function_name(value: Any) -> str | None:
+        if isinstance(value, dict):
+            value = value.get("name") or value.get("function")
+        text = str(value or "").strip()
+        return text or None
+
+    def state_entries() -> list[dict[str, Any]]:
+        value = state.get("contracts")
+        return [item for item in value if isinstance(item, dict)] if isinstance(value, list) else []
+
+    state_by_id = {
+        str(item.get("contract_id")): item
+        for item in state_entries()
+        if item.get("contract_id")
+    }
+
+    def current_list(key: str, fallback_key: str | None = None) -> list[str]:
+        # An explicitly empty current plan is meaningful: it represents a
+        # no-new-work observation.  Do not replace it with the previous run's
+        # non-empty summary merely because the list is empty.
+        if key in plan:
+            return strings(plan.get(key))
+        return strings(summary.get(fallback_key or key))
+
+    ready = current_list("ready_contracts")
+    selected = current_list("selected_contracts")
+    new_candidates = current_list("new_candidates")
+    selected_new_work = strings(summary.get("selected_new_work"))
+    blockers_by_id: dict[str, dict[str, Any]] = {}
+
+    def add_blocker(value: Any, fallback_contract_id: str | None = None) -> None:
+        if isinstance(value, str):
+            text = value.strip()
+            if ":" in text:
+                contract_id, reason = text.split(":", 1)
+                fallback_contract_id = fallback_contract_id or contract_id.strip()
+                value = {"reasons": [reason.strip()]}
+            else:
+                value = {"reasons": [text]}
+        if not isinstance(value, dict):
+            return
+        contract_id = str(value.get("contract_id") or fallback_contract_id or "").strip()
+        if not contract_id:
+            return
+        entry = blockers_by_id.setdefault(
+            contract_id,
+            {
+                "contract_id": contract_id,
+                "function": None,
+                "status": "BLOCKED",
+                "current_state": None,
+                "promotion_status": None,
+                "reasons": [],
+            },
+        )
+        entry["function"] = entry["function"] or function_name(value.get("function"))
+        entry["current_state"] = entry["current_state"] or value.get("current_state")
+        entry["promotion_status"] = entry["promotion_status"] or value.get("promotion_status")
+        reasons = value.get("reasons")
+        if not isinstance(reasons, list):
+            reasons = [value.get("reason") or value.get("failure_reason")]
+        entry["reasons"] = sorted({
+            *entry["reasons"],
+            *(str(reason).strip() for reason in reasons if reason),
+        })
+
+    for item in plan.get("blocked_contracts", []) if isinstance(plan.get("blocked_contracts"), list) else []:
+        add_blocker(item)
+    for item in summary.get("blocked_contracts", []) if isinstance(summary.get("blocked_contracts"), list) else []:
+        add_blocker(item)
+    for item in summary.get("blockers", []) if isinstance(summary.get("blockers"), list) else []:
+        add_blocker(item)
+    for item in state_entries():
+        if str(item.get("status", "")).upper() == "BLOCKED":
+            add_blocker(item)
+
+    for contract_id, item in blockers_by_id.items():
+        current = state_by_id.get(contract_id, {})
+        item["function"] = item["function"] or function_name(current.get("function"))
+        item["current_state"] = item["current_state"] or current.get("current_state")
+        item["promotion_status"] = item["promotion_status"] or current.get("promotion_status")
+        if not item["reasons"] and current.get("failure_reason"):
+            item["reasons"] = [str(current["failure_reason"])]
+
+    blocked_contracts = [blockers_by_id[key] for key in sorted(blockers_by_id)]
+    queue_ids: list[str] = []
+    for contract_id in [*new_candidates, *(item["contract_id"] for item in blocked_contracts)]:
+        if contract_id not in queue_ids:
+            queue_ids.append(contract_id)
+    candidate_queue: list[dict[str, Any]] = []
+    for contract_id in queue_ids:
+        state_item = state_by_id.get(contract_id, {})
+        current_status = status(
+            state_item.get("status") or state_item.get("current_state"),
+            not_applicable="UNPROVED",
+        )
+        blocked = blockers_by_id.get(contract_id)
+        candidate_queue.append({
+            "contract_id": contract_id,
+            "function": (blocked or {}).get("function") or function_name(state_item.get("function")),
+            "queue_state": "BLOCKED" if blocked else "NEW",
+            "current_status": "BLOCKED" if blocked else current_status,
+            "current_state": state_item.get("current_state"),
+            "reasons": (blocked or {}).get("reasons", []),
+            "promotion_status": state_item.get("promotion_status") or (blocked or {}).get("promotion_status"),
+        })
+
+    return {
+        "schema_version": 1,
+        "source_files": ["ci/plan.json", "ci/state.json", "summary.json"],
+        "ready_contracts": sorted(set(ready)),
+        "selected_contracts": sorted(set(selected)),
+        "new_candidates": sorted(set(new_candidates)),
+        "selected_new_work": sorted(set(selected_new_work)),
+        "candidate_queue": candidate_queue,
+        "blocked_contracts": blocked_contracts,
+        "blockers": blocked_contracts,
+        "counts": {
+            "ready": len(set(ready)),
+            "selected": len(set(selected)),
+            "new_candidates": len(set(new_candidates)),
+            "blocked": len(blocked_contracts),
+        },
+        "generator_invocations": as_int(summary.get("generator_invocations"), 0) or 0,
+        "model_calls": as_int(summary.get("model_calls"), 0) or 0,
+    }
+
+
 def spec_manifest(repo: Path) -> dict[str, Any]:
     return read_json(repo / "spec" / "manifest.json", {}) or {}
+
+
+def analysis_preflight_model(repo: Path) -> dict[str, Any]:
+    """Expose the latest analysis-tool preflight as a compact blocker receipt."""
+    path = repo / "build" / "analysis-preflight.json"
+    payload = read_json(path, {}) or {}
+    if not isinstance(payload, dict) or not payload:
+        return {
+            "available": False,
+            "status": "NOT_CONFIGURED",
+            "receipt": "build/analysis-preflight.json",
+            "missing_tools": [],
+            "blockers": [],
+        }
+    status_value = str(payload.get("status") or "NOT_CONFIGURED").upper()
+    if status_value not in {"PASS", "INFRASTRUCTURE_FAILURE", "NOT_CONFIGURED"}:
+        status_value = "INFRASTRUCTURE_FAILURE"
+    missing = payload.get("missing_tools") if isinstance(payload.get("missing_tools"), list) else []
+    blockers = payload.get("blockers") if isinstance(payload.get("blockers"), list) else []
+    return {
+        "available": True,
+        "status": status_value,
+        "receipt": "build/analysis-preflight.json",
+        "missing_tools": sorted({str(item) for item in missing if item}),
+        "blockers": sorted({str(item) for item in blockers if item}),
+        "tools": payload.get("tools") if isinstance(payload.get("tools"), dict) else {},
+    }
 
 
 def contract_for(
@@ -944,12 +1163,24 @@ def strategy_entries(storage: Path, cid: str) -> list[dict[str, Any]]:
 
 
 def short_receipt(
-    receipt: dict[str, Any], run: dict[str, Any], function_dir: Path | None = None
+    receipt: dict[str, Any],
+    run: dict[str, Any],
+    function_dir: Path | None = None,
+    *,
+    include_sort_key: bool = False,
 ) -> dict[str, Any]:
     _, candidate_ratio = candidate_model(receipt)
     vector = vector_model(receipt)
     matrix = matrix_model(receipt)
-    return {
+    rtl_sha256 = receipt.get("rtl_sha256") or receipt.get("accepted_rtl_sha256")
+    if not rtl_sha256:
+        accepted = receipt.get("accepted_rtl")
+        if accepted:
+            accepted_path = Path(str(accepted))
+            if not accepted_path.is_absolute() and function_dir:
+                accepted_path = function_dir / accepted_path
+            rtl_sha256 = file_hash(accepted_path)
+    result = {
         "run_id": run.get("run_id"),
         "profile": run.get("profile"),
         "status": status(receipt.get("status"), not_applicable="UNPROVED"),
@@ -957,9 +1188,12 @@ def short_receipt(
         "frame_pass_rate": matrix["frame"].get("display", "0/0"),
         "vectors": vector.get("executed", 0),
         "contract_hash": receipt.get("contract_hash"),
-        "rtl_sha256": receipt.get("rtl_sha256"),
+        "rtl_sha256": rtl_sha256,
         "timestamp": run_timestamp(run, str(run.get("run_id", ""))),
     }
+    if include_sort_key:
+        result["_sort_timestamp"] = run_sort_timestamp(run, str(run.get("run_id", "")))
+    return result
 
 
 def comparison(history: list[dict[str, Any]]) -> str:
@@ -1026,13 +1260,27 @@ def normalized_function(
     promotion = promotion_model(repo, receipt, component, cid)
     if promotion["stale"]:
         blockers.extend(promotion["stale_reasons"])
-    history = [short_receipt(raw, run_value) for run_value, raw in history_receipts]
-    history.sort(key=lambda item: (str(item.get("timestamp")), str(item.get("run_id"))))
+    history = [short_receipt(raw, run_value, include_sort_key=True) for run_value, raw in history_receipts]
+    history.sort(key=lambda item: (str(item.get("_sort_timestamp", item.get("timestamp"))), str(item.get("run_id"))))
     if history:
-        current_summary = short_receipt(receipt, run)
+        current_summary = short_receipt(receipt, run, include_sort_key=True)
         history = [item for item in history if item.get("run_id") != run.get("run_id")]
         history.append(current_summary)
-        history.sort(key=lambda item: (str(item.get("timestamp")), str(item.get("run_id"))))
+        history.sort(key=lambda item: (str(item.get("_sort_timestamp", item.get("timestamp"))), str(item.get("run_id"))))
+    for item in history:
+        item.pop("_sort_timestamp", None)
+    if promotion.get("status") == "PASS" and not promotion.get("last_verified_run_id"):
+        verified_history = [
+            item for item in history
+            if item.get("status") == "PASS"
+            and (
+                not component.get("contract_hash")
+                or not item.get("contract_hash")
+                or item.get("contract_hash") == component.get("contract_hash")
+            )
+        ]
+        if verified_history:
+            promotion["last_verified_run_id"] = verified_history[-1].get("run_id")
     comparison_value = comparison(history)
     current_stage = (
         "complete"
@@ -1160,6 +1408,7 @@ class Dataset:
     records: list[dict[str, Any]]
     selected_run_id: str | None
     overview: dict[str, Any]
+    ci_frontier: dict[str, Any]
     functions: list[dict[str, Any]]
     runs: list[dict[str, Any]]
     traceability: dict[str, Any]
@@ -1200,6 +1449,186 @@ def make_traceability_index(functions: list[dict[str, Any]]) -> dict[str, Any]:
         "schema_version": 1,
         "spec_to_code": dict(sorted(spec.items())),
         "code_to_spec": dict(sorted(code.items())),
+    }
+
+
+def make_traceability_audit(repo: Path) -> dict[str, Any]:
+    """Expose the repository-wide traceability receipt without promoting links."""
+    receipt_path = repo / "traceability" / "traceability.json"
+    payload = read_json(receipt_path, {}) or {}
+    report_names = {
+        "orphans": "orphans.md",
+        "orphan_triage": "orphan-triage.md",
+        "spec_to_code": "spec-to-code.md",
+        "code_to_spec": "code-to-spec.md",
+    }
+    reports = {
+        key: f"../reports/{name}"
+        for key, name in report_names.items()
+        if (repo / "reports" / name).is_file()
+    }
+    if not isinstance(payload, dict) or not payload:
+        return {
+            "schema_version": 1,
+            "available": False,
+            "receipt": "traceability/traceability.json",
+            "receipt_sha256": None,
+            "counts": {
+                "link_count": 0,
+                "exact_count": 0,
+                "proposed_count": 0,
+                "reviewed_count": 0,
+                "accepted_library_link_count": 0,
+                "stale_count": 0,
+                "spec_anchor_count": 0,
+                "linked_spec_anchor_count": 0,
+                "production_anchor_count": 0,
+                "linked_production_anchor_count": 0,
+                "untraced_spec_anchor_count": 0,
+                "untraced_production_function_count": 0,
+            },
+            "links": [],
+            "review_queue": [],
+            "orphans": {
+                "spec_anchor_ids": [],
+                "production_code_anchor_ids": [],
+            },
+            "orphan_triage": {
+                "schema_version": 1,
+                "summary": {
+                    "production_code_count": 0,
+                    "spec_anchor_count": 0,
+                    "production_code_next_actions": {},
+                    "spec_next_actions": {},
+                },
+                "production_code": [],
+                "spec": [],
+            },
+            "library_projection": {
+                "schema_version": 1,
+                "status": "NOT_CONFIGURED",
+                "manifest_sha256": None,
+                "components_seen": 0,
+                "components_eligible": 0,
+                "links_added": 0,
+                "skipped": {},
+            },
+            "reports": reports,
+        }
+
+    raw_links = payload.get("links") if isinstance(payload.get("links"), list) else []
+    link_fields = (
+        "link_id",
+        "status",
+        "method",
+        "function",
+        "clang_usr",
+        "spec_anchor_id",
+        "spec_page",
+        "spec_section",
+        "code_anchor_id",
+        "code_file",
+        "code_line",
+        "code_permalink",
+        "evidence",
+        "review_note",
+    )
+    links: list[dict[str, Any]] = []
+    for raw in raw_links:
+        if not isinstance(raw, dict):
+            continue
+        links.append({key: raw[key] for key in link_fields if key in raw})
+    links.sort(
+        key=lambda value: (
+            str(value.get("status", "")),
+            str(value.get("spec_anchor_id", "")),
+            str(value.get("function", "")),
+            str(value.get("link_id", "")),
+        )
+    )
+    status_counts = Counter(str(link.get("status", "UNRESOLVED")) for link in links)
+    orphan_payload = payload.get("orphans") if isinstance(payload.get("orphans"), dict) else {}
+    spec_orphans = sorted(
+        str(value)
+        for value in orphan_payload.get("spec_anchor_ids", [])
+        if value is not None
+    )
+    code_orphans = sorted(
+        str(value)
+        for value in orphan_payload.get("production_code_anchor_ids", [])
+        if value is not None
+    )
+    linked_spec = {
+        str(link.get("spec_anchor_id"))
+        for link in links
+        if link.get("spec_anchor_id")
+    }
+    linked_code = {
+        str(link.get("code_anchor_id"))
+        for link in links
+        if link.get("code_anchor_id")
+    }
+    raw_counts = payload.get("counts") if isinstance(payload.get("counts"), dict) else {}
+    accepted_library_links = sum(
+        1 for link in links if link.get("method") == "accepted_library_exact_spec"
+    )
+    counts = {
+        "link_count": len(links),
+        "exact_count": status_counts.get("EXACT", 0),
+        "proposed_count": status_counts.get("PROPOSED", 0),
+        "reviewed_count": status_counts.get("REVIEWED", 0),
+        "accepted_library_link_count": accepted_library_links,
+        "stale_count": status_counts.get("STALE", 0),
+        "spec_anchor_count": as_int(raw_counts.get("spec_anchor_count"), 0) or 0,
+        "linked_spec_anchor_count": len(linked_spec),
+        "production_anchor_count": len(linked_code) + len(code_orphans),
+        "linked_production_anchor_count": len(linked_code),
+        "untraced_spec_anchor_count": len(spec_orphans),
+        "untraced_production_function_count": len(code_orphans),
+    }
+    review_queue = [link for link in links if link.get("status") == "PROPOSED"]
+    orphan_triage = payload.get("orphan_triage") if isinstance(payload.get("orphan_triage"), dict) else {}
+    if not orphan_triage:
+        orphan_triage = {
+            "schema_version": 1,
+            "summary": {
+                "production_code_count": len(code_orphans),
+                "spec_anchor_count": len(spec_orphans),
+                "production_code_next_actions": {},
+                "spec_next_actions": {},
+            },
+            "production_code": [],
+            "spec": [],
+        }
+    raw_projection = payload.get("library_projection")
+    if not isinstance(raw_projection, dict):
+        raw_projection = {}
+    library_projection = {
+        "schema_version": raw_projection.get("schema_version", 1),
+        "status": raw_projection.get("status", "NOT_CONFIGURED"),
+        "manifest_sha256": raw_projection.get("manifest_sha256"),
+        "components_seen": as_int(raw_projection.get("components_seen"), 0) or 0,
+        "components_eligible": as_int(raw_projection.get("components_eligible"), 0) or 0,
+        "links_added": as_int(raw_projection.get("links_added"), 0) or 0,
+        "skipped": raw_projection.get("skipped") if isinstance(raw_projection.get("skipped"), dict) else {},
+    }
+    return {
+        "schema_version": 1,
+        "available": True,
+        "receipt": "traceability/traceability.json",
+        "receipt_sha256": file_hash(receipt_path),
+        "source_hashes_sha256": payload.get("source_hashes_sha256"),
+        "spec_sha256": payload.get("spec_sha256"),
+        "counts": counts,
+        "links": links,
+        "review_queue": review_queue,
+        "orphans": {
+            "spec_anchor_ids": spec_orphans,
+            "production_code_anchor_ids": code_orphans,
+        },
+        "orphan_triage": orphan_triage,
+        "library_projection": library_projection,
+        "reports": reports,
     }
 
 
@@ -1255,7 +1684,10 @@ def make_library_index(
                 "spec_hash": manifest.get("spec_hash"),
                 "artifact_dir": component.get("artifact_dir"),
                 "promoted_at": component.get("promoted_at"),
-                "last_verified_run_id": component.get("last_verified_run_id"),
+                "last_verified_run_id": (
+                    component.get("last_verified_run_id")
+                    or (item.get("promotion", {}) or {}).get("last_verified_run_id")
+                ),
                 "boundary": component.get("boundary"),
                 "authority": component.get("authority"),
             },
@@ -1466,10 +1898,14 @@ DSC PDF.
 
 ## New meanings
 
-    runs/<run-id>/functions/<contract-id>/
-      rtl/              run-local candidate RTL references
-      verification/     run-local receipt/counterexample references
-      logs/             run-local tool logs
+    {resolution.root}/cache/flow/<run-id>/<contract-id>/
+      repo/             isolated source/controller copy
+      artifacts-<attempt>/
+                        external candidate RTL/oracle/harness/build material
+      flow.log          durable flow log
+
+    {resolution.root}/runs/<run-id>/functions/<contract-id>/
+      accepted/         compact accepted-RTL handoff reference
 
     library/accepted/<contract-id>/<contract-hash>/
       rtl/              immutable accepted RTL (content-addressed reference)
@@ -1477,7 +1913,12 @@ DSC PDF.
       contract/         locked contract (content-addressed reference)
 
     dashboard/          static HTML and normalized view models
-    reports/            readable regression-summary.md and per-function reports
+    build/              compact C build and analysis-preflight receipts only
+    dashboard/data/ci-frontier.json
+                        current tool-selected ready/candidate/blocker frontier
+    dashboard/data/traceability.json
+                        repository-wide exact/proposed/reviewed/orphan audit
+    reports/            readable regression-summary.md, orphan triage, and per-function reports
     library/index.json  accepted-library index with stale/provenance checks
     path-map.json       legacy-to-new path mapping
 
@@ -1704,6 +2145,12 @@ def build_dataset(
     source_gate = selected_run.get("source_gate") or (
         functions[0].get("source_gate") if functions else {}
     )
+    ci_frontier = load_ci_frontier(repo)
+    traceability = make_traceability_index(functions)
+    traceability_audit = make_traceability_audit(repo)
+    traceability["global_audit"] = traceability_audit
+    repository_hygiene = repository_hygiene_model(repo)
+    analysis_preflight = analysis_preflight_model(repo)
     overview = {
         "schema_version": 1,
         "selected_run": selected_summary,
@@ -1712,12 +2159,19 @@ def build_dataset(
             "pdf": spec.get("spec", {}),
             "source": spec.get("source", {}),
             "source_gate": source_gate,
+            "analysis_preflight": analysis_preflight,
             "spec_status": (
                 "AVAILABLE"
                 if Path(str(spec.get("spec", {}).get("path", ""))).is_file()
                 else "SPEC_UNAVAILABLE"
             ),
         },
+        "ci_frontier": ci_frontier,
+        "traceability": {
+            key: traceability_audit[key]
+            for key in ("available", "receipt", "receipt_sha256", "counts", "reports", "library_projection")
+        },
+        "repository_hygiene": repository_hygiene,
         "counts": dict(sorted(counts.items())),
         "progress": {
             "functions": {
@@ -1740,9 +2194,10 @@ def build_dataset(
         records=records,
         selected_run_id=selected_id,
         overview=overview,
+        ci_frontier=ci_frontier,
         functions=functions,
         runs=run_summaries,
-        traceability=make_traceability_index(functions),
+        traceability=traceability,
         library_index=make_library_index(repo, manifest, functions, resolution),
         path_map=make_path_map(repo, resolution.root, manifest, functions),
         docs=directory_layout_doc(resolution),
@@ -1865,7 +2320,7 @@ def report_function(item: dict[str, Any]) -> str:
 
 CSS = """
 :root{color-scheme:light;--ink:#17212b;--muted:#64748b;--line:#d8e0e8;--panel:#fff;--bg:#f5f7fa;--blue:#2563eb;--green:#16803c;--red:#b42318;--amber:#a15c00;--purple:#6941c6}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}.wrap{max-width:1500px;margin:0 auto;padding:28px 32px}header{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;margin-bottom:24px}h1{font-size:30px;line-height:1.15;margin:0 0 6px}h2{font-size:20px;margin:28px 0 12px}h3{font-size:16px;margin:22px 0 10px}.muted,.small{color:var(--muted);font-size:12px}.nav{display:flex;flex-wrap:wrap;gap:10px}.nav a,.button{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:7px 10px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}.card,.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:0 1px 2px #00000008}.card strong{font-size:26px;display:block}.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}@media(max-width:900px){.wrap{padding:20px 16px}.grid2{grid-template-columns:1fr}header{display:block}.nav{margin-top:14px}}table{border-collapse:collapse;width:100%;background:var(--panel)}th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}th{position:sticky;top:0;background:#eef3f8;z-index:1;cursor:pointer;font-size:12px}tr:hover td{background:#f8fbff}.table-scroll{overflow:auto;border:1px solid var(--line);border-radius:10px}.pill{display:inline-block;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:700;white-space:nowrap}.PASS{background:#dcfce7;color:#166534}.FAIL,.INFRASTRUCTURE_FAILURE{background:#fee4e2;color:#9b1c1c}.BLOCKED{background:#fff0c2;color:#8a4b00}.RUNNING{background:#dbeafe;color:#1e40af}.UNPROVED{background:#eee9fe;color:#5b35a2}.bar{height:10px;border-radius:999px;background:#e8edf2;overflow:hidden;min-width:120px}.bar>i{height:100%;display:block;background:var(--blue)}.bar.green>i{background:var(--green)}.statline{display:flex;justify-content:space-between;gap:12px;margin:8px 0}.failure{border-left:4px solid var(--red);padding:10px 12px;background:#fff5f4;margin:8px 0}.notice{border-left:4px solid var(--amber);padding:10px 12px;background:#fff9e8;margin:10px 0}.chain{display:grid;grid-template-columns:repeat(6,minmax(100px,1fr));gap:8px}@media(max-width:900px){.chain{grid-template-columns:repeat(2,1fr)}}.chain div{border:1px solid var(--line);border-radius:8px;padding:10px;background:#fbfcfe}.chain b{display:block;margin-bottom:4px}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;word-break:break-word}.nowrap{white-space:nowrap}input,select{padding:8px;border:1px solid var(--line);border-radius:7px;background:#fff}.filters{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}a{color:var(--blue);text-decoration:none}a:hover{text-decoration:underline}.wrap{max-width:1500px;margin:0 auto;padding:28px 32px}header{display:flex;justify-content:space-between;gap:24px;align-items:flex-start;margin-bottom:24px}h1{font-size:30px;line-height:1.15;margin:0 0 6px}h2{font-size:20px;margin:28px 0 12px}h3{font-size:16px;margin:22px 0 10px}.muted,.small{color:var(--muted);font-size:12px}.nav{display:flex;flex-wrap:wrap;gap:10px}.nav a,.button{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:7px 10px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px}.card,.panel{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px;box-shadow:0 1px 2px #00000008}.card strong{font-size:26px;display:block}.grid2{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}@media(max-width:900px){.wrap{padding:20px 16px}.grid2{grid-template-columns:1fr}header{display:block}.nav{margin-top:14px}}table{border-collapse:collapse;width:100%;background:var(--panel)}th,td{border-bottom:1px solid var(--line);padding:9px 10px;text-align:left;vertical-align:top}th{position:sticky;top:0;background:#eef3f8;z-index:1;cursor:pointer;font-size:12px}tr:hover td{background:#f8fbff}.table-scroll{overflow:auto;border:1px solid var(--line);border-radius:10px}.pill{display:inline-block;border-radius:999px;padding:2px 8px;font-size:11px;font-weight:700;white-space:nowrap}.PASS{background:#dcfce7;color:#166534}.FAIL,.INFRASTRUCTURE_FAILURE,.STALE{background:#fee4e2;color:#9b1c1c}.BLOCKED,.PROPOSED{background:#fff0c2;color:#8a4b00}.REVIEWED{background:#dcfce7;color:#166534}.RUNNING,.NEW,.READY{background:#dbeafe;color:#1e40af}.UNPROVED{background:#eee9fe;color:#5b35a2}.bar{height:10px;border-radius:999px;background:#e8edf2;overflow:hidden;min-width:120px}.bar>i{height:100%;display:block;background:var(--blue)}.bar.green>i{background:var(--green)}.statline{display:flex;justify-content:space-between;gap:12px;margin:8px 0}.failure{border-left:4px solid var(--red);padding:10px 12px;background:#fff5f4;margin:8px 0}.notice{border-left:4px solid var(--amber);padding:10px 12px;background:#fff9e8;margin:8px 0}.chain{display:grid;grid-template-columns:repeat(6,minmax(100px,1fr));gap:8px}@media(max-width:900px){.chain{grid-template-columns:repeat(2,1fr)}}.chain div{border:1px solid var(--line);border-radius:8px;padding:10px;background:#fbfcfe}.chain b{display:block;margin-bottom:4px}.code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;word-break:break-word}.nowrap{white-space:nowrap}input,select{padding:8px;border:1px solid var(--line);border-radius:7px;background:#fff}.filters{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
 """
 
 
@@ -1916,6 +2371,264 @@ def bar(label: str, passed: int | None, total: int | None, color: str = "") -> s
     )
 
 
+def render_ci_frontier(frontier: dict[str, Any]) -> str:
+    """Render current migration queue and blockers, independent of run status."""
+    counts = frontier.get("counts", {}) if isinstance(frontier, dict) else {}
+    body = (
+        '<section class="grid2"><div class="panel"><h2>Migration frontier</h2>'
+        f'<div class="statline"><span>Ready contracts</span><b>{html.escape(str(counts.get("ready", 0)))}</b></div>'
+        f'<div class="statline"><span>New candidates</span><b>{html.escape(str(counts.get("new_candidates", 0)))}</b></div>'
+        f'<div class="statline"><span>Current blockers</span><b>{html.escape(str(counts.get("blocked", 0)))}</b></div>'
+        f'<p class="small">Source: {html.escape(", ".join(frontier.get("source_files", [])))}</p>'
+        '</div><div class="panel"><h2>Candidate queue</h2>'
+    )
+    queue = frontier.get("candidate_queue", []) if isinstance(frontier, dict) else []
+    if queue:
+        body += (
+            '<div class="table-scroll"><table><thead><tr><th>Contract</th>'
+            '<th>Function</th><th>Queue</th><th>Current status</th><th>Reason / next action</th>'
+            '</tr></thead><tbody>'
+        )
+        for item in queue:
+            reasons = "; ".join(item.get("reasons") or []) or "ready for the next deterministic stage"
+            body += (
+                f'<tr><td class="code">{html.escape(str(item.get("contract_id")))}</td>'
+                f'<td>{html.escape(str(item.get("function") or "—"))}</td>'
+                f'<td>{html_status(item.get("queue_state"))}</td>'
+                f'<td>{html_status(item.get("current_status"))}</td>'
+                f'<td>{html.escape(reasons)}</td></tr>'
+            )
+        body += "</tbody></table></div>"
+    else:
+        body += '<div class="panel">No pending candidate in the current CI frontier.</div>'
+    body += "</div></section>"
+
+    blockers = frontier.get("blockers", []) if isinstance(frontier, dict) else []
+    body += '<section><h2>CI blockers requiring attention</h2>'
+    if blockers:
+        for item in blockers:
+            reasons = "; ".join(item.get("reasons") or []) or "blocked"
+            body += (
+                f'<div class="failure"><b>{html.escape(str(item.get("function") or item.get("contract_id")))}</b> '
+                f'<span class="code">{html.escape(str(item.get("contract_id")))}</span> '
+                f'{html_status(item.get("status"))}<br>{html.escape(reasons)}</div>'
+            )
+    else:
+        body += '<div class="panel">No current CI blocker.</div>'
+    return body + "</section>"
+
+
+def render_traceability_summary(audit: dict[str, Any], *, link_href: str) -> str:
+    counts = audit.get("counts", {}) if isinstance(audit, dict) else {}
+    if not audit.get("available"):
+        return (
+            '<section><h2>Traceability audit</h2><div class="panel">'
+            'No repository-wide traceability receipt is available; the selected '
+            'library projection remains below.</div></section>'
+        )
+    cards = [
+        ("Generated links", counts.get("link_count", 0)),
+        ("Exact", counts.get("exact_count", 0)),
+        ("Proposed", counts.get("proposed_count", 0)),
+        ("Reviewed", counts.get("reviewed_count", 0)),
+        ("Accepted library links", counts.get("accepted_library_link_count", 0)),
+        ("PDF orphans", counts.get("untraced_spec_anchor_count", 0)),
+        ("C function orphans", counts.get("untraced_production_function_count", 0)),
+    ]
+    card_html = "".join(
+        f'<div class="card"><div class="muted">{html.escape(str(label))}</div>'
+        f'<strong>{html.escape(str(value))}</strong></div>'
+        for label, value in cards
+    )
+    projection = audit.get("library_projection", {}) if isinstance(audit.get("library_projection"), dict) else {}
+    projection_status = projection.get("status", "NOT_CONFIGURED")
+    projection_links = projection.get("links_added", counts.get("accepted_library_link_count", 0))
+    return (
+        '<section><h2>Traceability audit</h2>'
+        f'<section class="cards">{card_html}</section>'
+        '<div class="panel"><p>Repository-wide links are tool-generated. '
+        'PROPOSED links and orphan lists remain human-review work; they are not '
+        'promoted by the dashboard.</p>'
+        f'<p class="small">Accepted library projection: {html.escape(str(projection_status))}; '
+        f'{html.escape(str(projection_links))} links added from hash-checked PASS contracts.</p>'
+        f'<a class="button" href="{html.escape(link_href)}">Open complete traceability audit</a>'
+        '</div></section>'
+    )
+
+
+def render_repository_traceability_audit(audit: dict[str, Any]) -> str:
+    if not audit.get("available"):
+        return (
+            '<section><h2>Repository-wide audit</h2><div class="panel">'
+            'The generated traceability/traceability.json receipt is unavailable. '
+            'Only the selected library links can be displayed.</div></section>'
+        )
+    counts = audit.get("counts", {})
+    projection = audit.get("library_projection", {}) if isinstance(audit.get("library_projection"), dict) else {}
+    body = (
+        '<section><h2>Repository-wide audit</h2>'
+        '<div class="panel"><div class="statline"><span>Receipt</span>'
+        f'<span class="code">{html.escape(str(audit.get("receipt")))}</span></div>'
+        f'<div class="statline"><span>Production anchors linked</span><b>'
+        f'{html.escape(str(counts.get("linked_production_anchor_count", 0)))} / '
+        f'{html.escape(str(counts.get("production_anchor_count", 0)))}</b></div>'
+        f'<div class="statline"><span>PDF anchors linked</span><b>'
+        f'{html.escape(str(counts.get("linked_spec_anchor_count", 0)))} / '
+        f'{html.escape(str(counts.get("spec_anchor_count", 0)))}</b></div>'
+        f'<div class="statline"><span>Accepted library links projected</span><b>'
+        f'{html.escape(str(counts.get("accepted_library_link_count", 0)))} '
+        f'({html.escape(str(projection.get("status", "NOT_CONFIGURED")))})</b></div>'
+        '<p class="small">Exact links are supported by direct evidence. Proposed '
+        'links are review candidates only; orphaned anchors remain unresolved.</p>'
+    )
+    report_links = audit.get("reports", {}) if isinstance(audit.get("reports"), dict) else {}
+    if report_links:
+        body += '<p>Readable reports: ' + ", ".join(
+            f'<a href="{html.escape(str(href))}">{html.escape(str(label))}</a>'
+            for label, href in sorted(report_links.items())
+        ) + "</p>"
+    body += "</div>"
+
+    queue = audit.get("review_queue", []) if isinstance(audit.get("review_queue"), list) else []
+    body += '<h3>Proposed links awaiting human review</h3>'
+    if queue:
+        body += (
+            '<div class="table-scroll"><table><thead><tr><th>Spec anchor</th>'
+            '<th>Function</th><th>Method</th><th>Evidence</th><th>C source</th>'
+            '</tr></thead><tbody>'
+        )
+        for link in queue:
+            code_href = link.get("code_permalink")
+            code_label = f'{link.get("code_file", "—")}:{link.get("code_line", "—")}'
+            code = (
+                f'<a href="{html.escape(str(code_href))}">{html.escape(code_label)}</a>'
+                if code_href else html.escape(code_label)
+            )
+            body += (
+                f'<tr><td class="code">{html.escape(str(link.get("spec_anchor_id", "—")))}</td>'
+                f'<td>{html.escape(str(link.get("function", "—")))}</td>'
+                f'<td>{html_status(link.get("status"))}<br>{html.escape(str(link.get("method", "—")))}</td>'
+                f'<td>{html.escape(str(link.get("evidence", "—")))}</td><td>{code}</td></tr>'
+            )
+        body += '</tbody></table></div>'
+    else:
+        body += '<div class="panel">No proposed link is awaiting human review.</div>'
+
+    all_links = audit.get("links", []) if isinstance(audit.get("links"), list) else []
+    body += (
+        f'<details class="panel"><summary>All repository-wide generated links '
+        f'({html.escape(str(len(all_links)))})</summary>'
+        '<div class="table-scroll"><table><thead><tr><th>Status</th><th>Spec anchor</th>'
+        '<th>Function</th><th>Method</th><th>C source</th></tr></thead><tbody>'
+    )
+    for link in all_links:
+        code_href = link.get("code_permalink")
+        code_label = f'{link.get("code_file", "—")}:{link.get("code_line", "—")}'
+        code = (
+            f'<a href="{html.escape(str(code_href))}">{html.escape(code_label)}</a>'
+            if code_href else html.escape(code_label)
+        )
+        body += (
+            f'<tr><td>{html_status(link.get("status"))}</td>'
+            f'<td class="code">{html.escape(str(link.get("spec_anchor_id", "—")))}</td>'
+            f'<td>{html.escape(str(link.get("function", "—")))}</td>'
+            f'<td>{html.escape(str(link.get("method", "—")))}</td><td>{code}</td></tr>'
+        )
+    body += '</tbody></table></div></details>'
+
+    orphans = audit.get("orphans", {}) if isinstance(audit.get("orphans"), dict) else {}
+    spec_orphans = orphans.get("spec_anchor_ids", []) if isinstance(orphans.get("spec_anchor_ids"), list) else []
+    code_orphans = orphans.get("production_code_anchor_ids", []) if isinstance(orphans.get("production_code_anchor_ids"), list) else []
+
+    def orphan_details(title: str, values: list[Any]) -> str:
+        items = "".join(f'<li class="code">{html.escape(str(value))}</li>' for value in values)
+        return (
+            f'<details class="panel"><summary>{html.escape(title)} '
+            f'({html.escape(str(len(values)))})</summary><ul>{items}</ul></details>'
+        )
+
+    body += (
+        '<h3>Unresolved traceability queue</h3>'
+        '<div class="grid2">'
+        + orphan_details("PDF anchors without a code link", spec_orphans)
+        + orphan_details("Production functions without a spec link", code_orphans)
+        + '</div></section>'
+    )
+    triage = audit.get("orphan_triage", {}) if isinstance(audit.get("orphan_triage"), dict) else {}
+    triage_summary = triage.get("summary", {}) if isinstance(triage.get("summary"), dict) else {}
+    code_triage = triage.get("production_code", []) if isinstance(triage.get("production_code"), list) else []
+    spec_triage = triage.get("spec", []) if isinstance(triage.get("spec"), list) else []
+    code_actions = triage_summary.get("production_code_next_actions", {})
+    spec_actions = triage_summary.get("spec_next_actions", {})
+
+    def action_summary(values: Any) -> str:
+        if not isinstance(values, dict) or not values:
+            return "none"
+        return ", ".join(
+            f'<span class="code">{html.escape(str(key))}</span> ({html.escape(str(value))})'
+            for key, value in sorted(values.items())
+        )
+
+    body += '<section><h3>Deterministic orphan triage</h3>'
+    body += (
+        '<div class="panel"><p>These next actions are derived from the Clang, candidate, coverage, '
+        'comment, and PDF-anchor facts. They are review guidance only; no link or RTL target is promoted.</p>'
+        f'<div class="statline"><span>Production actions</span><span>{action_summary(code_actions)}</span></div>'
+        f'<div class="statline"><span>PDF actions</span><span>{action_summary(spec_actions)}</span></div></div>'
+    )
+    body += (
+        f'<details class="panel"><summary>Production orphan triage ({html.escape(str(len(code_triage)))})</summary>'
+        '<div class="table-scroll"><table><thead><tr><th>Function</th><th>Source</th>'
+        '<th>Next action</th><th>Tool facts</th><th>Coverage</th><th>Evidence</th></tr></thead><tbody>'
+    )
+    for item in code_triage:
+        candidate = item.get("candidate") if isinstance(item.get("candidate"), dict) else {}
+        coverage = item.get("coverage") if isinstance(item.get("coverage"), dict) else {}
+        source_label = f'{item.get("file", "—")}:{item.get("line", "—")}'
+        permalink = item.get("permalink")
+        source = (
+            f'<a href="{html.escape(str(permalink))}">{html.escape(source_label)}</a>'
+            if permalink else html.escape(source_label)
+        )
+        facts = (
+            f'rank {html.escape(str(candidate.get("rank", "—")))} / '
+            f'score {html.escape(str(candidate.get("score", "—")))}<br>'
+            f'eligible {html.escape(str(candidate.get("eligible", "—")))} · '
+            f'{html.escape(str(candidate.get("purity", "—")))} / '
+            f'{html.escape(str(candidate.get("timing", "—")))}'
+        )
+        coverage_text = (
+            f'{html.escape(str(coverage.get("status", "—")))}<br>'
+            f'exec {html.escape(str(coverage.get("execution_count", "—")))} · '
+            f'after {html.escape(str(coverage.get("eligible_after_coverage", "—")))}'
+        )
+        evidence = (
+            f'{html.escape(str(item.get("rationale", "—")))}<br>'
+            f'C comments: {html.escape(str(len(item.get("comments", []))))}'
+        )
+        body += (
+            f'<tr><td class="code">{html.escape(str(item.get("function", "—")))}</td>'
+            f'<td>{source}</td><td class="code">{html.escape(str(item.get("next_action", "—")))}</td>'
+            f'<td>{facts}</td><td>{coverage_text}</td><td>{evidence}</td></tr>'
+        )
+    body += '</tbody></table></div></details>'
+    body += (
+        f'<details class="panel"><summary>PDF orphan triage ({html.escape(str(len(spec_triage)))})</summary>'
+        '<div class="table-scroll"><table><thead><tr><th>Anchor</th><th>Kind/page</th>'
+        '<th>Next action</th><th>Related C functions</th><th>Evidence</th></tr></thead><tbody>'
+    )
+    for item in spec_triage:
+        related = ", ".join(str(value) for value in item.get("related_code_functions", [])) or "none"
+        body += (
+            f'<tr><td class="code">{html.escape(str(item.get("spec_anchor_id", "—")))}</td>'
+            f'<td>{html.escape(str(item.get("kind", "—")))} / {html.escape(str(item.get("page", "—")))}</td>'
+            f'<td class="code">{html.escape(str(item.get("next_action", "—")))}</td>'
+            f'<td>{html.escape(related)}</td><td>{html.escape(str(item.get("rationale", "—")))}</td></tr>'
+        )
+    body += '</tbody></table></div></details></section>'
+    return body
+
+
 def render_index(dataset: Dataset) -> str:
     overview = dataset.overview
     storage = dataset.resolution
@@ -1926,6 +2639,8 @@ def render_index(dataset: Dataset) -> str:
         ("Frame sanity", overview["progress"]["frames"]["display"]),
         ("Vectors", f"{overview['progress']['vectors']:,}"),
         ("Indexed runs", dataset.overview["run_count"]),
+        ("CI blockers", overview["ci_frontier"]["counts"]["blocked"]),
+        ("Handoff hygiene", overview.get("repository_hygiene", {}).get("status", "NOT_CONFIGURED")),
     ]
     card_html = "".join(
         f'<div class="card"><div class="muted">{html.escape(str(label))}</div>'
@@ -1953,6 +2668,16 @@ def render_index(dataset: Dataset) -> str:
         if overview["source"]["spec_status"] == "AVAILABLE"
         else '<div class="failure"><b>SPEC_UNAVAILABLE</b>: the recorded PDF path is not readable; traceability links remain visible but are not asserted.</div>'
     )
+    preflight = overview["source"].get("analysis_preflight", {})
+    if preflight.get("status") == "INFRASTRUCTURE_FAILURE":
+        missing = ", ".join(preflight.get("missing_tools") or []) or "see receipt"
+        source_notice += (
+            '<div class="failure"><b>ANALYSIS_PREFLIGHT</b>: '
+            f'analysis is blocked by missing tools: {html.escape(missing)}. '
+            f'<a href="../{html.escape(str(preflight.get("receipt", "build/analysis-preflight.json")))}">Open receipt</a>.</div>'
+        )
+    elif preflight.get("status") == "PASS":
+        source_notice += '<div class="panel"><b>ANALYSIS_PREFLIGHT</b>: all required analysis tools are available.</div>'
     body = header(
         "DSC regression dashboard",
         f"run {selected.get('run_id')} · {selected.get('status')} · JSON receipts are authoritative",
@@ -1971,6 +2696,18 @@ def render_index(dataset: Dataset) -> str:
         + progress_bars
         + "</div></section>"
     )
+    hygiene = overview.get("repository_hygiene", {})
+    hygiene_class = "panel" if hygiene.get("status") in {"PASS", "NOT_CONFIGURED"} else "failure"
+    body += (
+        f'<section class="{hygiene_class}"><h2>Handoff hygiene</h2>'
+        f'<p>Status: {html_status(hygiene.get("status"))}; '
+        f'{html.escape(str(hygiene.get("forbidden_count", 0)))} forbidden tracked files.</p>'
+        f'<p class="muted">Generated candidates, logs, vectors, and simulator build trees belong at '
+        f'<span class="code">DSC_REGRESSION_ROOT</span>; this checkout keeps compact receipts and accepted RTL.</p>'
+        f'</section>'
+    )
+    body += render_traceability_summary(overview.get("traceability", {}), link_href="traceability.html")
+    body += render_ci_frontier(overview["ci_frontier"])
     body += (
         '<h2>Function regression table</h2><div class="filters">'
         '<input id="filter" placeholder="filter function, contract, blocker…">'
@@ -2065,7 +2802,7 @@ def render_history(dataset: Dataset) -> str:
             f'<td>{html.escape(str(run.get("function_count")))}</td>'
             f'<td>{html.escape(str(run.get("candidates", {}).get("display")))}</td>'
             f'<td>{html.escape(str(run.get("frames", {}).get("display")))}</td>'
-            f'<td>{html.escape(f"{run.get("vectors", 0):,}")}</td>'
+            f'<td>{html.escape(format(run.get("vectors", 0), ","))}</td>'
             f'<td class="small">source {html.escape(str(run.get("source_hash")))}<br>'
             f'spec {html.escape(str(run.get("spec_hash")))}</td></tr>'
         )
@@ -2095,8 +2832,11 @@ def render_history(dataset: Dataset) -> str:
 def render_traceability(dataset: Dataset) -> str:
     body = header(
         "Traceability index",
-        "Bidirectional Spec -> C -> Contract -> RTL -> Verification links",
+        "Repository-wide PDF <-> C audit plus accepted Spec -> C -> Contract -> RTL -> Verification links",
         [("Overview", "index.html"), ("History", "history.html")],
+    )
+    body += render_repository_traceability_audit(
+        dataset.traceability.get("global_audit", {})
     )
     body += (
         '<h2>Spec -> code / functions</h2><div class="table-scroll"><table><thead>'
@@ -2154,6 +2894,7 @@ def write_site(dataset: Dataset, site_root: Path) -> list[Path]:
         (site_root / "data" / "overview.json", dataset.overview),
         (site_root / "data" / "runs.json", dataset.runs),
         (site_root / "data" / "traceability.json", dataset.traceability),
+        (site_root / "data" / "ci-frontier.json", dataset.ci_frontier),
     ):
         write_json(path, value)
         outputs.append(path)
@@ -2237,11 +2978,21 @@ def relative_files(root: Path) -> list[Path]:
 def check_site(repo: Path, output: Path | None = None) -> tuple[bool, list[str]]:
     site = (output or (repo / "dashboard")).resolve()
     errors: list[str] = []
+    hygiene = repository_hygiene_model(repo)
+    if hygiene.get("available") and hygiene.get("status") != "PASS":
+        forbidden = ", ".join(item.get("path", "") for item in hygiene.get("forbidden", [])[:8])
+        suffix = "…" if hygiene.get("forbidden_count", 0) > 8 else ""
+        errors.append(
+            "handoff hygiene failed: "
+            f"{hygiene.get('forbidden_count', 0)} forbidden tracked files"
+            + (f" ({forbidden}{suffix})" if forbidden else "")
+        )
     required = [
         site / "index.html",
         site / "history.html",
         site / "traceability.html",
         site / "manifest.json",
+        site / "data" / "traceability.json",
         repo / "reports" / "regression-summary.md",
         repo / "library" / "index.json",
         repo / "path-map.json",
@@ -2259,6 +3010,52 @@ def check_site(repo: Path, output: Path | None = None) -> tuple[bool, list[str]]
             errors.append(f"missing function view model: {cid}")
         if not (repo / "reports" / "functions" / f"{safe_id(cid)}.md").is_file():
             errors.append(f"missing function report: {cid}")
+    frontier = read_json(site / "data" / "ci-frontier.json", {}) or {}
+    if not isinstance(frontier, dict):
+        errors.append("invalid CI frontier view model")
+    else:
+        for item in frontier.get("blockers", []) if isinstance(frontier.get("blockers"), list) else []:
+            if item.get("status") != "BLOCKED":
+                errors.append(f"invalid CI blocker status: {item.get('contract_id')}")
+    traceability = read_json(site / "data" / "traceability.json", {}) or {}
+    if not isinstance(traceability, dict):
+        errors.append("invalid traceability view model")
+    else:
+        audit = traceability.get("global_audit", {})
+        if not isinstance(audit, dict):
+            errors.append("invalid repository-wide traceability audit")
+        elif audit.get("available"):
+            counts = audit.get("counts", {})
+            for key in (
+                "link_count",
+                "exact_count",
+                "proposed_count",
+                "reviewed_count",
+                "accepted_library_link_count",
+                "untraced_spec_anchor_count",
+                "untraced_production_function_count",
+            ):
+                if not isinstance(counts.get(key), int) or counts.get(key) < 0:
+                    errors.append(f"invalid traceability count: {key}")
+            triage = audit.get("orphan_triage", {})
+            if triage and not isinstance(triage, dict):
+                errors.append("invalid traceability orphan triage")
+            elif isinstance(triage, dict):
+                for key in ("production_code", "spec"):
+                    if key in triage and not isinstance(triage.get(key), list):
+                        errors.append(f"invalid traceability orphan triage list: {key}")
+                summary = triage.get("summary", {})
+                if summary and not isinstance(summary, dict):
+                    errors.append("invalid traceability orphan triage summary")
+            projection = audit.get("library_projection", {})
+            if not isinstance(projection, dict):
+                errors.append("invalid traceability library projection")
+            else:
+                if projection.get("status") not in {"PASS", "STALE_INPUT", "INVALID", "NOT_CONFIGURED"}:
+                    errors.append("invalid traceability library projection status")
+                for key in ("components_seen", "components_eligible", "links_added"):
+                    if not isinstance(projection.get(key), int) or projection.get(key) < 0:
+                        errors.append(f"invalid traceability library projection count: {key}")
     if site.is_dir():
         for path in relative_files(site):
             if path.suffix != ".html":
@@ -2543,13 +3340,78 @@ def report_summary(dataset: Dataset) -> str:
         f"| Frame sanity | {overview['progress']['frames']['display']} |",
         f"| Vectors executed | {overview['progress']['vectors']} |",
         f"| Runs indexed | {overview['run_count']} |",
+        f"| Handoff hygiene | {md_escape((overview.get('repository_hygiene') or {}).get('status', 'NOT_CONFIGURED'))} |",
         "", "## Source gate", "",
     ]
     source = overview["source"]
     lines += [
         f"- PDF: {source['spec_status']}; {md_escape((source.get('pdf') or {}).get('path'))}",
         f"- Source/build gate: {md_escape((source.get('source_gate') or {}).get('status'))}",
+        f"- Analysis-tool preflight: {md_escape((source.get('analysis_preflight') or {}).get('status', 'NOT_CONFIGURED'))}; "
+        f"missing: {md_escape(', '.join((source.get('analysis_preflight') or {}).get('missing_tools', [])) or 'none')}",
         "- PDF and C source remain external/immutable inputs.", "",
+        "## Handoff storage", "",
+        "Generated candidates, logs, vectors, and simulator build trees are external durable artifacts; only compact receipts, contracts, reports, and accepted RTL belong in this checkout.",
+        f"- Tracked-file gate: {md_escape((overview.get('repository_hygiene') or {}).get('status', 'NOT_CONFIGURED'))}",
+        "",
+        "## Traceability audit", "",
+    ]
+    traceability = overview.get("traceability", {})
+    trace_counts = traceability.get("counts", {}) if isinstance(traceability, dict) else {}
+    if traceability.get("available"):
+        lines += [
+            "The repository-wide traceability receipt is authoritative for discovery, "
+            "but proposed links and orphaned anchors remain human-review work.", "",
+            "| Measure | Result |", "|---|---:|",
+            f"| Generated links | {trace_counts.get('link_count', 0)} |",
+            f"| Exact / proposed / reviewed | {trace_counts.get('exact_count', 0)} / {trace_counts.get('proposed_count', 0)} / {trace_counts.get('reviewed_count', 0)} |",
+            f"| Accepted library links / projection | {trace_counts.get('accepted_library_link_count', 0)} / {md_escape((traceability.get('library_projection') or {}).get('status', 'NOT_CONFIGURED'))} |",
+            f"| PDF anchors linked / total | {trace_counts.get('linked_spec_anchor_count', 0)} / {trace_counts.get('spec_anchor_count', 0)} |",
+            f"| Production anchors linked / total | {trace_counts.get('linked_production_anchor_count', 0)} / {trace_counts.get('production_anchor_count', 0)} |",
+            f"| Untraced PDF anchors | {trace_counts.get('untraced_spec_anchor_count', 0)} |",
+            f"| Untraced production functions | {trace_counts.get('untraced_production_function_count', 0)} |",
+        ]
+        if traceability.get("reports"):
+            lines.append(
+                "Readable audit: "
+                + ", ".join(
+                    f"[{label}]({href})"
+                    for label, href in sorted(traceability["reports"].items())
+                )
+                + "."
+            )
+    else:
+        lines.append("No repository-wide traceability receipt was available.")
+    lines += [
+        "", "## Migration frontier", "",
+        f"- Ready contracts: {md_escape(', '.join(overview['ci_frontier'].get('ready_contracts', [])) or 'none')}",
+        f"- New candidates: {md_escape(', '.join(overview['ci_frontier'].get('new_candidates', [])) or 'none')}",
+        f"- Generator invocations: {overview['ci_frontier'].get('generator_invocations', 0)}; model calls: {overview['ci_frontier'].get('model_calls', 0)}",
+    ]
+    frontier_queue = overview["ci_frontier"].get("candidate_queue", [])
+    if frontier_queue:
+        lines += [
+            "", "| Candidate | Function | Queue | Current status | Reason / next action |",
+            "|---|---|---|---|---|",
+        ]
+        for item in frontier_queue:
+            lines.append(
+                f"| {md_escape(item.get('contract_id'))} | {md_escape(item.get('function'))} | "
+                f"{md_escape(item.get('queue_state'))} | {md_escape(item.get('current_status'))} | "
+                f"{md_escape('; '.join(item.get('reasons') or []) or 'ready for the next deterministic stage')} |"
+            )
+    if overview["ci_frontier"].get("blockers"):
+        lines += ["", "### Current CI blockers", ""]
+        for item in overview["ci_frontier"]["blockers"]:
+            lines.append(
+                f"- {md_escape(item.get('function') or item.get('contract_id'))} "
+                f"({md_escape(item.get('contract_id'))}): "
+                f"{md_escape('; '.join(item.get('reasons') or []) or 'blocked')}"
+            )
+    else:
+        lines += ["", "There are no current CI blockers."]
+    lines += [
+        "",
         "## Function results", "",
         "| Function | Status | Stage | Candidates | Vectors | Unit/formal | Frame | Next action |",
         "|---|---|---|---|---:|---|---|---|",

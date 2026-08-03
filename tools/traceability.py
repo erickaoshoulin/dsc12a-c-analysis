@@ -18,7 +18,7 @@ import shutil
 import struct
 import subprocess
 import zlib
-from collections import defaultdict
+from collections import Counter, defaultdict
 from typing import Any
 from urllib.parse import urlparse
 
@@ -110,6 +110,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--candidates", required=True, type=pathlib.Path)
     parser.add_argument("--output-dir", required=True, type=pathlib.Path)
     parser.add_argument("--reviewed", required=True, type=pathlib.Path)
+    parser.add_argument("--library-manifest", type=pathlib.Path)
     return parser.parse_args()
 
 
@@ -952,8 +953,483 @@ def apply_reviewed(
     return links
 
 
+def apply_library_links(
+    links: list[dict[str, Any]],
+    library_manifest_path: pathlib.Path | None,
+    output_dir: pathlib.Path,
+    anchors: list[dict[str, Any]],
+    code_anchors: list[dict[str, Any]],
+    manifest: dict[str, Any],
+) -> tuple[list[dict[str, Any]], dict[str, Any]]:
+    """Project accepted library spec links into generated traceability.
+
+    A PASS library component is already a reviewed, content-addressed
+    contract.  Reusing its EXACT_SPEC links reduces duplicate human review,
+    but this projection is never a selector: it only joins an existing
+    accepted contract to an existing Clang code anchor and an existing PDF
+    anchor.  Stale or malformed library inputs are reported and ignored.
+    """
+    audit: dict[str, Any] = {
+        "schema_version": 1,
+        "status": "NOT_CONFIGURED",
+        "manifest": str(library_manifest_path) if library_manifest_path else None,
+        "manifest_sha256": None,
+        "components_seen": 0,
+        "components_eligible": 0,
+        "links_added": 0,
+        "skipped": {},
+    }
+    if library_manifest_path is None or not library_manifest_path.is_file():
+        return links, audit
+
+    try:
+        library = json.loads(library_manifest_path.read_text(encoding="utf-8"))
+        audit["manifest_sha256"] = sha256_file(library_manifest_path)
+    except (OSError, json.JSONDecodeError):
+        audit["status"] = "INVALID"
+        audit["skipped"] = {"invalid_manifest": 1}
+        return links, audit
+    if not isinstance(library, dict):
+        audit["status"] = "INVALID"
+        audit["skipped"] = {"invalid_manifest_shape": 1}
+        return links, audit
+
+    spec_sha = manifest.get("spec", {}).get("sha256", "UNKNOWN")
+    source_sha = manifest.get("source", {}).get("source_hashes_sha256", "UNKNOWN")
+    if library.get("spec_hash") != spec_sha or library.get("source_hash") != source_sha:
+        audit["status"] = "STALE_INPUT"
+        audit["skipped"] = {"library_input_hash_mismatch": 1}
+        return links, audit
+
+    components = library.get("components") if isinstance(library.get("components"), list) else []
+    audit["status"] = "PASS"
+    audit["components_seen"] = len(components)
+    anchor_by_id = {
+        str(item.get("anchor_id")): item
+        for item in anchors
+        if isinstance(item, dict) and item.get("anchor_id")
+    }
+    code_by_usr = {
+        str(item.get("clang_usr")): item
+        for item in code_anchors
+        if isinstance(item, dict) and item.get("clang_usr")
+    }
+    existing = {link_key(link) for link in links}
+    skipped: Counter[str] = Counter()
+    added: list[dict[str, Any]] = []
+
+    def component_sort_key(item: Any) -> str:
+        return str(item.get("contract_id", "")) if isinstance(item, dict) else ""
+
+    for component in sorted(components, key=component_sort_key):
+        if not isinstance(component, dict):
+            skipped["invalid_component"] += 1
+            continue
+        if component.get("status") != "PASS":
+            skipped["component_not_pass"] += 1
+            continue
+        if component.get("authority") != "EXACT_SPEC":
+            skipped["component_not_exact_spec"] += 1
+            continue
+        contract_id = str(component.get("contract_id", ""))
+        if not contract_id:
+            skipped["component_missing_id"] += 1
+            continue
+        contract_hash = str(component.get("contract_hash", ""))
+        if not contract_hash:
+            skipped["component_missing_hash"] += 1
+            continue
+        audit["components_eligible"] += 1
+        contract_paths = [
+            library_manifest_path.parent / "contracts" / f"{contract_id}.json",
+            output_dir / "library" / "contracts" / f"{contract_id}.json",
+        ]
+        contract_file = component.get("contract_file")
+        if contract_file:
+            contract_paths.append(output_dir / str(contract_file))
+        contract_path = next((path for path in contract_paths if path.is_file()), None)
+        if contract_path is None:
+            skipped["contract_file_missing"] += 1
+            continue
+        try:
+            contract = json.loads(contract_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            skipped["contract_file_invalid"] += 1
+            continue
+        if not isinstance(contract, dict) or contract.get("contract_id") != contract_id:
+            skipped["contract_identity_mismatch"] += 1
+            continue
+        function = contract.get("function") if isinstance(contract.get("function"), dict) else {}
+        clang_usr = str(function.get("clang_usr", ""))
+        code = code_by_usr.get(clang_usr)
+        if not code:
+            skipped["code_anchor_missing"] += 1
+            continue
+        spec_links = contract.get("spec_links") if isinstance(contract.get("spec_links"), list) else []
+        component_added = 0
+        for spec_link in spec_links:
+            if not isinstance(spec_link, dict) or spec_link.get("status") != "EXACT":
+                skipped["spec_link_not_exact"] += 1
+                continue
+            spec_anchor_id = str(spec_link.get("anchor_id", ""))
+            anchor = anchor_by_id.get(spec_anchor_id)
+            if not anchor:
+                skipped["spec_anchor_missing"] += 1
+                continue
+            key = (spec_anchor_id, str(code.get("code_anchor_id", "")))
+            if key in existing:
+                skipped["duplicate_link"] += 1
+                continue
+            link = {
+                "link_id": f"library-{contract_id}-{spec_anchor_id.replace(':', '-')}",
+                "status": "REVIEWED",
+                "method": "accepted_library_exact_spec",
+                "evidence": (
+                    f"Accepted PASS library component {contract_id} carries an EXACT_SPEC "
+                    f"link to {spec_anchor_id}"
+                ),
+                "spec_anchor_id": spec_anchor_id,
+                "spec_page": anchor.get("page", spec_link.get("page")),
+                "spec_section": anchor.get("section_id")
+                if anchor.get("kind") == "model_note"
+                else anchor.get("identifier") if anchor.get("kind") == "section" else None,
+                "spec_sha256": spec_sha,
+                "code_anchor_id": code.get("code_anchor_id"),
+                "function": code.get("function"),
+                "clang_usr": clang_usr,
+                "code_file": code.get("file"),
+                "code_line": code.get("line"),
+                "code_permalink": code.get("permalink"),
+                "source_hashes_sha256": source_sha,
+                "review_note": "Projected from accepted PASS library contract; human promotion already approved the contract.",
+                "library_contract_id": contract_id,
+                "library_contract_hash": contract_hash,
+                "library_manifest_sha256": audit["manifest_sha256"],
+            }
+            links.append(link)
+            added.append(link)
+            existing.add(key)
+            component_added += 1
+        if component_added == 0:
+            skipped["component_no_new_links"] += 1
+
+    audit["links_added"] = len(added)
+    audit["skipped"] = dict(sorted(skipped.items()))
+    return links, audit
+
+
+def _comment_view(comment: dict[str, Any]) -> dict[str, Any]:
+    refs = comment.get("spec_refs") if isinstance(comment.get("spec_refs"), dict) else {}
+    return {
+        "comment_id": comment.get("comment_id"),
+        "file": comment.get("file"),
+        "line": comment.get("line"),
+        "end_line": comment.get("end_line"),
+        "function": comment.get("function"),
+        "mn_ids": sorted(str(value) for value in comment.get("mn_ids", []) if value),
+        "spec_refs": {
+            key: sorted(value for value in refs.get(key, []) if value is not None)
+            for key in ("sections", "tables", "figures", "pages")
+            if refs.get(key)
+        },
+        "text": compact_text(str(comment.get("text", "")), 240),
+        "permalink": comment.get("permalink"),
+    }
+
+
+def _candidate_view(candidate: dict[str, Any] | None, rank: int | None) -> dict[str, Any] | None:
+    if not candidate:
+        return None
+    return {
+        "rank": rank,
+        "score": candidate.get("score"),
+        "confidence": candidate.get("confidence"),
+        "eligible": candidate.get("eligible"),
+        "production_reachable": candidate.get("production_reachable"),
+        "contributes_to_observable_output": candidate.get("contributes_to_observable_output"),
+        "bounded_computation": candidate.get("bounded_computation"),
+        "purity": candidate.get("purity"),
+        "timing": candidate.get("timing"),
+        "role": candidate.get("role"),
+        "direct_effects": candidate.get("direct_effects", {}),
+        "transitive_effects": candidate.get("transitive_effects", {}),
+        "evidence": [str(value) for value in candidate.get("evidence", [])],
+    }
+
+
+def _coverage_view(coverage: dict[str, Any] | None) -> dict[str, Any] | None:
+    if not coverage:
+        return None
+    details = coverage.get("coverage") if isinstance(coverage.get("coverage"), dict) else {}
+    return {
+        "status": coverage.get("coverage_status"),
+        "eligible_after_coverage": coverage.get("eligible_after_coverage"),
+        "execution_count": details.get("execution_count"),
+        "line_coverage_percent": details.get("line_coverage_percent"),
+        "branch_coverage_percent": details.get("branch_coverage_percent"),
+        "region_coverage_percent": details.get("region_coverage_percent"),
+        "profile": coverage.get("profile"),
+    }
+
+
+def _raw_function_view(function: dict[str, Any] | None) -> dict[str, Any] | None:
+    if not function:
+        return None
+    proposal = function.get("proposal") if isinstance(function.get("proposal"), dict) else {}
+    fields_write = function.get("fields_write") if isinstance(function.get("fields_write"), list) else []
+    return {
+        "return_type": function.get("return_type"),
+        "parameter_count": len(function.get("parameters", [])),
+        "pointer_modes": [
+            item.get("mode")
+            for item in function.get("pointer_parameters", [])
+            if isinstance(item, dict) and item.get("mode")
+        ],
+        "callers": sorted({str(item.get("name")) for item in function.get("callers", []) if isinstance(item, dict) and item.get("name")}),
+        "callees": sorted({str(item.get("name")) for item in function.get("callees", []) if isinstance(item, dict) and item.get("name")}),
+        "loop_count": function.get("loop_count", len(function.get("loops", []))),
+        "unknown_facts": [str(value) for value in function.get("unknown_facts", [])],
+        "proposal_category": proposal.get("category_proposal"),
+        "static_mutable_state": sorted({str(value) for value in function.get("static_mutable_state", [])}),
+        "fields_written": sorted({str(item.get("name")) for item in fields_write if isinstance(item, dict) and item.get("name")}),
+        "effects": function.get("effects", {}),
+    }
+
+
+def _code_orphan_action(
+    candidate: dict[str, Any] | None,
+    coverage: dict[str, Any] | None,
+    comments: list[dict[str, Any]],
+) -> tuple[str, str]:
+    direct_ref_values: set[str] = set()
+    for comment in comments:
+        direct_ref_values.update(str(value) for value in comment.get("mn_ids", []) if value)
+        refs = comment.get("spec_refs") if isinstance(comment.get("spec_refs"), dict) else {}
+        for values in refs.values():
+            if isinstance(values, list):
+                direct_ref_values.update(str(value) for value in values if value is not None and value != "")
+    direct_refs = sorted(direct_ref_values)
+    if direct_refs:
+        return (
+            "RESOLVE_DIRECT_SPEC_REFERENCE",
+            "C comments carry direct model-note or spec-reference evidence: " + ", ".join(direct_refs),
+        )
+    if not candidate:
+        return ("REVIEW_MISSING_CANDIDATE_FACT", "No matching tool-ranked candidate fact was available")
+    if candidate.get("eligible"):
+        coverage_status = (coverage or {}).get("coverage_status") or (coverage or {}).get("status")
+        if not coverage or coverage_status in {None, "NO_COVERAGE_DATA", "STATIC_UNCOVERED"}:
+            return ("COLLECT_COVERAGE_EVIDENCE", "Tool facts mark the function eligible, but coverage is absent or uncovered")
+        if coverage.get("eligible_after_coverage"):
+            return ("REVIEW_EXACT_SPEC_SCOPE", "Tool facts and coverage admit the function; exact PDF scope still needs evidence")
+        return ("REVIEW_COVERAGE_OR_DOMAIN", "Static eligibility did not survive the current coverage gate")
+    if candidate.get("contributes_to_observable_output") is False:
+        return ("CHECK_NON_OUTPUT_SCOPE", "The discovered function is reachable but not marked as observable-output contributing")
+    if candidate.get("purity") != "PURE" or candidate.get("timing") != "COMBINATIONAL":
+        return ("KEEP_STATEFUL_OR_UNPROVEN_BOUNDARY", "Tool facts show stateful, impure, or non-combinational behavior")
+    if candidate.get("bounded_computation") is False:
+        return ("PROVE_BOUNDED_DOMAIN", "Tool facts do not prove fixed loop bounds")
+    return ("REVIEW_SPEC_SCOPE", "Reachable code lacks a deterministic exact PDF/C link")
+
+
+def _anchor_reference_keys(anchor: dict[str, Any]) -> set[str]:
+    identifier = str(anchor.get("identifier", ""))
+    kind = str(anchor.get("kind", ""))
+    normalized_identifier = re.sub(r"\s+", "", identifier).lower()
+    keys = {identifier.lower(), normalized_identifier}
+    if kind == "section":
+        keys.update({f"section{identifier}".lower(), f"section{normalized_identifier}"})
+    elif kind == "table":
+        keys.update({f"table{identifier}".lower(), f"table{normalized_identifier}"})
+    elif kind == "figure":
+        keys.update({f"figure{identifier}".lower(), f"figure{normalized_identifier}"})
+    elif kind == "page":
+        keys.update({f"p{anchor.get('page')}".lower(), f"page{anchor.get('page')}".lower()})
+    return {value for value in keys if value}
+
+
+def _comment_references_anchor(comment: dict[str, Any], anchor: dict[str, Any]) -> bool:
+    refs = comment.get("spec_refs") if isinstance(comment.get("spec_refs"), dict) else {}
+    values = {
+        str(value).lower()
+        for key in ("sections", "tables", "figures")
+        for value in refs.get(key, [])
+    }
+    values.update(
+        {
+            f"section{value}".lower()
+            for value in refs.get("sections", [])
+        }
+    )
+    values.update(
+        {
+            f"table{str(value).replace(' ', '')}".lower()
+            for value in refs.get("tables", [])
+        }
+    )
+    values.update(
+        {
+            f"figure{str(value).replace(' ', '')}".lower()
+            for value in refs.get("figures", [])
+        }
+    )
+    values.update(
+        {f"p{value}".lower() for value in refs.get("pages", [])}
+    )
+    values.update(
+        {f"page{value}".lower() for value in refs.get("pages", [])}
+    )
+    return bool(values & _anchor_reference_keys(anchor))
+
+
+def build_orphan_triage(
+    anchors: list[dict[str, Any]],
+    comments_payload: dict[str, Any],
+    raw: dict[str, Any],
+    candidates: dict[str, Any],
+    coverage: dict[str, Any] | None,
+    spec_orphans: list[str],
+    code_orphans: list[str],
+    input_hashes: dict[str, str | None] | None = None,
+) -> dict[str, Any]:
+    """Create evidence-backed next actions for unresolved traceability items.
+
+    This is deliberately a reporting projection.  It never creates a link or
+    selects a function; every identity and classification comes from the
+    existing Clang, candidate, coverage, comment, or PDF-anchor facts.
+    """
+    code_anchors = {
+        str(item.get("code_anchor_id")): item
+        for item in comments_payload.get("code_anchors", [])
+        if isinstance(item, dict) and item.get("code_anchor_id")
+    }
+    comments_by_usr: dict[str, list[dict[str, Any]]] = defaultdict(list)
+    for comment in comments_payload.get("comments", []):
+        if not isinstance(comment, dict):
+            continue
+        usr = comment.get("clang_usr")
+        if usr:
+            comments_by_usr[str(usr)].append(comment)
+    raw_by_usr = {
+        str(item.get("clang_usr")): item
+        for item in raw.get("functions", [])
+        if isinstance(item, dict) and item.get("clang_usr")
+    }
+    candidate_by_usr = {
+        str(item.get("clang_usr")): item
+        for item in candidates.get("functions", [])
+        if isinstance(item, dict) and item.get("clang_usr")
+    }
+    ranked = [
+        item
+        for item in candidates.get("ranked_candidates", [])
+        if isinstance(item, dict) and item.get("clang_usr")
+    ]
+    rank_by_usr = {str(item["clang_usr"]): index for index, item in enumerate(ranked, 1)}
+    coverage_by_usr = {
+        str(item.get("clang_usr")): item
+        for item in (coverage or {}).get("functions", [])
+        if isinstance(item, dict) and item.get("clang_usr")
+    }
+
+    production_code: list[dict[str, Any]] = []
+    for code_id in sorted(code_orphans):
+        anchor = code_anchors.get(code_id, {"code_anchor_id": code_id})
+        usr = str(anchor.get("clang_usr", ""))
+        candidate = candidate_by_usr.get(usr)
+        coverage_fact = coverage_by_usr.get(usr)
+        related_comments = sorted(
+            comments_by_usr.get(usr, []),
+            key=lambda item: (int(item.get("line", 0) or 0), str(item.get("comment_id", ""))),
+        )
+        action, rationale = _code_orphan_action(candidate, coverage_fact, related_comments)
+        production_code.append(
+            {
+                "code_anchor_id": code_id,
+                "clang_usr": anchor.get("clang_usr"),
+                "function": anchor.get("function"),
+                "file": anchor.get("file"),
+                "line": anchor.get("line"),
+                "end_line": anchor.get("end_line"),
+                "permalink": anchor.get("permalink"),
+                "next_action": action,
+                "rationale": rationale,
+                "candidate": _candidate_view(candidate, rank_by_usr.get(usr)),
+                "coverage": _coverage_view(coverage_fact),
+                "raw_facts": _raw_function_view(raw_by_usr.get(usr)),
+                "comments": [_comment_view(item) for item in related_comments],
+            }
+        )
+
+    anchor_by_id = {
+        str(item.get("anchor_id")): item
+        for item in anchors
+        if isinstance(item, dict) and item.get("anchor_id")
+    }
+    spec_items: list[dict[str, Any]] = []
+    for anchor_id in sorted(spec_orphans):
+        anchor = anchor_by_id.get(anchor_id, {"anchor_id": anchor_id})
+        mn_ids = {str(value) for value in anchor.get("mn_ids", []) if value}
+        related_comments = []
+        for comment in comments_payload.get("comments", []):
+            if not isinstance(comment, dict):
+                continue
+            comment_mn_ids = {str(value) for value in comment.get("mn_ids", []) if value}
+            if (mn_ids and mn_ids & comment_mn_ids) or _comment_references_anchor(comment, anchor):
+                related_comments.append(comment)
+        related_comments.sort(key=lambda item: (int(item.get("line", 0) or 0), str(item.get("comment_id", ""))))
+        related_functions = sorted({str(item.get("function")) for item in related_comments if item.get("function")})
+        if related_comments:
+            action = "REPAIR_EXACT_SPEC_LINK"
+            rationale = "C comments provide a direct model-note or explicit-reference lead for this PDF anchor"
+        else:
+            action = "REVIEW_SPEC_SCOPE"
+            rationale = "No matching C comment evidence was found for this PDF anchor"
+        spec_items.append(
+            {
+                "spec_anchor_id": anchor_id,
+                "kind": anchor.get("kind"),
+                "identifier": anchor.get("identifier"),
+                "page": anchor.get("page"),
+                "section_id": anchor.get("section_id"),
+                "section_anchor_id": anchor.get("section_anchor_id"),
+                "title": anchor.get("title"),
+                "short_anchor": anchor.get("short_anchor"),
+                "mn_ids": sorted(mn_ids),
+                "next_action": action,
+                "rationale": rationale,
+                "related_code_functions": related_functions,
+                "comments": [_comment_view(item) for item in related_comments],
+            }
+        )
+
+    code_actions = Counter(item["next_action"] for item in production_code)
+    spec_actions = Counter(item["next_action"] for item in spec_items)
+    return {
+        "schema_version": 1,
+        "do_not_edit": True,
+        "summary": {
+            "production_code_count": len(production_code),
+            "spec_anchor_count": len(spec_items),
+            "production_code_next_actions": dict(sorted(code_actions.items())),
+            "spec_next_actions": dict(sorted(spec_actions.items())),
+        },
+        "input_hashes": dict(sorted((input_hashes or {}).items())),
+        "production_code": production_code,
+        "spec": spec_items,
+    }
+
+
 def markdown_spec_to_code(payload: dict[str, Any]) -> str:
-    lines = ["# Specification to C traceability", "", "Generated links are EXACT only when anchored by a direct MN/spec reference; heuristic links remain PROPOSED until human review.", ""]
+    lines = [
+        "# Specification to C traceability",
+        "",
+        "Generated links are EXACT only when anchored by a direct MN/spec reference. "
+        "Accepted PASS library contracts may also project their hash-checked EXACT_SPEC "
+        "links as REVIEWED joins to existing Clang/PDF anchors; heuristic links remain "
+        "PROPOSED until human review.",
+        "",
+    ]
     for link in payload["links"]:
         lines.extend([
             f"- `{link['status']}` `{link['spec_anchor_id']}` page {link['spec_page']} -> `{link['function']}` `{link['code_file']}:{link['code_line']}`",
@@ -978,11 +1454,57 @@ def markdown_code_to_spec(payload: dict[str, Any]) -> str:
     return "\n".join(lines)
 
 
+def markdown_orphan_triage(triage: dict[str, Any]) -> str:
+    summary = triage.get("summary", {})
+    lines = [
+        "# Traceability orphan triage",
+        "",
+        "This is a deterministic evidence projection for human review. It does not create traceability links or select RTL targets.",
+        "",
+        f"- Untraced production functions: {summary.get('production_code_count', 0)}",
+        f"- Untraced PDF anchors: {summary.get('spec_anchor_count', 0)}",
+        "",
+        "## Production C functions",
+        "",
+    ]
+    for item in triage.get("production_code", []):
+        candidate = item.get("candidate") or {}
+        coverage = item.get("coverage") or {}
+        source = f"{item.get('file', 'UNKNOWN')}:{item.get('line', 'UNKNOWN')}-{item.get('end_line', item.get('line', 'UNKNOWN'))}"
+        lines.extend(
+            [
+                f"### `{item.get('function', 'UNKNOWN')}`",
+                "",
+                f"- Anchor: `{item.get('code_anchor_id')}`; source: `{source}`",
+                f"- Next action: `{item.get('next_action')}` — {item.get('rationale')}",
+                f"- Tool rank/score: `{candidate.get('rank', '—')}` / `{candidate.get('score', '—')}`; eligible: `{candidate.get('eligible', '—')}`; purity/timing: `{candidate.get('purity', '—')}` / `{candidate.get('timing', '—')}`",
+                f"- Coverage: `{coverage.get('status', '—')}`; executed: `{coverage.get('execution_count', '—')}`; eligible after coverage: `{coverage.get('eligible_after_coverage', '—')}`",
+            ]
+        )
+        for comment in item.get("comments", []):
+            lines.append(f"- C evidence: `{comment.get('file')}:{comment.get('line')}` — {comment.get('text', '')}")
+        lines.append("")
+    lines.extend(["## PDF anchors", ""])
+    for item in triage.get("spec", []):
+        lines.extend(
+            [
+                f"### `{item.get('spec_anchor_id')}`",
+                "",
+                f"- Kind/page: `{item.get('kind')}` / `{item.get('page')}`; title: {item.get('title') or item.get('short_anchor') or '—'}",
+                f"- Next action: `{item.get('next_action')}` — {item.get('rationale')}",
+                f"- Related C functions: {', '.join(f'`{value}`' for value in item.get('related_code_functions', [])) or 'none'}",
+                "",
+            ]
+        )
+    return "\n".join(lines).rstrip() + "\n"
+
+
 def main() -> int:
     args = parse_args()
     manifest = json.loads(args.input_manifest.resolve().read_text(encoding="utf-8"))
     raw = json.loads(args.raw.resolve().read_text(encoding="utf-8"))
     candidates = json.loads(args.candidates.resolve().read_text(encoding="utf-8"))
+    output = args.output_dir.resolve()
     pdf_path = pathlib.Path(manifest["spec"]["path"])
     pdf_payload = extract_pdf_layout(pdf_path)
     anchors = pdf_payload["anchors"]
@@ -996,12 +1518,32 @@ def main() -> int:
         code_anchors=comments["code_anchors"],
         raw_functions=raw.get("functions", []),
     )
+    library_manifest_path = (
+        args.library_manifest.resolve()
+        if args.library_manifest
+        else output / "library" / "manifest.json"
+    )
+    links, library_projection = apply_library_links(
+        links,
+        library_manifest_path,
+        output,
+        anchors,
+        comments["code_anchors"],
+        manifest,
+    )
     linked_spec = {link["spec_anchor_id"] for link in links}
     linked_code = {link["code_anchor_id"] for link in links}
     spec_orphans = [anchor["anchor_id"] for anchor in anchors if anchor["kind"] != "page" and anchor["anchor_id"] not in linked_spec]
     production_usrs = {item.get("clang_usr") for item in candidates.get("functions", []) if item.get("production_reachable")}
     production_anchors = {anchor["code_anchor_id"] for anchor in comments["code_anchors"] if anchor["clang_usr"] in production_usrs}
     code_orphans = sorted(production_anchors - linked_code)
+    coverage_path = output / "coverage" / "coverage.json"
+    coverage = None
+    if coverage_path.is_file():
+        try:
+            coverage = json.loads(coverage_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            coverage = None
     counts = {
         "spec_anchor_count": len(anchors),
         "heading_anchor_count": sum(anchor["kind"] in {"section", "table", "figure"} for anchor in anchors),
@@ -1024,6 +1566,7 @@ def main() -> int:
         "proposed_count": sum(link["status"] == "PROPOSED" for link in links),
         "reviewed_count": sum(link["status"] == "REVIEWED" for link in links),
         "stale_count": sum(link["status"] == "STALE" for link in links),
+        "accepted_library_link_count": sum(link.get("method") == "accepted_library_exact_spec" for link in links),
         "untraced_spec_anchor_count": len(spec_orphans),
         "untraced_production_function_count": len(code_orphans),
     }
@@ -1031,6 +1574,21 @@ def main() -> int:
         set(counts["pdf_model_note_ids"]) & set(counts["c_model_note_ids"])
     )
     counts["shared_model_note_count"] = len(counts["shared_model_note_ids"])
+    orphan_triage = build_orphan_triage(
+        anchors,
+        comments,
+        raw,
+        candidates,
+        coverage,
+        spec_orphans,
+        code_orphans,
+        input_hashes={
+            "raw_facts": sha256_file(args.raw.resolve()),
+            "candidate_facts": sha256_file(args.candidates.resolve()),
+            "coverage": sha256_file(coverage_path) if coverage_path.is_file() else None,
+            "library_manifest": library_projection.get("manifest_sha256"),
+        },
+    )
     payload = {
         "schema_version": 2,
         "do_not_edit": True,
@@ -1042,8 +1600,9 @@ def main() -> int:
             "spec_anchor_ids": spec_orphans,
             "production_code_anchor_ids": code_orphans,
         },
+        "library_projection": library_projection,
+        "orphan_triage": orphan_triage,
     }
-    output = args.output_dir.resolve()
     write_json(
         output / "spec" / "anchors.json",
         {
@@ -1065,10 +1624,12 @@ def main() -> int:
     (output / "traceability" / "links.proposed.yaml").write_text(render_yaml(links, generated=True), encoding="utf-8")
     output.joinpath("reports", "spec-to-code.md").write_text(markdown_spec_to_code(payload), encoding="utf-8")
     output.joinpath("reports", "code-to-spec.md").write_text(markdown_code_to_spec(payload), encoding="utf-8")
+    output.joinpath("reports", "orphan-triage.md").write_text(markdown_orphan_triage(orphan_triage), encoding="utf-8")
     output.joinpath("reports", "orphans.md").write_text(
         "# Traceability orphans\n\n"
         + f"- Untraced spec anchors: {len(spec_orphans)}\n"
         + f"- Untraced production functions: {len(code_orphans)}\n\n"
+        + "- Detailed deterministic triage: [orphan-triage.md](orphan-triage.md)\n\n"
         + "## Spec anchors\n\n"
         + "\n".join(f"- `{item}`" for item in spec_orphans)
         + "\n\n## Production C functions\n\n"

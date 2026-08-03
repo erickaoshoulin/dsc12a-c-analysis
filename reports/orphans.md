@@ -1,7 +1,9 @@
 # Traceability orphans
 
-- Untraced spec anchors: 156
-- Untraced production functions: 59
+- Untraced spec anchors: 150
+- Untraced production functions: 53
+
+- Detailed deterministic triage: [orphan-triage.md](orphan-triage.md)
 
 ## Spec anchors
 
@@ -40,8 +42,6 @@
 - `pdf:figure:3-7`
 - `pdf:section:3.4`
 - `pdf:section:3.5`
-- `pdf:section:3.5.1`
-- `pdf:table:3-1`
 - `pdf:figure:3-8`
 - `pdf:figure:3-9`
 - `pdf:section:3.5.2`
@@ -75,7 +75,6 @@
 - `pdf:table:4-4`
 - `pdf:section:4.2.3`
 - `pdf:table:4-5`
-- `pdf:section:4.3`
 - `pdf:section:4.4`
 - `pdf:table:4-6`
 - `pdf:table:4-7`
@@ -112,10 +111,7 @@
 - `pdf:figure:6-9`
 - `pdf:section:6.5.3`
 - `pdf:section:6.5.3.3`
-- `pdf:section:6.6.2`
 - `pdf:table:6-1`
-- `pdf:section:6.6.3`
-- `pdf:section:6.6.4`
 - `pdf:section:6.8.5`
 - `pdf:figure:6-11`
 - `pdf:section:6.7`
@@ -169,22 +165,16 @@
 - `code:function:c:@F@DSC_Decode`
 - `code:function:c:@F@DSC_Encode`
 - `code:function:c:@F@ErrorHandler`
-- `code:function:c:@F@EscapeCodeSize`
-- `code:function:c:@F@EstimateBitsForGroup`
 - `code:function:c:@F@GetBits`
 - `code:function:c:@F@HistoryLookup`
 - `code:function:c:@F@InitializeDSCState`
-- `code:function:c:@F@IsFlatnessInfoSent`
-- `code:function:c:@F@MaxResidualSize`
 - `code:function:c:@F@PopulateOrigLine`
-- `code:function:c:@F@PredictSize`
 - `code:function:c:@F@ProcessGroupDec`
 - `code:function:c:@F@ProcessGroupEnc`
 - `code:function:c:@F@RemoveBitsEncoderBuffer`
 - `code:function:c:@F@UpdateICHistory`
 - `code:function:c:@F@UpdateMidpoint`
 - `code:function:c:@F@UseICHistory`
-- `code:function:c:@F@UsingMidpoint`
 - `code:function:c:@F@VLCGroup`
 - `code:function:c:@F@conv`
 - `code:function:c:@F@convertbits`

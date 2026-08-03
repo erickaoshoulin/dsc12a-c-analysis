@@ -1,4 +1,4 @@
-# Standalone DSC 1.2a auto-discovery, contracts, coverage, and RTL-slice prompt
+# Standalone DSC 1.2a C-model analysis, auto-discovery, and RTL-slice prompt
 
 Work only in this standalone repository. The project is independent of SVRT
 and may generate bounded combinational Verilog library slices, but it does
@@ -18,6 +18,22 @@ library. This project is not SVRT and must not grow SVRT integration,
 whole-codec RTL generation, an LLM runtime, C/Rust parsing, or
 sequential-hardware behavior.
 
+The local PDF and C model are mandatory preflight inputs, not optional
+context: every run must rediscover and hash the PDF, compile the immutable C
+model with `make -j1 clean` followed by `make -j1`, require `source/dsc`, and
+run the discovered bit-true smoke/golden check before planning any RTL work.
+This repository is deliberately standalone and must not inspect, import,
+configure, or integrate with SVRT.
+
+The durable regression service is also standalone. When `DSC_REGRESSION_ROOT`
+is set, use that existing external root for queue state, run receipts, vectors,
+large logs, and per-flow candidate bundles; in this deployment it may be an
+SMB-backed path. Durable FlowRunner jobs set `DSC_CICD_ARTIFACT_ROOT` to a
+run-isolated artifact directory and keep only logical artifact references in
+the checkout. Keep compact receipts, reports, and accepted RTL in the
+repository, and never create a new share or add SVRT state merely to provide
+durable storage.
+
 ## Stable-library boundary (non-negotiable)
 
 - Function discovery and ranking are tool outputs. The prompt, environment,
@@ -34,6 +50,13 @@ sequential-hardware behavior.
   and exact-spec gates are mandatory. If composition fails, keep the C path
   authoritative and record the candidate as a boundary/blocker; do not add an
   adapter, dummy state, or guessed port merely to make the gate pass.
+- Composition is checked against the generated, deterministic caller adapter,
+  not by comparing raw native call-site arity with the frozen RTL port count.
+  Native C callers may pass one pointer/state object while a reviewed adapter
+  exposes several read-only scalar taps. The adapter must bind every frozen
+  scalar port exactly once and record both the native call-site counts and the
+  resulting bindings. If it cannot do so, retain `C_ONLY` as a `C_BOUNDARY`;
+  never pass dummy state or invent a function-specific port mapping.
 - Generated RTL must be a generic contract-driven slice. Semantic adapters
   may be keyed by reviewed contract semantics, never by a function-name
   recipe or hardcoded source-function list. The C oracle is retained for
@@ -64,11 +87,32 @@ make -j1 -C source
 
 Require `source/dsc`. If `bittrue_smoke/run_c_baseline.sh` exists, run it
 and verify its expected golden hash; otherwise run a safe help/smoke command.
+Generate or load the compilation database and run the compiler front-end check
+over every translation unit with `tools/check_compile_commands.py`. A clean
+model build, a passing all-translation-unit compile receipt, and the smoke
+receipt are separate mandatory C gates; record all three.
 Record commands, return codes, warnings, tool versions, timeout/path failures,
-smoke outputs, and binary SHA-256 in `build/build-receipt.json`.
+smoke outputs, and binary SHA-256 in `build/build-receipt.json`. Verbose
+make/smoke logs use `--log-dir` outside the checkout and appear only as
+`external://build-logs/...` receipt references.
+
+After the C gate, write the compact `build/analysis-preflight.json` receipt
+before clearing any derived facts. The receipt-producing tool and `run.sh`
+must use the same deterministic resolver: honor explicit executable paths,
+then standard Homebrew LLVM paths, then `PATH`, then an already-installed
+Opam switch for Frama-C; record the resolved path, version, and resolution
+source (`configured`, `homebrew`, `PATH`, or `opam`) for every tool. Never
+install or initialize a package manager during a run. Surface
+`INFRASTRUCTURE_FAILURE` in the dashboard/report and preserve the prior facts
+when Frama-C or another required analysis tool is unavailable.
+Refresh and check the dashboard/report after a successful run and after this
+preflight failure path.
 
 Any build/tool/path/timeout failure is `INFRASTRUCTURE_FAILURE`. Stop before
-regenerating analysis artifacts and do not invoke an LLM.
+regenerating analysis artifacts and do not invoke an LLM. `run.sh` checks
+Python, Clang/Clang++, Frama-C, `llvm-config`, and CMake after the C build but
+before clearing prior facts; a missing tool preserves the last valid compact
+receipts and reports the blocker.
 
 For every new work batch, the selector must be the tool-produced candidate
 frontier, never a prompt-supplied function name. First compile the immutable C
@@ -123,13 +167,31 @@ Generate:
   `traceability/links.reviewed.yaml`, and
   `traceability/traceability.json`;
 - `reports/spec-to-code.md`, `reports/code-to-spec.md`,
-  `reports/orphans.md`, and `reports/candidates.md`.
+  `reports/orphan-triage.md`, `reports/orphans.md`, and
+  `reports/candidates.md`.
+- The dashboard must project the repository-wide receipt into a readable
+  traceability audit: exact/proposed/reviewed/stale counts, proposal queue,
+  accepted-library projection status/count, linked-versus-total PDF/C anchors, complete orphan lists, and deterministic
+  orphan-triage actions. Triage must join tool-discovered Clang/candidate/
+  coverage facts with C comments and PDF anchors to show source spans, ranking,
+  eligibility, coverage, and the evidence-backed next review action. Triage is
+  reporting only: it must not create a traceability link, select a function by
+  name, or select an RTL target. An engineer must not need to open raw JSON to
+  discover unresolved traceability work.
 
 Link precedence is exact `MN_*` match, explicit page/section/table reference,
 normalized function/table identifier, then optional LLM proposal. Exact links
 must never be created by an LLM. Proposed, reviewed, exact, and stale statuses
 remain distinct; reviewed links are human-edited and become stale when input
 hashes change. Unknowns and orphans must remain visible.
+
+An accepted library component may be projected into generated traceability only
+when its manifest entry is `PASS`, its authority is `EXACT_SPEC`, its contract
+file identifies the existing Clang USR, and the library source/spec hashes match
+the current input manifest. The projection reuses only the contract's existing
+`EXACT` PDF links and records the contract/manifest hashes as provenance; it
+must never select a function, add a candidate, or replace the human-edited
+review surface. Orphan triage remains reporting-only and must not create links.
 
 The primary PDF text path is `pdfinfo` plus `pdftotext -layout`. Every PDF
 `model note: MN_*` line is attached to the nearest preceding section heading
@@ -222,14 +284,17 @@ before/after rankings, selected contracts, and the first RTL result. Commit with
 feat: create DSC contracts and first bit-true RTL slice
 ```
 
-Then push the requested branch and open a draft PR with the same title.
+Then push the requested branch and update the existing draft PR; do not create
+a duplicate PR or turn a discovered function name into a selection input.
 
 ## Dependency-aware CI/CD migration agent
 
 The next migration stage is generic and must not add a function-name allowlist.
 Use `python3 tools/cicd_agent.py plan|run|resume|status` and consume the
 existing manifest, Clang facts, coverage, traceability, locked contracts,
-callgraph, and verification receipts.
+callgraph, and verification receipts. Select from the current tool-ready
+frontier while reloading accepted PASS snapshots from `library/contracts/` so
+an ordinary plan cannot discard stable work that is not in the small seed set.
 
 Emit `ci/dag.json`, `ci/plan.json`, `ci/state.json`, and
 `ci/cache-index.json`. Each node records source/spec/contract/dependency
@@ -240,11 +305,15 @@ whose semantics are resolved, execute independent contracts in stable parallel
 batches, and compose callers only after callee RTL passes. Reject recursion and
 combinational dependency cycles.
 
-The contract-driven artifact bundle is under
-`artifacts/<contract-hash>/` and includes a frozen SV interface/stub, C oracle,
-Verilator harness, input packing, legal-domain/vector generator, mutations,
-shadow/replacement wrapper, and receipt schema. The model may generate only a
-combinational RTL body, at most once per function and at most four candidates.
+The contract-driven artifact bundle is materialized under the external
+`DSC_CICD_ARTIFACT_ROOT/<contract-hash>/` for a durable flow. The
+checkout keeps only compact receipts, locked contracts, interfaces, and
+reports; candidate RTL, C oracle, Verilator harness, input/vector generator,
+mutations, shadow/replacement wrapper, and build trees never become tracked
+handoff files. State/cache receipts use the logical `artifacts/<contract-hash>`
+reference and the flow receipt records the external artifact root. The model
+may generate only a combinational RTL body, at most once per function and at
+most four candidates.
 Reject clocks, resets, latches, delays, initial blocks, stateful memory, and
 testbench logic.
 
@@ -268,7 +337,11 @@ an LLM call. Write `integration/generated-overlay/`,
 `integration/replacement-plan.yaml`, `integration/bitstream-receipts/`, and
 `reports/pipeline-summary.md`.
 
-For the dependency-aware CI/CD change, commit and open a draft PR with:
+For a dependency-aware CI/CD change, commit the scoped change, push the
+requested branch, and update the existing draft PR rather than creating a
+duplicate. Do not require a function-specific PR title or target list.
+
+The historical implementation title was:
 
 ```text
 feat: add dependency-aware C-to-RTL CI/CD agent
@@ -295,13 +368,33 @@ PDF and upstream C model are immutable external inputs.
    ready leaf whose frozen interface shape differs from existing promoted
    work. Reject recursive/combinational dependency cycles.
 
-3. Invoke the real generator hook. On a ready cache miss invoke
-   `DSC_CICD_GENERATOR_CMD request.json output_dir` exactly once. The request
-   contains only `locked_contract`, `frozen_interface`, `c_body`, and short
-   `exact_spec_anchors`. The hook emits at most four SystemVerilog candidates
-   and telemetry. A missing hook is `GENERATION_REQUIRED`; zero-output or
-   invalid output is `GENERATION_FAILED`. Cache hits reuse verified receipts
-   with zero generator/model calls.
+   Function selection is an output of the current discovery/ranking pipeline:
+   re-run AST, callgraph, effect, reachability, coverage, exact-PDF, and
+   contract-readiness gates, then select from the resulting candidate frontier.
+   Never put a source function name in a prompt, target list, allowlist,
+   environment default, reviewed override, or adapter branch. A target ID may
+   route an already materialized discovered contract for retry, but it cannot
+   create, select, or enrich a function absent from the current tool facts.
+   Semantic adapter dispatch may use reviewed `semantics.kind` and its binding
+   maps; it must never use a function-name recipe. The selector must remain
+   correct when function names, source order, or the top-ranked candidate
+   change.
+
+3. Materialize or generate RTL. On a ready cache miss for new/repair work,
+   invoke `DSC_CICD_GENERATOR_CMD request.json output_dir` exactly once. The
+   request contains only `locked_contract`, `frozen_interface`, `c_body`, and
+   short `exact_spec_anchors`. The hook emits at most four SystemVerilog
+   candidates and telemetry. The planner must preflight this hook before
+   selecting new/repair work: a missing hook is a visible
+   `GENERATION_REQUIRED` infrastructure blocker with no generator/model call,
+   and the same contract must not be reselected until the hook is configured;
+   zero-output or invalid output is `GENERATION_FAILED`. For a bounded refresh
+   of an already-PASS component, first verify the current contract hash and
+   the manifest's RTL path/SHA-256, copy that accepted RTL as the sole
+   candidate, and run all deterministic verification gates with zero
+   generator/model calls. A missing or changed accepted file is an
+   `INFRASTRUCTURE_FAILURE`, not a generator retry. Cache hits reuse verified
+   receipts with zero generator/model calls.
 
 4. Verify executable candidates. Freeze direct scalar argument/result ports,
    legal domains, packing, C oracle, harness, and mutation cases. A reviewed
@@ -322,6 +415,20 @@ PDF and upstream C model are immutable external inputs.
    samples-per-unit, group offsets, static pointer indices, and per-group
    pairwise tap sets in reviewed data; the generator and adapter derive the
    frozen ports from those facts rather than embedding a single sample index.
+   For caller composition, validate the generated adapter's exact frozen-port
+   bindings. The original C call may have fewer arguments because it passes a
+   pointer/state aggregate; that native arity is traceability evidence, not a
+   reason to reject a valid reviewed scalar adapter. Reject only when the
+   adapter cannot supply the complete frozen DUT interface, and retain the C
+   boundary without dummy state.
+   For any reviewed pointer/state projection, preserve the original C
+   declaration and call signature in the overlay. Build the RTL call from the
+   reviewed semantic strategy: bind every frozen input exactly once to a
+   scalar parameter, a reviewed read-only record field, an indexed array
+   element, or an explicitly guarded tap; reject missing, duplicate, guessed,
+   or dummy bindings. Record native caller arity separately from frozen RTL
+   port count. This is a generic contract-driven adapter rule and must work
+   without naming the source function in code or configuration.
    A clean concrete result is `DIFFERENTIAL_PASS`, never a promotion or
    stable-library proof. For a reviewed production-domain relative-window
    contract, keep the complete C line-buffer state at the caller boundary and
@@ -376,11 +483,8 @@ PDF and upstream C model are immutable external inputs.
    receipts, bitstream receipts, and `reports/pipeline-summary.md`. Report
    candidates, model calls/tokens, shard counts, timings, dependency pair,
    matrix scenarios, cache status, blockers, and counterexamples. Run tests,
-   commit, push the requested branch, and open a draft PR titled exactly:
-
-```text
-feat: execute generic RTL generation and dependency composition
-```
+   commit, push the requested branch, and update the existing draft PR. Do not
+   create a duplicate PR or require a function-specific title.
 
 ## Durable per-function regression service v1
 
@@ -414,8 +518,16 @@ finite legal domain. A bounded exploratory subset is
 be `FORMAL_EQUIVALENT`, but it still needs dependency, frame, and source
 gates before stable-library promotion. A function
 already recorded as PASS in `library/manifest.json` is not new work and is
-excluded from ordinary queue planning; it may be re-run only when the durable
-queue explicitly requests a refresh or dependency composition.
+excluded from new-work selection, but it automatically enters a bounded
+regression frontier when its recorded source/spec/contract/dependency,
+controller, prompt, generator, or tool hash is stale and no valid cache exists.
+Valid cache entries are never regenerated. A stale stable refresh reuses the
+hash-checked accepted RTL in `library/rtl/` and reruns the C oracle,
+Verilator, shards, dependency, and frame gates; it does not invoke the RTL
+generator merely because provenance changed. `DSC_CICD_REFRESH_STABLE=1`
+remains the explicit route for a full stable-frontier verification refresh.
+`DSC_CICD_FORCE_REGENERATE=1` with explicit queue routing is the deliberate
+route when new RTL generation is actually requested.
 
 When Clang marks only `bounded_computation` false for an otherwise eligible,
 executed production leaf, a reviewed `BOUNDED_DOMAIN` admission may discharge
@@ -468,14 +580,50 @@ Reject recursive or combinational dependency cycles. A generation authority
 must be `EXACT_SPEC`, `DERIVED`, or `HUMAN_APPROVED`; `AI_PROPOSED` and
 `C_TYPE_FALLBACK` are visible blockers and cannot generate RTL.
 
-The durable service is `tools/cicd_agent.py` and stores mutable state only in
-the repository's JSON receipts under `ci/`, `artifacts/`, and `integration/`.
-Do not add a network share, SQLite queue, SVRT state, or a second orchestration
-service. Publish each receipt atomically, preserve prior receipts for audit,
-and treat missing PDF/source/tools, stale hashes, low disk, or timeout as
-infrastructure failures. `plan` consumes tool-discovered facts and reviewed
-contracts; a target ID is routing metadata and never a source-level function
-allowlist.
+The durable service is `tools/cicd_agent.py`. Its compact controller state is
+JSON under `ci/`, `artifacts/`, and `integration/`; its optional external
+durable queue is the pre-existing `DSC_REGRESSION_ROOT`. Do not add SVRT state,
+SQLite, a second orchestration service, or a new network share. When the
+external root is configured, keep queue/runs/vectors/logs there and retain
+only compact handoff artifacts in the repository. Publish each receipt
+atomically, preserve prior receipts for audit, and treat missing PDF/source/
+tools, stale hashes, low disk, or timeout as infrastructure failures. `plan`
+consumes tool-discovered facts and reviewed contracts; a target ID is routing
+metadata and never a source-level function allowlist.
+
+An ordinary plan must reload every accepted `PASS` contract snapshot from
+`library/contracts/` using the manifest, even when that contract is not part
+of the small human-maintained seed set or is temporarily absent from the new
+candidate ranking. Never collapse the stable DAG to `contracts/locked/` plus
+the current batch. Stable refresh still rechecks current source/spec/tool
+hashes and the manifest-verified RTL. Routing/provenance fields such as
+`selection`, `library_promotion`, and `do_not_edit` do not change semantic
+contract identity; a real interface/semantics/source/spec change does.
+
+A no-work refresh may remove an already-PASS component from the active
+selection, but it must not erase that component's prior DAG nodes, artifact
+links, or promotion status. Preserve historical nodes from the previous DAG or
+durable CI state and expose them as `historical_contracts`; the current plan
+still controls only new selection. DAG edges must resolve to nodes and remain
+deterministically ordered.
+
+When an executed composition receipt is `COMPOSITION_BLOCKED` and its
+composition is `C_BOUNDARY`, treat the boundary as a durable deterministic
+block for the same source/spec/contract/dependency hashes. Do not spend another
+generator or model call solely because controller, prompt, generator, or tool
+provenance changed. A semantic input change reopens the work automatically;
+an explicit queue retry may use `DSC_CICD_RETRY_BLOCKED=1`, an explicit target,
+or a deliberate force/refresh request. Keep the receipt and blocker visible,
+and never invent pointer/state adapters or dummy caller arguments to bypass the
+frozen interface.
+
+If a process stops after entering an executable stage, durable history
+requeues that exact contract even when semantic hashes are unchanged. If all
+deterministic gates pass but human promotion approval is absent, keep the
+exact candidate artifact and return `AWAITING_HUMAN_APPROVAL`. Once the
+matching approval receipt appears, resume that artifact without a generator or
+model call; a missing or mismatched pending candidate is an infrastructure
+failure.
 
 The supported commands are:
 
@@ -493,7 +641,12 @@ receipts; it must not launch a new RTL regression, copy large artifacts, or
 replace the receipt source of truth. Keep the following meanings explicit:
 
 ```text
-runs/<run-id>/functions/<contract-id>/{rtl,verification,logs}/
+DSC_REGRESSION_ROOT/cache/flow/<run-id>/<contract-id>/
+  repo/                         isolated source/controller copy
+  artifacts-<attempt>/          candidate RTL/oracle/harness/build material
+  flow.log                      durable flow log
+DSC_REGRESSION_ROOT/runs/<run-id>/functions/<contract-id>/
+  accepted/                     compact accepted-RTL handoff reference
 library/accepted/<contract-id>/<contract-hash>/{rtl,verification,contract}/
 dashboard/
 reports/
@@ -522,10 +675,25 @@ python3 tools/regression.py report <run-id>
 The static site is self-contained with no CDN dependencies and includes an
 overview, filterable function table, failure/blocker summary, run history and
 comparison, bidirectional Spec -> C -> Contract -> RTL -> Verification ->
-Frame links, and per-function width/interface/promotion detail. Prefer
+Frame links, repository-wide traceability audit/orphan review, and per-function
+width/interface/promotion detail. Prefer
 `DSC_REGRESSION_ROOT`, otherwise inspect the mounted SMB regression root and
 show a visible repository-local fallback when it is unavailable. A missing
 recorded PDF is `SPEC_UNAVAILABLE`; external PDF/C inputs remain read-only.
+The overview must show both the selected regression run and the current
+tool-selected CI frontier (`ready`, `new candidates`, candidate queue, and
+human/infrastructure blockers) so a green regression run cannot hide pending
+migration work.
+
+Before publishing a dashboard or queue snapshot, run the durable poll cycle:
+recover expired jobs, reconcile every run from its function receipts, create
+any bounded scale plans, and only then rebuild the dashboard. A run with
+complete PASS receipts is `COMPLETED`/`PASS` even if an older parent record was
+left `QUEUED`; a run with no receipts remains queued and must not be guessed as
+passing. Reconciliation may update status timestamps, but `latest` and per-
+function history are ordered by immutable run creation/start time so repairing
+an old run cannot move it ahead of a newer run. Reports and normalized views
+must expose the reconciliation result and preserve the raw receipt evidence.
 
 For a bounded regression refresh of already promoted leaves, the queue may use
 `DSC_CICD_REFRESH_STABLE=1` together with `DSC_CICD_MAX_NEW` and
@@ -535,11 +703,16 @@ frontier; those variables are routing and parallelism metadata, never a
 function-name allowlist. `DSC_CICD_FORCE_REGENERATE=1` remains the explicit
 single-contract refresh route through `DSC_CICD_TARGET_CONTRACT`.
 
-Each bounded batch may generate at most four candidates per selected contract.
-Independent contracts run in stable parallel workers. Preserve the immutable
-C model as oracle/reference, run the real C/Verilator shards, and promote only
-after unit, formal-or-exhaustive, dependency, C_ONLY/SHADOW/RTL_RETURN, and
-frame byte/SHA-256 gates pass.
+Each bounded batch may generate at most four candidates per selected
+new/repair contract. Stable refresh items may instead materialize one
+manifest-verified accepted candidate and generate zero RTL candidates.
+Independent contracts run in stable parallel workers. Preserve the immutable C
+model as oracle/reference, run the real C/Verilator shards, and make a
+candidate promotion-eligible only after unit, formal-or-exhaustive,
+dependency, C_ONLY/SHADOW/RTL_RETURN, and frame byte/SHA-256 gates pass.
+Promotion still waits for a human approval receipt bound to the exact
+contract/interface/spec/source/RTL hashes; verification success alone never
+writes the stable library.
 
 ### Continuous scale and library loop
 
@@ -553,18 +726,23 @@ python3 tools/cicd_agent.py status
 
 Each run reads the current facts/spec plan at dispatch. A reviewed contract
 that becomes eligible later enters a subsequent batch without editing a
-function allowlist. Each selected contract gets an independent generator
-invocation, C oracle, Verilator build, parallel shard set, caller composition
-check, and frame matrix. A target contract is queue routing metadata only; it
-is never a source-level function selector. A refresh intentionally bypasses a
-valid leaf cache while preserving prior receipts and accepted RTL for audit
-and rollback. If no unproven ready contract exists, the run reports no new
-work and does not enqueue a duplicate batch.
+function allowlist. Each selected new/repair contract gets an independent
+generator invocation, C oracle, Verilator build, parallel shard set, caller
+composition check, and frame matrix. A selected stable refresh instead uses
+the manifest-verified accepted RTL as its candidate and performs the same
+deterministic gates without a generator invocation. A target contract is
+queue routing metadata only; it is never a source-level function selector. A
+refresh intentionally bypasses a valid leaf cache while preserving prior
+receipts and accepted RTL for audit and rollback. If no unproven ready
+contract exists, the run reports no new work and does not enqueue a duplicate
+batch.
 
 For an explicit stable refresh, the scale function set is the union of the
 current facts/spec-ready plan and PASS components already recorded in
 `library/manifest.json`, rechecked through the current exact width/spec gate.
-Stable components that need to be rematerialized from reviewed overrides are
+Stable components with matching contract and RTL hashes are verification-only
+refreshes; components that cannot be hash-checked fail closed. Stable
+components that need to be rematerialized from reviewed overrides are
 discovered by their tool facts identity during that refresh. This keeps every
 verified leaf in the regression surface without turning the manifest into a
 source-level function allowlist.
@@ -584,7 +762,8 @@ facts/spec review → scale dispatch → parallel generate → C oracle + Verila
 → exhaustive/legal-domain or explicitly bounded differential shards
 → AST/Z3 proof when reviewed → smallest counterexample / DIFFERENTIAL_PASS /
 FORMAL_EQUIVALENT / EXHAUSTIVE_EQUIVALENT
-→ caller/frame gates → promote PASS leaves → inspect blockers → next batch
+→ caller/frame gates → await explicit human promotion review → promote approved leaves
+→ inspect blockers → next batch
 ```
 
 On a counterexample, retain the receipt and feed the smallest failing vector
@@ -592,13 +771,29 @@ back into the next generator/repair attempt. On an infrastructure failure,
 repair the tool/domain/oracle gate and resume only the affected queue job.
 Never promote a candidate because it compiles alone. Promotion requires all
 unit, dependency, C_ONLY/SHADOW/RTL_RETURN, frame byte/SHA, exact PDF
-traceability, and reviewed-port gates. The promotion stage writes
-only stable, purely combinational DUT leaves to `library/rtl/`, together with
+traceability, and reviewed-port gates, followed by a separate human approval
+receipt. The approval is immutable by contract hash and exact canonical RTL
+hash at `ci/promotion-approvals/<contract-id>/<contract-hash>.json`; it must
+record the source/spec/interface hashes, reviewer and timestamp, design intent,
+QoR review, `decision: PROMOTE`, `review_status: APPROVED`, and every gate in
+`width_spec`, `unit_equivalence`, `formal_or_exhaustive`,
+`dependency_composition`, `C_ONLY`, `SHADOW`, `RTL_RETURN`, and `frame_compare`.
+The executable agent never creates this receipt and never auto-promotes a
+new or repaired candidate. Without it, a fully verified candidate remains
+`AWAITING_HUMAN_APPROVAL`, its artifact and receipt are retained, and the
+library is unchanged. After approval, the promotion stage writes only stable,
+purely combinational DUT leaves to `library/rtl/`, together with
 `library/contracts/`, `library/verification/`, and `library/manifest.json`.
-The executable agent performs that materialization automatically under a
-library write lock after a `PROMOTED` result, canonicalizes the module name,
-archives a replaced RTL file, and records `library_promotion: PASS`. A receipt
-that only passes unit or differential comparison is never materialized.
+The write is protected by the library lock, canonicalizes the module name,
+archives a replaced RTL file, and records the approval hash. A receipt that
+only passes unit or differential comparison is never materialized.
+An already accepted manifest component is a grandfathered stable baseline:
+its bounded refresh reuses the hash-checked RTL and reports
+`VERIFIED_REFRESH` without changing the library or requiring a new approval.
+When a durable revalidation receipt is reconciled into the library index, it
+updates `last_verified_run_id` and a compact `last_regression` summary while
+preserving the existing schema-2 traceability, formal, dependency, and matrix
+evidence; full vectors and logs remain at `DSC_REGRESSION_ROOT`.
 The library is an incremental designer-facing RTL set, not a whole-codec
 rewrite: keep stateful callers, unresolved pointer/table dependencies, and
 non-DUT code in C until their contracts are independently proven.
@@ -616,9 +811,12 @@ width/spec
 → frame byte/SHA-256 comparison
 ```
 
-Large logs, build trees, vectors, and flow worktrees stay outside the handoff.
-Compact receipts, traceability, accepted RTL, and pipeline metadata are the
-handoff. Verified shards may be reused only after the current contract input
+Large logs, build trees, candidate RTL, C oracles, harnesses, vectors, and
+flow worktrees stay outside the handoff. `tools/repo_hygiene.py check` is the
+tracked-file gate, and `tools/dashboard.py check` fails if a forbidden path
+enters the checkout. Compact receipts, traceability, accepted RTL, and
+pipeline metadata are the handoff. Verified shards may be reused only after
+the current contract input
 order, vector strategy, and every shard line count match the prior receipt.
 Receipts must include candidate and frame pass rates, shard/vector counts,
 counterexamples, blockers, cache/execution status, model tier/call budget,

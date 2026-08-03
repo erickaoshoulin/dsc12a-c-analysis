@@ -32,13 +32,11 @@
     "function": "FindResidualSize",
     "kind": "leaf",
     "module": "findresidualsize",
-    "parent_run_id": "20260802T062208Z-0ad45a41",
+    "parent_run_id": "20260803T013704Z-05a52482",
     "profile": "scale",
-    "promoted_at": "2026-08-02T23:46:34Z",
     "rtl_sha256": "a10d4649d371883b4bdfef25fc99448c5a719e937a93425900ddf00b26474073",
-    "run_id": "20260802T230757Z-scale-7a24e3ac",
+    "run_id": "20260803T014654Z-scale-2b8c6c5c",
     "run_kind": "leaf",
-    "schema_version": 1,
     "source_gate": {
       "blockers": [],
       "build": {
@@ -84,99 +82,9 @@
       "verilator_lint_build": "PASS",
       "width_spec_gate": "PASS"
     },
-    "status": "PASS",
-    "traceability": {
-      "authority": "EXACT_SPEC",
-      "c_span": {
-        "end_line": 1109,
-        "start_line": 1078
-      },
-      "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
-      "ports": [
-        {
-          "authority": "HUMAN_APPROVED",
-          "c_span": {
-            "end_line": 1109,
-            "start_line": 1078
-          },
-          "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
-          "derivation": "DSC 1.2a signed residual range required by the reviewed DSU-VLC threshold domain",
-          "domain": {
-            "basis": "DSC 1.2a signed residual range required by the reviewed DSU-VLC threshold domain",
-            "kind": "range",
-            "range": [
-              -65535,
-              65535
-            ]
-          },
-          "name": "eq",
-          "review_status": "REVIEWED",
-          "role": "eq",
-          "signed": true,
-          "spec_pages": [
-            34,
-            91
-          ],
-          "spec_sections": [
-            "3",
-            "6.6.1"
-          ],
-          "spec_tables": [],
-          "width": 17
-        },
-        {
-          "authority": "EXACT_SPEC",
-          "c_span": {
-            "end_line": 1109,
-            "start_line": 1078
-          },
-          "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
-          "derivation": "locked contract interface",
-          "domain": {
-            "range": [
-              0,
-              17
-            ]
-          },
-          "name": "return_value",
-          "review_status": "REVIEWED",
-          "role": "return_value",
-          "signed": false,
-          "spec_pages": [
-            34,
-            91
-          ],
-          "spec_sections": [
-            "3",
-            "6.6.1"
-          ],
-          "spec_tables": [],
-          "width": 5
-        }
-      ],
-      "review_status": "REVIEWED",
-      "source_file": "dsc_codec.c",
-      "source_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
-      "spec_links": [
-        {
-          "anchor_id": "pdf:section:6.6.1",
-          "evidence": "The normative section defines the residual-size quantity used by DSU-VLC.",
-          "page": 91,
-          "section": "6.6.1",
-          "status": "EXACT"
-        },
-        {
-          "anchor_id": "pdf:table:3-1",
-          "evidence": "The normative table lists residual values and their coded sizes.",
-          "page": 34,
-          "section": "3",
-          "status": "EXACT"
-        }
-      ],
-      "spec_pdf": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf"
-    }
+    "status": "PASS"
   },
-  "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+  "last_verified_run_id": "20260803T014654Z-scale-2b8c6c5c",
   "matrix": {
     "modes": {
       "C_ONLY": "PASS",
@@ -187,11 +95,11 @@
     "status": "PASS"
   },
   "module": "findresidualsize",
-  "parent_run_id": "20260802T062208Z-0ad45a41",
+  "parent_run_id": "20260803T013704Z-05a52482",
   "profile": "scale",
   "promoted_at": "2026-08-02T21:15:58Z",
   "rtl_sha256": "a10d4649d371883b4bdfef25fc99448c5a719e937a93425900ddf00b26474073",
-  "run_id": "20260802T230757Z-scale-7a24e3ac",
+  "run_id": "20260803T014654Z-scale-2b8c6c5c",
   "run_kind": "leaf",
   "schema_version": 2,
   "source_gate": {

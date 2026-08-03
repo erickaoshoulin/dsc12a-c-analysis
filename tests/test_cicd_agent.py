@@ -1,4 +1,6 @@
 import json
+import hashlib
+import os
 import pathlib
 import tempfile
 import threading
@@ -6,7 +8,7 @@ import time
 import unittest
 from unittest import mock
 
-from tools.cicd_agent import Agent, STATE_ORDER, contract_exact_links, digest, safe_identifier
+from tools.cicd_agent import Agent, STATE_ORDER, contract_exact_links, digest, file_hash, safe_identifier
 from tools.generator_fixture import generic_body
 
 
@@ -83,6 +85,113 @@ class CicdAgentUnitTests(unittest.TestCase):
             "output": {"name": "return_value", "logical_width": 8, "signed": False},
         })
         self.assertEqual([port["name"] for port in ports], ["value", "return_value"])
+
+    def test_accepted_library_contracts_reload_without_function_allowlist(self):
+        contract = {
+            "contract_id": "tool_leaf",
+            "status": "LOCKED",
+            "origin": "tool_discovered_reviewed_override",
+            "function": {"name": "ToolLeaf", "clang_usr": "c:@F@ToolLeaf"},
+            "spec_links": [{"status": "EXACT", "anchor_id": "pdf:section:tool_leaf"}],
+            "obligations": [],
+            "dependencies": {"unresolved": []},
+            "interface": {"ports": [
+                {"name": "value", "direction": "input", "width": 8, "signed": False},
+                {"name": "return_value", "direction": "output", "width": 8, "signed": False},
+            ]},
+            "semantics": {"kind": "pure_expression"},
+            "selection": {"new_work": True, "candidate_rank": 1},
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            (root / "library" / "contracts").mkdir(parents=True)
+            (root / "library" / "manifest.json").write_text(json.dumps({
+                "components": [{"contract_id": "tool_leaf", "status": "PASS"}],
+            }), encoding="utf-8")
+            (root / "library" / "contracts" / "tool_leaf.json").write_text(
+                json.dumps(contract), encoding="utf-8"
+            )
+            agent = Agent(root, "plan")
+            loaded = agent.load_accepted_library_contracts([])
+        self.assertEqual([item["contract_id"] for item in loaded], ["tool_leaf"])
+        self.assertEqual(loaded[0]["status"], "LOCKED")
+
+    def test_accepted_library_reload_uses_manifest_locked_snapshot_hash(self):
+        snapshot = {
+            "contract_id": "tool_leaf",
+            "status": "LOCKED",
+            "function": {"name": "ToolLeaf", "clang_usr": "c:@F@ToolLeaf"},
+            "spec_links": [{"status": "EXACT", "anchor_id": "pdf:section:tool_leaf"}],
+            "obligations": [],
+            "dependencies": {"unresolved": []},
+            "interface": {"ports": [
+                {"name": "value", "direction": "input", "width": 8, "signed": False},
+                {"name": "return_value", "direction": "output", "width": 8, "signed": False},
+            ]},
+            "semantics": {"kind": "pure_expression"},
+            "selection": {"new_work": True, "candidate_rank": 1},
+        }
+        promoted = dict(snapshot)
+        promoted.update({
+            "do_not_edit": True,
+            "library_promotion": {"status": "PASS", "artifact_dir": "artifacts/tool-hash"},
+        })
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            artifact = root / "artifacts" / digest(snapshot)
+            (artifact).mkdir(parents=True)
+            (artifact / "locked-contract.json").write_text(json.dumps(snapshot), encoding="utf-8")
+            (root / "library" / "contracts").mkdir(parents=True)
+            (root / "library" / "contracts" / "tool_leaf.json").write_text(
+                json.dumps(promoted), encoding="utf-8"
+            )
+            (root / "library" / "manifest.json").write_text(json.dumps({
+                "components": [{
+                    "contract_id": "tool_leaf",
+                    "status": "PASS",
+                    "contract_hash": digest(snapshot),
+                    "artifact_dir": str(artifact.relative_to(root)),
+                }],
+            }), encoding="utf-8")
+            agent = Agent(root, "plan")
+            loaded = agent.load_accepted_library_contracts([])
+        self.assertEqual(digest(loaded[0]), digest(snapshot))
+        self.assertNotIn("library_promotion", loaded[0])
+        self.assertNotIn("do_not_edit", loaded[0])
+
+    def test_stable_refresh_reloads_accepted_library_contracts(self):
+        accepted = {
+            "contract_id": "tool_leaf",
+            "status": "LOCKED",
+            "function": {"name": "ToolLeaf", "clang_usr": "c:@F@ToolLeaf"},
+            "spec_links": [{"status": "EXACT", "anchor_id": "pdf:section:tool_leaf"}],
+            "obligations": [],
+            "dependencies": {"unresolved": []},
+            "interface": {"ports": []},
+            "semantics": {"kind": "pure_expression"},
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            agent = Agent(pathlib.Path(directory), "run")
+            agent.input_facts = {"errors": []}
+            with mock.patch.object(agent, "apply_reviewed_overrides", return_value=[]), \
+                    mock.patch.object(agent, "load_accepted_library_contracts", return_value=[accepted]) as reload:
+                with mock.patch.dict(os.environ, {"DSC_CICD_REFRESH_STABLE": "1"}, clear=False):
+                    agent.materialize_new_contracts()
+            reload.assert_called_once()
+        self.assertEqual([item["contract_id"] for item in agent.contracts], ["tool_leaf"])
+
+    def test_stable_identity_ignores_library_provenance(self):
+        contract = {"contract_id": "tool_leaf", "semantics": {"kind": "pure_expression"}}
+        promoted = dict(contract)
+        promoted.update({
+            "selection": {"new_work": True},
+            "library_promotion": {"status": "PASS", "artifact_dir": "artifacts/tool_leaf"},
+            "do_not_edit": True,
+        })
+        self.assertEqual(
+            Agent.stable_contract_identity(contract),
+            Agent.stable_contract_identity(promoted),
+        )
 
     def test_promoted_manifest_resolves_dynamic_contract_usr_from_tool_facts(self):
         with tempfile.TemporaryDirectory() as directory:
@@ -353,13 +462,622 @@ class CicdAgentUnitTests(unittest.TestCase):
             agent = Agent(root, "plan")
             agent.contracts = [contract]
             agent.dependency_info = {"cycles": [], "adjacency": {"unit_target": []}, "call_sites": [], "all_call_sites": [], "dependency_hashes": {}}
-            with mock.patch.dict("os.environ", {"DSC_CICD_TARGET_CONTRACT": "unit_target", "DSC_CICD_FORCE_REGENERATE": "1"}, clear=False):
+            with mock.patch.dict("os.environ", {
+                "DSC_CICD_TARGET_CONTRACT": "unit_target",
+                "DSC_CICD_FORCE_REGENERATE": "1",
+                "DSC_CICD_GENERATOR_CMD": "test-generator-hook",
+            }, clear=False):
                 plan = agent.build_plan()
         self.assertEqual(plan["selected_contracts"], ["unit_target"])
         self.assertEqual(plan["target_contract"], "unit_target")
         self.assertTrue(plan["force_regenerate"])
         self.assertTrue(plan["contracts"][0]["targeted"])
         self.assertTrue(plan["contracts"][0]["force_regenerate"])
+
+    def test_plan_blocks_new_work_when_generator_hook_is_missing(self):
+        contract = {
+            "contract_id": "new_leaf",
+            "status": "LOCKED",
+            "function": {"name": "NewLeaf", "clang_usr": "c:@F@NewLeaf"},
+            "spec_links": [{"status": "EXACT", "anchor_id": "pdf:section:new"}],
+            "obligations": [],
+            "dependencies": {"unresolved": []},
+            "interface": {"ports": [
+                {"name": "value", "direction": "input", "width": 8, "signed": False},
+                {"name": "return_value", "direction": "output", "width": 8, "signed": False},
+            ]},
+            "semantics": {"kind": "pure_expression"},
+            "origin": "tool_discovered_reviewed_override",
+            "selection": {"new_work": True},
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            agent = Agent(root, "plan")
+            agent.contracts = [contract]
+            agent.input_facts = {
+                "source_hash": "source",
+                "spec_hash": "spec",
+                "tool_versions": {},
+            }
+            agent.dependency_info = {
+                "cycles": [],
+                "adjacency": {"new_leaf": []},
+                "call_sites": [],
+                "all_call_sites": [],
+                "dependency_hashes": {"new_leaf": "dependency"},
+            }
+            with mock.patch.dict(os.environ, {"DSC_CICD_GENERATOR_CMD": ""}, clear=False):
+                plan = agent.build_plan()
+        item = plan["contracts"][0]
+        self.assertEqual(plan["selected_contracts"], [])
+        self.assertFalse(item["ready"])
+        self.assertTrue(item["generation_required"])
+        self.assertFalse(item["generator_hook_configured"])
+        self.assertIn(
+            "GENERATION_REQUIRED: DSC_CICD_GENERATOR_CMD is not configured",
+            item["blocked_reasons"],
+        )
+        self.assertEqual(plan["blocked_contracts"][0]["contract_id"], "new_leaf")
+
+    def test_composition_boundary_is_not_regenerated_without_explicit_retry(self):
+        contract = {
+            "contract_id": "boundary_leaf",
+            "status": "LOCKED",
+            "function": {"name": "BoundaryLeaf", "clang_usr": "c:@F@BoundaryLeaf"},
+            "spec_links": [{"status": "EXACT", "anchor_id": "pdf:section:boundary"}],
+            "obligations": [],
+            "dependencies": {"unresolved": []},
+            "interface": {"ports": [
+                {"name": "value", "direction": "input", "width": 8, "signed": False},
+                {"name": "return_value", "direction": "output", "width": 8, "signed": False},
+            ]},
+            "semantics": {"kind": "pure_expression"},
+            "origin": "tool_discovered_reviewed_override",
+            "selection": {"new_work": True},
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            agent = Agent(root, "plan")
+            agent.contracts = [contract]
+            agent.input_facts = {"source_hash": "source", "spec_hash": "spec", "tool_versions": {}}
+            agent.dependency_info = {
+                "cycles": [],
+                "adjacency": {"boundary_leaf": []},
+                "call_sites": [],
+                "all_call_sites": [],
+                "dependency_hashes": {"boundary_leaf": "dependency"},
+            }
+            _, hashes = agent.cache_key(contract)
+            artifact = root / "artifacts" / hashes["contract"]
+            artifact.mkdir(parents=True)
+            (artifact / "matrix-receipt.json").write_text(json.dumps({
+                "status": "COMPOSITION_BLOCKED",
+                "reason": "caller call signature does not provide the frozen DUT interface; retain C boundary",
+                "composition": {"status": "C_BOUNDARY"},
+            }), encoding="utf-8")
+            agent.previous_state = {"contracts": [{
+                "contract_id": "boundary_leaf",
+                "current_state": "BITSTREAM_PASS",
+                "status": "FAILED",
+                "hashes": hashes,
+                "artifacts": [str(artifact.relative_to(root))],
+            }]}
+            with mock.patch.dict(os.environ, {
+                "DSC_CICD_TARGET_CONTRACT": "",
+                "DSC_CICD_RETRY_BLOCKED": "",
+                "DSC_CICD_FORCE_REGENERATE": "",
+                "DSC_CICD_REFRESH_STABLE": "",
+            }, clear=False):
+                plan = agent.build_plan()
+            item = plan["contracts"][0]
+            self.assertEqual(plan["selected_contracts"], [])
+            self.assertFalse(item["ready"])
+            self.assertIn("prior_composition_boundary_unresolved", item["blocked_reasons"])
+            self.assertEqual(plan["blocked_contracts"][0]["contract_id"], "boundary_leaf")
+            self.assertEqual(item["prior_composition_boundary"]["composition_status"], "C_BOUNDARY")
+
+            changed_controller_hashes = dict(hashes)
+            changed_controller_hashes["agent"] = "prior-controller-version"
+            agent.previous_state = {"contracts": [{
+                "contract_id": "boundary_leaf",
+                "current_state": "BITSTREAM_PASS",
+                "status": "FAILED",
+                "hashes": changed_controller_hashes,
+                "artifacts": [str(artifact.relative_to(root))],
+            }]}
+            with mock.patch.dict(os.environ, {
+                "DSC_CICD_TARGET_CONTRACT": "",
+                "DSC_CICD_RETRY_BLOCKED": "",
+                "DSC_CICD_FORCE_REGENERATE": "",
+                "DSC_CICD_REFRESH_STABLE": "",
+                "DSC_CICD_GENERATOR_CMD": "test-generator-hook",
+            }, clear=False):
+                controller_plan = agent.build_plan()
+            controller_item = controller_plan["contracts"][0]
+            self.assertEqual(controller_plan["selected_contracts"], ["boundary_leaf"])
+            self.assertTrue(controller_item["prior_composition_boundary"]["controller_changed"])
+            self.assertTrue(controller_item["boundary_retry_requested"])
+
+            with mock.patch.dict(os.environ, {
+                "DSC_CICD_RETRY_BLOCKED": "1",
+                "DSC_CICD_GENERATOR_CMD": "test-generator-hook",
+            }, clear=False):
+                retry_plan = agent.build_plan()
+            retry_item = retry_plan["contracts"][0]
+            self.assertEqual(retry_plan["selected_contracts"], ["boundary_leaf"])
+            self.assertTrue(retry_item["ready"])
+            self.assertTrue(retry_item["boundary_retry_requested"])
+            self.assertNotIn("prior_composition_boundary_unresolved", retry_item["blocked_reasons"])
+
+    def test_stale_promoted_component_enters_bounded_auto_refresh(self):
+        contract = {
+            "contract_id": "stable_leaf",
+            "status": "LOCKED",
+            "function": {"name": "StableLeaf", "clang_usr": "c:@F@StableLeaf"},
+            "spec_links": [{"status": "EXACT", "anchor_id": "pdf:section:stable"}],
+            "obligations": [],
+            "dependencies": {"unresolved": []},
+            "interface": {"ports": [
+                {"name": "value", "direction": "input", "width": 8, "signed": False},
+                {"name": "return_value", "direction": "output", "width": 8, "signed": False},
+            ]},
+            "semantics": {"kind": "pure_expression"},
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            rtl = root / "library" / "rtl" / "stable_leaf.sv"
+            rtl.parent.mkdir(parents=True)
+            rtl.write_text(
+                "module stable_leaf(input logic [7:0] value, output logic [7:0] return_value);\n"
+                "  assign return_value = value;\nendmodule\n",
+                encoding="utf-8",
+            )
+            agent = Agent(root, "plan")
+            agent.contracts = [contract]
+            agent.input_facts = {"source_hash": "source", "spec_hash": "spec", "tool_versions": {}}
+            agent.dependency_info = {
+                "cycles": [],
+                "adjacency": {"stable_leaf": []},
+                "call_sites": [],
+                "all_call_sites": [],
+                "dependency_hashes": {"stable_leaf": "dependency"},
+            }
+            _, hashes = agent.cache_key(contract)
+            (root / "library" / "manifest.json").write_text(json.dumps({
+                "components": [{
+                    "contract_id": "stable_leaf",
+                    "status": "PASS",
+                    "contract_hash": hashes["contract"],
+                    "module_file": "rtl/stable_leaf.sv",
+                    "module_sha256": file_hash(rtl),
+                }],
+            }), encoding="utf-8")
+            prior_hashes = dict(hashes)
+            prior_hashes["agent"] = "controller-before-change"
+            agent.previous_state = {"contracts": [{
+                "contract_id": "stable_leaf",
+                "current_state": "PROMOTED",
+                "status": "PROMOTED",
+                "hashes": prior_hashes,
+            }]}
+            with mock.patch.dict(os.environ, {
+                "DSC_CICD_TARGET_CONTRACT": "",
+                "DSC_CICD_REFRESH_STABLE": "",
+                "DSC_CICD_FORCE_REGENERATE": "",
+            }, clear=False):
+                plan = agent.build_plan()
+        self.assertEqual(plan["selected_contracts"], ["stable_leaf"])
+        self.assertEqual(plan["auto_refresh_contracts"], ["stable_leaf"])
+        self.assertFalse(plan["contracts"][0]["new_work"])
+        self.assertTrue(plan["contracts"][0]["stale"])
+
+    def test_stale_stable_refresh_reuses_hash_checked_accepted_rtl(self):
+        contract = {
+            "contract_id": "stable_leaf",
+            "status": "LOCKED",
+            "function": {
+                "name": "StableLeaf",
+                "clang_usr": "c:@F@StableLeaf",
+                "source_file": "model.c",
+                "source_span": {"start_line": 1, "end_line": 1},
+            },
+            "spec_links": [{"status": "EXACT", "anchor_id": "pdf:section:stable"}],
+            "obligations": [],
+            "dependencies": {"unresolved": []},
+            "interface": {"ports": [
+                {"name": "value", "direction": "input", "width": 8, "signed": False},
+                {"name": "return_value", "direction": "output", "width": 8, "signed": False},
+            ]},
+            "semantics": {"kind": "pure_expression"},
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            rtl = root / "library" / "rtl" / "stable_leaf.sv"
+            rtl.parent.mkdir(parents=True)
+            rtl.write_text(
+                "module stable_leaf(input logic [7:0] value, output logic [7:0] return_value);\n"
+                "  assign return_value = value;\nendmodule\n",
+                encoding="utf-8",
+            )
+            agent = Agent(root, "plan")
+            agent.contracts = [contract]
+            agent.input_facts = {"source_hash": "source", "spec_hash": "spec", "tool_versions": {}}
+            agent.dependency_info = {
+                "cycles": [],
+                "adjacency": {"stable_leaf": []},
+                "call_sites": [],
+                "all_call_sites": [],
+                "dependency_hashes": {"stable_leaf": "dependency"},
+            }
+            _, hashes = agent.cache_key(contract)
+            (root / "library" / "manifest.json").write_text(json.dumps({
+                "components": [{
+                    "contract_id": "stable_leaf",
+                    "status": "PASS",
+                    "contract_hash": hashes["contract"],
+                    "module_file": "rtl/stable_leaf.sv",
+                    "module_sha256": file_hash(rtl),
+                }],
+            }), encoding="utf-8")
+            old_hashes = dict(hashes)
+            old_hashes["agent"] = "controller-before-change"
+            agent.previous_state = {"contracts": [{
+                "contract_id": "stable_leaf",
+                "current_state": "PROMOTED",
+                "status": "PROMOTED",
+                "hashes": old_hashes,
+            }]}
+            plan = agent.build_plan()
+        item = plan["contracts"][0]
+        self.assertEqual(plan["selected_contracts"], ["stable_leaf"])
+        self.assertTrue(item["accepted_rtl_available"])
+        self.assertTrue(item["reuse_accepted_rtl"])
+        self.assertEqual(plan["reuse_accepted_rtl_contracts"], ["stable_leaf"])
+
+    def test_interrupted_stage_is_requeued_even_when_hashes_are_current(self):
+        contract = {
+            "contract_id": "recovery_leaf",
+            "status": "LOCKED",
+            "function": {"name": "RecoveryLeaf", "clang_usr": "c:@F@RecoveryLeaf"},
+            "spec_links": [{"status": "EXACT", "anchor_id": "pdf:section:recovery"}],
+            "obligations": [],
+            "dependencies": {"unresolved": []},
+            "interface": {"ports": [
+                {"name": "value", "direction": "input", "width": 8, "signed": False},
+                {"name": "return_value", "direction": "output", "width": 8, "signed": False},
+            ]},
+            "semantics": {"kind": "pure_expression"},
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            rtl = root / "library" / "rtl" / "recovery_leaf.sv"
+            rtl.parent.mkdir(parents=True)
+            rtl.write_text(
+                "module recovery_leaf(input logic [7:0] value, output logic [7:0] return_value);\n"
+                "  assign return_value = value;\nendmodule\n",
+                encoding="utf-8",
+            )
+            agent = Agent(root, "plan")
+            agent.contracts = [contract]
+            agent.input_facts = {"source_hash": "source", "spec_hash": "spec", "tool_versions": {}}
+            agent.dependency_info = {
+                "cycles": [],
+                "adjacency": {"recovery_leaf": []},
+                "call_sites": [],
+                "all_call_sites": [],
+                "dependency_hashes": {"recovery_leaf": "dependency"},
+            }
+            _, hashes = agent.cache_key(contract)
+            (root / "library" / "manifest.json").write_text(json.dumps({
+                "components": [{
+                    "contract_id": "recovery_leaf",
+                    "status": "PASS",
+                    "contract_hash": hashes["contract"],
+                    "module_file": "rtl/recovery_leaf.sv",
+                    "module_sha256": file_hash(rtl),
+                }],
+            }), encoding="utf-8")
+            agent.previous_state = {"contracts": [{
+                "contract_id": "recovery_leaf",
+                "hashes": hashes,
+                "history": [
+                    {"state": "CONTRACT_LOCKED", "status": "DEFERRED"},
+                    {"state": "RTL_GENERATED", "status": "PASS"},
+                    {"state": "CONTRACT_LOCKED", "status": "DEFERRED"},
+                ],
+            }]}
+            plan = agent.build_plan()
+        item = plan["contracts"][0]
+        self.assertEqual(plan["selected_contracts"], ["recovery_leaf"])
+        self.assertEqual(plan["recovery_contracts"], ["recovery_leaf"])
+        self.assertTrue(item["resume_needed"])
+        self.assertFalse(item["stale"])
+        self.assertTrue(item["reuse_accepted_rtl"])
+
+    def test_deferred_batch_preserves_previous_observation_hashes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            agent = Agent(root, "run")
+            agent.previous_state = {"contracts": [{
+                "contract_id": "deferred_leaf",
+                "hashes": {"agent": "observed-before-batch"},
+                "history": [{"state": "DISCOVERED"}],
+            }]}
+            agent.plan = {"contracts": [{
+                "contract_id": "deferred_leaf",
+                "function": "ToolDiscoveredLeaf",
+                "origin": "tool_discovered_reviewed_override",
+                "selected": False,
+                "deferred": True,
+                "blocked_reasons": [],
+                "hashes": {"agent": "current-controller"},
+                "interface_shape": [],
+            }]}
+            agent.initialize_state()
+        self.assertEqual(agent.state["contracts"][0]["hashes"]["agent"], "observed-before-batch")
+
+    def test_blocked_plan_preserves_previous_observation_hashes(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            agent = Agent(root, "run")
+            agent.previous_state = {"contracts": [{
+                "contract_id": "blocked_leaf",
+                "hashes": {"agent": "observed-before-block"},
+                "history": [{"state": "DISCOVERED"}],
+            }]}
+            agent.plan = {"contracts": [{
+                "contract_id": "blocked_leaf",
+                "function": "ToolDiscoveredLeaf",
+                "origin": "tool_discovered_reviewed_override",
+                "selected": False,
+                "deferred": False,
+                "blocked_reasons": ["GENERATION_REQUIRED: DSC_CICD_GENERATOR_CMD is not configured"],
+                "hashes": {"agent": "current-controller"},
+                "interface_shape": [],
+            }]}
+            agent.initialize_state()
+        self.assertEqual(agent.state["contracts"][0]["hashes"]["agent"], "observed-before-block")
+
+    def test_verified_refresh_is_not_requeued_after_deferred_plan(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            artifact = root / "artifacts" / "stable-refresh"
+            artifact.mkdir(parents=True)
+            (artifact / "generation.json").write_text(json.dumps({
+                "status": "PASS",
+                "execution_status": "REUSED_ACCEPTED_RTL",
+            }), encoding="utf-8")
+            (artifact / "matrix-receipt.json").write_text(json.dumps({
+                "status": "PASS",
+            }), encoding="utf-8")
+            agent = Agent(root, "plan")
+            agent.previous_state = {"contracts": [{
+                "contract_id": "stable_leaf",
+                "artifacts": [str(artifact.relative_to(root))],
+                "history": [
+                    {"state": "BITSTREAM_PASS", "status": "PASS"},
+                    {"state": "CONTRACT_LOCKED", "status": "DEFERRED"},
+                ],
+            }]}
+            self.assertFalse(agent.prior_execution_incomplete("stable_leaf"))
+
+    def test_report_blockers_include_current_run_failure_after_no_work_plan(self):
+        agent = Agent(pathlib.Path(tempfile.mkdtemp()), "run")
+        agent.plan = {
+            "blocked_contracts": [{
+                "contract_id": "boundary_contract",
+                "reasons": ["prior_composition_boundary_unresolved"],
+            }],
+        }
+        agent.run_results = [{
+            "contract_id": "verified_contract",
+            "status": "FAILED",
+            "matrix": {
+                "status": "COMPOSITION_BLOCKED",
+                "reason": "caller interface is not representable",
+            },
+        }]
+        agent.state = {"contracts": [{
+            "contract_id": "verified_contract",
+            "status": "FAILED",
+            "failure_reason": "caller interface is not representable",
+        }]}
+        agent.previous_state = {"contracts": [{
+            "contract_id": "history_contract",
+            "history": [
+                {"state": "BITSTREAM_PASS", "status": "FAILED", "failure_reason": "last executable failure"},
+                {"state": "CONTRACT_LOCKED", "status": "DEFERRED", "failure_reason": "bounded selection deferred"},
+            ],
+        }]}
+        blockers = agent.report_blockers()
+        self.assertIn("boundary_contract: prior_composition_boundary_unresolved", blockers)
+        self.assertIn("verified_contract: caller interface is not representable", blockers)
+        self.assertIn("history_contract: last executable failure", blockers)
+
+    def test_report_blockers_prefers_current_specific_blocker_over_history_status(self):
+        agent = Agent(pathlib.Path(tempfile.mkdtemp()), "run")
+        agent.plan = {
+            "blocked_contracts": [{
+                "contract_id": "blocked_contract",
+                "reasons": ["GENERATION_REQUIRED: DSC_CICD_GENERATOR_CMD is not configured"],
+            }],
+        }
+        agent.state = {"contracts": [{
+            "contract_id": "blocked_contract",
+            "status": "BLOCKED",
+            "failure_reason": "GENERATION_REQUIRED: DSC_CICD_GENERATOR_CMD is not configured",
+        }]}
+        agent.previous_state = {"contracts": [{
+            "contract_id": "blocked_contract",
+            "history": [
+                {"state": "RTL_GENERATED", "status": "GENERATION_REQUIRED"},
+                {"state": "DISCOVERED", "status": "BLOCKED"},
+            ],
+        }]}
+        blockers = agent.report_blockers()
+        self.assertEqual(
+            blockers,
+            ["blocked_contract: GENERATION_REQUIRED: DSC_CICD_GENERATOR_CMD is not configured"],
+        )
+
+    def test_accepted_rtl_refresh_skips_generator_and_copies_one_candidate(self):
+        contract = {
+            "contract_id": "stable_leaf",
+            "status": "LOCKED",
+            "function": {
+                "name": "StableLeaf",
+                "clang_usr": "c:@F@StableLeaf",
+                "source_file": "model.c",
+                "source_span": {"start_line": 1, "end_line": 1},
+            },
+            "spec_links": [{"status": "EXACT", "anchor_id": "pdf:section:stable"}],
+            "obligations": [],
+            "dependencies": {"unresolved": []},
+            "interface": {"ports": [
+                {"name": "value", "direction": "input", "width": 8, "signed": False},
+                {"name": "return_value", "direction": "output", "width": 8, "signed": False},
+            ]},
+            "semantics": {"kind": "pure_expression"},
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            source = root / "source"
+            source.mkdir()
+            (source / "model.c").write_text("int StableLeaf(int value) { return value; }\n", encoding="utf-8")
+            rtl = root / "library" / "rtl" / "stable_leaf.sv"
+            rtl.parent.mkdir(parents=True)
+            rtl.write_text(
+                "module stable_leaf(input logic [7:0] value, output logic [7:0] return_value);\n"
+                "  assign return_value = value;\nendmodule\n",
+                encoding="utf-8",
+            )
+            (root / "library" / "manifest.json").write_text(json.dumps({
+                "components": [{
+                    "contract_id": "stable_leaf",
+                    "status": "PASS",
+                    "contract_hash": "stable-contract",
+                    "module_file": "rtl/stable_leaf.sv",
+                    "module_sha256": file_hash(rtl),
+                }],
+            }), encoding="utf-8")
+            agent = Agent(root, "run")
+            agent.input_facts = {"source_dir": str(source), "tools": {}}
+            artifact = root / "artifacts" / "stable-contract"
+            marker = root / "generator-called"
+            hook = f"{os.sys.executable} -c 'open({str(marker)!r}, \"w\").write(\"called\")'"
+            with mock.patch.dict(os.environ, {"DSC_CICD_GENERATOR_CMD": hook}, clear=False):
+                receipt = agent.generate_artifacts(
+                    contract,
+                    {"contract_id": "stable_leaf", "contract_hash": "stable-contract", "reuse_accepted_rtl": True},
+                    artifact,
+                )
+            candidate_text = (artifact / "generated" / "candidate_01.sv").read_text(encoding="utf-8")
+            rtl_text = rtl.read_text(encoding="utf-8")
+        self.assertEqual(receipt["status"], "PASS")
+        self.assertEqual(receipt["execution_status"], "REUSED_ACCEPTED_RTL")
+        self.assertEqual(receipt["model_calls"], 0)
+        self.assertEqual(len(receipt["candidates"]), 1)
+        self.assertEqual(receipt["candidates"][0]["candidate"], "candidate_01")
+        self.assertEqual(candidate_text, rtl_text)
+        self.assertFalse(marker.exists())
+        self.assertEqual(agent.generator_invocations, 0)
+
+    def test_accepted_rtl_refresh_is_verification_only(self):
+        contract = {
+            "contract_id": "stable_leaf",
+            "status": "LOCKED",
+            "function": {"name": "StableLeaf", "clang_usr": "c:@F@StableLeaf"},
+            "spec_links": [{"status": "EXACT", "anchor_id": "pdf:section:stable"}],
+            "interface": {"ports": [
+                {"name": "value", "direction": "input", "width": 8, "signed": False},
+                {"name": "return_value", "direction": "output", "width": 8, "signed": False},
+            ]},
+            "semantics": {"kind": "pure_expression"},
+            "dependencies": {"unresolved": []},
+            "obligations": [],
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory).resolve()
+            rtl = root / "library" / "rtl" / "stable_leaf.sv"
+            rtl.parent.mkdir(parents=True)
+            rtl.write_text(
+                "module stable_leaf(input logic [7:0] value, output logic [7:0] return_value);\n"
+                "  assign return_value = value;\nendmodule\n",
+                encoding="utf-8",
+            )
+            (root / "library" / "manifest.json").write_text(json.dumps({"components": [{
+                "contract_id": "stable_leaf",
+                "status": "PASS",
+                "contract_hash": "stable-contract",
+                "module_file": "rtl/stable_leaf.sv",
+                "module_sha256": file_hash(rtl),
+            }]}), encoding="utf-8")
+            artifact = root / "artifacts" / "stable-contract" / "generated"
+            artifact.mkdir(parents=True)
+            (artifact / "candidate_01.sv").write_text(rtl.read_text(encoding="utf-8"), encoding="utf-8")
+            agent = Agent(root, "run")
+            agent.input_facts = {"source_hash": "source-hash", "spec_hash": "spec-hash"}
+            result = {
+                "status": "PROMOTED",
+                "unit": {"promoted_candidate": "candidate_01", "candidates": [{"candidate": "candidate_01"}]},
+                "dependency": {"status": "PASS"},
+                "matrix": {"status": "PASS", "modes": {"C_ONLY": {"status": "PASS"}, "SHADOW": {"status": "PASS"}, "RTL_RETURN": {"status": "PASS"}}},
+            }
+            promotion = agent.promote_library_component(
+                contract,
+                {"contract_id": "stable_leaf", "contract_hash": "stable-contract", "reuse_accepted_rtl": True},
+                artifact.parent,
+                result,
+            )
+        self.assertEqual(promotion["status"], "VERIFIED_REFRESH")
+        self.assertEqual(promotion["approval"]["status"], "NOT_REQUIRED")
+
+    def test_pending_approval_reuses_exact_candidate_without_generator(self):
+        contract = {
+            "contract_id": "pending_leaf",
+            "status": "LOCKED",
+            "function": {"name": "PendingLeaf", "source_file": "model.c", "source_span": {"start_line": 1, "end_line": 1}},
+            "spec_links": [{"status": "EXACT", "anchor_id": "pdf:section:pending"}],
+            "interface": {"ports": [
+                {"name": "value", "direction": "input", "width": 8, "signed": False},
+                {"name": "return_value", "direction": "output", "width": 8, "signed": False},
+            ]},
+            "semantics": {"kind": "pure_expression"},
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory).resolve()
+            source = root / "source"
+            source.mkdir()
+            (source / "model.c").write_text("int PendingLeaf(int value) { return value; }\n", encoding="utf-8")
+            agent = Agent(root, "run")
+            agent.input_facts = {"source_dir": str(source), "source_hash": "source", "spec_hash": "spec"}
+            artifact = root / "artifacts" / "pending-contract"
+            generated = artifact / "generated"
+            generated.mkdir(parents=True)
+            candidate = generated / "candidate_01.sv"
+            candidate.write_text(
+                "module pending_candidate(input logic [7:0] value, output logic [7:0] return_value);\n"
+                "  assign return_value = value;\nendmodule\n",
+                encoding="utf-8",
+            )
+            _, canonical_sha256 = agent.canonical_rtl_source("pending_leaf", candidate.read_text(encoding="utf-8"))
+            marker = root / "generator-called"
+            hook = f"{os.sys.executable} -c 'open({str(marker)!r}, \"w\").write(\"called\")'"
+            with mock.patch.dict(os.environ, {"DSC_CICD_GENERATOR_CMD": hook}, clear=False):
+                receipt = agent.generate_artifacts(
+                    contract,
+                    {
+                        "contract_id": "pending_leaf",
+                        "contract_hash": "pending-contract",
+                        "resume_human_approval": True,
+                        "pending_rtl_sha256": canonical_sha256,
+                    },
+                    artifact,
+                )
+        self.assertEqual(receipt["status"], "PASS")
+        self.assertEqual(receipt["execution_status"], "REUSED_PENDING_APPROVAL_RTL")
+        self.assertEqual(receipt["model_calls"], 0)
+        self.assertFalse(marker.exists())
 
     def test_refresh_stable_selects_tool_ready_manifest_frontier_in_parallel_batch(self):
         def contract(contract_id):
@@ -379,15 +1097,10 @@ class CicdAgentUnitTests(unittest.TestCase):
 
         with tempfile.TemporaryDirectory() as directory:
             root = pathlib.Path(directory)
-            (root / "library").mkdir()
-            (root / "library" / "manifest.json").write_text(json.dumps({
-                "components": [
-                    {"contract_id": "unit_alpha", "status": "PASS"},
-                    {"contract_id": "unit_beta", "status": "PASS"},
-                ],
-            }), encoding="utf-8")
+            (root / "library" / "rtl").mkdir(parents=True)
             agent = Agent(root, "plan")
-            agent.contracts = [contract("unit_alpha"), contract("unit_beta")]
+            contracts = [contract("unit_alpha"), contract("unit_beta")]
+            agent.contracts = contracts
             agent.dependency_info = {
                 "cycles": [],
                 "adjacency": {"unit_alpha": [], "unit_beta": []},
@@ -395,6 +1108,26 @@ class CicdAgentUnitTests(unittest.TestCase):
                 "all_call_sites": [],
                 "dependency_hashes": {},
             }
+            components = []
+            for value in contracts:
+                contract_id_value = value["contract_id"]
+                rtl = root / "library" / "rtl" / f"{contract_id_value}.sv"
+                rtl.write_text(
+                    f"module {contract_id_value}(input logic [7:0] value, output logic [7:0] return_value);\n"
+                    "  assign return_value = value;\nendmodule\n",
+                    encoding="utf-8",
+                )
+                _, hashes = agent.cache_key(value)
+                components.append({
+                    "contract_id": contract_id_value,
+                    "status": "PASS",
+                    "contract_hash": hashes["contract"],
+                    "module_file": f"rtl/{contract_id_value}.sv",
+                    "module_sha256": file_hash(rtl),
+                })
+            (root / "library" / "manifest.json").write_text(
+                json.dumps({"components": components}), encoding="utf-8"
+            )
             with mock.patch.dict("os.environ", {
                 "DSC_CICD_TARGET_CONTRACT": "",
                 "DSC_CICD_REFRESH_STABLE": "1",
@@ -405,6 +1138,73 @@ class CicdAgentUnitTests(unittest.TestCase):
         self.assertTrue(plan["refresh_stable"])
         self.assertTrue(plan["force_regenerate"])
         self.assertTrue(all(item["force_regenerate"] for item in plan["contracts"]))
+        self.assertTrue(all(item["accepted_rtl_available"] for item in plan["contracts"]))
+        self.assertTrue(all(item["reuse_accepted_rtl"] for item in plan["contracts"]))
+
+    def test_no_work_plan_preserves_historical_dag_nodes(self):
+        contract = {
+            "contract_id": "current_leaf",
+            "status": "LOCKED",
+            "function": {"name": "CurrentLeaf", "clang_usr": "c:@F@CurrentLeaf"},
+            "spec_links": [{"status": "EXACT", "anchor_id": "pdf:section:current"}],
+            "obligations": [],
+            "dependencies": {"unresolved": []},
+            "interface": {"ports": [
+                {"name": "value", "direction": "input", "width": 8, "signed": False},
+                {"name": "return_value", "direction": "output", "width": 8, "signed": False},
+            ]},
+            "semantics": {"kind": "pure_expression"},
+        }
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            (root / "ci").mkdir()
+            (root / "ci" / "dag.json").write_text(json.dumps({
+                "nodes": [{
+                    "node_id": "old_leaf:promote",
+                    "contract_id": "old_leaf",
+                    "stage": "PROMOTED",
+                    "status": "PROMOTED",
+                    "artifacts": ["artifacts/old-hash"],
+                }],
+                "edges": [],
+                "dependency_call_sites": [],
+            }), encoding="utf-8")
+            (root / "ci" / "state.json").write_text(json.dumps({
+                "contracts": [{
+                    "contract_id": "state_only",
+                    "current_state": "PROMOTED",
+                    "status": "PROMOTED",
+                    "hashes": {
+                        "source": "source-hash",
+                        "spec": "spec-hash",
+                        "contract": "contract-hash",
+                        "dependency": "dependency-hash",
+                    },
+                    "artifacts": ["artifacts/state-only"],
+                }],
+            }), encoding="utf-8")
+            agent = Agent(root, "plan")
+            agent.contracts = [contract]
+            agent.dependency_info = {
+                "cycles": [],
+                "adjacency": {"current_leaf": []},
+                "call_sites": [],
+                "all_call_sites": [],
+                "dependency_hashes": {},
+            }
+            plan = agent.build_plan()
+        self.assertIn("old_leaf", plan["historical_contracts"])
+        self.assertIn("state_only", plan["historical_contracts"])
+        old_node = next(node for node in agent.dag["nodes"] if node["node_id"] == "old_leaf:promote")
+        self.assertEqual(old_node["status"], "PROMOTED")
+        self.assertEqual(old_node["artifacts"], ["artifacts/old-hash"])
+        state_node = next(node for node in agent.dag["nodes"] if node["node_id"] == "state_only:promote")
+        self.assertEqual(state_node["status"], "PROMOTED")
+        self.assertEqual(state_node["artifacts"], ["artifacts/state-only"])
+        self.assertEqual(agent.dag["historical_node_count"], 10)
+        node_ids = {node["node_id"] for node in agent.dag["nodes"]}
+        self.assertTrue(agent.dag["edges"])
+        self.assertTrue(all(edge["from"] in node_ids and edge["to"] in node_ids for edge in agent.dag["edges"]))
 
     def test_promoted_candidate_materializes_stable_library_and_archives_replacement(self):
         contract = {
@@ -456,6 +1256,36 @@ class CicdAgentUnitTests(unittest.TestCase):
                 "dependency": {"status": "PASS"},
                 "matrix": {"status": "PASS", "modes": {"C_ONLY": {"status": "PASS"}, "SHADOW": {"status": "PASS"}, "RTL_RETURN": {"status": "PASS"}}},
             }
+            awaiting = agent.promote_library_component(
+                contract,
+                {"contract_id": "fixture_leaf", "contract_hash": "fixture-hash"},
+                artifact,
+                result,
+            )
+            self.assertEqual(awaiting["status"], "AWAITING_HUMAN_APPROVAL")
+            canonical_rtl = (
+                "module fixture_leaf(input logic [7:0] value, output logic [7:0] return_value);\n"
+                "  assign return_value = value;\n"
+                "endmodule\n"
+            )
+            approval_path = agent.promotion_approval_path("fixture_leaf", "fixture-hash")
+            approval_path.parent.mkdir(parents=True, exist_ok=True)
+            approval_path.write_text(json.dumps({
+                "schema_version": 1,
+                "contract_id": "fixture_leaf",
+                "contract_hash": "fixture-hash",
+                "rtl_sha256": hashlib.sha256(canonical_rtl.encode("utf-8")).hexdigest(),
+                "source_sha256": "source-hash",
+                "spec_sha256": "pdf-hash",
+                "interface_sha256": digest(contract["interface"]),
+                "review_status": "APPROVED",
+                "decision": "PROMOTE",
+                "reviewer": "designer@example.invalid",
+                "reviewed_at": "2026-08-03T00:00:00Z",
+                "design_intent": "Pure combinational identity leaf.",
+                "qor": {"latency_cycles": 0, "area_reviewed": True},
+                "gates_reviewed": ["width_spec", "unit_equivalence", "formal_or_exhaustive", "dependency_composition", "C_ONLY", "SHADOW", "RTL_RETURN", "frame_compare"],
+            }), encoding="utf-8")
             promotion = agent.promote_library_component(
                 contract,
                 {"contract_id": "fixture_leaf", "contract_hash": "fixture-hash"},
@@ -740,6 +1570,21 @@ class CicdAgentUnitTests(unittest.TestCase):
             self.assertIn("dsc_cfg->dsc_version_minor", overlay)
             self.assertIn("dsc_state->quantTableLuma[qp]", overlay)
             self.assertIn("dsc_state->cpntBitDepth[0]", overlay)
+
+            paths = agent.write_overlay_sources(
+                contract, root, "map_qp_to_qlevel", root / "candidate.sv"
+            )
+            composition = paths["composition"]
+            self.assertEqual(composition["status"], "PASS")
+            self.assertEqual(composition["adapter_kind"], "flattened_pointer_state")
+            self.assertEqual(
+                composition["rtl_input_count"],
+                len([port for port in contract["interface"]["ports"] if port["direction"] == "input"]),
+            )
+            self.assertEqual(
+                composition["frozen_input_ports"],
+                [port["name"] for port in contract["interface"]["ports"] if port["direction"] == "input"],
+            )
 
     def test_oracle_supports_dynamic_index_into_fixed_struct_array(self):
         contract = {

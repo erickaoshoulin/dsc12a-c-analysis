@@ -11,6 +11,21 @@
 - `EXACT` page 103 `pdf:model-note:MN_CALC_SCALE_OFFSET:p103` (exact_mn_id)
 - `EXACT` page 103 `pdf:section:6.8.2` (exact_mn_id)
 
+## `EscapeCodeSize`
+
+- `REVIEWED` page 34 `pdf:section:3.5.1` (accepted_library_exact_spec)
+- `REVIEWED` page 93 `pdf:section:6.6.2` (accepted_library_exact_spec)
+- `REVIEWED` page 113 `pdf:section:6.8.6` (accepted_library_exact_spec)
+
+## `EstimateBitsForGroup`
+
+- `REVIEWED` page 88 `pdf:model-note:MN_ENC_ICH_MODE_SELECT:p088` (accepted_library_exact_spec)
+- `REVIEWED` page 88 `pdf:section:6.5.3.2` (accepted_library_exact_spec)
+- `REVIEWED` page 91 `pdf:section:6.6.1` (accepted_library_exact_spec)
+- `REVIEWED` page 94 `pdf:section:6.6.4` (accepted_library_exact_spec)
+- `REVIEWED` page 34 `pdf:table:3-1` (accepted_library_exact_spec)
+- `REVIEWED` page 114 `pdf:table:6-2` (accepted_library_exact_spec)
+
 ## `FindMidpoint`
 
 - `EXACT` page 80 `pdf:model-note:MN_MIDPOINT_PRED:p080` (exact_mn_id)
@@ -19,6 +34,7 @@
 ## `FindResidualSize`
 
 - `REVIEWED` page 91 `pdf:section:6.6.1` (reviewed_exact_spec)
+- `REVIEWED` page 34 `pdf:table:3-1` (accepted_library_exact_spec)
 
 ## `FlatnessAdjustment`
 
@@ -30,11 +46,19 @@
 ## `GetQpAdjPredSize`
 
 - `PROPOSED` page 113 `pdf:model-note:MN_FLAT_QP_ADJ:p113` (normalized_concept_heuristic)
+- `REVIEWED` page 113 `pdf:section:6.8.5.2` (accepted_library_exact_spec)
+- `REVIEWED` page 91 `pdf:section:6.6.1` (accepted_library_exact_spec)
+- `REVIEWED` page 113 `pdf:section:6.8.6` (accepted_library_exact_spec)
 
 ## `IchDecision`
 
 - `EXACT` page 88 `pdf:model-note:MN_ENC_ICH_MODE_SELECT:p088` (exact_mn_id)
 - `EXACT` page 88 `pdf:section:6.5.3.2` (exact_mn_id)
+
+## `IsFlatnessInfoSent`
+
+- `REVIEWED` page 62 `pdf:section:4.3` (accepted_library_exact_spec)
+- `REVIEWED` page 94 `pdf:section:6.6.3` (accepted_library_exact_spec)
 
 ## `IsOrigFlatHIndex`
 
@@ -49,11 +73,23 @@
 
 - `EXACT` page 113 `pdf:model-note:MN_MAP_QP_TO_QLEVEL:p113` (exact_mn_id)
 - `EXACT` page 113 `pdf:section:6.8.6` (exact_mn_id)
+- `REVIEWED` page 114 `pdf:table:6-2` (accepted_library_exact_spec)
+
+## `MaxResidualSize`
+
+- `REVIEWED` page 34 `pdf:section:3.5.1` (accepted_library_exact_spec)
+- `REVIEWED` page 91 `pdf:section:6.6.1` (accepted_library_exact_spec)
+- `REVIEWED` page 113 `pdf:section:6.8.6` (accepted_library_exact_spec)
 
 ## `PickBestHistoryValue`
 
 - `EXACT` page 88 `pdf:model-note:MN_ENC_ICH_IDX_SELECT:p088` (exact_mn_id)
 - `EXACT` page 88 `pdf:section:6.5.3.1` (exact_mn_id)
+
+## `PredictSize`
+
+- `REVIEWED` page 91 `pdf:section:6.6.1` (accepted_library_exact_spec)
+- `REVIEWED` page 83 `pdf:section:6.4.5` (accepted_library_exact_spec)
 
 ## `PredictionLoop`
 
@@ -99,6 +135,13 @@
 ## `UpdateHistoryElement`
 
 - `PROPOSED` page 84 `pdf:figure:6-6` (normalized_concept_heuristic)
+
+## `UsingMidpoint`
+
+- `REVIEWED` page 82 `pdf:model-note:MN_ENC_MPP_SELECT:p082` (accepted_library_exact_spec)
+- `REVIEWED` page 82 `pdf:section:6.4.4.2` (accepted_library_exact_spec)
+- `REVIEWED` page 34 `pdf:table:3-1` (accepted_library_exact_spec)
+- `REVIEWED` page 114 `pdf:table:6-2` (accepted_library_exact_spec)
 
 ## `VLCUnit`
 

@@ -1,4 +1,100 @@
 {
+  "ci_frontier": {
+    "blocked_contracts": [
+      {
+        "contract_id": "ichdecision",
+        "current_state": "DISCOVERED",
+        "function": "IchDecision",
+        "promotion_status": "AWAITING_HUMAN_APPROVAL",
+        "reasons": [
+          "human_promotion_approval_pending",
+          "human_promotion_approval_required"
+        ],
+        "status": "BLOCKED"
+      }
+    ],
+    "blockers": [
+      {
+        "contract_id": "ichdecision",
+        "current_state": "DISCOVERED",
+        "function": "IchDecision",
+        "promotion_status": "AWAITING_HUMAN_APPROVAL",
+        "reasons": [
+          "human_promotion_approval_pending",
+          "human_promotion_approval_required"
+        ],
+        "status": "BLOCKED"
+      }
+    ],
+    "candidate_queue": [
+      {
+        "contract_id": "ichdecision",
+        "current_state": "DISCOVERED",
+        "current_status": "BLOCKED",
+        "function": "IchDecision",
+        "promotion_status": "AWAITING_HUMAN_APPROVAL",
+        "queue_state": "BLOCKED",
+        "reasons": [
+          "human_promotion_approval_pending",
+          "human_promotion_approval_required"
+        ]
+      }
+    ],
+    "counts": {
+      "blocked": 1,
+      "new_candidates": 1,
+      "ready": 16,
+      "selected": 16
+    },
+    "generator_invocations": 0,
+    "model_calls": 0,
+    "new_candidates": [
+      "ichdecision"
+    ],
+    "ready_contracts": [
+      "ceil_log2",
+      "escapecodesize",
+      "estimatebitsforgroup",
+      "findmidpoint",
+      "findresidualsize",
+      "getqpadjpredsize",
+      "isflatnessinfosent",
+      "isorigflathindex",
+      "mapqptoqlevel",
+      "maxresidualsize",
+      "predictsize",
+      "qp2qlevel",
+      "quantizeresidual",
+      "samplepredict",
+      "samptolinebuf",
+      "usingmidpoint"
+    ],
+    "schema_version": 1,
+    "selected_contracts": [
+      "ceil_log2",
+      "escapecodesize",
+      "estimatebitsforgroup",
+      "findmidpoint",
+      "findresidualsize",
+      "getqpadjpredsize",
+      "isflatnessinfosent",
+      "isorigflathindex",
+      "mapqptoqlevel",
+      "maxresidualsize",
+      "predictsize",
+      "qp2qlevel",
+      "quantizeresidual",
+      "samplepredict",
+      "samptolinebuf",
+      "usingmidpoint"
+    ],
+    "selected_new_work": [],
+    "source_files": [
+      "ci/plan.json",
+      "ci/state.json",
+      "summary.json"
+    ]
+  },
   "counts": {
     "PASS": 16
   },
@@ -74,6 +170,19 @@
     },
     "vectors": 108011919
   },
+  "repository_hygiene": {
+    "available": true,
+    "forbidden": [],
+    "forbidden_count": 0,
+    "rules": {
+      "generated_candidate_material": "artifacts generated candidates, RTL, oracles, harnesses, and vector generators",
+      "obj_dir": "simulator build directories",
+      "transient_log_or_waveform": "tracked logs and simulator waveforms",
+      "vectors": "tracked vector directories"
+    },
+    "status": "PASS",
+    "tracked_count": 1116
+  },
   "run_count": 20,
   "schema_version": 1,
   "selected_run": {
@@ -101,6 +210,59 @@
     "vectors": 108011919
   },
   "source": {
+    "analysis_preflight": {
+      "available": true,
+      "blockers": [
+        "missing tool: frama-c"
+      ],
+      "missing_tools": [
+        "frama-c"
+      ],
+      "receipt": "build/analysis-preflight.json",
+      "status": "INFRASTRUCTURE_FAILURE",
+      "tools": {
+        "clang": {
+          "requested": "clang",
+          "resolution": "PATH",
+          "resolved": "/usr/bin/clang",
+          "status": "PASS",
+          "version": "Apple clang version 17.0.0 (clang-1700.6.3.2)"
+        },
+        "clang++": {
+          "requested": "clang++",
+          "resolution": "homebrew",
+          "resolved": "/opt/homebrew/Cellar/llvm/22.1.8/bin/clang-22",
+          "status": "PASS",
+          "version": "Homebrew clang version 22.1.8"
+        },
+        "cmake": {
+          "requested": "cmake",
+          "resolution": "PATH",
+          "resolved": "/opt/homebrew/Cellar/cmake/4.1.1/bin/cmake",
+          "status": "PASS",
+          "version": "cmake version 4.1.1"
+        },
+        "frama-c": {
+          "requested": "frama-c",
+          "resolved": null,
+          "status": "MISSING"
+        },
+        "llvm-config": {
+          "requested": "llvm-config",
+          "resolution": "homebrew",
+          "resolved": "/opt/homebrew/Cellar/llvm/22.1.8/bin/llvm-config",
+          "status": "PASS",
+          "version": "22.1.8"
+        },
+        "python": {
+          "requested": "python3",
+          "resolution": "PATH",
+          "resolved": "/opt/homebrew/Cellar/python@3.14/3.14.6/Frameworks/Python.framework/Versions/3.14/bin/python3.14",
+          "status": "PASS",
+          "version": "Python 3.14.6"
+        }
+      }
+    },
     "pdf": {
       "gate": {
         "metadata_contains_display_stream_compression": true,
@@ -307,10 +469,48 @@
   "storage": {
     "fallback": false,
     "fallback_reason": null,
-    "mode": "EXPLICIT_ROOT",
+    "mode": "ENV_ROOT",
     "mountpoint": null,
     "requested": "/Users/snow/.svrt-network/dsc12a-regression",
     "root": "/Users/snow/.svrt-network/dsc12a-regression",
     "share": null
+  },
+  "traceability": {
+    "available": true,
+    "counts": {
+      "accepted_library_link_count": 25,
+      "exact_count": 53,
+      "link_count": 89,
+      "linked_production_anchor_count": 35,
+      "linked_spec_anchor_count": 64,
+      "production_anchor_count": 88,
+      "proposed_count": 6,
+      "reviewed_count": 30,
+      "spec_anchor_count": 358,
+      "stale_count": 0,
+      "untraced_production_function_count": 53,
+      "untraced_spec_anchor_count": 150
+    },
+    "library_projection": {
+      "components_eligible": 16,
+      "components_seen": 16,
+      "links_added": 25,
+      "manifest_sha256": "3c42a038a8d3367eb7225a40e102f7150495daab672e2de2ea261446cef301d0",
+      "schema_version": 1,
+      "skipped": {
+        "code_anchor_missing": 1,
+        "component_no_new_links": 6,
+        "duplicate_link": 20
+      },
+      "status": "PASS"
+    },
+    "receipt": "traceability/traceability.json",
+    "receipt_sha256": "91237e3ea6ff3a89c6ee8b1dbd553dbe29a0e18b04e4c27d36be3fcf634bbc3a",
+    "reports": {
+      "code_to_spec": "../reports/code-to-spec.md",
+      "orphan_triage": "../reports/orphan-triage.md",
+      "orphans": "../reports/orphans.md",
+      "spec_to_code": "../reports/spec-to-code.md"
+    }
   }
 }

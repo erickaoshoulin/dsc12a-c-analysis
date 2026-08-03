@@ -1,1 +1,0 @@
-# Generated vector format: one decimal value per frozen input port, per line.\n

@@ -1,6 +1,6 @@
 # Specification to C traceability
 
-Generated links are EXACT only when anchored by a direct MN/spec reference; heuristic links remain PROPOSED until human review.
+Generated links are EXACT only when anchored by a direct MN/spec reference. Accepted PASS library contracts may also project their hash-checked EXACT_SPEC links as REVIEWED joins to existing Clang/PDF anchors; heuristic links remain PROPOSED until human review.
 
 - `EXACT` `pdf:model-note:MN_MAP_QP_TO_QLEVEL:p113` page 113 -> `MapQpToQlevel` `dsc_codec.c:221`
   - method: exact_mn_id; evidence: C comment and PDF anchor both contain MN_MAP_QP_TO_QLEVEL
@@ -194,3 +194,78 @@ Generated links are EXACT only when anchored by a direct MN/spec reference; heur
 - `REVIEWED` `pdf:section:6.8.5.1` page 111 -> `IsOrigFlatHIndex` `dsc_codec.c:1126`
   - method: reviewed_exact_spec; evidence: The reviewed C body reads only flatness configuration, primary QP, component count, slice width, and original-line samples; the generated boundary keeps line storage in the caller.
   - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1126-L1195
+- `REVIEWED` `pdf:section:3.5.1` page 34 -> `EscapeCodeSize` `dsc_codec.c:443`
+  - method: accepted_library_exact_spec; evidence: Accepted PASS library component escapecodesize carries an EXACT_SPEC link to pdf:section:3.5.1
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L443-L451
+- `REVIEWED` `pdf:section:6.6.2` page 93 -> `EscapeCodeSize` `dsc_codec.c:443`
+  - method: accepted_library_exact_spec; evidence: Accepted PASS library component escapecodesize carries an EXACT_SPEC link to pdf:section:6.6.2
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L443-L451
+- `REVIEWED` `pdf:section:6.8.6` page 113 -> `EscapeCodeSize` `dsc_codec.c:443`
+  - method: accepted_library_exact_spec; evidence: Accepted PASS library component escapecodesize carries an EXACT_SPEC link to pdf:section:6.8.6
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L443-L451
+- `REVIEWED` `pdf:model-note:MN_ENC_ICH_MODE_SELECT:p088` page 88 -> `EstimateBitsForGroup` `dsc_codec.c:390`
+  - method: accepted_library_exact_spec; evidence: Accepted PASS library component estimatebitsforgroup carries an EXACT_SPEC link to pdf:model-note:MN_ENC_ICH_MODE_SELECT:p088
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L390-L437
+- `REVIEWED` `pdf:section:6.5.3.2` page 88 -> `EstimateBitsForGroup` `dsc_codec.c:390`
+  - method: accepted_library_exact_spec; evidence: Accepted PASS library component estimatebitsforgroup carries an EXACT_SPEC link to pdf:section:6.5.3.2
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L390-L437
+- `REVIEWED` `pdf:section:6.6.1` page 91 -> `EstimateBitsForGroup` `dsc_codec.c:390`
+  - method: accepted_library_exact_spec; evidence: Accepted PASS library component estimatebitsforgroup carries an EXACT_SPEC link to pdf:section:6.6.1
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L390-L437
+- `REVIEWED` `pdf:section:6.6.4` page 94 -> `EstimateBitsForGroup` `dsc_codec.c:390`
+  - method: accepted_library_exact_spec; evidence: Accepted PASS library component estimatebitsforgroup carries an EXACT_SPEC link to pdf:section:6.6.4
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L390-L437
+- `REVIEWED` `pdf:table:3-1` page 34 -> `EstimateBitsForGroup` `dsc_codec.c:390`
+  - method: accepted_library_exact_spec; evidence: Accepted PASS library component estimatebitsforgroup carries an EXACT_SPEC link to pdf:table:3-1
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L390-L437
+- `REVIEWED` `pdf:table:6-2` page 114 -> `EstimateBitsForGroup` `dsc_codec.c:390`
+  - method: accepted_library_exact_spec; evidence: Accepted PASS library component estimatebitsforgroup carries an EXACT_SPEC link to pdf:table:6-2
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L390-L437
+- `REVIEWED` `pdf:table:3-1` page 34 -> `FindResidualSize` `dsc_codec.c:1078`
+  - method: accepted_library_exact_spec; evidence: Accepted PASS library component findresidualsize carries an EXACT_SPEC link to pdf:table:3-1
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1078-L1109
+- `REVIEWED` `pdf:section:6.8.5.2` page 113 -> `GetQpAdjPredSize` `dsc_codec.c:278`
+  - method: accepted_library_exact_spec; evidence: Accepted PASS library component getqpadjpredsize carries an EXACT_SPEC link to pdf:section:6.8.5.2
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L278-L297
+- `REVIEWED` `pdf:section:6.6.1` page 91 -> `GetQpAdjPredSize` `dsc_codec.c:278`
+  - method: accepted_library_exact_spec; evidence: Accepted PASS library component getqpadjpredsize carries an EXACT_SPEC link to pdf:section:6.6.1
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L278-L297
+- `REVIEWED` `pdf:section:6.8.6` page 113 -> `GetQpAdjPredSize` `dsc_codec.c:278`
+  - method: accepted_library_exact_spec; evidence: Accepted PASS library component getqpadjpredsize carries an EXACT_SPEC link to pdf:section:6.8.6
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L278-L297
+- `REVIEWED` `pdf:section:4.3` page 62 -> `IsFlatnessInfoSent` `dsc_codec.c:1116`
+  - method: accepted_library_exact_spec; evidence: Accepted PASS library component isflatnessinfosent carries an EXACT_SPEC link to pdf:section:4.3
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1116-L1119
+- `REVIEWED` `pdf:section:6.6.3` page 94 -> `IsFlatnessInfoSent` `dsc_codec.c:1116`
+  - method: accepted_library_exact_spec; evidence: Accepted PASS library component isflatnessinfosent carries an EXACT_SPEC link to pdf:section:6.6.3
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1116-L1119
+- `REVIEWED` `pdf:table:6-2` page 114 -> `MapQpToQlevel` `dsc_codec.c:221`
+  - method: accepted_library_exact_spec; evidence: Accepted PASS library component mapqptoqlevel carries an EXACT_SPEC link to pdf:table:6-2
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L221-L238
+- `REVIEWED` `pdf:section:3.5.1` page 34 -> `MaxResidualSize` `dsc_codec.c:263`
+  - method: accepted_library_exact_spec; evidence: Accepted PASS library component maxresidualsize carries an EXACT_SPEC link to pdf:section:3.5.1
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L263-L270
+- `REVIEWED` `pdf:section:6.6.1` page 91 -> `MaxResidualSize` `dsc_codec.c:263`
+  - method: accepted_library_exact_spec; evidence: Accepted PASS library component maxresidualsize carries an EXACT_SPEC link to pdf:section:6.6.1
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L263-L270
+- `REVIEWED` `pdf:section:6.8.6` page 113 -> `MaxResidualSize` `dsc_codec.c:263`
+  - method: accepted_library_exact_spec; evidence: Accepted PASS library component maxresidualsize carries an EXACT_SPEC link to pdf:section:6.8.6
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L263-L270
+- `REVIEWED` `pdf:section:6.6.1` page 91 -> `PredictSize` `dsc_codec.c:1476`
+  - method: accepted_library_exact_spec; evidence: Accepted PASS library component predictsize carries an EXACT_SPEC link to pdf:section:6.6.1
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1476-L1486
+- `REVIEWED` `pdf:section:6.4.5` page 83 -> `PredictSize` `dsc_codec.c:1476`
+  - method: accepted_library_exact_spec; evidence: Accepted PASS library component predictsize carries an EXACT_SPEC link to pdf:section:6.4.5
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L1476-L1486
+- `REVIEWED` `pdf:model-note:MN_ENC_MPP_SELECT:p082` page 82 -> `UsingMidpoint` `dsc_codec.c:457`
+  - method: accepted_library_exact_spec; evidence: Accepted PASS library component usingmidpoint carries an EXACT_SPEC link to pdf:model-note:MN_ENC_MPP_SELECT:p082
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L457-L476
+- `REVIEWED` `pdf:section:6.4.4.2` page 82 -> `UsingMidpoint` `dsc_codec.c:457`
+  - method: accepted_library_exact_spec; evidence: Accepted PASS library component usingmidpoint carries an EXACT_SPEC link to pdf:section:6.4.4.2
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L457-L476
+- `REVIEWED` `pdf:table:3-1` page 34 -> `UsingMidpoint` `dsc_codec.c:457`
+  - method: accepted_library_exact_spec; evidence: Accepted PASS library component usingmidpoint carries an EXACT_SPEC link to pdf:table:3-1
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L457-L476
+- `REVIEWED` `pdf:table:6-2` page 114 -> `UsingMidpoint` `dsc_codec.c:457`
+  - method: accepted_library_exact_spec; evidence: Accepted PASS library component usingmidpoint carries an EXACT_SPEC link to pdf:table:6-2
+  - fixed C permalink: https://github.com/erickaoshoulin/dsc-1-2a-rust-port/blob/f26ecb2afa83aa9f0cc608b5b7c2742901ee9207/source/dsc_codec.c#L457-L476

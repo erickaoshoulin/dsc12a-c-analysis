@@ -268,6 +268,41 @@ class DashboardFixtureTests(unittest.TestCase):
         ok, errors = dashboard.check_site(repo, site)
         self.assertTrue(ok, errors)
 
+    def test_pass_history_recovers_missing_rtl_hash_and_verified_run(self):
+        temp, repo, regression, _ = self.make_fixture()
+        self.addCleanup(temp.cleanup)
+        accepted = (
+            regression
+            / "runs"
+            / "fixture-run"
+            / "functions"
+            / "fixture_leaf"
+            / "accepted"
+            / "candidate_01.sv"
+        )
+        accepted.parent.mkdir(parents=True, exist_ok=True)
+        accepted.write_text("module fixture_leaf; endmodule\n", encoding="utf-8")
+        receipt_path = regression / "runs" / "fixture-run" / "functions" / "fixture_leaf" / "receipt.json"
+        receipt = dashboard.read_json(receipt_path)
+        receipt["accepted_rtl"] = str(accepted)
+        receipt.pop("rtl_sha256", None)
+        dashboard.write_json(receipt_path, receipt)
+        manifest_path = repo / "library" / "manifest.json"
+        manifest = dashboard.read_json(manifest_path)
+        manifest["components"][0].pop("last_verified_run_id", None)
+        dashboard.write_json(manifest_path, manifest)
+
+        site = repo / "dashboard"
+        dataset, _ = dashboard.build(repo, str(regression), "latest", output=site, mirror_external=False)
+        model = dashboard.read_json(site / "data" / "functions" / "fixture_leaf.json")
+        expected_hash = dashboard.file_hash(accepted)
+        self.assertEqual(model["promotion"]["last_verified_run_id"], "fixture-run")
+        self.assertEqual(model["history"][0]["rtl_sha256"], expected_hash)
+        indexed = dashboard.read_json(repo / "library" / "index.json")
+        component = indexed["components"][0]
+        self.assertEqual(component["provenance"]["last_verified_run_id"], "fixture-run")
+        self.assertEqual(component["history"][0]["rtl_sha256"], expected_hash)
+
     def test_failed_fixture_is_red_with_cause_and_counterexample(self):
         temp, repo, regression, _ = self.make_fixture(failed=True)
         self.addCleanup(temp.cleanup)
@@ -300,6 +335,215 @@ class DashboardFixtureTests(unittest.TestCase):
         self.assertIn("SPEC_UNAVAILABLE", summary)
         self.assertIn("SMB fallback", summary)
 
+    def test_repository_traceability_audit_keeps_proposals_and_orphans_visible(self):
+        temp, repo, regression, _ = self.make_fixture()
+        self.addCleanup(temp.cleanup)
+        dashboard.write_json(repo / "traceability" / "traceability.json", {
+            "schema_version": 1,
+            "counts": {"spec_anchor_count": 4},
+            "links": [
+                {
+                    "link_id": "exact-1",
+                    "status": "EXACT",
+                    "method": "exact_mn_id",
+                    "function": "FixtureLeaf",
+                    "spec_anchor_id": "pdf:model-note:MN_FIXTURE:p7",
+                    "spec_page": 7,
+                    "code_anchor_id": "code:function:c:@F@FixtureLeaf",
+                    "code_file": "fixture.c",
+                    "code_line": 10,
+                    "code_permalink": "https://github.com/example/repo/blob/fixture/fixture.c#L10-L20",
+                    "evidence": "fixture exact evidence",
+                },
+                {
+                    "link_id": "proposed-1",
+                    "status": "PROPOSED",
+                    "method": "normalized_concept_heuristic",
+                    "function": "CandidateLeaf",
+                    "spec_anchor_id": "pdf:section:7",
+                    "spec_page": 7,
+                    "code_anchor_id": "code:function:c:@F@CandidateLeaf",
+                    "code_file": "candidate.c",
+                    "code_line": 12,
+                    "evidence": "heuristic evidence",
+                },
+                {
+                    "link_id": "reviewed-1",
+                    "status": "REVIEWED",
+                    "method": "reviewed_exact_spec",
+                    "function": "ReviewedLeaf",
+                    "spec_anchor_id": "pdf:section:8",
+                    "spec_page": 8,
+                    "code_anchor_id": "code:function:c:@F@ReviewedLeaf",
+                    "code_file": "reviewed.c",
+                    "code_line": 14,
+                    "evidence": "reviewed evidence",
+                },
+                {
+                    "link_id": "library-1",
+                    "status": "REVIEWED",
+                    "method": "accepted_library_exact_spec",
+                    "function": "LibraryLeaf",
+                    "spec_anchor_id": "pdf:section:8.1",
+                    "spec_page": 8,
+                    "code_anchor_id": "code:function:c:@F@LibraryLeaf",
+                    "code_file": "library.c",
+                    "code_line": 16,
+                    "evidence": "accepted library evidence",
+                },
+            ],
+            "orphans": {
+                "spec_anchor_ids": ["pdf:figure:9"],
+                "production_code_anchor_ids": ["code:function:c:@F@Untraced"],
+            },
+            "orphan_triage": {
+                "schema_version": 1,
+                "summary": {
+                    "production_code_count": 1,
+                    "spec_anchor_count": 1,
+                    "production_code_next_actions": {"CHECK_NON_OUTPUT_SCOPE": 1},
+                    "spec_next_actions": {"REVIEW_SPEC_SCOPE": 1},
+                },
+                "production_code": [{
+                    "function": "Untraced",
+                    "file": "fixture.c",
+                    "line": 20,
+                    "next_action": "CHECK_NON_OUTPUT_SCOPE",
+                    "rationale": "fixture triage evidence",
+                    "candidate": {"rank": 4, "score": 12, "eligible": False, "purity": "IMPURE", "timing": "UNKNOWN"},
+                    "coverage": {"status": "EXECUTED", "execution_count": 2, "eligible_after_coverage": False},
+                    "comments": [],
+                }],
+                "spec": [{
+                    "spec_anchor_id": "pdf:figure:9",
+                    "kind": "figure",
+                    "page": 9,
+                    "next_action": "REVIEW_SPEC_SCOPE",
+                    "rationale": "fixture spec evidence",
+                    "related_code_functions": [],
+                }],
+            },
+            "library_projection": {
+                "schema_version": 1,
+                "status": "PASS",
+                "manifest_sha256": "fixture-manifest",
+                "components_seen": 1,
+                "components_eligible": 1,
+                "links_added": 1,
+                "skipped": {},
+            },
+        })
+
+        site = repo / "dashboard"
+        dataset, _ = dashboard.build(repo, str(regression), "latest", output=site, mirror_external=False)
+        audit = dataset.traceability["global_audit"]
+        self.assertTrue(audit["available"])
+        self.assertEqual(audit["counts"]["link_count"], 4)
+        self.assertEqual(audit["counts"]["exact_count"], 1)
+        self.assertEqual(audit["counts"]["proposed_count"], 1)
+        self.assertEqual(audit["counts"]["reviewed_count"], 2)
+        self.assertEqual(audit["counts"]["accepted_library_link_count"], 1)
+        self.assertEqual(audit["library_projection"]["status"], "PASS")
+        self.assertEqual(dataset.overview["traceability"]["library_projection"]["status"], "PASS")
+        self.assertEqual(audit["counts"]["untraced_spec_anchor_count"], 1)
+        self.assertEqual(audit["counts"]["untraced_production_function_count"], 1)
+        self.assertIn("CandidateLeaf", (site / "traceability.html").read_text(encoding="utf-8"))
+        self.assertIn("pdf:figure:9", (site / "traceability.html").read_text(encoding="utf-8"))
+        self.assertIn("Deterministic orphan triage", (site / "traceability.html").read_text(encoding="utf-8"))
+        self.assertIn("CHECK_NON_OUTPUT_SCOPE", (site / "traceability.html").read_text(encoding="utf-8"))
+        self.assertIn("Traceability audit", (site / "index.html").read_text(encoding="utf-8"))
+        self.assertIn("Accepted library links projected", (site / "traceability.html").read_text(encoding="utf-8"))
+        self.assertIn("Untraced production functions", (repo / "reports" / "regression-summary.md").read_text(encoding="utf-8"))
+        self.assertIn("1 / PASS", (repo / "reports" / "regression-summary.md").read_text(encoding="utf-8"))
+        self.assertTrue((site / "data" / "traceability.json").is_file())
+        ok, errors = dashboard.check_site(repo, site)
+        self.assertTrue(ok, errors)
+
+    def test_analysis_preflight_blocker_is_visible_in_dashboard_and_report(self):
+        temp, repo, regression, _ = self.make_fixture()
+        self.addCleanup(temp.cleanup)
+        (repo / "build").mkdir()
+        dashboard.write_json(repo / "build" / "analysis-preflight.json", {
+            "schema_version": 1,
+            "status": "INFRASTRUCTURE_FAILURE",
+            "missing_tools": ["frama-c"],
+            "blockers": ["missing tool: frama-c"],
+        })
+        site = repo / "dashboard"
+        dataset, _ = dashboard.build(repo, str(regression), "latest", output=site, mirror_external=False)
+        preflight = dataset.overview["source"]["analysis_preflight"]
+        self.assertEqual(preflight["status"], "INFRASTRUCTURE_FAILURE")
+        self.assertEqual(preflight["missing_tools"], ["frama-c"])
+        summary = (repo / "reports" / "regression-summary.md").read_text(encoding="utf-8")
+        self.assertIn("Analysis-tool preflight: INFRASTRUCTURE_FAILURE", summary)
+        self.assertIn("frama-c", (site / "index.html").read_text(encoding="utf-8"))
+        ok, errors = dashboard.check_site(repo, site)
+        self.assertTrue(ok, errors)
+
+    def test_ci_frontier_blocker_is_visible_in_dashboard_and_report(self):
+        temp, repo, regression, _ = self.make_fixture()
+        self.addCleanup(temp.cleanup)
+        dashboard.write_json(repo / "ci" / "plan.json", {
+            "schema_version": 2,
+            "selected_contracts": ["fixture_leaf"],
+            "new_candidates": ["pending_leaf"],
+            "blocked_contracts": [{
+                "contract_id": "pending_leaf",
+                "function": "PendingLeaf",
+                "reasons": ["human_promotion_approval_pending"],
+            }],
+        })
+        dashboard.write_json(repo / "ci" / "state.json", {
+            "schema_version": 1,
+            "contracts": [{
+                "contract_id": "pending_leaf",
+                "function": "PendingLeaf",
+                "current_state": "DISCOVERED",
+                "status": "BLOCKED",
+                "failure_reason": "human_promotion_approval_pending",
+            }],
+        })
+        dashboard.write_json(repo / "summary.json", {
+            "ready_contracts": ["fixture_leaf"],
+            "selected_contracts": ["fixture_leaf"],
+            "new_candidates": ["pending_leaf"],
+            "blockers": ["pending_leaf: human_promotion_approval_pending"],
+            "generator_invocations": 0,
+            "model_calls": 0,
+        })
+
+        site = repo / "dashboard"
+        dataset, _ = dashboard.build(repo, str(regression), "latest", output=site, mirror_external=False)
+        frontier = dataset.overview["ci_frontier"]
+        self.assertEqual(frontier["counts"]["blocked"], 1)
+        self.assertEqual(frontier["candidate_queue"][0]["contract_id"], "pending_leaf")
+        self.assertEqual(frontier["candidate_queue"][0]["current_status"], "BLOCKED")
+        self.assertIn("PendingLeaf", (site / "index.html").read_text(encoding="utf-8"))
+        self.assertIn("human_promotion_approval_pending", (site / "index.html").read_text(encoding="utf-8"))
+        self.assertIn("pending_leaf", (repo / "reports" / "regression-summary.md").read_text(encoding="utf-8"))
+        self.assertTrue((site / "data" / "ci-frontier.json").is_file())
+        ok, errors = dashboard.check_site(repo, site)
+        self.assertTrue(ok, errors)
+
+    def test_empty_current_plan_does_not_fall_back_to_previous_run_selection(self):
+        temp, repo, regression, _ = self.make_fixture()
+        self.addCleanup(temp.cleanup)
+        dashboard.write_json(repo / "ci" / "plan.json", {
+            "schema_version": 2,
+            "ready_contracts": ["fixture_leaf"],
+            "selected_contracts": [],
+            "new_candidates": [],
+        })
+        dashboard.write_json(repo / "summary.json", {
+            "ready_contracts": ["fixture_leaf"],
+            "selected_contracts": ["fixture_leaf"],
+            "new_candidates": [],
+        })
+        frontier = dashboard.load_ci_frontier(repo)
+        self.assertEqual(frontier["ready_contracts"], ["fixture_leaf"])
+        self.assertEqual(frontier["selected_contracts"], [])
+        self.assertEqual(frontier["counts"]["selected"], 0)
+
     def test_rebuild_is_deterministic_and_links_resolve(self):
         temp, repo, regression, _ = self.make_fixture()
         self.addCleanup(temp.cleanup)
@@ -323,6 +567,31 @@ class DashboardFixtureTests(unittest.TestCase):
         ok, errors = dashboard.check_site(repo, site)
         self.assertTrue(ok, errors)
         self.assertNotIn("receipt.json", (repo / "reports" / "regression-summary.md").read_text())
+
+    def test_latest_run_uses_creation_time_after_reconciliation(self):
+        temp = tempfile.TemporaryDirectory()
+        self.addCleanup(temp.cleanup)
+        root = Path(temp.name)
+        runs = root / "runs"
+        for run_id, created_at, updated_at in (
+            ("old-run", "2026-08-02T06:22:08Z", "2026-08-03T08:00:00Z"),
+            ("new-run", "2026-08-03T01:46:54Z", "2026-08-03T03:25:02Z"),
+        ):
+            run_dir = runs / run_id / "functions"
+            run_dir.mkdir(parents=True)
+            dashboard.write_json(
+                run_dir.parent / "run.json",
+                {
+                    "run_id": run_id,
+                    "status": "COMPLETED",
+                    "created_at": created_at,
+                    "updated_at": updated_at,
+                },
+            )
+        records = dashboard.load_run_records(root)
+        self.assertEqual(dashboard.resolve_run_id(records, "latest"), "new-run")
+        old_record = next(item for item in records if item["run"]["run_id"] == "old-run")
+        self.assertEqual(old_record["timestamp"], "2026-08-02T06:22:08Z")
 
 
 if __name__ == "__main__":

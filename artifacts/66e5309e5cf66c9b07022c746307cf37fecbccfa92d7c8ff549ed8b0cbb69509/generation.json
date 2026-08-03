@@ -1,33 +1,22 @@
 {
+  "accepted_rtl": {
+    "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+    "library_file": "library/rtl/samplepredict.sv",
+    "module": "samplepredict",
+    "module_sha256": "831411aefb7fd14c630f6a71d75191a62320ce17566d6292637fcdab603e2011",
+    "reason": "bounded_stable_refresh"
+  },
   "candidate_limit": 4,
   "candidates": [
     {
       "candidate": "candidate_01",
+      "module": "samplepredict",
       "path": "generated/candidate_01.sv",
-      "sha256": "9284db80588056687c6156a939c57a46f1752f588c4429bd97a571959a151a1d",
-      "validation": "PASS",
-      "validation_reasons": []
-    },
-    {
-      "candidate": "candidate_02",
-      "path": "generated/candidate_02.sv",
-      "sha256": "edc6850c3dcbc7dfa387f794417b12cb02903e0ac946bda1e4dc46529c613263",
+      "sha256": "831411aefb7fd14c630f6a71d75191a62320ce17566d6292637fcdab603e2011",
       "validation": "PASS",
       "validation_reasons": []
     }
   ],
-  "command": {
-    "command": [
-      "python3",
-      "tools/generator_fixture.py",
-      "/private/tmp/dsc12a-c-analysis/artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509/generation-request.json",
-      "/private/tmp/dsc12a-c-analysis/artifacts/66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509/generated"
-    ],
-    "cwd": "/private/tmp/dsc12a-c-analysis",
-    "duration_seconds": 0.04,
-    "output": "",
-    "returncode": 0
-  },
   "context_keys": [
     "locked_contract",
     "frozen_interface",
@@ -35,28 +24,14 @@
     "exact_spec_anchors"
   ],
   "contract_id": "samplepredict",
-  "execution_status": "EXECUTED_NOW",
-  "hook": "python3 tools/generator_fixture.py",
-  "model_calls": 1,
+  "execution_status": "REUSED_ACCEPTED_RTL",
+  "hook": "NOT_USED",
+  "model_calls": 0,
   "schema_version": 2,
   "source_span": {
     "end_line": 383,
     "start_line": 308
   },
   "status": "PASS",
-  "telemetry": {
-    "candidate_count": 2,
-    "contract_id": "samplepredict",
-    "generator": "deterministic-fixture-hook",
-    "model_calls": 1,
-    "request_keys": [
-      "c_body",
-      "exact_spec_anchors",
-      "frozen_interface",
-      "locked_contract"
-    ],
-    "tokens_in": 9269,
-    "tokens_out": 3033
-  },
-  "tokens": 12302
+  "tokens": 0
 }

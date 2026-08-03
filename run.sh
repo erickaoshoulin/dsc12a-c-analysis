@@ -5,15 +5,78 @@ set -u
 SCRIPT_DIR="$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)"
 REPO_DIR="$SCRIPT_DIR"
 OUTPUT_DIR="$SCRIPT_DIR"
-PYTHON="${PYTHON:-python3}"
+PYTHON_REQUESTED="${PYTHON:-python3}"
+CLANGXX_REQUESTED="${CLANGXX:-clang++}"
+CLANG_REQUESTED="${CLANG:-clang}"
+FRAMA_C_REQUESTED="${FRAMA_C:-frama-c}"
+LLVM_CONFIG_REQUESTED="${LLVM_CONFIG:-llvm-config}"
+CMAKE_REQUESTED="${CMAKE:-cmake}"
+PYTHON="$PYTHON_REQUESTED"
 TIMEOUT_SECONDS="${DSC_ANALYSIS_TIMEOUT_SECONDS:-600}"
 BUILD_TIMEOUT_SECONDS="${DSC_BUILD_TIMEOUT_SECONDS:-$TIMEOUT_SECONDS}"
 TOP_N="${DSC_ANALYSIS_TOP_N:-10}"
-CLANGXX="${CLANGXX:-$(command -v clang++ 2>/dev/null || true)}"
-CLANG="${CLANG:-$(command -v clang 2>/dev/null || true)}"
-FRAMA_C="${FRAMA_C:-$(command -v frama-c 2>/dev/null || true)}"
-LLVM_CONFIG="${LLVM_CONFIG:-$(command -v llvm-config 2>/dev/null || true)}"
-CMAKE="${CMAKE:-$(command -v cmake 2>/dev/null || true)}"
+resolve_executable() {
+  local name="$1"
+  shift
+  local candidate
+  for candidate in "$@"; do
+    if [ -x "$candidate" ]; then
+      printf '%s\n' "$candidate"
+      return 0
+    fi
+  done
+  candidate="$(command -v "$name" 2>/dev/null || true)"
+  if [ -n "$candidate" ]; then
+    printf '%s\n' "$candidate"
+    return 0
+  fi
+  if [ "$name" = "frama-c" ]; then
+    if [ -n "${OPAM_SWITCH_PREFIX:-}" ]; then
+      for candidate in \
+        "$OPAM_SWITCH_PREFIX/bin/$name" \
+        "$OPAM_SWITCH_PREFIX/_opam/bin/$name"; do
+        if [ -x "$candidate" ]; then
+          printf '%s\n' "$candidate"
+          return 0
+        fi
+      done
+    fi
+    candidate="$(command -v opam 2>/dev/null || true)"
+    if [ -z "$candidate" ]; then
+      for candidate in /opt/homebrew/bin/opam /usr/local/bin/opam; do
+        if [ -x "$candidate" ]; then
+          break
+        fi
+      done
+    fi
+    if [ -n "$candidate" ] && [ -x "$candidate" ]; then
+      local opam_tool
+      opam_tool="$($candidate exec -- which "$name" 2>/dev/null | tail -n 1 || true)"
+      if [ -x "$opam_tool" ]; then
+        printf '%s\n' "$opam_tool"
+        return 0
+      fi
+      local switch_name
+      while IFS= read -r switch_name; do
+        [ -n "$switch_name" ] || continue
+        opam_tool="$($candidate exec --switch="$switch_name" -- which "$name" 2>/dev/null | tail -n 1 || true)"
+        if [ -x "$opam_tool" ]; then
+          printf '%s\n' "$opam_tool"
+          return 0
+        fi
+      done <<EOF
+$($candidate switch list --short 2>/dev/null || true)
+EOF
+    fi
+  fi
+  return 1
+}
+
+CLANGXX="${CLANGXX:-$(resolve_executable clang++ /opt/homebrew/opt/llvm/bin/clang++ /usr/local/opt/llvm/bin/clang++ || true)}"
+CLANG="${CLANG:-$(resolve_executable clang || true)}"
+FRAMA_C="${FRAMA_C:-$(resolve_executable frama-c || true)}"
+LLVM_CONFIG="${LLVM_CONFIG:-$(resolve_executable llvm-config /opt/homebrew/opt/llvm/bin/llvm-config /usr/local/opt/llvm/bin/llvm-config || true)}"
+CMAKE="${CMAKE:-$(resolve_executable cmake || true)}"
 SYSROOT="${DSC_SYSROOT:-}"
 if [ -z "$SYSROOT" ] && command -v xcrun >/dev/null 2>&1; then
   SYSROOT="$(xcrun --show-sdk-path 2>/dev/null || true)"
@@ -45,6 +108,17 @@ fail() {
   return 1
 }
 
+refresh_dashboard() {
+  if ! "$PYTHON" "$SCRIPT_DIR/tools/dashboard.py" build --run latest >/dev/null; then
+    echo "INFRASTRUCTURE_FAILURE: dashboard/report refresh failed" >&2
+    return 1
+  fi
+  if ! "$PYTHON" "$SCRIPT_DIR/tools/dashboard.py" check >/dev/null; then
+    echo "INFRASTRUCTURE_FAILURE: dashboard/report check failed" >&2
+    return 1
+  fi
+}
+
 clear_generated_outputs() {
   rm -f -- \
     "$OUTPUT_DIR/summary.json" \
@@ -69,6 +143,7 @@ clear_generated_outputs() {
     "$OUTPUT_DIR/reports/candidates.md" \
     "$OUTPUT_DIR/reports/spec-to-code.md" \
     "$OUTPUT_DIR/reports/code-to-spec.md" \
+    "$OUTPUT_DIR/reports/orphan-triage.md" \
     "$OUTPUT_DIR/reports/orphans.md" \
     "$OUTPUT_DIR/reports/unresolved.md"
 }
@@ -204,7 +279,8 @@ run_once() {
       --raw "$raw_json" \
       --candidates "$OUTPUT_DIR/facts/candidates.json" \
       --output-dir "$OUTPUT_DIR" \
-      --reviewed "$OUTPUT_DIR/traceability/links.reviewed.yaml"; then
+      --reviewed "$OUTPUT_DIR/traceability/links.reviewed.yaml" \
+      --library-manifest "$OUTPUT_DIR/library/manifest.json"; then
     fail "INFRASTRUCTURE_FAILURE: deterministic PDF/C traceability extraction failed"
     return 1
   fi
@@ -307,12 +383,34 @@ if [ -z "$SOURCE_DIR" ] || [ -z "$MODEL_ROOT" ]; then
   exit 1
 fi
 
+BUILD_LOG_DIR="$WORK_DIR/build-logs"
+case "${DSC_REGRESSION_ROOT:-}" in
+  /*)
+    BUILD_LOG_DIR="$DSC_REGRESSION_ROOT/local/build-logs/$(date -u +%Y%m%dT%H%M%SZ)-$$"
+    ;;
+esac
+
 if ! "$PYTHON" "$SCRIPT_DIR/tools/build_model.py" \
     --model-root "$MODEL_ROOT" \
     --output-dir "$OUTPUT_DIR/build" \
     --work-dir "$WORK_DIR/model-build" \
+    --log-dir "$BUILD_LOG_DIR" \
     --timeout "$BUILD_TIMEOUT_SECONDS"; then
   echo "INFRASTRUCTURE_FAILURE: isolated C clean-build/smoke gate failed; see $OUTPUT_DIR/build/build-receipt.json" >&2
+  exit 1
+fi
+
+PREFLIGHT_RECEIPT="$OUTPUT_DIR/build/analysis-preflight.json"
+if ! "$PYTHON" "$SCRIPT_DIR/tools/analysis_preflight.py" \
+    --output "$PREFLIGHT_RECEIPT" \
+    --python "$PYTHON_REQUESTED" \
+    --clang "$CLANG_REQUESTED" \
+    --clang++ "$CLANGXX_REQUESTED" \
+    --frama-c "$FRAMA_C_REQUESTED" \
+    --llvm-config "$LLVM_CONFIG_REQUESTED" \
+    --cmake "$CMAKE_REQUESTED"; then
+  refresh_dashboard || true
+  echo "INFRASTRUCTURE_FAILURE: required analysis tools unavailable; preserving prior generated receipts; see $PREFLIGHT_RECEIPT" >&2
   exit 1
 fi
 
@@ -405,8 +503,17 @@ if [ "${DSC_RUN_CICD:-0}" = "1" ]; then
     echo "GENERATION_REQUIRED: set DSC_CICD_GENERATOR_CMD before running the generic migration agent" >&2
     exit 2
   fi
+  if [ -z "${DSC_CICD_ARTIFACT_ROOT:-}" ]; then
+    case "${DSC_REGRESSION_ROOT:-}" in
+      /*) export DSC_CICD_ARTIFACT_ROOT="$DSC_REGRESSION_ROOT/local/cicd-artifacts/$(date -u +%Y%m%dT%H%M%SZ)-$$" ;;
+    esac
+  fi
   if ! "$PYTHON" "$SCRIPT_DIR/tools/cicd_agent.py" run; then
     echo "INFRASTRUCTURE_FAILURE: executable generic C-to-RTL CI/CD run failed; see $OUTPUT_DIR/reports/pipeline-summary.md" >&2
     exit 1
   fi
+fi
+
+if ! refresh_dashboard; then
+  exit 1
 fi

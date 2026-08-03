@@ -1,7 +1,7 @@
 # Regression summary
 
 Selected run: 20260803T014654Z-scale-2b8c6c5c (PASS)
-Storage: /Users/snow/.svrt-network/dsc12a-regression (EXPLICIT_ROOT)
+Storage: /Users/snow/.svrt-network/dsc12a-regression (ENV_ROOT)
 SMB fallback: none
 
 ## Overview
@@ -13,12 +13,48 @@ SMB fallback: none
 | Frame sanity | 48/48 |
 | Vectors executed | 108011919 |
 | Runs indexed | 20 |
+| Handoff hygiene | PASS |
 
 ## Source gate
 
 - PDF: AVAILABLE; /Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf
 - Source/build gate: PASS
+- Analysis-tool preflight: INFRASTRUCTURE_FAILURE; missing: frama-c
 - PDF and C source remain external/immutable inputs.
+
+## Handoff storage
+
+Generated candidates, logs, vectors, and simulator build trees are external durable artifacts; only compact receipts, contracts, reports, and accepted RTL belong in this checkout.
+- Tracked-file gate: PASS
+
+## Traceability audit
+
+The repository-wide traceability receipt is authoritative for discovery, but proposed links and orphaned anchors remain human-review work.
+
+| Measure | Result |
+|---|---:|
+| Generated links | 89 |
+| Exact / proposed / reviewed | 53 / 6 / 30 |
+| Accepted library links / projection | 25 / PASS |
+| PDF anchors linked / total | 64 / 358 |
+| Production anchors linked / total | 35 / 88 |
+| Untraced PDF anchors | 150 |
+| Untraced production functions | 53 |
+Readable audit: [code_to_spec](../reports/code-to-spec.md), [orphan_triage](../reports/orphan-triage.md), [orphans](../reports/orphans.md), [spec_to_code](../reports/spec-to-code.md).
+
+## Migration frontier
+
+- Ready contracts: ceil_log2, escapecodesize, estimatebitsforgroup, findmidpoint, findresidualsize, getqpadjpredsize, isflatnessinfosent, isorigflathindex, mapqptoqlevel, maxresidualsize, predictsize, qp2qlevel, quantizeresidual, samplepredict, samptolinebuf, usingmidpoint
+- New candidates: ichdecision
+- Generator invocations: 0; model calls: 0
+
+| Candidate | Function | Queue | Current status | Reason / next action |
+|---|---|---|---|---|
+| ichdecision | IchDecision | BLOCKED | BLOCKED | human_promotion_approval_pending; human_promotion_approval_required |
+
+### Current CI blockers
+
+- IchDecision (ichdecision): human_promotion_approval_pending; human_promotion_approval_required
 
 ## Function results
 
@@ -78,7 +114,7 @@ The selected run has no function-level failure or blocker.
 | 20260802T105600Z-scale-67d0be81 | scale | PASS | 1 | 1/2 | 3/3 | 21233664 |
 | 20260802T102758Z-scale-45761593 | scale | PASS | 1 | 1/2 | 3/3 | 32768 |
 | 20260802T093510Z-scale-22275ebc | scale | PASS | 2 | 2/4 | 6/6 | 10435567 |
-| 20260802T062208Z-0ad45a41 | pilot | RUNNING | 2 | 2/4 | 4/6 | 2228207 |
+| 20260802T062208Z-0ad45a41 | pilot | PASS | 2 | 2/4 | 4/6 | 2228207 |
 
 ## How to open
 

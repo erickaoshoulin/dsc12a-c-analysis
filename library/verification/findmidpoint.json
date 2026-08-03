@@ -32,13 +32,11 @@
     "function": "FindMidpoint",
     "kind": "arithmetic",
     "module": "findmidpoint",
-    "parent_run_id": "20260802T062208Z-0ad45a41",
+    "parent_run_id": "20260803T013704Z-05a52482",
     "profile": "scale",
-    "promoted_at": "2026-08-02T23:46:34Z",
     "rtl_sha256": "95b00b9f217f19697deb92e6926e102faf48b91af79a9fb6331900a7217d480b",
-    "run_id": "20260802T230757Z-scale-7a24e3ac",
+    "run_id": "20260803T014654Z-scale-2b8c6c5c",
     "run_kind": "arithmetic",
-    "schema_version": 1,
     "source_gate": {
       "blockers": [],
       "build": {
@@ -84,138 +82,9 @@
       "verilator_lint_build": "PASS",
       "width_spec_gate": "PASS"
     },
-    "status": "PASS",
-    "traceability": {
-      "authority": "EXACT_SPEC",
-      "c_span": {
-        "end_column": 1,
-        "end_line": 914,
-        "start_column": 5,
-        "start_line": 906
-      },
-      "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
-      "ports": [
-        {
-          "authority": "EXACT_SPEC",
-          "c_span": {
-            "end_column": 1,
-            "end_line": 914,
-            "start_column": 5,
-            "start_line": 906
-          },
-          "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
-          "derivation": "dsc_state_t component arrays have extent 4",
-          "domain": {
-            "basis": "dsc_state_t component arrays have extent 4",
-            "kind": "range",
-            "range": [
-              0,
-              3
-            ],
-            "values": []
-          },
-          "name": "cpnt",
-          "review_status": "REVIEWED",
-          "role": "cpnt",
-          "signed": null,
-          "spec_pages": [
-            80
-          ],
-          "spec_sections": [
-            "6.4.3"
-          ],
-          "spec_tables": [],
-          "width": 2
-        },
-        {
-          "authority": "EXACT_SPEC",
-          "c_span": {
-            "end_column": 1,
-            "end_line": 914,
-            "start_column": 5,
-            "start_line": 906
-          },
-          "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
-          "derivation": "Table 6-2 qLevel columns",
-          "domain": {
-            "basis": "Table 6-2 qLevel columns",
-            "kind": "range",
-            "range": [
-              0,
-              16
-            ],
-            "values": []
-          },
-          "name": "qlevel",
-          "review_status": "REVIEWED",
-          "role": "qlevel",
-          "signed": null,
-          "spec_pages": [
-            80
-          ],
-          "spec_sections": [
-            "6.4.3"
-          ],
-          "spec_tables": [],
-          "width": 5
-        },
-        {
-          "authority": "EXACT_SPEC",
-          "c_span": {
-            "end_column": 1,
-            "end_line": 914,
-            "start_column": 5,
-            "start_line": 906
-          },
-          "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
-          "derivation": "locked contract interface",
-          "domain": {
-            "range": [
-              128,
-              131071
-            ]
-          },
-          "name": "return_value",
-          "review_status": "REVIEWED",
-          "role": "return_value",
-          "signed": false,
-          "spec_pages": [
-            80
-          ],
-          "spec_sections": [
-            "6.4.3"
-          ],
-          "spec_tables": [],
-          "width": 17
-        }
-      ],
-      "review_status": "REVIEWED",
-      "source_file": "dsc_codec.c",
-      "source_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623",
-      "spec_links": [
-        {
-          "anchor_id": "pdf:model-note:MN_MIDPOINT_PRED:p080",
-          "evidence": "C comment and PDF anchor both contain MN_MIDPOINT_PRED",
-          "method": "exact_mn_id",
-          "page": 80,
-          "section": "6.4.3",
-          "short_anchor": "6.4.3 Midpoint Prediction; model note: MN_MIDPOINT_PRED in dsc_codec.c",
-          "status": "EXACT"
-        },
-        {
-          "anchor_id": "pdf:section:6.4.3",
-          "evidence": "C comment and PDF anchor both contain MN_MIDPOINT_PRED",
-          "method": "exact_mn_id",
-          "page": 80,
-          "section": "6.4.3",
-          "short_anchor": "6.4.3 Midpoint Prediction",
-          "status": "EXACT"
-        }
-      ],
-      "spec_pdf": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_v1.2a.pdf"
-    }
+    "status": "PASS"
   },
-  "last_verified_run_id": "20260802T230757Z-scale-7a24e3ac",
+  "last_verified_run_id": "20260803T014654Z-scale-2b8c6c5c",
   "matrix": {
     "modes": {
       "C_ONLY": "PASS",
@@ -226,11 +95,11 @@
     "status": "PASS"
   },
   "module": "findmidpoint",
-  "parent_run_id": "20260802T062208Z-0ad45a41",
+  "parent_run_id": "20260803T013704Z-05a52482",
   "profile": "scale",
   "promoted_at": "2026-08-02T21:16:34Z",
   "rtl_sha256": "95b00b9f217f19697deb92e6926e102faf48b91af79a9fb6331900a7217d480b",
-  "run_id": "20260802T230757Z-scale-7a24e3ac",
+  "run_id": "20260803T014654Z-scale-2b8c6c5c",
   "run_kind": "arithmetic",
   "schema_version": 2,
   "source_gate": {

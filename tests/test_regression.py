@@ -95,6 +95,40 @@ class RegressionServiceTests(unittest.TestCase):
             self.assertIn("completed_at", refreshed)
             self.assertEqual(read_json(run_dir / "run.json", {})["status"], "COMPLETED")
 
+    def test_poll_reconciles_all_runs_before_publishing_snapshot(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            store = DurableStore(root, validate=False)
+            store.ensure_layout()
+
+            complete_dir = store.run_dir("run-complete")
+            complete_function = complete_dir / "functions" / "contract-a"
+            complete_function.mkdir(parents=True)
+            (complete_dir / "run.json").write_text(
+                json.dumps({"run_id": "run-complete", "profile": "scale", "status": "QUEUED"}),
+                encoding="utf-8",
+            )
+            (complete_function / "receipt.json").write_text(
+                json.dumps({"run_id": "run-complete", "contract_id": "contract-a", "status": "PASS"}),
+                encoding="utf-8",
+            )
+
+            queued_dir = store.run_dir("run-without-receipt")
+            (queued_dir / "functions").mkdir(parents=True)
+            (queued_dir / "run.json").write_text(
+                json.dumps({"run_id": "run-without-receipt", "profile": "scale", "status": "QUEUED"}),
+                encoding="utf-8",
+            )
+
+            service = RegressionService(store, ROOT)
+            snapshot = service.poll()
+
+            self.assertEqual(read_json(complete_dir / "run.json", {})["status"], "COMPLETED")
+            self.assertEqual(read_json(queued_dir / "run.json", {})["status"], "QUEUED")
+            reconciled = {item["run_id"]: item["status"] for item in snapshot["reconciled_runs"]}
+            self.assertEqual(reconciled["run-complete"], "COMPLETED")
+            self.assertEqual(reconciled["run-without-receipt"], "QUEUED")
+
     def test_source_gate_and_function_selection_use_current_facts(self):
         context = LocalContext(ROOT)
         gate = context.source_gate()
@@ -123,7 +157,15 @@ class RegressionServiceTests(unittest.TestCase):
         context = LocalContext(ROOT)
         blocked_ids = [item.get("contract_id") for item in context.plan.get("contracts", []) if not item.get("ready")]
         if blocked_ids:
-            self.assertEqual(context.width_spec_gate(str(blocked_ids[0]))["status"], "BLOCKED")
+            for contract_id in blocked_ids:
+                width_gate = context.width_spec_gate(str(contract_id))
+                if width_gate["status"] == "BLOCKED":
+                    self.assertTrue(width_gate["blockers"])
+                else:
+                    # Planner-level boundaries (for example an unresolved
+                    # caller composition) remain distinct from the width/spec
+                    # gate and expose their own durable reason.
+                    self.assertTrue(context.plan_item(str(contract_id)).get("blocked_reasons"))
         else:
             self.assertEqual(context.width_spec_gate("mapqptoqlevel")["status"], "PASS")
         with tempfile.TemporaryDirectory() as directory:
@@ -283,6 +325,7 @@ class RegressionServiceTests(unittest.TestCase):
                     "kind": "using_midpoint",
                     "formal_proof": {"status": "PASS"},
                     "dependency": {"status": "PASS"},
+                    "traceability": {"source_file": "prior-reviewed.c", "spec_links": [{"status": "EXACT", "page": 7}]},
                     "stages": {"formal": "PASS"},
                 }),
                 encoding="utf-8",
@@ -333,7 +376,10 @@ class RegressionServiceTests(unittest.TestCase):
             self.assertEqual(verification["kind"], "using_midpoint")
             self.assertEqual(verification["run_kind"], "arithmetic")
             self.assertEqual(verification["formal_proof"]["status"], "PASS")
+            self.assertEqual(verification["traceability"]["source_file"], "prior-reviewed.c")
             self.assertEqual(verification["last_verified_run_id"], "run-a")
+            self.assertEqual(verification["last_regression"]["run_id"], "run-a")
+            self.assertNotIn("traceability", verification["last_regression"])
             self.assertTrue(read_json(library / "contracts" / "synthetic.json", {}).get("do_not_edit"))
 
 
