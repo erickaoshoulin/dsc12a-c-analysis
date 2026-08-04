@@ -252,6 +252,12 @@ but it must not select a function or bypass `facts/candidates.json` and
 - `contracts/locked/<id>.json`
 - `reports/contract-review.md`
 
+`contracts/selection.json` must retain the complete tool-selected top-N
+frontier. Leaf entries are emitted as contracts; eligible callers with direct
+source callees remain visible as `DEPENDENCY_DEFERRED` entries with their
+callee USRs and coverage evidence, and must not be emitted as locked leaf
+contracts until dependency-aware work is ready.
+
 Each contract records the Clang USR, source span/hash/permalink, exact/proposed
 spec links, flattened inputs, only read struct fields, roles
 `CONFIG_STATIC`/`RUNTIME_INPUT`/`CONSTANT_TABLE`/`DEPENDENCY`, signedness,

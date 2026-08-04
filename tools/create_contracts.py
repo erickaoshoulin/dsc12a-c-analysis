@@ -89,6 +89,84 @@ def function_link(function: dict[str, Any], links: dict[str, list[dict[str, Any]
     return sorted(result, key=lambda item: (item.get("status", ""), item.get("page") or 0, item.get("anchor_id", "")))
 
 
+CONTRACT_SOURCE_EXCLUSIONS = {
+    "cmd_parse.c",
+    "codec_main.c",
+    "dpx.c",
+    "hdr_dpx.c",
+    "logging.c",
+    "psnr.c",
+}
+
+
+def build_candidate_frontier(
+    functions_payload: dict[str, Any], candidates_payload: dict[str, Any],
+    coverage: dict[str, Any], top_n: int,
+) -> list[tuple[int, dict[str, Any], dict[str, Any], dict[str, Any]]]:
+    """Return the complete tool-selected contract frontier before leaf gating.
+
+    Candidate discovery intentionally ranks more than just leaf functions so
+    Frama-C can inspect callers and dependency boundaries.  Contract
+    generation, however, starts with leaves.  Keeping this frontier separate
+    prevents eligible callers from disappearing from the generated handoff
+    when they are deferred for dependency-aware work.
+    """
+    if top_n <= 0:
+        return []
+    functions_by_usr = {
+        item.get("clang_usr"): item
+        for item in functions_payload.get("functions", [])
+        if item.get("clang_usr")
+    }
+    coverage_by_usr = {
+        item.get("clang_usr"): item
+        for item in coverage.get("functions", [])
+        if item.get("clang_usr")
+    }
+    frontier = []
+    for candidate_rank, candidate in enumerate(candidates_payload.get("ranked_candidates", []), start=1):
+        usr = candidate.get("clang_usr")
+        function = functions_by_usr.get(usr)
+        dynamic = coverage_by_usr.get(usr, {})
+        if not function or not candidate.get("eligible") or not dynamic.get("eligible_after_coverage"):
+            continue
+        if pathlib.Path(function.get("source_file", "")).name in CONTRACT_SOURCE_EXCLUSIONS:
+            continue
+        frontier.append((candidate_rank, function, candidate, dynamic))
+        if len(frontier) >= max(0, top_n):
+            break
+    return frontier
+
+
+def frontier_record(
+    item: tuple[int, dict[str, Any], dict[str, Any], dict[str, Any]],
+) -> dict[str, Any]:
+    candidate_rank, function, candidate, dynamic = item
+    callees = sorted(
+        {
+            (str(callee.get("name", "")), str(callee.get("clang_usr", "")))
+            for callee in function.get("callees", [])
+            if isinstance(callee, dict)
+        }
+    )
+    leaf = not callees
+    return {
+        "candidate_rank": candidate_rank,
+        "contract_id": slug(function.get("name", function.get("clang_usr", "contract"))),
+        "function": function.get("name"),
+        "clang_usr": function.get("clang_usr"),
+        "score": candidate.get("score"),
+        "coverage_status": dynamic.get("coverage_status"),
+        "execution_count": dynamic.get("coverage", {}).get("execution_count"),
+        "selection_state": "LEAF_SELECTED" if leaf else "DEPENDENCY_DEFERRED",
+        "direct_callees": [
+            {"name": name, "clang_usr": usr}
+            for name, usr in callees
+        ],
+        "reason": None if leaf else "direct source dependencies require dependency-aware contract work before caller selection",
+    }
+
+
 def infer_port(parameter: dict[str, Any], function: dict[str, Any], source_text: str, anchors: dict[str, dict[str, Any]]) -> dict[str, Any]:
     name = parameter.get("name", "input")
     type_name = parameter.get("type", "UNKNOWN")
@@ -337,7 +415,11 @@ def make_contract(
     return contract
 
 
-def markdown_report(contracts: list[dict[str, Any]], coverage: dict[str, Any], traceability: dict[str, Any]) -> str:
+def markdown_report(
+    contracts: list[dict[str, Any]], coverage: dict[str, Any],
+    traceability: dict[str, Any], frontier: list[dict[str, Any]],
+) -> str:
+    deferred = [item for item in frontier if item.get("selection_state") == "DEPENDENCY_DEFERRED"]
     lines = [
         "# Contract review",
         "",
@@ -346,7 +428,8 @@ def markdown_report(contracts: list[dict[str, Any]], coverage: dict[str, Any], t
         f"- Coverage executed functions: {coverage.get('executed_function_count')}",
         f"- Static-but-uncovered functions: {coverage.get('static_but_uncovered_function_count')}",
         f"- Exact PDF/C links: {traceability.get('counts', {}).get('exact_count')}",
-        f"- Selection cap: {coverage.get('_selection_top_n')}; selected: {len(contracts)}",
+        f"- Selection cap: {coverage.get('_selection_top_n')}; frontier: {len(frontier)}; leaf contracts selected: {len(contracts)}",
+        f"- Dependency-deferred candidates: {len(deferred)}",
         "",
     ]
     for contract in contracts:
@@ -367,6 +450,29 @@ def markdown_report(contracts: list[dict[str, Any]], coverage: dict[str, Any], t
         for link in links:
             lines.append(f"  - `{link.get('status')}` `{link.get('anchor_id')}` page {link.get('page')}")
         lines.append("")
+    if deferred:
+        lines.extend(["## Deferred dependency candidates", ""])
+        lines.append(
+            "These candidates are tool-discovered and coverage-eligible, but they are not leaf contracts. "
+            "They remain visible for a later dependency-aware batch and are not emitted as locked contracts."
+        )
+        lines.append("")
+        for item in deferred:
+            callees = ", ".join(
+                f"`{callee.get('name')}`" for callee in item.get("direct_callees", [])
+            ) or "none"
+            lines.extend(
+                [
+                    f"### `{item.get('function')}`",
+                    "",
+                    f"- candidate rank: {item.get('candidate_rank')}; score: {item.get('score')}",
+                    f"- coverage: `{item.get('coverage_status')}`; execution count: {item.get('execution_count')}",
+                    f"- state: `{item.get('selection_state')}`",
+                    f"- direct source callees: {callees}",
+                    f"- reason: {item.get('reason')}",
+                    "",
+                ]
+            )
     return "\n".join(lines)
 
 
@@ -386,33 +492,13 @@ def main() -> int:
         links_by_usr.setdefault(link.get("clang_usr", ""), []).append(
             {**link, "spec_short_anchor": anchors.get(link.get("spec_anchor_id"), {}).get("short_anchor")}
         )
-    candidates_by_usr = {item.get("clang_usr"): item for item in candidates_payload.get("ranked_candidates", [])}
-    candidate_rank_by_usr = {
-        item.get("clang_usr"): rank for rank, item in enumerate(candidates_payload.get("ranked_candidates", []), start=1)
-    }
-    coverage_by_usr = {item.get("clang_usr"): item for item in coverage.get("functions", [])}
-    ranked = []
-    for function in functions_payload.get("functions", []):
-        usr = function.get("clang_usr")
-        candidate = candidates_by_usr.get(usr, {})
-        dynamic = coverage_by_usr.get(usr, {})
-        if not candidate.get("eligible") or not dynamic.get("eligible_after_coverage"):
-            continue
-        if function.get("callees"):
-            continue
-        if pathlib.Path(function.get("source_file", "")).name in {"cmd_parse.c", "codec_main.c", "dpx.c", "hdr_dpx.c", "logging.c", "psnr.c"}:
-            continue
-        ranked.append((
-            candidate_rank_by_usr.get(usr, 1 << 30),
-            function,
-            candidate,
-            dynamic,
-        ))
-    ranked.sort(key=lambda item: item[0])
+    frontier = build_candidate_frontier(functions_payload, candidates_payload, coverage, args.top_n)
+    ranked = [item for item in frontier if not item[1].get("callees")]
     source_dir = pathlib.Path(manifest["source"]["source_dir"]).resolve()
     contracts = []
-    for rank, (candidate_rank, function, candidate, dynamic) in enumerate(ranked[: args.top_n], start=1):
+    for rank, (candidate_rank, function, candidate, dynamic) in enumerate(ranked, start=1):
         contracts.append(make_contract(function, candidate, coverage, source_dir, manifest, links_by_usr, anchors, rank, candidate_rank))
+    frontier_payload = [frontier_record(item) for item in frontier]
     output = args.output_dir.resolve()
     for contract in contracts:
         write_json(output / "proposed" / f"{contract['contract_id']}.yaml", contract)
@@ -424,7 +510,7 @@ def main() -> int:
             "do_not_edit": True,
         }
         write_json(output / "locked" / f"{contract['contract_id']}.json", locked)
-    report = markdown_report(contracts, coverage, traceability)
+    report = markdown_report(contracts, coverage, traceability, frontier_payload)
     (output / "../reports/contract-review.md").resolve().parent.mkdir(parents=True, exist_ok=True)
     (output / "../reports/contract-review.md").resolve().write_text(report, encoding="utf-8")
     output.joinpath("selection.json").write_text(
@@ -433,14 +519,23 @@ def main() -> int:
                 "schema_version": 1,
                 "do_not_edit": True,
                 "requested_top_n": args.top_n,
+                "frontier_count": len(frontier_payload),
                 "selected_count": len(contracts),
                 "contract_ids": [item["contract_id"] for item in contracts],
+                "frontier": frontier_payload,
+                "deferred_candidates": [
+                    item for item in frontier_payload
+                    if item.get("selection_state") == "DEPENDENCY_DEFERRED"
+                ],
             },
             indent=2,
         ) + "\n",
         encoding="utf-8",
     )
     print("contracts generated: " + ", ".join(item["contract_id"] for item in contracts))
+    deferred_names = [item["function"] for item in frontier_payload if item["selection_state"] == "DEPENDENCY_DEFERRED"]
+    if deferred_names:
+        print("dependency-deferred: " + ", ".join(deferred_names))
     # N is an upper bound: leaf/state/dependency filters can legitimately
     # leave fewer than N tool-selected contracts. An empty selection remains
     # a failure because the downstream RTL-slice stage has no work item.
