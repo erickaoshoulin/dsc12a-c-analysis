@@ -64,12 +64,6 @@ def resolve_opam_executable(tool: str) -> str | None:
     if switch_prefix:
         prefixes.append(pathlib.Path(switch_prefix).expanduser())
 
-    opam_root = pathlib.Path.home() / ".opam"
-    default_switch = opam_root / "default"
-    prefixes.append(default_switch)
-    if opam_root.is_dir():
-        prefixes.extend(sorted(path for path in opam_root.iterdir() if path.is_dir()))
-
     seen: set[pathlib.Path] = set()
     for prefix in prefixes:
         if prefix in seen:
@@ -86,6 +80,17 @@ def resolve_opam_executable(tool: str) -> str | None:
                 opam = candidate
                 break
     if not opam:
+        opam_root = pathlib.Path.home() / ".opam"
+        prefixes.append(opam_root / "default")
+        if opam_root.is_dir():
+            prefixes.extend(sorted(path for path in opam_root.iterdir() if path.is_dir()))
+        for prefix in prefixes:
+            if prefix in seen:
+                continue
+            seen.add(prefix)
+            for candidate in (prefix / "bin" / tool, prefix / "_opam" / "bin" / tool):
+                if candidate.is_file() and os.access(candidate, os.X_OK):
+                    return str(candidate.resolve())
         return None
 
     commands = [[opam, "exec", "--", "which", tool]]
@@ -122,6 +127,22 @@ def resolve_opam_executable(tool: str) -> str | None:
         resolved = _executable_from_output(result.stdout)
         if resolved:
             return resolved
+
+    # Prefer the switch selected by the discovered Opam executable. This is
+    # important when a caller supplies a project-local/test Opam on PATH: a
+    # pre-existing user switch must not shadow that resolver context.
+    opam_root = pathlib.Path.home() / ".opam"
+    default_switch = opam_root / "default"
+    prefixes.append(default_switch)
+    if opam_root.is_dir():
+        prefixes.extend(sorted(path for path in opam_root.iterdir() if path.is_dir()))
+    for prefix in prefixes:
+        if prefix in seen:
+            continue
+        seen.add(prefix)
+        for candidate in (prefix / "bin" / tool, prefix / "_opam" / "bin" / tool):
+            if candidate.is_file() and os.access(candidate, os.X_OK):
+                return str(candidate.resolve())
     return None
 
 

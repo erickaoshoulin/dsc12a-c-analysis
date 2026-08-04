@@ -3804,6 +3804,7 @@
           "condition": "i<size",
           "dependency_locations": [
             "var:bit",
+            "var:bit_count",
             "var:bitcntmod8",
             "var:bufidx",
             "var:outval"
@@ -6298,7 +6299,8 @@
         {
           "condition": "*sliceh",
           "dependency_locations": [
-            "var:dsc_codec"
+            "var:dsc_codec",
+            "var:sliceh"
           ],
           "fixed_trip_count": null,
           "has_fixed_trip_count": false,
@@ -6457,6 +6459,7 @@
         {
           "condition": "i>=0",
           "dependency_locations": [
+            "var:bit_count",
             "var:bitcntmod8",
             "var:curbit"
           ],
@@ -9021,9 +9024,9 @@
       "rank production/output-contributing bounded candidates without a function-name allowlist"
     ],
     "binary_sha256": "1aa30a5c49f7b87bc18c2150f94ad620bc005f3aa935327d63799cb3f674216c",
-    "build_receipt_sha256": "dfaee4a5f1dc607d5a20441f6945f7180b9c0ee48c033b273ffda92ce85fe828",
+    "build_receipt_sha256": "0aa979aa48d0a2949a2e7b2646763d7d68a48d6fe6ca0c20f6106cc08b03a3a3",
     "build_status": "PASS",
-    "candidate_receipt_sha256": "97f6a5455ec94fe9c09f0595dc59e6127f19887d4707b690309ee3732a6c4cba",
+    "candidate_receipt_sha256": "623bdae214e7a4cd800b8352f38473601585a1969959d2e49ba72b51507072aa",
     "candidate_selection": {
       "boundary_root_usrs": [
         "c:@F@DSC_Algorithm",
@@ -9081,10 +9084,10 @@
       "count": 194,
       "source": "Clang AST functionDecl(isDefinition())"
     },
-    "generated_timestamp": "2026-08-01T14:03:19.965036+00:00",
-    "input_manifest_sha256": "c1cf90cdd06ff4afd38b80de7cfc476944d708d1c15cb0ee9b372e3cc254cb6b",
+    "generated_timestamp": "2026-08-03T22:12:46.424276+00:00",
+    "input_manifest_sha256": "4b84a1647cec289c31c870086867cc412c197a081d4a641e8e30f9d1aa25bc5d",
     "schema_version": 2,
-    "semantic_hash": "88dec0a2317c112a5cc36ded8319664c5d60ec4f939722210dcff1cc80ff7c44",
+    "semantic_hash": "8cdffe1e33e8998c7b5d41fd09319bf331b4c341edeecae2a77aacb9b3638601",
     "source_file_hashes": [
       {
         "path": "cmd_parse.c",
@@ -9194,18 +9197,101 @@
     "spec_pdf_sha256": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
     "status": "OK",
     "traceability_counts": {
-      "comment_count": 343,
-      "exact_count": 0,
-      "heading_anchor_count": 182,
-      "link_count": 59,
-      "model_note_count": 28,
-      "proposed_count": 59,
-      "reviewed_count": 0,
-      "spec_anchor_count": 327,
+      "accepted_library_link_count": 25,
+      "c_model_note_ids": [
+        "MN_BLOCK_PRED",
+        "MN_BP_SEARCH",
+        "MN_CALC_SCALE_OFFSET",
+        "MN_DEC_CSC",
+        "MN_DEC_ENTROPY",
+        "MN_DEC_MPP_SELECT",
+        "MN_DSU_SIZE_PREDICTION",
+        "MN_ENC_CSC",
+        "MN_ENC_FLATNESS_DECISION",
+        "MN_ENC_ICH_IDX_SELECT",
+        "MN_ENC_ICH_MODE_SELECT",
+        "MN_ENC_ICH_PIXEL_CHECK_QERR",
+        "MN_ENC_MPP_SELECT",
+        "MN_ENC_QUANTIZATION",
+        "MN_ENC_VLC_UNIT",
+        "MN_FLAT_QP_ADJ",
+        "MN_ICH_UPDATE",
+        "MN_IQ_RECON",
+        "MN_LINE_STORAGE",
+        "MN_MAP_QP_TO_QLEVEL",
+        "MN_MIDPOINT_PRED",
+        "MN_MMAP",
+        "MN_RC_LONG_TERM",
+        "MN_RC_SHORT_TERM",
+        "MN_RC_XFORM",
+        "MN_SIMPLE_422_444",
+        "MN_SIMPLE_444_422"
+      ],
+      "comment_count": 311,
+      "exact_count": 53,
+      "heading_anchor_count": 186,
+      "link_count": 89,
+      "model_note_anchor_count": 27,
+      "model_note_count": 27,
+      "pdf_model_note_ids": [
+        "MN_BLOCK_PRED",
+        "MN_BP_SEARCH",
+        "MN_CALC_SCALE_OFFSET",
+        "MN_DEC_CSC",
+        "MN_DEC_ENTROPY",
+        "MN_DEC_MPP_SELECT",
+        "MN_ENC_CSC",
+        "MN_ENC_FLATNESS_DECISION",
+        "MN_ENC_ICH_IDX_SELECT",
+        "MN_ENC_ICH_MODE_SELECT",
+        "MN_ENC_MPP_SELECT",
+        "MN_ENC_QUANTIZATION",
+        "MN_FLAT_QP_ADJ",
+        "MN_IQ_RECON",
+        "MN_LINE_STORAGE",
+        "MN_MAP_QP_TO_QLEVEL",
+        "MN_MIDPOINT_PRED",
+        "MN_MIN_RBS",
+        "MN_MMAP",
+        "MN_RC_LONG_TERM",
+        "MN_RC_SHORT_TERM",
+        "MN_RC_XFORM",
+        "MN_SIMPLE_422_444",
+        "MN_SIMPLE_444_422"
+      ],
+      "proposed_count": 6,
+      "reviewed_count": 30,
+      "shared_model_note_count": 23,
+      "shared_model_note_ids": [
+        "MN_BLOCK_PRED",
+        "MN_BP_SEARCH",
+        "MN_CALC_SCALE_OFFSET",
+        "MN_DEC_CSC",
+        "MN_DEC_ENTROPY",
+        "MN_DEC_MPP_SELECT",
+        "MN_ENC_CSC",
+        "MN_ENC_FLATNESS_DECISION",
+        "MN_ENC_ICH_IDX_SELECT",
+        "MN_ENC_ICH_MODE_SELECT",
+        "MN_ENC_MPP_SELECT",
+        "MN_ENC_QUANTIZATION",
+        "MN_FLAT_QP_ADJ",
+        "MN_IQ_RECON",
+        "MN_LINE_STORAGE",
+        "MN_MAP_QP_TO_QLEVEL",
+        "MN_MIDPOINT_PRED",
+        "MN_MMAP",
+        "MN_RC_LONG_TERM",
+        "MN_RC_SHORT_TERM",
+        "MN_RC_XFORM",
+        "MN_SIMPLE_422_444",
+        "MN_SIMPLE_444_422"
+      ],
+      "spec_anchor_count": 358,
       "stale_count": 0,
-      "untraced_production_function_count": 112,
-      "untraced_spec_anchor_count": 153
+      "untraced_production_function_count": 53,
+      "untraced_spec_anchor_count": 150
     },
-    "traceability_sha256": "f80c37857195e053d85ae0af3be8c425df945a44f631847493d462a34c340116"
+    "traceability_sha256": "5bb4cba234eef0295fcec54408d9acd1c7cc80a2caded90a7f0f4a7f69b30320"
   }
 }

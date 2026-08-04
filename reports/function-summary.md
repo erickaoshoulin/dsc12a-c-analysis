@@ -944,15 +944,15 @@ A proposal is not a hardware equivalence claim.
 - Return: `int`; parameters: `cmdarg: const cmdarg_t`, `v: char *`, `cmd: int`
 - Callers: parse_cmd, parse_line
 - Callees: Assert_func, UErr, __builtin___strcpy_chk, __builtin_object_size, str2d, str2dim, str2dvect, str2f, str2fdim, str2frange, str2fvect, str2i, str2ivect, str2l, str2ll, str2llvect, str2lvect, str2p, str2pdim, str2prange, str2pvect, str2range, str2ui, str2uivect, str2ul, str2ull, str2ullvect, str2ulvect
-- Global read/write: 0/0; field read/write: 49/0
+- Global read/write: 0/0; field read/write: 39/10
 - Pointer modes: v=UNKNOWN
 - Loops: 0; fixed counts: UNKNOWN
 - Effects: `{"assert": true, "file_io": false, "indirect_call": false, "logging": true, "malloc": false}`
 - Proposal: **IO_OR_DEBUG**; purity=False; combinational=False
 - Classification evidence:
-  - AST observed no global/field/pointee writes
+  - AST observed writes or mutable-state effects: ['cmdarg_s.var_ptr']
   - AST pointer modes: ['UNKNOWN']
-  - AST observed field reads: cmdarg_s.cmd, cmdarg_s.key, cmdarg_s.type, cmdarg_s.type, cmdarg_s.type, cmdarg_s.type, cmdarg_s.type, cmdarg_s.value, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.vct_lng, cmdarg_s.vct_lng, cmdarg_s.vct_lng, cmdarg_s.vct_lng, cmdarg_s.vct_lng, cmdarg_s.vct_lng, cmdarg_s.vct_lng, cmdarg_s.vct_lng, cmdarg_s.vct_lng
+  - AST observed field reads: cmdarg_s.cmd, cmdarg_s.key, cmdarg_s.type, cmdarg_s.type, cmdarg_s.type, cmdarg_s.type, cmdarg_s.type, cmdarg_s.value, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.var_ptr, cmdarg_s.vct_lng, cmdarg_s.vct_lng, cmdarg_s.vct_lng, cmdarg_s.vct_lng, cmdarg_s.vct_lng, cmdarg_s.vct_lng, cmdarg_s.vct_lng, cmdarg_s.vct_lng, cmdarg_s.vct_lng
   - AST observed no loop
 
 ## `ceil_log2`
@@ -1535,15 +1535,14 @@ A proposal is not a hardware equivalence claim.
 - Callers: ProcessGroupDec, ProcessGroupEnc, parse_pps
 - Callees: NONE
 - Global read/write: 0/0; field read/write: 0/0
-- Pointer modes: buf=READ_ONLY, bit_count=READ_ONLY
+- Pointer modes: buf=READ_ONLY, bit_count=WRITES_THROUGH
 - Loops: 1; fixed counts: UNKNOWN
 - Effects: `{"assert": false, "file_io": false, "indirect_call": false, "logging": false, "malloc": false}`
-- Proposal: **PURE_COMB_CANDIDATE**; purity=True; combinational=True
+- Proposal: **STATEFUL**; purity=False; combinational=False
 - Classification evidence:
-  - AST observed no global/field/pointee writes
-  - AST pointer modes: ['READ_ONLY', 'READ_ONLY']
+  - AST observed writes or mutable-state effects: ['bit_count']
+  - AST pointer modes: ['READ_ONLY', 'WRITES_THROUGH']
   - AST loop count is 1; trip proofs are retained per loop
-  - No direct calls and no non-const global read were observed
 
 ## `gettoken`
 
@@ -2341,13 +2340,13 @@ A proposal is not a hardware equivalence claim.
 - Callers: ProcessGroupEnc, WriteEntryToBitstream, write_pps
 - Callees: printf
 - Global read/write: 0/0; field read/write: 0/0
-- Pointer modes: buf=WRITES_THROUGH, bit_count=READ_ONLY
+- Pointer modes: buf=WRITES_THROUGH, bit_count=WRITES_THROUGH
 - Loops: 1; fixed counts: UNKNOWN
 - Effects: `{"assert": false, "file_io": false, "indirect_call": false, "logging": true, "malloc": false}`
 - Proposal: **IO_OR_DEBUG**; purity=False; combinational=False
 - Classification evidence:
-  - AST observed writes or mutable-state effects: ['buf']
-  - AST pointer modes: ['READ_ONLY', 'WRITES_THROUGH']
+  - AST observed writes or mutable-state effects: ['bit_count', 'buf']
+  - AST pointer modes: ['WRITES_THROUGH', 'WRITES_THROUGH']
   - AST loop count is 1; trip proofs are retained per loop
 
 ## `read_dpx`

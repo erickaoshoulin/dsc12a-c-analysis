@@ -47,7 +47,7 @@ This is a deterministic evidence projection for human review. It does not create
 
 - Anchor: `code:function:c:@F@ErrorHandler`; source: `dsc_codec.c:171-213`
 - Next action: `KEEP_STATEFUL_OR_UNPROVEN_BOUNDARY` — Tool facts show stateful, impure, or non-combinational behavior
-- Tool rank/score: `26` / `60.0`; eligible: `False`; purity/timing: `IMPURE` / `UNKNOWN`
+- Tool rank/score: `25` / `60.0`; eligible: `False`; purity/timing: `IMPURE` / `UNKNOWN`
 - Coverage: `STATIC_BUT_UNCOVERED`; executed: `0`; eligible after coverage: `False`
 - C evidence: `dsc_codec.c:168` — //! Fill out the rest of the slice with valid pixels when an error occurs. Note the standard does not specify what the pixels should be & this is just an example.
 - C evidence: `dsc_codec.c:169` — /*! \param dsc_cfg DSC parameters \param dsc_state DSC state structure */
@@ -83,7 +83,7 @@ This is a deterministic evidence projection for human review. It does not create
 
 - Anchor: `code:function:c:@F@PopulateOrigLine`; source: `dsc_codec.c:2294-2351`
 - Next action: `KEEP_STATEFUL_OR_UNPROVEN_BOUNDARY` — Tool facts show stateful, impure, or non-combinational behavior
-- Tool rank/score: `27` / `60.0`; eligible: `False`; purity/timing: `IMPURE` / `UNKNOWN`
+- Tool rank/score: `26` / `60.0`; eligible: `False`; purity/timing: `IMPURE` / `UNKNOWN`
 - Coverage: `EXECUTED`; executed: `2592`; eligible after coverage: `False`
 - C evidence: `dsc_codec.c:2289` — //! Convert original pixels in pic_t format to an array of unsigned int for easy access/
 - C evidence: `dsc_codec.c:2290` — /*! \param dsc_cfg DSC configuration structure \param dsc_state DSC state structure \param ip Input picture \param vPos Which line of slice to use */
@@ -110,7 +110,7 @@ This is a deterministic evidence projection for human review. It does not create
 
 - Anchor: `code:function:c:@F@RemoveBitsEncoderBuffer`; source: `dsc_codec.c:1201-1231`
 - Next action: `KEEP_STATEFUL_OR_UNPROVEN_BOUNDARY` — Tool facts show stateful, impure, or non-combinational behavior
-- Tool rank/score: `24` / `65.0`; eligible: `False`; purity/timing: `IMPURE` / `STATEFUL`
+- Tool rank/score: `23` / `65.0`; eligible: `False`; purity/timing: `IMPURE` / `STATEFUL`
 - Coverage: `EXECUTED`; executed: `387818`; eligible after coverage: `False`
 - C evidence: `dsc_codec.c:1198` — //! Function to remove one pixel's worth of bits from the encoder buffer model
 - C evidence: `dsc_codec.c:1199` — /*! \param dsc_cfg DSC configuration structure \param dsc_state DSC state structure */
@@ -128,7 +128,7 @@ This is a deterministic evidence projection for human review. It does not create
 
 - Anchor: `code:function:c:@F@UpdateMidpoint`; source: `dsc_codec.c:875-899`
 - Next action: `KEEP_STATEFUL_OR_UNPROVEN_BOUNDARY` — Tool facts show stateful, impure, or non-combinational behavior
-- Tool rank/score: `28` / `60.0`; eligible: `False`; purity/timing: `IMPURE` / `UNKNOWN`
+- Tool rank/score: `27` / `60.0`; eligible: `False`; purity/timing: `IMPURE` / `UNKNOWN`
 - Coverage: `EXECUTED`; executed: `131328`; eligible after coverage: `False`
 - C evidence: `dsc_codec.c:870` — //! Encoder function to updated reconstructed pixels if midpoint prediction was selected
 - C evidence: `dsc_codec.c:871` — /*! \param dsc_cfg DSC configuration structure \param dsc_state DSC state structure \param currLine Current line reconstructed samples (modified) \param flag_first_luma For 4:2:2, flag indicating that only the first luma unit has been proc…
@@ -196,7 +196,7 @@ This is a deterministic evidence projection for human review. It does not create
 
 - Anchor: `code:function:c:@F@fifo_free`; source: `fifo.c:66-69`
 - Next action: `KEEP_STATEFUL_OR_UNPROVEN_BOUNDARY` — Tool facts show stateful, impure, or non-combinational behavior
-- Tool rank/score: `15` / `79.95`; eligible: `False`; purity/timing: `IMPURE` / `COMBINATIONAL`
+- Tool rank/score: `14` / `79.95`; eligible: `False`; purity/timing: `IMPURE` / `COMBINATIONAL`
 - Coverage: `EXECUTED`; executed: `288`; eligible after coverage: `False`
 - C evidence: `fifo.c:64` — //! Free a FIFO object
 - C evidence: `fifo.c:65` — /*! \param fifo Pointer to FIFO data structure */
@@ -214,7 +214,7 @@ This is a deterministic evidence projection for human review. It does not create
 
 - Anchor: `code:function:c:@F@fifo_init`; source: `fifo.c:43-51`
 - Next action: `KEEP_STATEFUL_OR_UNPROVEN_BOUNDARY` — Tool facts show stateful, impure, or non-combinational behavior
-- Tool rank/score: `25` / `64.95`; eligible: `False`; purity/timing: `IMPURE` / `STATEFUL`
+- Tool rank/score: `24` / `64.95`; eligible: `False`; purity/timing: `IMPURE` / `STATEFUL`
 - Coverage: `EXECUTED`; executed: `288`; eligible after coverage: `False`
 - C evidence: `fifo.c:33` — /*! \file fifo.c * Generic bit FIFO functions */
 - C evidence: `fifo.c:40` — //! Initialize a FIFO object
@@ -233,7 +233,7 @@ This is a deterministic evidence projection for human review. It does not create
 
 - Anchor: `code:function:c:@F@getbits`; source: `dsc_utils.c:109-138`
 - Next action: `KEEP_STATEFUL_OR_UNPROVEN_BOUNDARY` — Tool facts show stateful, impure, or non-combinational behavior
-- Tool rank/score: `12` / `80.0`; eligible: `False`; purity/timing: `PURE` / `UNKNOWN`
+- Tool rank/score: `28` / `60.0`; eligible: `False`; purity/timing: `IMPURE` / `UNKNOWN`
 - Coverage: `STATIC_BUT_UNCOVERED`; executed: `0`; eligible after coverage: `False`
 - C evidence: `dsc_utils.c:103` — //! Read bits from a buffer in memory
 - C evidence: `dsc_utils.c:104` — /*! \param size Number of bits to read \param buf Pointer to compressed bits buffer \param bit_count Number of bits read so far (modified) \param sign_extend Flag indicating to do a sign extension on the result \return Value from bitstream…
@@ -402,7 +402,7 @@ This is a deterministic evidence projection for human review. It does not create
 
 - Anchor: `code:function:c:@F@yuv_422_444_region`; source: `dsc_utils.c:375-379`
 - Next action: `KEEP_STATEFUL_OR_UNPROVEN_BOUNDARY` — Tool facts show stateful, impure, or non-combinational behavior
-- Tool rank/score: `17` / `79.9`; eligible: `False`; purity/timing: `IMPURE` / `COMBINATIONAL`
+- Tool rank/score: `16` / `79.9`; eligible: `False`; purity/timing: `IMPURE` / `COMBINATIONAL`
 - Coverage: `STATIC_BUT_UNCOVERED`; executed: `0`; eligible after coverage: `False`
 
 ### `yuv_444_422`
@@ -416,7 +416,7 @@ This is a deterministic evidence projection for human review. It does not create
 
 - Anchor: `code:function:c:@F@yuv_444_422_region`; source: `dsc_utils.c:385-389`
 - Next action: `KEEP_STATEFUL_OR_UNPROVEN_BOUNDARY` — Tool facts show stateful, impure, or non-combinational behavior
-- Tool rank/score: `18` / `79.9`; eligible: `False`; purity/timing: `IMPURE` / `COMBINATIONAL`
+- Tool rank/score: `17` / `79.9`; eligible: `False`; purity/timing: `IMPURE` / `COMBINATIONAL`
 - Coverage: `STATIC_BUT_UNCOVERED`; executed: `0`; eligible after coverage: `False`
 
 ### `yuv_read`

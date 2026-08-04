@@ -164,12 +164,6 @@ These are proposal labels supported by recorded AST/Frama evidence; they are not
 - Combinational candidate: `True`
 - Evidence: AST observed no global/field/pointee writes; AST observed no loop; No direct calls and no non-const global read were observed
 
-## `getbits` — PURE_COMB_CANDIDATE
-
-- Pure candidate: `True`
-- Combinational candidate: `True`
-- Evidence: AST observed no global/field/pointee writes; AST pointer modes: ['READ_ONLY', 'READ_ONLY']; AST loop count is 1; trip proofs are retained per loop; No direct calls and no non-const global read were observed
-
 ## `has_ext` — COMPOSITE_COMB_CANDIDATE
 
 - Pure candidate: `False`

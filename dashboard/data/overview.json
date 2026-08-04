@@ -7,8 +7,7 @@
         "function": "IchDecision",
         "promotion_status": "AWAITING_HUMAN_APPROVAL",
         "reasons": [
-          "human_promotion_approval_pending",
-          "human_promotion_approval_required"
+          "human_promotion_approval_pending"
         ],
         "status": "BLOCKED"
       }
@@ -20,8 +19,7 @@
         "function": "IchDecision",
         "promotion_status": "AWAITING_HUMAN_APPROVAL",
         "reasons": [
-          "human_promotion_approval_pending",
-          "human_promotion_approval_required"
+          "human_promotion_approval_pending"
         ],
         "status": "BLOCKED"
       }
@@ -35,8 +33,7 @@
         "promotion_status": "AWAITING_HUMAN_APPROVAL",
         "queue_state": "BLOCKED",
         "reasons": [
-          "human_promotion_approval_pending",
-          "human_promotion_approval_required"
+          "human_promotion_approval_pending"
         ]
       }
     ],
@@ -212,14 +209,10 @@
   "source": {
     "analysis_preflight": {
       "available": true,
-      "blockers": [
-        "missing tool: frama-c"
-      ],
-      "missing_tools": [
-        "frama-c"
-      ],
+      "blockers": [],
+      "missing_tools": [],
       "receipt": "build/analysis-preflight.json",
-      "status": "INFRASTRUCTURE_FAILURE",
+      "status": "PASS",
       "tools": {
         "clang": {
           "requested": "clang",
@@ -244,8 +237,10 @@
         },
         "frama-c": {
           "requested": "frama-c",
-          "resolved": null,
-          "status": "MISSING"
+          "resolution": "opam",
+          "resolved": "/Users/snow/.opam/dsc12a-ocaml-5.4.0/bin/frama-c",
+          "status": "PASS",
+          "version": "33.0 (Arsenic)"
         },
         "llvm-config": {
           "requested": "llvm-config",
@@ -505,7 +500,7 @@
       "status": "PASS"
     },
     "receipt": "traceability/traceability.json",
-    "receipt_sha256": "91237e3ea6ff3a89c6ee8b1dbd553dbe29a0e18b04e4c27d36be3fcf634bbc3a",
+    "receipt_sha256": "5bb4cba234eef0295fcec54408d9acd1c7cc80a2caded90a7f0f4a7f69b30320",
     "reports": {
       "code_to_spec": "../reports/code-to-spec.md",
       "orphan_triage": "../reports/orphan-triage.md",

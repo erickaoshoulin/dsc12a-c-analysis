@@ -25,6 +25,15 @@ run the discovered bit-true smoke/golden check before planning any RTL work.
 This repository is deliberately standalone and must not inspect, import,
 configure, or integrate with SVRT.
 
+Frama-C ordering is also mandatory: after the C/tool preflight passes, run
+tool-selected Eva and From analysis before any generic CI/CD generation or
+stable-library promotion work. Preserve the Frama-C version, selected
+targets, alarms, dependency results, and explicit `UNKNOWN` outcomes in the
+receipts; a zero exit code alone is not a proof. Human promotion approvals
+and reviewed traceability links are external decisions. The agent may report
+pending review, but must never create, approve, or silently modify those
+human decisions.
+
 The durable regression service is also standalone. When `DSC_REGRESSION_ROOT`
 is set, use that existing external root for queue state, run receipts, vectors,
 large logs, and per-flow candidate bundles; in this deployment it may be an

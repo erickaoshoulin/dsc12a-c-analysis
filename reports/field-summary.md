@@ -1347,8 +1347,8 @@ Roles are per-field proposals. No complete `dsc_cfg_t` or `dsc_state_t` is treat
 
 - Type: `void *`
 - Role proposal: **UNKNOWN**
-- Read by: assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, merge_cmd_args, merge_cmd_args, merge_cmd_args, merge_cmd_args, parse_cmd, parse_cmd_usage, parse_key_usage, parse_line, retrieve_cmds_var, retrieve_cmds_var, retrieve_keys_var, retrieve_keys_var
-- Written by: main, main, main, main, merge_cmd_args, merge_cmd_args
+- Read by: assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, merge_cmd_args, merge_cmd_args, merge_cmd_args, merge_cmd_args, parse_cmd, parse_cmd_usage, parse_key_usage, parse_line, retrieve_cmds_var, retrieve_cmds_var, retrieve_keys_var, retrieve_keys_var
+- Written by: assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, assign_val, main, main, main, main, merge_cmd_args, merge_cmd_args
 - Evidence:
   - No role taxonomy proof was available
 
