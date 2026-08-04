@@ -161,6 +161,11 @@ reports/
   progress.md
 ```
 
+`contracts/selection.json` also records the complete tool-selected frontier:
+leaf functions emitted in the current batch and eligible callers deferred with
+their direct dependency evidence. Deferred callers are not silently dropped
+and are not treated as locked contracts.
+
 All generated JSON includes provenance and semantic hashes. Build/tool/path,
 compiler, timeout, or source-integrity failures are
 `INFRASTRUCTURE_FAILURE`; no regeneration or LLM fallback is attempted.

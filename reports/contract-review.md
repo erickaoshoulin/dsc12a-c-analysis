@@ -5,7 +5,8 @@ Contracts are generated from tool-discovered production/output leaf functions; n
 - Coverage executed functions: 78
 - Static-but-uncovered functions: 102
 - Exact PDF/C links: 53
-- Selection cap: 10; selected: 7
+- Selection cap: 10; frontier: 10; leaf contracts selected: 7
+- Dependency-deferred candidates: 3
 
 ## findmidpoint — `FindMidpoint`
 
@@ -92,3 +93,31 @@ Contracts are generated from tool-discovered production/output leaf functions; n
   - `EXACT` `pdf:model-note:MN_MMAP:p079` page 79
   - `EXACT` `pdf:section:6.4.1.2` page 79
   - `EXACT` `pdf:section:6.4.2` page 79
+
+## Deferred dependency candidates
+
+These candidates are tool-discovered and coverage-eligible, but they are not leaf contracts. They remain visible for a later dependency-aware batch and are not emitted as locked contracts.
+
+### `EscapeCodeSize`
+
+- candidate rank: 8; score: 99.95
+- coverage: `EXECUTED`; execution count: 20889
+- state: `DEPENDENCY_DEFERRED`
+- direct source callees: `MapQpToQlevel`
+- reason: direct source dependencies require dependency-aware contract work before caller selection
+
+### `MaxResidualSize`
+
+- candidate rank: 9; score: 99.95
+- coverage: `EXECUTED`; execution count: 2181573
+- state: `DEPENDENCY_DEFERRED`
+- direct source callees: `MapQpToQlevel`
+- reason: direct source dependencies require dependency-aware contract work before caller selection
+
+### `GetQpAdjPredSize`
+
+- candidate rank: 10; score: 99.9
+- coverage: `EXECUTED`; execution count: 469602
+- state: `DEPENDENCY_DEFERRED`
+- direct source callees: `MapQpToQlevel`, `MaxResidualSize`
+- reason: direct source dependencies require dependency-aware contract work before caller selection
