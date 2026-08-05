@@ -1,0 +1,37 @@
+{
+  "candidate": "candidate_01.sv",
+  "candidate_sha256": "1f3e8a1942e9dfebd2cb90c6b047c9b5e4ea0d7038b1bc422faab2fa34a90196",
+  "contract": "provisional-contract.json",
+  "contract_sha256": "b0bbe172207984f831920abba4df0e5e20e3ede82846cfbc6d835e18e5f272c6",
+  "promotion_status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW",
+  "schema_version": 1,
+  "selection": {
+    "callee_contract_id": null,
+    "clang_usr": "c:@F@fifo_put_bits",
+    "execution_count": 584296,
+    "human_review_required_before_promotion": true,
+    "literal_size_bound": {
+      "argument_index": 2,
+      "complete_for_visible_literal_calls": false,
+      "evidence": "integer literals at directly visible C callsites",
+      "maximum": 32,
+      "nonliteral_calls": 11,
+      "values": [
+        2,
+        4,
+        8,
+        10,
+        12,
+        16,
+        32
+      ],
+      "visible_calls": 35
+    },
+    "name": "fifo_put_bits",
+    "provisional_max_bits": 32,
+    "selection_basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "semantics_kind": "fifo_write_transition",
+    "window_bytes": 5
+  },
+  "status": "PASS"
+}

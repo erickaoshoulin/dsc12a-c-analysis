@@ -56,6 +56,8 @@ struct RewriteState {
   unsigned rewrittenCalls = 0;
   std::set<std::string> rewrittenUSRs;
   std::set<std::string> changedFiles;
+  std::set<std::string> directReferenceLocations;
+  std::set<std::string> pendingReferenceLocations;
   std::set<std::string> indirectLocations;
   std::set<std::string> macroLocations;
   llvm::json::Array callSites;
@@ -104,25 +106,74 @@ class TargetReferenceVisitor : public RecursiveASTVisitor<TargetReferenceVisitor
   bool Found = false;
 };
 
+class DirectTargetReferenceSearch
+    : public RecursiveASTVisitor<DirectTargetReferenceSearch> {
+ public:
+  DirectTargetReferenceSearch(ASTContext &Context, const DeclRefExpr *Needle,
+                              std::string Target)
+      : ContextValue(Context), NeedleValue(Needle), TargetUSRValue(std::move(Target)) {}
+
+  bool VisitCallExpr(CallExpr *Call) {
+    const FunctionDecl *Callee = Call->getDirectCallee();
+    if (!Callee || usrFor(Callee) != TargetUSRValue) return true;
+    class IdentityVisitor : public RecursiveASTVisitor<IdentityVisitor> {
+     public:
+      explicit IdentityVisitor(const DeclRefExpr *Needle) : NeedleValue(Needle) {}
+      bool VisitDeclRefExpr(DeclRefExpr *Reference) {
+        if (Reference == NeedleValue) Found = true;
+        return !Found;
+      }
+      bool found() const { return Found; }
+
+     private:
+      const DeclRefExpr *NeedleValue;
+      bool Found = false;
+    } Identity(NeedleValue);
+    Identity.TraverseStmt(Call->getCallee());
+    if (Identity.found()) {
+      Found = true;
+      return false;
+    }
+    SourceManager &SM = ContextValue.getSourceManager();
+    if (SM.getSpellingLoc(Call->getCallee()->getBeginLoc()) ==
+        SM.getSpellingLoc(NeedleValue->getExprLoc())) {
+      Found = true;
+      return false;
+    }
+    return true;
+  }
+
+  bool found() const { return Found; }
+
+ private:
+  ASTContext &ContextValue;
+  const DeclRefExpr *NeedleValue;
+  std::string TargetUSRValue;
+  bool Found = false;
+};
+
 bool isDirectTargetReference(ASTContext &Context, const DeclRefExpr *Reference,
                              const std::string &Target) {
-  DynTypedNode Current = DynTypedNode::create(*Reference);
+  std::vector<DynTypedNode> Frontier{DynTypedNode::create(*Reference)};
   for (unsigned Depth = 0; Depth < 12; ++Depth) {
-    auto Parents = Context.getParents(Current);
-    if (Parents.empty()) return false;
-    bool Advanced = false;
-    for (const DynTypedNode &Parent : Parents) {
-      if (const auto *Call = Parent.get<CallExpr>())
-        return Call->getDirectCallee() && usrFor(Call->getDirectCallee()) == Target;
-      if (Parent.get<Stmt>() || Parent.get<Decl>()) {
-        Current = Parent;
-        Advanced = true;
-        break;
+    std::vector<DynTypedNode> Next;
+    for (const DynTypedNode &Current : Frontier) {
+      for (const DynTypedNode &Parent : Context.getParents(Current)) {
+        if (const auto *Call = Parent.get<CallExpr>()) {
+          if (Call->getDirectCallee() && usrFor(Call->getDirectCallee()) == Target)
+            return true;
+        }
+        if (Parent.get<Stmt>() || Parent.get<Decl>()) {
+          Next.push_back(Parent);
+        }
       }
     }
-    if (!Advanced) return false;
+    if (Next.empty()) break;
+    Frontier = std::move(Next);
   }
-  return false;
+  DirectTargetReferenceSearch Search(Context, Reference, Target);
+  Search.TraverseDecl(Context.getTranslationUnitDecl());
+  return Search.found();
 }
 
 std::string resultForCall(ASTContext &Context, const CallExpr *Call) {
@@ -202,6 +253,9 @@ class CallbackWithTarget : public MatchFinder::MatchCallback {
       if (Callee && usrFor(Callee) == TargetUSRValue) {
         ++StateValue->directCalls;
         SourceLocation Loc = Call->getCallee()->getBeginLoc();
+        StateValue->directReferenceLocations.insert(locationString(SM, Loc));
+        StateValue->directReferenceLocations.insert(
+            locationString(SM, Call->getExprLoc()));
         if (mark(Loc, "direct target call is inside a macro expansion")) return;
         if (auto Error = PendingReplacements->add(Replacement(
                 SM, CharSourceRange::getTokenRange(Call->getCallee()->getSourceRange()),
@@ -241,8 +295,7 @@ class CallbackWithTarget : public MatchFinder::MatchCallback {
       bool IsDirectCallReference = isDirectTargetReference(Context, Reference, TargetUSRValue);
       if (!IsDirectCallReference) {
         std::string Location = locationString(SM, Reference->getExprLoc());
-        StateValue->indirectLocations.insert(Location);
-        StateValue->fail("selected function reference is not a direct call at " + Location);
+        StateValue->pendingReferenceLocations.insert(Location);
       }
     }
   }
@@ -300,6 +353,8 @@ void writeReceipt(RewriteState &State, int ToolResult) {
   Receipt["rewritten_calls"] = State.rewrittenCalls;
   Receipt["rewritten_usrs"] = stringArray(State.rewrittenUSRs);
   Receipt["changed_files"] = stringArray(State.changedFiles);
+  Receipt["direct_reference_locations"] = stringArray(State.directReferenceLocations);
+  Receipt["pending_reference_locations"] = stringArray(State.pendingReferenceLocations);
   Receipt["macro_locations"] = stringArray(State.macroLocations);
   Receipt["indirect_locations"] = stringArray(State.indirectLocations);
   Receipt["call_sites"] = std::move(State.callSites);
@@ -328,6 +383,11 @@ int main(int argc, const char **argv) {
   Tool.setDiagnosticConsumer(new IgnoringDiagConsumer());
   ActionFactory Factory(State);
   int Result = Tool.run(&Factory);
+  for (const std::string &Location : State->pendingReferenceLocations) {
+    if (State->directReferenceLocations.count(Location)) continue;
+    State->indirectLocations.insert(Location);
+    State->fail("selected function reference is not a direct call at " + Location);
+  }
   writeReceipt(*State, Result);
   if (Result != 0 || State->failed || State->definitions != 1 || State->rewrittenCalls != State->directCalls) return 3;
   return 0;

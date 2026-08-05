@@ -1,0 +1,1486 @@
+{
+  "contract_id": "vlcunit_encode_transition",
+  "dependencies": [
+    {
+      "contract_file": "rtl/encode-candidates/selected-fifo-write-accounting-transition/provisional-contract.json",
+      "contract_id": "addbits_encode_transition",
+      "contract_sha256": "87ca6b9dac107038c4abe95fb41e2012ae327bdd97dcebe028baa32b79b123cd",
+      "function_name": "AddBits",
+      "function_usr": "c:@F@AddBits",
+      "kind": "fifo_write_accounting_transition",
+      "matrix_receipt_file": "rtl/encode-candidates/selected-fifo-write-accounting-transition/matrix-receipt.json",
+      "matrix_receipt_sha256": "ff209f916451822c266811ed7f5b1bc9fda947d6657dec980a3dc52d3af72c8b",
+      "module": "addbits_encode_transition",
+      "module_file": "rtl/encode-candidates/selected-fifo-write-accounting-transition/candidate_01.sv",
+      "module_sha256": "b562f76e24ef99facf12c1b37c6c7a05a3feb8ca60f69cab07991504401e2df0",
+      "role": "addbits_command_sink",
+      "rtl_return_invocations": 1535313,
+      "rtl_return_receipt_file": "rtl/encode-candidates/selected-fifo-write-accounting-transition/rtl-return-receipt.json",
+      "rtl_return_receipt_sha256": "d57dd2ce59b34ef9b87debec6b0badce2c4d251deb1c161c0dcce35fb8ec59f5",
+      "source_body_sha256": "df2c6a2cde5372651a209e157f7451bb57b894a8be38198ac2cb83afd95d21fc",
+      "source_file": "multiplex.c",
+      "source_file_sha256": "ab549255599fbdf1f69dd9fa8013ed39c044c3b8f591b187e2e056a5f1f5ab50",
+      "source_root": "/Users/snow/Desktop/Display Stream Compression (DSC)/DSC 1.2a/DSC_model_20210623/source",
+      "source_span": {
+        "end_line": 93,
+        "start_line": 89
+      }
+    }
+  ],
+  "function": {
+    "clang_usr": "c:@F@VLCUnit",
+    "name": "VLCUnit",
+    "parameters": [
+      {
+        "name": "dsc_cfg",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_cfg_t *"
+      },
+      {
+        "name": "dsc_state",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_state_t *"
+      },
+      {
+        "name": "unit",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "quantized_residuals",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "int *"
+      },
+      {
+        "name": "force_p1_ich2",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      }
+    ],
+    "qualified_name": "VLCUnit",
+    "return_type": "void",
+    "source_body_sha256": "68f11a3cc9c8b65c280e2cb29df2988529a556887253e956caa206ab41ac73f4",
+    "source_file": "dsc_codec.c",
+    "source_span": {
+      "end_line": 1703,
+      "start_line": 1494
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "name": "helper_results_valid",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "helper_qlevel",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "helper_adj_predicted_size",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "helper_flatness_info_sent",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "helper_escape_code_size",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "helper_ich_decision",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "helper_max_residual_size",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "helper_predicted_size",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "helper_required_size_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "helper_required_size_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "helper_required_size_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_bits_per_component",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_somewhat_flat_qp_thresh",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "unit",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "quantized_residual_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "quantized_residual_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "quantized_residual_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "force_p1_ich2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_num_bits",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_force_mpp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_primary_qp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_group_count",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_prev_first_flat",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_first_flat",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_flatness_type",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ich_selected",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_prev_ich_selected",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ich_indices_in_group",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpnt_bit_depth_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpnt_bit_depth_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpnt_bit_depth_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpnt_bit_depth_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unit_c_type_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unit_c_type_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unit_c_type_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unit_c_type_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unit_ssp_map_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unit_ssp_map_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unit_ssp_map_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unit_ssp_map_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ich_index_unit_map_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ich_index_unit_map_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ich_index_unit_map_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ich_index_unit_map_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ich_index_unit_map_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ich_index_unit_map_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ich_lookup_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ich_lookup_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ich_lookup_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ich_lookup_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ich_lookup_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ich_lookup_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_orig_within_qerr_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_orig_within_qerr_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_orig_within_qerr_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_orig_within_qerr_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_orig_within_qerr_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_orig_within_qerr_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_mid_0_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_mid_0_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_mid_0_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_mid_1_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_mid_1_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_mid_1_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_mid_2_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_mid_2_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_mid_2_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_mid_3_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_mid_3_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_mid_3_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_selected_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_selected_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_selected_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_selected_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_predicted_size_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_predicted_size_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_predicted_size_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_predicted_size_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_rc_size_unit_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_rc_size_unit_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_rc_size_unit_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_rc_size_unit_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "domain_valid",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "illegal_domain",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "fatal_error",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "fatal_error_code",
+        "signed": false,
+        "width": 4
+      },
+      {
+        "direction": "output",
+        "name": "bounded_loop_violation",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "command_overflow",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "arithmetic_domain_violation",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "source_order_valid",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "num_bits_delta_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "addbits_command_count",
+        "signed": false,
+        "width": 4
+      },
+      {
+        "direction": "output",
+        "name": "state_num_bits_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_flatness_type_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_ich_selected_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_prev_ich_selected_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_selected_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_selected_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_selected_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_selected_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_predicted_size_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_predicted_size_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_predicted_size_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_predicted_size_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_rc_size_unit_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_rc_size_unit_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_rc_size_unit_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_rc_size_unit_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_valid_0",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_ctype_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_data_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_nbits_0",
+        "signed": false,
+        "width": 6
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_valid_1",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_ctype_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_data_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_nbits_1",
+        "signed": false,
+        "width": 6
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_valid_2",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_ctype_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_data_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_nbits_2",
+        "signed": false,
+        "width": 6
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_valid_3",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_ctype_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_data_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_nbits_3",
+        "signed": false,
+        "width": 6
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_valid_4",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_ctype_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_data_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_nbits_4",
+        "signed": false,
+        "width": 6
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_valid_5",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_ctype_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_data_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_nbits_5",
+        "signed": false,
+        "width": 6
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_valid_6",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_ctype_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_data_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_nbits_6",
+        "signed": false,
+        "width": 6
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_valid_7",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_ctype_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_data_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_nbits_7",
+        "signed": false,
+        "width": 6
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_valid_8",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_ctype_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_data_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "addbits_cmd_nbits_8",
+        "signed": false,
+        "width": 6
+      }
+    ]
+  },
+  "origin": "tool_discovered_encode_vlc_unit_compute_boundary",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "NOT_REQUESTED"
+  },
+  "schema_version": 2,
+  "selection": {
+    "basis": [
+      "covered stateful encoder boundary with ordered bit-write calls, fixed sample/unit loops, and bounded ICH loops",
+      "positive Encode execution coverage is required",
+      "Clang fields identify the complete residual/ICH state transition",
+      "the child is selected by stateful FIFO-write signature and PASSed RTL evidence",
+      "fixed-trip and bounded dynamic loops are retained as generation evidence",
+      "function spelling is not used as a selection predicate"
+    ],
+    "coverage_status": "EXECUTED",
+    "encode_execution_count": 404352,
+    "no_function_name_allowlist": true,
+    "structural_evidence": {
+      "bounded_ich_loop_count": 4,
+      "bounded_loop_proofs": [
+        {
+          "condition": "i<dsc_state->ichIndicesInGroup",
+          "fixed_trip_count": null,
+          "has_fixed_trip_count": false,
+          "iteration_dependency": "NO_SAME_LOCATION_READ_WRITE_OBSERVED",
+          "proof": "UNKNOWN: loop bound is not constant"
+        },
+        {
+          "condition": "i<SAMPLES_PER_UNIT",
+          "fixed_trip_count": 3,
+          "has_fixed_trip_count": true,
+          "iteration_dependency": "POTENTIAL_CROSS_ITERATION_DEPENDENCY",
+          "proof": "FIXED_TRIP_COUNT: constant initializer, bound, and step"
+        },
+        {
+          "condition": "i<SAMPLES_PER_UNIT",
+          "fixed_trip_count": 3,
+          "has_fixed_trip_count": true,
+          "iteration_dependency": "NO_SAME_LOCATION_READ_WRITE_OBSERVED",
+          "proof": "FIXED_TRIP_COUNT: constant initializer, bound, and step"
+        },
+        {
+          "condition": "i<dsc_state->ichIndicesInGroup",
+          "fixed_trip_count": null,
+          "has_fixed_trip_count": false,
+          "iteration_dependency": "NO_SAME_LOCATION_READ_WRITE_OBSERVED",
+          "proof": "UNKNOWN: loop bound is not constant"
+        },
+        {
+          "condition": "i<dsc_state->ichIndicesInGroup",
+          "fixed_trip_count": null,
+          "has_fixed_trip_count": false,
+          "iteration_dependency": "NO_SAME_LOCATION_READ_WRITE_OBSERVED",
+          "proof": "UNKNOWN: loop bound is not constant"
+        },
+        {
+          "condition": "i<dsc_state->ichIndicesInGroup",
+          "fixed_trip_count": null,
+          "has_fixed_trip_count": false,
+          "iteration_dependency": "NO_SAME_LOCATION_READ_WRITE_OBSERVED",
+          "proof": "UNKNOWN: loop bound is not constant"
+        },
+        {
+          "condition": "i<MAX_UNITS_PER_GROUP",
+          "fixed_trip_count": 3,
+          "has_fixed_trip_count": true,
+          "iteration_dependency": "NO_SAME_LOCATION_READ_WRITE_OBSERVED",
+          "proof": "FIXED_TRIP_COUNT: constant initializer, bound, and step"
+        },
+        {
+          "condition": "i<SAMPLES_PER_UNIT",
+          "fixed_trip_count": 3,
+          "has_fixed_trip_count": true,
+          "iteration_dependency": "NO_SAME_LOCATION_READ_WRITE_OBSERVED",
+          "proof": "FIXED_TRIP_COUNT: constant initializer, bound, and step"
+        },
+        {
+          "condition": "i<SAMPLES_PER_UNIT",
+          "fixed_trip_count": 3,
+          "has_fixed_trip_count": true,
+          "iteration_dependency": "POTENTIAL_CROSS_ITERATION_DEPENDENCY",
+          "proof": "FIXED_TRIP_COUNT: constant initializer, bound, and step"
+        }
+      ],
+      "child_call_sites": [
+        1535,
+        1541,
+        1548,
+        1552,
+        1560,
+        1633,
+        1635,
+        1640,
+        1673,
+        1675,
+        1682,
+        1689
+      ],
+      "child_clang_usr": "c:@F@AddBits",
+      "config_read_fields": [
+        "bits_per_component",
+        "somewhat_flat_qp_thresh"
+      ],
+      "direct_effects": {
+        "assert": true,
+        "file_io": true,
+        "indirect_call": false,
+        "logging": false,
+        "malloc": false
+      },
+      "dynamic_ich_bound": 6,
+      "fatal_side_effects_separated": true,
+      "fixed_loop_trip_counts": [
+        3,
+        3,
+        3,
+        3,
+        3
+      ],
+      "fixed_sample_loop_count": 4,
+      "fixed_unit_loop_count": 1,
+      "loop_conditions": [
+        "i<dsc_state->ichIndicesInGroup",
+        "i<SAMPLES_PER_UNIT",
+        "i<SAMPLES_PER_UNIT",
+        "i<dsc_state->ichIndicesInGroup",
+        "i<dsc_state->ichIndicesInGroup",
+        "i<dsc_state->ichIndicesInGroup",
+        "i<MAX_UNITS_PER_GROUP",
+        "i<SAMPLES_PER_UNIT",
+        "i<SAMPLES_PER_UNIT"
+      ],
+      "max_addbits_commands": 9,
+      "pointer_parameter_types": [
+        "dsc_cfg_t *",
+        "dsc_state_t *",
+        "int *"
+      ],
+      "scalar_parameter_types": [
+        "int",
+        "int"
+      ],
+      "source_body_sha256": "68f11a3cc9c8b65c280e2cb29df2988529a556887253e956caa206ab41ac73f4",
+      "source_ordered": true,
+      "state_read_fields": [
+        "cpntBitDepth",
+        "firstFlat",
+        "flatnessType",
+        "forceMpp",
+        "groupCount",
+        "ichIndexUnitMap",
+        "ichIndicesInGroup",
+        "ichLookup",
+        "ichSelected",
+        "origWithinQerr",
+        "prevFirstFlat",
+        "prevIchSelected",
+        "primaryQp",
+        "quantizedResidualMid",
+        "unitCType",
+        "unitSspMap"
+      ],
+      "state_write_fields": [
+        "flatnessType",
+        "ichSelected",
+        "midpointSelected",
+        "predictedSize",
+        "prevIchSelected",
+        "rcSizeUnit"
+      ]
+    }
+  },
+  "semantics": {
+    "adapter_boundary": "the adapter consumes command slots 0..command_count-1 and binds each slot to the hash-pinned AddBits FIFO-write child",
+    "bindings": {
+      "argument_ports": {
+        "force_p1_ich2": "force_p1_ich2",
+        "quantized_residuals": [
+          "quantized_residual_0",
+          "quantized_residual_1",
+          "quantized_residual_2"
+        ],
+        "unit": "unit"
+      },
+      "command_count_port": "addbits_command_count",
+      "command_ports": [
+        {
+          "ctype": "addbits_cmd_ctype_0",
+          "data": "addbits_cmd_data_0",
+          "nbits": "addbits_cmd_nbits_0",
+          "valid": "addbits_cmd_valid_0"
+        },
+        {
+          "ctype": "addbits_cmd_ctype_1",
+          "data": "addbits_cmd_data_1",
+          "nbits": "addbits_cmd_nbits_1",
+          "valid": "addbits_cmd_valid_1"
+        },
+        {
+          "ctype": "addbits_cmd_ctype_2",
+          "data": "addbits_cmd_data_2",
+          "nbits": "addbits_cmd_nbits_2",
+          "valid": "addbits_cmd_valid_2"
+        },
+        {
+          "ctype": "addbits_cmd_ctype_3",
+          "data": "addbits_cmd_data_3",
+          "nbits": "addbits_cmd_nbits_3",
+          "valid": "addbits_cmd_valid_3"
+        },
+        {
+          "ctype": "addbits_cmd_ctype_4",
+          "data": "addbits_cmd_data_4",
+          "nbits": "addbits_cmd_nbits_4",
+          "valid": "addbits_cmd_valid_4"
+        },
+        {
+          "ctype": "addbits_cmd_ctype_5",
+          "data": "addbits_cmd_data_5",
+          "nbits": "addbits_cmd_nbits_5",
+          "valid": "addbits_cmd_valid_5"
+        },
+        {
+          "ctype": "addbits_cmd_ctype_6",
+          "data": "addbits_cmd_data_6",
+          "nbits": "addbits_cmd_nbits_6",
+          "valid": "addbits_cmd_valid_6"
+        },
+        {
+          "ctype": "addbits_cmd_ctype_7",
+          "data": "addbits_cmd_data_7",
+          "nbits": "addbits_cmd_nbits_7",
+          "valid": "addbits_cmd_valid_7"
+        },
+        {
+          "ctype": "addbits_cmd_ctype_8",
+          "data": "addbits_cmd_data_8",
+          "nbits": "addbits_cmd_nbits_8",
+          "valid": "addbits_cmd_valid_8"
+        }
+      ],
+      "config_ports": {
+        "bits_per_component": "cfg_bits_per_component",
+        "somewhat_flat_qp_thresh": "cfg_somewhat_flat_qp_thresh"
+      },
+      "fatal_ports": {
+        "arithmetic_domain_violation": "arithmetic_domain_violation",
+        "bounded_loop_violation": "bounded_loop_violation",
+        "command_overflow": "command_overflow",
+        "domain_valid": "domain_valid",
+        "fatal_error": "fatal_error",
+        "fatal_error_code": "fatal_error_code",
+        "illegal_domain": "illegal_domain",
+        "source_order_valid": "source_order_valid"
+      },
+      "helper_result_ports": {
+        "adj_predicted_size": "helper_adj_predicted_size",
+        "escape_code_size": "helper_escape_code_size",
+        "flatness_info_sent": "helper_flatness_info_sent",
+        "ich_decision": "helper_ich_decision",
+        "max_residual_size": "helper_max_residual_size",
+        "predicted_size": "helper_predicted_size",
+        "qlevel": "helper_qlevel",
+        "required_size": [
+          "helper_required_size_0",
+          "helper_required_size_1",
+          "helper_required_size_2"
+        ],
+        "results_valid": "helper_results_valid"
+      },
+      "num_bits_delta_port": "num_bits_delta_out",
+      "state_input_ports": {
+        "cpntBitDepth": [
+          "state_cpnt_bit_depth_0",
+          "state_cpnt_bit_depth_1",
+          "state_cpnt_bit_depth_2",
+          "state_cpnt_bit_depth_3"
+        ],
+        "firstFlat": "state_first_flat",
+        "flatnessType": "state_flatness_type",
+        "forceMpp": "state_force_mpp",
+        "groupCount": "state_group_count",
+        "ichIndexUnitMap": [
+          "state_ich_index_unit_map_0",
+          "state_ich_index_unit_map_1",
+          "state_ich_index_unit_map_2",
+          "state_ich_index_unit_map_3",
+          "state_ich_index_unit_map_4",
+          "state_ich_index_unit_map_5"
+        ],
+        "ichIndicesInGroup": "state_ich_indices_in_group",
+        "ichLookup": [
+          "state_ich_lookup_0",
+          "state_ich_lookup_1",
+          "state_ich_lookup_2",
+          "state_ich_lookup_3",
+          "state_ich_lookup_4",
+          "state_ich_lookup_5"
+        ],
+        "ichSelected": "state_ich_selected",
+        "midpointSelected": [
+          "state_midpoint_selected_0",
+          "state_midpoint_selected_1",
+          "state_midpoint_selected_2",
+          "state_midpoint_selected_3"
+        ],
+        "numBits": "state_num_bits",
+        "origWithinQerr": [
+          "state_orig_within_qerr_0",
+          "state_orig_within_qerr_1",
+          "state_orig_within_qerr_2",
+          "state_orig_within_qerr_3",
+          "state_orig_within_qerr_4",
+          "state_orig_within_qerr_5"
+        ],
+        "predictedSize": [
+          "state_predicted_size_0",
+          "state_predicted_size_1",
+          "state_predicted_size_2",
+          "state_predicted_size_3"
+        ],
+        "prevFirstFlat": "state_prev_first_flat",
+        "prevIchSelected": "state_prev_ich_selected",
+        "primaryQp": "state_primary_qp",
+        "quantizedResidualMid": [
+          [
+            "state_quantized_residual_mid_0_0",
+            "state_quantized_residual_mid_0_1",
+            "state_quantized_residual_mid_0_2"
+          ],
+          [
+            "state_quantized_residual_mid_1_0",
+            "state_quantized_residual_mid_1_1",
+            "state_quantized_residual_mid_1_2"
+          ],
+          [
+            "state_quantized_residual_mid_2_0",
+            "state_quantized_residual_mid_2_1",
+            "state_quantized_residual_mid_2_2"
+          ],
+          [
+            "state_quantized_residual_mid_3_0",
+            "state_quantized_residual_mid_3_1",
+            "state_quantized_residual_mid_3_2"
+          ]
+        ],
+        "rcSizeUnit": [
+          "state_rc_size_unit_0",
+          "state_rc_size_unit_1",
+          "state_rc_size_unit_2",
+          "state_rc_size_unit_3"
+        ],
+        "unitCType": [
+          "state_unit_c_type_0",
+          "state_unit_c_type_1",
+          "state_unit_c_type_2",
+          "state_unit_c_type_3"
+        ],
+        "unitSspMap": [
+          "state_unit_ssp_map_0",
+          "state_unit_ssp_map_1",
+          "state_unit_ssp_map_2",
+          "state_unit_ssp_map_3"
+        ]
+      },
+      "state_num_bits_input": "state_num_bits",
+      "state_num_bits_output": "state_num_bits_out",
+      "state_output_ports": {
+        "flatnessType": "state_flatness_type_out",
+        "ichSelected": "state_ich_selected_out",
+        "midpointSelected": [
+          "state_midpoint_selected_0_out",
+          "state_midpoint_selected_1_out",
+          "state_midpoint_selected_2_out",
+          "state_midpoint_selected_3_out"
+        ],
+        "predictedSize": [
+          "state_predicted_size_0_out",
+          "state_predicted_size_1_out",
+          "state_predicted_size_2_out",
+          "state_predicted_size_3_out"
+        ],
+        "prevIchSelected": "state_prev_ich_selected_out",
+        "rcSizeUnit": [
+          "state_rc_size_unit_0_out",
+          "state_rc_size_unit_1_out",
+          "state_rc_size_unit_2_out",
+          "state_rc_size_unit_3_out"
+        ]
+      }
+    },
+    "command_stream": {
+      "bounded": true,
+      "command_fields": [
+        "valid",
+        "ctype",
+        "data",
+        "nbits"
+      ],
+      "max_commands": 9,
+      "num_bits_behavior": "state_num_bits_out = state_num_bits + sum(command nbits)",
+      "ordered": true,
+      "overflow_behavior": "fatal_error_code=2; no state or command commit",
+      "source_order": [
+        {
+          "order": "first",
+          "source_lines": [
+            1535,
+            1541
+          ],
+          "stage": "flatness_flag"
+        },
+        {
+          "order": "after_flatness_flag",
+          "source_lines": [
+            1548,
+            1552
+          ],
+          "stage": "first_flat"
+        },
+        {
+          "order": "ascending_i",
+          "source_lines": [
+            1560
+          ],
+          "stage": "early_ich_indices"
+        },
+        {
+          "order": "before_ich_indices",
+          "source_lines": [
+            1633,
+            1635
+          ],
+          "stage": "ich_prefix"
+        },
+        {
+          "order": "ascending_i",
+          "source_lines": [
+            1640
+          ],
+          "stage": "ich_indices"
+        },
+        {
+          "order": "before_samples",
+          "source_lines": [
+            1673,
+            1675
+          ],
+          "stage": "residual_prefix"
+        },
+        {
+          "order": "ascending_i",
+          "source_lines": [
+            1682,
+            1689
+          ],
+          "stage": "sample_deltas"
+        }
+      ]
+    },
+    "constants": {
+      "command_ctype_width": 32,
+      "command_data_width": 32,
+      "command_nbits_width": 6,
+      "groups_per_supergroup": 4,
+      "ich_bits": 5,
+      "max_addbits_commands": 9,
+      "max_pixels_per_group": 6,
+      "max_units_per_group": 4,
+      "num_components": 4,
+      "samples_per_unit": 3
+    },
+    "kind": "bounded_vlc_unit_encode_transition",
+    "legal_domain": {
+      "arithmetic_code": 3,
+      "bits_per_component": [
+        8,
+        16
+      ],
+      "bounded_dynamic_loop_max": 6,
+      "bounded_loop_code": 2,
+      "fatal_paths": {
+        "dynamic_loop_bound_or_command_overflow": "fatal_error_code=2",
+        "invalid_unit_or_force": "fatal_error_code=1",
+        "missing_or_invalid_helper_result": "fatal_error_code=4",
+        "negative_or_oversized_nbits_or_signed_overflow": "fatal_error_code=3"
+      },
+      "fixed_loop_trip_counts": [
+        3
+      ],
+      "force_mpp": [
+        0,
+        1
+      ],
+      "force_p1_ich2": [
+        0,
+        2
+      ],
+      "helper_code": 4,
+      "ich_index_unit_map": [
+        0,
+        3
+      ],
+      "ich_indices_in_group": [
+        0,
+        6
+      ],
+      "ich_selected": [
+        0,
+        1
+      ],
+      "invalid_domain_code": 1,
+      "orig_within_qerr": [
+        0,
+        1
+      ],
+      "unit": [
+        0,
+        3
+      ]
+    },
+    "source_order": {
+      "model": "single combinational transaction; commands are emitted in C source order",
+      "stages": [
+        "scalar setup and helper-result binding",
+        "flatness flag and first-flat syntax elements",
+        "early ICH index path with bounded six-entry scan",
+        "required-size reduction and midpoint override",
+        "prefix arithmetic and all-orig-within-qerr scan",
+        "ICH decision and ordered ICH command emission",
+        "residual prefix and three sample-delta commands",
+        "state/scalar commit and numBits accounting"
+      ]
+    },
+    "specialization": {
+      "assertion_is_a_fatal_domain_sideband": true,
+      "debug_file_io_is_not_in_rtl": true,
+      "decoder_branch_is_not_modeled": true,
+      "encoder_branch_only": true
+    },
+    "state_transition": "bit-true encoder branch with source-ordered AddBits command stream; update flatness, ICH, midpoint, RC-size, prediction-size, previous-ICH, and numBits state outputs"
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

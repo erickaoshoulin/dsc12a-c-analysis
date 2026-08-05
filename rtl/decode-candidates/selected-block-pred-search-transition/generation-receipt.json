@@ -1,0 +1,32 @@
+{
+  "candidate": "candidate_01.sv",
+  "candidate_sha256": "b4527b4ea1cd32e5035a5bf6cfbb669f6821016251dd811695833fa4b1a9a4e3",
+  "contract": "provisional-contract.json",
+  "contract_sha256": "19f50230e280fe3fe6dfb790a1fed81a7b0a31355cbec433a95d69d877e593b6",
+  "promotion_status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW",
+  "schema_version": 1,
+  "selection": {
+    "callee_contract_id": "samplepredict",
+    "clang_usr": "c:@F@BlockPredSearch",
+    "execution_count": 1213056,
+    "human_review_required_before_promotion": true,
+    "literal_size_bound": {
+      "callee": "SamplePredict",
+      "callee_candidate_file": "/private/tmp/dsc12a-regression-dashboard/library/rtl/samplepredict.sv",
+      "callee_candidate_sha256": "831411aefb7fd14c630f6a71d75191a62320ce17566d6292637fcdab603e2011",
+      "callee_contract_file": "/private/tmp/dsc12a-regression-dashboard/library/contracts/samplepredict.json",
+      "callee_contract_id": "samplepredict",
+      "callee_contract_sha256": "1f2f0f64cfa4c4b3ea889b8f1602b3811c5343e7cc1b7271fbadb6d86336663b",
+      "complete_for_visible_literal_calls": false,
+      "evidence": "fixed BP_RANGE/BP_SIZE predictor search composed from a hash-bound accepted sample predictor",
+      "maximum": null,
+      "values": []
+    },
+    "name": "BlockPredSearch",
+    "provisional_max_bits": null,
+    "selection_basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "semantics_kind": "bounded_block_pred_search_transition",
+    "window_bytes": 0
+  },
+  "status": "PASS"
+}

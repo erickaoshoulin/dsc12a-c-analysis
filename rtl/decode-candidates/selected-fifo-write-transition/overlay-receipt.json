@@ -1,0 +1,511 @@
+{
+  "call_sites": [
+    {
+      "arguments": [
+        "&fifo",
+        "datum[b][k][i][xindex]",
+        "8"
+      ],
+      "call_text": "fifo_put_bits(&fifo, datum[b][k][i][xindex], 8)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/dpx.c:580:8",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&fifo",
+        "datum[b][k][i][xindex]",
+        "10"
+      ],
+      "call_text": "fifo_put_bits(&fifo, datum[b][k][i][xindex], 10)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/dpx.c:588:9",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&fifo",
+        "datum[b][k][i][xindex]",
+        "10"
+      ],
+      "call_text": "fifo_put_bits(&fifo, datum[b][k][i][xindex], 10)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/dpx.c:591:9",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&fifo",
+        "0",
+        "2"
+      ],
+      "call_text": "fifo_put_bits(&fifo, 0, 2)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/dpx.c:593:10",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&fifo",
+        "datum[b][k][i][xindex]",
+        "10"
+      ],
+      "call_text": "fifo_put_bits(&fifo, datum[b][k][i][xindex], 10)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/dpx.c:599:9",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&fifo",
+        "0",
+        "2"
+      ],
+      "call_text": "fifo_put_bits(&fifo, 0, 2)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/dpx.c:598:10",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&fifo",
+        "datum[b][k][i][xindex]",
+        "12"
+      ],
+      "call_text": "fifo_put_bits(&fifo, datum[b][k][i][xindex], 12)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/dpx.c:625:9",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&fifo",
+        "datum[b][k][i][xindex]",
+        "12"
+      ],
+      "call_text": "fifo_put_bits(&fifo, datum[b][k][i][xindex], 12)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/dpx.c:628:9",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&fifo",
+        "0",
+        "4"
+      ],
+      "call_text": "fifo_put_bits(&fifo, 0, 4)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/dpx.c:629:9",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&fifo",
+        "0",
+        "4"
+      ],
+      "call_text": "fifo_put_bits(&fifo, 0, 4)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/dpx.c:633:9",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&fifo",
+        "datum[b][k][i][xindex]",
+        "12"
+      ],
+      "call_text": "fifo_put_bits(&fifo, datum[b][k][i][xindex], 12)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/dpx.c:634:9",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&fifo",
+        "datum[b][k][i][xindex]",
+        "16"
+      ],
+      "call_text": "fifo_put_bits(&fifo, datum[b][k][i][xindex], 16)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/dpx.c:655:8",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&fifo",
+        "*((unsigned int *)(&datum[b][k][i][xindex]))",
+        "32"
+      ],
+      "call_text": "fifo_put_bits(&fifo, *((unsigned int *)(&datum[b][k][i][xindex])), 32)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/dpx.c:660:7",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&fifo",
+        "0",
+        "32 - fifo.fullness"
+      ],
+      "call_text": "fifo_put_bits(&fifo, 0, 32 - fifo.fullness)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/dpx.c:679:6",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&fifo",
+        "0",
+        "32 - fifo.fullness"
+      ],
+      "call_text": "fifo_put_bits(&fifo, 0, 32 - fifo.fullness)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/dpx.c:691:4",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&fifo",
+        "data32b",
+        "32"
+      ],
+      "call_text": "fifo_put_bits(&fifo, data32b, 32)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/dpx.c:1243:7",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&(dsc_state->seSizeFifo[i])",
+        "dsc_state->encBalanceFifo[i].fullness - start_fullness[i]",
+        "8"
+      ],
+      "call_text": "fifo_put_bits(&(dsc_state->seSizeFifo[i]), dsc_state->encBalanceFifo[i].fullness - start_fullness[i], 8)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/dsc_codec.c:1759:3",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&(dsc_state->seSizeFifo[i])",
+        "dsc_state->encBalanceFifo[i].fullness - start_fullness[i]",
+        "8"
+      ],
+      "call_text": "fifo_put_bits(&(dsc_state->seSizeFifo[i]), dsc_state->encBalanceFifo[i].fullness - start_fullness[i], 8)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/dsc_codec.c:1777:4",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&tmp",
+        "fifo_get_bits(src, s, 0)",
+        "s"
+      ],
+      "call_text": "fifo_put_bits(&tmp, fifo_get_bits(src, s, 0), s)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/fifo.c:157:3",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "src",
+        "d",
+        "s"
+      ],
+      "call_text": "fifo_put_bits(src, d, s)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/fifo.c:163:3",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dst",
+        "d",
+        "s"
+      ],
+      "call_text": "fifo_put_bits(dst, d, s)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/fifo.c:164:3",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&fifo",
+        "dlist[e].d[k]",
+        "MIN(32, f.ImageHeader.ImageElement[e].BitSize)"
+      ],
+      "call_text": "fifo_put_bits(&fifo, dlist[e].d[k], MIN(32, f.ImageHeader.ImageElement[e].BitSize))",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/hdr_dpx.c:1813:6",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&fifo",
+        "dlist[e].d[k]",
+        "f.ImageHeader.ImageElement[e].BitSize"
+      ],
+      "call_text": "fifo_put_bits(&fifo, dlist[e].d[k], f.ImageHeader.ImageElement[e].BitSize)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/hdr_dpx.c:1830:6",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&fifo",
+        "0",
+        "2"
+      ],
+      "call_text": "fifo_put_bits(&fifo, 0, 2)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/hdr_dpx.c:1832:7",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&fifo",
+        "0",
+        "4"
+      ],
+      "call_text": "fifo_put_bits(&fifo, 0, 4)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/hdr_dpx.c:1834:7",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&fifo",
+        "dlist[e].d[k]",
+        "f.ImageHeader.ImageElement[e].BitSize"
+      ],
+      "call_text": "fifo_put_bits(&fifo, dlist[e].d[k], f.ImageHeader.ImageElement[e].BitSize)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/hdr_dpx.c:1856:6",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&fifo",
+        "0",
+        "2"
+      ],
+      "call_text": "fifo_put_bits(&fifo, 0, 2)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/hdr_dpx.c:1852:8",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&fifo",
+        "0",
+        "4"
+      ],
+      "call_text": "fifo_put_bits(&fifo, 0, 4)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/hdr_dpx.c:1854:8",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&fifo",
+        "0",
+        "32 - fifo.fullness"
+      ],
+      "call_text": "fifo_put_bits(&fifo, 0, 32 - fifo.fullness)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/hdr_dpx.c:1876:7",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&(dsc_state->encBalanceFifo[CType])",
+        "d",
+        "nbits"
+      ],
+      "call_text": "fifo_put_bits(&(dsc_state->encBalanceFifo[CType]), d, nbits)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/multiplex.c:91:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&dsc_state->shifter[i]",
+        "d",
+        "8"
+      ],
+      "call_text": "fifo_put_bits(&dsc_state->shifter[i], d, 8)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/multiplex.c:145:5",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "&dsc_state->shifter[i]",
+        "d",
+        "8"
+      ],
+      "call_text": "fifo_put_bits(&dsc_state->shifter[i], d, 8)",
+      "callee_usr": "c:@F@fifo_put_bits",
+      "location": "<overlay-work>/source/multiplex.c:172:5",
+      "result": "discarded"
+    }
+  ],
+  "changed_files": [
+    {
+      "new_sha256": "4469941ad82eaae5890a256387e7184c3ef85137f2e5ece92a3e8c24faf05d68",
+      "old_sha256": "cf8b5216b23015de699935536163fc47d8ccf2e42df3e0ae3e85dba6eee6e17d",
+      "path": "dpx.c"
+    },
+    {
+      "new_sha256": "dbef6be9ba1e711e5505d36cdeb46c04f2d54db9b6e09a1a67a08ccd88f71fc5",
+      "old_sha256": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf",
+      "path": "dsc_codec.c"
+    },
+    {
+      "new_sha256": "9f3f50c7a0937024087a4bb7181690c7ed98638e3c589787f32c6d6796be1c29",
+      "old_sha256": "6a886eaffd01b6651703da54bbb90e9cf77d6503131ab419644e0ad3e50a3e6e",
+      "path": "fifo.c"
+    },
+    {
+      "new_sha256": "6553a4b7f8b0b5c609d9e16a5cfd972e2efb1bfaa2e9560c3af8b683ff935911",
+      "old_sha256": "655820d0da1f2e68565030fe674eb708e1dc53df231e69c3ed403f1867930f3d",
+      "path": "hdr_dpx.c"
+    },
+    {
+      "new_sha256": "de399e15b2950f93681eb93762b37a1014670920f1022cf4acb51dcea16c5b09",
+      "old_sha256": "ab549255599fbdf1f69dd9fa8013ed39c044c3b8f591b187e2e056a5f1f5ab50",
+      "path": "multiplex.c"
+    }
+  ],
+  "command": {
+    "command": [
+      "<overlay-work>/tmp/cicd-clang-rewriter/dsc-clang-rewrite",
+      "--compdb",
+      "<overlay-work>/source/compile_commands.json",
+      "--target-usr",
+      "c:@F@fifo_put_bits",
+      "--original-name",
+      "fifo_put_bits_original",
+      "--dispatcher-name",
+      "dsc_cicd_invoke",
+      "--receipt",
+      "<overlay-work>/source/clang-overlay-receipt.json",
+      "<overlay-work>/source/cmd_parse.c",
+      "<overlay-work>/source/codec_main.c",
+      "<overlay-work>/source/dpx.c",
+      "<overlay-work>/source/dsc_codec.c",
+      "<overlay-work>/source/dsc_utils.c",
+      "<overlay-work>/source/fifo.c",
+      "<overlay-work>/source/hdr_dpx.c",
+      "<overlay-work>/source/logging.c",
+      "<overlay-work>/source/multiplex.c",
+      "<overlay-work>/source/psnr.c",
+      "<overlay-work>/source/utl.c"
+    ],
+    "cwd": "<overlay-work>/source",
+    "duration_seconds": 0.287,
+    "output": "[1/11] Processing file <overlay-work>/source/cmd_parse.c.\n[2/11] Processing file <overlay-work>/source/codec_main.c.\n[3/11] Processing file <overlay-work>/source/dpx.c.\n[4/11] Processing file <overlay-work>/source/dsc_codec.c.\n[5/11] Processing file <overlay-work>/source/dsc_utils.c.\n[6/11] Processing file <overlay-work>/source/fifo.c.\n[7/11] Processing file <overlay-work>/source/hdr_dpx.c.\n[8/11] Processing file <overlay-work>/source/logging.c.\n[9/11] Processing file <overlay-work>/source/multiplex.c.\n[10/11] Processing file <overlay-work>/source/psnr.c.\n[11/11] Processing file <overlay-work>/source/utl.c.\n",
+    "returncode": 3
+  },
+  "contract_id": "fifo_put_bits_decode_transition",
+  "definitions_seen": 1,
+  "direct_calls_seen": 32,
+  "direct_reference_locations": [
+    "<overlay-work>/source/dpx.c:1243:7",
+    "<overlay-work>/source/dpx.c:580:8",
+    "<overlay-work>/source/dpx.c:588:9",
+    "<overlay-work>/source/dpx.c:591:9",
+    "<overlay-work>/source/dpx.c:593:10",
+    "<overlay-work>/source/dpx.c:598:10",
+    "<overlay-work>/source/dpx.c:599:9",
+    "<overlay-work>/source/dpx.c:625:9",
+    "<overlay-work>/source/dpx.c:628:9",
+    "<overlay-work>/source/dpx.c:629:9",
+    "<overlay-work>/source/dpx.c:633:9",
+    "<overlay-work>/source/dpx.c:634:9",
+    "<overlay-work>/source/dpx.c:655:8",
+    "<overlay-work>/source/dpx.c:660:7",
+    "<overlay-work>/source/dpx.c:679:6",
+    "<overlay-work>/source/dpx.c:691:4",
+    "<overlay-work>/source/dsc_codec.c:1759:3",
+    "<overlay-work>/source/dsc_codec.c:1777:4",
+    "<overlay-work>/source/fifo.c:157:3",
+    "<overlay-work>/source/fifo.c:163:3",
+    "<overlay-work>/source/fifo.c:164:3",
+    "<overlay-work>/source/hdr_dpx.c:1813:6",
+    "<overlay-work>/source/hdr_dpx.c:1830:6",
+    "<overlay-work>/source/hdr_dpx.c:1832:7",
+    "<overlay-work>/source/hdr_dpx.c:1834:7",
+    "<overlay-work>/source/hdr_dpx.c:1852:8",
+    "<overlay-work>/source/hdr_dpx.c:1854:8",
+    "<overlay-work>/source/hdr_dpx.c:1856:6",
+    "<overlay-work>/source/hdr_dpx.c:1876:7",
+    "<overlay-work>/source/multiplex.c:145:5",
+    "<overlay-work>/source/multiplex.c:172:5",
+    "<overlay-work>/source/multiplex.c:91:2"
+  ],
+  "dispatcher_name": "dsc_cicd_invoke",
+  "failures": [
+    "selected function reference is not a direct call at <overlay-work>/source/hdr_dpx.c:1235:7"
+  ],
+  "indirect_locations": [
+    "<overlay-work>/source/hdr_dpx.c:1235:7"
+  ],
+  "macro_locations": [],
+  "original_name": "fifo_put_bits_original",
+  "pending_reference_locations": [
+    "<overlay-work>/source/hdr_dpx.c:1235:7"
+  ],
+  "residual_symbol_alias": {
+    "accepted": true,
+    "declared_by_adapter": true,
+    "policy": "definition must be renamed exactly once; every recognized direct call must be rewritten; only residual references routed by the generated same-name dispatcher alias may remain"
+  },
+  "rewritten_calls": 32,
+  "rewritten_usrs": [
+    "c:@F@fifo_put_bits"
+  ],
+  "schema_version": 2,
+  "source_copy_hashes_after": {
+    "cmd_parse.c": "aa6f8ca2ed1cd62c73007b920f2561d690643a3a63381c3777d04b1b59c08b01",
+    "codec_main.c": "6f10916c2e72e3b6c5e8d578fb607954b6b501f309ba3735f8ec4ec61c689500",
+    "dpx.c": "4469941ad82eaae5890a256387e7184c3ef85137f2e5ece92a3e8c24faf05d68",
+    "dsc_cicd_main.c": "e1aac2224ec67466dbc9673d913e98bb5cae31a077f78356970016e0c95f6f58",
+    "dsc_cicd_overlay.c": "3ed6108a1d436aacb10b4f24ef0873236c2d55e123e8f067836170fb9d5dcd87",
+    "dsc_codec.c": "dbef6be9ba1e711e5505d36cdeb46c04f2d54db9b6e09a1a67a08ccd88f71fc5",
+    "dsc_utils.c": "8aadcb1ecff2586892f385255a73fea367eec9afb6e14608d1010c08b7aca14e",
+    "fifo.c": "9f3f50c7a0937024087a4bb7181690c7ed98638e3c589787f32c6d6796be1c29",
+    "hdr_dpx.c": "6553a4b7f8b0b5c609d9e16a5cfd972e2efb1bfaa2e9560c3af8b683ff935911",
+    "logging.c": "9194d16f129d5c92e7fca52a7c34de5d0312f64f33d2e069accc85f33913919c",
+    "multiplex.c": "de399e15b2950f93681eb93762b37a1014670920f1022cf4acb51dcea16c5b09",
+    "psnr.c": "331f5e3f4ec62c51a184c1e766d073a348a45301745b06b84dc20cda6ad9e438",
+    "utl.c": "c673e2e5cd8dd6c5f91461908f628977644a8ad424d2e8a9fe9ba575bfcbffed"
+  },
+  "source_copy_hashes_before": {
+    "cmd_parse.c": "aa6f8ca2ed1cd62c73007b920f2561d690643a3a63381c3777d04b1b59c08b01",
+    "codec_main.c": "6f10916c2e72e3b6c5e8d578fb607954b6b501f309ba3735f8ec4ec61c689500",
+    "dpx.c": "cf8b5216b23015de699935536163fc47d8ccf2e42df3e0ae3e85dba6eee6e17d",
+    "dsc_cicd_main.c": "e1aac2224ec67466dbc9673d913e98bb5cae31a077f78356970016e0c95f6f58",
+    "dsc_cicd_overlay.c": "3ed6108a1d436aacb10b4f24ef0873236c2d55e123e8f067836170fb9d5dcd87",
+    "dsc_codec.c": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf",
+    "dsc_utils.c": "8aadcb1ecff2586892f385255a73fea367eec9afb6e14608d1010c08b7aca14e",
+    "fifo.c": "6a886eaffd01b6651703da54bbb90e9cf77d6503131ab419644e0ad3e50a3e6e",
+    "hdr_dpx.c": "655820d0da1f2e68565030fe674eb708e1dc53df231e69c3ed403f1867930f3d",
+    "logging.c": "9194d16f129d5c92e7fca52a7c34de5d0312f64f33d2e069accc85f33913919c",
+    "multiplex.c": "ab549255599fbdf1f69dd9fa8013ed39c044c3b8f591b187e2e056a5f1f5ab50",
+    "psnr.c": "331f5e3f4ec62c51a184c1e766d073a348a45301745b06b84dc20cda6ad9e438",
+    "utl.c": "c673e2e5cd8dd6c5f91461908f628977644a8ad424d2e8a9fe9ba575bfcbffed"
+  },
+  "status": "PASS",
+  "target_usr": "c:@F@fifo_put_bits",
+  "tool": {
+    "binary": "<overlay-work>/tmp/cicd-clang-rewriter/dsc-clang-rewrite",
+    "source_fingerprint": "2bedf29f5ca4d30b8ebfba004d2d0098dfc5b37f498d816bb84c982f5ed3c025",
+    "status": "REUSED_BUILD"
+  },
+  "upstream_source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+  "upstream_source_unchanged": true
+}

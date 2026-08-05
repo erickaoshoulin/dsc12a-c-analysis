@@ -1,0 +1,76 @@
+{
+  "candidate": "candidate_01.sv",
+  "candidate_sha256": "089f838f4365d92f4f923325aef2f75c961217e3309acf2fb98300d9b549f274",
+  "contract": "provisional-contract.json",
+  "contract_sha256": "ce054723e5f0acb5d6684a3c85fe0ba3d40c38e02d588e3aa1a8ec7fb8484a4a",
+  "promotion_status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW",
+  "schema_version": 1,
+  "selection": {
+    "callee_contract_id": null,
+    "clang_usr": "c:@F@PredictionLoop",
+    "execution_count": 393984,
+    "human_review_required_before_promotion": true,
+    "literal_size_bound": {
+      "accepted_dependencies": [
+        {
+          "candidate_file": "/private/tmp/dsc12a-regression-dashboard/library/rtl/findmidpoint.sv",
+          "candidate_sha256": "95b00b9f217f19697deb92e6926e102faf48b91af79a9fb6331900a7217d480b",
+          "contract_file": "/private/tmp/dsc12a-regression-dashboard/library/contracts/findmidpoint.json",
+          "contract_id": "findmidpoint",
+          "contract_sha256": "5d2617730d3c210dbfd119c68c722d035c65df571b5ac628af7bf19b0d722a12",
+          "function": "FindMidpoint"
+        },
+        {
+          "candidate_file": "/private/tmp/dsc12a-regression-dashboard/library/rtl/findresidualsize.sv",
+          "candidate_sha256": "a10d4649d371883b4bdfef25fc99448c5a719e937a93425900ddf00b26474073",
+          "contract_file": "/private/tmp/dsc12a-regression-dashboard/library/contracts/findresidualsize.json",
+          "contract_id": "findresidualsize",
+          "contract_sha256": "c80809ad3149bc843d4ac9cfbde3eb22275ff38d330871729232be8253912811",
+          "function": "FindResidualSize"
+        },
+        {
+          "candidate_file": "/private/tmp/dsc12a-regression-dashboard/library/rtl/mapqptoqlevel.sv",
+          "candidate_sha256": "5dda9dc25483193295e7af8abbd927b209f8e9715f2f4791864200f2fc0a3334",
+          "contract_file": "/private/tmp/dsc12a-regression-dashboard/library/contracts/mapqptoqlevel.json",
+          "contract_id": "mapqptoqlevel",
+          "contract_sha256": "9bbbf576bb551a7cf896d43f54fd6d3bf779c447bf4a87660ee63f302c8c191f",
+          "function": "MapQpToQlevel"
+        },
+        {
+          "candidate_file": "/private/tmp/dsc12a-regression-dashboard/library/rtl/maxresidualsize.sv",
+          "candidate_sha256": "cfdb54a0936d5bd70d45ddd9bcb20d05d99b73039a3789c1124ed564ae5aa65b",
+          "contract_file": "/private/tmp/dsc12a-regression-dashboard/library/contracts/maxresidualsize.json",
+          "contract_id": "maxresidualsize",
+          "contract_sha256": "84e97590a3bd35586be554aee05a306a3390367b2324703e68f6f6beaf9a9714",
+          "function": "MaxResidualSize"
+        },
+        {
+          "candidate_file": "/private/tmp/dsc12a-regression-dashboard/library/rtl/quantizeresidual.sv",
+          "candidate_sha256": "7c9d729bbe1ac193b6f355b3d8281a92ab350a9c27a7717145fdea31a863d9cd",
+          "contract_file": "/private/tmp/dsc12a-regression-dashboard/library/contracts/quantizeresidual.json",
+          "contract_id": "quantizeresidual",
+          "contract_sha256": "c8e83afed963044c81b588a1bad28ec2c1dd81ded0055be1ea438139118592eb",
+          "function": "QuantizeResidual"
+        },
+        {
+          "candidate_file": "/private/tmp/dsc12a-regression-dashboard/library/rtl/samplepredict.sv",
+          "candidate_sha256": "831411aefb7fd14c630f6a71d75191a62320ce17566d6292637fcdab603e2011",
+          "contract_file": "/private/tmp/dsc12a-regression-dashboard/library/contracts/samplepredict.json",
+          "contract_id": "samplepredict",
+          "contract_sha256": "1f2f0f64cfa4c4b3ea889b8f1602b3811c5343e7cc1b7271fbadb6d86336663b",
+          "function": "SamplePredict"
+        }
+      ],
+      "complete_for_visible_literal_calls": false,
+      "evidence": "fixed MAX_UNITS_PER_GROUP decoder reconstruction composed from hash-bound accepted pure leaves; encoder-only branches are outside this specialization",
+      "maximum": null,
+      "values": []
+    },
+    "name": "PredictionLoop",
+    "provisional_max_bits": null,
+    "selection_basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "semantics_kind": "bounded_prediction_decode_transition",
+    "window_bytes": 0
+  },
+  "status": "PASS"
+}

@@ -1,0 +1,675 @@
+{
+  "contract_id": "updatemidpoint_encode_transition",
+  "function": {
+    "clang_usr": "c:@F@UpdateMidpoint",
+    "name": "UpdateMidpoint",
+    "parameters": [
+      {
+        "name": "dsc_cfg",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_cfg_t *"
+      },
+      {
+        "name": "dsc_state",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_state_t *"
+      },
+      {
+        "name": "currLine",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "int **"
+      },
+      {
+        "name": "hPos",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      }
+    ],
+    "return_type": "void",
+    "source_body_sha256": "cb71de8bb3143a9a45ee0de1ca8117fc5334e9940cc40423f037d231a0b3e755",
+    "source_file": "dsc_codec.c",
+    "source_span": {
+      "end_line": 899,
+      "start_line": 875
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "name": "hpos",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "pixels_per_group",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "units_per_group",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "slice_width",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "unit_selected_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "unit_selected_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "unit_selected_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "unit_selected_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "unit_component_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "unit_component_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "unit_component_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "unit_component_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "unit_start_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "unit_start_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "unit_start_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "unit_start_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "reconstruction_0_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "reconstruction_0_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "reconstruction_0_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "reconstruction_1_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "reconstruction_1_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "reconstruction_1_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "reconstruction_2_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "reconstruction_2_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "reconstruction_2_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "reconstruction_3_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "reconstruction_3_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "reconstruction_3_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_0",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_component_0",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "direction": "output",
+        "name": "write_address_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_1",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_component_1",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "direction": "output",
+        "name": "write_address_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_2",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_component_2",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "direction": "output",
+        "name": "write_address_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_3",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_component_3",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "direction": "output",
+        "name": "write_address_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_4",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_component_4",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "direction": "output",
+        "name": "write_address_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_5",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_component_5",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "direction": "output",
+        "name": "write_address_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_6",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_component_6",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "direction": "output",
+        "name": "write_address_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_7",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_component_7",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "direction": "output",
+        "name": "write_address_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_8",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_component_8",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "direction": "output",
+        "name": "write_address_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_9",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_component_9",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "direction": "output",
+        "name": "write_address_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_10",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_component_10",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "direction": "output",
+        "name": "write_address_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_11",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_component_11",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "direction": "output",
+        "name": "write_address_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_11",
+        "signed": true,
+        "width": 32
+      }
+    ]
+  },
+  "obligations": [
+    "full-frame Encode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "enabled write metadata and final aliased line image must match original C",
+    "human review of bounded reconstructed-line write sidebands before promotion"
+  ],
+  "origin": "tool_discovered_encoder_runtime_transition",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "schema_version": 2,
+  "selection": {
+    "basis": [
+      "Encode runtime coverage reached the function",
+      "Clang found one scalar position and one write-through reconstructed-line parameter",
+      "AST found a fixed sample loop and a state-bounded unit loop",
+      "AST/source bindings derive all scalar, vector, matrix, component, address, and write-enable roles",
+      "header constants bound the complete write-sideband set",
+      "no function-name allowlist is used"
+    ],
+    "encode_execution_count": 131328
+  },
+  "semantics": {
+    "bindings": {
+      "component_field": "unitCType",
+      "component_ports": [
+        "unit_component_0",
+        "unit_component_1",
+        "unit_component_2",
+        "unit_component_3"
+      ],
+      "config_parameter": "dsc_cfg",
+      "hpos_parameter": "hPos",
+      "hpos_port": "hpos",
+      "line_parameter": "currLine",
+      "pixels_per_group_field": "pixelsInGroup",
+      "pixels_per_group_port": "pixels_per_group",
+      "reconstruction_field": "midpointRecon",
+      "reconstruction_ports": [
+        [
+          "reconstruction_0_0",
+          "reconstruction_0_1",
+          "reconstruction_0_2"
+        ],
+        [
+          "reconstruction_1_0",
+          "reconstruction_1_1",
+          "reconstruction_1_2"
+        ],
+        [
+          "reconstruction_2_0",
+          "reconstruction_2_1",
+          "reconstruction_2_2"
+        ],
+        [
+          "reconstruction_3_0",
+          "reconstruction_3_1",
+          "reconstruction_3_2"
+        ]
+      ],
+      "selected_field": "midpointSelected",
+      "selected_ports": [
+        "unit_selected_0",
+        "unit_selected_1",
+        "unit_selected_2",
+        "unit_selected_3"
+      ],
+      "slice_width_field": "sliceWidth",
+      "slice_width_port": "slice_width",
+      "state_parameter": "dsc_state",
+      "unit_start_field": "unitStartHPos",
+      "unit_start_ports": [
+        "unit_start_0",
+        "unit_start_1",
+        "unit_start_2",
+        "unit_start_3"
+      ],
+      "units_per_group_field": "unitsPerGroup",
+      "units_per_group_port": "units_per_group",
+      "write_sidebands": [
+        {
+          "address": "write_address_0",
+          "component": "write_component_0",
+          "enable": "write_enable_0",
+          "value": "write_value_0"
+        },
+        {
+          "address": "write_address_1",
+          "component": "write_component_1",
+          "enable": "write_enable_1",
+          "value": "write_value_1"
+        },
+        {
+          "address": "write_address_2",
+          "component": "write_component_2",
+          "enable": "write_enable_2",
+          "value": "write_value_2"
+        },
+        {
+          "address": "write_address_3",
+          "component": "write_component_3",
+          "enable": "write_enable_3",
+          "value": "write_value_3"
+        },
+        {
+          "address": "write_address_4",
+          "component": "write_component_4",
+          "enable": "write_enable_4",
+          "value": "write_value_4"
+        },
+        {
+          "address": "write_address_5",
+          "component": "write_component_5",
+          "enable": "write_enable_5",
+          "value": "write_value_5"
+        },
+        {
+          "address": "write_address_6",
+          "component": "write_component_6",
+          "enable": "write_enable_6",
+          "value": "write_value_6"
+        },
+        {
+          "address": "write_address_7",
+          "component": "write_component_7",
+          "enable": "write_enable_7",
+          "value": "write_value_7"
+        },
+        {
+          "address": "write_address_8",
+          "component": "write_component_8",
+          "enable": "write_enable_8",
+          "value": "write_value_8"
+        },
+        {
+          "address": "write_address_9",
+          "component": "write_component_9",
+          "enable": "write_enable_9",
+          "value": "write_value_9"
+        },
+        {
+          "address": "write_address_10",
+          "component": "write_component_10",
+          "enable": "write_enable_10",
+          "value": "write_value_10"
+        },
+        {
+          "address": "write_address_11",
+          "component": "write_component_11",
+          "enable": "write_enable_11",
+          "value": "write_value_11"
+        }
+      ]
+    },
+    "kind": "bounded_midpoint_line_write_transition",
+    "legal_domain": {
+      "all_enabled_addresses_reference_allocated_padded_lines": true,
+      "hpos_nonnegative": true,
+      "pixels_per_group_positive": true,
+      "unit_component": [
+        0,
+        3
+      ],
+      "units_per_group": [
+        0,
+        4
+      ]
+    },
+    "max_units": 4,
+    "padding_left": 5,
+    "samples_per_unit": 3,
+    "state_transition": "emit every conditional reconstructed-line write in exact sample-major then unit-major C source order",
+    "write_slots": 12
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

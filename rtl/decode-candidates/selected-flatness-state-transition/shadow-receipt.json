@@ -1,0 +1,998 @@
+{
+  "coverage_status": "RTL_EXERCISED",
+  "scenarios": [
+    {
+      "baseline_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+      "baseline_sha256_match": true,
+      "command": {
+        "command": [
+          "<overlay-work>/source/dsc",
+          "-F",
+          "<overlay-work>/bittrue_smoke/simple_8bpc_rgb.cfg"
+        ],
+        "cwd": "<overlay-work>",
+        "duration_seconds": 0.027,
+        "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nDSC_CICD_OVERLAY_METRICS calls=6912 rtl_invocations=6912 mismatches=0\n\n",
+        "returncode": 0
+      },
+      "expected_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+      "expected_sha256_match": true,
+      "mismatch_count": 0,
+      "oracle_class": "ANCHORED_EXPECTED_SHA",
+      "overlay_metrics": {
+        "calls": 6912,
+        "metrics_present": true,
+        "mismatches": 0,
+        "replacement_reached": true,
+        "rtl_exercised": true,
+        "rtl_invocations": 6912
+      },
+      "replacement_status": "RTL_EXERCISED",
+      "scenario": {
+        "config": "bittrue_smoke/simple_8bpc_rgb.cfg",
+        "config_sha256": "32ee85dad952808a92b0ae51de1fffc1c42eafb23575279e389144edaf007ce0",
+        "expected_sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+        "expected_variable": "expected_hash",
+        "golden": "bittrue_smoke/out/simple_192x108.dsc",
+        "list": "bittrue_smoke/simple_8bpc_rgb.list",
+        "list_sha256": "c1661be1e63a392e701642ab6ac0e4c94d571475198dd4a9fc4ada934c5fbbde",
+        "name": "run_c_baseline",
+        "oracle_class": "ANCHORED_EXPECTED_SHA",
+        "parse_status": "PASS",
+        "script": "bittrue_smoke/run_c_baseline.sh",
+        "script_sha256": "e184c477a3c1ff09d3366e72bc4f2df9b7c41529afbed7b4ef6b7139b90571df"
+      },
+      "sha256": "2fe0f356fa9c0a008dd3b1500ebb6af2782e2acc9c1a37718f9f5a1835408797",
+      "size_bytes": 31236,
+      "status": "PASS"
+    },
+    {
+      "baseline_sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
+      "baseline_sha256_match": true,
+      "command": {
+        "command": [
+          "<overlay-work>/source/dsc",
+          "-F",
+          "<overlay-work>/bittrue_smoke/simple_10bpc_rgb.cfg"
+        ],
+        "cwd": "<overlay-work>",
+        "duration_seconds": 0.028,
+        "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nDSC_CICD_OVERLAY_METRICS calls=6912 rtl_invocations=6912 mismatches=0\n\n",
+        "returncode": 0
+      },
+      "expected_sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
+      "expected_sha256_match": true,
+      "mismatch_count": 0,
+      "oracle_class": "ANCHORED_EXPECTED_SHA",
+      "overlay_metrics": {
+        "calls": 6912,
+        "metrics_present": true,
+        "mismatches": 0,
+        "replacement_reached": true,
+        "rtl_exercised": true,
+        "rtl_invocations": 6912
+      },
+      "replacement_status": "RTL_EXERCISED",
+      "scenario": {
+        "config": "bittrue_smoke/simple_10bpc_rgb.cfg",
+        "config_sha256": "7eeb378ed7785cca6538fe35d507eeb5f3a30a51e3559c860578e963dbf15aa2",
+        "expected_sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
+        "expected_variable": "expected_hash",
+        "golden": "bittrue_smoke/out/simple_192x108_10bpc.dsc",
+        "list": "bittrue_smoke/simple_10bpc_rgb.list",
+        "list_sha256": "be1703f1a83b757bcb3d73d7f6d7a37e7ad5039afcc6b63a7a36b43e42923178",
+        "name": "run_c_baseline_10bpc",
+        "oracle_class": "ANCHORED_EXPECTED_SHA",
+        "parse_status": "PASS",
+        "script": "bittrue_smoke/run_c_baseline_10bpc.sh",
+        "script_sha256": "529b81f21c252ae1f03c26c8368bc739cbbd2bb18fb629cedf8f345f01a7ca59"
+      },
+      "sha256": "696f4639c02fbadb2db0d7f4ec65fb0c6b2d6c8c6277d954ca4b09ac722fea13",
+      "size_bytes": 31236,
+      "status": "PASS"
+    },
+    {
+      "baseline_sha256": "223f4c102df736d47a375701946451f270e7ee5741da3d2d4515c33f295ee221",
+      "baseline_sha256_match": true,
+      "command": {
+        "command": [
+          "<overlay-work>/source/dsc",
+          "-F",
+          "<overlay-work>/bittrue_smoke/simple_10bpc_rgb_vbr.cfg"
+        ],
+        "cwd": "<overlay-work>",
+        "duration_seconds": 0.028,
+        "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nDSC_CICD_OVERLAY_METRICS calls=6912 rtl_invocations=6912 mismatches=0\n\n",
+        "returncode": 0
+      },
+      "expected_sha256": "223f4c102df736d47a375701946451f270e7ee5741da3d2d4515c33f295ee221",
+      "expected_sha256_match": true,
+      "mismatch_count": 0,
+      "oracle_class": "ANCHORED_EXPECTED_SHA",
+      "overlay_metrics": {
+        "calls": 6912,
+        "metrics_present": true,
+        "mismatches": 0,
+        "replacement_reached": true,
+        "rtl_exercised": true,
+        "rtl_invocations": 6912
+      },
+      "replacement_status": "RTL_EXERCISED",
+      "scenario": {
+        "config": "bittrue_smoke/simple_10bpc_rgb_vbr.cfg",
+        "config_sha256": "8507fd922105da031b75002ddc6009829df39dbcb18698208d17a41fe167ca99",
+        "expected_sha256": "223f4c102df736d47a375701946451f270e7ee5741da3d2d4515c33f295ee221",
+        "expected_variable": "expected",
+        "golden": "bittrue_smoke/out/simple_192x108_10bpc_vbr.dsc",
+        "list": "bittrue_smoke/simple_10bpc_rgb_vbr.list",
+        "list_sha256": "42ebc7324f051b5e4c59ef5a8c40eeabee1839c3320e705522033f2ebd613744",
+        "name": "run_c_baseline_10bpc_vbr",
+        "oracle_class": "ANCHORED_EXPECTED_SHA",
+        "parse_status": "PASS",
+        "script": "bittrue_smoke/run_c_baseline_10bpc_vbr.sh",
+        "script_sha256": "4ef9f80bf697cdec1ce9c7bba11e1e54e9a91b4c036965df3448a6723f939449"
+      },
+      "sha256": "223f4c102df736d47a375701946451f270e7ee5741da3d2d4515c33f295ee221",
+      "size_bytes": 31164,
+      "status": "PASS"
+    },
+    {
+      "baseline_sha256": "8066fd44a6b28febd9f35bb748f5730003a0aacc7fe6a6ee2bbd4d1ef471b0a1",
+      "baseline_sha256_match": true,
+      "command": {
+        "command": [
+          "<overlay-work>/source/dsc",
+          "-F",
+          "<overlay-work>/bittrue_smoke/simple_12bpc_rgb.cfg"
+        ],
+        "cwd": "<overlay-work>",
+        "duration_seconds": 0.028,
+        "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nDSC_CICD_OVERLAY_METRICS calls=6912 rtl_invocations=6912 mismatches=0\n\n",
+        "returncode": 0
+      },
+      "expected_sha256": "8066fd44a6b28febd9f35bb748f5730003a0aacc7fe6a6ee2bbd4d1ef471b0a1",
+      "expected_sha256_match": true,
+      "mismatch_count": 0,
+      "oracle_class": "ANCHORED_EXPECTED_SHA",
+      "overlay_metrics": {
+        "calls": 6912,
+        "metrics_present": true,
+        "mismatches": 0,
+        "replacement_reached": true,
+        "rtl_exercised": true,
+        "rtl_invocations": 6912
+      },
+      "replacement_status": "RTL_EXERCISED",
+      "scenario": {
+        "config": "bittrue_smoke/simple_12bpc_rgb.cfg",
+        "config_sha256": "b1c3e0ff99994f2f7567249aa2d39a49492dae5759a0f0da00f728e5e5258cf2",
+        "expected_sha256": "8066fd44a6b28febd9f35bb748f5730003a0aacc7fe6a6ee2bbd4d1ef471b0a1",
+        "expected_variable": "expected_hash",
+        "golden": "bittrue_smoke/out/simple_192x108_12bpc.dsc",
+        "list": "bittrue_smoke/simple_12bpc_rgb.list",
+        "list_sha256": "688ccfa1509b8f4d7cf9e4387da831ab2e8c019470c4334a9c5f240d01a597f8",
+        "name": "run_c_baseline_12bpc",
+        "oracle_class": "ANCHORED_EXPECTED_SHA",
+        "parse_status": "PASS",
+        "script": "bittrue_smoke/run_c_baseline_12bpc.sh",
+        "script_sha256": "dcb0c6443b2e7e3656fee4c4cf6d63820e6351799437091f5633ca1294d5fcd1"
+      },
+      "sha256": "8066fd44a6b28febd9f35bb748f5730003a0aacc7fe6a6ee2bbd4d1ef471b0a1",
+      "size_bytes": 31236,
+      "status": "PASS"
+    },
+    {
+      "baseline_sha256": "0c061779aad7663df594548e209374cf77b89cfdf187b1e2ab578a178fb5fdd5",
+      "baseline_sha256_match": true,
+      "command": {
+        "command": [
+          "<overlay-work>/source/dsc",
+          "-F",
+          "<overlay-work>/bittrue_smoke/simple_12bpc_rgb_vbr.cfg"
+        ],
+        "cwd": "<overlay-work>",
+        "duration_seconds": 0.028,
+        "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nDSC_CICD_OVERLAY_METRICS calls=6912 rtl_invocations=6912 mismatches=0\n\n",
+        "returncode": 0
+      },
+      "expected_sha256": "0c061779aad7663df594548e209374cf77b89cfdf187b1e2ab578a178fb5fdd5",
+      "expected_sha256_match": true,
+      "mismatch_count": 0,
+      "oracle_class": "ANCHORED_EXPECTED_SHA",
+      "overlay_metrics": {
+        "calls": 6912,
+        "metrics_present": true,
+        "mismatches": 0,
+        "replacement_reached": true,
+        "rtl_exercised": true,
+        "rtl_invocations": 6912
+      },
+      "replacement_status": "RTL_EXERCISED",
+      "scenario": {
+        "config": "bittrue_smoke/simple_12bpc_rgb_vbr.cfg",
+        "config_sha256": "a8ea0968e4d5388d311605adad676fe9e9f408cd93896c524380d63ac9b65d3d",
+        "expected_sha256": "0c061779aad7663df594548e209374cf77b89cfdf187b1e2ab578a178fb5fdd5",
+        "expected_variable": "expected",
+        "golden": "bittrue_smoke/out/simple_192x108_12bpc_vbr.dsc",
+        "list": "bittrue_smoke/simple_12bpc_rgb_vbr.list",
+        "list_sha256": "d2814c9ab69e94e3419e1f8391ac01646927a1f52d6297c0878218db1cb0195e",
+        "name": "run_c_baseline_12bpc_vbr",
+        "oracle_class": "ANCHORED_EXPECTED_SHA",
+        "parse_status": "PASS",
+        "script": "bittrue_smoke/run_c_baseline_12bpc_vbr.sh",
+        "script_sha256": "2a8bd929760abcf65e5cd0cba2d8c9e5bed93d8fe10374efb6e92ff444c1a022"
+      },
+      "sha256": "0c061779aad7663df594548e209374cf77b89cfdf187b1e2ab578a178fb5fdd5",
+      "size_bytes": 31164,
+      "status": "PASS"
+    },
+    {
+      "baseline_sha256": "15461f71865a8e779c35cb982ff281f0bf18a0468d550f8f6b836dd3aafc5092",
+      "baseline_sha256_match": true,
+      "command": {
+        "command": [
+          "<overlay-work>/source/dsc",
+          "-F",
+          "<overlay-work>/bittrue_smoke/simple_14bpc_rgb.cfg"
+        ],
+        "cwd": "<overlay-work>",
+        "duration_seconds": 0.029,
+        "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nDSC_CICD_OVERLAY_METRICS calls=6912 rtl_invocations=6912 mismatches=0\n\n",
+        "returncode": 0
+      },
+      "expected_sha256": "15461f71865a8e779c35cb982ff281f0bf18a0468d550f8f6b836dd3aafc5092",
+      "expected_sha256_match": true,
+      "mismatch_count": 0,
+      "oracle_class": "ANCHORED_EXPECTED_SHA",
+      "overlay_metrics": {
+        "calls": 6912,
+        "metrics_present": true,
+        "mismatches": 0,
+        "replacement_reached": true,
+        "rtl_exercised": true,
+        "rtl_invocations": 6912
+      },
+      "replacement_status": "RTL_EXERCISED",
+      "scenario": {
+        "config": "bittrue_smoke/simple_14bpc_rgb.cfg",
+        "config_sha256": "b952755ccc55cae208f1852a54788d5b1566dfbee33ccebe23d58a4784b5220b",
+        "expected_sha256": "15461f71865a8e779c35cb982ff281f0bf18a0468d550f8f6b836dd3aafc5092",
+        "expected_variable": "expected_hash",
+        "golden": "bittrue_smoke/out/simple_192x108_14bpc.dsc",
+        "list": "bittrue_smoke/simple_14bpc_rgb.list",
+        "list_sha256": "0f17e734cc2bfae6692139c48d5ee54f0257bab638292907972333c21271f020",
+        "name": "run_c_baseline_14bpc",
+        "oracle_class": "ANCHORED_EXPECTED_SHA",
+        "parse_status": "PASS",
+        "script": "bittrue_smoke/run_c_baseline_14bpc.sh",
+        "script_sha256": "00ca93edc8769bf7fb10e9d99ccd10d8e30454b1b92b0c1b8966e352786906e9"
+      },
+      "sha256": "15461f71865a8e779c35cb982ff281f0bf18a0468d550f8f6b836dd3aafc5092",
+      "size_bytes": 31236,
+      "status": "PASS"
+    },
+    {
+      "baseline_sha256": "08e8ae9e5bc62c0e0a10af32bb7389ae99faea5cf648e6f8d4180c15d3cdd5c0",
+      "baseline_sha256_match": true,
+      "command": {
+        "command": [
+          "<overlay-work>/source/dsc",
+          "-F",
+          "<overlay-work>/bittrue_smoke/simple_14bpc_rgb_vbr.cfg"
+        ],
+        "cwd": "<overlay-work>",
+        "duration_seconds": 0.029,
+        "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nDSC_CICD_OVERLAY_METRICS calls=6912 rtl_invocations=6912 mismatches=0\n\n",
+        "returncode": 0
+      },
+      "expected_sha256": "08e8ae9e5bc62c0e0a10af32bb7389ae99faea5cf648e6f8d4180c15d3cdd5c0",
+      "expected_sha256_match": true,
+      "mismatch_count": 0,
+      "oracle_class": "ANCHORED_EXPECTED_SHA",
+      "overlay_metrics": {
+        "calls": 6912,
+        "metrics_present": true,
+        "mismatches": 0,
+        "replacement_reached": true,
+        "rtl_exercised": true,
+        "rtl_invocations": 6912
+      },
+      "replacement_status": "RTL_EXERCISED",
+      "scenario": {
+        "config": "bittrue_smoke/simple_14bpc_rgb_vbr.cfg",
+        "config_sha256": "a3e2de3fb5297538ed97cf291b34305301e8043ce7ebc6f0f3083b66b38e7295",
+        "expected_sha256": "08e8ae9e5bc62c0e0a10af32bb7389ae99faea5cf648e6f8d4180c15d3cdd5c0",
+        "expected_variable": "expected",
+        "golden": "bittrue_smoke/out/simple_192x108_14bpc_vbr.dsc",
+        "list": "bittrue_smoke/simple_14bpc_rgb_vbr.list",
+        "list_sha256": "2dd6ecce9ecfc7385ca42fc7cd23c928ff17c6e4457ec35bb0ea1f8ad3dfeac1",
+        "name": "run_c_baseline_14bpc_vbr",
+        "oracle_class": "ANCHORED_EXPECTED_SHA",
+        "parse_status": "PASS",
+        "script": "bittrue_smoke/run_c_baseline_14bpc_vbr.sh",
+        "script_sha256": "58996ae6aff107cbaa253db558085117ab4c57b042d7ab10052a4dda5d951b3a"
+      },
+      "sha256": "08e8ae9e5bc62c0e0a10af32bb7389ae99faea5cf648e6f8d4180c15d3cdd5c0",
+      "size_bytes": 31164,
+      "status": "PASS"
+    },
+    {
+      "baseline_sha256": "79552a7b45e8647b73a4342b6e84eb7a1bbcc4ae57b6238d669dbad7529526f3",
+      "baseline_sha256_match": true,
+      "command": {
+        "command": [
+          "<overlay-work>/source/dsc",
+          "-F",
+          "<overlay-work>/bittrue_smoke/simple_16bpc_rgb.cfg"
+        ],
+        "cwd": "<overlay-work>",
+        "duration_seconds": 0.03,
+        "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nDSC_CICD_OVERLAY_METRICS calls=6912 rtl_invocations=6912 mismatches=0\n\n",
+        "returncode": 0
+      },
+      "expected_sha256": "79552a7b45e8647b73a4342b6e84eb7a1bbcc4ae57b6238d669dbad7529526f3",
+      "expected_sha256_match": true,
+      "mismatch_count": 0,
+      "oracle_class": "ANCHORED_EXPECTED_SHA",
+      "overlay_metrics": {
+        "calls": 6912,
+        "metrics_present": true,
+        "mismatches": 0,
+        "replacement_reached": true,
+        "rtl_exercised": true,
+        "rtl_invocations": 6912
+      },
+      "replacement_status": "RTL_EXERCISED",
+      "scenario": {
+        "config": "bittrue_smoke/simple_16bpc_rgb.cfg",
+        "config_sha256": "7e2bb1a3f94b142c79c971dd6b21608cd9c878326a10e07988ff7887056da9e1",
+        "expected_sha256": "79552a7b45e8647b73a4342b6e84eb7a1bbcc4ae57b6238d669dbad7529526f3",
+        "expected_variable": "expected_hash",
+        "golden": "bittrue_smoke/out/simple_192x108_16bpc.dsc",
+        "list": "bittrue_smoke/simple_16bpc_rgb.list",
+        "list_sha256": "fbefdb6642347f58e067396a1038c199ac0a4322e2196cc315170fa46c564b3e",
+        "name": "run_c_baseline_16bpc",
+        "oracle_class": "ANCHORED_EXPECTED_SHA",
+        "parse_status": "PASS",
+        "script": "bittrue_smoke/run_c_baseline_16bpc.sh",
+        "script_sha256": "6db5515bd95d873a46d64310d3f92c896f7430f7386848048f97578afd16d5da"
+      },
+      "sha256": "79552a7b45e8647b73a4342b6e84eb7a1bbcc4ae57b6238d669dbad7529526f3",
+      "size_bytes": 31236,
+      "status": "PASS"
+    },
+    {
+      "baseline_sha256": "b66e64190f749f95d2c5f7dc094e04b601607453ef2e9dafd73b4b70d3f00f06",
+      "baseline_sha256_match": true,
+      "command": {
+        "command": [
+          "<overlay-work>/source/dsc",
+          "-F",
+          "<overlay-work>/bittrue_smoke/simple_16bpc_rgb_vbr.cfg"
+        ],
+        "cwd": "<overlay-work>",
+        "duration_seconds": 0.03,
+        "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nDSC_CICD_OVERLAY_METRICS calls=6912 rtl_invocations=6912 mismatches=0\n\n",
+        "returncode": 0
+      },
+      "expected_sha256": "b66e64190f749f95d2c5f7dc094e04b601607453ef2e9dafd73b4b70d3f00f06",
+      "expected_sha256_match": true,
+      "mismatch_count": 0,
+      "oracle_class": "ANCHORED_EXPECTED_SHA",
+      "overlay_metrics": {
+        "calls": 6912,
+        "metrics_present": true,
+        "mismatches": 0,
+        "replacement_reached": true,
+        "rtl_exercised": true,
+        "rtl_invocations": 6912
+      },
+      "replacement_status": "RTL_EXERCISED",
+      "scenario": {
+        "config": "bittrue_smoke/simple_16bpc_rgb_vbr.cfg",
+        "config_sha256": "eea46668975236f1ca69ab6b001acacedaf57e26b25db9c58a6d5434c8c68ab1",
+        "expected_sha256": "b66e64190f749f95d2c5f7dc094e04b601607453ef2e9dafd73b4b70d3f00f06",
+        "expected_variable": "expected",
+        "golden": "bittrue_smoke/out/simple_192x108_16bpc_vbr.dsc",
+        "list": "bittrue_smoke/simple_16bpc_rgb_vbr.list",
+        "list_sha256": "6837be9168b65250d89820ef98f7bb222e6bab9d4a2f8c689e12432f20538e7c",
+        "name": "run_c_baseline_16bpc_vbr",
+        "oracle_class": "ANCHORED_EXPECTED_SHA",
+        "parse_status": "PASS",
+        "script": "bittrue_smoke/run_c_baseline_16bpc_vbr.sh",
+        "script_sha256": "d56ee6a5c566fde005703dc45df728a387dfbf243a4e3194d759d37f9b05fdd2"
+      },
+      "sha256": "b66e64190f749f95d2c5f7dc094e04b601607453ef2e9dafd73b4b70d3f00f06",
+      "size_bytes": 31164,
+      "status": "PASS"
+    },
+    {
+      "baseline_sha256": "2ca5ce4325b1557aa2404e5d86912e6019bd6940dac99892fcc99a5a2af534c6",
+      "baseline_sha256_match": true,
+      "command": {
+        "command": [
+          "<overlay-work>/source/dsc",
+          "-F",
+          "<overlay-work>/bittrue_smoke/simple_8bpc_rgb_2slice.cfg"
+        ],
+        "cwd": "<overlay-work>",
+        "duration_seconds": 0.027,
+        "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 2\nProcessing slice 2 / 2\nDSC_CICD_OVERLAY_METRICS calls=6912 rtl_invocations=6912 mismatches=0\n\n",
+        "returncode": 0
+      },
+      "expected_sha256": "2ca5ce4325b1557aa2404e5d86912e6019bd6940dac99892fcc99a5a2af534c6",
+      "expected_sha256_match": true,
+      "mismatch_count": 0,
+      "oracle_class": "ANCHORED_EXPECTED_SHA",
+      "overlay_metrics": {
+        "calls": 6912,
+        "metrics_present": true,
+        "mismatches": 0,
+        "replacement_reached": true,
+        "rtl_exercised": true,
+        "rtl_invocations": 6912
+      },
+      "replacement_status": "RTL_EXERCISED",
+      "scenario": {
+        "config": "bittrue_smoke/simple_8bpc_rgb_2slice.cfg",
+        "config_sha256": "3852e0d3812e3ce6f2bb6204019dd429a89d4ed6886ac81177b141ba5aa0ae40",
+        "expected_sha256": "2ca5ce4325b1557aa2404e5d86912e6019bd6940dac99892fcc99a5a2af534c6",
+        "expected_variable": "expected_hash",
+        "golden": "bittrue_smoke/out/simple_192x108_2slice.dsc",
+        "list": "bittrue_smoke/simple_8bpc_rgb_2slice.list",
+        "list_sha256": "ac58b5f7c5941c3079539c38527dada4bd307643bb5df919ef7593344c5b93dc",
+        "name": "run_c_baseline_2slice",
+        "oracle_class": "ANCHORED_EXPECTED_SHA",
+        "parse_status": "PASS",
+        "script": "bittrue_smoke/run_c_baseline_2slice.sh",
+        "script_sha256": "1d52d33d022537fdd7dc28f8598ee630c1abda5d1aea528151457bbfcef33608"
+      },
+      "sha256": "2ca5ce4325b1557aa2404e5d86912e6019bd6940dac99892fcc99a5a2af534c6",
+      "size_bytes": 31236,
+      "status": "PASS"
+    },
+    {
+      "baseline_sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
+      "baseline_sha256_match": true,
+      "command": {
+        "command": [
+          "<overlay-work>/source/dsc",
+          "-F",
+          "<overlay-work>/bittrue_smoke/native_8bpc_420.cfg"
+        ],
+        "cwd": "<overlay-work>",
+        "duration_seconds": 0.015,
+        "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nDSC_CICD_OVERLAY_METRICS calls=3456 rtl_invocations=3456 mismatches=0\n\n",
+        "returncode": 0
+      },
+      "expected_sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
+      "expected_sha256_match": true,
+      "mismatch_count": 0,
+      "oracle_class": "ANCHORED_EXPECTED_SHA",
+      "overlay_metrics": {
+        "calls": 3456,
+        "metrics_present": true,
+        "mismatches": 0,
+        "replacement_reached": true,
+        "rtl_exercised": true,
+        "rtl_invocations": 3456
+      },
+      "replacement_status": "RTL_EXERCISED",
+      "scenario": {
+        "config": "bittrue_smoke/native_8bpc_420.cfg",
+        "config_sha256": "155ad6f6674897141ce854142f29ce10dd60909ad32f3526c88a9f054c7d685d",
+        "expected_sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
+        "expected_variable": "expected_hash",
+        "golden": "bittrue_smoke/out/native_192x108_420.dsc",
+        "list": "bittrue_smoke/native_8bpc_420.list",
+        "list_sha256": "e1dba225eea219ea595cc110cf8354a6bb6690b9b5db765d7cdac9b4fe6c6ef5",
+        "name": "run_c_baseline_native420",
+        "oracle_class": "ANCHORED_EXPECTED_SHA",
+        "parse_status": "PASS",
+        "script": "bittrue_smoke/run_c_baseline_native420.sh",
+        "script_sha256": "ac69f114d0b01f35cd5261bb516c1dee18f2b08a085c8e3bec8639a1f6099f2d"
+      },
+      "sha256": "0fb9dd3f4e305446f6b95e516a3bacae435a54619514bb9105851a40ef0f0533",
+      "size_bytes": 15684,
+      "status": "PASS"
+    },
+    {
+      "baseline_sha256": "a1b9cce89a47028770fe563ad26a4e7a07da40e03ba2a45babaded9f4589abd9",
+      "baseline_sha256_match": true,
+      "command": {
+        "command": [
+          "<overlay-work>/source/dsc",
+          "-F",
+          "<overlay-work>/bittrue_smoke/native_10bpc_420.cfg"
+        ],
+        "cwd": "<overlay-work>",
+        "duration_seconds": 0.016,
+        "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nDSC_CICD_OVERLAY_METRICS calls=3456 rtl_invocations=3456 mismatches=0\n\n",
+        "returncode": 0
+      },
+      "expected_sha256": "a1b9cce89a47028770fe563ad26a4e7a07da40e03ba2a45babaded9f4589abd9",
+      "expected_sha256_match": true,
+      "mismatch_count": 0,
+      "oracle_class": "ANCHORED_EXPECTED_SHA",
+      "overlay_metrics": {
+        "calls": 3456,
+        "metrics_present": true,
+        "mismatches": 0,
+        "replacement_reached": true,
+        "rtl_exercised": true,
+        "rtl_invocations": 3456
+      },
+      "replacement_status": "RTL_EXERCISED",
+      "scenario": {
+        "config": "bittrue_smoke/native_10bpc_420.cfg",
+        "config_sha256": "60b38205ced16b47f5adf525ae24f945a8217f5cbc3a35c060723be895ffb6fb",
+        "expected_sha256": "a1b9cce89a47028770fe563ad26a4e7a07da40e03ba2a45babaded9f4589abd9",
+        "expected_variable": "expected_hash",
+        "golden": "bittrue_smoke/out/native_192x108_420_10bpc.dsc",
+        "list": "bittrue_smoke/native_10bpc_420.list",
+        "list_sha256": "58d4a4ca744b3252cd12457dd17c61c1344e25443214fcbf53e12b8f45470e7a",
+        "name": "run_c_baseline_native420_10bpc",
+        "oracle_class": "ANCHORED_EXPECTED_SHA",
+        "parse_status": "PASS",
+        "script": "bittrue_smoke/run_c_baseline_native420_10bpc.sh",
+        "script_sha256": "46643ba50beccbd4fca75d9fa47de83ff2acf7869b33d1b37bffcebeda3ed0aa"
+      },
+      "sha256": "a1b9cce89a47028770fe563ad26a4e7a07da40e03ba2a45babaded9f4589abd9",
+      "size_bytes": 15684,
+      "status": "PASS"
+    },
+    {
+      "baseline_sha256": "02e8106680f833d7fc142a30231811952806b23ba9482c1f6a95043d3ad2559d",
+      "baseline_sha256_match": true,
+      "command": {
+        "command": [
+          "<overlay-work>/source/dsc",
+          "-F",
+          "<overlay-work>/bittrue_smoke/native_8bpc_420_vbr.cfg"
+        ],
+        "cwd": "<overlay-work>",
+        "duration_seconds": 0.015,
+        "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nDSC_CICD_OVERLAY_METRICS calls=3456 rtl_invocations=3456 mismatches=0\n\n",
+        "returncode": 0
+      },
+      "expected_sha256": "02e8106680f833d7fc142a30231811952806b23ba9482c1f6a95043d3ad2559d",
+      "expected_sha256_match": true,
+      "mismatch_count": 0,
+      "oracle_class": "ANCHORED_EXPECTED_SHA",
+      "overlay_metrics": {
+        "calls": 3456,
+        "metrics_present": true,
+        "mismatches": 0,
+        "replacement_reached": true,
+        "rtl_exercised": true,
+        "rtl_invocations": 3456
+      },
+      "replacement_status": "RTL_EXERCISED",
+      "scenario": {
+        "config": "bittrue_smoke/native_8bpc_420_vbr.cfg",
+        "config_sha256": "d291e826419fd46f47bb86149a4446f3dd2c0314a44dcbe49198629003186f1f",
+        "expected_sha256": "02e8106680f833d7fc142a30231811952806b23ba9482c1f6a95043d3ad2559d",
+        "expected_variable": "expected_hash",
+        "golden": "bittrue_smoke/out/native_192x108_420_vbr.dsc",
+        "list": "bittrue_smoke/native_8bpc_420_vbr.list",
+        "list_sha256": "f5aa46e68d56e59ef724fee16ac57ce81dfe746d905a4e16b8b1f62a6e3193d7",
+        "name": "run_c_baseline_native420_vbr",
+        "oracle_class": "ANCHORED_EXPECTED_SHA",
+        "parse_status": "PASS",
+        "script": "bittrue_smoke/run_c_baseline_native420_vbr.sh",
+        "script_sha256": "874673da421a764aa277842d7bd8f5bbad7050e17fa4848b20162a4028799019"
+      },
+      "sha256": "02e8106680f833d7fc142a30231811952806b23ba9482c1f6a95043d3ad2559d",
+      "size_bytes": 15810,
+      "status": "PASS"
+    },
+    {
+      "baseline_sha256": "4e09cb377d64f706ca5f8dbfe1313ab13e22d81b65346f5ff66d24cf93689457",
+      "baseline_sha256_match": true,
+      "command": {
+        "command": [
+          "<overlay-work>/source/dsc",
+          "-F",
+          "<overlay-work>/bittrue_smoke/native_8bpc_422.cfg"
+        ],
+        "cwd": "<overlay-work>",
+        "duration_seconds": 0.018,
+        "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nDSC_CICD_OVERLAY_METRICS calls=3456 rtl_invocations=3456 mismatches=0\n\n",
+        "returncode": 0
+      },
+      "expected_sha256": "4e09cb377d64f706ca5f8dbfe1313ab13e22d81b65346f5ff66d24cf93689457",
+      "expected_sha256_match": true,
+      "mismatch_count": 0,
+      "oracle_class": "ANCHORED_EXPECTED_SHA",
+      "overlay_metrics": {
+        "calls": 3456,
+        "metrics_present": true,
+        "mismatches": 0,
+        "replacement_reached": true,
+        "rtl_exercised": true,
+        "rtl_invocations": 3456
+      },
+      "replacement_status": "RTL_EXERCISED",
+      "scenario": {
+        "config": "bittrue_smoke/native_8bpc_422.cfg",
+        "config_sha256": "ba3679219820075ce0956ace60ebb093c8c20a2192e2a3f6bd5cd09b9e2ea661",
+        "expected_sha256": "4e09cb377d64f706ca5f8dbfe1313ab13e22d81b65346f5ff66d24cf93689457",
+        "expected_variable": "expected_hash",
+        "golden": "bittrue_smoke/out/native_192x108_422.dsc",
+        "list": "bittrue_smoke/native_8bpc_422.list",
+        "list_sha256": "dfd9825bfe868a99ee1044a5c3856539cdc65d0b93c20851160e4279d310527e",
+        "name": "run_c_baseline_native422",
+        "oracle_class": "ANCHORED_EXPECTED_SHA",
+        "parse_status": "PASS",
+        "script": "bittrue_smoke/run_c_baseline_native422.sh",
+        "script_sha256": "acc1566dcbe7107548c2c9f1fdc0e96636dbd0706b443446f6aa77db428a175a"
+      },
+      "sha256": "4e09cb377d64f706ca5f8dbfe1313ab13e22d81b65346f5ff66d24cf93689457",
+      "size_bytes": 15684,
+      "status": "PASS"
+    },
+    {
+      "baseline_sha256": "d5620b858013a3097731c57b15765a881b6689602456cf7fb5b779435f9526b9",
+      "baseline_sha256_match": true,
+      "command": {
+        "command": [
+          "<overlay-work>/source/dsc",
+          "-F",
+          "<overlay-work>/bittrue_smoke/native_10bpc_422.cfg"
+        ],
+        "cwd": "<overlay-work>",
+        "duration_seconds": 0.019,
+        "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nDSC_CICD_OVERLAY_METRICS calls=3456 rtl_invocations=3456 mismatches=0\n\n",
+        "returncode": 0
+      },
+      "expected_sha256": "d5620b858013a3097731c57b15765a881b6689602456cf7fb5b779435f9526b9",
+      "expected_sha256_match": true,
+      "mismatch_count": 0,
+      "oracle_class": "ANCHORED_EXPECTED_SHA",
+      "overlay_metrics": {
+        "calls": 3456,
+        "metrics_present": true,
+        "mismatches": 0,
+        "replacement_reached": true,
+        "rtl_exercised": true,
+        "rtl_invocations": 3456
+      },
+      "replacement_status": "RTL_EXERCISED",
+      "scenario": {
+        "config": "bittrue_smoke/native_10bpc_422.cfg",
+        "config_sha256": "8447ba2c918127020c2a40652ffce64e32201e3274785ec830afcc544f53a3c6",
+        "expected_sha256": "d5620b858013a3097731c57b15765a881b6689602456cf7fb5b779435f9526b9",
+        "expected_variable": "expected_hash",
+        "golden": "bittrue_smoke/out/native_192x108_422_10bpc.dsc",
+        "list": "bittrue_smoke/native_10bpc_422.list",
+        "list_sha256": "1f4bee3bb0c8ab41258da91371af6b134a913a3f8ab4b79ceb99ee4df61379ba",
+        "name": "run_c_baseline_native422_10bpc",
+        "oracle_class": "ANCHORED_EXPECTED_SHA",
+        "parse_status": "PASS",
+        "script": "bittrue_smoke/run_c_baseline_native422_10bpc.sh",
+        "script_sha256": "52af3fec835b3b07c056cbf5872d4698b518c3c252b7018c920282a5933373cd"
+      },
+      "sha256": "d5620b858013a3097731c57b15765a881b6689602456cf7fb5b779435f9526b9",
+      "size_bytes": 15684,
+      "status": "PASS"
+    },
+    {
+      "baseline_sha256": "90160f102553ac8cbe055139d1695b7d6abc35a32b53e95b2b368330874e5d9e",
+      "baseline_sha256_match": true,
+      "command": {
+        "command": [
+          "<overlay-work>/source/dsc",
+          "-F",
+          "<overlay-work>/bittrue_smoke/native_8bpc_422_vbr.cfg"
+        ],
+        "cwd": "<overlay-work>",
+        "duration_seconds": 0.018,
+        "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nDSC_CICD_OVERLAY_METRICS calls=3456 rtl_invocations=3456 mismatches=0\n\n",
+        "returncode": 0
+      },
+      "expected_sha256": "90160f102553ac8cbe055139d1695b7d6abc35a32b53e95b2b368330874e5d9e",
+      "expected_sha256_match": true,
+      "mismatch_count": 0,
+      "oracle_class": "ANCHORED_EXPECTED_SHA",
+      "overlay_metrics": {
+        "calls": 3456,
+        "metrics_present": true,
+        "mismatches": 0,
+        "replacement_reached": true,
+        "rtl_exercised": true,
+        "rtl_invocations": 3456
+      },
+      "replacement_status": "RTL_EXERCISED",
+      "scenario": {
+        "config": "bittrue_smoke/native_8bpc_422_vbr.cfg",
+        "config_sha256": "9d6c5ed6f2c0cf4ef1a53d339ea03e531cce54a54876b6f58ffd94ef00c3728c",
+        "expected_sha256": "90160f102553ac8cbe055139d1695b7d6abc35a32b53e95b2b368330874e5d9e",
+        "expected_variable": "expected_hash",
+        "golden": "bittrue_smoke/out/native_192x108_422_vbr.dsc",
+        "list": "bittrue_smoke/native_8bpc_422_vbr.list",
+        "list_sha256": "eaecbf283c80083c7a5b8e2bc37d596b4a1c5294db6a5a94e6cc67b66943ed3c",
+        "name": "run_c_baseline_native422_vbr",
+        "oracle_class": "ANCHORED_EXPECTED_SHA",
+        "parse_status": "PASS",
+        "script": "bittrue_smoke/run_c_baseline_native422_vbr.sh",
+        "script_sha256": "e18925d5b81d4e57fbf111a70d9c99c2c13c594b1c5d0f1ba0be60ef5a009a57"
+      },
+      "sha256": "90160f102553ac8cbe055139d1695b7d6abc35a32b53e95b2b368330874e5d9e",
+      "size_bytes": 15756,
+      "status": "PASS"
+    },
+    {
+      "baseline_sha256": "df5b1591bca6932c59ee6f59299072befb67a0493e7a86bb05e40bdaa6cedd0a",
+      "baseline_sha256_match": true,
+      "command": {
+        "command": [
+          "<overlay-work>/source/dsc",
+          "-F",
+          "<overlay-work>/bittrue_smoke/simple_8bpc_simple422.cfg"
+        ],
+        "cwd": "<overlay-work>",
+        "duration_seconds": 0.026,
+        "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nDSC_CICD_OVERLAY_METRICS calls=6912 rtl_invocations=6912 mismatches=0\n\n",
+        "returncode": 0
+      },
+      "expected_sha256": "df5b1591bca6932c59ee6f59299072befb67a0493e7a86bb05e40bdaa6cedd0a",
+      "expected_sha256_match": true,
+      "mismatch_count": 0,
+      "oracle_class": "ANCHORED_EXPECTED_SHA",
+      "overlay_metrics": {
+        "calls": 6912,
+        "metrics_present": true,
+        "mismatches": 0,
+        "replacement_reached": true,
+        "rtl_exercised": true,
+        "rtl_invocations": 6912
+      },
+      "replacement_status": "RTL_EXERCISED",
+      "scenario": {
+        "config": "bittrue_smoke/simple_8bpc_simple422.cfg",
+        "config_sha256": "b1ac953889cddd4d3493d828abab8b789e4472385b0ec6c467874a91dac29ab7",
+        "expected_sha256": "df5b1591bca6932c59ee6f59299072befb67a0493e7a86bb05e40bdaa6cedd0a",
+        "expected_variable": "expected_hash",
+        "golden": "bittrue_smoke/out/simple_192x108_422.dsc",
+        "list": "bittrue_smoke/simple_8bpc_simple422.list",
+        "list_sha256": "fc42a8ade13c6e7e176241913f584200bc386d8a7d2d0d2fbae3b08254dea88d",
+        "name": "run_c_baseline_simple422",
+        "oracle_class": "ANCHORED_EXPECTED_SHA",
+        "parse_status": "PASS",
+        "script": "bittrue_smoke/run_c_baseline_simple422.sh",
+        "script_sha256": "d3e8e7a6758206235d30851faa4b510ef12879e9bc566ced199759f5f4341bda"
+      },
+      "sha256": "df5b1591bca6932c59ee6f59299072befb67a0493e7a86bb05e40bdaa6cedd0a",
+      "size_bytes": 31236,
+      "status": "PASS"
+    },
+    {
+      "baseline_sha256": "0f3a8ad364a166f4391859788722d931d0eec13b5e576ce5bc6e546980e70cc5",
+      "baseline_sha256_match": true,
+      "command": {
+        "command": [
+          "<overlay-work>/source/dsc",
+          "-F",
+          "<overlay-work>/bittrue_smoke/simple_10bpc_simple422.cfg"
+        ],
+        "cwd": "<overlay-work>",
+        "duration_seconds": 0.027,
+        "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nDSC_CICD_OVERLAY_METRICS calls=6912 rtl_invocations=6912 mismatches=0\n\n",
+        "returncode": 0
+      },
+      "expected_sha256": "0f3a8ad364a166f4391859788722d931d0eec13b5e576ce5bc6e546980e70cc5",
+      "expected_sha256_match": true,
+      "mismatch_count": 0,
+      "oracle_class": "ANCHORED_EXPECTED_SHA",
+      "overlay_metrics": {
+        "calls": 6912,
+        "metrics_present": true,
+        "mismatches": 0,
+        "replacement_reached": true,
+        "rtl_exercised": true,
+        "rtl_invocations": 6912
+      },
+      "replacement_status": "RTL_EXERCISED",
+      "scenario": {
+        "config": "bittrue_smoke/simple_10bpc_simple422.cfg",
+        "config_sha256": "6d7526a28e6ebe2d70e97ada85189dc8587873da561269919c05fff2f49b5086",
+        "expected_sha256": "0f3a8ad364a166f4391859788722d931d0eec13b5e576ce5bc6e546980e70cc5",
+        "expected_variable": "expected_hash",
+        "golden": "bittrue_smoke/out/simple_192x108_422_10bpc.dsc",
+        "list": "bittrue_smoke/simple_10bpc_simple422.list",
+        "list_sha256": "ae5a3ceb6fb3aa7c3a3eec7244b19564a3561a5ccc394a3f50e719c7ad39c74a",
+        "name": "run_c_baseline_simple422_10bpc",
+        "oracle_class": "ANCHORED_EXPECTED_SHA",
+        "parse_status": "PASS",
+        "script": "bittrue_smoke/run_c_baseline_simple422_10bpc.sh",
+        "script_sha256": "8cbb8631f59d3e9c4b92ca0ea9556a7a839a2929da7ef0f12c97babf8324ba8e"
+      },
+      "sha256": "0f3a8ad364a166f4391859788722d931d0eec13b5e576ce5bc6e546980e70cc5",
+      "size_bytes": 31236,
+      "status": "PASS"
+    },
+    {
+      "baseline_sha256": "f96d3608411598453e8032d5493bc5fcdacec26baea3199a3970b2bd1f44a907",
+      "baseline_sha256_match": true,
+      "command": {
+        "command": [
+          "<overlay-work>/source/dsc",
+          "-F",
+          "<overlay-work>/bittrue_smoke/simple_8bpc_simple422_vbr.cfg"
+        ],
+        "cwd": "<overlay-work>",
+        "duration_seconds": 0.026,
+        "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nDSC_CICD_OVERLAY_METRICS calls=6912 rtl_invocations=6912 mismatches=0\n\n",
+        "returncode": 0
+      },
+      "expected_sha256": "f96d3608411598453e8032d5493bc5fcdacec26baea3199a3970b2bd1f44a907",
+      "expected_sha256_match": true,
+      "mismatch_count": 0,
+      "oracle_class": "ANCHORED_EXPECTED_SHA",
+      "overlay_metrics": {
+        "calls": 6912,
+        "metrics_present": true,
+        "mismatches": 0,
+        "replacement_reached": true,
+        "rtl_exercised": true,
+        "rtl_invocations": 6912
+      },
+      "replacement_status": "RTL_EXERCISED",
+      "scenario": {
+        "config": "bittrue_smoke/simple_8bpc_simple422_vbr.cfg",
+        "config_sha256": "ee3e7a4a0cd7a05e944d1be1e3c68d81ed8643407374e9f175ac1738f182cc93",
+        "expected_sha256": "f96d3608411598453e8032d5493bc5fcdacec26baea3199a3970b2bd1f44a907",
+        "expected_variable": "expected_hash",
+        "golden": "bittrue_smoke/out/simple_192x108_422_vbr.dsc",
+        "list": "bittrue_smoke/simple_8bpc_simple422_vbr.list",
+        "list_sha256": "0bc9270d11fe752b912e6ecb25796861242d47ea658386b12cc42b6b7c15fa0d",
+        "name": "run_c_baseline_simple422_vbr",
+        "oracle_class": "ANCHORED_EXPECTED_SHA",
+        "parse_status": "PASS",
+        "script": "bittrue_smoke/run_c_baseline_simple422_vbr.sh",
+        "script_sha256": "b73fb5f86a7dd07c22fac108895ced31de17986537c981f4e524e37dc55704fe"
+      },
+      "sha256": "f96d3608411598453e8032d5493bc5fcdacec26baea3199a3970b2bd1f44a907",
+      "size_bytes": 31164,
+      "status": "PASS"
+    },
+    {
+      "baseline_sha256": "5dda0f8fe27b6c18081d4c8c73e041dcd252dd75f4cd7ba2af0fed77b215f225",
+      "baseline_sha256_match": true,
+      "command": {
+        "command": [
+          "<overlay-work>/source/dsc",
+          "-F",
+          "<overlay-work>/bittrue_smoke/simple_8bpc_rgb_vbr.cfg"
+        ],
+        "cwd": "<overlay-work>",
+        "duration_seconds": 0.028,
+        "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nProcessing slice 1 / 1\nDSC_CICD_OVERLAY_METRICS calls=6912 rtl_invocations=6912 mismatches=0\n\n",
+        "returncode": 0
+      },
+      "expected_sha256": "5dda0f8fe27b6c18081d4c8c73e041dcd252dd75f4cd7ba2af0fed77b215f225",
+      "expected_sha256_match": true,
+      "mismatch_count": 0,
+      "oracle_class": "ANCHORED_EXPECTED_SHA",
+      "overlay_metrics": {
+        "calls": 6912,
+        "metrics_present": true,
+        "mismatches": 0,
+        "replacement_reached": true,
+        "rtl_exercised": true,
+        "rtl_invocations": 6912
+      },
+      "replacement_status": "RTL_EXERCISED",
+      "scenario": {
+        "config": "bittrue_smoke/simple_8bpc_rgb_vbr.cfg",
+        "config_sha256": "9522f68a70ec96fd346279e04c45c419ffc823450eeab04acbaa8147f91d1464",
+        "expected_sha256": "5dda0f8fe27b6c18081d4c8c73e041dcd252dd75f4cd7ba2af0fed77b215f225",
+        "expected_variable": "expected_hash",
+        "golden": "bittrue_smoke/out/simple_192x108_vbr.dsc",
+        "list": "bittrue_smoke/simple_8bpc_rgb_vbr.list",
+        "list_sha256": "9bbe0c1c80b09b824ce093f50ab7368db4e5f4a76f458933dbf67f5827b26778",
+        "name": "run_c_baseline_vbr",
+        "oracle_class": "ANCHORED_EXPECTED_SHA",
+        "parse_status": "PASS",
+        "script": "bittrue_smoke/run_c_baseline_vbr.sh",
+        "script_sha256": "3bc101ecc250294f018455a88172378085611051091967c5515e0abf17c01aac"
+      },
+      "sha256": "5dda0f8fe27b6c18081d4c8c73e041dcd252dd75f4cd7ba2af0fed77b215f225",
+      "size_bytes": 31164,
+      "status": "PASS"
+    },
+    {
+      "baseline_sha256": "7cc1761ac68e789b8790f48f3df20d32b20a03f56e218cb29145aa74b8c0dfb7",
+      "baseline_sha256_match": true,
+      "command": {
+        "command": [
+          "<overlay-work>/source/dsc",
+          "-F",
+          "<overlay-work>/bittrue_smoke/simple_8bpc_rgb_vbr_2slice.cfg"
+        ],
+        "cwd": "<overlay-work>",
+        "duration_seconds": 0.027,
+        "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nWARNING: A final scale value > than 63/8 may have undefined behavior on some implementations.  Try increasing initial_xmit_delay.\nProcessing slice 1 / 2\nProcessing slice 2 / 2\nDSC_CICD_OVERLAY_METRICS calls=6912 rtl_invocations=6912 mismatches=0\n\n",
+        "returncode": 0
+      },
+      "expected_sha256": "7cc1761ac68e789b8790f48f3df20d32b20a03f56e218cb29145aa74b8c0dfb7",
+      "expected_sha256_match": true,
+      "mismatch_count": 0,
+      "oracle_class": "ANCHORED_EXPECTED_SHA",
+      "overlay_metrics": {
+        "calls": 6912,
+        "metrics_present": true,
+        "mismatches": 0,
+        "replacement_reached": true,
+        "rtl_exercised": true,
+        "rtl_invocations": 6912
+      },
+      "replacement_status": "RTL_EXERCISED",
+      "scenario": {
+        "config": "bittrue_smoke/simple_8bpc_rgb_vbr_2slice.cfg",
+        "config_sha256": "cbf42634379f13c2872b53bcb1b341603ca7091253a871c04521386d6eb8ec00",
+        "expected_sha256": "7cc1761ac68e789b8790f48f3df20d32b20a03f56e218cb29145aa74b8c0dfb7",
+        "expected_variable": "expected",
+        "golden": "bittrue_smoke/out/simple_192x108_vbr_2slice.dsc",
+        "list": "bittrue_smoke/simple_8bpc_rgb_vbr_2slice.list",
+        "list_sha256": "e06928f693c62a57b83d9efe44513b115f92eac20d02a53fbe0bc635b6663131",
+        "name": "run_c_baseline_vbr_2slice",
+        "oracle_class": "ANCHORED_EXPECTED_SHA",
+        "parse_status": "PASS",
+        "script": "bittrue_smoke/run_c_baseline_vbr_2slice.sh",
+        "script_sha256": "525cb5a1cf33e9858d0a9036546da33fa51219a30c7c80fc22d93b46d3b518a5"
+      },
+      "sha256": "7cc1761ac68e789b8790f48f3df20d32b20a03f56e218cb29145aa74b8c0dfb7",
+      "size_bytes": 31200,
+      "status": "PASS"
+    },
+    {
+      "baseline_sha256": "1bdf62805eb31105776a29173409d4b9d6a2b42c9e8a0b03a2663275bcfc4e58",
+      "baseline_sha256_match": true,
+      "command": {
+        "command": [
+          "<overlay-work>/source/dsc",
+          "-F",
+          "<overlay-work>/bittrue_smoke/simple_8bpc_rgb_vbr_underflow.cfg"
+        ],
+        "cwd": "<overlay-work>",
+        "duration_seconds": 0.027,
+        "output": "Display Stream Compression (DSC) reference model version 1.63\nCopyright 2013-2021 Broadcom Inc.  All rights reserved.\n\nWARNING: A final scale value > than 63/8 may have undefined behavior on some implementations.  Try increasing initial_xmit_delay.\nProcessing slice 1 / 1\nDSC_CICD_OVERLAY_METRICS calls=6912 rtl_invocations=6912 mismatches=0\n\n",
+        "returncode": 0
+      },
+      "expected_sha256": "1bdf62805eb31105776a29173409d4b9d6a2b42c9e8a0b03a2663275bcfc4e58",
+      "expected_sha256_match": true,
+      "mismatch_count": 0,
+      "oracle_class": "ANCHORED_EXPECTED_SHA",
+      "overlay_metrics": {
+        "calls": 6912,
+        "metrics_present": true,
+        "mismatches": 0,
+        "replacement_reached": true,
+        "rtl_exercised": true,
+        "rtl_invocations": 6912
+      },
+      "replacement_status": "RTL_EXERCISED",
+      "scenario": {
+        "config": "bittrue_smoke/simple_8bpc_rgb_vbr_underflow.cfg",
+        "config_sha256": "a6fb6d76f655bc5ca59edc9dd4b9b327bbb1af375fbf5c8e608f02697aac8d4f",
+        "expected_sha256": "1bdf62805eb31105776a29173409d4b9d6a2b42c9e8a0b03a2663275bcfc4e58",
+        "expected_variable": "expected",
+        "golden": "bittrue_smoke/out/simple_192x108_vbr_underflow.dsc",
+        "list": "bittrue_smoke/simple_8bpc_rgb_vbr_underflow.list",
+        "list_sha256": "de42aad78b501ca74245938e51bddebf65d94934a3639e711bc67a243810ba2f",
+        "name": "run_c_baseline_vbr_underflow",
+        "oracle_class": "ANCHORED_EXPECTED_SHA",
+        "parse_status": "PASS",
+        "script": "bittrue_smoke/run_c_baseline_vbr_underflow.sh",
+        "script_sha256": "ffad3f5d29b5f608ef897b73484d81c67ec61e71748dd6948476480642a31af0"
+      },
+      "sha256": "1bdf62805eb31105776a29173409d4b9d6a2b42c9e8a0b03a2663275bcfc4e58",
+      "size_bytes": 31092,
+      "status": "PASS"
+    }
+  ],
+  "status": "PASS",
+  "total_calls": 131328,
+  "total_rtl_invocations": 131328
+}

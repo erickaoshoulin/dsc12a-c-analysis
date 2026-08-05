@@ -1,0 +1,860 @@
+{
+  "call_sites": [
+    {
+      "arguments": [
+        "1",
+        "4",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(1, 4, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:519:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->dsc_version_minor",
+        "4",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->dsc_version_minor, 4, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:520:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->pps_identifier",
+        "8",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->pps_identifier, 8, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:521:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "0",
+        "8",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(0, 8, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:522:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->bits_per_component",
+        "4",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->bits_per_component, 4, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:523:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->linebuf_depth",
+        "4",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->linebuf_depth, 4, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:524:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "0",
+        "2",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(0, 2, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:525:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->block_pred_enable",
+        "1",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->block_pred_enable, 1, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:526:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->convert_rgb",
+        "1",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->convert_rgb, 1, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:527:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->simple_422",
+        "1",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->simple_422, 1, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:528:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->vbr_enable",
+        "1",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->vbr_enable, 1, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:529:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->bits_per_pixel",
+        "10",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->bits_per_pixel, 10, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:530:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->pic_height",
+        "16",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->pic_height, 16, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:531:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->pic_width",
+        "16",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->pic_width, 16, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:532:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->slice_height",
+        "16",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->slice_height, 16, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:533:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->slice_width",
+        "16",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->slice_width, 16, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:534:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->chunk_size",
+        "16",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->chunk_size, 16, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:535:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "0",
+        "6",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(0, 6, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:536:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->initial_xmit_delay",
+        "10",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->initial_xmit_delay, 10, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:537:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->initial_dec_delay",
+        "16",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->initial_dec_delay, 16, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:538:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "0",
+        "10",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(0, 10, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:539:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->initial_scale_value",
+        "6",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->initial_scale_value, 6, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:540:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->scale_increment_interval",
+        "16",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->scale_increment_interval, 16, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:541:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "0",
+        "4",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(0, 4, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:542:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->scale_decrement_interval",
+        "12",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->scale_decrement_interval, 12, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:543:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "0",
+        "11",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(0, 11, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:544:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->first_line_bpg_ofs",
+        "5",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->first_line_bpg_ofs, 5, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:545:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->nfl_bpg_offset",
+        "16",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->nfl_bpg_offset, 16, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:546:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->slice_bpg_offset",
+        "16",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->slice_bpg_offset, 16, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:547:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->initial_offset",
+        "16",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->initial_offset, 16, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:548:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->final_offset",
+        "16",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->final_offset, 16, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:549:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "0",
+        "3",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(0, 3, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:550:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->flatness_min_qp",
+        "5",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->flatness_min_qp, 5, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:551:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "0",
+        "3",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(0, 3, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:552:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->flatness_max_qp",
+        "5",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->flatness_max_qp, 5, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:553:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->rc_model_size",
+        "16",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->rc_model_size, 16, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:556:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "0",
+        "4",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(0, 4, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:557:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->rc_edge_factor",
+        "4",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->rc_edge_factor, 4, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:558:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "0",
+        "3",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(0, 3, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:559:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->rc_quant_incr_limit0",
+        "5",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->rc_quant_incr_limit0, 5, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:560:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "0",
+        "3",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(0, 3, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:561:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->rc_quant_incr_limit1",
+        "5",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->rc_quant_incr_limit1, 5, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:562:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->rc_tgt_offset_hi",
+        "4",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->rc_tgt_offset_hi, 4, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:563:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->rc_tgt_offset_lo",
+        "4",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->rc_tgt_offset_lo, 4, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:564:2",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->rc_buf_thresh[i]>>6",
+        "8",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->rc_buf_thresh[i]>>6, 8, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:567:3",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->rc_range_parameters[i].range_min_qp",
+        "5",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->rc_range_parameters[i].range_min_qp, 5, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:570:3",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->rc_range_parameters[i].range_max_qp",
+        "5",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->rc_range_parameters[i].range_max_qp, 5, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:571:3",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->rc_range_parameters[i].range_bpg_offset",
+        "6",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->rc_range_parameters[i].range_bpg_offset, 6, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:572:3",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "0",
+        "6",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(0, 6, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:577:3",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->native_420",
+        "1",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->native_420, 1, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:578:3",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->native_422",
+        "1",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->native_422, 1, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:579:3",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "0",
+        "3",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(0, 3, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:588:3",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->second_line_bpg_ofs",
+        "5",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->second_line_bpg_ofs, 5, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:589:3",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->nsl_bpg_offset",
+        "16",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->nsl_bpg_offset, 16, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:591:3",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "dsc_cfg->second_line_ofs_adj",
+        "16",
+        "buf",
+        "&nbits"
+      ],
+      "call_text": "putbits(dsc_cfg->second_line_ofs_adj, 16, buf, &nbits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/dsc_utils.c:593:3",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "d",
+        "sz",
+        "buf",
+        "&dsc_state->postMuxNumBits"
+      ],
+      "call_text": "putbits(d, sz, buf, &dsc_state->postMuxNumBits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/multiplex.c:78:3",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "d",
+        "32",
+        "buf",
+        "&dsc_state->postMuxNumBits"
+      ],
+      "call_text": "putbits(d, 32, buf, &dsc_state->postMuxNumBits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/multiplex.c:72:4",
+      "result": "discarded"
+    },
+    {
+      "arguments": [
+        "d",
+        "8",
+        "buf",
+        "&dsc_state->postMuxNumBits"
+      ],
+      "call_text": "putbits(d, 8, buf, &dsc_state->postMuxNumBits)",
+      "callee_usr": "c:@F@putbits",
+      "location": "<overlay-work>/source/multiplex.c:139:6",
+      "result": "discarded"
+    }
+  ],
+  "changed_files": [
+    {
+      "new_sha256": "4ee3a89b4aba7ac0c711c49e36b43785fb074ddf1e6a07ca543b31ff9f4aa8d0",
+      "old_sha256": "8aadcb1ecff2586892f385255a73fea367eec9afb6e14608d1010c08b7aca14e",
+      "path": "dsc_utils.c"
+    },
+    {
+      "new_sha256": "982faec83f974823dfaabdf6bf94ff1200f7debf0f0dab49b52c592ae2cfd6b4",
+      "old_sha256": "ab549255599fbdf1f69dd9fa8013ed39c044c3b8f591b187e2e056a5f1f5ab50",
+      "path": "multiplex.c"
+    }
+  ],
+  "command": {
+    "command": [
+      "<overlay-work>/tmp/cicd-clang-rewriter/dsc-clang-rewrite",
+      "--compdb",
+      "<overlay-work>/source/compile_commands.json",
+      "--target-usr",
+      "c:@F@putbits",
+      "--original-name",
+      "putbits_original",
+      "--dispatcher-name",
+      "dsc_cicd_invoke",
+      "--receipt",
+      "<overlay-work>/source/clang-overlay-receipt.json",
+      "<overlay-work>/source/cmd_parse.c",
+      "<overlay-work>/source/codec_main.c",
+      "<overlay-work>/source/dpx.c",
+      "<overlay-work>/source/dsc_codec.c",
+      "<overlay-work>/source/dsc_utils.c",
+      "<overlay-work>/source/fifo.c",
+      "<overlay-work>/source/hdr_dpx.c",
+      "<overlay-work>/source/logging.c",
+      "<overlay-work>/source/multiplex.c",
+      "<overlay-work>/source/psnr.c",
+      "<overlay-work>/source/utl.c"
+    ],
+    "cwd": "<overlay-work>/source",
+    "duration_seconds": 0.279,
+    "output": "[1/11] Processing file <overlay-work>/source/cmd_parse.c.\n[2/11] Processing file <overlay-work>/source/codec_main.c.\n[3/11] Processing file <overlay-work>/source/dpx.c.\n[4/11] Processing file <overlay-work>/source/dsc_codec.c.\n[5/11] Processing file <overlay-work>/source/dsc_utils.c.\n[6/11] Processing file <overlay-work>/source/fifo.c.\n[7/11] Processing file <overlay-work>/source/hdr_dpx.c.\n[8/11] Processing file <overlay-work>/source/logging.c.\n[9/11] Processing file <overlay-work>/source/multiplex.c.\n[10/11] Processing file <overlay-work>/source/psnr.c.\n[11/11] Processing file <overlay-work>/source/utl.c.\n",
+    "returncode": 0
+  },
+  "contract_id": "putbits_encode_transition",
+  "definitions_seen": 1,
+  "direct_calls_seen": 58,
+  "direct_reference_locations": [
+    "<overlay-work>/source/dsc_utils.c:519:2",
+    "<overlay-work>/source/dsc_utils.c:520:2",
+    "<overlay-work>/source/dsc_utils.c:521:2",
+    "<overlay-work>/source/dsc_utils.c:522:2",
+    "<overlay-work>/source/dsc_utils.c:523:2",
+    "<overlay-work>/source/dsc_utils.c:524:2",
+    "<overlay-work>/source/dsc_utils.c:525:2",
+    "<overlay-work>/source/dsc_utils.c:526:2",
+    "<overlay-work>/source/dsc_utils.c:527:2",
+    "<overlay-work>/source/dsc_utils.c:528:2",
+    "<overlay-work>/source/dsc_utils.c:529:2",
+    "<overlay-work>/source/dsc_utils.c:530:2",
+    "<overlay-work>/source/dsc_utils.c:531:2",
+    "<overlay-work>/source/dsc_utils.c:532:2",
+    "<overlay-work>/source/dsc_utils.c:533:2",
+    "<overlay-work>/source/dsc_utils.c:534:2",
+    "<overlay-work>/source/dsc_utils.c:535:2",
+    "<overlay-work>/source/dsc_utils.c:536:2",
+    "<overlay-work>/source/dsc_utils.c:537:2",
+    "<overlay-work>/source/dsc_utils.c:538:2",
+    "<overlay-work>/source/dsc_utils.c:539:2",
+    "<overlay-work>/source/dsc_utils.c:540:2",
+    "<overlay-work>/source/dsc_utils.c:541:2",
+    "<overlay-work>/source/dsc_utils.c:542:2",
+    "<overlay-work>/source/dsc_utils.c:543:2",
+    "<overlay-work>/source/dsc_utils.c:544:2",
+    "<overlay-work>/source/dsc_utils.c:545:2",
+    "<overlay-work>/source/dsc_utils.c:546:2",
+    "<overlay-work>/source/dsc_utils.c:547:2",
+    "<overlay-work>/source/dsc_utils.c:548:2",
+    "<overlay-work>/source/dsc_utils.c:549:2",
+    "<overlay-work>/source/dsc_utils.c:550:2",
+    "<overlay-work>/source/dsc_utils.c:551:2",
+    "<overlay-work>/source/dsc_utils.c:552:2",
+    "<overlay-work>/source/dsc_utils.c:553:2",
+    "<overlay-work>/source/dsc_utils.c:556:2",
+    "<overlay-work>/source/dsc_utils.c:557:2",
+    "<overlay-work>/source/dsc_utils.c:558:2",
+    "<overlay-work>/source/dsc_utils.c:559:2",
+    "<overlay-work>/source/dsc_utils.c:560:2",
+    "<overlay-work>/source/dsc_utils.c:561:2",
+    "<overlay-work>/source/dsc_utils.c:562:2",
+    "<overlay-work>/source/dsc_utils.c:563:2",
+    "<overlay-work>/source/dsc_utils.c:564:2",
+    "<overlay-work>/source/dsc_utils.c:567:3",
+    "<overlay-work>/source/dsc_utils.c:570:3",
+    "<overlay-work>/source/dsc_utils.c:571:3",
+    "<overlay-work>/source/dsc_utils.c:572:3",
+    "<overlay-work>/source/dsc_utils.c:577:3",
+    "<overlay-work>/source/dsc_utils.c:578:3",
+    "<overlay-work>/source/dsc_utils.c:579:3",
+    "<overlay-work>/source/dsc_utils.c:588:3",
+    "<overlay-work>/source/dsc_utils.c:589:3",
+    "<overlay-work>/source/dsc_utils.c:591:3",
+    "<overlay-work>/source/dsc_utils.c:593:3",
+    "<overlay-work>/source/multiplex.c:139:6",
+    "<overlay-work>/source/multiplex.c:72:4",
+    "<overlay-work>/source/multiplex.c:78:3"
+  ],
+  "dispatcher_name": "dsc_cicd_invoke",
+  "failures": [],
+  "indirect_locations": [],
+  "macro_locations": [],
+  "original_name": "putbits_original",
+  "pending_reference_locations": [],
+  "residual_symbol_alias": {
+    "accepted": false,
+    "declared_by_adapter": true,
+    "policy": "definition must be renamed exactly once; every recognized direct call must be rewritten; only residual references routed by the generated same-name dispatcher alias may remain"
+  },
+  "rewritten_calls": 58,
+  "rewritten_usrs": [
+    "c:@F@putbits"
+  ],
+  "schema_version": 2,
+  "source_copy_hashes_after": {
+    "cmd_parse.c": "aa6f8ca2ed1cd62c73007b920f2561d690643a3a63381c3777d04b1b59c08b01",
+    "codec_main.c": "6f10916c2e72e3b6c5e8d578fb607954b6b501f309ba3735f8ec4ec61c689500",
+    "dpx.c": "cf8b5216b23015de699935536163fc47d8ccf2e42df3e0ae3e85dba6eee6e17d",
+    "dsc_cicd_main.c": "e1aac2224ec67466dbc9673d913e98bb5cae31a077f78356970016e0c95f6f58",
+    "dsc_cicd_overlay.c": "6b7734fab90e0e399128db50637cad51c4a5e67f24dd6b1d6af6687b53305d50",
+    "dsc_codec.c": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf",
+    "dsc_utils.c": "4ee3a89b4aba7ac0c711c49e36b43785fb074ddf1e6a07ca543b31ff9f4aa8d0",
+    "fifo.c": "6a886eaffd01b6651703da54bbb90e9cf77d6503131ab419644e0ad3e50a3e6e",
+    "hdr_dpx.c": "655820d0da1f2e68565030fe674eb708e1dc53df231e69c3ed403f1867930f3d",
+    "logging.c": "9194d16f129d5c92e7fca52a7c34de5d0312f64f33d2e069accc85f33913919c",
+    "multiplex.c": "982faec83f974823dfaabdf6bf94ff1200f7debf0f0dab49b52c592ae2cfd6b4",
+    "psnr.c": "331f5e3f4ec62c51a184c1e766d073a348a45301745b06b84dc20cda6ad9e438",
+    "utl.c": "c673e2e5cd8dd6c5f91461908f628977644a8ad424d2e8a9fe9ba575bfcbffed"
+  },
+  "source_copy_hashes_before": {
+    "cmd_parse.c": "aa6f8ca2ed1cd62c73007b920f2561d690643a3a63381c3777d04b1b59c08b01",
+    "codec_main.c": "6f10916c2e72e3b6c5e8d578fb607954b6b501f309ba3735f8ec4ec61c689500",
+    "dpx.c": "cf8b5216b23015de699935536163fc47d8ccf2e42df3e0ae3e85dba6eee6e17d",
+    "dsc_cicd_main.c": "e1aac2224ec67466dbc9673d913e98bb5cae31a077f78356970016e0c95f6f58",
+    "dsc_cicd_overlay.c": "6b7734fab90e0e399128db50637cad51c4a5e67f24dd6b1d6af6687b53305d50",
+    "dsc_codec.c": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf",
+    "dsc_utils.c": "8aadcb1ecff2586892f385255a73fea367eec9afb6e14608d1010c08b7aca14e",
+    "fifo.c": "6a886eaffd01b6651703da54bbb90e9cf77d6503131ab419644e0ad3e50a3e6e",
+    "hdr_dpx.c": "655820d0da1f2e68565030fe674eb708e1dc53df231e69c3ed403f1867930f3d",
+    "logging.c": "9194d16f129d5c92e7fca52a7c34de5d0312f64f33d2e069accc85f33913919c",
+    "multiplex.c": "ab549255599fbdf1f69dd9fa8013ed39c044c3b8f591b187e2e056a5f1f5ab50",
+    "psnr.c": "331f5e3f4ec62c51a184c1e766d073a348a45301745b06b84dc20cda6ad9e438",
+    "utl.c": "c673e2e5cd8dd6c5f91461908f628977644a8ad424d2e8a9fe9ba575bfcbffed"
+  },
+  "status": "PASS",
+  "target_usr": "c:@F@putbits",
+  "tool": {
+    "binary": "<overlay-work>/tmp/cicd-clang-rewriter/dsc-clang-rewrite",
+    "source_fingerprint": "2bedf29f5ca4d30b8ebfba004d2d0098dfc5b37f498d816bb84c982f5ed3c025",
+    "status": "REUSED_BUILD"
+  },
+  "upstream_source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+  "upstream_source_unchanged": true
+}

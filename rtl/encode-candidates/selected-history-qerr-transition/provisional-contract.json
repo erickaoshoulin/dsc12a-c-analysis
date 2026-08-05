@@ -1,0 +1,611 @@
+{
+  "contract_id": "isorigwithinqerr_encode_history_transition",
+  "dependencies": [
+    {
+      "contract_file": "rtl/decode-candidates/selected-sampled-lookup-transition/provisional-contract.json",
+      "contract_id": "historylookup_decode_transition",
+      "contract_sha256": "7d629d8b2f37a025a4d2693a4791f63fa120106bcbf92407c9ca8d07a17b7231",
+      "contract_status": "PROVISIONAL_SIMULATION_ONLY",
+      "encode_evidence": {
+        "contract_id": "historylookup_decode_transition",
+        "encode_rtl_return_invocations": 25291655,
+        "frontier_file": "coverage/encode/frontier.json",
+        "frontier_sha256": "ae0e5d1461d17a02a3b18abfcb699bf7add2fdf2a0f9a50aff9349deea3dcbff",
+        "status": "PASS"
+      },
+      "function": "HistoryLookup",
+      "function_usr": "c:@F@HistoryLookup",
+      "module_file": "rtl/decode-candidates/selected-sampled-lookup-transition/candidate_01.sv",
+      "module_sha256": "247297547a72ffd176caea2bf7c90523c9ab5e4386a6cd912eea4bf128ed06d5",
+      "role": "history_lookup",
+      "semantics_kind": "sampled_lookup_transition",
+      "source_body_sha256": "3cc42cbdb6b767e87040250762060e6e2b5463788416019111ac9e13ef4fcd5c"
+    },
+    {
+      "contract_file": "library/contracts/mapqptoqlevel.json",
+      "contract_id": "mapqptoqlevel",
+      "contract_sha256": "9bbbf576bb551a7cf896d43f54fd6d3bf779c447bf4a87660ee63f302c8c191f",
+      "contract_status": "LOCKED",
+      "function": "MapQpToQlevel",
+      "function_usr": "c:@F@MapQpToQlevel",
+      "module_file": "library/rtl/mapqptoqlevel.sv",
+      "module_sha256": "5dda9dc25483193295e7af8abbd927b209f8e9715f2f4791864200f2fc0a3334",
+      "role": "map_qp_to_qlevel",
+      "semantics_kind": "qp_mapping",
+      "source_body_sha256": "1df142a6789220d42d5b1a4a21a8e44123420067cec2390b8797ceb40d4bce4d",
+      "verification_file": "library/verification/mapqptoqlevel.json",
+      "verification_sha256": "af8759d2e2cbfd036f3371155705bec5b3cdc60118bcc19907d48e79387576f9",
+      "verification_status": "PASS"
+    }
+  ],
+  "function": {
+    "clang_usr": "c:@F@IsOrigWithinQerr",
+    "name": "IsOrigWithinQerr",
+    "parameters": [
+      {
+        "name": "dsc_cfg",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_cfg_t *"
+      },
+      {
+        "name": "dsc_state",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_state_t *"
+      },
+      {
+        "name": "hPos",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "vPos",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "qp",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "sampModCnt",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      }
+    ],
+    "return_type": "int",
+    "source_body_sha256": "3362ce4601d76b5b8ba226a533b5c59c3c5567f1d5f65ae9e30de1136d7f892c",
+    "source_file": "dsc_codec.c",
+    "source_file_sha256": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf",
+    "source_span": {
+      "end_line": 667,
+      "start_line": 611
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "name": "cfg_bits_per_component",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_native_420",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "cfg_native_422",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "cfg_dsc_version_minor",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "direction": "input",
+        "name": "state_v_pos",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_num_components",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pixels_in_group",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_slice_width",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "h_pos",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "v_pos",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "qp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "samp_mod_cnt",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cpnt_bit_depth_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cpnt_bit_depth_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cpnt_bit_depth_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cpnt_bit_depth_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "array": [
+          0,
+          5
+        ],
+        "direction": "input",
+        "name": "orig_within_qerr",
+        "role": "state input image",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "array": [
+          0,
+          31
+        ],
+        "direction": "input",
+        "name": "history_valid",
+        "role": "history state input image",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "orig_line_sample_0",
+        "role": "origLine sample at h_pos + PADDING_LEFT",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "orig_line_sample_1",
+        "role": "origLine sample at h_pos + PADDING_LEFT",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "orig_line_sample_2",
+        "role": "origLine sample at h_pos + PADDING_LEFT",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "orig_line_sample_3",
+        "role": "origLine sample at h_pos + PADDING_LEFT",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "array": [
+          0,
+          31
+        ],
+        "direction": "input",
+        "name": "history_lookup_0",
+        "role": "HistoryLookup child result",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "array": [
+          0,
+          31
+        ],
+        "direction": "input",
+        "name": "history_lookup_1",
+        "role": "HistoryLookup child result",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "array": [
+          0,
+          31
+        ],
+        "direction": "input",
+        "name": "history_lookup_2",
+        "role": "HistoryLookup child result",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "array": [
+          0,
+          31
+        ],
+        "direction": "input",
+        "name": "history_lookup_3",
+        "role": "HistoryLookup child result",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "array": [
+          0,
+          31
+        ],
+        "direction": "input",
+        "name": "history_lookup_result_valid",
+        "role": "HistoryLookup child result valid",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "array": [
+          0,
+          31
+        ],
+        "direction": "output",
+        "name": "lookup_request_valid",
+        "role": "HistoryLookup child request",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "array": [
+          0,
+          31
+        ],
+        "direction": "output",
+        "name": "lookup_request_entry",
+        "role": "HistoryLookup child request",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "array": [
+          0,
+          31
+        ],
+        "direction": "output",
+        "name": "lookup_request_first_line",
+        "role": "HistoryLookup child request",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "array": [
+          0,
+          31
+        ],
+        "direction": "output",
+        "name": "lookup_request_is_odd_line",
+        "role": "HistoryLookup child request",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "array": [
+          0,
+          31
+        ],
+        "direction": "output",
+        "name": "lookup_request_h_pos",
+        "role": "HistoryLookup child request",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "array": [
+          0,
+          3
+        ],
+        "direction": "input",
+        "name": "map_qlevel",
+        "role": "MapQpToQlevel child result",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "array": [
+          0,
+          3
+        ],
+        "direction": "output",
+        "name": "map_request_valid",
+        "role": "MapQpToQlevel child request",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "map_request_qp",
+        "role": "MapQpToQlevel child request",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "array": [
+          0,
+          3
+        ],
+        "direction": "output",
+        "name": "map_request_cpnt",
+        "role": "MapQpToQlevel child request",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "array": [
+          0,
+          3
+        ],
+        "direction": "output",
+        "name": "max_qerr",
+        "role": "QuantDivisor[MapQpToQlevel(...)] / 2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "array": [
+          0,
+          5
+        ],
+        "direction": "output",
+        "name": "orig_within_qerr_out",
+        "role": "state output image",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "array": [
+          0,
+          31
+        ],
+        "direction": "output",
+        "name": "history_valid_out",
+        "role": "state output image",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "return_value",
+        "role": "qerr predicate",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "illegal_domain",
+        "role": "legal-domain sideband",
+        "signed": false,
+        "width": 1
+      }
+    ]
+  },
+  "legal_domain": {
+    "bits_per_component": [
+      8,
+      10,
+      12,
+      14,
+      16
+    ],
+    "entry": [
+      0,
+      31
+    ],
+    "history_lookup_result_valid_for_requested_entries": true,
+    "map_qlevel": [
+      0,
+      16
+    ],
+    "native_flags_not_both_set": true,
+    "num_components": [
+      3,
+      4
+    ],
+    "num_components_matches_native_422": true,
+    "pixels_in_group": 3,
+    "qp": [
+      0,
+      31
+    ],
+    "samp_mod_cnt": [
+      0,
+      5
+    ],
+    "slice_width_minimum": {
+      "native": 5,
+      "non_native": 7
+    }
+  },
+  "obligations": [
+    "bind map_qlevel ports to the hash-pinned MapQpToQlevel child",
+    "bind every history_lookup result port to the hash-pinned HistoryLookup child",
+    "commit only origWithinQerr[sampModCnt] and history.valid[25..31] state outputs",
+    "compare qerr result and state image in the adapter",
+    "human review remains required before promotion"
+  ],
+  "origin": "tool_discovered_encode_history_transition",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "schema_version": 1,
+  "selection": {
+    "basis": "immutable source structure + Clang facts + positive Encode coverage; function spelling is evidence only and is not an allowlist",
+    "coverage": {
+      "clang_usr": "c:@F@IsOrigWithinQerr",
+      "contributes_to_observable_output": true,
+      "coverage": {
+        "branch_coverage_percent": 97.222,
+        "covered": true,
+        "end_line": 667,
+        "execution_count": 393984,
+        "line_coverage_percent": 81.356,
+        "name": "IsOrigWithinQerr",
+        "raw_summary": {
+          "branch_arm_count": 36,
+          "covered_branch_arm_count": 35,
+          "covered_line_region_count": 48,
+          "function_count": 1,
+          "function_covered": 1,
+          "line_region_count": 59
+        },
+        "region_coverage_percent": 81.356,
+        "source_file": "dsc_codec.c",
+        "start_line": 612
+      },
+      "coverage_status": "EXECUTED",
+      "covered": true,
+      "direct_effects": {
+        "allocation": false,
+        "assertion": false,
+        "indirect_call": false,
+        "io": false,
+        "logging": false,
+        "state_write": true,
+        "unknown_facts": []
+      },
+      "eligible_after_coverage": false,
+      "end_line": 667,
+      "execution_count": 393984,
+      "line": 611,
+      "name": "IsOrigWithinQerr",
+      "production_reachable": true,
+      "purity": "IMPURE",
+      "role": "DUT",
+      "source_file": "dsc_codec.c",
+      "static_eligible": false,
+      "timing": "UNKNOWN",
+      "transitive_effects": {
+        "allocation": false,
+        "assertion": false,
+        "indirect_call": false,
+        "io": false,
+        "logging": false,
+        "state_write": true,
+        "unknown_facts": []
+      }
+    },
+    "encode_execution_count": 393984,
+    "role": "history_qerr",
+    "selection_basis": [
+      "immutable source span was read from Clang facts",
+      "Encode coverage reports a positive execution count",
+      "candidate facts retain production reachability and observable output",
+      "role was selected by loop/call/field/effect fingerprint, not function spelling"
+    ],
+    "structural_evidence": [
+      "signed-int return with configuration/state pointers",
+      "immutable source directly calls the sampled history lookup role",
+      "source has the six-slot origWithinQerr indexed state transition",
+      "source maps QP through QuantDivisor-derived per-component thresholds",
+      "source writes upper history valid entries before the ICH scan",
+      "source scans a fixed ICH_SIZE loop and uses inclusive absdiff > max_qerr rejection",
+      "source has the exact first-pixel early-return guard"
+    ]
+  },
+  "semantics": {
+    "algorithm": {
+      "component_scan": "must complete all active components after a mismatch",
+      "entry_count": 32,
+      "entry_scan": "fixed 32 entries; valid candidate may early-break on a complete hit",
+      "first_pixel_early_return": "(h_pos == 0) && (v_pos == 0)",
+      "ich_bits_nonzero": true,
+      "max_qerr": "QuantDivisor[MapQpToQlevel(modified_qp, cpnt)] / 2",
+      "modified_qp": "min(2*bits_per_component-1, qp+2)",
+      "qerr_slots": 6,
+      "threshold": "inclusive; reject only when absdiff > max_qerr",
+      "upper_valid_update": "history.valid[25..31] before the 32-entry scan"
+    },
+    "child_result_protocol": {
+      "c_precomputed_qerr_forbidden": true,
+      "history_lookup_result_ports": "history_lookup_0..3[0..31]",
+      "history_lookup_result_valid": "history_lookup_result_valid[0..31]",
+      "map_qlevel_result_ports": "map_qlevel[0..3]",
+      "qerr_is_computed_in_rtl": true,
+      "request_ports": "lookup_request_* and map_request_*"
+    },
+    "constants": {
+      "ich_pixels_above": 7,
+      "ich_size": 32,
+      "large_int": 1073741824,
+      "padding_left": 5,
+      "quant_divisor": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32,
+        64,
+        128,
+        256,
+        512,
+        1024,
+        2048,
+        4096,
+        8192,
+        16384,
+        32768,
+        65536
+      ]
+    },
+    "kind": "history_qerr_transition"
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

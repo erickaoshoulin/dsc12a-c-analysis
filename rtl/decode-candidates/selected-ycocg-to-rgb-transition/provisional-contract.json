@@ -1,0 +1,165 @@
+{
+  "contract_id": "ycocg2rgb_pixel_transition",
+  "dependencies": [],
+  "function": {
+    "clang_usr": "c:@F@ycocg2rgb",
+    "name": "ycocg2rgb",
+    "parameters": [
+      {
+        "name": "ip",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "pic_t *"
+      },
+      {
+        "name": "op",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "pic_t *"
+      },
+      {
+        "name": "dsc_cfg",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_cfg_t *"
+      }
+    ],
+    "return_type": "void",
+    "source_body_sha256": "114318c7a6b3a2cdd2b01de271ae6e2cedf687dbddd65065ba900d3d7c76b726",
+    "source_file": "dsc_utils.c",
+    "source_span": {
+      "end_line": 300,
+      "start_line": 225
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "name": "bits",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "input_channel_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "input_channel_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "input_channel_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "domain_valid",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "output_channel_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "output_channel_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "output_channel_2",
+        "signed": true,
+        "width": 32
+      }
+    ]
+  },
+  "obligations": [
+    "full-frame Decode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "full-frame Encode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "human review of raster bounds and 16-bpc chroma reduction before promotion"
+  ],
+  "origin": "tool_discovered_decoder_runtime_transition",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "schema_version": 2,
+  "selection": {
+    "basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "decode_execution_count": 15,
+    "shape_evidence": {
+      "complete_for_visible_literal_calls": false,
+      "direction": "ycocg_to_rgb",
+      "evidence": "typed RGB/YUV plane read-write direction plus a bounded independent per-pixel arithmetic kernel",
+      "maximum": null,
+      "values": []
+    }
+  },
+  "semantics": {
+    "bindings": {
+      "bits_port": "bits",
+      "config_fields": [
+        "xstart",
+        "ystart",
+        "slice_width",
+        "slice_height"
+      ],
+      "config_parameter": "dsc_cfg",
+      "direction": "ycocg_to_rgb",
+      "input_parameter": "ip",
+      "input_plane_fields": [
+        "y",
+        "u",
+        "v"
+      ],
+      "input_ports": [
+        "input_channel_0",
+        "input_channel_1",
+        "input_channel_2"
+      ],
+      "output_parameter": "op",
+      "output_plane_fields": [
+        "r",
+        "g",
+        "b"
+      ],
+      "output_ports": [
+        "output_channel_0",
+        "output_channel_1",
+        "output_channel_2"
+      ]
+    },
+    "composition_reduction": "the C adapter retains bounds/error orchestration while every pixel value written by the source function is returned by RTL",
+    "constants": {
+      "channel_count": 3,
+      "maximum_bits": 16,
+      "minimum_bits": 8,
+      "reduce_chroma_16bpc": true
+    },
+    "kind": "raster_color_transform_transition",
+    "legal_domain": {
+      "bits": [
+        8,
+        16
+      ],
+      "each_pixel_is_independent": true,
+      "input_and_output_pictures_are_distinct": true,
+      "iteration_region": "intersection of configured slice rectangle and picture dimensions",
+      "matching_picture_dimensions": true,
+      "yuv_chroma": "YUV_444"
+    },
+    "state_transition": "apply the frozen reversible RGB/YCoCg arithmetic to every active raster pixel through repeated Verilator invocations"
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

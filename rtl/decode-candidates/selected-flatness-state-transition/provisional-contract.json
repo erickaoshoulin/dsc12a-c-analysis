@@ -1,0 +1,1183 @@
+{
+  "contract_id": "flatnessadjustment_decode_transition",
+  "dependencies": [
+    {
+      "contract_file": "contracts/isflatnessinfosent.json",
+      "contract_id": "isflatnessinfosent",
+      "contract_sha256": "fa60490ed384c2ad476c2123b07e5753391c5b923df4f70066bb2132fb518c3e",
+      "function": "IsFlatnessInfoSent",
+      "module": "isflatnessinfosent",
+      "module_file": "rtl/isflatnessinfosent.sv",
+      "module_sha256": "0a4b0d5ee2f45598e3ea1859102a42e3fa2ef66aba94e7049fc1d47876a5c07e",
+      "role": "flatness_interval"
+    },
+    {
+      "contract_file": "contracts/isorigflathindex.json",
+      "contract_id": "isorigflathindex",
+      "contract_sha256": "d9b7a77df4ab02ab3d1b0eb6da19f15bca887f0c3c4a49454681e9370f175e60",
+      "function": "IsOrigFlatHIndex",
+      "module": "isorigflathindex",
+      "module_file": "rtl/isorigflathindex.sv",
+      "module_sha256": "cfb707d7aa001c86145ecff6476c1fd36b7d2755ecabe5d5af41f817ea22d855",
+      "role": "original_window"
+    }
+  ],
+  "function": {
+    "clang_usr": "c:@F@FlatnessAdjustment",
+    "name": "FlatnessAdjustment",
+    "parameters": [
+      {
+        "name": "dsc_cfg",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_cfg_t *"
+      },
+      {
+        "name": "dsc_state",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_state_t *"
+      },
+      {
+        "name": "hPos",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "qp",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "new_quant",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      }
+    ],
+    "return_type": "void",
+    "source_body_sha256": "356a860ac2e0dfed1e7d53a344611fd3befdbe44ac91bb454af2504f58d7ac47",
+    "source_file": "dsc_codec.c",
+    "source_span": {
+      "end_line": 2583,
+      "start_line": 2510
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "name": "hpos",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "qp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "new_quant",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_dsc_version_minor",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_somewhat_flat_qp_delta",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_somewhat_flat_qp_thresh",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_very_flat_qp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_bits_per_component",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_flatness_det_thresh",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_flatness_max_qp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_flatness_min_qp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_native_420",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_last_range_max_qp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_firstflat",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_flatnesstype",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_groupcount",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_isencoder",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_origisflat",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pixelsingroup",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_prevfirstflat",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_prevflatnesstype",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_previsflat",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_prevqp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_primaryqp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_slicewidth",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_stqp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_numcomponents",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpntbitdepth_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpntbitdepth_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c0_0",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c0_1",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c0_2",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c0_3",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c0_4",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c0_5",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c0_6",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c1_0",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c1_1",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c1_2",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c1_3",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c1_4",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c1_5",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c1_6",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c2_0",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c2_1",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c2_2",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c2_3",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c2_4",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c2_5",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c2_6",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c3_0",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c3_1",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c3_2",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c3_3",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c3_4",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c3_5",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_0_c3_6",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c0_0",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c0_1",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c0_2",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c0_3",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c0_4",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c0_5",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c0_6",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c1_0",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c1_1",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c1_2",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c1_3",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c1_4",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c1_5",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c1_6",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c2_0",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c2_1",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c2_2",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c2_3",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c2_4",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c2_5",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c2_6",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c3_0",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c3_1",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c3_2",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c3_3",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c3_4",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c3_5",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_1_c3_6",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c0_0",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c0_1",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c0_2",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c0_3",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c0_4",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c0_5",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c0_6",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c1_0",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c1_1",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c1_2",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c1_3",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c1_4",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c1_5",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c1_6",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c2_0",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c2_1",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c2_2",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c2_3",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c2_4",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c2_5",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c2_6",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c3_0",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c3_1",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c3_2",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c3_3",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c3_4",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c3_5",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_2_c3_6",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c0_0",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c0_1",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c0_2",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c0_3",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c0_4",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c0_5",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c0_6",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c1_0",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c1_1",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c1_2",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c1_3",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c1_4",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c1_5",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c1_6",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c2_0",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c2_1",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c2_2",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c2_3",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c2_4",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c2_5",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c2_6",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c3_0",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c3_1",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c3_2",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c3_3",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c3_4",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c3_5",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "orig_call_3_c3_6",
+        "signed": false,
+        "width": 16
+      },
+      {
+        "direction": "output",
+        "name": "state_firstflat_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_flatnesstype_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_origisflat_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_prevfirstflat_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_prevflatnesstype_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_previsflat_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_prevqp_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_stqp_out",
+        "signed": true,
+        "width": 32
+      }
+    ]
+  },
+  "obligations": [
+    "full-frame Decode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "full-frame Encode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "human review of unrolled priority loop, tap addressing, and scalar next state before promotion"
+  ],
+  "origin": "tool_discovered_decoder_runtime_transition",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "schema_version": 2,
+  "selection": {
+    "basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "decode_execution_count": 131328,
+    "shape_evidence": {
+      "complete_for_visible_literal_calls": false,
+      "evidence": "fixed four-stage scalar state transition around accepted pure callees",
+      "maximum": null,
+      "values": []
+    }
+  },
+  "semantics": {
+    "bindings": {
+      "config_parameter": "dsc_cfg",
+      "config_ports": {
+        "bits_per_component": "cfg_bits_per_component",
+        "dsc_version_minor": "cfg_dsc_version_minor",
+        "flatness_det_thresh": "cfg_flatness_det_thresh",
+        "flatness_max_qp": "cfg_flatness_max_qp",
+        "flatness_min_qp": "cfg_flatness_min_qp",
+        "last_range_max_qp": "cfg_last_range_max_qp",
+        "native_420": "cfg_native_420",
+        "somewhat_flat_qp_delta": "cfg_somewhat_flat_qp_delta",
+        "somewhat_flat_qp_thresh": "cfg_somewhat_flat_qp_thresh",
+        "very_flat_qp": "cfg_very_flat_qp"
+      },
+      "horizontal_position_parameter": "hPos",
+      "ignored_parameter": "new_quant",
+      "qp_parameter": "qp",
+      "scalar_input_ports": {
+        "hPos": "hpos",
+        "new_quant": "new_quant",
+        "qp": "qp"
+      },
+      "state_input_ports": {
+        "cpntBitDepth[0]": "state_cpntbitdepth_0",
+        "cpntBitDepth[1]": "state_cpntbitdepth_1",
+        "firstFlat": "state_firstflat",
+        "flatnessType": "state_flatnesstype",
+        "groupCount": "state_groupcount",
+        "isEncoder": "state_isencoder",
+        "numComponents": "state_numcomponents",
+        "origIsFlat": "state_origisflat",
+        "pixelsInGroup": "state_pixelsingroup",
+        "prevFirstFlat": "state_prevfirstflat",
+        "prevFlatnessType": "state_prevflatnesstype",
+        "prevIsFlat": "state_previsflat",
+        "prevQp": "state_prevqp",
+        "primaryQp": "state_primaryqp",
+        "sliceWidth": "state_slicewidth",
+        "stQp": "state_stqp"
+      },
+      "state_output_ports": {
+        "firstFlat": "state_firstflat_out",
+        "flatnessType": "state_flatnesstype_out",
+        "origIsFlat": "state_origisflat_out",
+        "prevFirstFlat": "state_prevfirstflat_out",
+        "prevFlatnessType": "state_prevflatnesstype_out",
+        "prevIsFlat": "state_previsflat_out",
+        "prevQp": "state_prevqp_out",
+        "stQp": "state_stqp_out"
+      },
+      "state_parameter": "dsc_state",
+      "tap_ports": [
+        "orig_call_0_c0_0",
+        "orig_call_0_c0_1",
+        "orig_call_0_c0_2",
+        "orig_call_0_c0_3",
+        "orig_call_0_c0_4",
+        "orig_call_0_c0_5",
+        "orig_call_0_c0_6",
+        "orig_call_0_c1_0",
+        "orig_call_0_c1_1",
+        "orig_call_0_c1_2",
+        "orig_call_0_c1_3",
+        "orig_call_0_c1_4",
+        "orig_call_0_c1_5",
+        "orig_call_0_c1_6",
+        "orig_call_0_c2_0",
+        "orig_call_0_c2_1",
+        "orig_call_0_c2_2",
+        "orig_call_0_c2_3",
+        "orig_call_0_c2_4",
+        "orig_call_0_c2_5",
+        "orig_call_0_c2_6",
+        "orig_call_0_c3_0",
+        "orig_call_0_c3_1",
+        "orig_call_0_c3_2",
+        "orig_call_0_c3_3",
+        "orig_call_0_c3_4",
+        "orig_call_0_c3_5",
+        "orig_call_0_c3_6",
+        "orig_call_1_c0_0",
+        "orig_call_1_c0_1",
+        "orig_call_1_c0_2",
+        "orig_call_1_c0_3",
+        "orig_call_1_c0_4",
+        "orig_call_1_c0_5",
+        "orig_call_1_c0_6",
+        "orig_call_1_c1_0",
+        "orig_call_1_c1_1",
+        "orig_call_1_c1_2",
+        "orig_call_1_c1_3",
+        "orig_call_1_c1_4",
+        "orig_call_1_c1_5",
+        "orig_call_1_c1_6",
+        "orig_call_1_c2_0",
+        "orig_call_1_c2_1",
+        "orig_call_1_c2_2",
+        "orig_call_1_c2_3",
+        "orig_call_1_c2_4",
+        "orig_call_1_c2_5",
+        "orig_call_1_c2_6",
+        "orig_call_1_c3_0",
+        "orig_call_1_c3_1",
+        "orig_call_1_c3_2",
+        "orig_call_1_c3_3",
+        "orig_call_1_c3_4",
+        "orig_call_1_c3_5",
+        "orig_call_1_c3_6",
+        "orig_call_2_c0_0",
+        "orig_call_2_c0_1",
+        "orig_call_2_c0_2",
+        "orig_call_2_c0_3",
+        "orig_call_2_c0_4",
+        "orig_call_2_c0_5",
+        "orig_call_2_c0_6",
+        "orig_call_2_c1_0",
+        "orig_call_2_c1_1",
+        "orig_call_2_c1_2",
+        "orig_call_2_c1_3",
+        "orig_call_2_c1_4",
+        "orig_call_2_c1_5",
+        "orig_call_2_c1_6",
+        "orig_call_2_c2_0",
+        "orig_call_2_c2_1",
+        "orig_call_2_c2_2",
+        "orig_call_2_c2_3",
+        "orig_call_2_c2_4",
+        "orig_call_2_c2_5",
+        "orig_call_2_c2_6",
+        "orig_call_2_c3_0",
+        "orig_call_2_c3_1",
+        "orig_call_2_c3_2",
+        "orig_call_2_c3_3",
+        "orig_call_2_c3_4",
+        "orig_call_2_c3_5",
+        "orig_call_2_c3_6",
+        "orig_call_3_c0_0",
+        "orig_call_3_c0_1",
+        "orig_call_3_c0_2",
+        "orig_call_3_c0_3",
+        "orig_call_3_c0_4",
+        "orig_call_3_c0_5",
+        "orig_call_3_c0_6",
+        "orig_call_3_c1_0",
+        "orig_call_3_c1_1",
+        "orig_call_3_c1_2",
+        "orig_call_3_c1_3",
+        "orig_call_3_c1_4",
+        "orig_call_3_c1_5",
+        "orig_call_3_c1_6",
+        "orig_call_3_c2_0",
+        "orig_call_3_c2_1",
+        "orig_call_3_c2_2",
+        "orig_call_3_c2_3",
+        "orig_call_3_c2_4",
+        "orig_call_3_c2_5",
+        "orig_call_3_c2_6",
+        "orig_call_3_c3_0",
+        "orig_call_3_c3_1",
+        "orig_call_3_c3_2",
+        "orig_call_3_c3_3",
+        "orig_call_3_c3_4",
+        "orig_call_3_c3_5",
+        "orig_call_3_c3_6"
+      ]
+    },
+    "constants": {
+      "callee_calls": 4,
+      "component_count": 4,
+      "groups_per_supergroup": 4,
+      "last_range_index": 14,
+      "num_buffer_ranges": 15,
+      "padding_left": 5,
+      "taps_per_component": 7
+    },
+    "kind": "bounded_flatness_state_transition",
+    "legal_domain": {
+      "dsc_version_minor": [
+        1,
+        2
+      ],
+      "first_flat_sentinel": [
+        -1,
+        3
+      ],
+      "group_count_nonnegative": true,
+      "num_components": [
+        3,
+        4
+      ],
+      "pixels_in_group": 3
+    },
+    "state_transition": "compose accepted flatness predicate/window RTL with a fixed four-stage priority recurrence and explicit scalar next-state outputs"
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

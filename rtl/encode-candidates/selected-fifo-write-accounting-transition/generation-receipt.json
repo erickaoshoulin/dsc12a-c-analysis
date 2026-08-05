@@ -1,0 +1,66 @@
+{
+  "candidate": "candidate_01.sv",
+  "contract_id": "addbits_encode_transition",
+  "match_count": 1,
+  "matches": [
+    {
+      "clang_usr": "c:@F@AddBits",
+      "config_parameter": "dsc_cfg",
+      "coverage": {
+        "branch_coverage_percent": 100.0,
+        "covered": true,
+        "end_line": 93,
+        "execution_count": 1535313,
+        "line_coverage_percent": 100.0,
+        "name": "AddBits",
+        "raw_summary": {
+          "branch_arm_count": 0,
+          "covered_branch_arm_count": 0,
+          "covered_line_region_count": 1,
+          "function_count": 1,
+          "function_covered": 1,
+          "line_region_count": 1
+        },
+        "region_coverage_percent": 100.0,
+        "source_file": "multiplex.c",
+        "start_line": 90
+      },
+      "data_parameter": "d",
+      "dependency": {
+        "candidate_sha256": "1f3e8a1942e9dfebd2cb90c6b047c9b5e4ea0d7038b1bc422faab2fa34a90196",
+        "contract_id": "fifo_put_bits_decode_transition",
+        "contract_sha256": "b0bbe172207984f831920abba4df0e5e20e3ede82846cfbc6d835e18e5f272c6",
+        "encode_rtl_return_invocations": 2523961,
+        "function": "fifo_put_bits"
+      },
+      "execution_count": 1535313,
+      "fifo_array_field": "encBalanceFifo",
+      "fifo_index_parameter": "CType",
+      "max_bits": 32,
+      "name": "AddBits",
+      "nbits_parameter": "nbits",
+      "selection_basis": [
+        "Encode runtime coverage reached the function",
+        "Clang found one loop-free mutable DSC state parameter",
+        "the only callee has all-scope Encode RTL_RETURN evidence",
+        "the callee contract is an explicit FIFO write transition",
+        "AST fields expose one indexed FIFO array and one scalar bit counter",
+        "source binding maps the FIFO index, payload, and size without a function allowlist"
+      ],
+      "semantics_kind": "fifo_write_accounting_transition",
+      "source_span": {
+        "end_line": 93,
+        "start_line": 89
+      },
+      "state_counter_field": "numBits",
+      "state_parameter": "dsc_state",
+      "window_bytes": 5
+    }
+  ],
+  "promotion_status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW",
+  "schema_version": 1,
+  "selected_clang_usr": "c:@F@AddBits",
+  "selected_function": "AddBits",
+  "selection_policy": "highest Encode execution count among structural bounded composed FIFO-write accounting matches; no function-name allowlist",
+  "status": "PASS"
+}

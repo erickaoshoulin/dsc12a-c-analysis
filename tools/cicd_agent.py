@@ -166,6 +166,8 @@ def contract_exact_links(contract: dict[str, Any]) -> list[dict[str, Any]]:
 
 
 def scrub_paths(value: Any, roots: Iterable[pathlib.Path]) -> Any:
+    if isinstance(value, pathlib.Path):
+        value = str(value)
     if isinstance(value, str):
         result = value
         for root in roots:
@@ -1327,7 +1329,11 @@ class Agent:
             # the semantic contract consumed by an already accepted RTL
             # component.  Stable refreshes may rebuild that metadata from the
             # current tool facts, so compare the immutable contract snapshot
-            # while ignoring only the transient selection block.
+            # while ignoring only the transient selection block.  Compact
+            # accepted snapshots live in the checkout for portability.  When
+            # a fresh external artifact root is selected it is intentionally
+            # empty, so fall back to that checkout snapshot instead of
+            # treating the accepted RTL as unavailable.
             artifact_raw = str(component.get("artifact_dir", ""))
             artifact_dir = pathlib.Path(artifact_raw)
             if (
@@ -1336,13 +1342,29 @@ class Agent:
                 or ".." in artifact_dir.parts
             ):
                 return None
-            artifact_path = self.resolve_artifact_reference(artifact_dir)
-            try:
-                artifact_path.resolve().relative_to(self.artifacts.resolve())
-            except ValueError:
-                return None
-            promoted_contract = read_json(artifact_path / "locked-contract.json", {}) or {}
-            if not promoted_contract or self.stable_contract_identity(promoted_contract) != self.stable_contract_identity(contract):
+            artifact_paths = [self.resolve_artifact_reference(artifact_dir)]
+            if self.external_artifacts and artifact_dir.parts[:1] == ("artifacts",):
+                artifact_paths.append(self.root / artifact_dir)
+            promoted_contract = None
+            for artifact_path in artifact_paths:
+                allowed_root = (
+                    self.root / "artifacts"
+                    if artifact_path == self.root / artifact_dir
+                    else self.artifacts
+                )
+                try:
+                    artifact_path.resolve().relative_to(allowed_root.resolve())
+                except ValueError:
+                    continue
+                snapshot = read_json(artifact_path / "locked-contract.json", {}) or {}
+                if (
+                    snapshot
+                    and self.stable_contract_identity(snapshot)
+                    == self.stable_contract_identity(contract)
+                ):
+                    promoted_contract = snapshot
+                    break
+            if promoted_contract is None:
                 return None
         raw_module_file = str(component.get("module_file", ""))
         if not raw_module_file:
@@ -1371,7 +1393,13 @@ class Agent:
     def stable_contract_identity(contract: dict[str, Any]) -> str:
         """Hash semantic contract facts while excluding routing/provenance metadata."""
         normalized = copy.deepcopy(contract)
-        for key in ("selection", "library_promotion", "do_not_edit"):
+        for key in (
+            "selection",
+            "library_promotion",
+            "do_not_edit",
+            "lock",
+            "provenance",
+        ):
             normalized.pop(key, None)
         return digest(normalized)
 
@@ -2094,11 +2122,25 @@ class Agent:
                 },
                 "matrix": {
                     "status": matrix.get("status"),
+                    "scope": matrix.get("matrix_scope"),
+                    "profiles_selected": matrix.get("matrix_profiles_selected"),
+                    "evidence_summary": matrix.get("evidence_summary", {}),
                     "modes": {
                         mode: (matrix.get("modes", {}).get(mode, {}) or {}).get("status")
                         for mode in ("C_ONLY", "SHADOW", "RTL_RETURN")
                     },
                     "scripts_discovered": matrix.get("matrix_scripts_discovered"),
+                    "phase_order": matrix.get("phase_order", []),
+                    "decode": {
+                        "status": (matrix.get("decode", {}) or {}).get("status"),
+                        "coverage_status": (matrix.get("decode", {}) or {}).get("coverage_status"),
+                        "comparison": (matrix.get("decode", {}) or {}).get("comparison"),
+                    },
+                    "encode": {
+                        "status": (matrix.get("encode", {}) or {}).get("status"),
+                        "comparison": (matrix.get("encode", {}) or {}).get("comparison"),
+                    },
+                    "replacement_coverage": matrix.get("replacement_coverage", {}),
                 },
                 "promoted_at": promoted_at,
             }
@@ -2373,6 +2415,202 @@ class Agent:
             """
         ).strip() + "\n"
 
+    def render_populate_orig_line_oracle(
+        self,
+        contract: dict[str, Any],
+        inputs: list[dict[str, Any]],
+    ) -> str:
+        """Render the bounded transaction oracle around the immutable C leaf.
+
+        The source image is deliberately uniform per vector.  That keeps the
+        oracle memory finite while still exercising the original function for
+        the touched line element; the request metadata is emitted by the
+        same source-derived transaction relation frozen in the contract.
+        The production overlay remains request-driven and never uses this
+        helper to calculate a picture address.
+        """
+        function = contract_function(contract)
+        name = str(function.get("name"))
+        parameters = self.function_parameters(contract)
+        if len(parameters) != 4:
+            raise RuntimeError("PopulateOrigLine oracle requires four C parameters")
+        semantics = contract.get("semantics", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        input_names = [str(port.get("name")) for port in inputs]
+        output_names = [
+            str(port.get("name"))
+            for port in (contract.get("interface", {}) or {}).get("ports", [])
+            if port.get("direction") == "output"
+        ]
+        required_inputs = [
+            str(bindings.get(key, ""))
+            for key in (
+                "native_420_port",
+                "native_422_port",
+                "xstart_port",
+                "ystart_port",
+                "num_components_port",
+                "slice_width_port",
+                "picture_width_port",
+                "picture_height_port",
+                "vpos_port",
+                "component_port",
+                "sample_index_port",
+                "component_depth_port",
+                "pixel_data_port",
+            )
+        ]
+        if required_inputs != input_names:
+            raise RuntimeError("PopulateOrigLine oracle input bindings are incomplete")
+        if output_names != [
+            "read_enable",
+            "read_plane",
+            "read_y",
+            "read_x",
+            "write_enable",
+            "write_component",
+            "write_address",
+            "write_value",
+            "illegal_domain",
+        ]:
+            raise RuntimeError("PopulateOrigLine oracle output bindings are incomplete")
+        parameter_declarations = ", ".join(
+            f"{str(parameter.get('type', 'int')).strip()} {parameter.get('name')}"
+            for parameter in parameters
+        )
+        parameter_names = [str(parameter.get("name")) for parameter in parameters]
+        input_declarations = ", ".join(f"int {name}" for name in input_names)
+        input_local_declarations = ", ".join(input_names)
+        input_variables = ", ".join(f"&{name}" for name in input_names)
+        input_format = " ".join(["%d"] * len(input_names))
+        cfg_name = str(bindings.get("config_parameter", "dsc_cfg"))
+        state_name = str(bindings.get("state_parameter", "dsc_state"))
+        picture_name = str(bindings.get("picture_parameter", "ip"))
+        vpos_name = str(bindings.get("vpos_parameter", "vPos"))
+        vpos_port = str(bindings.get("vpos_port", "vpos"))
+        cfg_fields = {
+            "native_420": str(bindings.get("native_420_field", "native_420")),
+            "native_422": str(bindings.get("native_422_field", "native_422")),
+            "xstart": str(bindings.get("xstart_field", "xstart")),
+            "ystart": str(bindings.get("ystart_field", "ystart")),
+        }
+        state_fields = {
+            "num_components": str(bindings.get("num_components_field", "numComponents")),
+            "slice_width": str(bindings.get("slice_width_field", "sliceWidth")),
+            "component_depth": str(bindings.get("component_depth_field", "cpntBitDepth")),
+        }
+        max_components = int(semantics.get("component_count", 4) or 4)
+        padding_left = int(semantics.get("padding_left", 5) or 5)
+        padding_right = int(semantics.get("padding_right", 10) or 10)
+        output_values = {
+            "read_enable": "dsc_cicd_read_enable",
+            "read_plane": "dsc_cicd_read_plane",
+            "read_y": "dsc_cicd_read_y",
+            "read_x": "dsc_cicd_read_x",
+            "write_enable": "dsc_cicd_write_enable",
+            "write_component": "dsc_cicd_write_component",
+            "write_address": "dsc_cicd_write_address",
+            "write_value": "dsc_cicd_write_value",
+            "illegal_domain": "dsc_cicd_illegal_domain",
+        }
+        lines = [
+            "#include <stdio.h>",
+            "#include <stdlib.h>",
+            "#include <string.h>",
+            "#include \"dsc_types.h\"",
+            f"extern void {name}({parameter_declarations});",
+            "static int dsc_cicd_min(int left, int right) { return left < right ? left : right; }",
+            "static void dsc_cicd_free_rows(int **rows, int height) {",
+            "    if (!rows) return;",
+            "    for (int row = 0; row < height; ++row) free(rows[row]);",
+            "    free(rows);",
+            "}",
+            "static void dsc_cicd_reference_request(",
+            "    int native_420, int native_422, int xstart, int ystart,",
+            "    int slice_width, int pic_width, int pic_height, int vpos,",
+            "    int component, int sample_index, int component_depth, int pixel_data,",
+            "    int *read_enable, int *read_plane, int *read_y, int *read_x,",
+            "    int *write_enable, int *write_component, int *write_address,",
+            "    int *write_value, int *illegal_domain) {",
+            "    int legal = 1;",
+            "    if (native_420 && native_422) legal = 0;",
+            "    if (component < 0 || component > 3 || sample_index < 0 || slice_width < 1 ||",
+            "        sample_index >= slice_width + PADDING_RIGHT || pic_width < 1 || pic_height < 1 ||",
+            "        vpos < 0 || component_depth < 1 || component_depth > 30) legal = 0;",
+            "    if (!native_422 && component > 2) legal = 0;",
+            "    *read_enable = 0; *read_plane = 0; *read_y = 0; *read_x = 0;",
+            "    *write_enable = 0; *write_component = 0; *write_address = 0;",
+            "    *write_value = 0; *illegal_domain = legal ? 0 : 1;",
+            "    if (!legal) return;",
+            "    int xstart_i = xstart >> (native_420 || native_422);",
+            "    int picture_width_i = pic_width;",
+            "    if (native_422 && component >= 1 && component <= 2) picture_width_i >>= 1;",
+            "    int last_position_i;",
+            "    if (native_422 && (component == 0 || component == 3))",
+            "        last_position_i = dsc_cicd_min(picture_width_i, (xstart_i + slice_width) * 2) - 1;",
+            "    else",
+            "        last_position_i = dsc_cicd_min(picture_width_i, xstart_i + slice_width) - 1;",
+            "    int x_index_i;",
+            "    if (native_422 && component == 0) { *read_plane = 0; x_index_i = (xstart_i + sample_index) * 2; }",
+            "    else if (native_422 && component == 1) { *read_plane = 1; x_index_i = xstart_i + sample_index; }",
+            "    else if (native_422 && component == 2) { *read_plane = 2; x_index_i = xstart_i + sample_index; }",
+            "    else if (native_422 && component == 3) { *read_plane = 0; x_index_i = (xstart_i + sample_index) * 2 + 1; }",
+            "    else if (component == 0) { *read_plane = 0; x_index_i = xstart_i + sample_index; }",
+            "    else if (component == 1) { *read_plane = 1; x_index_i = xstart_i + sample_index; }",
+            "    else { *read_plane = 2; x_index_i = xstart_i + sample_index; }",
+            "    if (x_index_i > last_position_i) x_index_i = last_position_i;",
+            "    int y_raw_i = ystart + vpos;",
+            "    *read_enable = y_raw_i < pic_height;",
+            "    *read_y = y_raw_i < pic_height ? y_raw_i : pic_height - 1;",
+            "    *read_x = x_index_i;",
+            "    *write_enable = 1; *write_component = component;",
+            "    *write_address = sample_index + PADDING_LEFT;",
+            "    *write_value = *read_enable ? pixel_data : (1 << (component_depth - 1));",
+            "}",
+            "int main(int argc, char **argv) {",
+            "    FILE *input = stdin;",
+            "    if (argc > 1) { input = fopen(argv[1], \"rb\"); if (!input) return 2; }",
+            f"    int {input_local_declarations};",
+            "    while (fscanf(input, \"" + input_format + "\", " + input_variables + f") == {len(input_names)}) {{",
+            f"        dsc_cfg_t {cfg_name} = {{0}};",
+            f"        dsc_state_t {state_name} = {{0}};",
+            f"        pic_t {picture_name} = {{0}};",
+            f"        {cfg_name}.{cfg_fields['native_420']} = native_420;",
+            f"        {cfg_name}.{cfg_fields['native_422']} = native_422;",
+            f"        {cfg_name}.{cfg_fields['xstart']} = xstart;",
+            f"        {cfg_name}.{cfg_fields['ystart']} = ystart;",
+            f"        {state_name}.{state_fields['num_components']} = num_components;",
+            f"        {state_name}.{state_fields['slice_width']} = slice_width;",
+            f"        {picture_name}.w = pic_width; {picture_name}.h = pic_height;",
+            f"        int *dsc_cicd_line[{max_components}] = {{0}};",
+            "        int **dsc_cicd_y = (int **)calloc((size_t)pic_height, sizeof(int *));",
+            "        int **dsc_cicd_u = (int **)calloc((size_t)pic_height, sizeof(int *));",
+            "        int **dsc_cicd_v = (int **)calloc((size_t)pic_height, sizeof(int *));",
+            "        for (int row = 0; row < pic_height; ++row) {",
+            "            dsc_cicd_y[row] = (int *)calloc((size_t)pic_width, sizeof(int));",
+            "            dsc_cicd_u[row] = (int *)calloc((size_t)pic_width, sizeof(int));",
+            "            dsc_cicd_v[row] = (int *)calloc((size_t)pic_width, sizeof(int));",
+            "            for (int col = 0; col < pic_width; ++col) {",
+            "                dsc_cicd_y[row][col] = pixel_data; dsc_cicd_u[row][col] = pixel_data; dsc_cicd_v[row][col] = pixel_data;",
+            "            }",
+            "        }",
+            f"        {picture_name}.data.yuv.y = dsc_cicd_y; {picture_name}.data.yuv.u = dsc_cicd_u; {picture_name}.data.yuv.v = dsc_cicd_v;",
+            f"        for (int cpnt = 0; cpnt < num_components; ++cpnt) {{ {state_name}.{state_fields['component_depth']}[cpnt] = component_bit_depth; dsc_cicd_line[cpnt] = (int *)calloc((size_t)(slice_width + PADDING_LEFT + PADDING_RIGHT), sizeof(int)); {state_name}.origLine[cpnt] = dsc_cicd_line[cpnt]; }}",
+            f"        {name}(&{cfg_name}, &{state_name}, &{picture_name}, {vpos_port});",
+            "        int dsc_cicd_read_enable, dsc_cicd_read_plane, dsc_cicd_read_y, dsc_cicd_read_x;",
+            "        int dsc_cicd_write_enable, dsc_cicd_write_component, dsc_cicd_write_address, dsc_cicd_write_value, dsc_cicd_illegal_domain;",
+            "        dsc_cicd_reference_request(native_420, native_422, xstart, ystart, slice_width, pic_width, pic_height, vpos, component, sample_index, component_bit_depth, pixel_data, &dsc_cicd_read_enable, &dsc_cicd_read_plane, &dsc_cicd_read_y, &dsc_cicd_read_x, &dsc_cicd_write_enable, &dsc_cicd_write_component, &dsc_cicd_write_address, &dsc_cicd_write_value, &dsc_cicd_illegal_domain);",
+            "        if (!dsc_cicd_illegal_domain) dsc_cicd_write_value = dsc_cicd_line[component][sample_index + PADDING_LEFT];",
+            "        printf(\"%d %d %d %d %d %d %d %d %d\\n\", dsc_cicd_read_enable, dsc_cicd_read_plane, dsc_cicd_read_y, dsc_cicd_read_x, dsc_cicd_write_enable, dsc_cicd_write_component, dsc_cicd_write_address, dsc_cicd_write_value, dsc_cicd_illegal_domain);",
+            f"        for (int cpnt = 0; cpnt < num_components; ++cpnt) free(dsc_cicd_line[cpnt]);",
+            "        dsc_cicd_free_rows(dsc_cicd_y, pic_height); dsc_cicd_free_rows(dsc_cicd_u, pic_height); dsc_cicd_free_rows(dsc_cicd_v, pic_height);",
+            "    }",
+            "    if (input != stdin) fclose(input);",
+            "    return 0;",
+            "}",
+        ]
+        return "\n".join(lines) + "\n"
+
     def render_oracle(self, contract: dict[str, Any]) -> str:
         function = contract_function(contract)
         name = str(function.get("name"))
@@ -2400,6 +2638,8 @@ class Agent:
             return self.render_flatness_window_oracle(contract, inputs, output)
         if (contract.get("semantics", {}) or {}).get("kind") == "ich_decision":
             return self.render_ich_decision_oracle(contract, inputs, output)
+        if (contract.get("semantics", {}) or {}).get("kind") == "populate_orig_line_memory_transition":
+            return self.render_populate_orig_line_oracle(contract, inputs)
         if isinstance(dynamic_window, dict) and dynamic_window:
             return self.render_dynamic_window_oracle(
                 contract,
@@ -4692,6 +4932,106 @@ class Agent:
             "legal_relation": "flatness_det_thresh = 2 << (bits_per_component - 8); taps are bounded original samples",
         }
 
+    def populate_orig_line_vector_iterator(
+        self,
+        contract: dict[str, Any],
+        input_ports: list[dict[str, Any]],
+        values: list[list[int]],
+        strategy: dict[str, Any],
+    ) -> tuple[Iterable[tuple[int, ...]], dict[str, Any]]:
+        """Generate bounded request/response cases for the picture leaf."""
+        names = [str(port.get("name")) for port in input_ports]
+        by_name = {name: [int(value) for value in values[index]] for index, name in enumerate(names)}
+        required = {
+            "native_420", "native_422", "xstart", "ystart", "num_components",
+            "slice_width", "pic_width", "pic_height", "vpos", "component",
+            "sample_index", "component_bit_depth", "pixel_data",
+        }
+        if not required.issubset(by_name):
+            raise RuntimeError("PopulateOrigLine vector strategy ports are incomplete")
+
+        def choose(port_name: str, requested: Iterable[int]) -> list[int]:
+            legal = set(by_name[port_name])
+            return list(dict.fromkeys(int(value) for value in requested if int(value) in legal))
+
+        native_420_values = choose("native_420", [0, 1])
+        native_422_values = choose("native_422", [0, 1])
+        x_values = choose("xstart", [0, 1, 2, 5, 16])
+        ystart_values = choose("ystart", [0, 1, 2, 5])
+        width_values = choose("slice_width", [1, 2, 3, 4, 8, 16, 31])
+        picture_width_values = choose("pic_width", [1, 2, 3, 4, 8, 16, 31])
+        picture_height_values = choose("pic_height", [1, 2, 3, 4, 8, 16])
+        depth_values = choose("component_bit_depth", [8, 10, 12, 16])
+        pixel_values = choose("pixel_data", [0, 1, 127, 255, 1023, 65535])
+        if not all((native_420_values, native_422_values, x_values, ystart_values,
+                    width_values, picture_width_values, picture_height_values,
+                    depth_values, pixel_values)):
+            raise RuntimeError("PopulateOrigLine vector strategy has an empty legal probe")
+
+        def emit(context: dict[str, int]) -> tuple[int, ...]:
+            return tuple(int(context[name]) for name in names)
+
+        vectors: list[tuple[int, ...]] = []
+        seen: set[tuple[int, ...]] = set()
+        for native_420, native_422, component_count, components in (
+            (0, 0, 3, (0, 1, 2)),
+            (1, 0, 3, (0, 1, 2)),
+            (0, 1, 4, (0, 1, 2, 3)),
+        ):
+            if native_420 not in native_420_values or native_422 not in native_422_values:
+                continue
+            mode_vector_count = 0
+            for slice_width in width_values:
+                sample_values = choose(
+                    "sample_index",
+                    [0, max(0, slice_width - 1), slice_width, slice_width + int(contract["semantics"].get("padding_right", 10)) - 1],
+                )
+                for pic_width in picture_width_values:
+                    if native_422 and pic_width < 2:
+                        continue
+                    for pic_height in picture_height_values:
+                        for vpos in choose("vpos", [0, 1, max(0, pic_height - 1), pic_height]):
+                            for component in components:
+                                for sample_index in sample_values:
+                                    for pixel_data in pixel_values:
+                                        context = {
+                                            name: int(domain[len(domain) // 2])
+                                            for name, domain in by_name.items()
+                                            if domain
+                                        }
+                                        context.update({
+                                            "native_420": native_420,
+                                            "native_422": native_422,
+                                            "xstart": x_values[(slice_width + component) % len(x_values)],
+                                            "ystart": ystart_values[(pic_height + component) % len(ystart_values)],
+                                            "num_components": component_count,
+                                            "slice_width": slice_width,
+                                            "pic_width": pic_width,
+                                            "pic_height": pic_height,
+                                            "vpos": vpos,
+                                            "component": component,
+                                            "sample_index": sample_index,
+                                            "component_bit_depth": depth_values[(component + sample_index) % len(depth_values)],
+                                            "pixel_data": pixel_data,
+                                        })
+                                        vector = emit(context)
+                                        if mode_vector_count >= 5000:
+                                            continue
+                                        if vector in seen:
+                                            continue
+                                        seen.add(vector)
+                                        vectors.append(vector)
+                                        mode_vector_count += 1
+
+        return iter(vectors), {
+            "kind": "populate_orig_line",
+            "exhaustive": False,
+            "formal_required": False,
+            "coverage_mode": str(strategy.get("coverage_mode", "request-and-write-boundaries")),
+            "vectors": len(vectors),
+            "source": "tool-driven native plane mapping, clamp, bottom midpoint, and padded-address probes",
+        }
+
     def legal_vector_iterator(self, contract: dict[str, Any], input_ports: list[dict[str, Any]],
                               values: list[list[int]]) -> tuple[Iterable[tuple[int, ...]], dict[str, Any]]:
         """Return legal vectors, including reviewed conditional domains.
@@ -4718,6 +5058,8 @@ class Agent:
             return self.estimate_bits_vector_iterator(contract, input_ports, values, table_strategy)
         if isinstance(table_strategy, dict) and table_strategy.get("kind") == "ich_decision":
             return self.ich_decision_vector_iterator(contract, input_ports, values, table_strategy)
+        if isinstance(table_strategy, dict) and table_strategy.get("kind") == "populate_orig_line":
+            return self.populate_orig_line_vector_iterator(contract, input_ports, values, table_strategy)
         normalized = {re.sub(r"[^a-z0-9]", "", name.lower()): name for name in names}
         bit_depth_name = normalized.get("cpntbitdepth")
         qlevel_name = normalized.get("qlevel")
@@ -5640,8 +5982,25 @@ class Agent:
         build_dir = self.root / "tmp" / "cicd-clang-rewriter"
         build_dir.mkdir(parents=True, exist_ok=True)
         binary = build_dir / "dsc-clang-rewrite"
-        if binary.is_file():
-            return binary, {"status": "REUSED_BUILD", "binary": str(binary)}
+        build_inputs = [
+            self.root / "tools" / "CMakeLists.txt",
+            self.root / "tools" / "clang_rewrite_overlay.cpp",
+        ]
+        fingerprint = digest([
+            {"path": str(path.relative_to(self.root)), "sha256": file_hash(path)}
+            for path in build_inputs
+        ])
+        fingerprint_path = build_dir / "source-fingerprint.txt"
+        if (
+            binary.is_file()
+            and fingerprint_path.is_file()
+            and fingerprint_path.read_text(encoding="utf-8").strip() == fingerprint
+        ):
+            return binary, {
+                "status": "REUSED_BUILD",
+                "binary": str(binary),
+                "source_fingerprint": fingerprint,
+            }
         cmake = locate_tool("cmake")
         llvm_config = self.input_facts["tools"].get("llvm-config")
         if not cmake or not llvm_config:
@@ -5670,7 +6029,14 @@ class Agent:
         )
         if build["returncode"] != 0 or not binary.is_file():
             return None, {"status": "INFRASTRUCTURE_FAILURE", "reason": "rewriter build failed", "configure": configure, "build": build}
-        return binary, {"status": "BUILT", "binary": str(binary), "configure": configure, "build": build}
+        fingerprint_path.write_text(fingerprint + "\n", encoding="utf-8")
+        return binary, {
+            "status": "BUILT",
+            "binary": str(binary),
+            "source_fingerprint": fingerprint,
+            "configure": configure,
+            "build": build,
+        }
 
     def write_compdb_for_copy(self, source_dir: pathlib.Path, path: pathlib.Path) -> list[pathlib.Path]:
         clang = self.input_facts["tools"].get("clang") or "clang"
@@ -5685,19 +6051,30 @@ class Agent:
         write_json(path, entries)
         return sources
 
-    def run_overlay_rewriter(self, contract: dict[str, Any], source_dir: pathlib.Path,
-                             overlay_header: pathlib.Path) -> dict[str, Any]:
+    def run_overlay_rewriter(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        overlay_header: pathlib.Path,
+        allow_residual_symbol_alias: bool = False,
+        *,
+        original_name: str | None = None,
+        dispatcher_name: str = "dsc_cicd_invoke",
+        receipt_name: str = "clang-overlay-receipt.json",
+    ) -> dict[str, Any]:
         binary, build_receipt = self.ensure_rewriter()
         if not binary:
             return build_receipt
         compdb = source_dir / "compile_commands.json"
         sources = self.write_compdb_for_copy(source_dir, compdb)
+        rewrite_sources = [
+            path for path in sources if not path.name.startswith("dsc_cicd_")
+        ]
         before = {str(path.relative_to(source_dir)): file_hash(path) for path in sources}
         cid = contract_id(contract)
         function = contract_function(contract)
-        original_name = str(function.get("name")) + "_original"
-        dispatcher_name = "dsc_cicd_invoke"
-        receipt_path = source_dir / "clang-overlay-receipt.json"
+        original_name = original_name or str(function.get("name")) + "_original"
+        receipt_path = source_dir / receipt_name
         command = [
             str(binary),
             "--compdb", str(compdb),
@@ -5705,7 +6082,7 @@ class Agent:
             "--original-name", original_name,
             "--dispatcher-name", dispatcher_name,
             "--receipt", str(receipt_path),
-        ] + [str(path) for path in sources]
+        ] + [str(path) for path in rewrite_sources]
         result = self.run_process(command, cwd=source_dir, timeout=1800)
         after = {str(path.relative_to(source_dir)): file_hash(path) for path in sources}
         tool_receipt = read_json(receipt_path, {}) or {}
@@ -5724,7 +6101,26 @@ class Agent:
             for path in sorted(set(before) | set(after))
             if before.get(path) != after.get(path)
         ]
-        if tool_receipt.get("status") == "PASS" and result["returncode"] == 0:
+        failures = [str(value) for value in tool_receipt.get("failures", [])]
+        alias_safe_failure_prefixes = (
+            "selected function reference is not a direct call at ",
+            "selected function is called indirectly at ",
+            "direct target call is inside a macro expansion",
+        )
+        residual_alias_accepted = bool(
+            allow_residual_symbol_alias
+            and tool_receipt.get("definitions_seen") == 1
+            and tool_receipt.get("rewritten_calls")
+            == tool_receipt.get("direct_calls_seen")
+            and failures
+            and all(
+                failure.startswith(alias_safe_failure_prefixes)
+                for failure in failures
+            )
+        )
+        if (
+            tool_receipt.get("status") == "PASS" and result["returncode"] == 0
+        ) or residual_alias_accepted:
             for changed_file in changed:
                 path = source_dir / changed_file["path"]
                 original = path.read_text(encoding="utf-8", errors="replace")
@@ -5750,14 +6146,53 @@ class Agent:
             "rewritten_calls": tool_receipt.get("rewritten_calls", 0),
             "direct_calls_seen": tool_receipt.get("direct_calls_seen", 0),
             "call_sites": tool_receipt.get("call_sites", []),
+            "direct_reference_locations": tool_receipt.get(
+                "direct_reference_locations", []
+            ),
+            "pending_reference_locations": tool_receipt.get(
+                "pending_reference_locations", []
+            ),
             "macro_locations": tool_receipt.get("macro_locations", []),
             "indirect_locations": tool_receipt.get("indirect_locations", []),
-            "failures": tool_receipt.get("failures", []),
+            "failures": failures,
+            "residual_symbol_alias": {
+                "declared_by_adapter": allow_residual_symbol_alias,
+                "accepted": residual_alias_accepted,
+                "policy": (
+                    "definition must be renamed exactly once; every recognized direct call "
+                    "must be rewritten; only residual references routed by the generated "
+                    "same-name dispatcher alias may remain"
+                ),
+            },
             "tool": build_receipt,
             "command": result,
         }
         write_json(source_dir / "overlay-receipt.json", receipt)
         return receipt
+
+    @staticmethod
+    def overlay_runtime_metrics_source() -> str:
+        """Emit one machine-readable invocation summary at normal process exit."""
+        return (
+            "static unsigned long dsc_cicd_mismatches;\n"
+            "static unsigned long dsc_cicd_calls;\n"
+            "static unsigned long dsc_cicd_rtl_invocations;\n"
+            "static int dsc_cicd_report_registered;\n"
+            "static void dsc_cicd_report(void) {\n"
+            "    fprintf(stderr, \"DSC_CICD_OVERLAY_METRICS calls=%lu "
+            "rtl_invocations=%lu mismatches=%lu\\n\",\n"
+            "            dsc_cicd_calls, dsc_cicd_rtl_invocations, "
+            "dsc_cicd_mismatches);\n"
+            "}\n"
+            "static void dsc_cicd_note_call(int mode) {\n"
+            "    if (!dsc_cicd_report_registered) {\n"
+            "        atexit(dsc_cicd_report);\n"
+            "        dsc_cicd_report_registered = 1;\n"
+            "    }\n"
+            "    ++dsc_cicd_calls;\n"
+            "    if (mode != 0) ++dsc_cicd_rtl_invocations;\n"
+            "}\n"
+        )
 
     def write_flatness_overlay_sources(
         self,
@@ -5863,10 +6298,11 @@ class Agent:
             "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
             "    return 0;\n"
             "}\n"
-            "static unsigned long dsc_cicd_mismatches;\n"
-            f"int dsc_cicd_invoke({caller_declarations}) {{\n"
+            + self.overlay_runtime_metrics_source()
+            + f"int dsc_cicd_invoke({caller_declarations}) {{\n"
             f"    int c_value = {original}({caller_call});\n"
             "    int mode = dsc_cicd_mode();\n"
+            "    dsc_cicd_note_call(mode);\n"
             "    if (mode == 0) return c_value;\n"
             f"    int rtl_value = dsc_cicd_rtl({rtl_call});\n"
             "    if (rtl_value != c_value) {\n"
@@ -6143,10 +6579,11 @@ class Agent:
             "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
             "    return 0;\n"
             "}\n"
-            "static unsigned long dsc_cicd_mismatches;\n"
-            f"int dsc_cicd_invoke({caller_declarations}) {{\n"
+            + self.overlay_runtime_metrics_source()
+            + f"int dsc_cicd_invoke({caller_declarations}) {{\n"
             f"    int c_value = {original}({caller_call});\n"
             "    int mode = dsc_cicd_mode();\n"
+            "    dsc_cicd_note_call(mode);\n"
             "    if (mode == 0) return c_value;\n"
             f"    int rtl_value = dsc_cicd_rtl({rtl_call});\n"
             "    if (rtl_value != c_value) {\n"
@@ -6212,12 +6649,8045 @@ class Agent:
             },
         }
 
+    def write_bitstream_read_transition_overlay_sources(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        module: str,
+        candidate_sv: pathlib.Path,
+    ) -> dict[str, Any]:
+        """Bind a read-only byte window plus explicit write-through cursor."""
+        semantics = contract.get("semantics", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        interface = contract.get("interface", {}) or {}
+        ports = [
+            port for port in interface.get("ports", []) if isinstance(port, dict)
+        ]
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        outputs = [port for port in ports if port.get("direction") == "output"]
+        input_names = {str(port.get("name")) for port in inputs}
+        output_names = {str(port.get("name")) for port in outputs}
+        byte_ports = [str(value) for value in bindings.get("byte_ports", [])]
+        size_port = str(bindings.get("size_port", ""))
+        cursor_port = str(bindings.get("cursor_port", ""))
+        sign_port = str(bindings.get("sign_extend_port", ""))
+        return_port = str(bindings.get("return_port", ""))
+        cursor_output_port = str(bindings.get("cursor_output_port", ""))
+        if (
+            not byte_ports
+            or {size_port, cursor_port, sign_port, *byte_ports} != input_names
+            or {return_port, cursor_output_port} != output_names
+        ):
+            raise RuntimeError("bitstream transition ports do not match the frozen interface")
+
+        parameters = self.function_parameters(contract)
+        parameter_by_name = {
+            str(parameter.get("name")): parameter for parameter in parameters
+        }
+        size_parameter = str(bindings.get("size_parameter", ""))
+        buffer_parameter = str(bindings.get("buffer_parameter", ""))
+        cursor_parameter = str(bindings.get("cursor_parameter", ""))
+        sign_parameter = str(bindings.get("sign_extend_parameter", ""))
+        required_parameters = {
+            size_parameter, buffer_parameter, cursor_parameter, sign_parameter
+        }
+        if not required_parameters or not required_parameters.issubset(parameter_by_name):
+            raise RuntimeError("bitstream transition parameter bindings are incomplete")
+        if not parameter_is_pointer(parameter_by_name[buffer_parameter]):
+            raise RuntimeError("bitstream transition buffer must be a pointer")
+        if not parameter_is_pointer(parameter_by_name[cursor_parameter]):
+            raise RuntimeError("bitstream transition cursor must be a pointer")
+
+        parameter_specs = [
+            f"{str(parameter.get('type', 'int')).strip()} {parameter.get('name')}"
+            for parameter in parameters
+        ]
+        parameter_names = [str(parameter.get("name")) for parameter in parameters]
+        caller_declarations = ", ".join(parameter_specs)
+        function_name = str(contract_function(contract).get("name"))
+        original = function_name + "_original"
+        alias_call = ", ".join(parameter_names)
+        c_call = ", ".join(
+            "&dsc_cicd_c_cursor" if name == cursor_parameter else name
+            for name in parameter_names
+        )
+        input_declarations = ", ".join(
+            f"int {port['name']}" for port in inputs
+        )
+        rtl_expressions = {
+            size_port: size_parameter,
+            cursor_port: "dsc_cicd_cursor_before",
+            sign_port: sign_parameter,
+        }
+        for index, port in enumerate(byte_ports):
+            rtl_expressions[port] = f"dsc_cicd_byte_{index}"
+        rtl_arguments = [rtl_expressions[str(port["name"])] for port in inputs]
+        rtl_call = ", ".join([*rtl_arguments, "&dsc_cicd_rtl_cursor"])
+
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n"
+            "#define DSC_CICD_OVERLAY_H\n"
+            f"int dsc_cicd_invoke({caller_declarations});\n"
+            "#endif\n",
+            encoding="utf-8",
+        )
+        byte_loads = []
+        for index in range(len(byte_ports)):
+            threshold = index * 8
+            byte_loads.append(
+                f"    int dsc_cicd_byte_{index} = "
+                f"(((dsc_cicd_cursor_before & 7) + {size_parameter}) > {threshold}) "
+                f"? {buffer_parameter}[(dsc_cicd_cursor_before >> 3) + {index}] : 0;\n"
+            )
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdio.h>\n"
+            "#include <stdlib.h>\n"
+            "#include <string.h>\n"
+            "#include \"dsc_cicd_overlay.h\"\n"
+            f"extern int {original}({caller_declarations});\n"
+            f"extern int dsc_cicd_rtl({input_declarations}, int *{cursor_output_port});\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n"
+            "}\n"
+            + self.overlay_runtime_metrics_source()
+            + f"int dsc_cicd_invoke({caller_declarations}) {{\n"
+            f"    int dsc_cicd_cursor_before = *{cursor_parameter};\n"
+            "    int dsc_cicd_c_cursor = dsc_cicd_cursor_before;\n"
+            f"    int c_value = {original}({c_call});\n"
+            "    int mode = dsc_cicd_mode();\n"
+            "    dsc_cicd_note_call(mode);\n"
+            "    if (mode == 0) {\n"
+            f"        *{cursor_parameter} = dsc_cicd_c_cursor;\n"
+            "        return c_value;\n"
+            "    }\n"
+            + "".join(byte_loads)
+            + "    int dsc_cicd_rtl_cursor = dsc_cicd_cursor_before;\n"
+            f"    int rtl_value = dsc_cicd_rtl({rtl_call});\n"
+            "    if (rtl_value != c_value || dsc_cicd_rtl_cursor != dsc_cicd_c_cursor) {\n"
+            "        ++dsc_cicd_mismatches;\n"
+            "        fprintf(stderr, \"C/RTL mismatch: c=%d rtl=%d c_cursor=%d rtl_cursor=%d\\n\",\n"
+            "                c_value, rtl_value, dsc_cicd_c_cursor, dsc_cicd_rtl_cursor);\n"
+            "    }\n"
+            "    if (mode == 2) {\n"
+            f"        *{cursor_parameter} = dsc_cicd_rtl_cursor;\n"
+            "        return rtl_value;\n"
+            "    }\n"
+            f"    *{cursor_parameter} = dsc_cicd_c_cursor;\n"
+            "    return c_value;\n"
+            "}\n",
+            encoding="utf-8",
+        )
+
+        return_output = next(port for port in outputs if port["name"] == return_port)
+        return_width = int(return_output.get("width", 32))
+        assignments = "\n".join(
+            f"    dut.{port['name']} = static_cast<unsigned long long>({port['name']});"
+            for port in inputs
+        )
+        bridge = source_dir / "rtl_bridge.cpp"
+        bridge.write_text(
+            "#include <cstdint>\n"
+            "#include \"verilated.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            "static long long dsc_cicd_sign_extend(long long value, int width) {\n"
+            "    if (width >= 63) return value;\n"
+            "    long long bit = 1LL << (width - 1);\n"
+            "    long long mask = (1LL << width) - 1;\n"
+            "    value &= mask;\n"
+            "    return (value & bit) ? value - (1LL << width) : value;\n"
+            "}\n"
+            f'extern "C" int dsc_cicd_rtl({input_declarations}, int *{cursor_output_port}) {{\n'
+            f"    V{safe_identifier(module)} dut;\n"
+            f"{assignments}\n"
+            "    dut.eval();\n"
+            f"    *{cursor_output_port} = static_cast<int>(dut.{cursor_output_port});\n"
+            f"    return static_cast<int>(dsc_cicd_sign_extend(static_cast<long long>(dut.{return_port}), {return_width}));\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\n"
+            "extern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) {\n"
+            "    return dsc_cicd_original_main(argc, argv);\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        return {
+            "header": header,
+            "overlay": overlay,
+            "bridge": bridge,
+            "main": main,
+            "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": "explicit_bitstream_read_state_transition",
+                "caller_parameter_count": len(parameters),
+                "rtl_input_count": len(inputs),
+                "frozen_input_ports": [str(port.get("name")) for port in inputs],
+                "rtl_bindings": rtl_arguments,
+                "state_outputs": [cursor_output_port],
+                "rtl_return_controls_cursor_in_rtl_return": True,
+            },
+        }
+
+    def write_bitstream_write_transition_overlay_sources(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        module: str,
+        candidate_sv: pathlib.Path,
+    ) -> dict[str, Any]:
+        """Bind a bounded output-byte window plus explicit write cursor."""
+        semantics = contract.get("semantics", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        ports = [
+            port
+            for port in (contract.get("interface", {}) or {}).get("ports", [])
+            if isinstance(port, dict)
+        ]
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        outputs = [port for port in ports if port.get("direction") == "output"]
+        input_names = {str(port.get("name")) for port in inputs}
+        output_names = {str(port.get("name")) for port in outputs}
+        byte_ports = [str(value) for value in bindings.get("byte_ports", [])]
+        byte_outputs = [
+            str(value) for value in bindings.get("byte_output_ports", [])
+        ]
+        value_port = str(bindings.get("value_port", ""))
+        size_port = str(bindings.get("size_port", ""))
+        cursor_port = str(bindings.get("cursor_port", ""))
+        cursor_output = str(bindings.get("cursor_output_port", ""))
+        if (
+            not byte_ports
+            or len(byte_ports) != len(byte_outputs)
+            or {value_port, size_port, cursor_port, *byte_ports} != input_names
+            or {cursor_output, *byte_outputs} != output_names
+        ):
+            raise RuntimeError(
+                "bitstream write ports do not match the frozen interface"
+            )
+
+        parameters = self.function_parameters(contract)
+        parameter_by_name = {
+            str(parameter.get("name")): parameter for parameter in parameters
+        }
+        value_parameter = str(bindings.get("value_parameter", ""))
+        size_parameter = str(bindings.get("size_parameter", ""))
+        buffer_parameter = str(bindings.get("buffer_parameter", ""))
+        cursor_parameter = str(bindings.get("cursor_parameter", ""))
+        if not {
+            value_parameter,
+            size_parameter,
+            buffer_parameter,
+            cursor_parameter,
+        }.issubset(parameter_by_name):
+            raise RuntimeError(
+                "bitstream write parameter bindings are incomplete"
+            )
+        if not parameter_is_pointer(parameter_by_name[buffer_parameter]):
+            raise RuntimeError("bitstream write buffer must be a pointer")
+        if not parameter_is_pointer(parameter_by_name[cursor_parameter]):
+            raise RuntimeError("bitstream write cursor must be a pointer")
+
+        maximum = int(semantics.get("max_bits", 0) or 0)
+        window_bytes = int(semantics.get("window_bytes", len(byte_ports)) or 0)
+        if maximum <= 0 or window_bytes != len(byte_ports):
+            raise RuntimeError("bitstream write bounds are incomplete")
+
+        parameter_specs = [
+            f"{str(parameter.get('type', 'int')).strip()} {parameter.get('name')}"
+            for parameter in parameters
+        ]
+        parameter_names = [str(parameter.get("name")) for parameter in parameters]
+        caller_declarations = ", ".join(parameter_specs)
+        alias_call = ", ".join(parameter_names)
+        function_name = str(contract_function(contract).get("name"))
+        original = function_name + "_original"
+        c_call = ", ".join(
+            (
+                "dsc_cicd_c_bytes"
+                if name == buffer_parameter
+                else "&dsc_cicd_c_local_cursor"
+                if name == cursor_parameter
+                else name
+            )
+            for name in parameter_names
+        )
+        input_declarations = ", ".join(
+            (
+                f"unsigned int {port['name']}"
+                if str(port.get("name")) == value_port
+                else f"int {port['name']}"
+            )
+            for port in inputs
+        )
+        rtl_expressions = {
+            value_port: value_parameter,
+            size_port: size_parameter,
+            cursor_port: "dsc_cicd_cursor_before",
+        }
+        for index, port in enumerate(byte_ports):
+            rtl_expressions[port] = f"dsc_cicd_pre[{index}]"
+        rtl_arguments = [rtl_expressions[str(port["name"])] for port in inputs]
+        rtl_byte_variables = [
+            f"dsc_cicd_rtl_byte_{index}" for index in range(window_bytes)
+        ]
+        rtl_call = ", ".join(
+            [
+                *rtl_arguments,
+                *[f"&{name}" for name in rtl_byte_variables],
+                "&dsc_cicd_rtl_cursor",
+            ]
+        )
+        rtl_variable_declarations = "".join(
+            f"    int {name} = dsc_cicd_pre[{index}];\n"
+            for index, name in enumerate(rtl_byte_variables)
+        )
+        rtl_raw_initializers = ", ".join(
+            f"(unsigned char){name}" for name in rtl_byte_variables
+        )
+
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n"
+            "#define DSC_CICD_OVERLAY_H\n"
+            f"void dsc_cicd_invoke({caller_declarations});\n"
+            "#endif\n",
+            encoding="utf-8",
+        )
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdio.h>\n"
+            "#include <stdlib.h>\n"
+            "#include <string.h>\n"
+            "#include \"dsc_cicd_overlay.h\"\n"
+            f"extern void {original}({caller_declarations});\n"
+            f"extern void dsc_cicd_rtl({input_declarations}, "
+            + ", ".join(f"int *{name}" for name in byte_outputs)
+            + f", int *{cursor_output});\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n"
+            "}\n"
+            + self.overlay_runtime_metrics_source()
+            + f"void dsc_cicd_invoke({caller_declarations}) {{\n"
+            "    int mode = dsc_cicd_mode();\n"
+            f"    if ({size_parameter} < 0 || {size_parameter} > {maximum}) {{\n"
+            "        dsc_cicd_note_call(0);\n"
+            f"        {original}({alias_call});\n"
+            "        return;\n"
+            "    }\n"
+            "    dsc_cicd_note_call(mode);\n"
+            "    if (mode == 0) {\n"
+            f"        {original}({alias_call});\n"
+            "        return;\n"
+            "    }\n"
+            f"    int dsc_cicd_cursor_before = *{cursor_parameter};\n"
+            "    int dsc_cicd_start_byte = dsc_cicd_cursor_before >> 3;\n"
+            "    int dsc_cicd_bit_offset = dsc_cicd_cursor_before & 7;\n"
+            f"    int dsc_cicd_touched = "
+            f"(dsc_cicd_bit_offset + {size_parameter} + 7) >> 3;\n"
+            f"    unsigned char dsc_cicd_pre[{window_bytes}] = {{0}};\n"
+            f"    for (int i = 0; i < dsc_cicd_touched && i < {window_bytes}; ++i)\n"
+            f"        dsc_cicd_pre[i] = {buffer_parameter}[dsc_cicd_start_byte + i];\n"
+            f"    unsigned char dsc_cicd_c_bytes[{window_bytes}];\n"
+            f"    memcpy(dsc_cicd_c_bytes, dsc_cicd_pre, {window_bytes});\n"
+            "    int dsc_cicd_c_local_cursor = dsc_cicd_bit_offset;\n"
+            f"    {original}({c_call});\n"
+            "    int dsc_cicd_c_cursor = "
+            "(dsc_cicd_cursor_before & ~7) + dsc_cicd_c_local_cursor;\n"
+            + rtl_variable_declarations
+            + "    int dsc_cicd_rtl_cursor = dsc_cicd_cursor_before;\n"
+            f"    dsc_cicd_rtl({rtl_call});\n"
+            f"    unsigned char dsc_cicd_rtl_bytes[{window_bytes}] = "
+            f"{{{rtl_raw_initializers}}};\n"
+            "    int dsc_cicd_data_mismatch = 0;\n"
+            f"    for (int i = 0; i < dsc_cicd_touched && i < {window_bytes}; ++i)\n"
+            "        dsc_cicd_data_mismatch |= "
+            "dsc_cicd_c_bytes[i] != dsc_cicd_rtl_bytes[i];\n"
+            "    if (dsc_cicd_data_mismatch || "
+            "dsc_cicd_c_cursor != dsc_cicd_rtl_cursor) {\n"
+            "        ++dsc_cicd_mismatches;\n"
+            "        fprintf(stderr, \"C/RTL mismatch: data=%d "
+            "c_cursor=%d rtl_cursor=%d size=%d cursor_before=%d\\n\",\n"
+            "                dsc_cicd_data_mismatch, dsc_cicd_c_cursor, "
+            f"dsc_cicd_rtl_cursor, {size_parameter}, dsc_cicd_cursor_before);\n"
+            "    }\n"
+            "    if (mode == 2) {\n"
+            f"        for (int i = 0; i < dsc_cicd_touched && i < {window_bytes}; ++i)\n"
+            f"            {buffer_parameter}[dsc_cicd_start_byte + i] = "
+            "dsc_cicd_rtl_bytes[i];\n"
+            f"        *{cursor_parameter} = dsc_cicd_rtl_cursor;\n"
+            "    } else {\n"
+            f"        for (int i = 0; i < dsc_cicd_touched && i < {window_bytes}; ++i)\n"
+            f"            {buffer_parameter}[dsc_cicd_start_byte + i] = "
+            "dsc_cicd_c_bytes[i];\n"
+            f"        *{cursor_parameter} = dsc_cicd_c_cursor;\n"
+            "    }\n"
+            "}\n"
+            + f"void {function_name}({caller_declarations}) {{\n"
+            f"    dsc_cicd_invoke({alias_call});\n"
+            "}\n",
+            encoding="utf-8",
+        )
+
+        assignments = "\n".join(
+            f"    dut.{port['name']} = "
+            f"static_cast<unsigned long long>({port['name']});"
+            for port in inputs
+        )
+        bridge = source_dir / "rtl_bridge.cpp"
+        bridge.write_text(
+            "#include <cstdint>\n"
+            "#include \"verilated.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            f'extern "C" void dsc_cicd_rtl({input_declarations}, '
+            + ", ".join(f"int *{name}" for name in byte_outputs)
+            + f", int *{cursor_output}) {{\n"
+            f"    V{safe_identifier(module)} dut;\n"
+            f"{assignments}\n"
+            "    dut.eval();\n"
+            + "".join(
+                f"    *{output} = static_cast<int>(dut.{output});\n"
+                for output in byte_outputs
+            )
+            + f"    *{cursor_output} = "
+            f"static_cast<int>(dut.{cursor_output});\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\n"
+            "extern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) {\n"
+            "    return dsc_cicd_original_main(argc, argv);\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        return {
+            "header": header,
+            "overlay": overlay,
+            "bridge": bridge,
+            "main": main,
+            "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": "explicit_bitstream_write_state_transition",
+                "caller_parameter_count": len(parameters),
+                "rtl_input_count": len(inputs),
+                "frozen_input_ports": [
+                    str(port.get("name")) for port in inputs
+                ],
+                "rtl_bindings": rtl_arguments,
+                "state_outputs": [*byte_outputs, cursor_output],
+                "rtl_return_controls_output_memory_and_cursor": True,
+                "c_oracle_uses_private_output_window": True,
+                "residual_symbol_alias_routes_to_dispatcher": True,
+            },
+        }
+
+    def write_fifo_read_transition_overlay_sources(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        module: str,
+        candidate_sv: pathlib.Path,
+    ) -> dict[str, Any]:
+        """Bind a FIFO read as an explicit combinational next-state function."""
+        semantics = contract.get("semantics", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        ports = [
+            port for port in (contract.get("interface", {}) or {}).get("ports", [])
+            if isinstance(port, dict)
+        ]
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        outputs = [port for port in ports if port.get("direction") == "output"]
+        input_names = {str(port.get("name")) for port in inputs}
+        output_names = {str(port.get("name")) for port in outputs}
+        byte_ports = [str(value) for value in bindings.get("byte_ports", [])]
+        nbits_port = str(bindings.get("nbits_port", ""))
+        fullness_port = str(bindings.get("fullness_port", ""))
+        read_ptr_port = str(bindings.get("read_ptr_port", ""))
+        fifo_size_port = str(bindings.get("fifo_size_port", ""))
+        sign_port = str(bindings.get("sign_extend_port", ""))
+        return_port = str(bindings.get("return_port", ""))
+        fullness_output = str(bindings.get("fullness_output_port", ""))
+        read_ptr_output = str(bindings.get("read_ptr_output_port", ""))
+        if (
+            not byte_ports
+            or {
+                nbits_port, fullness_port, read_ptr_port,
+                fifo_size_port, sign_port, *byte_ports,
+            } != input_names
+            or {return_port, fullness_output, read_ptr_output} != output_names
+        ):
+            raise RuntimeError("FIFO transition ports do not match the frozen interface")
+
+        parameters = self.function_parameters(contract)
+        parameter_by_name = {
+            str(parameter.get("name")): parameter for parameter in parameters
+        }
+        fifo_parameter = str(bindings.get("fifo_parameter", ""))
+        nbits_parameter = str(bindings.get("nbits_parameter", ""))
+        sign_parameter = str(bindings.get("sign_extend_parameter", ""))
+        if not {fifo_parameter, nbits_parameter, sign_parameter}.issubset(parameter_by_name):
+            raise RuntimeError("FIFO transition parameter bindings are incomplete")
+        if not parameter_is_pointer(parameter_by_name[fifo_parameter]):
+            raise RuntimeError("FIFO transition state parameter must be a pointer")
+
+        parameter_specs = [
+            f"{str(parameter.get('type', 'int')).strip()} {parameter.get('name')}"
+            for parameter in parameters
+        ]
+        parameter_names = [str(parameter.get("name")) for parameter in parameters]
+        caller_declarations = ", ".join(parameter_specs)
+        function_name = str(contract_function(contract).get("name"))
+        original = function_name + "_original"
+        alias_call = ", ".join(parameter_names)
+        c_call = ", ".join(
+            "&dsc_cicd_c_fifo" if name == fifo_parameter else name
+            for name in parameter_names
+        )
+        input_declarations = ", ".join(
+            f"int {port['name']}" for port in inputs
+        )
+        rtl_expressions = {
+            nbits_port: nbits_parameter,
+            fullness_port: "dsc_cicd_fullness_before",
+            read_ptr_port: "dsc_cicd_read_ptr_before",
+            fifo_size_port: "dsc_cicd_fifo_size",
+            sign_port: sign_parameter,
+        }
+        for index, port in enumerate(byte_ports):
+            rtl_expressions[port] = f"dsc_cicd_byte_{index}"
+        rtl_arguments = [rtl_expressions[str(port["name"])] for port in inputs]
+        rtl_call = ", ".join([
+            *rtl_arguments,
+            "&dsc_cicd_rtl_fullness",
+            "&dsc_cicd_rtl_read_ptr",
+        ])
+
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n"
+            "#define DSC_CICD_OVERLAY_H\n"
+            "#include \"fifo.h\"\n"
+            f"int dsc_cicd_invoke({caller_declarations});\n"
+            "#endif\n",
+            encoding="utf-8",
+        )
+        byte_loads = []
+        for index in range(len(byte_ports)):
+            threshold = index * 8
+            byte_loads.append(
+                f"    int dsc_cicd_byte_{index} = "
+                f"(((dsc_cicd_read_ptr_before & 7) + {nbits_parameter}) > {threshold}) "
+                f"? {fifo_parameter}->data[(dsc_cicd_start_byte + {index}) "
+                f"% dsc_cicd_fifo_bytes] : 0;\n"
+            )
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdio.h>\n"
+            "#include <stdlib.h>\n"
+            "#include <string.h>\n"
+            "#include \"dsc_cicd_overlay.h\"\n"
+            f"extern int {original}({caller_declarations});\n"
+            f"extern int dsc_cicd_rtl({input_declarations}, int *{fullness_output}, int *{read_ptr_output});\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n"
+            "}\n"
+            + self.overlay_runtime_metrics_source()
+            + f"int dsc_cicd_invoke({caller_declarations}) {{\n"
+            f"    int dsc_cicd_fullness_before = {fifo_parameter}->fullness;\n"
+            f"    int dsc_cicd_read_ptr_before = {fifo_parameter}->read_ptr;\n"
+            f"    int dsc_cicd_fifo_size = {fifo_parameter}->size;\n"
+            f"    fifo_t dsc_cicd_c_fifo = *{fifo_parameter};\n"
+            f"    int c_value = {original}({c_call});\n"
+            "    int mode = dsc_cicd_mode();\n"
+            "    dsc_cicd_note_call(mode);\n"
+            "    if (mode == 0) {\n"
+            f"        {fifo_parameter}->fullness = dsc_cicd_c_fifo.fullness;\n"
+            f"        {fifo_parameter}->read_ptr = dsc_cicd_c_fifo.read_ptr;\n"
+            "        return c_value;\n"
+            "    }\n"
+            "    int dsc_cicd_fifo_bytes = dsc_cicd_fifo_size >> 3;\n"
+            "    int dsc_cicd_start_byte = dsc_cicd_read_ptr_before >> 3;\n"
+            + "".join(byte_loads)
+            + "    int dsc_cicd_rtl_fullness = dsc_cicd_fullness_before;\n"
+            "    int dsc_cicd_rtl_read_ptr = dsc_cicd_read_ptr_before;\n"
+            f"    int rtl_value = dsc_cicd_rtl({rtl_call});\n"
+            "    if (rtl_value != c_value || "
+            "dsc_cicd_rtl_fullness != dsc_cicd_c_fifo.fullness || "
+            "dsc_cicd_rtl_read_ptr != dsc_cicd_c_fifo.read_ptr) {\n"
+            "        ++dsc_cicd_mismatches;\n"
+            "        fprintf(stderr, \"C/RTL mismatch: c=%d rtl=%d c_fullness=%d "
+            "rtl_fullness=%d c_read_ptr=%d rtl_read_ptr=%d nbits=%d sign=%d "
+            "read_before=%d fifo_size=%d\\n\",\n"
+            "                c_value, rtl_value, dsc_cicd_c_fifo.fullness, "
+            "dsc_cicd_rtl_fullness, dsc_cicd_c_fifo.read_ptr, dsc_cicd_rtl_read_ptr, "
+            f"{nbits_parameter}, {sign_parameter}, dsc_cicd_read_ptr_before, dsc_cicd_fifo_size);\n"
+            "    }\n"
+            "    if (mode == 2) {\n"
+            f"        {fifo_parameter}->fullness = dsc_cicd_rtl_fullness;\n"
+            f"        {fifo_parameter}->read_ptr = dsc_cicd_rtl_read_ptr;\n"
+            "        return rtl_value;\n"
+            "    }\n"
+            f"    {fifo_parameter}->fullness = dsc_cicd_c_fifo.fullness;\n"
+            f"    {fifo_parameter}->read_ptr = dsc_cicd_c_fifo.read_ptr;\n"
+            "    return c_value;\n"
+            "}\n"
+            + f"int {function_name}({caller_declarations}) {{\n"
+            f"    return dsc_cicd_invoke({alias_call});\n"
+            "}\n",
+            encoding="utf-8",
+        )
+
+        return_output = next(port for port in outputs if port["name"] == return_port)
+        return_width = int(return_output.get("width", 32))
+        assignments = "\n".join(
+            f"    dut.{port['name']} = static_cast<unsigned long long>({port['name']});"
+            for port in inputs
+        )
+        bridge = source_dir / "rtl_bridge.cpp"
+        bridge.write_text(
+            "#include <cstdint>\n"
+            "#include \"verilated.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            "static long long dsc_cicd_fifo_sign_extend(long long value, int width) {\n"
+            "    if (width >= 63) return value;\n"
+            "    long long bit = 1LL << (width - 1);\n"
+            "    long long mask = (1LL << width) - 1;\n"
+            "    value &= mask;\n"
+            "    return (value & bit) ? value - (1LL << width) : value;\n"
+            "}\n"
+            f'extern "C" int dsc_cicd_rtl({input_declarations}, int *{fullness_output}, int *{read_ptr_output}) {{\n'
+            f"    V{safe_identifier(module)} dut;\n"
+            f"{assignments}\n"
+            "    dut.eval();\n"
+            f"    *{fullness_output} = static_cast<int>(dut.{fullness_output});\n"
+            f"    *{read_ptr_output} = static_cast<int>(dut.{read_ptr_output});\n"
+            f"    return static_cast<int>(dsc_cicd_fifo_sign_extend(static_cast<long long>(dut.{return_port}), {return_width}));\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\n"
+            "extern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) {\n"
+            "    return dsc_cicd_original_main(argc, argv);\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        return {
+            "header": header,
+            "overlay": overlay,
+            "bridge": bridge,
+            "main": main,
+            "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": "explicit_fifo_read_state_transition",
+                "caller_parameter_count": len(parameters),
+                "rtl_input_count": len(inputs),
+                "frozen_input_ports": [str(port.get("name")) for port in inputs],
+                "rtl_bindings": rtl_arguments,
+                "state_outputs": [fullness_output, read_ptr_output],
+                "rtl_return_controls_fifo_state_in_rtl_return": True,
+                "residual_symbol_alias_routes_to_dispatcher": True,
+            },
+        }
+
+    def write_fifo_read_accounting_transition_overlay_sources(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        module: str,
+        candidate_sv: pathlib.Path,
+    ) -> dict[str, Any]:
+        """Bind a composed bit-accounting/FIFO read as explicit next state."""
+        semantics = contract.get("semantics", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        ports = [
+            port for port in (contract.get("interface", {}) or {}).get("ports", [])
+            if isinstance(port, dict)
+        ]
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        outputs = [port for port in ports if port.get("direction") == "output"]
+        input_names = {str(port.get("name")) for port in inputs}
+        output_names = {str(port.get("name")) for port in outputs}
+        byte_ports = [str(value) for value in bindings.get("byte_ports", [])]
+        nbits_port = str(bindings.get("nbits_port", ""))
+        bit_count_port = str(bindings.get("bit_count_port", ""))
+        fullness_port = str(bindings.get("fullness_port", ""))
+        read_ptr_port = str(bindings.get("read_ptr_port", ""))
+        fifo_size_port = str(bindings.get("fifo_size_port", ""))
+        sign_port = str(bindings.get("sign_extend_port", ""))
+        return_port = str(bindings.get("return_port", ""))
+        bit_count_output = str(bindings.get("bit_count_output_port", ""))
+        fullness_output = str(bindings.get("fullness_output_port", ""))
+        read_ptr_output = str(bindings.get("read_ptr_output_port", ""))
+        if (
+            not byte_ports
+            or {
+                nbits_port, bit_count_port, fullness_port, read_ptr_port,
+                fifo_size_port, sign_port, *byte_ports,
+            } != input_names
+            or {
+                return_port, bit_count_output, fullness_output, read_ptr_output,
+            } != output_names
+        ):
+            raise RuntimeError(
+                "FIFO accounting transition ports do not match the frozen interface"
+            )
+
+        parameters = self.function_parameters(contract)
+        parameter_by_name = {
+            str(parameter.get("name")): parameter for parameter in parameters
+        }
+        state_parameter = str(bindings.get("state_parameter", ""))
+        unit_parameter = str(bindings.get("unit_parameter", ""))
+        nbits_parameter = str(bindings.get("nbits_parameter", ""))
+        sign_parameter = str(bindings.get("sign_extend_parameter", ""))
+        required_parameters = {
+            state_parameter, unit_parameter, nbits_parameter, sign_parameter,
+        }
+        if not required_parameters.issubset(parameter_by_name):
+            raise RuntimeError("FIFO accounting parameter bindings are incomplete")
+        if not parameter_is_pointer(parameter_by_name[state_parameter]):
+            raise RuntimeError("FIFO accounting state parameter must be a pointer")
+
+        state_counter_field = str(bindings.get("state_counter_field", ""))
+        fifo_array_field = str(bindings.get("fifo_array_field", ""))
+        identifier = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+        if not identifier.fullmatch(state_counter_field) or not identifier.fullmatch(
+            fifo_array_field
+        ):
+            raise RuntimeError("FIFO accounting state-field bindings are invalid")
+
+        parameter_specs = [
+            f"{str(parameter.get('type', 'int')).strip()} {parameter.get('name')}"
+            for parameter in parameters
+        ]
+        parameter_names = [str(parameter.get("name")) for parameter in parameters]
+        caller_declarations = ", ".join(parameter_specs)
+        function_name = str(contract_function(contract).get("name"))
+        original = function_name + "_original"
+        alias_call = ", ".join(parameter_names)
+        c_call = ", ".join(
+            "&dsc_cicd_c_state" if name == state_parameter else name
+            for name in parameter_names
+        )
+        input_declarations = ", ".join(
+            f"int {port['name']}" for port in inputs
+        )
+        rtl_expressions = {
+            nbits_port: nbits_parameter,
+            bit_count_port: "dsc_cicd_bit_count_before",
+            fullness_port: "dsc_cicd_fullness_before",
+            read_ptr_port: "dsc_cicd_read_ptr_before",
+            fifo_size_port: "dsc_cicd_fifo_size",
+            sign_port: sign_parameter,
+        }
+        for index, port in enumerate(byte_ports):
+            rtl_expressions[port] = f"dsc_cicd_byte_{index}"
+        rtl_arguments = [rtl_expressions[str(port["name"])] for port in inputs]
+        rtl_call = ", ".join([
+            *rtl_arguments,
+            "&dsc_cicd_rtl_bit_count",
+            "&dsc_cicd_rtl_fullness",
+            "&dsc_cicd_rtl_read_ptr",
+        ])
+
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n"
+            "#define DSC_CICD_OVERLAY_H\n"
+            "#include \"dsc_types.h\"\n"
+            f"int dsc_cicd_invoke({caller_declarations});\n"
+            "#endif\n",
+            encoding="utf-8",
+        )
+        byte_loads = []
+        for index in range(len(byte_ports)):
+            threshold = index * 8
+            byte_loads.append(
+                f"    int dsc_cicd_byte_{index} = "
+                f"(((dsc_cicd_read_ptr_before & 7) + {nbits_parameter}) > {threshold}) "
+                f"? dsc_cicd_fifo->data[(dsc_cicd_start_byte + {index}) "
+                f"% dsc_cicd_fifo_bytes] : 0;\n"
+            )
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdio.h>\n"
+            "#include <stdlib.h>\n"
+            "#include <string.h>\n"
+            "#include \"dsc_cicd_overlay.h\"\n"
+            f"extern int {original}({caller_declarations});\n"
+            f"extern int dsc_cicd_rtl({input_declarations}, int *{bit_count_output}, "
+            f"int *{fullness_output}, int *{read_ptr_output});\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n"
+            "}\n"
+            + self.overlay_runtime_metrics_source()
+            + f"int dsc_cicd_invoke({caller_declarations}) {{\n"
+            f"    int dsc_cicd_bit_count_before = {state_parameter}->{state_counter_field};\n"
+            f"    fifo_t *dsc_cicd_fifo = &({state_parameter}->{fifo_array_field}[{unit_parameter}]);\n"
+            "    int dsc_cicd_fullness_before = dsc_cicd_fifo->fullness;\n"
+            "    int dsc_cicd_read_ptr_before = dsc_cicd_fifo->read_ptr;\n"
+            "    int dsc_cicd_fifo_size = dsc_cicd_fifo->size;\n"
+            f"    dsc_state_t dsc_cicd_c_state = *{state_parameter};\n"
+            f"    int c_value = {original}({c_call});\n"
+            f"    fifo_t *dsc_cicd_c_fifo = &(dsc_cicd_c_state.{fifo_array_field}[{unit_parameter}]);\n"
+            "    int mode = dsc_cicd_mode();\n"
+            "    dsc_cicd_note_call(mode);\n"
+            "    if (mode == 0) {\n"
+            f"        {state_parameter}->{state_counter_field} = "
+            f"dsc_cicd_c_state.{state_counter_field};\n"
+            "        dsc_cicd_fifo->fullness = dsc_cicd_c_fifo->fullness;\n"
+            "        dsc_cicd_fifo->read_ptr = dsc_cicd_c_fifo->read_ptr;\n"
+            "        return c_value;\n"
+            "    }\n"
+            "    int dsc_cicd_fifo_bytes = dsc_cicd_fifo_size >> 3;\n"
+            "    int dsc_cicd_start_byte = dsc_cicd_read_ptr_before >> 3;\n"
+            + "".join(byte_loads)
+            + "    int dsc_cicd_rtl_bit_count = dsc_cicd_bit_count_before;\n"
+            "    int dsc_cicd_rtl_fullness = dsc_cicd_fullness_before;\n"
+            "    int dsc_cicd_rtl_read_ptr = dsc_cicd_read_ptr_before;\n"
+            f"    int rtl_value = dsc_cicd_rtl({rtl_call});\n"
+            "    if (rtl_value != c_value || "
+            f"dsc_cicd_rtl_bit_count != dsc_cicd_c_state.{state_counter_field} || "
+            "dsc_cicd_rtl_fullness != dsc_cicd_c_fifo->fullness || "
+            "dsc_cicd_rtl_read_ptr != dsc_cicd_c_fifo->read_ptr) {\n"
+            "        ++dsc_cicd_mismatches;\n"
+            "        fprintf(stderr, \"C/RTL mismatch: c=%d rtl=%d c_bits=%d "
+            "rtl_bits=%d c_fullness=%d rtl_fullness=%d c_read_ptr=%d "
+            "rtl_read_ptr=%d nbits=%d sign=%d unit=%d read_before=%d "
+            "fifo_size=%d\\n\",\n"
+            f"                c_value, rtl_value, dsc_cicd_c_state.{state_counter_field}, "
+            "dsc_cicd_rtl_bit_count, dsc_cicd_c_fifo->fullness, "
+            "dsc_cicd_rtl_fullness, dsc_cicd_c_fifo->read_ptr, "
+            f"dsc_cicd_rtl_read_ptr, {nbits_parameter}, {sign_parameter}, "
+            f"{unit_parameter}, dsc_cicd_read_ptr_before, dsc_cicd_fifo_size);\n"
+            "    }\n"
+            "    if (mode == 2) {\n"
+            f"        {state_parameter}->{state_counter_field} = dsc_cicd_rtl_bit_count;\n"
+            "        dsc_cicd_fifo->fullness = dsc_cicd_rtl_fullness;\n"
+            "        dsc_cicd_fifo->read_ptr = dsc_cicd_rtl_read_ptr;\n"
+            "        return rtl_value;\n"
+            "    }\n"
+            f"    {state_parameter}->{state_counter_field} = "
+            f"dsc_cicd_c_state.{state_counter_field};\n"
+            "    dsc_cicd_fifo->fullness = dsc_cicd_c_fifo->fullness;\n"
+            "    dsc_cicd_fifo->read_ptr = dsc_cicd_c_fifo->read_ptr;\n"
+            "    return c_value;\n"
+            "}\n"
+            + f"int {function_name}({caller_declarations}) {{\n"
+            f"    return dsc_cicd_invoke({alias_call});\n"
+            "}\n",
+            encoding="utf-8",
+        )
+
+        return_output = next(port for port in outputs if port["name"] == return_port)
+        return_width = int(return_output.get("width", 32))
+        assignments = "\n".join(
+            f"    dut.{port['name']} = static_cast<unsigned long long>({port['name']});"
+            for port in inputs
+        )
+        bridge = source_dir / "rtl_bridge.cpp"
+        bridge.write_text(
+            "#include <cstdint>\n"
+            "#include \"verilated.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            "static long long dsc_cicd_fifo_accounting_sign_extend(long long value, int width) {\n"
+            "    if (width >= 63) return value;\n"
+            "    long long bit = 1LL << (width - 1);\n"
+            "    long long mask = (1LL << width) - 1;\n"
+            "    value &= mask;\n"
+            "    return (value & bit) ? value - (1LL << width) : value;\n"
+            "}\n"
+            f'extern "C" int dsc_cicd_rtl({input_declarations}, int *{bit_count_output}, '
+            f'int *{fullness_output}, int *{read_ptr_output}) {{\n'
+            f"    V{safe_identifier(module)} dut;\n"
+            f"{assignments}\n"
+            "    dut.eval();\n"
+            f"    *{bit_count_output} = static_cast<int>(dut.{bit_count_output});\n"
+            f"    *{fullness_output} = static_cast<int>(dut.{fullness_output});\n"
+            f"    *{read_ptr_output} = static_cast<int>(dut.{read_ptr_output});\n"
+            "    return static_cast<int>(dsc_cicd_fifo_accounting_sign_extend("
+            f"static_cast<long long>(dut.{return_port}), {return_width}));\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\n"
+            "extern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) {\n"
+            "    return dsc_cicd_original_main(argc, argv);\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        return {
+            "header": header,
+            "overlay": overlay,
+            "bridge": bridge,
+            "main": main,
+            "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": "explicit_fifo_read_accounting_state_transition",
+                "caller_parameter_count": len(parameters),
+                "rtl_input_count": len(inputs),
+                "frozen_input_ports": [str(port.get("name")) for port in inputs],
+                "rtl_bindings": rtl_arguments,
+                "state_outputs": [
+                    bit_count_output, fullness_output, read_ptr_output,
+                ],
+                "rtl_return_controls_composed_state_in_rtl_return": True,
+                "residual_symbol_alias_routes_to_dispatcher": True,
+            },
+        }
+
+    def write_fifo_write_transition_overlay_sources(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        module: str,
+        candidate_sv: pathlib.Path,
+    ) -> dict[str, Any]:
+        """Bind a bounded FIFO memory-window write as explicit next state."""
+        semantics = contract.get("semantics", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        ports = [
+            port for port in (contract.get("interface", {}) or {}).get("ports", [])
+            if isinstance(port, dict)
+        ]
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        outputs = [port for port in ports if port.get("direction") == "output"]
+        input_names = {str(port.get("name")) for port in inputs}
+        output_names = {str(port.get("name")) for port in outputs}
+        byte_ports = [str(value) for value in bindings.get("byte_ports", [])]
+        byte_outputs = [
+            str(value) for value in bindings.get("byte_output_ports", [])
+        ]
+        data_port = str(bindings.get("data_port", ""))
+        nbits_port = str(bindings.get("nbits_port", ""))
+        fullness_port = str(bindings.get("fullness_port", ""))
+        write_ptr_port = str(bindings.get("write_ptr_port", ""))
+        fifo_size_port = str(bindings.get("fifo_size_port", ""))
+        max_fullness_port = str(bindings.get("max_fullness_port", ""))
+        fullness_output = str(bindings.get("fullness_output_port", ""))
+        write_ptr_output = str(bindings.get("write_ptr_output_port", ""))
+        max_fullness_output = str(bindings.get("max_fullness_output_port", ""))
+        if (
+            not byte_ports
+            or len(byte_ports) != len(byte_outputs)
+            or {
+                data_port, nbits_port, fullness_port, write_ptr_port,
+                fifo_size_port, max_fullness_port, *byte_ports,
+            } != input_names
+            or {
+                fullness_output, write_ptr_output, max_fullness_output,
+                *byte_outputs,
+            } != output_names
+        ):
+            raise RuntimeError("FIFO write ports do not match the frozen interface")
+
+        parameters = self.function_parameters(contract)
+        parameter_by_name = {
+            str(parameter.get("name")): parameter for parameter in parameters
+        }
+        fifo_parameter = str(bindings.get("fifo_parameter", ""))
+        data_parameter = str(bindings.get("data_parameter", ""))
+        nbits_parameter = str(bindings.get("nbits_parameter", ""))
+        if not {fifo_parameter, data_parameter, nbits_parameter}.issubset(
+            parameter_by_name
+        ):
+            raise RuntimeError("FIFO write parameter bindings are incomplete")
+        if not parameter_is_pointer(parameter_by_name[fifo_parameter]):
+            raise RuntimeError("FIFO write state parameter must be a pointer")
+
+        field_keys = [
+            "data_field", "fullness_field", "write_ptr_field", "size_field",
+            "max_fullness_field",
+        ]
+        fields = {key: str(bindings.get(key, "")) for key in field_keys}
+        identifier = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+        if not all(identifier.fullmatch(value) for value in fields.values()):
+            raise RuntimeError("FIFO write state-field bindings are invalid")
+        data_field = fields["data_field"]
+        fullness_field = fields["fullness_field"]
+        write_ptr_field = fields["write_ptr_field"]
+        size_field = fields["size_field"]
+        max_fullness_field = fields["max_fullness_field"]
+
+        parameter_specs = [
+            f"{str(parameter.get('type', 'int')).strip()} {parameter.get('name')}"
+            for parameter in parameters
+        ]
+        parameter_names = [str(parameter.get("name")) for parameter in parameters]
+        caller_declarations = ", ".join(parameter_specs)
+        function_name = str(contract_function(contract).get("name"))
+        original = function_name + "_original"
+        alias_call = ", ".join(parameter_names)
+        c_call = alias_call
+        input_declarations = ", ".join(
+            (
+                f"unsigned int {port['name']}"
+                if str(port.get("name")) == data_port
+                else f"int {port['name']}"
+            )
+            for port in inputs
+        )
+        rtl_expressions = {
+            data_port: data_parameter,
+            nbits_port: nbits_parameter,
+            fullness_port: "dsc_cicd_fullness_before",
+            write_ptr_port: "dsc_cicd_write_ptr_before",
+            fifo_size_port: "dsc_cicd_fifo_size",
+            max_fullness_port: "dsc_cicd_max_fullness_before",
+        }
+        for index, port in enumerate(byte_ports):
+            rtl_expressions[port] = f"dsc_cicd_pre[{index}]"
+        rtl_arguments = [rtl_expressions[str(port["name"])] for port in inputs]
+        rtl_byte_variables = [
+            f"dsc_cicd_rtl_byte_{index}" for index in range(len(byte_outputs))
+        ]
+        rtl_call = ", ".join([
+            *rtl_arguments,
+            *[f"&{value}" for value in rtl_byte_variables],
+            "&dsc_cicd_rtl_fullness",
+            "&dsc_cicd_rtl_write_ptr",
+            "&dsc_cicd_rtl_max_fullness",
+        ])
+        index_initializers = ", ".join(
+            f"(dsc_cicd_start_byte + {index}) % dsc_cicd_fifo_bytes"
+            for index in range(len(byte_ports))
+        )
+        pre_initializers = ", ".join(
+            f"{fifo_parameter}->{data_field}[dsc_cicd_index[{index}]]"
+            for index in range(len(byte_ports))
+        )
+        c_initializers = ", ".join(
+            f"{fifo_parameter}->{data_field}[dsc_cicd_index[{index}]]"
+            for index in range(len(byte_ports))
+        )
+        rtl_variable_declarations = "".join(
+            f"    int {value} = dsc_cicd_pre[{index}];\n"
+            for index, value in enumerate(rtl_byte_variables)
+        )
+        rtl_raw_initializers = ", ".join(
+            f"(unsigned char){value}" for value in rtl_byte_variables
+        )
+
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n"
+            "#define DSC_CICD_OVERLAY_H\n"
+            "#include \"fifo.h\"\n"
+            f"void dsc_cicd_invoke({caller_declarations});\n"
+            "#endif\n",
+            encoding="utf-8",
+        )
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdio.h>\n"
+            "#include <stdlib.h>\n"
+            "#include <string.h>\n"
+            "#include \"dsc_cicd_overlay.h\"\n"
+            f"extern void {original}({caller_declarations});\n"
+            f"extern void dsc_cicd_rtl({input_declarations}, "
+            + ", ".join(f"int *{value}" for value in byte_outputs)
+            + f", int *{fullness_output}, int *{write_ptr_output}, "
+            f"int *{max_fullness_output});\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n"
+            "}\n"
+            + self.overlay_runtime_metrics_source()
+            + f"void dsc_cicd_invoke({caller_declarations}) {{\n"
+            f"    int dsc_cicd_fullness_before = {fifo_parameter}->{fullness_field};\n"
+            f"    int dsc_cicd_write_ptr_before = {fifo_parameter}->{write_ptr_field};\n"
+            f"    int dsc_cicd_fifo_size = {fifo_parameter}->{size_field};\n"
+            f"    int dsc_cicd_max_fullness_before = {fifo_parameter}->{max_fullness_field};\n"
+            "    int dsc_cicd_fifo_bytes = dsc_cicd_fifo_size >> 3;\n"
+            "    int dsc_cicd_start_byte = dsc_cicd_write_ptr_before >> 3;\n"
+            f"    int dsc_cicd_index[{len(byte_ports)}] = {{{index_initializers}}};\n"
+            f"    unsigned char dsc_cicd_pre[{len(byte_ports)}] = {{{pre_initializers}}};\n"
+            f"    {original}({c_call});\n"
+            f"    unsigned char dsc_cicd_c_after[{len(byte_ports)}] = "
+            f"{{{c_initializers}}};\n"
+            f"    int dsc_cicd_c_fullness = {fifo_parameter}->{fullness_field};\n"
+            f"    int dsc_cicd_c_write_ptr = {fifo_parameter}->{write_ptr_field};\n"
+            f"    int dsc_cicd_c_max_fullness = {fifo_parameter}->{max_fullness_field};\n"
+            "    int mode = dsc_cicd_mode();\n"
+            "    dsc_cicd_note_call(mode);\n"
+            "    if (mode == 0) return;\n"
+            + rtl_variable_declarations
+            + "    int dsc_cicd_rtl_fullness = dsc_cicd_fullness_before;\n"
+            "    int dsc_cicd_rtl_write_ptr = dsc_cicd_write_ptr_before;\n"
+            "    int dsc_cicd_rtl_max_fullness = dsc_cicd_max_fullness_before;\n"
+            f"    dsc_cicd_rtl({rtl_call});\n"
+            f"    unsigned char dsc_cicd_rtl_raw[{len(byte_ports)}] = "
+            f"{{{rtl_raw_initializers}}};\n"
+            f"    unsigned char dsc_cicd_mask[{len(byte_ports)}] = {{0}};\n"
+            f"    unsigned char dsc_cicd_merged[{len(byte_ports)}];\n"
+            f"    for (int i = 0; i < {nbits_parameter}; ++i) {{\n"
+            "        int logical_bit = (dsc_cicd_write_ptr_before & 7) + i;\n"
+            "        int slot = logical_bit >> 3;\n"
+            "        dsc_cicd_mask[slot] |= (unsigned char)(1 << (7 - (logical_bit & 7)));\n"
+            "    }\n"
+            f"    for (int i = 0; i < {len(byte_ports)}; ++i) "
+            "dsc_cicd_merged[i] = dsc_cicd_pre[i];\n"
+            f"    for (int slot = 0; slot < {len(byte_ports)}; ++slot) {{\n"
+            f"        for (int alias = 0; alias < {len(byte_ports)}; ++alias) {{\n"
+            "            if (dsc_cicd_index[alias] == dsc_cicd_index[slot])\n"
+            "                dsc_cicd_merged[alias] = "
+            "(unsigned char)((dsc_cicd_merged[alias] & ~dsc_cicd_mask[slot]) | "
+            "(dsc_cicd_rtl_raw[slot] & dsc_cicd_mask[slot]));\n"
+            "        }\n"
+            "    }\n"
+            "    int dsc_cicd_data_mismatch = 0;\n"
+            f"    for (int i = 0; i < {len(byte_ports)}; ++i) "
+            "dsc_cicd_data_mismatch |= dsc_cicd_merged[i] != dsc_cicd_c_after[i];\n"
+            "    if (dsc_cicd_data_mismatch || "
+            "dsc_cicd_rtl_fullness != dsc_cicd_c_fullness || "
+            "dsc_cicd_rtl_write_ptr != dsc_cicd_c_write_ptr || "
+            "dsc_cicd_rtl_max_fullness != dsc_cicd_c_max_fullness) {\n"
+            "        ++dsc_cicd_mismatches;\n"
+            "        fprintf(stderr, \"C/RTL mismatch: data=%d c_fullness=%d "
+            "rtl_fullness=%d c_write_ptr=%d rtl_write_ptr=%d c_max=%d "
+            "rtl_max=%d nbits=%d write_before=%d fifo_size=%d\\n\",\n"
+            "                dsc_cicd_data_mismatch, dsc_cicd_c_fullness, "
+            "dsc_cicd_rtl_fullness, dsc_cicd_c_write_ptr, dsc_cicd_rtl_write_ptr, "
+            "dsc_cicd_c_max_fullness, dsc_cicd_rtl_max_fullness, "
+            f"{nbits_parameter}, dsc_cicd_write_ptr_before, dsc_cicd_fifo_size);\n"
+            "    }\n"
+            "    if (mode == 2) {\n"
+            f"        for (int i = 0; i < {len(byte_ports)}; ++i) "
+            f"{fifo_parameter}->{data_field}[dsc_cicd_index[i]] = dsc_cicd_merged[i];\n"
+            f"        {fifo_parameter}->{fullness_field} = dsc_cicd_rtl_fullness;\n"
+            f"        {fifo_parameter}->{write_ptr_field} = dsc_cicd_rtl_write_ptr;\n"
+            f"        {fifo_parameter}->{max_fullness_field} = dsc_cicd_rtl_max_fullness;\n"
+            "    }\n"
+            "}\n"
+            + f"void {function_name}({caller_declarations}) {{\n"
+            f"    dsc_cicd_invoke({alias_call});\n"
+            "}\n",
+            encoding="utf-8",
+        )
+
+        assignments = "\n".join(
+            f"    dut.{port['name']} = static_cast<unsigned long long>({port['name']});"
+            for port in inputs
+        )
+        bridge = source_dir / "rtl_bridge.cpp"
+        bridge.write_text(
+            "#include <cstdint>\n"
+            "#include \"verilated.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            f'extern "C" void dsc_cicd_rtl({input_declarations}, '
+            + ", ".join(f"int *{value}" for value in byte_outputs)
+            + f", int *{fullness_output}, int *{write_ptr_output}, "
+            f"int *{max_fullness_output}) {{\n"
+            f"    V{safe_identifier(module)} dut;\n"
+            f"{assignments}\n"
+            "    dut.eval();\n"
+            + "".join(
+                f"    *{output} = static_cast<int>(dut.{output});\n"
+                for output in byte_outputs
+            )
+            + f"    *{fullness_output} = static_cast<int>(dut.{fullness_output});\n"
+            f"    *{write_ptr_output} = static_cast<int>(dut.{write_ptr_output});\n"
+            f"    *{max_fullness_output} = static_cast<int>(dut.{max_fullness_output});\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\n"
+            "extern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) {\n"
+            "    return dsc_cicd_original_main(argc, argv);\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        return {
+            "header": header,
+            "overlay": overlay,
+            "bridge": bridge,
+            "main": main,
+            "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": "explicit_fifo_write_state_transition",
+                "caller_parameter_count": len(parameters),
+                "rtl_input_count": len(inputs),
+                "frozen_input_ports": [str(port.get("name")) for port in inputs],
+                "rtl_bindings": rtl_arguments,
+                "state_outputs": [
+                    *byte_outputs, fullness_output, write_ptr_output,
+                    max_fullness_output,
+                ],
+                "rtl_return_controls_fifo_memory_and_state_in_rtl_return": True,
+                "residual_symbol_alias_routes_to_dispatcher": True,
+            },
+        }
+
+    def write_fifo_write_accounting_transition_overlay_sources(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        module: str,
+        candidate_sv: pathlib.Path,
+    ) -> dict[str, Any]:
+        """Bind one indexed FIFO write plus its caller-visible bit counter."""
+        semantics = contract.get("semantics", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        ports = [
+            port
+            for port in (contract.get("interface", {}) or {}).get("ports", [])
+            if isinstance(port, dict)
+        ]
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        outputs = [port for port in ports if port.get("direction") == "output"]
+        input_names = {str(port.get("name")) for port in inputs}
+        output_names = {str(port.get("name")) for port in outputs}
+        byte_ports = [str(value) for value in bindings.get("byte_ports", [])]
+        byte_outputs = [
+            str(value) for value in bindings.get("byte_output_ports", [])
+        ]
+        data_port = str(bindings.get("data_port", ""))
+        nbits_port = str(bindings.get("nbits_port", ""))
+        num_bits_port = str(bindings.get("num_bits_port", ""))
+        fullness_port = str(bindings.get("fullness_port", ""))
+        write_ptr_port = str(bindings.get("write_ptr_port", ""))
+        fifo_size_port = str(bindings.get("fifo_size_port", ""))
+        max_fullness_port = str(bindings.get("max_fullness_port", ""))
+        num_bits_output = str(
+            bindings.get("num_bits_output_port", "")
+        )
+        fullness_output = str(
+            bindings.get("fullness_output_port", "")
+        )
+        write_ptr_output = str(
+            bindings.get("write_ptr_output_port", "")
+        )
+        max_fullness_output = str(
+            bindings.get("max_fullness_output_port", "")
+        )
+        if (
+            not byte_ports
+            or len(byte_ports) != len(byte_outputs)
+            or {
+                data_port,
+                nbits_port,
+                num_bits_port,
+                fullness_port,
+                write_ptr_port,
+                fifo_size_port,
+                max_fullness_port,
+                *byte_ports,
+            }
+            != input_names
+            or {
+                num_bits_output,
+                fullness_output,
+                write_ptr_output,
+                max_fullness_output,
+                *byte_outputs,
+            }
+            != output_names
+        ):
+            raise RuntimeError(
+                "FIFO write accounting ports do not match the frozen interface"
+            )
+
+        parameters = self.function_parameters(contract)
+        parameter_by_name = {
+            str(parameter.get("name")): parameter for parameter in parameters
+        }
+        state_parameter = str(bindings.get("state_parameter", ""))
+        fifo_index_parameter = str(
+            bindings.get("fifo_index_parameter", "")
+        )
+        data_parameter = str(bindings.get("data_parameter", ""))
+        nbits_parameter = str(bindings.get("nbits_parameter", ""))
+        required_parameters = {
+            state_parameter,
+            fifo_index_parameter,
+            data_parameter,
+            nbits_parameter,
+        }
+        if not required_parameters.issubset(parameter_by_name):
+            raise RuntimeError(
+                "FIFO write accounting parameter bindings are incomplete"
+            )
+        if not parameter_is_pointer(parameter_by_name[state_parameter]):
+            raise RuntimeError(
+                "FIFO write accounting state parameter must be a pointer"
+            )
+
+        field_names = {
+            key: str(bindings.get(key, ""))
+            for key in (
+                "state_counter_field",
+                "fifo_array_field",
+                "data_field",
+                "fullness_field",
+                "write_ptr_field",
+                "size_field",
+                "max_fullness_field",
+            )
+        }
+        identifier = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+        if not all(
+            identifier.fullmatch(value) for value in field_names.values()
+        ):
+            raise RuntimeError(
+                "FIFO write accounting state-field bindings are invalid"
+            )
+        counter_field = field_names["state_counter_field"]
+        fifo_array_field = field_names["fifo_array_field"]
+        data_field = field_names["data_field"]
+        fullness_field = field_names["fullness_field"]
+        write_ptr_field = field_names["write_ptr_field"]
+        size_field = field_names["size_field"]
+        max_fullness_field = field_names["max_fullness_field"]
+
+        parameter_specs = [
+            f"{str(parameter.get('type', 'int')).strip()} {parameter.get('name')}"
+            for parameter in parameters
+        ]
+        parameter_names = [str(parameter.get("name")) for parameter in parameters]
+        caller_declarations = ", ".join(parameter_specs)
+        alias_call = ", ".join(parameter_names)
+        function_name = str(contract_function(contract).get("name"))
+        original = function_name + "_original"
+        input_declarations = ", ".join(
+            (
+                f"unsigned int {port['name']}"
+                if str(port.get("name")) == data_port
+                else f"int {port['name']}"
+            )
+            for port in inputs
+        )
+        rtl_expressions = {
+            data_port: data_parameter,
+            nbits_port: nbits_parameter,
+            num_bits_port: "dsc_cicd_num_bits_before",
+            fullness_port: "dsc_cicd_fullness_before",
+            write_ptr_port: "dsc_cicd_write_ptr_before",
+            fifo_size_port: "dsc_cicd_fifo_size",
+            max_fullness_port: "dsc_cicd_max_fullness_before",
+        }
+        for index, port in enumerate(byte_ports):
+            rtl_expressions[port] = f"dsc_cicd_pre[{index}]"
+        rtl_arguments = [rtl_expressions[str(port["name"])] for port in inputs]
+        rtl_byte_variables = [
+            f"dsc_cicd_rtl_byte_{index}"
+            for index in range(len(byte_outputs))
+        ]
+        rtl_call = ", ".join(
+            [
+                *rtl_arguments,
+                *[f"&{value}" for value in rtl_byte_variables],
+                "&dsc_cicd_rtl_num_bits",
+                "&dsc_cicd_rtl_fullness",
+                "&dsc_cicd_rtl_write_ptr",
+                "&dsc_cicd_rtl_max_fullness",
+            ]
+        )
+        index_initializers = ", ".join(
+            f"(dsc_cicd_start_byte + {index}) % dsc_cicd_fifo_bytes"
+            for index in range(len(byte_ports))
+        )
+        pre_initializers = ", ".join(
+            f"dsc_cicd_fifo->{data_field}[dsc_cicd_index[{index}]]"
+            for index in range(len(byte_ports))
+        )
+        c_initializers = ", ".join(
+            f"dsc_cicd_fifo->{data_field}[dsc_cicd_index[{index}]]"
+            for index in range(len(byte_ports))
+        )
+        rtl_variable_declarations = "".join(
+            f"    int {value} = dsc_cicd_pre[{index}];\n"
+            for index, value in enumerate(rtl_byte_variables)
+        )
+        rtl_raw_initializers = ", ".join(
+            f"(unsigned char){value}" for value in rtl_byte_variables
+        )
+
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n"
+            "#define DSC_CICD_OVERLAY_H\n"
+            "#include \"dsc_types.h\"\n"
+            f"void dsc_cicd_invoke({caller_declarations});\n"
+            "#endif\n",
+            encoding="utf-8",
+        )
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdio.h>\n"
+            "#include <stdlib.h>\n"
+            "#include <string.h>\n"
+            "#include \"dsc_cicd_overlay.h\"\n"
+            f"extern void {original}({caller_declarations});\n"
+            f"extern void dsc_cicd_rtl({input_declarations}, "
+            + ", ".join(f"int *{value}" for value in byte_outputs)
+            + f", int *{num_bits_output}, int *{fullness_output}, "
+            f"int *{write_ptr_output}, int *{max_fullness_output});\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n"
+            "}\n"
+            + self.overlay_runtime_metrics_source()
+            + f"void dsc_cicd_invoke({caller_declarations}) {{\n"
+            f"    fifo_t *dsc_cicd_fifo = &({state_parameter}->"
+            f"{fifo_array_field}[{fifo_index_parameter}]);\n"
+            f"    int dsc_cicd_num_bits_before = "
+            f"{state_parameter}->{counter_field};\n"
+            f"    int dsc_cicd_fullness_before = "
+            f"dsc_cicd_fifo->{fullness_field};\n"
+            f"    int dsc_cicd_write_ptr_before = "
+            f"dsc_cicd_fifo->{write_ptr_field};\n"
+            f"    int dsc_cicd_fifo_size = dsc_cicd_fifo->{size_field};\n"
+            f"    int dsc_cicd_max_fullness_before = "
+            f"dsc_cicd_fifo->{max_fullness_field};\n"
+            "    int dsc_cicd_fifo_bytes = dsc_cicd_fifo_size >> 3;\n"
+            "    int dsc_cicd_start_byte = dsc_cicd_write_ptr_before >> 3;\n"
+            f"    int dsc_cicd_index[{len(byte_ports)}] = "
+            f"{{{index_initializers}}};\n"
+            f"    unsigned char dsc_cicd_pre[{len(byte_ports)}] = "
+            f"{{{pre_initializers}}};\n"
+            f"    {original}({alias_call});\n"
+            f"    unsigned char dsc_cicd_c_after[{len(byte_ports)}] = "
+            f"{{{c_initializers}}};\n"
+            f"    int dsc_cicd_c_num_bits = "
+            f"{state_parameter}->{counter_field};\n"
+            f"    int dsc_cicd_c_fullness = "
+            f"dsc_cicd_fifo->{fullness_field};\n"
+            f"    int dsc_cicd_c_write_ptr = "
+            f"dsc_cicd_fifo->{write_ptr_field};\n"
+            f"    int dsc_cicd_c_max_fullness = "
+            f"dsc_cicd_fifo->{max_fullness_field};\n"
+            "    int mode = dsc_cicd_mode();\n"
+            "    dsc_cicd_note_call(mode);\n"
+            "    if (mode == 0) return;\n"
+            + rtl_variable_declarations
+            + "    int dsc_cicd_rtl_num_bits = dsc_cicd_num_bits_before;\n"
+            "    int dsc_cicd_rtl_fullness = dsc_cicd_fullness_before;\n"
+            "    int dsc_cicd_rtl_write_ptr = dsc_cicd_write_ptr_before;\n"
+            "    int dsc_cicd_rtl_max_fullness = "
+            "dsc_cicd_max_fullness_before;\n"
+            f"    dsc_cicd_rtl({rtl_call});\n"
+            f"    unsigned char dsc_cicd_rtl_raw[{len(byte_ports)}] = "
+            f"{{{rtl_raw_initializers}}};\n"
+            f"    unsigned char dsc_cicd_mask[{len(byte_ports)}] = {{0}};\n"
+            f"    unsigned char dsc_cicd_merged[{len(byte_ports)}];\n"
+            f"    for (int i = 0; i < {nbits_parameter}; ++i) {{\n"
+            "        int logical_bit = "
+            "(dsc_cicd_write_ptr_before & 7) + i;\n"
+            "        int slot = logical_bit >> 3;\n"
+            "        dsc_cicd_mask[slot] |= "
+            "(unsigned char)(1 << (7 - (logical_bit & 7)));\n"
+            "    }\n"
+            f"    for (int i = 0; i < {len(byte_ports)}; ++i) "
+            "dsc_cicd_merged[i] = dsc_cicd_pre[i];\n"
+            f"    for (int slot = 0; slot < {len(byte_ports)}; ++slot) {{\n"
+            f"        for (int alias = 0; alias < {len(byte_ports)}; ++alias) {{\n"
+            "            if (dsc_cicd_index[alias] == dsc_cicd_index[slot])\n"
+            "                dsc_cicd_merged[alias] = "
+            "(unsigned char)((dsc_cicd_merged[alias] & "
+            "~dsc_cicd_mask[slot]) | "
+            "(dsc_cicd_rtl_raw[slot] & dsc_cicd_mask[slot]));\n"
+            "        }\n"
+            "    }\n"
+            "    int dsc_cicd_data_mismatch = 0;\n"
+            f"    for (int i = 0; i < {len(byte_ports)}; ++i) "
+            "dsc_cicd_data_mismatch |= "
+            "dsc_cicd_merged[i] != dsc_cicd_c_after[i];\n"
+            "    if (dsc_cicd_data_mismatch || "
+            "dsc_cicd_rtl_num_bits != dsc_cicd_c_num_bits || "
+            "dsc_cicd_rtl_fullness != dsc_cicd_c_fullness || "
+            "dsc_cicd_rtl_write_ptr != dsc_cicd_c_write_ptr || "
+            "dsc_cicd_rtl_max_fullness != dsc_cicd_c_max_fullness) {\n"
+            "        ++dsc_cicd_mismatches;\n"
+            "        fprintf(stderr, \"C/RTL mismatch: data=%d "
+            "c_bits=%d rtl_bits=%d c_fullness=%d rtl_fullness=%d "
+            "c_write_ptr=%d rtl_write_ptr=%d c_max=%d rtl_max=%d "
+            "nbits=%d write_before=%d fifo_size=%d\\n\",\n"
+            "                dsc_cicd_data_mismatch, dsc_cicd_c_num_bits, "
+            "dsc_cicd_rtl_num_bits, dsc_cicd_c_fullness, "
+            "dsc_cicd_rtl_fullness, dsc_cicd_c_write_ptr, "
+            "dsc_cicd_rtl_write_ptr, dsc_cicd_c_max_fullness, "
+            "dsc_cicd_rtl_max_fullness, "
+            f"{nbits_parameter}, dsc_cicd_write_ptr_before, "
+            "dsc_cicd_fifo_size);\n"
+            "    }\n"
+            "    if (mode == 2) {\n"
+            f"        for (int i = 0; i < {len(byte_ports)}; ++i) "
+            f"dsc_cicd_fifo->{data_field}[dsc_cicd_index[i]] = "
+            "dsc_cicd_merged[i];\n"
+            f"        {state_parameter}->{counter_field} = "
+            "dsc_cicd_rtl_num_bits;\n"
+            f"        dsc_cicd_fifo->{fullness_field} = "
+            "dsc_cicd_rtl_fullness;\n"
+            f"        dsc_cicd_fifo->{write_ptr_field} = "
+            "dsc_cicd_rtl_write_ptr;\n"
+            f"        dsc_cicd_fifo->{max_fullness_field} = "
+            "dsc_cicd_rtl_max_fullness;\n"
+            "    }\n"
+            "}\n"
+            + f"void {function_name}({caller_declarations}) {{\n"
+            f"    dsc_cicd_invoke({alias_call});\n"
+            "}\n",
+            encoding="utf-8",
+        )
+
+        assignments = "\n".join(
+            f"    dut.{port['name']} = "
+            f"static_cast<unsigned long long>({port['name']});"
+            for port in inputs
+        )
+        bridge = source_dir / "rtl_bridge.cpp"
+        bridge.write_text(
+            "#include <cstdint>\n"
+            "#include \"verilated.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            f'extern "C" void dsc_cicd_rtl({input_declarations}, '
+            + ", ".join(f"int *{value}" for value in byte_outputs)
+            + f", int *{num_bits_output}, int *{fullness_output}, "
+            f"int *{write_ptr_output}, int *{max_fullness_output}) {{\n"
+            f"    V{safe_identifier(module)} dut;\n"
+            f"{assignments}\n"
+            "    dut.eval();\n"
+            + "".join(
+                f"    *{output} = static_cast<int>(dut.{output});\n"
+                for output in byte_outputs
+            )
+            + f"    *{num_bits_output} = "
+            f"static_cast<int>(dut.{num_bits_output});\n"
+            f"    *{fullness_output} = "
+            f"static_cast<int>(dut.{fullness_output});\n"
+            f"    *{write_ptr_output} = "
+            f"static_cast<int>(dut.{write_ptr_output});\n"
+            f"    *{max_fullness_output} = "
+            f"static_cast<int>(dut.{max_fullness_output});\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\n"
+            "extern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) {\n"
+            "    return dsc_cicd_original_main(argc, argv);\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        return {
+            "header": header,
+            "overlay": overlay,
+            "bridge": bridge,
+            "main": main,
+            "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": (
+                    "explicit_fifo_write_accounting_state_transition"
+                ),
+                "caller_parameter_count": len(parameters),
+                "rtl_input_count": len(inputs),
+                "frozen_input_ports": [
+                    str(port.get("name")) for port in inputs
+                ],
+                "rtl_bindings": rtl_arguments,
+                "state_outputs": [
+                    *byte_outputs,
+                    num_bits_output,
+                    fullness_output,
+                    write_ptr_output,
+                    max_fullness_output,
+                ],
+                "rtl_return_controls_fifo_memory_and_counter": True,
+                "callee_transition_inlined_in_source_order": True,
+                "residual_symbol_alias_routes_to_dispatcher": True,
+            },
+        }
+
+    def write_midpoint_line_write_transition_overlay_sources(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        module: str,
+        candidate_sv: pathlib.Path,
+    ) -> dict[str, Any]:
+        """Bind bounded conditional writes into reconstructed line storage."""
+        semantics = contract.get("semantics", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        ports = [
+            port
+            for port in (contract.get("interface", {}) or {}).get("ports", [])
+            if isinstance(port, dict)
+        ]
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        outputs = [port for port in ports if port.get("direction") == "output"]
+        input_names = {str(port.get("name")) for port in inputs}
+        output_names = {str(port.get("name")) for port in outputs}
+        selected_ports = [
+            str(value) for value in bindings.get("selected_ports", [])
+        ]
+        component_ports = [
+            str(value) for value in bindings.get("component_ports", [])
+        ]
+        unit_start_ports = [
+            str(value) for value in bindings.get("unit_start_ports", [])
+        ]
+        reconstruction_ports = [
+            [str(value) for value in row]
+            for row in bindings.get("reconstruction_ports", [])
+        ]
+        sidebands = [
+            {
+                key: str(item.get(key, ""))
+                for key in ("enable", "component", "address", "value")
+            }
+            for item in bindings.get("write_sidebands", [])
+            if isinstance(item, dict)
+        ]
+        max_units = int(semantics.get("max_units", 0) or 0)
+        samples_per_unit = int(
+            semantics.get("samples_per_unit", 0) or 0
+        )
+        write_slots = int(semantics.get("write_slots", 0) or 0)
+        if (
+            max_units <= 0
+            or samples_per_unit <= 0
+            or write_slots != max_units * samples_per_unit
+            or len(selected_ports) != max_units
+            or len(component_ports) != max_units
+            or len(unit_start_ports) != max_units
+            or len(reconstruction_ports) != max_units
+            or any(
+                len(row) != samples_per_unit
+                for row in reconstruction_ports
+            )
+            or len(sidebands) != write_slots
+        ):
+            raise RuntimeError(
+                "midpoint line-write dimensions are incomplete"
+            )
+        scalar_port_names = {
+            str(bindings.get("hpos_port", "")),
+            str(bindings.get("pixels_per_group_port", "")),
+            str(bindings.get("units_per_group_port", "")),
+            str(bindings.get("slice_width_port", "")),
+        }
+        expected_inputs = {
+            *scalar_port_names,
+            *selected_ports,
+            *component_ports,
+            *unit_start_ports,
+            *[
+                port
+                for row in reconstruction_ports
+                for port in row
+            ],
+        }
+        expected_outputs = {
+            value for item in sidebands for value in item.values()
+        }
+        if expected_inputs != input_names or expected_outputs != output_names:
+            raise RuntimeError(
+                "midpoint line-write ports do not match the frozen interface"
+            )
+
+        parameters = self.function_parameters(contract)
+        parameter_by_name = {
+            str(parameter.get("name")): parameter for parameter in parameters
+        }
+        config_parameter = str(bindings.get("config_parameter", ""))
+        state_parameter = str(bindings.get("state_parameter", ""))
+        line_parameter = str(bindings.get("line_parameter", ""))
+        hpos_parameter = str(bindings.get("hpos_parameter", ""))
+        if not {
+            config_parameter,
+            state_parameter,
+            line_parameter,
+            hpos_parameter,
+        }.issubset(parameter_by_name):
+            raise RuntimeError(
+                "midpoint line-write parameter bindings are incomplete"
+            )
+        if not parameter_is_pointer(parameter_by_name[state_parameter]):
+            raise RuntimeError(
+                "midpoint line-write state parameter must be a pointer"
+            )
+        if not parameter_is_pointer(parameter_by_name[line_parameter]):
+            raise RuntimeError(
+                "midpoint line-write output parameter must be a pointer"
+            )
+
+        field_names = {
+            key: str(bindings.get(key, ""))
+            for key in (
+                "pixels_per_group_field",
+                "units_per_group_field",
+                "slice_width_field",
+                "selected_field",
+                "component_field",
+                "unit_start_field",
+                "reconstruction_field",
+            )
+        }
+        identifier = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+        if not all(
+            identifier.fullmatch(value) for value in field_names.values()
+        ):
+            raise RuntimeError(
+                "midpoint line-write state-field bindings are invalid"
+            )
+        pixels_field = field_names["pixels_per_group_field"]
+        units_field = field_names["units_per_group_field"]
+        slice_field = field_names["slice_width_field"]
+        selected_field = field_names["selected_field"]
+        component_field = field_names["component_field"]
+        unit_start_field = field_names["unit_start_field"]
+        reconstruction_field = field_names["reconstruction_field"]
+
+        parameter_specs = [
+            f"{str(parameter.get('type', 'int')).strip()} {parameter.get('name')}"
+            for parameter in parameters
+        ]
+        parameter_names = [str(parameter.get("name")) for parameter in parameters]
+        caller_declarations = ", ".join(parameter_specs)
+        alias_call = ", ".join(parameter_names)
+        function_name = str(contract_function(contract).get("name"))
+        original = function_name + "_original"
+        input_declarations = ", ".join(
+            f"int {port['name']}" for port in inputs
+        )
+        rtl_expressions = {
+            str(bindings["hpos_port"]): hpos_parameter,
+            str(bindings["pixels_per_group_port"]): (
+                f"{state_parameter}->{pixels_field}"
+            ),
+            str(bindings["units_per_group_port"]): (
+                f"{state_parameter}->{units_field}"
+            ),
+            str(bindings["slice_width_port"]): (
+                f"{state_parameter}->{slice_field}"
+            ),
+        }
+        for unit in range(max_units):
+            rtl_expressions[selected_ports[unit]] = (
+                f"{state_parameter}->{selected_field}[{unit}]"
+            )
+            rtl_expressions[component_ports[unit]] = (
+                f"{state_parameter}->{component_field}[{unit}]"
+            )
+            rtl_expressions[unit_start_ports[unit]] = (
+                f"{state_parameter}->{unit_start_field}[{unit}]"
+            )
+            for sample in range(samples_per_unit):
+                rtl_expressions[reconstruction_ports[unit][sample]] = (
+                    f"{state_parameter}->{reconstruction_field}"
+                    f"[{unit}][{sample}]"
+                )
+        rtl_arguments = [rtl_expressions[str(port["name"])] for port in inputs]
+        output_port_order = [str(port["name"]) for port in outputs]
+        output_variables = {
+            name: f"dsc_cicd_rtl_{name}" for name in output_port_order
+        }
+        rtl_call = ", ".join(
+            [
+                *rtl_arguments,
+                *[
+                    f"&{output_variables[name]}"
+                    for name in output_port_order
+                ],
+            ]
+        )
+        output_declarations = "".join(
+            f"    int {output_variables[name]} = 0;\n"
+            for name in output_port_order
+        )
+        enable_initializers = ", ".join(
+            output_variables[item["enable"]] for item in sidebands
+        )
+        component_initializers = ", ".join(
+            output_variables[item["component"]] for item in sidebands
+        )
+        address_initializers = ", ".join(
+            output_variables[item["address"]] for item in sidebands
+        )
+        value_initializers = ", ".join(
+            output_variables[item["value"]] for item in sidebands
+        )
+
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n"
+            "#define DSC_CICD_OVERLAY_H\n"
+            "#include \"dsc_types.h\"\n"
+            f"void dsc_cicd_invoke({caller_declarations});\n"
+            "#endif\n",
+            encoding="utf-8",
+        )
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdio.h>\n"
+            "#include <stdlib.h>\n"
+            "#include <string.h>\n"
+            "#include \"dsc_cicd_overlay.h\"\n"
+            f"extern void {original}({caller_declarations});\n"
+            f"extern void dsc_cicd_rtl({input_declarations}, "
+            + ", ".join(f"int *{name}" for name in output_port_order)
+            + ");\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n"
+            "}\n"
+            + self.overlay_runtime_metrics_source()
+            + f"void dsc_cicd_invoke({caller_declarations}) {{\n"
+            f"    int dsc_cicd_expected_enable[{write_slots}] = {{0}};\n"
+            f"    int dsc_cicd_expected_component[{write_slots}] = {{0}};\n"
+            f"    int dsc_cicd_expected_address[{write_slots}] = {{0}};\n"
+            f"    int dsc_cicd_pre[{write_slots}] = {{0}};\n"
+            f"    int dsc_cicd_start_hpos = {hpos_parameter} - "
+            f"({hpos_parameter} % {state_parameter}->{pixels_field});\n"
+            f"    for (int sample = 0; sample < {samples_per_unit}; ++sample) {{\n"
+            "        int active = sample == 0 || "
+            f"({hpos_parameter} + sample - 1 < "
+            f"{state_parameter}->{slice_field});\n"
+            f"        for (int unit = 0; unit < {max_units}; ++unit) {{\n"
+            f"            int slot = sample * {max_units} + unit;\n"
+            "            dsc_cicd_expected_enable[slot] = "
+            f"unit < {state_parameter}->{units_field} && "
+            f"{state_parameter}->{selected_field}[unit] && active;\n"
+            "            dsc_cicd_expected_component[slot] = "
+            f"{state_parameter}->{component_field}[unit];\n"
+            "            dsc_cicd_expected_address[slot] = "
+            "dsc_cicd_start_hpos + "
+            f"{int(semantics.get('padding_left', 0))} + "
+            f"{state_parameter}->{unit_start_field}[unit] + sample;\n"
+            "            if (dsc_cicd_expected_enable[slot])\n"
+            "                dsc_cicd_pre[slot] = "
+            f"{line_parameter}[dsc_cicd_expected_component[slot]]"
+            "[dsc_cicd_expected_address[slot]];\n"
+            "        }\n"
+            "    }\n"
+            f"    {original}({alias_call});\n"
+            f"    int dsc_cicd_c_after[{write_slots}] = {{0}};\n"
+            f"    for (int slot = 0; slot < {write_slots}; ++slot) {{\n"
+            "        if (dsc_cicd_expected_enable[slot])\n"
+            "            dsc_cicd_c_after[slot] = "
+            f"{line_parameter}[dsc_cicd_expected_component[slot]]"
+            "[dsc_cicd_expected_address[slot]];\n"
+            "    }\n"
+            "    int mode = dsc_cicd_mode();\n"
+            "    dsc_cicd_note_call(mode);\n"
+            "    if (mode == 0) return;\n"
+            + output_declarations
+            + f"    dsc_cicd_rtl({rtl_call});\n"
+            f"    int dsc_cicd_rtl_enable[{write_slots}] = "
+            f"{{{enable_initializers}}};\n"
+            f"    int dsc_cicd_rtl_component[{write_slots}] = "
+            f"{{{component_initializers}}};\n"
+            f"    int dsc_cicd_rtl_address[{write_slots}] = "
+            f"{{{address_initializers}}};\n"
+            f"    int dsc_cicd_rtl_value[{write_slots}] = "
+            f"{{{value_initializers}}};\n"
+            f"    int dsc_cicd_merged[{write_slots}];\n"
+            f"    memcpy(dsc_cicd_merged, dsc_cicd_pre, "
+            f"sizeof(dsc_cicd_merged));\n"
+            "    int dsc_cicd_sideband_mismatch = 0;\n"
+            f"    for (int slot = 0; slot < {write_slots}; ++slot) {{\n"
+            "        dsc_cicd_sideband_mismatch |= "
+            "dsc_cicd_rtl_enable[slot] != "
+            "dsc_cicd_expected_enable[slot];\n"
+            "        if (dsc_cicd_expected_enable[slot] || "
+            "dsc_cicd_rtl_enable[slot]) {\n"
+            "            dsc_cicd_sideband_mismatch |= "
+            "dsc_cicd_rtl_component[slot] != "
+            "dsc_cicd_expected_component[slot];\n"
+            "            dsc_cicd_sideband_mismatch |= "
+            "dsc_cicd_rtl_address[slot] != "
+            "dsc_cicd_expected_address[slot];\n"
+            "        }\n"
+            "        if (dsc_cicd_rtl_enable[slot] && "
+            "dsc_cicd_rtl_component[slot] == "
+            "dsc_cicd_expected_component[slot] && "
+            "dsc_cicd_rtl_address[slot] == "
+            "dsc_cicd_expected_address[slot]) {\n"
+            f"            for (int alias = 0; alias < {write_slots}; ++alias) {{\n"
+            "                if (dsc_cicd_expected_enable[alias] && "
+            "dsc_cicd_expected_component[alias] == "
+            "dsc_cicd_rtl_component[slot] && "
+            "dsc_cicd_expected_address[alias] == "
+            "dsc_cicd_rtl_address[slot])\n"
+            "                    dsc_cicd_merged[alias] = "
+            "dsc_cicd_rtl_value[slot];\n"
+            "            }\n"
+            "        }\n"
+            "    }\n"
+            "    int dsc_cicd_data_mismatch = 0;\n"
+            f"    for (int slot = 0; slot < {write_slots}; ++slot) {{\n"
+            "        if (dsc_cicd_expected_enable[slot])\n"
+            "            dsc_cicd_data_mismatch |= "
+            "dsc_cicd_merged[slot] != dsc_cicd_c_after[slot];\n"
+            "    }\n"
+            "    if (dsc_cicd_sideband_mismatch || "
+            "dsc_cicd_data_mismatch) {\n"
+            "        ++dsc_cicd_mismatches;\n"
+            "        fprintf(stderr, \"C/RTL mismatch: sideband=%d "
+            "data=%d hpos=%d units=%d slice_width=%d\\n\",\n"
+            "                dsc_cicd_sideband_mismatch, "
+            f"dsc_cicd_data_mismatch, {hpos_parameter}, "
+            f"{state_parameter}->{units_field}, "
+            f"{state_parameter}->{slice_field});\n"
+            "    }\n"
+            "    if (mode == 2) {\n"
+            f"        for (int slot = 0; slot < {write_slots}; ++slot) {{\n"
+            "            if (dsc_cicd_expected_enable[slot])\n"
+            f"                {line_parameter}"
+            "[dsc_cicd_expected_component[slot]]"
+            "[dsc_cicd_expected_address[slot]] = "
+            "dsc_cicd_merged[slot];\n"
+            "        }\n"
+            "    }\n"
+            "}\n"
+            + f"void {function_name}({caller_declarations}) {{\n"
+            f"    dsc_cicd_invoke({alias_call});\n"
+            "}\n",
+            encoding="utf-8",
+        )
+
+        assignments = "\n".join(
+            f"    dut.{port['name']} = "
+            f"static_cast<unsigned long long>({port['name']});"
+            for port in inputs
+        )
+        bridge = source_dir / "rtl_bridge.cpp"
+        bridge.write_text(
+            "#include <cstdint>\n"
+            "#include \"verilated.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            f'extern "C" void dsc_cicd_rtl({input_declarations}, '
+            + ", ".join(f"int *{name}" for name in output_port_order)
+            + ") {\n"
+            f"    V{safe_identifier(module)} dut;\n"
+            f"{assignments}\n"
+            "    dut.eval();\n"
+            + "".join(
+                f"    *{name} = static_cast<int>(dut.{name});\n"
+                for name in output_port_order
+            )
+            + "}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\n"
+            "extern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) {\n"
+            "    return dsc_cicd_original_main(argc, argv);\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        return {
+            "header": header,
+            "overlay": overlay,
+            "bridge": bridge,
+            "main": main,
+            "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": (
+                    "explicit_bounded_midpoint_line_write_transition"
+                ),
+                "caller_parameter_count": len(parameters),
+                "rtl_input_count": len(inputs),
+                "frozen_input_ports": [
+                    str(port.get("name")) for port in inputs
+                ],
+                "rtl_bindings": rtl_arguments,
+                "state_outputs": output_port_order,
+                "rtl_return_controls_all_enabled_line_writes": True,
+                "final_aliased_line_image_compared": True,
+                "residual_symbol_alias_routes_to_dispatcher": True,
+            },
+        }
+
+    def write_populate_orig_line_transition_overlay_sources(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        module: str,
+        candidate_sv: pathlib.Path,
+    ) -> dict[str, Any]:
+        """Replace a picture-to-origLine leaf with request-driven RTL.
+
+        The immutable C function is called against private line storage and
+        its pointers are restored before the generated transaction loop runs.
+        RTL owns the source address calculation: the adapter only services
+        the plane/y/x request returned by RTL and supplies the returned pixel.
+        In RTL_RETURN the final line image is copied from RTL sidebands; the
+        C image is used solely as the comparison oracle.
+        """
+        semantics = contract.get("semantics", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        ports = [
+            port
+            for port in (contract.get("interface", {}) or {}).get("ports", [])
+            if isinstance(port, dict)
+        ]
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        outputs = [port for port in ports if port.get("direction") == "output"]
+        input_names = {str(port.get("name")) for port in inputs}
+        output_names = {str(port.get("name")) for port in outputs}
+        expected_inputs = {
+            str(bindings.get(key, ""))
+            for key in (
+                "native_420_port",
+                "native_422_port",
+                "xstart_port",
+                "ystart_port",
+                "num_components_port",
+                "slice_width_port",
+                "picture_width_port",
+                "picture_height_port",
+                "vpos_port",
+                "component_port",
+                "sample_index_port",
+                "component_depth_port",
+                "pixel_data_port",
+            )
+        }
+        expected_outputs = {
+            str(bindings.get(key, ""))
+            for key in (
+                "read_enable_port",
+                "read_plane_port",
+                "read_y_port",
+                "read_x_port",
+                "write_enable_port",
+                "write_component_port",
+                "write_address_port",
+                "write_value_port",
+                "illegal_domain_port",
+            )
+        }
+        if "" in expected_inputs or "" in expected_outputs or expected_inputs != input_names or expected_outputs != output_names:
+            raise RuntimeError("PopulateOrigLine ports do not match the frozen interface")
+
+        parameters = self.function_parameters(contract)
+        parameter_by_name = {
+            str(parameter.get("name")): parameter for parameter in parameters
+        }
+        config_parameter = str(bindings.get("config_parameter", ""))
+        state_parameter = str(bindings.get("state_parameter", ""))
+        picture_parameter = str(bindings.get("picture_parameter", ""))
+        vpos_parameter = str(bindings.get("vpos_parameter", ""))
+        if not {config_parameter, state_parameter, picture_parameter, vpos_parameter}.issubset(parameter_by_name):
+            raise RuntimeError("PopulateOrigLine parameter bindings are incomplete")
+        for pointer_name in (config_parameter, state_parameter, picture_parameter):
+            if not parameter_is_pointer(parameter_by_name[pointer_name]):
+                raise RuntimeError(f"PopulateOrigLine parameter is not a pointer: {pointer_name}")
+
+        component_count = int(semantics.get("component_count", 0) or 0)
+        padding_left = int(semantics.get("padding_left", 0) or 0)
+        padding_right = int(semantics.get("padding_right", 0) or 0)
+        max_slice_width = int(semantics.get("max_slice_width", 0) or 0)
+        max_slice_height = int(semantics.get("max_slice_height", 0) or 0)
+        if component_count <= 0 or padding_left < 0 or padding_right < 0 or max_slice_width <= 0 or max_slice_height <= 0:
+            raise RuntimeError("PopulateOrigLine bounds are incomplete")
+
+        parameter_specs = [
+            f"{str(parameter.get('type', 'int')).strip()} {parameter.get('name')}"
+            for parameter in parameters
+        ]
+        parameter_names = [str(parameter.get("name")) for parameter in parameters]
+        caller_declarations = ", ".join(parameter_specs)
+        alias_call = ", ".join(parameter_names)
+        function_name = str(contract_function(contract).get("name"))
+        original = function_name + "_original"
+        input_declarations = ", ".join(f"int {port['name']}" for port in inputs)
+        output_declarations = ", ".join(f"int *{port['name']}" for port in outputs)
+
+        def binding_port(key: str) -> str:
+            value = str(bindings.get(key, ""))
+            if value not in input_names | output_names:
+                raise RuntimeError(f"PopulateOrigLine binding is not a frozen port: {value}")
+            return value
+
+        native_420_port = binding_port("native_420_port")
+        native_422_port = binding_port("native_422_port")
+        xstart_port = binding_port("xstart_port")
+        ystart_port = binding_port("ystart_port")
+        num_components_port = binding_port("num_components_port")
+        slice_width_port = binding_port("slice_width_port")
+        picture_width_port = binding_port("picture_width_port")
+        picture_height_port = binding_port("picture_height_port")
+        vpos_port = binding_port("vpos_port")
+        component_port = binding_port("component_port")
+        sample_index_port = binding_port("sample_index_port")
+        component_depth_port = binding_port("component_depth_port")
+        pixel_data_port = binding_port("pixel_data_port")
+        read_enable_port = binding_port("read_enable_port")
+        read_plane_port = binding_port("read_plane_port")
+        read_y_port = binding_port("read_y_port")
+        read_x_port = binding_port("read_x_port")
+        write_enable_port = binding_port("write_enable_port")
+        write_component_port = binding_port("write_component_port")
+        write_address_port = binding_port("write_address_port")
+        write_value_port = binding_port("write_value_port")
+        illegal_domain_port = binding_port("illegal_domain_port")
+
+        rtl_expressions = {
+            native_420_port: f"{config_parameter}->{str(bindings.get('native_420_field', 'native_420'))}",
+            native_422_port: f"{config_parameter}->{str(bindings.get('native_422_field', 'native_422'))}",
+            xstart_port: f"{config_parameter}->{str(bindings.get('xstart_field', 'xstart'))}",
+            ystart_port: f"{config_parameter}->{str(bindings.get('ystart_field', 'ystart'))}",
+            num_components_port: f"{state_parameter}->{str(bindings.get('num_components_field', 'numComponents'))}",
+            slice_width_port: f"{state_parameter}->{str(bindings.get('slice_width_field', 'sliceWidth'))}",
+            picture_width_port: f"{picture_parameter}->{str(bindings.get('picture_width_field', 'w'))}",
+            picture_height_port: f"{picture_parameter}->{str(bindings.get('picture_height_field', 'h'))}",
+            vpos_port: vpos_parameter,
+            component_port: "dsc_cicd_component",
+            sample_index_port: "dsc_cicd_sample",
+            component_depth_port: f"{state_parameter}->{str(bindings.get('component_depth_field', 'cpntBitDepth'))}[dsc_cicd_component]",
+            pixel_data_port: "dsc_cicd_pixel_data",
+        }
+        if set(rtl_expressions) != input_names:
+            raise RuntimeError("PopulateOrigLine RTL input bindings are incomplete")
+        rtl_arguments = [rtl_expressions[str(port["name"])] for port in inputs]
+        output_variables = {
+            name: f"dsc_cicd_rtl_{name}" for name in output_names
+        }
+        rtl_call = ", ".join(
+            [
+                *rtl_arguments,
+                *[f"&{output_variables[str(port['name'])]}" for port in outputs],
+            ]
+        )
+        output_declarations_source = "".join(
+            f"    int {output_variables[str(port['name'])]} = 0;\n"
+            for port in outputs
+        )
+
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n"
+            "#define DSC_CICD_OVERLAY_H\n"
+            "#include \"dsc_types.h\"\n"
+            "#include \"vdo.h\"\n"
+            f"void dsc_cicd_invoke({caller_declarations});\n"
+            "#endif\n",
+            encoding="utf-8",
+        )
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdio.h>\n"
+            "#include <stdlib.h>\n"
+            "#include <string.h>\n"
+            "#include \"dsc_cicd_overlay.h\"\n"
+            f"extern void {original}({caller_declarations});\n"
+            f"extern void dsc_cicd_rtl({input_declarations}, {output_declarations});\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n"
+            "}\n"
+            "static int dsc_cicd_read_pixel(pic_t *picture, int plane, int y, int x, int *valid) {\n"
+            "    *valid = 0;\n"
+            "    if (plane == 0 && picture->data.yuv.y && picture->data.yuv.y[y]) { *valid = 1; return picture->data.yuv.y[y][x]; }\n"
+            "    if (plane == 1 && picture->data.yuv.u && picture->data.yuv.u[y]) { *valid = 1; return picture->data.yuv.u[y][x]; }\n"
+            "    if (plane == 2 && picture->data.yuv.v && picture->data.yuv.v[y]) { *valid = 1; return picture->data.yuv.v[y][x]; }\n"
+            "    return 0;\n"
+            "}\n"
+            + self.overlay_runtime_metrics_source()
+            + f"void dsc_cicd_invoke({caller_declarations}) {{\n"
+            "    int mode = dsc_cicd_mode();\n"
+            "    dsc_cicd_note_call(mode);\n"
+            f"    if (!{config_parameter} || !{state_parameter} || !{picture_parameter} || "
+            f"{state_parameter}->numComponents < 1 || {state_parameter}->numComponents > {component_count} || "
+            f"{state_parameter}->sliceWidth < 1 || {state_parameter}->sliceWidth > {max_slice_width} || "
+            f"{vpos_parameter} < 0 || {vpos_parameter} > {max_slice_height} || "
+            f"{config_parameter}->native_420 < 0 || {config_parameter}->native_420 > 1 || "
+            f"{config_parameter}->native_422 < 0 || {config_parameter}->native_422 > 1 || "
+            f"({config_parameter}->native_420 && {config_parameter}->native_422) || "
+            f"{config_parameter}->xstart < 0 || {config_parameter}->xstart > {max_slice_width} || "
+            f"{config_parameter}->ystart < 0 || {config_parameter}->ystart > {max_slice_height} || "
+            f"{picture_parameter}->w < 1 || {picture_parameter}->w > {max_slice_width} || "
+            f"{picture_parameter}->h < 1 || {picture_parameter}->h > {max_slice_height} || "
+            f"!{picture_parameter}->data.yuv.y || !{picture_parameter}->data.yuv.u || !{picture_parameter}->data.yuv.v || "
+            f"({config_parameter}->native_422 == 0 && {state_parameter}->numComponents > 3) || "
+            f"({config_parameter}->native_422 && {picture_parameter}->w < 2)) {{\n"
+            "        ++dsc_cicd_mismatches;\n"
+            "        return;\n"
+            "    }\n"
+            f"    int dsc_cicd_line_extent = {state_parameter}->sliceWidth + {padding_left} + {padding_right};\n"
+            f"    int *dsc_cicd_saved_line[{component_count}] = {{0}};\n"
+            f"    int *dsc_cicd_private_line[{component_count}] = {{0}};\n"
+            f"    int *dsc_cicd_rtl_line[{component_count}] = {{0}};\n"
+            f"    for (int cpnt = 0; cpnt < {state_parameter}->numComponents; ++cpnt) {{\n"
+            f"        if (!{state_parameter}->origLine[cpnt] || {state_parameter}->cpntBitDepth[cpnt] < 1 || {state_parameter}->cpntBitDepth[cpnt] > 30) {{\n"
+            "            ++dsc_cicd_mismatches;\n"
+            f"            for (int restore_cpnt = 0; restore_cpnt < cpnt; ++restore_cpnt) {state_parameter}->origLine[restore_cpnt] = dsc_cicd_saved_line[restore_cpnt];\n"
+            "            return;\n"
+            "        }\n"
+            "        dsc_cicd_saved_line[cpnt] = "
+            f"{state_parameter}->origLine[cpnt];\n"
+            "        dsc_cicd_private_line[cpnt] = (int *)calloc((size_t)dsc_cicd_line_extent, sizeof(int));\n"
+            "        dsc_cicd_rtl_line[cpnt] = (int *)calloc((size_t)dsc_cicd_line_extent, sizeof(int));\n"
+            "        if (!dsc_cicd_private_line[cpnt] || !dsc_cicd_rtl_line[cpnt]) {\n"
+            "            ++dsc_cicd_mismatches;\n"
+            f"            for (int restore_cpnt = 0; restore_cpnt < cpnt; ++restore_cpnt) {state_parameter}->origLine[restore_cpnt] = dsc_cicd_saved_line[restore_cpnt];\n"
+            f"            for (int free_cpnt = 0; free_cpnt <= cpnt; ++free_cpnt) {{ free(dsc_cicd_private_line[free_cpnt]); free(dsc_cicd_rtl_line[free_cpnt]); }}\n"
+            "            return;\n"
+            "        }\n"
+            f"        {state_parameter}->origLine[cpnt] = dsc_cicd_private_line[cpnt];\n"
+            "    }\n"
+            f"    {original}({alias_call});\n"
+            f"    for (int cpnt = 0; cpnt < {state_parameter}->numComponents; ++cpnt)\n"
+            f"        {state_parameter}->origLine[cpnt] = dsc_cicd_saved_line[cpnt];\n"
+            "    if (mode == 0) {\n"
+            f"        for (int cpnt = 0; cpnt < {state_parameter}->numComponents; ++cpnt) {{\n"
+            f"            for (int sample = 0; sample < {state_parameter}->sliceWidth + {padding_right}; ++sample) {{\n"
+            f"                int address = sample + {padding_left};\n"
+            f"                {state_parameter}->origLine[cpnt][address] = dsc_cicd_private_line[cpnt][address];\n"
+            "            }\n"
+            "            free(dsc_cicd_private_line[cpnt]);\n"
+            "            free(dsc_cicd_rtl_line[cpnt]);\n"
+            "        }\n"
+            "        return;\n"
+            "    }\n"
+            "    int dsc_cicd_mismatch = 0;\n"
+            f"    for (int dsc_cicd_component = 0; dsc_cicd_component < {state_parameter}->numComponents; ++dsc_cicd_component) {{\n"
+            f"        for (int dsc_cicd_sample = 0; dsc_cicd_sample < {state_parameter}->sliceWidth + {padding_right}; ++dsc_cicd_sample) {{\n"
+            "            int dsc_cicd_pixel_data = 0;\n"
+            + output_declarations_source
+            + "            dsc_cicd_rtl(" + rtl_call + ");\n"
+            + "            int dsc_cicd_request_enable = " + output_variables[read_enable_port] + ";\n"
+            + "            int dsc_cicd_request_plane = " + output_variables[read_plane_port] + ";\n"
+            + "            int dsc_cicd_request_y = " + output_variables[read_y_port] + ";\n"
+            + "            int dsc_cicd_request_x = " + output_variables[read_x_port] + ";\n"
+            + "            if (dsc_cicd_request_enable) {\n"
+            + "                int dsc_cicd_memory_valid = 0;\n"
+            + f"                int dsc_cicd_source_width = {picture_parameter}->w;\n"
+            + f"                if ({config_parameter}->native_422 && (dsc_cicd_request_plane == 1 || dsc_cicd_request_plane == 2)) dsc_cicd_source_width >>= 1;\n"
+            + f"                if (dsc_cicd_request_plane < 0 || dsc_cicd_request_plane > 2 || dsc_cicd_request_y < 0 || dsc_cicd_request_y >= {picture_parameter}->h || dsc_cicd_request_x < 0 || dsc_cicd_request_x >= dsc_cicd_source_width) dsc_cicd_mismatch = 1;\n"
+            + "                else { dsc_cicd_pixel_data = dsc_cicd_read_pixel(" + picture_parameter + ", dsc_cicd_request_plane, dsc_cicd_request_y, dsc_cicd_request_x, &dsc_cicd_memory_valid); dsc_cicd_mismatch |= !dsc_cicd_memory_valid; }\n"
+            + "                dsc_cicd_rtl(" + rtl_call + ");\n"
+            + "                dsc_cicd_mismatch |= " + output_variables[read_enable_port] + " != dsc_cicd_request_enable;\n"
+            + "                dsc_cicd_mismatch |= " + output_variables[read_plane_port] + " != dsc_cicd_request_plane;\n"
+            + "                dsc_cicd_mismatch |= " + output_variables[read_y_port] + " != dsc_cicd_request_y;\n"
+            + "                dsc_cicd_mismatch |= " + output_variables[read_x_port] + " != dsc_cicd_request_x;\n"
+            + "            }\n"
+            + "            int dsc_cicd_address = dsc_cicd_sample + " + str(padding_left) + ";\n"
+            + "            int dsc_cicd_expected = dsc_cicd_private_line[dsc_cicd_component][dsc_cicd_address];\n"
+            + "            dsc_cicd_mismatch |= " + output_variables[illegal_domain_port] + " != 0;\n"
+            + "            dsc_cicd_mismatch |= " + output_variables[write_enable_port] + " != 1;\n"
+            + "            dsc_cicd_mismatch |= " + output_variables[write_component_port] + " != dsc_cicd_component;\n"
+            + "            dsc_cicd_mismatch |= " + output_variables[write_address_port] + " != dsc_cicd_address;\n"
+            + "            dsc_cicd_mismatch |= " + output_variables[write_value_port] + " != dsc_cicd_expected;\n"
+            + "            dsc_cicd_rtl_line[dsc_cicd_component][dsc_cicd_address] = " + output_variables[write_value_port] + ";\n"
+            + "        }\n"
+            + "    }\n"
+            + "    if (dsc_cicd_mismatch) {\n"
+            + "        ++dsc_cicd_mismatches;\n"
+            + "        fprintf(stderr, \"C/RTL PopulateOrigLine mismatch: mode=%d\\n\", mode);\n"
+            + "    }\n"
+            + f"    for (int dsc_cicd_component = 0; dsc_cicd_component < {state_parameter}->numComponents; ++dsc_cicd_component) {{\n"
+            + f"        for (int dsc_cicd_sample = 0; dsc_cicd_sample < {state_parameter}->sliceWidth + {padding_right}; ++dsc_cicd_sample) {{\n"
+            + "            int dsc_cicd_address = dsc_cicd_sample + " + str(padding_left) + ";\n"
+            + "            if (mode == 2) " + state_parameter + "->origLine[dsc_cicd_component][dsc_cicd_address] = dsc_cicd_rtl_line[dsc_cicd_component][dsc_cicd_address];\n"
+            + "            else " + state_parameter + "->origLine[dsc_cicd_component][dsc_cicd_address] = dsc_cicd_private_line[dsc_cicd_component][dsc_cicd_address];\n"
+            + "        }\n"
+            + "        free(dsc_cicd_private_line[dsc_cicd_component]);\n"
+            + "        free(dsc_cicd_rtl_line[dsc_cicd_component]);\n"
+            + "    }\n"
+            + "}\n"
+            + f"void {function_name}({caller_declarations}) {{\n"
+            + f"    dsc_cicd_invoke({alias_call});\n"
+            + "}\n",
+            encoding="utf-8",
+        )
+
+        assignments = "\n".join(
+            f"    dut.{port['name']} = static_cast<long long>({port['name']});"
+            for port in inputs
+        )
+        bridge = source_dir / "rtl_bridge.cpp"
+        bridge.write_text(
+            "#include <cstdint>\n"
+            "#include \"verilated.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            f"extern \"C\" void dsc_cicd_rtl({input_declarations}, {output_declarations}) {{\n"
+            f"    V{safe_identifier(module)} dut;\n"
+            f"{assignments}\n"
+            "    dut.eval();\n"
+            + "\n".join(
+                f"    *{port['name']} = static_cast<int>(dut.{port['name']});"
+                for port in outputs
+            )
+            + "\n}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\n"
+            "extern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) {\n"
+            "    return dsc_cicd_original_main(argc, argv);\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        return {
+            "header": header,
+            "overlay": overlay,
+            "bridge": bridge,
+            "main": main,
+            "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": "explicit_populate_orig_line_memory_request_transition",
+                "caller_parameter_count": len(parameters),
+                "rtl_input_count": len(inputs),
+                "frozen_input_ports": [str(port.get("name")) for port in inputs],
+                "rtl_bindings": rtl_arguments,
+                "state_outputs": [str(port.get("name")) for port in outputs],
+                "external_pic_memory_is_read_only": True,
+                "rtl_produces_plane_y_x_request": True,
+                "adapter_services_rtl_memory_request": True,
+                "c_oracle_uses_private_orig_line_storage": True,
+                "c_oracle_state_pointers_restored_before_rtl": True,
+                "rtl_return_commits_rtl_line_image_without_c_fallback": True,
+                "every_touched_output_element_compared": True,
+                "residual_symbol_alias_routes_to_dispatcher": True,
+            },
+        }
+
+    def write_bounded_ich_decision_transition_overlay_sources(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        module: str,
+        candidate_sv: pathlib.Path,
+    ) -> dict[str, Any]:
+        """Bind a fixed-lane ICH decision composed from accepted child results."""
+        semantics = contract.get("semantics", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        ports = [
+            port
+            for port in (contract.get("interface", {}) or {}).get("ports", [])
+            if isinstance(port, dict)
+        ]
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        outputs = [port for port in ports if port.get("direction") == "output"]
+        if len(outputs) != 1:
+            raise RuntimeError(
+                "ICH decision must expose exactly one return output"
+            )
+        input_names = {str(port.get("name")) for port in inputs}
+        return_port = str(bindings.get("return_port", ""))
+        if {str(port.get("name")) for port in outputs} != {return_port}:
+            raise RuntimeError("ICH decision return binding is invalid")
+        max_units = int(semantics.get("max_units", 0) or 0)
+        max_mid_ports = [
+            str(value)
+            for value in bindings.get("max_mid_error_ports", [])
+        ]
+        max_error_ports = [
+            str(value) for value in bindings.get("max_error_ports", [])
+        ]
+        max_ich_ports = [
+            str(value)
+            for value in bindings.get("max_ich_error_ports", [])
+        ]
+        using_ports = [
+            str(value)
+            for value in bindings.get("using_midpoint_ports", [])
+        ]
+        scalar_ports = {
+            str(bindings.get("adjusted_size_port", "")),
+            str(bindings.get("alternate_prefix_port", "")),
+            str(bindings.get("alternate_size_port", "")),
+            str(bindings.get("version_port", "")),
+            str(bindings.get("units_port", "")),
+            str(bindings.get("previous_ich_port", "")),
+            str(bindings.get("ich_indices_port", "")),
+            str(bindings.get("estimated_bits_port", "")),
+            str(bindings.get("flat_index_port", "")),
+        }
+        if (
+            max_units <= 0
+            or len(max_mid_ports) != max_units
+            or len(max_error_ports) != max_units
+            or len(max_ich_ports) != max_units
+            or len(using_ports) != max_units
+            or {
+                *scalar_ports,
+                *max_mid_ports,
+                *max_error_ports,
+                *max_ich_ports,
+                *using_ports,
+            }
+            != input_names
+        ):
+            raise RuntimeError(
+                "ICH decision ports do not match the frozen interface"
+            )
+
+        parameters = self.function_parameters(contract)
+        parameter_by_name = {
+            str(parameter.get("name")): parameter for parameter in parameters
+        }
+        config_parameter = str(bindings.get("config_parameter", ""))
+        state_parameter = str(bindings.get("state_parameter", ""))
+        adjusted_parameter = str(
+            bindings.get("adjusted_size_parameter", "")
+        )
+        alternate_prefix_parameter = str(
+            bindings.get("alternate_prefix_parameter", "")
+        )
+        alternate_size_parameter = str(
+            bindings.get("alternate_size_parameter", "")
+        )
+        if not {
+            config_parameter,
+            state_parameter,
+            adjusted_parameter,
+            alternate_prefix_parameter,
+            alternate_size_parameter,
+        }.issubset(parameter_by_name):
+            raise RuntimeError(
+                "ICH decision parameter bindings are incomplete"
+            )
+        if not parameter_is_pointer(parameter_by_name[config_parameter]):
+            raise RuntimeError("ICH decision config must be a pointer")
+        if not parameter_is_pointer(parameter_by_name[state_parameter]):
+            raise RuntimeError("ICH decision state must be a pointer")
+
+        field_names = {
+            key: str(bindings.get(key, ""))
+            for key in (
+                "version_field",
+                "units_field",
+                "previous_ich_field",
+                "ich_indices_field",
+                "hpos_field",
+                "unit_type_field",
+                "max_mid_error_field",
+                "max_error_field",
+                "max_ich_error_field",
+            )
+        }
+        callee_names = {
+            key: str(bindings.get(key, ""))
+            for key in (
+                "midpoint_callee",
+                "estimate_callee",
+                "flat_callee",
+                "log_callee",
+            )
+        }
+        identifier = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+        if not all(
+            identifier.fullmatch(value)
+            for value in [*field_names.values(), *callee_names.values()]
+        ):
+            raise RuntimeError(
+                "ICH decision field or callee bindings are invalid"
+            )
+        version_field = field_names["version_field"]
+        units_field = field_names["units_field"]
+        previous_ich_field = field_names["previous_ich_field"]
+        ich_indices_field = field_names["ich_indices_field"]
+        hpos_field = field_names["hpos_field"]
+        unit_type_field = field_names["unit_type_field"]
+        max_mid_field = field_names["max_mid_error_field"]
+        max_error_field = field_names["max_error_field"]
+        max_ich_field = field_names["max_ich_error_field"]
+        midpoint_callee = callee_names["midpoint_callee"]
+        estimate_callee = callee_names["estimate_callee"]
+        flat_callee = callee_names["flat_callee"]
+
+        parameter_specs = [
+            f"{str(parameter.get('type', 'int')).strip()} {parameter.get('name')}"
+            for parameter in parameters
+        ]
+        parameter_names = [str(parameter.get("name")) for parameter in parameters]
+        caller_declarations = ", ".join(parameter_specs)
+        caller_call = ", ".join(parameter_names)
+        function_name = str(contract_function(contract).get("name"))
+        original = function_name + "_original"
+        input_declarations = ", ".join(
+            f"int {port['name']}" for port in inputs
+        )
+        rtl_expressions = {
+            str(bindings["adjusted_size_port"]): adjusted_parameter,
+            str(bindings["alternate_prefix_port"]): (
+                alternate_prefix_parameter
+            ),
+            str(bindings["alternate_size_port"]): alternate_size_parameter,
+            str(bindings["version_port"]): (
+                f"{config_parameter}->{version_field}"
+            ),
+            str(bindings["units_port"]): (
+                f"{state_parameter}->{units_field}"
+            ),
+            str(bindings["previous_ich_port"]): (
+                f"{state_parameter}->{previous_ich_field}"
+            ),
+            str(bindings["ich_indices_port"]): (
+                f"{state_parameter}->{ich_indices_field}"
+            ),
+            str(bindings["estimated_bits_port"]): (
+                "dsc_cicd_estimated_bits"
+            ),
+            str(bindings["flat_index_port"]): "dsc_cicd_flat_index",
+        }
+        using_declarations = []
+        for unit in range(max_units):
+            using_declarations.append(
+                f"    int dsc_cicd_using_{unit} = 0;\n"
+                f"    if ({unit} < {state_parameter}->{units_field})\n"
+                f"        dsc_cicd_using_{unit} = {midpoint_callee}("
+                f"{config_parameter}, {state_parameter}, {unit}, "
+                f"{state_parameter}->{unit_type_field}[{unit}]);\n"
+            )
+            rtl_expressions[using_ports[unit]] = (
+                f"dsc_cicd_using_{unit}"
+            )
+            rtl_expressions[max_mid_ports[unit]] = (
+                f"{state_parameter}->{max_mid_field}[{unit}]"
+            )
+            rtl_expressions[max_error_ports[unit]] = (
+                f"{state_parameter}->{max_error_field}[{unit}]"
+            )
+            rtl_expressions[max_ich_ports[unit]] = (
+                f"{state_parameter}->{max_ich_field}[{unit}]"
+            )
+        rtl_arguments = [rtl_expressions[str(port["name"])] for port in inputs]
+        rtl_call = ", ".join(rtl_arguments)
+
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n"
+            "#define DSC_CICD_OVERLAY_H\n"
+            "#include \"dsc_types.h\"\n"
+            f"int dsc_cicd_invoke({caller_declarations});\n"
+            "#endif\n",
+            encoding="utf-8",
+        )
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdio.h>\n"
+            "#include <stdlib.h>\n"
+            "#include <string.h>\n"
+            "#include \"dsc_cicd_overlay.h\"\n"
+            f"extern int {original}({caller_declarations});\n"
+            f"extern int {midpoint_callee}(dsc_cfg_t *, "
+            "dsc_state_t *, int, int);\n"
+            f"extern int {estimate_callee}(dsc_cfg_t *, dsc_state_t *);\n"
+            f"extern int {flat_callee}(dsc_cfg_t *, dsc_state_t *, int);\n"
+            f"extern int dsc_cicd_rtl({input_declarations});\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n"
+            "}\n"
+            + self.overlay_runtime_metrics_source()
+            + f"int dsc_cicd_invoke({caller_declarations}) {{\n"
+            f"    int c_value = {original}({caller_call});\n"
+            "    int mode = dsc_cicd_mode();\n"
+            "    dsc_cicd_note_call(mode);\n"
+            "    if (mode == 0) return c_value;\n"
+            + "".join(using_declarations)
+            + f"    int dsc_cicd_estimated_bits = {estimate_callee}("
+            f"{config_parameter}, {state_parameter});\n"
+            "    int dsc_cicd_flat_index = 0;\n"
+            f"    if ({config_parameter}->{version_field} == 2)\n"
+            f"        dsc_cicd_flat_index = {flat_callee}("
+            f"{config_parameter}, {state_parameter}, "
+            f"{state_parameter}->{hpos_field});\n"
+            f"    int rtl_value = dsc_cicd_rtl({rtl_call});\n"
+            "    if (rtl_value != c_value) {\n"
+            "        ++dsc_cicd_mismatches;\n"
+            "        fprintf(stderr, \"C/RTL mismatch: c=%d rtl=%d "
+            "units=%d version=%d\\n\", c_value, rtl_value, "
+            f"{state_parameter}->{units_field}, "
+            f"{config_parameter}->{version_field});\n"
+            "    }\n"
+            "    return mode == 2 ? rtl_value : c_value;\n"
+            "}\n"
+            + f"int {function_name}({caller_declarations}) {{\n"
+            f"    return dsc_cicd_invoke({caller_call});\n"
+            "}\n",
+            encoding="utf-8",
+        )
+
+        assignments = "\n".join(
+            f"    dut.{port['name']} = "
+            f"static_cast<unsigned long long>({port['name']});"
+            for port in inputs
+        )
+        bridge = source_dir / "rtl_bridge.cpp"
+        bridge.write_text(
+            "#include <cstdint>\n"
+            "#include \"verilated.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            f'extern "C" int dsc_cicd_rtl({input_declarations}) {{\n'
+            f"    V{safe_identifier(module)} dut;\n"
+            f"{assignments}\n"
+            "    dut.eval();\n"
+            f"    return static_cast<int>(dut.{return_port});\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\n"
+            "extern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) {\n"
+            "    return dsc_cicd_original_main(argc, argv);\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        return {
+            "header": header,
+            "overlay": overlay,
+            "bridge": bridge,
+            "main": main,
+            "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": "explicit_bounded_ich_decision_transition",
+                "caller_parameter_count": len(parameters),
+                "rtl_input_count": len(inputs),
+                "frozen_input_ports": [
+                    str(port.get("name")) for port in inputs
+                ],
+                "rtl_bindings": rtl_arguments,
+                "state_outputs": [return_port],
+                "rtl_return_controls_decision": True,
+                "accepted_child_results_are_explicit_inputs": True,
+                "simultaneous_rewrite_routes_child_calls_to_rtl": True,
+                "residual_symbol_alias_routes_to_dispatcher": True,
+            },
+        }
+
+    def write_scalar_record_next_state_overlay_sources(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        module: str,
+        candidate_sv: pathlib.Path,
+    ) -> dict[str, Any]:
+        """Bind loop-free config/state scalar arithmetic to explicit outputs."""
+        semantics = contract.get("semantics", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        scalar_input_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("scalar_input_ports", {}) or {}).items()
+        }
+        config_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("config_ports", {}) or {}).items()
+        }
+        state_input_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("state_input_ports", {}) or {}).items()
+        }
+        scalar_output_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("scalar_output_ports", {}) or {}).items()
+        }
+        state_output_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("state_output_ports", {}) or {}).items()
+        }
+        ports = [
+            port for port in (contract.get("interface", {}) or {}).get("ports", [])
+            if isinstance(port, dict)
+        ]
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        outputs = [port for port in ports if port.get("direction") == "output"]
+        if (
+            {str(port.get("name")) for port in inputs}
+            != {
+                *scalar_input_ports.values(), *config_ports.values(),
+                *state_input_ports.values(),
+            }
+            or {str(port.get("name")) for port in outputs}
+            != {*scalar_output_ports.values(), *state_output_ports.values()}
+        ):
+            raise RuntimeError(
+                "scalar record transition ports do not match the frozen interface"
+            )
+
+        parameters = self.function_parameters(contract)
+        parameter_by_name = {
+            str(parameter.get("name")): parameter for parameter in parameters
+        }
+        config_parameter = str(bindings.get("config_parameter", ""))
+        state_parameter = str(bindings.get("state_parameter", ""))
+        scalar_output_parameters = set(scalar_output_ports)
+        required_parameters = {
+            config_parameter, state_parameter, *scalar_input_ports,
+            *scalar_output_parameters,
+        }
+        if not required_parameters.issubset(parameter_by_name):
+            raise RuntimeError("scalar record parameter bindings are incomplete")
+        if not parameter_is_pointer(parameter_by_name[config_parameter]):
+            raise RuntimeError("scalar record config parameter must be a pointer")
+        if not parameter_is_pointer(parameter_by_name[state_parameter]):
+            raise RuntimeError("scalar record state parameter must be a pointer")
+
+        identifier = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+        all_identifiers = {
+            config_parameter, state_parameter, *scalar_input_ports,
+            *scalar_output_parameters, *config_ports, *state_input_ports,
+            *state_output_ports,
+        }
+        if not all(identifier.fullmatch(value) for value in all_identifiers):
+            raise RuntimeError("scalar record bindings contain an invalid identifier")
+
+        parameter_specs = [
+            f"{str(parameter.get('type', 'int')).strip()} {parameter.get('name')}"
+            for parameter in parameters
+        ]
+        parameter_names = [str(parameter.get("name")) for parameter in parameters]
+        caller_declarations = ", ".join(parameter_specs)
+        function_name = str(contract_function(contract).get("name"))
+        original = function_name + "_original"
+        alias_call = ", ".join(parameter_names)
+        c_output_names = {
+            parameter: f"dsc_cicd_c_{safe_identifier(parameter)}"
+            for parameter in scalar_output_parameters
+        }
+        c_call = ", ".join(
+            "&dsc_cicd_c_state"
+            if name == state_parameter
+            else f"&{c_output_names[name]}"
+            if name in c_output_names
+            else name
+            for name in parameter_names
+        )
+        rtl_expressions = {
+            port: parameter for parameter, port in scalar_input_ports.items()
+        }
+        rtl_expressions.update({
+            port: f"{config_parameter}->{field}"
+            for field, port in config_ports.items()
+        })
+        rtl_expressions.update({
+            port: f"{state_parameter}->{field}"
+            for field, port in state_input_ports.items()
+        })
+        rtl_arguments = [rtl_expressions[str(port["name"])] for port in inputs]
+        rtl_variables = {
+            str(port["name"]): f"dsc_cicd_rtl_{safe_identifier(str(port['name']))}"
+            for port in outputs
+        }
+        rtl_call = ", ".join([
+            *rtl_arguments,
+            *[f"&{rtl_variables[str(port['name'])]}" for port in outputs],
+        ])
+        c_expected = {
+            port: c_output_names[parameter]
+            for parameter, port in scalar_output_ports.items()
+        }
+        c_expected.update({
+            port: f"dsc_cicd_c_state.{field}"
+            for field, port in state_output_ports.items()
+        })
+        rtl_initializers = {
+            port: "0" for port in scalar_output_ports.values()
+        }
+        rtl_initializers.update({
+            port: f"{state_parameter}->{field}"
+            for field, port in state_output_ports.items()
+        })
+        c_output_declarations = "".join(
+            f"    int {c_output_names[parameter]} = 0;\n"
+            for parameter in sorted(c_output_names)
+        )
+        rtl_output_declarations = "".join(
+            f"    int {rtl_variables[str(port['name'])]} = "
+            f"{rtl_initializers[str(port['name'])]};\n"
+            for port in outputs
+        )
+        mismatch_expression = " || ".join(
+            f"{rtl_variables[str(port['name'])]} != {c_expected[str(port['name'])]}"
+            for port in outputs
+        )
+        apply_c = "".join(
+            f"        *{parameter} = {c_output_names[parameter]};\n"
+            for parameter in scalar_output_ports
+        ) + "".join(
+            f"        {state_parameter}->{field} = dsc_cicd_c_state.{field};\n"
+            for field in state_output_ports
+        )
+        apply_rtl = "".join(
+            f"        *{parameter} = {rtl_variables[port]};\n"
+            for parameter, port in scalar_output_ports.items()
+        ) + "".join(
+            f"        {state_parameter}->{field} = {rtl_variables[port]};\n"
+            for field, port in state_output_ports.items()
+        )
+        input_declarations = ", ".join(
+            f"int {port['name']}" for port in inputs
+        )
+        output_pointer_declarations = ", ".join(
+            f"int *{port['name']}" for port in outputs
+        )
+
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n"
+            "#define DSC_CICD_OVERLAY_H\n"
+            "#include \"dsc_types.h\"\n"
+            f"void dsc_cicd_invoke({caller_declarations});\n"
+            "#endif\n",
+            encoding="utf-8",
+        )
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdio.h>\n"
+            "#include <stdlib.h>\n"
+            "#include <string.h>\n"
+            "#include \"dsc_cicd_overlay.h\"\n"
+            f"extern void {original}({caller_declarations});\n"
+            f"extern void dsc_cicd_rtl({input_declarations}, "
+            f"{output_pointer_declarations});\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n"
+            "}\n"
+            + self.overlay_runtime_metrics_source()
+            + f"void dsc_cicd_invoke({caller_declarations}) {{\n"
+            f"    dsc_state_t dsc_cicd_c_state = *{state_parameter};\n"
+            + c_output_declarations
+            + f"    {original}({c_call});\n"
+            "    int mode = dsc_cicd_mode();\n"
+            "    dsc_cicd_note_call(mode);\n"
+            "    if (mode == 0) {\n"
+            + apply_c
+            + "        return;\n"
+            "    }\n"
+            + rtl_output_declarations
+            + f"    dsc_cicd_rtl({rtl_call});\n"
+            f"    if ({mismatch_expression}) {{\n"
+            "        ++dsc_cicd_mismatches;\n"
+            "        fprintf(stderr, \"C/RTL scalar record mismatch\\n\");\n"
+            "    }\n"
+            "    if (mode == 2) {\n"
+            + apply_rtl
+            + "        return;\n"
+            "    }\n"
+            + apply_c
+            + "}\n"
+            + f"void {function_name}({caller_declarations}) {{\n"
+            f"    dsc_cicd_invoke({alias_call});\n"
+            "}\n",
+            encoding="utf-8",
+        )
+
+        assignments = "\n".join(
+            f"    dut.{port['name']} = static_cast<unsigned int>({port['name']});"
+            for port in inputs
+        )
+        bridge = source_dir / "rtl_bridge.cpp"
+        bridge.write_text(
+            "#include <cstdint>\n"
+            "#include \"verilated.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            f'extern "C" void dsc_cicd_rtl({input_declarations}, '
+            f"{output_pointer_declarations}) {{\n"
+            f"    V{safe_identifier(module)} dut;\n"
+            f"{assignments}\n"
+            "    dut.eval();\n"
+            + "".join(
+                f"    *{port['name']} = static_cast<int>(dut.{port['name']});\n"
+                for port in outputs
+            )
+            + "}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\n"
+            "extern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) {\n"
+            "    return dsc_cicd_original_main(argc, argv);\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        return {
+            "header": header,
+            "overlay": overlay,
+            "bridge": bridge,
+            "main": main,
+            "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": "explicit_scalar_record_next_state",
+                "caller_parameter_count": len(parameters),
+                "rtl_input_count": len(inputs),
+                "frozen_input_ports": [str(port.get("name")) for port in inputs],
+                "rtl_bindings": rtl_arguments,
+                "state_outputs": [str(port.get("name")) for port in outputs],
+                "rtl_return_controls_scalar_record_state_in_rtl_return": True,
+                "residual_symbol_alias_routes_to_dispatcher": True,
+            },
+        }
+
+    def write_sampled_lookup_transition_overlay_sources(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        module: str,
+        candidate_sv: pathlib.Path,
+    ) -> dict[str, Any]:
+        """Bind history/line-buffer pointers through a fixed sampled-tap interface."""
+        semantics = contract.get("semantics", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        constants = semantics.get("constants", {}) or {}
+        history_ports = [str(value) for value in bindings.get("history_ports", [])]
+        base_ports = [str(value) for value in bindings.get("native_base_ports", [])]
+        base1_ports = [str(value) for value in bindings.get("native_base1_ports", [])]
+        simple_ports = [str(value) for value in bindings.get("simple_tap_ports", [])]
+        output_ports = [str(value) for value in bindings.get("output_ports", [])]
+        component_count = int(constants.get("component_count", 0) or 0)
+        ich_size = int(constants.get("ich_size", 0) or 0)
+        pixels_above = int(constants.get("ich_pixels_above", 0) or 0)
+        padding_left = int(constants.get("padding_left", 0) or 0)
+        if not (
+            component_count == 4
+            and len(history_ports) == component_count
+            and len(base_ports) == component_count
+            and len(base1_ports) == component_count
+            and len(simple_ports) == component_count - 1
+            and len(output_ports) == component_count
+            and ich_size > pixels_above > 0
+        ):
+            raise RuntimeError("sampled lookup fixed extents are incomplete")
+
+        ports = [
+            port for port in (contract.get("interface", {}) or {}).get("ports", [])
+            if isinstance(port, dict)
+        ]
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        outputs = [port for port in ports if port.get("direction") == "output"]
+        fixed_inputs = {
+            "native_420", "native_422", "entry", "first_line_flag",
+            "is_odd_line", "num_components",
+        }
+        if (
+            {str(port.get("name")) for port in inputs}
+            != {
+                *fixed_inputs, *history_ports, *base_ports, *base1_ports,
+                *simple_ports,
+            }
+            or {str(port.get("name")) for port in outputs} != set(output_ports)
+        ):
+            raise RuntimeError("sampled lookup ports do not match the frozen interface")
+
+        parameters = self.function_parameters(contract)
+        parameter_by_name = {
+            str(parameter.get("name")): parameter for parameter in parameters
+        }
+        binding_keys = [
+            "config_parameter", "state_parameter", "output_parameter",
+            "entry_parameter", "horizontal_position_parameter",
+            "first_line_parameter", "odd_line_parameter",
+        ]
+        parameter_bindings = {
+            key: str(bindings.get(key, "")) for key in binding_keys
+        }
+        if not set(parameter_bindings.values()).issubset(parameter_by_name):
+            raise RuntimeError("sampled lookup parameter bindings are incomplete")
+        config_parameter = parameter_bindings["config_parameter"]
+        state_parameter = parameter_bindings["state_parameter"]
+        output_parameter = parameter_bindings["output_parameter"]
+        entry_parameter = parameter_bindings["entry_parameter"]
+        hpos_parameter = parameter_bindings["horizontal_position_parameter"]
+        first_line_parameter = parameter_bindings["first_line_parameter"]
+        odd_line_parameter = parameter_bindings["odd_line_parameter"]
+        if not all(
+            parameter_is_pointer(parameter_by_name[name])
+            for name in (config_parameter, state_parameter, output_parameter)
+        ):
+            raise RuntimeError("sampled lookup record/output parameters must be pointers")
+
+        field_keys = [
+            "native_420_field", "native_422_field", "history_field",
+            "history_pixels_field", "num_components_field",
+            "pixels_in_group_field", "prev_line_field", "slice_width_field",
+        ]
+        fields = {key: str(bindings.get(key, "")) for key in field_keys}
+        identifier = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+        if not all(identifier.fullmatch(value) for value in fields.values()):
+            raise RuntimeError("sampled lookup field bindings are invalid")
+
+        parameter_specs = [
+            f"{str(parameter.get('type', 'int')).strip()} {parameter.get('name')}"
+            for parameter in parameters
+        ]
+        parameter_names = [str(parameter.get("name")) for parameter in parameters]
+        caller_declarations = ", ".join(parameter_specs)
+        function_name = str(contract_function(contract).get("name"))
+        original = function_name + "_original"
+        alias_call = ", ".join(parameter_names)
+        c_call = ", ".join(
+            "dsc_cicd_c_output" if name == output_parameter else name
+            for name in parameter_names
+        )
+        reserved = ich_size - pixels_above
+        history_field = fields["history_field"]
+        history_pixels_field = fields["history_pixels_field"]
+        prev_line_field = fields["prev_line_field"]
+        num_components_field = fields["num_components_field"]
+        pixels_in_group_field = fields["pixels_in_group_field"]
+        slice_width_field = fields["slice_width_field"]
+        native_420_field = fields["native_420_field"]
+        native_422_field = fields["native_422_field"]
+
+        input_declarations = ", ".join(
+            (
+                f"unsigned int {port['name']}"
+                if int(port.get("width", 1)) == 32 and not port.get("signed")
+                else f"int {port['name']}"
+            )
+            for port in inputs
+        )
+        output_pointer_declarations = ", ".join(
+            f"unsigned int *{port}" for port in output_ports
+        )
+        rtl_expressions = {
+            "native_420": f"{config_parameter}->{native_420_field}",
+            "native_422": f"{config_parameter}->{native_422_field}",
+            "entry": entry_parameter,
+            "first_line_flag": first_line_parameter,
+            "is_odd_line": odd_line_parameter,
+            "num_components": f"{state_parameter}->{num_components_field}",
+        }
+        for index, port in enumerate(history_ports):
+            rtl_expressions[port] = f"dsc_cicd_history[{index}]"
+        for index, port in enumerate(base_ports):
+            rtl_expressions[port] = f"dsc_cicd_base[{index}]"
+        for index, port in enumerate(base1_ports):
+            rtl_expressions[port] = f"dsc_cicd_base1[{index}]"
+        for index, port in enumerate(simple_ports):
+            rtl_expressions[port] = f"dsc_cicd_simple[{index}]"
+        rtl_arguments = [rtl_expressions[str(port["name"])] for port in inputs]
+        rtl_output_variables = [
+            f"dsc_cicd_rtl_output_{index}" for index in range(component_count)
+        ]
+        rtl_call = ", ".join([
+            *rtl_arguments,
+            *[f"&{value}" for value in rtl_output_variables],
+        ])
+        copy_c = "".join(
+            f"        {output_parameter}[{index}] = dsc_cicd_c_output[{index}];\n"
+            for index in range(component_count)
+        )
+        copy_rtl = "".join(
+            f"        {output_parameter}[{index}] = {rtl_output_variables[index]};\n"
+            for index in range(component_count)
+        )
+        rtl_output_declarations = "".join(
+            f"    unsigned int {value} = 0;\n"
+            for value in rtl_output_variables
+        )
+        mismatch_expression = " || ".join(
+            f"{rtl_output_variables[index]} != dsc_cicd_c_output[{index}]"
+            for index in range(component_count)
+        )
+
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n"
+            "#define DSC_CICD_OVERLAY_H\n"
+            "#include \"dsc_types.h\"\n"
+            f"void dsc_cicd_invoke({caller_declarations});\n"
+            "#endif\n",
+            encoding="utf-8",
+        )
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdio.h>\n"
+            "#include <stdlib.h>\n"
+            "#include <string.h>\n"
+            "#include \"dsc_cicd_overlay.h\"\n"
+            f"extern void {original}({caller_declarations});\n"
+            f"extern void dsc_cicd_rtl({input_declarations}, "
+            f"{output_pointer_declarations});\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n"
+            "}\n"
+            + self.overlay_runtime_metrics_source()
+            + f"void dsc_cicd_invoke({caller_declarations}) {{\n"
+            f"    unsigned int dsc_cicd_c_output[{component_count}] = {{0}};\n"
+            f"    {original}({c_call});\n"
+            "    int mode = dsc_cicd_mode();\n"
+            "    dsc_cicd_note_call(mode);\n"
+            "    if (mode == 0) {\n"
+            + copy_c
+            + "        return;\n"
+            "    }\n"
+            f"    unsigned int dsc_cicd_history[{component_count}] = {{0}};\n"
+            f"    unsigned int dsc_cicd_base[{component_count}] = {{0}};\n"
+            f"    unsigned int dsc_cicd_base1[{component_count}] = {{0}};\n"
+            f"    unsigned int dsc_cicd_simple[{component_count - 1}] = {{0}};\n"
+            f"    for (int i = 0; i < {component_count}; ++i) {{\n"
+            f"        if (i < {state_parameter}->{num_components_field})\n"
+            f"            dsc_cicd_history[i] = {state_parameter}->{history_field}."
+            f"{history_pixels_field}[i][{entry_parameter}];\n"
+            "    }\n"
+            f"    int dsc_cicd_center = ({hpos_parameter} / "
+            f"{state_parameter}->{pixels_in_group_field}) * "
+            f"{state_parameter}->{pixels_in_group_field} + "
+            f"({state_parameter}->{pixels_in_group_field} / 2);\n"
+            f"    int dsc_cicd_native = {config_parameter}->{native_420_field} || "
+            f"{config_parameter}->{native_422_field};\n"
+            "    int dsc_cicd_low = dsc_cicd_native ? 2 : "
+            f"({pixels_above} / 2);\n"
+            f"    int dsc_cicd_high = {state_parameter}->{slice_width_field} - 1 - "
+            f"(dsc_cicd_native ? 2 : ({pixels_above} / 2));\n"
+            "    if (dsc_cicd_center < dsc_cicd_low) dsc_cicd_center = dsc_cicd_low;\n"
+            "    else if (dsc_cicd_center > dsc_cicd_high) dsc_cicd_center = dsc_cicd_high;\n"
+            f"    if (!{first_line_parameter} && ({entry_parameter} >= {reserved})) {{\n"
+            f"        int dsc_cicd_distance = {entry_parameter} - {reserved};\n"
+            "        int dsc_cicd_offset = (dsc_cicd_distance + 1) >> 1;\n"
+            f"        if ({config_parameter}->{native_420_field} || "
+            f"{config_parameter}->{native_422_field}) {{\n"
+            f"            int dsc_cicd_index = dsc_cicd_center + dsc_cicd_offset - 2 + {padding_left};\n"
+            f"            for (int i = 0; i < {component_count}; ++i) {{\n"
+            f"                dsc_cicd_base[i] = {state_parameter}->{prev_line_field}[i][dsc_cicd_index];\n"
+            f"                dsc_cicd_base1[i] = {state_parameter}->{prev_line_field}[i][dsc_cicd_index + 1];\n"
+            "            }\n"
+            "        } else {\n"
+            f"            int dsc_cicd_index = dsc_cicd_center + dsc_cicd_distance - ({pixels_above} / 2) + {padding_left};\n"
+            f"            for (int i = 0; i < {component_count - 1}; ++i)\n"
+            f"                dsc_cicd_simple[i] = {state_parameter}->{prev_line_field}[i][dsc_cicd_index];\n"
+            "        }\n"
+            "    }\n"
+            + rtl_output_declarations
+            + f"    dsc_cicd_rtl({rtl_call});\n"
+            f"    if ({mismatch_expression}) {{\n"
+            "        ++dsc_cicd_mismatches;\n"
+            "        fprintf(stderr, \"C/RTL sampled lookup mismatch: entry=%d first=%d odd=%d\\n\", "
+            f"{entry_parameter}, {first_line_parameter}, {odd_line_parameter});\n"
+            "    }\n"
+            "    if (mode == 2) {\n"
+            + copy_rtl
+            + "        return;\n"
+            "    }\n"
+            + copy_c
+            + "}\n"
+            + f"void {function_name}({caller_declarations}) {{\n"
+            f"    dsc_cicd_invoke({alias_call});\n"
+            "}\n",
+            encoding="utf-8",
+        )
+
+        assignments = "\n".join(
+            f"    dut.{port['name']} = static_cast<unsigned int>({port['name']});"
+            for port in inputs
+        )
+        bridge = source_dir / "rtl_bridge.cpp"
+        bridge.write_text(
+            "#include <cstdint>\n"
+            "#include \"verilated.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            f'extern "C" void dsc_cicd_rtl({input_declarations}, '
+            f"{output_pointer_declarations}) {{\n"
+            f"    static V{safe_identifier(module)} dut;\n"
+            f"{assignments}\n"
+            "    dut.eval();\n"
+            + "".join(
+                f"    *{port} = static_cast<unsigned int>(dut.{port});\n"
+                for port in output_ports
+            )
+            + "}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\n"
+            "extern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) {\n"
+            "    return dsc_cicd_original_main(argc, argv);\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        return {
+            "header": header,
+            "overlay": overlay,
+            "bridge": bridge,
+            "main": main,
+            "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": "explicit_sampled_lookup_transition",
+                "caller_parameter_count": len(parameters),
+                "rtl_input_count": len(inputs),
+                "frozen_input_ports": [str(port.get("name")) for port in inputs],
+                "rtl_bindings": rtl_arguments,
+                "state_outputs": output_ports,
+                "rtl_return_controls_output_buffer_in_rtl_return": True,
+                "residual_symbol_alias_routes_to_dispatcher": True,
+            },
+        }
+
+    def write_scalar_record_memory_transition_overlay_sources(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        module: str,
+        candidate_sv: pathlib.Path,
+    ) -> dict[str, Any]:
+        """Bind scalar next state plus one indexed memory write sideband."""
+        semantics = contract.get("semantics", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        config_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("config_ports", {}) or {}).items()
+        }
+        state_input_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("state_input_ports", {}) or {}).items()
+        }
+        state_output_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("state_output_ports", {}) or {}).items()
+        }
+        memory_write_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("memory_write_ports", {}) or {}).items()
+        }
+        memory_field = str(bindings.get("memory_field", ""))
+        ports = [
+            port for port in (contract.get("interface", {}) or {}).get("ports", [])
+            if isinstance(port, dict)
+        ]
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        outputs = [port for port in ports if port.get("direction") == "output"]
+        if (
+            {str(port.get("name")) for port in inputs}
+            != {*config_ports.values(), *state_input_ports.values()}
+            or {str(port.get("name")) for port in outputs}
+            != {*state_output_ports.values(), *memory_write_ports.values()}
+            or set(memory_write_ports) != {"enable", "index", "value"}
+            or not memory_field
+        ):
+            raise RuntimeError(
+                "scalar record memory ports do not match the frozen interface"
+            )
+
+        parameters = self.function_parameters(contract)
+        parameter_by_name = {
+            str(parameter.get("name")): parameter for parameter in parameters
+        }
+        config_parameter = str(bindings.get("config_parameter", ""))
+        state_parameter = str(bindings.get("state_parameter", ""))
+        if set(parameter_by_name) != {config_parameter, state_parameter}:
+            raise RuntimeError(
+                "scalar record memory transition requires exactly config/state parameters"
+            )
+        if not parameter_is_pointer(parameter_by_name[config_parameter]):
+            raise RuntimeError("scalar record memory config parameter must be a pointer")
+        if not parameter_is_pointer(parameter_by_name[state_parameter]):
+            raise RuntimeError("scalar record memory state parameter must be a pointer")
+
+        identifier = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+        all_identifiers = {
+            config_parameter, state_parameter, memory_field,
+            *config_ports, *state_input_ports, *state_output_ports,
+            *config_ports.values(), *state_input_ports.values(),
+            *state_output_ports.values(), *memory_write_ports.values(),
+        }
+        if not all(identifier.fullmatch(value) for value in all_identifiers):
+            raise RuntimeError("scalar record memory bindings contain an invalid identifier")
+
+        parameter_specs = [
+            f"{str(parameter.get('type', 'int')).strip()} {parameter.get('name')}"
+            for parameter in parameters
+        ]
+        parameter_names = [str(parameter.get("name")) for parameter in parameters]
+        caller_declarations = ", ".join(parameter_specs)
+        function_name = str(contract_function(contract).get("name"))
+        original = function_name + "_original"
+        alias_call = ", ".join(parameter_names)
+        c_call = ", ".join(
+            "&dsc_cicd_c_state" if name == state_parameter else name
+            for name in parameter_names
+        )
+        rtl_expressions = {
+            port: f"{config_parameter}->{field}"
+            for field, port in config_ports.items()
+        }
+        rtl_expressions.update({
+            port: f"{state_parameter}->{field}"
+            for field, port in state_input_ports.items()
+        })
+        rtl_arguments = [rtl_expressions[str(port["name"])] for port in inputs]
+        rtl_variables = {
+            str(port["name"]): f"dsc_cicd_rtl_{safe_identifier(str(port['name']))}"
+            for port in outputs
+        }
+        rtl_call = ", ".join([
+            *rtl_arguments,
+            *[f"&{rtl_variables[str(port['name'])]}" for port in outputs],
+        ])
+        c_expected = {
+            port: f"dsc_cicd_c_state.{field}"
+            for field, port in state_output_ports.items()
+        }
+        c_expected.update({
+            memory_write_ports["enable"]: "dsc_cicd_c_write_enable",
+            memory_write_ports["index"]: "dsc_cicd_c_write_index",
+            memory_write_ports["value"]: "dsc_cicd_c_write_value",
+        })
+        rtl_initializers = {
+            port: f"{state_parameter}->{field}"
+            for field, port in state_output_ports.items()
+        }
+        rtl_initializers.update({
+            memory_write_ports["enable"]: "0",
+            memory_write_ports["index"]: f"{state_parameter}->chunkCount",
+            memory_write_ports["value"]: "0",
+        })
+        rtl_output_declarations = "".join(
+            f"    int {rtl_variables[str(port['name'])]} = "
+            f"{rtl_initializers[str(port['name'])]};\n"
+            for port in outputs
+        )
+        mismatch_expression = " || ".join(
+            f"{rtl_variables[str(port['name'])]} != {c_expected[str(port['name'])]}"
+            for port in outputs
+        )
+        apply_c = "".join(
+            f"        {state_parameter}->{field} = dsc_cicd_c_state.{field};\n"
+            for field in state_output_ports
+        ) + (
+            f"        if (dsc_cicd_c_write_enable)\n"
+            f"            {state_parameter}->{memory_field}[dsc_cicd_c_write_index] = "
+            "dsc_cicd_c_write_value;\n"
+        )
+        apply_rtl = "".join(
+            f"        {state_parameter}->{field} = {rtl_variables[port]};\n"
+            for field, port in state_output_ports.items()
+        ) + (
+            f"        if ({rtl_variables[memory_write_ports['enable']]})\n"
+            f"            {state_parameter}->{memory_field}"
+            f"[{rtl_variables[memory_write_ports['index']]}] = "
+            f"{rtl_variables[memory_write_ports['value']]};\n"
+        )
+        input_declarations = ", ".join(
+            f"int {port['name']}" for port in inputs
+        )
+        output_pointer_declarations = ", ".join(
+            f"int *{port['name']}" for port in outputs
+        )
+
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n"
+            "#define DSC_CICD_OVERLAY_H\n"
+            "#include \"dsc_types.h\"\n"
+            f"void dsc_cicd_invoke({caller_declarations});\n"
+            "#endif\n",
+            encoding="utf-8",
+        )
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdio.h>\n"
+            "#include <stdlib.h>\n"
+            "#include <string.h>\n"
+            "#include \"dsc_cicd_overlay.h\"\n"
+            f"extern void {original}({caller_declarations});\n"
+            f"extern void dsc_cicd_rtl({input_declarations}, "
+            f"{output_pointer_declarations});\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n"
+            "}\n"
+            + self.overlay_runtime_metrics_source()
+            + f"void dsc_cicd_invoke({caller_declarations}) {{\n"
+            f"    dsc_state_t dsc_cicd_c_state = *{state_parameter};\n"
+            f"    int dsc_cicd_c_write_enable = "
+            f"(({state_parameter}->chunkPixelTimes + 1 >= {state_parameter}->sliceWidth) && "
+            f"({config_parameter}->vbr_enable != 0) && ({state_parameter}->isEncoder != 0));\n"
+            f"    int dsc_cicd_c_write_index = {state_parameter}->chunkCount;\n"
+            "    int dsc_cicd_c_write_value = 0;\n"
+            "    int dsc_cicd_prior_write_value = 0;\n"
+            f"    if (dsc_cicd_c_write_enable)\n"
+            f"        dsc_cicd_prior_write_value = {state_parameter}->{memory_field}"
+            "[dsc_cicd_c_write_index];\n"
+            f"    {original}({c_call});\n"
+            "    if (dsc_cicd_c_write_enable) {\n"
+            f"        dsc_cicd_c_write_value = {state_parameter}->{memory_field}"
+            "[dsc_cicd_c_write_index];\n"
+            f"        {state_parameter}->{memory_field}[dsc_cicd_c_write_index] = "
+            "dsc_cicd_prior_write_value;\n"
+            "    }\n"
+            "    int mode = dsc_cicd_mode();\n"
+            "    dsc_cicd_note_call(mode);\n"
+            "    if (mode == 0) {\n"
+            + apply_c
+            + "        return;\n"
+            "    }\n"
+            + rtl_output_declarations
+            + f"    dsc_cicd_rtl({rtl_call});\n"
+            f"    if ({mismatch_expression}) {{\n"
+            "        ++dsc_cicd_mismatches;\n"
+            "        fprintf(stderr, \"C/RTL scalar-memory mismatch: write=%d index=%d value=%d\\n\", "
+            f"{rtl_variables[memory_write_ports['enable']]}, "
+            f"{rtl_variables[memory_write_ports['index']]}, "
+            f"{rtl_variables[memory_write_ports['value']]});\n"
+            "    }\n"
+            "    if (mode == 2) {\n"
+            + apply_rtl
+            + "        return;\n"
+            "    }\n"
+            + apply_c
+            + "}\n"
+            + f"void {function_name}({caller_declarations}) {{\n"
+            f"    dsc_cicd_invoke({alias_call});\n"
+            "}\n",
+            encoding="utf-8",
+        )
+
+        assignments = "\n".join(
+            f"    dut.{port['name']} = static_cast<std::uint32_t>({port['name']});"
+            for port in inputs
+        )
+        output_assignments = "".join(
+            f"    *{port['name']} = "
+            + (
+                f"static_cast<std::int32_t>(dut.{port['name']});\n"
+                if port.get("signed") and int(port.get("width", 1)) == 32
+                else f"static_cast<int>(dut.{port['name']});\n"
+            )
+            for port in outputs
+        )
+        bridge = source_dir / "rtl_bridge.cpp"
+        bridge.write_text(
+            "#include <cstdint>\n"
+            "#include \"verilated.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            f'extern "C" void dsc_cicd_rtl({input_declarations}, '
+            f"{output_pointer_declarations}) {{\n"
+            f"    static V{safe_identifier(module)} dut;\n"
+            f"{assignments}\n"
+            "    dut.eval();\n"
+            + output_assignments
+            + "}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\n"
+            "extern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) {\n"
+            "    return dsc_cicd_original_main(argc, argv);\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        return {
+            "header": header,
+            "overlay": overlay,
+            "bridge": bridge,
+            "main": main,
+            "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": "explicit_scalar_record_memory_transition",
+                "caller_parameter_count": len(parameters),
+                "rtl_input_count": len(inputs),
+                "frozen_input_ports": [str(port.get("name")) for port in inputs],
+                "rtl_bindings": rtl_arguments,
+                "state_outputs": [str(port.get("name")) for port in outputs],
+                "rtl_return_controls_scalar_and_indexed_memory_state_in_rtl_return": True,
+                "c_shadow_memory_write_is_restored_before_rtl_return": True,
+                "residual_symbol_alias_routes_to_dispatcher": True,
+            },
+        }
+
+    def write_bounded_mux_refill_transition_overlay_sources(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        module: str,
+        candidate_sv: pathlib.Path,
+    ) -> dict[str, Any]:
+        """Bind a bounded stream cursor and four complete FIFO snapshots."""
+        semantics = contract.get("semantics", {}) or {}
+        constants = semantics.get("constants", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        max_ssps = int(constants.get("max_ssps", 0))
+        stream_window_bytes = int(constants.get("stream_window_bytes", 0))
+        max_fifo_bytes = int(constants.get("max_fifo_bytes", 0))
+        max_se_ports = [str(value) for value in bindings.get("max_se_size_ports", [])]
+        stream_ports = [str(value) for value in bindings.get("stream_byte_ports", [])]
+        lanes = [dict(value) for value in bindings.get("fifo_lanes", [])]
+        if (
+            max_ssps != 4
+            or stream_window_bytes != 33
+            or max_fifo_bytes != 17
+            or len(max_se_ports) != max_ssps
+            or len(stream_ports) != stream_window_bytes
+            or len(lanes) != max_ssps
+        ):
+            raise RuntimeError("bounded mux refill constants are incomplete")
+
+        ports = [
+            port for port in (contract.get("interface", {}) or {}).get("ports", [])
+            if isinstance(port, dict)
+        ]
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        outputs = [port for port in ports if port.get("direction") == "output"]
+        input_names = {str(port.get("name")) for port in inputs}
+        output_names = {str(port.get("name")) for port in outputs}
+        expected_inputs = {
+            str(bindings.get("mux_word_size_port")),
+            str(bindings.get("num_ssps_port")),
+            str(bindings.get("post_mux_num_bits_port")),
+            *max_se_ports,
+            *stream_ports,
+        }
+        expected_outputs = {
+            "domain_valid",
+            str(bindings.get("post_mux_num_bits_output_port")),
+        }
+        scalar_input_keys = (
+            "size_port", "fullness_port", "read_ptr_port", "write_ptr_port",
+            "max_fullness_port", "byte_ctr_port",
+        )
+        scalar_output_keys = (
+            "size_output_port", "fullness_output_port", "read_ptr_output_port",
+            "write_ptr_output_port", "max_fullness_output_port",
+            "byte_ctr_output_port",
+        )
+        for lane in lanes:
+            expected_inputs.update(str(lane[key]) for key in scalar_input_keys)
+            expected_inputs.update(str(value) for value in lane["data_input_ports"])
+            expected_outputs.update(str(lane[key]) for key in scalar_output_keys)
+            expected_outputs.update(str(value) for value in lane["data_output_ports"])
+        if input_names != expected_inputs or output_names != expected_outputs:
+            raise RuntimeError("bounded mux refill ports do not match the frozen interface")
+
+        parameters = self.function_parameters(contract)
+        parameter_by_name = {
+            str(parameter.get("name")): parameter for parameter in parameters
+        }
+        config_parameter = str(bindings.get("config_parameter", ""))
+        state_parameter = str(bindings.get("state_parameter", ""))
+        buffer_parameter = str(bindings.get("buffer_parameter", ""))
+        if set(parameter_by_name) != {
+            config_parameter, state_parameter, buffer_parameter
+        }:
+            raise RuntimeError("bounded mux refill requires config/state/byte-buffer parameters")
+        if not all(
+            parameter_is_pointer(parameter_by_name[name])
+            for name in (config_parameter, state_parameter, buffer_parameter)
+        ):
+            raise RuntimeError("bounded mux refill native parameters must be pointers")
+
+        identifier = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+        all_identifiers = {
+            config_parameter, state_parameter, buffer_parameter,
+            str(bindings.get("mux_word_size_field")),
+            str(bindings.get("num_ssps_field")),
+            str(bindings.get("post_mux_num_bits_field")),
+            str(bindings.get("max_se_size_field")),
+            str(bindings.get("shifter_field")),
+            *input_names, *output_names,
+        }
+        if not all(identifier.fullmatch(value) for value in all_identifiers):
+            raise RuntimeError("bounded mux refill bindings contain an invalid identifier")
+
+        parameter_specs = [
+            f"{str(parameter.get('type', 'int')).strip()} {parameter.get('name')}"
+            for parameter in parameters
+        ]
+        parameter_names = [str(parameter.get("name")) for parameter in parameters]
+        caller_declarations = ", ".join(parameter_specs)
+        alias_call = ", ".join(parameter_names)
+        function_name = str(contract_function(contract).get("name"))
+        original = function_name + "_original"
+        mux_field = str(bindings["mux_word_size_field"])
+        num_ssps_field = str(bindings["num_ssps_field"])
+        post_field = str(bindings["post_mux_num_bits_field"])
+        max_se_field = str(bindings["max_se_size_field"])
+        shifter_field = str(bindings["shifter_field"])
+
+        abi = source_dir / "dsc_cicd_rtl_abi.h"
+        abi.write_text(
+            "#ifndef DSC_CICD_RTL_ABI_H\n"
+            "#define DSC_CICD_RTL_ABI_H\n"
+            "#include <stdint.h>\n"
+            f"#define DSC_CICD_MAX_SSPS {max_ssps}\n"
+            f"#define DSC_CICD_STREAM_BYTES {stream_window_bytes}\n"
+            f"#define DSC_CICD_FIFO_BYTES {max_fifo_bytes}\n"
+            "typedef struct {\n"
+            "    uint32_t size;\n"
+            "    uint32_t fullness;\n"
+            "    uint32_t read_ptr;\n"
+            "    uint32_t write_ptr;\n"
+            "    uint32_t max_fullness;\n"
+            "    uint32_t byte_ctr;\n"
+            "    uint8_t data[DSC_CICD_FIFO_BYTES];\n"
+            "} dsc_cicd_fifo_snapshot_t;\n"
+            "#ifdef __cplusplus\nextern \"C\" {\n#endif\n"
+            "void dsc_cicd_rtl(uint32_t mux_word_size, uint32_t num_ssps, "
+            "uint32_t post_mux_num_bits, "
+            "const uint32_t max_se_size[DSC_CICD_MAX_SSPS], "
+            "const uint8_t stream[DSC_CICD_STREAM_BYTES], "
+            "const dsc_cicd_fifo_snapshot_t input_fifo[DSC_CICD_MAX_SSPS], "
+            "uint32_t *domain_valid, uint32_t *post_mux_num_bits_out, "
+            "dsc_cicd_fifo_snapshot_t output_fifo[DSC_CICD_MAX_SSPS]);\n"
+            "#ifdef __cplusplus\n}\n#endif\n"
+            "#endif\n",
+            encoding="utf-8",
+        )
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n"
+            "#define DSC_CICD_OVERLAY_H\n"
+            "#include \"dsc_types.h\"\n"
+            f"void dsc_cicd_invoke({caller_declarations});\n"
+            "#endif\n",
+            encoding="utf-8",
+        )
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdint.h>\n"
+            "#include <stdio.h>\n"
+            "#include <stdlib.h>\n"
+            "#include <string.h>\n"
+            "#include \"dsc_cicd_overlay.h\"\n"
+            "#include \"dsc_cicd_rtl_abi.h\"\n"
+            f"extern void {original}({caller_declarations});\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n"
+            "}\n"
+            + self.overlay_runtime_metrics_source()
+            + "static void dsc_cicd_capture_fifo(const fifo_t *source, "
+            "dsc_cicd_fifo_snapshot_t *target) {\n"
+            "    memset(target, 0, sizeof(*target));\n"
+            "    if (!source->data || source->size <= 0 || (source->size & 7) || "
+            "source->size / 8 > DSC_CICD_FIFO_BYTES) {\n"
+            "        fprintf(stderr, \"unsupported mux FIFO domain: size=%d\\n\", source->size);\n"
+            "        exit(2);\n"
+            "    }\n"
+            "    target->size = (uint32_t)source->size;\n"
+            "    target->fullness = (uint32_t)source->fullness;\n"
+            "    target->read_ptr = (uint32_t)source->read_ptr;\n"
+            "    target->write_ptr = (uint32_t)source->write_ptr;\n"
+            "    target->max_fullness = (uint32_t)source->max_fullness;\n"
+            "    target->byte_ctr = (uint32_t)source->byte_ctr;\n"
+            "    memcpy(target->data, source->data, (size_t)(source->size / 8));\n"
+            "}\n"
+            "static void dsc_cicd_apply_fifo(fifo_t *target, "
+            "const dsc_cicd_fifo_snapshot_t *source) {\n"
+            "    target->size = (int)source->size;\n"
+            "    target->fullness = (int)source->fullness;\n"
+            "    target->read_ptr = (int)source->read_ptr;\n"
+            "    target->write_ptr = (int)source->write_ptr;\n"
+            "    target->max_fullness = (int)source->max_fullness;\n"
+            "    target->byte_ctr = (int)source->byte_ctr;\n"
+            "    memcpy(target->data, source->data, (size_t)(source->size / 8));\n"
+            "}\n"
+            "static int dsc_cicd_fifo_mismatch(const dsc_cicd_fifo_snapshot_t *left, "
+            "const dsc_cicd_fifo_snapshot_t *right) {\n"
+            "    if (left->size != right->size || left->fullness != right->fullness || "
+            "left->read_ptr != right->read_ptr || left->write_ptr != right->write_ptr || "
+            "left->max_fullness != right->max_fullness || "
+            "left->byte_ctr != right->byte_ctr) return 1;\n"
+            "    return memcmp(left->data, right->data, (size_t)(left->size / 8)) != 0;\n"
+            "}\n"
+            + f"void dsc_cicd_invoke({caller_declarations}) {{\n"
+            f"    dsc_state_t dsc_cicd_c_state = *{state_parameter};\n"
+            "    dsc_cicd_fifo_snapshot_t dsc_cicd_input[DSC_CICD_MAX_SSPS];\n"
+            "    dsc_cicd_fifo_snapshot_t dsc_cicd_c_output[DSC_CICD_MAX_SSPS];\n"
+            "    dsc_cicd_fifo_snapshot_t dsc_cicd_rtl_output[DSC_CICD_MAX_SSPS];\n"
+            "    uint8_t dsc_cicd_c_data[DSC_CICD_MAX_SSPS][DSC_CICD_FIFO_BYTES] = {{0}};\n"
+            "    uint32_t dsc_cicd_max_se_size[DSC_CICD_MAX_SSPS] = {0};\n"
+            "    for (int lane = 0; lane < DSC_CICD_MAX_SSPS; ++lane) {\n"
+            f"        dsc_cicd_capture_fifo(&{state_parameter}->{shifter_field}[lane], "
+            "&dsc_cicd_input[lane]);\n"
+            "        memcpy(dsc_cicd_c_data[lane], dsc_cicd_input[lane].data, "
+            "DSC_CICD_FIFO_BYTES);\n"
+            f"        dsc_cicd_c_state.{shifter_field}[lane].data = dsc_cicd_c_data[lane];\n"
+            f"        dsc_cicd_max_se_size[lane] = (uint32_t){state_parameter}->{max_se_field}[lane];\n"
+            "    }\n"
+            f"    {original}({config_parameter}, &dsc_cicd_c_state, {buffer_parameter});\n"
+            "    for (int lane = 0; lane < DSC_CICD_MAX_SSPS; ++lane)\n"
+            f"        dsc_cicd_capture_fifo(&dsc_cicd_c_state.{shifter_field}[lane], "
+            "&dsc_cicd_c_output[lane]);\n"
+            "    int mode = dsc_cicd_mode();\n"
+            "    dsc_cicd_note_call(mode);\n"
+            "    if (mode == 0) {\n"
+            f"        {state_parameter}->{post_field} = dsc_cicd_c_state.{post_field};\n"
+            "        for (int lane = 0; lane < DSC_CICD_MAX_SSPS; ++lane)\n"
+            f"            dsc_cicd_apply_fifo(&{state_parameter}->{shifter_field}[lane], "
+            "&dsc_cicd_c_output[lane]);\n"
+            "        return;\n"
+            "    }\n"
+            "    uint8_t dsc_cicd_stream[DSC_CICD_STREAM_BYTES] = {0};\n"
+            f"    int dsc_cicd_base = {state_parameter}->{post_field} >> 3;\n"
+            "    for (int index = 0; index < DSC_CICD_STREAM_BYTES; ++index) {\n"
+            f"        if (index + 1 < DSC_CICD_STREAM_BYTES || ({state_parameter}->{post_field} & 7))\n"
+            f"            dsc_cicd_stream[index] = {buffer_parameter}[dsc_cicd_base + index];\n"
+            "    }\n"
+            "    uint32_t dsc_cicd_domain_valid = 0;\n"
+            "    uint32_t dsc_cicd_rtl_post = 0;\n"
+            f"    dsc_cicd_rtl((uint32_t){config_parameter}->{mux_field}, "
+            f"(uint32_t){state_parameter}->{num_ssps_field}, "
+            f"(uint32_t){state_parameter}->{post_field}, dsc_cicd_max_se_size, "
+            "dsc_cicd_stream, dsc_cicd_input, &dsc_cicd_domain_valid, "
+            "&dsc_cicd_rtl_post, dsc_cicd_rtl_output);\n"
+            "    int dsc_cicd_mismatch = !dsc_cicd_domain_valid || "
+            f"dsc_cicd_rtl_post != (uint32_t)dsc_cicd_c_state.{post_field};\n"
+            "    for (int lane = 0; lane < DSC_CICD_MAX_SSPS; ++lane)\n"
+            "        dsc_cicd_mismatch |= dsc_cicd_fifo_mismatch("
+            "&dsc_cicd_c_output[lane], &dsc_cicd_rtl_output[lane]);\n"
+            "    if (dsc_cicd_mismatch) {\n"
+            "        ++dsc_cicd_mismatches;\n"
+            "        fprintf(stderr, \"C/RTL bounded mux refill mismatch: cursor=%d ssps=%d mux=%d\\n\", "
+            f"{state_parameter}->{post_field}, {state_parameter}->{num_ssps_field}, "
+            f"{config_parameter}->{mux_field});\n"
+            "    }\n"
+            "    if (mode == 2) {\n"
+            f"        {state_parameter}->{post_field} = (int)dsc_cicd_rtl_post;\n"
+            "        for (int lane = 0; lane < DSC_CICD_MAX_SSPS; ++lane)\n"
+            f"            dsc_cicd_apply_fifo(&{state_parameter}->{shifter_field}[lane], "
+            "&dsc_cicd_rtl_output[lane]);\n"
+            "        return;\n"
+            "    }\n"
+            f"    {state_parameter}->{post_field} = dsc_cicd_c_state.{post_field};\n"
+            "    for (int lane = 0; lane < DSC_CICD_MAX_SSPS; ++lane)\n"
+            f"        dsc_cicd_apply_fifo(&{state_parameter}->{shifter_field}[lane], "
+            "&dsc_cicd_c_output[lane]);\n"
+            "}\n"
+            + f"void {function_name}({caller_declarations}) {{\n"
+            f"    dsc_cicd_invoke({alias_call});\n"
+            "}\n",
+            encoding="utf-8",
+        )
+
+        bridge_assignments = [
+            f"    dut.{bindings['mux_word_size_port']} = mux_word_size;",
+            f"    dut.{bindings['num_ssps_port']} = num_ssps;",
+            f"    dut.{bindings['post_mux_num_bits_port']} = post_mux_num_bits;",
+        ]
+        bridge_outputs = [
+            "    *domain_valid = static_cast<uint32_t>(dut.domain_valid);",
+            f"    *post_mux_num_bits_out = static_cast<uint32_t>(dut."
+            f"{bindings['post_mux_num_bits_output_port']});",
+        ]
+        for index, port in enumerate(max_se_ports):
+            bridge_assignments.append(f"    dut.{port} = max_se_size[{index}];")
+        for index, port in enumerate(stream_ports):
+            bridge_assignments.append(f"    dut.{port} = stream[{index}];")
+        field_pairs = (
+            ("size_port", "size", "size_output_port"),
+            ("fullness_port", "fullness", "fullness_output_port"),
+            ("read_ptr_port", "read_ptr", "read_ptr_output_port"),
+            ("write_ptr_port", "write_ptr", "write_ptr_output_port"),
+            ("max_fullness_port", "max_fullness", "max_fullness_output_port"),
+            ("byte_ctr_port", "byte_ctr", "byte_ctr_output_port"),
+        )
+        for lane_index, lane in enumerate(lanes):
+            for input_key, field, output_key in field_pairs:
+                bridge_assignments.append(
+                    f"    dut.{lane[input_key]} = input_fifo[{lane_index}].{field};"
+                )
+                bridge_outputs.append(
+                    f"    output_fifo[{lane_index}].{field} = "
+                    f"static_cast<uint32_t>(dut.{lane[output_key]});"
+                )
+            for byte_index, (input_port, output_port) in enumerate(zip(
+                lane["data_input_ports"], lane["data_output_ports"]
+            )):
+                bridge_assignments.append(
+                    f"    dut.{input_port} = input_fifo[{lane_index}].data[{byte_index}];"
+                )
+                bridge_outputs.append(
+                    f"    output_fifo[{lane_index}].data[{byte_index}] = "
+                    f"static_cast<uint8_t>(dut.{output_port});"
+                )
+        bridge = source_dir / "rtl_bridge.cpp"
+        bridge.write_text(
+            "#include <cstdint>\n"
+            "#include \"verilated.h\"\n"
+            "#include \"dsc_cicd_rtl_abi.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            "extern \"C\" void dsc_cicd_rtl(uint32_t mux_word_size, "
+            "uint32_t num_ssps, uint32_t post_mux_num_bits, "
+            "const uint32_t max_se_size[DSC_CICD_MAX_SSPS], "
+            "const uint8_t stream[DSC_CICD_STREAM_BYTES], "
+            "const dsc_cicd_fifo_snapshot_t input_fifo[DSC_CICD_MAX_SSPS], "
+            "uint32_t *domain_valid, uint32_t *post_mux_num_bits_out, "
+            "dsc_cicd_fifo_snapshot_t output_fifo[DSC_CICD_MAX_SSPS]) {\n"
+            f"    static V{safe_identifier(module)} dut;\n"
+            + "\n".join(bridge_assignments)
+            + "\n    dut.eval();\n"
+            + "\n".join(bridge_outputs)
+            + "\n}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\n"
+            "extern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) {\n"
+            "    return dsc_cicd_original_main(argc, argv);\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        rtl_bindings = [
+            f"{config_parameter}->{mux_field}",
+            f"{state_parameter}->{num_ssps_field}",
+            f"{state_parameter}->{post_field}",
+            *[f"{state_parameter}->{max_se_field}[{index}]" for index in range(max_ssps)],
+            *[f"{buffer_parameter}[base+{index}]" for index in range(stream_window_bytes)],
+        ]
+        for lane_index in range(max_ssps):
+            rtl_bindings.extend(
+                f"{state_parameter}->{shifter_field}[{lane_index}].{field}"
+                for field in (
+                    "size", "fullness", "read_ptr", "write_ptr",
+                    "max_fullness", "byte_ctr",
+                )
+            )
+            rtl_bindings.extend(
+                f"{state_parameter}->{shifter_field}[{lane_index}].data[{index}]"
+                for index in range(max_fifo_bytes)
+            )
+        return {
+            "header": header,
+            "abi": abi,
+            "overlay": overlay,
+            "bridge": bridge,
+            "main": main,
+            "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": "explicit_bounded_mux_refill_transition",
+                "caller_parameter_count": len(parameters),
+                "rtl_input_count": len(inputs),
+                "frozen_input_ports": [str(port.get("name")) for port in inputs],
+                "rtl_bindings": rtl_bindings,
+                "state_outputs": [str(port.get("name")) for port in outputs],
+                "rtl_return_controls_cursor_and_complete_fifo_snapshots": True,
+                "c_oracle_uses_private_fifo_memory": True,
+                "residual_symbol_alias_routes_to_dispatcher": True,
+            },
+        }
+
+    def write_bounded_flatness_state_transition_overlay_sources(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        module: str,
+        candidate_sv: pathlib.Path,
+    ) -> dict[str, Any]:
+        """Bind accepted flatness RTL callees plus an explicit scalar next state."""
+        semantics = contract.get("semantics", {}) or {}
+        constants = semantics.get("constants", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        calls = int(constants.get("callee_calls", 0))
+        components = int(constants.get("component_count", 0))
+        taps_per_component = int(constants.get("taps_per_component", 0))
+        padding_left = int(constants.get("padding_left", 0))
+        last_range_index = int(constants.get("last_range_index", -1))
+        if (calls, components, taps_per_component, padding_left, last_range_index) != (
+            4, 4, 7, 5, 14
+        ):
+            raise RuntimeError("bounded flatness constants are incomplete")
+        scalar_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("scalar_input_ports", {}) or {}).items()
+        }
+        config_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("config_ports", {}) or {}).items()
+        }
+        state_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("state_input_ports", {}) or {}).items()
+        }
+        state_output_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("state_output_ports", {}) or {}).items()
+        }
+        tap_ports = [str(value) for value in bindings.get("tap_ports", [])]
+        ports = [
+            port for port in (contract.get("interface", {}) or {}).get("ports", [])
+            if isinstance(port, dict)
+        ]
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        outputs = [port for port in ports if port.get("direction") == "output"]
+        scalar_input_names = {
+            *scalar_ports.values(), *config_ports.values(), *state_ports.values()
+        }
+        if (
+            {str(port.get("name")) for port in inputs}
+            != {*scalar_input_names, *tap_ports}
+            or {str(port.get("name")) for port in outputs}
+            != set(state_output_ports.values())
+            or len(tap_ports) != calls * components * taps_per_component
+        ):
+            raise RuntimeError("bounded flatness ports do not match the frozen interface")
+
+        parameters = self.function_parameters(contract)
+        parameter_by_name = {
+            str(parameter.get("name")): parameter for parameter in parameters
+        }
+        config_parameter = str(bindings.get("config_parameter", ""))
+        state_parameter = str(bindings.get("state_parameter", ""))
+        required_parameters = {config_parameter, state_parameter, *scalar_ports}
+        if set(parameter_by_name) != required_parameters:
+            raise RuntimeError("bounded flatness native parameter bindings are incomplete")
+        if not parameter_is_pointer(parameter_by_name[config_parameter]):
+            raise RuntimeError("bounded flatness config parameter must be a pointer")
+        if not parameter_is_pointer(parameter_by_name[state_parameter]):
+            raise RuntimeError("bounded flatness state parameter must be a pointer")
+        identifier = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+        all_identifiers = {
+            config_parameter, state_parameter, *scalar_ports, *config_ports,
+            *state_output_ports, *scalar_input_names,
+            *state_output_ports.values(), *tap_ports,
+        }
+        if not all(identifier.fullmatch(value) for value in all_identifiers):
+            raise RuntimeError("bounded flatness bindings contain an invalid identifier")
+        field_expression = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*(?:\[[0-9]+\])?$")
+        if not all(field_expression.fullmatch(value) for value in state_ports):
+            raise RuntimeError("bounded flatness state field binding is invalid")
+
+        parameter_specs = [
+            f"{str(parameter.get('type', 'int')).strip()} {parameter.get('name')}"
+            for parameter in parameters
+        ]
+        parameter_names = [str(parameter.get("name")) for parameter in parameters]
+        caller_declarations = ", ".join(parameter_specs)
+        alias_call = ", ".join(parameter_names)
+        c_call = ", ".join(
+            "&dsc_cicd_c_state" if name == state_parameter else name
+            for name in parameter_names
+        )
+        function_name = str(contract_function(contract).get("name"))
+        original = function_name + "_original"
+
+        scalar_port_order = [
+            str(port["name"]) for port in inputs if str(port["name"]) not in set(tap_ports)
+        ]
+        output_port_order = [str(port["name"]) for port in outputs]
+        abi = source_dir / "dsc_cicd_rtl_abi.h"
+        abi.write_text(
+            "#ifndef DSC_CICD_RTL_ABI_H\n"
+            "#define DSC_CICD_RTL_ABI_H\n"
+            "#include <stdint.h>\n"
+            f"#define DSC_CICD_FLAT_CALLS {calls}\n"
+            f"#define DSC_CICD_FLAT_COMPONENTS {components}\n"
+            f"#define DSC_CICD_FLAT_TAPS {taps_per_component}\n"
+            "typedef struct {\n"
+            + "".join(f"    int32_t {port};\n" for port in scalar_port_order)
+            + "    uint16_t taps[DSC_CICD_FLAT_CALLS][DSC_CICD_FLAT_COMPONENTS]"
+            "[DSC_CICD_FLAT_TAPS];\n"
+            "} dsc_cicd_flatness_input_t;\n"
+            "typedef struct {\n"
+            + "".join(f"    int32_t {port};\n" for port in output_port_order)
+            + "} dsc_cicd_flatness_output_t;\n"
+            "#ifdef __cplusplus\nextern \"C\" {\n#endif\n"
+            "void dsc_cicd_rtl(const dsc_cicd_flatness_input_t *input, "
+            "dsc_cicd_flatness_output_t *output);\n"
+            "#ifdef __cplusplus\n}\n#endif\n"
+            "#endif\n",
+            encoding="utf-8",
+        )
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n"
+            "#define DSC_CICD_OVERLAY_H\n"
+            "#include \"dsc_types.h\"\n"
+            f"void dsc_cicd_invoke({caller_declarations});\n"
+            "#endif\n",
+            encoding="utf-8",
+        )
+
+        scalar_assignments = []
+        rtl_bindings = []
+        for parameter, port in scalar_ports.items():
+            scalar_assignments.append(f"    dsc_cicd_input.{port} = {parameter};")
+            rtl_bindings.append(parameter)
+        for field, port in config_ports.items():
+            expression = (
+                f"{config_parameter}->rc_range_parameters[{last_range_index}].range_max_qp"
+                if field == "last_range_max_qp"
+                else f"{config_parameter}->{field}"
+            )
+            scalar_assignments.append(f"    dsc_cicd_input.{port} = {expression};")
+            rtl_bindings.append(expression)
+        for field, port in state_ports.items():
+            if field.startswith("cpntBitDepth["):
+                expression = f"{state_parameter}->{field}"
+            else:
+                expression = f"{state_parameter}->{field}"
+            scalar_assignments.append(f"    dsc_cicd_input.{port} = {expression};")
+            rtl_bindings.append(expression)
+        hpos_parameter = str(bindings["horizontal_position_parameter"])
+        qp_parameter = str(bindings["qp_parameter"])
+        tap_index = 0
+        for call in range(calls):
+            for component in range(components):
+                for tap_index_in_call in range(taps_per_component):
+                    expression = (
+                        f"{state_parameter}->origLine[{component}]"
+                        f"[{padding_left}+{hpos_parameter}"
+                        f"+({call + 1}*{state_parameter}->pixelsInGroup)+{tap_index_in_call}]"
+                    )
+                    rtl_bindings.append(expression)
+                    tap_index += 1
+        c_expected = {
+            port: f"dsc_cicd_c_state.{field}"
+            for field, port in state_output_ports.items()
+        }
+        mismatch_expression = " || ".join(
+            f"dsc_cicd_rtl_output.{port} != {c_expected[port]}"
+            for port in output_port_order
+        )
+        apply_c = "".join(
+            f"        {state_parameter}->{field} = dsc_cicd_c_state.{field};\n"
+            for field in state_output_ports
+        )
+        apply_rtl = "".join(
+            f"        {state_parameter}->{field} = dsc_cicd_rtl_output.{port};\n"
+            for field, port in state_output_ports.items()
+        )
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdint.h>\n"
+            "#include <stdio.h>\n"
+            "#include <stdlib.h>\n"
+            "#include <string.h>\n"
+            "#include \"dsc_cicd_overlay.h\"\n"
+            "#include \"dsc_cicd_rtl_abi.h\"\n"
+            f"extern void {original}({caller_declarations});\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n"
+            "}\n"
+            + self.overlay_runtime_metrics_source()
+            + f"void dsc_cicd_invoke({caller_declarations}) {{\n"
+            f"    dsc_state_t dsc_cicd_c_state = *{state_parameter};\n"
+            f"    {original}({c_call});\n"
+            "    int mode = dsc_cicd_mode();\n"
+            "    dsc_cicd_note_call(mode);\n"
+            "    if (mode == 0) {\n"
+            + apply_c
+            + "        return;\n"
+            "    }\n"
+            "    dsc_cicd_flatness_input_t dsc_cicd_input;\n"
+            "    dsc_cicd_flatness_output_t dsc_cicd_rtl_output;\n"
+            "    memset(&dsc_cicd_input, 0, sizeof(dsc_cicd_input));\n"
+            "    memset(&dsc_cicd_rtl_output, 0, sizeof(dsc_cicd_rtl_output));\n"
+            + "\n".join(scalar_assignments)
+            + "\n"
+            f"    int dsc_cicd_scan = ({state_parameter}->isEncoder != 0) && "
+            f"(({state_parameter}->groupCount & 3) == 3) && "
+            f"({qp_parameter} >= {config_parameter}->flatness_min_qp) && "
+            f"({qp_parameter} <= {config_parameter}->flatness_max_qp);\n"
+            "    if (dsc_cicd_scan) {\n"
+            "        for (int call = 0; call < DSC_CICD_FLAT_CALLS; ++call) {\n"
+            f"            int flat_h = {hpos_parameter} + (call + 1) * "
+            f"{state_parameter}->pixelsInGroup;\n"
+            f"            if (flat_h >= 0 && flat_h + 1 < {state_parameter}->sliceWidth) {{\n"
+            "                for (int component = 0; component < "
+            f"{state_parameter}->numComponents; ++component) {{\n"
+            "                    for (int tap = 0; tap < DSC_CICD_FLAT_TAPS; ++tap)\n"
+            f"                        dsc_cicd_input.taps[call][component][tap] = "
+            f"(uint16_t){state_parameter}->origLine[component]"
+            f"[{padding_left} + flat_h + tap];\n"
+            "                }\n"
+            "            }\n"
+            "        }\n"
+            "    }\n"
+            "    dsc_cicd_rtl(&dsc_cicd_input, &dsc_cicd_rtl_output);\n"
+            f"    if ({mismatch_expression}) {{\n"
+            "        ++dsc_cicd_mismatches;\n"
+            "        fprintf(stderr, \"C/RTL bounded flatness mismatch: h=%d qp=%d group=%d encoder=%d\\n\", "
+            f"{hpos_parameter}, {qp_parameter}, {state_parameter}->groupCount, "
+            f"{state_parameter}->isEncoder);\n"
+            "    }\n"
+            "    if (mode == 2) {\n"
+            + apply_rtl
+            + "        return;\n"
+            "    }\n"
+            + apply_c
+            + "}\n"
+            + f"void {function_name}({caller_declarations}) {{\n"
+            f"    dsc_cicd_invoke({alias_call});\n"
+            "}\n",
+            encoding="utf-8",
+        )
+
+        bridge_assignments = [
+            f"    dut.{port} = static_cast<uint32_t>(input->{port});"
+            for port in scalar_port_order
+        ]
+        tap_index = 0
+        for call in range(calls):
+            for component in range(components):
+                for tap_index_in_call in range(taps_per_component):
+                    bridge_assignments.append(
+                        f"    dut.{tap_ports[tap_index]} = "
+                        f"input->taps[{call}][{component}][{tap_index_in_call}];"
+                    )
+                    tap_index += 1
+        bridge_outputs = [
+            f"    output->{port} = static_cast<int32_t>(dut.{port});"
+            for port in output_port_order
+        ]
+        bridge = source_dir / "rtl_bridge.cpp"
+        bridge.write_text(
+            "#include <cstdint>\n"
+            "#include \"verilated.h\"\n"
+            "#include \"dsc_cicd_rtl_abi.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            "extern \"C\" void dsc_cicd_rtl("
+            "const dsc_cicd_flatness_input_t *input, "
+            "dsc_cicd_flatness_output_t *output) {\n"
+            f"    static V{safe_identifier(module)} dut;\n"
+            + "\n".join(bridge_assignments)
+            + "\n    dut.eval();\n"
+            + "\n".join(bridge_outputs)
+            + "\n}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\n"
+            "extern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) {\n"
+            "    return dsc_cicd_original_main(argc, argv);\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        return {
+            "header": header,
+            "abi": abi,
+            "overlay": overlay,
+            "bridge": bridge,
+            "main": main,
+            "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": "accepted_flatness_rtl_plus_bounded_scalar_state",
+                "caller_parameter_count": len(parameters),
+                "rtl_input_count": len(inputs),
+                "frozen_input_ports": [str(port.get("name")) for port in inputs],
+                "rtl_bindings": rtl_bindings,
+                "state_outputs": output_port_order,
+                "rtl_return_controls_all_written_flatness_state": True,
+                "accepted_rtl_dependencies_embedded": [
+                    str(item.get("contract_id")) for item in contract.get("dependencies", [])
+                ],
+                "residual_symbol_alias_routes_to_dispatcher": True,
+            },
+        }
+
+    def write_bounded_line_write_transition_overlay_sources(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        module: str,
+        candidate_sv: pathlib.Path,
+    ) -> dict[str, Any]:
+        """Bind a bounded ICH-to-line scatter as explicit write sidebands."""
+        semantics = contract.get("semantics", {}) or {}
+        constants = semantics.get("constants", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        max_pixels = int(constants.get("max_pixels", 0))
+        components = int(constants.get("component_count", 0))
+        if (max_pixels, components, int(constants.get("padding_left", 0))) != (6, 4, 5):
+            raise RuntimeError("bounded line write constants are incomplete")
+        pixel_ports = [[str(value) for value in row] for row in bindings.get("pixel_ports", [])]
+        index_ports = [str(value) for value in bindings.get("write_index_ports", [])]
+        enable_ports = [[str(value) for value in row] for row in bindings.get("write_enable_ports", [])]
+        value_ports = [[str(value) for value in row] for row in bindings.get("write_value_ports", [])]
+        if not all(len(rows) == max_pixels for rows in (pixel_ports, enable_ports, value_ports)):
+            raise RuntimeError("bounded line write row extent is incomplete")
+        if any(len(row) != components for rows in (pixel_ports, enable_ports, value_ports) for row in rows):
+            raise RuntimeError("bounded line write component extent is incomplete")
+        if len(index_ports) != max_pixels:
+            raise RuntimeError("bounded line write index extent is incomplete")
+
+        ports = [
+            port for port in (contract.get("interface", {}) or {}).get("ports", [])
+            if isinstance(port, dict)
+        ]
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        outputs = [port for port in ports if port.get("direction") == "output"]
+        base_input_ports = [
+            str(bindings[key]) for key in (
+                "hpos_port", "pixels_in_group_port", "ich_indices_port",
+                "ich_selected_port", "num_components_port",
+            )
+        ]
+        if {str(port["name"]) for port in inputs} != {
+            *base_input_ports, *[value for row in pixel_ports for value in row]
+        } or {str(port["name"]) for port in outputs} != {
+            *index_ports,
+            *[value for row in enable_ports for value in row],
+            *[value for row in value_ports for value in row],
+        }:
+            raise RuntimeError("bounded line write ports do not match the frozen interface")
+
+        parameters = self.function_parameters(contract)
+        parameter_by_name = {str(item.get("name")): item for item in parameters}
+        config_parameter = str(bindings.get("config_parameter", ""))
+        state_parameter = str(bindings.get("state_parameter", ""))
+        line_parameter = str(bindings.get("line_parameter", ""))
+        if set(parameter_by_name) != {config_parameter, state_parameter, line_parameter}:
+            raise RuntimeError("bounded line write requires config/state/line parameters")
+        if not all(parameter_is_pointer(parameter_by_name[name]) for name in parameter_by_name):
+            raise RuntimeError("bounded line write native parameters must be pointers")
+        identifier = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+        if not all(identifier.fullmatch(value) for value in {
+            config_parameter, state_parameter, line_parameter,
+            *base_input_ports, *index_ports,
+            *[value for row in pixel_ports for value in row],
+            *[value for row in enable_ports for value in row],
+            *[value for row in value_ports for value in row],
+        }):
+            raise RuntimeError("bounded line write bindings contain an invalid identifier")
+
+        parameter_specs = [
+            f"{str(item.get('type', 'int')).strip()} {item.get('name')}"
+            for item in parameters
+        ]
+        parameter_names = [str(item.get("name")) for item in parameters]
+        caller_declarations = ", ".join(parameter_specs)
+        alias_call = ", ".join(parameter_names)
+        function_name = str(contract_function(contract).get("name"))
+        original = function_name + "_original"
+        hpos_field = str(bindings["hpos_field"])
+        pixels_in_group_field = str(bindings["pixels_in_group_field"])
+        ich_indices_field = str(bindings["ich_indices_field"])
+        ich_selected_field = str(bindings["ich_selected_field"])
+        num_components_field = str(bindings["num_components_field"])
+        ich_pixels_field = str(bindings["ich_pixels_field"])
+
+        abi = source_dir / "dsc_cicd_rtl_abi.h"
+        abi.write_text(
+            "#ifndef DSC_CICD_RTL_ABI_H\n"
+            "#define DSC_CICD_RTL_ABI_H\n"
+            "#include <stdint.h>\n"
+            f"#define DSC_CICD_LINE_PIXELS {max_pixels}\n"
+            f"#define DSC_CICD_LINE_COMPONENTS {components}\n"
+            "typedef struct {\n"
+            "    int32_t hpos;\n    int32_t pixels_in_group;\n"
+            "    int32_t ich_indices;\n    int32_t ich_selected;\n"
+            "    int32_t num_components;\n"
+            "    uint32_t pixels[DSC_CICD_LINE_PIXELS][DSC_CICD_LINE_COMPONENTS];\n"
+            "} dsc_cicd_line_input_t;\n"
+            "typedef struct {\n"
+            "    int32_t index[DSC_CICD_LINE_PIXELS];\n"
+            "    uint8_t enable[DSC_CICD_LINE_PIXELS][DSC_CICD_LINE_COMPONENTS];\n"
+            "    int32_t value[DSC_CICD_LINE_PIXELS][DSC_CICD_LINE_COMPONENTS];\n"
+            "} dsc_cicd_line_output_t;\n"
+            "#ifdef __cplusplus\nextern \"C\" {\n#endif\n"
+            "void dsc_cicd_rtl(const dsc_cicd_line_input_t *input, "
+            "dsc_cicd_line_output_t *output);\n"
+            "#ifdef __cplusplus\n}\n#endif\n"
+            "#endif\n",
+            encoding="utf-8",
+        )
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n#define DSC_CICD_OVERLAY_H\n"
+            "#include \"dsc_types.h\"\n"
+            f"void dsc_cicd_invoke({caller_declarations});\n#endif\n",
+            encoding="utf-8",
+        )
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdint.h>\n#include <stdio.h>\n#include <stdlib.h>\n"
+            "#include <string.h>\n#include \"dsc_cicd_overlay.h\"\n"
+            "#include \"dsc_cicd_rtl_abi.h\"\n"
+            f"extern void {original}({caller_declarations});\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n}\n"
+            + self.overlay_runtime_metrics_source()
+            + f"void dsc_cicd_invoke({caller_declarations}) {{\n"
+            "    int dsc_cicd_index[DSC_CICD_LINE_PIXELS] = {0};\n"
+            "    uint8_t dsc_cicd_enable[DSC_CICD_LINE_PIXELS][DSC_CICD_LINE_COMPONENTS] = {{0}};\n"
+            "    int dsc_cicd_prior[DSC_CICD_LINE_PIXELS][DSC_CICD_LINE_COMPONENTS] = {{0}};\n"
+            "    int dsc_cicd_c_value[DSC_CICD_LINE_PIXELS][DSC_CICD_LINE_COMPONENTS] = {{0}};\n"
+            f"    int dsc_cicd_start = {state_parameter}->{hpos_field} - "
+            f"{state_parameter}->{pixels_in_group_field} + 1 + 5;\n"
+            "    for (int pixel = 0; pixel < DSC_CICD_LINE_PIXELS; ++pixel) {\n"
+            "        dsc_cicd_index[pixel] = dsc_cicd_start + pixel;\n"
+            "        for (int component = 0; component < DSC_CICD_LINE_COMPONENTS; ++component) {\n"
+            f"            dsc_cicd_enable[pixel][component] = ({state_parameter}->{ich_selected_field} != 0) && "
+            f"(pixel < {state_parameter}->{ich_indices_field}) && "
+            f"(component < {state_parameter}->{num_components_field});\n"
+            "            if (dsc_cicd_enable[pixel][component])\n"
+            f"                dsc_cicd_prior[pixel][component] = {line_parameter}[component]"
+            "[dsc_cicd_index[pixel]];\n"
+            "        }\n    }\n"
+            f"    {original}({config_parameter}, {state_parameter}, {line_parameter});\n"
+            "    for (int pixel = 0; pixel < DSC_CICD_LINE_PIXELS; ++pixel)\n"
+            "        for (int component = 0; component < DSC_CICD_LINE_COMPONENTS; ++component)\n"
+            "            if (dsc_cicd_enable[pixel][component]) {\n"
+            f"                dsc_cicd_c_value[pixel][component] = {line_parameter}[component]"
+            "[dsc_cicd_index[pixel]];\n"
+            f"                {line_parameter}[component][dsc_cicd_index[pixel]] = "
+            "dsc_cicd_prior[pixel][component];\n"
+            "            }\n"
+            "    int mode = dsc_cicd_mode();\n    dsc_cicd_note_call(mode);\n"
+            "    if (mode == 0) {\n"
+            "        for (int pixel = 0; pixel < DSC_CICD_LINE_PIXELS; ++pixel)\n"
+            "            for (int component = 0; component < DSC_CICD_LINE_COMPONENTS; ++component)\n"
+            "                if (dsc_cicd_enable[pixel][component])\n"
+            f"                    {line_parameter}[component][dsc_cicd_index[pixel]] = "
+            "dsc_cicd_c_value[pixel][component];\n"
+            "        return;\n    }\n"
+            "    dsc_cicd_line_input_t dsc_cicd_input;\n"
+            "    dsc_cicd_line_output_t dsc_cicd_rtl_output;\n"
+            "    memset(&dsc_cicd_input, 0, sizeof(dsc_cicd_input));\n"
+            "    memset(&dsc_cicd_rtl_output, 0, sizeof(dsc_cicd_rtl_output));\n"
+            f"    dsc_cicd_input.hpos = {state_parameter}->{hpos_field};\n"
+            f"    dsc_cicd_input.pixels_in_group = {state_parameter}->{pixels_in_group_field};\n"
+            f"    dsc_cicd_input.ich_indices = {state_parameter}->{ich_indices_field};\n"
+            f"    dsc_cicd_input.ich_selected = {state_parameter}->{ich_selected_field};\n"
+            f"    dsc_cicd_input.num_components = {state_parameter}->{num_components_field};\n"
+            "    for (int pixel = 0; pixel < DSC_CICD_LINE_PIXELS; ++pixel)\n"
+            "        for (int component = 0; component < DSC_CICD_LINE_COMPONENTS; ++component)\n"
+            f"            dsc_cicd_input.pixels[pixel][component] = {state_parameter}->"
+            f"{ich_pixels_field}[pixel][component];\n"
+            "    dsc_cicd_rtl(&dsc_cicd_input, &dsc_cicd_rtl_output);\n"
+            "    int dsc_cicd_mismatch = 0;\n"
+            "    for (int pixel = 0; pixel < DSC_CICD_LINE_PIXELS; ++pixel) {\n"
+            "        dsc_cicd_mismatch |= dsc_cicd_rtl_output.index[pixel] != dsc_cicd_index[pixel];\n"
+            "        for (int component = 0; component < DSC_CICD_LINE_COMPONENTS; ++component)\n"
+            "            dsc_cicd_mismatch |= "
+            "dsc_cicd_rtl_output.enable[pixel][component] != dsc_cicd_enable[pixel][component] || "
+            "dsc_cicd_rtl_output.value[pixel][component] != dsc_cicd_c_value[pixel][component];\n"
+            "    }\n"
+            "    if (dsc_cicd_mismatch) {\n        ++dsc_cicd_mismatches;\n"
+            "        fprintf(stderr, \"C/RTL bounded line write mismatch\\n\");\n    }\n"
+            "    if (mode == 2) {\n"
+            "        for (int pixel = 0; pixel < DSC_CICD_LINE_PIXELS; ++pixel)\n"
+            "            for (int component = 0; component < DSC_CICD_LINE_COMPONENTS; ++component)\n"
+            "                if (dsc_cicd_rtl_output.enable[pixel][component])\n"
+            f"                    {line_parameter}[component][dsc_cicd_rtl_output.index[pixel]] = "
+            "dsc_cicd_rtl_output.value[pixel][component];\n"
+            "        return;\n    }\n"
+            "    for (int pixel = 0; pixel < DSC_CICD_LINE_PIXELS; ++pixel)\n"
+            "        for (int component = 0; component < DSC_CICD_LINE_COMPONENTS; ++component)\n"
+            "            if (dsc_cicd_enable[pixel][component])\n"
+            f"                {line_parameter}[component][dsc_cicd_index[pixel]] = "
+            "dsc_cicd_c_value[pixel][component];\n"
+            "}\n"
+            + f"void {function_name}({caller_declarations}) {{\n"
+            f"    dsc_cicd_invoke({alias_call});\n}}\n",
+            encoding="utf-8",
+        )
+
+        bridge_assignments = [
+            f"    dut.{bindings['hpos_port']} = static_cast<uint32_t>(input->hpos);",
+            f"    dut.{bindings['pixels_in_group_port']} = static_cast<uint32_t>(input->pixels_in_group);",
+            f"    dut.{bindings['ich_indices_port']} = static_cast<uint32_t>(input->ich_indices);",
+            f"    dut.{bindings['ich_selected_port']} = static_cast<uint32_t>(input->ich_selected);",
+            f"    dut.{bindings['num_components_port']} = static_cast<uint32_t>(input->num_components);",
+        ]
+        bridge_outputs = []
+        for pixel in range(max_pixels):
+            bridge_outputs.append(
+                f"    output->index[{pixel}] = static_cast<int32_t>(dut.{index_ports[pixel]});"
+            )
+            for component in range(components):
+                bridge_assignments.append(
+                    f"    dut.{pixel_ports[pixel][component]} = input->pixels[{pixel}][{component}];"
+                )
+                bridge_outputs.extend([
+                    f"    output->enable[{pixel}][{component}] = "
+                    f"static_cast<uint8_t>(dut.{enable_ports[pixel][component]});",
+                    f"    output->value[{pixel}][{component}] = "
+                    f"static_cast<int32_t>(dut.{value_ports[pixel][component]});",
+                ])
+        bridge = source_dir / "rtl_bridge.cpp"
+        bridge.write_text(
+            "#include <cstdint>\n#include \"verilated.h\"\n"
+            "#include \"dsc_cicd_rtl_abi.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            "extern \"C\" void dsc_cicd_rtl(const dsc_cicd_line_input_t *input, "
+            "dsc_cicd_line_output_t *output) {\n"
+            f"    static V{safe_identifier(module)} dut;\n"
+            + "\n".join(bridge_assignments)
+            + "\n    dut.eval();\n"
+            + "\n".join(bridge_outputs)
+            + "\n}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\nextern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) { return dsc_cicd_original_main(argc, argv); }\n",
+            encoding="utf-8",
+        )
+        rtl_bindings = [
+            f"{state_parameter}->{hpos_field}",
+            f"{state_parameter}->{pixels_in_group_field}",
+            f"{state_parameter}->{ich_indices_field}",
+            f"{state_parameter}->{ich_selected_field}",
+            f"{state_parameter}->{num_components_field}",
+            *[
+                f"{state_parameter}->{ich_pixels_field}[{pixel}][{component}]"
+                for pixel in range(max_pixels) for component in range(components)
+            ],
+        ]
+        return {
+            "header": header,
+            "abi": abi,
+            "overlay": overlay,
+            "bridge": bridge,
+            "main": main,
+            "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": "explicit_bounded_line_write_transition",
+                "caller_parameter_count": len(parameters),
+                "rtl_input_count": len(inputs),
+                "frozen_input_ports": [str(port.get("name")) for port in inputs],
+                "rtl_bindings": rtl_bindings,
+                "state_outputs": [str(port.get("name")) for port in outputs],
+                "rtl_return_controls_all_reconstructed_line_writes": True,
+                "c_shadow_line_writes_restored_before_rtl_return": True,
+                "residual_symbol_alias_routes_to_dispatcher": True,
+            },
+        }
+
+    def write_bounded_history_update_transition_overlay_sources(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        module: str,
+        candidate_sv: pathlib.Path,
+    ) -> dict[str, Any]:
+        """Bind a complete bounded ICH memory snapshot to Verilated RTL."""
+        semantics = contract.get("semantics", {}) or {}
+        constants = semantics.get("constants", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        entries = int(constants.get("ich_entries", 0))
+        components = int(constants.get("component_count", 0))
+        if (entries, components, int(constants.get("reserved_nonfirst", 0))) != (
+            32, 4, 25
+        ):
+            raise RuntimeError("bounded history update constants are incomplete")
+        scalar_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("scalar_ports", {}) or {}).items()
+        }
+        recon_ports = [str(value) for value in bindings.get("recon_ports", [])]
+        valid_inputs = [
+            str(value) for value in bindings.get("valid_input_ports", [])
+        ]
+        pixel_inputs = [
+            [str(value) for value in row]
+            for row in bindings.get("pixel_input_ports", [])
+        ]
+        valid_outputs = [
+            str(value) for value in bindings.get("valid_output_ports", [])
+        ]
+        pixel_outputs = [
+            [str(value) for value in row]
+            for row in bindings.get("pixel_output_ports", [])
+        ]
+        if (
+            set(scalar_ports) != {
+                "cfg_native_420", "hPos", "vPos", "numComponents",
+                "isEncoder", "ichSelected", "prevIchSelected",
+            }
+            or len(recon_ports) != components
+            or len(valid_inputs) != entries
+            or len(valid_outputs) != entries
+            or len(pixel_inputs) != components
+            or len(pixel_outputs) != components
+            or any(len(row) != entries for row in pixel_inputs)
+            or any(len(row) != entries for row in pixel_outputs)
+        ):
+            raise RuntimeError("bounded history update bindings are incomplete")
+
+        ports = [
+            port for port in (contract.get("interface", {}) or {}).get("ports", [])
+            if isinstance(port, dict)
+        ]
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        outputs = [port for port in ports if port.get("direction") == "output"]
+        expected_inputs = {
+            *scalar_ports.values(), *recon_ports, *valid_inputs,
+            *[value for row in pixel_inputs for value in row],
+        }
+        expected_outputs = {
+            *valid_outputs, *[value for row in pixel_outputs for value in row],
+        }
+        if (
+            {str(port.get("name")) for port in inputs} != expected_inputs
+            or {str(port.get("name")) for port in outputs} != expected_outputs
+        ):
+            raise RuntimeError("bounded history update ports do not match frozen interface")
+
+        parameters = self.function_parameters(contract)
+        parameter_by_name = {
+            str(parameter.get("name")): parameter for parameter in parameters
+        }
+        config_parameter = str(bindings.get("config_parameter", ""))
+        state_parameter = str(bindings.get("state_parameter", ""))
+        recon_parameter = str(bindings.get("recon_parameter", ""))
+        if set(parameter_by_name) != {
+            config_parameter, state_parameter, recon_parameter
+        } or not all(
+            parameter_is_pointer(parameter_by_name[name])
+            for name in parameter_by_name
+        ):
+            raise RuntimeError("bounded history update requires config/state/recon pointers")
+
+        native_420_field = str(bindings.get("native_420_field", ""))
+        history_field = str(bindings.get("history_field", ""))
+        pixels_field = str(bindings.get("history_pixels_field", ""))
+        valid_field = str(bindings.get("history_valid_field", ""))
+        identifier = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+        identifiers = {
+            config_parameter, state_parameter, recon_parameter,
+            native_420_field, history_field, pixels_field, valid_field,
+            *scalar_ports.values(), *recon_ports, *valid_inputs, *valid_outputs,
+            *[value for row in pixel_inputs for value in row],
+            *[value for row in pixel_outputs for value in row],
+        }
+        if not all(identifier.fullmatch(value) for value in identifiers):
+            raise RuntimeError("bounded history update bindings contain invalid identifier")
+
+        parameter_specs = [
+            f"{str(parameter.get('type', 'int')).strip()} {parameter.get('name')}"
+            for parameter in parameters
+        ]
+        parameter_names = [str(parameter.get("name")) for parameter in parameters]
+        caller_declarations = ", ".join(parameter_specs)
+        alias_call = ", ".join(parameter_names)
+        function_name = str(contract_function(contract).get("name"))
+        original = function_name + "_original"
+
+        abi = source_dir / "dsc_cicd_rtl_abi.h"
+        abi.write_text(
+            "#ifndef DSC_CICD_RTL_ABI_H\n#define DSC_CICD_RTL_ABI_H\n"
+            "#include <stdint.h>\n"
+            f"#define DSC_CICD_HISTORY_ENTRIES {entries}\n"
+            f"#define DSC_CICD_HISTORY_COMPONENTS {components}\n"
+            "typedef struct {\n"
+            "    int32_t cfg_native_420;\n    int32_t hpos;\n"
+            "    int32_t vpos;\n    int32_t num_components;\n"
+            "    int32_t is_encoder;\n    int32_t ich_selected;\n"
+            "    int32_t prev_ich_selected;\n"
+            "    uint32_t recon[DSC_CICD_HISTORY_COMPONENTS];\n"
+            "    int32_t valid[DSC_CICD_HISTORY_ENTRIES];\n"
+            "    uint32_t pixels[DSC_CICD_HISTORY_COMPONENTS]"
+            "[DSC_CICD_HISTORY_ENTRIES];\n"
+            "} dsc_cicd_history_input_t;\n"
+            "typedef struct {\n"
+            "    int32_t valid[DSC_CICD_HISTORY_ENTRIES];\n"
+            "    uint32_t pixels[DSC_CICD_HISTORY_COMPONENTS]"
+            "[DSC_CICD_HISTORY_ENTRIES];\n"
+            "} dsc_cicd_history_output_t;\n"
+            "#ifdef __cplusplus\nextern \"C\" {\n#endif\n"
+            "void dsc_cicd_rtl(const dsc_cicd_history_input_t *input, "
+            "dsc_cicd_history_output_t *output);\n"
+            "#ifdef __cplusplus\n}\n#endif\n#endif\n",
+            encoding="utf-8",
+        )
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n#define DSC_CICD_OVERLAY_H\n"
+            "#include \"dsc_types.h\"\n"
+            f"void dsc_cicd_invoke({caller_declarations});\n#endif\n",
+            encoding="utf-8",
+        )
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdint.h>\n#include <stdio.h>\n#include <stdlib.h>\n"
+            "#include <string.h>\n#include \"dsc_cicd_overlay.h\"\n"
+            "#include \"dsc_cicd_rtl_abi.h\"\n"
+            f"extern void {original}({caller_declarations});\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n}\n"
+            + self.overlay_runtime_metrics_source()
+            + "static void dsc_cicd_require_history(const dsc_state_t *state) {\n"
+            "    if (!state || !state->history.valid || state->numComponents < 3 || "
+            "state->numComponents > DSC_CICD_HISTORY_COMPONENTS) {\n"
+            "        fprintf(stderr, \"unsupported history domain: components=%d\\n\", "
+            "state ? state->numComponents : -1);\n        exit(2);\n    }\n"
+            "    for (int component = 0; component < state->numComponents; ++component)\n"
+            "        if (!state->history.pixels[component]) {\n"
+            "            fprintf(stderr, \"missing active history plane: %d\\n\", component);\n"
+            "            exit(2);\n        }\n}\n"
+            "static void dsc_cicd_capture_input(const dsc_cfg_t *cfg, "
+            "const dsc_state_t *state, const unsigned int *recon, "
+            "dsc_cicd_history_input_t *input) {\n"
+            "    memset(input, 0, sizeof(*input));\n"
+            f"    input->cfg_native_420 = cfg->{native_420_field};\n"
+            "    input->hpos = state->hPos;\n    input->vpos = state->vPos;\n"
+            "    input->num_components = state->numComponents;\n"
+            "    input->is_encoder = state->isEncoder;\n"
+            "    input->ich_selected = state->ichSelected;\n"
+            "    input->prev_ich_selected = state->prevIchSelected;\n"
+            "    memcpy(input->valid, state->history.valid, sizeof(input->valid));\n"
+            "    for (int component = 0; component < state->numComponents; ++component) {\n"
+            "        input->recon[component] = recon[component];\n"
+            "        memcpy(input->pixels[component], state->history.pixels[component], "
+            "sizeof(input->pixels[component]));\n    }\n}\n"
+            "static void dsc_cicd_apply_history(dsc_state_t *state, "
+            "const dsc_cicd_history_output_t *source) {\n"
+            "    memcpy(state->history.valid, source->valid, sizeof(source->valid));\n"
+            "    for (int component = 0; component < state->numComponents; ++component)\n"
+            "        memcpy(state->history.pixels[component], source->pixels[component], "
+            "sizeof(source->pixels[component]));\n}\n"
+            "static int dsc_cicd_history_mismatch("
+            "const dsc_cicd_history_output_t *left, "
+            "const dsc_cicd_history_output_t *right, int components) {\n"
+            "    if (memcmp(left->valid, right->valid, sizeof(left->valid)) != 0) return 1;\n"
+            "    for (int component = 0; component < components; ++component)\n"
+            "        if (memcmp(left->pixels[component], right->pixels[component], "
+            "sizeof(left->pixels[component])) != 0) return 1;\n"
+            "    return 0;\n}\n"
+            + f"void dsc_cicd_invoke({caller_declarations}) {{\n"
+            f"    dsc_cicd_require_history({state_parameter});\n"
+            "    dsc_cicd_history_input_t dsc_cicd_input;\n"
+            "    dsc_cicd_history_output_t dsc_cicd_c_output;\n"
+            "    dsc_cicd_history_output_t dsc_cicd_rtl_output;\n"
+            f"    dsc_cicd_capture_input({config_parameter}, {state_parameter}, "
+            f"{recon_parameter}, &dsc_cicd_input);\n"
+            f"    dsc_state_t dsc_cicd_c_state = *{state_parameter};\n"
+            "    int dsc_cicd_c_valid[DSC_CICD_HISTORY_ENTRIES];\n"
+            "    unsigned int dsc_cicd_c_pixels[DSC_CICD_HISTORY_COMPONENTS]"
+            "[DSC_CICD_HISTORY_ENTRIES] = {{0}};\n"
+            "    unsigned int dsc_cicd_c_recon[DSC_CICD_HISTORY_COMPONENTS] = {0};\n"
+            "    memcpy(dsc_cicd_c_valid, dsc_cicd_input.valid, "
+            "sizeof(dsc_cicd_c_valid));\n"
+            "    for (int component = 0; component < DSC_CICD_HISTORY_COMPONENTS; ++component) {\n"
+            "        memcpy(dsc_cicd_c_pixels[component], dsc_cicd_input.pixels[component], "
+            "sizeof(dsc_cicd_c_pixels[component]));\n"
+            "        dsc_cicd_c_recon[component] = dsc_cicd_input.recon[component];\n"
+            "        dsc_cicd_c_state.history.pixels[component] = "
+            "dsc_cicd_c_pixels[component];\n    }\n"
+            "    dsc_cicd_c_state.history.valid = dsc_cicd_c_valid;\n"
+            f"    {original}({config_parameter}, &dsc_cicd_c_state, dsc_cicd_c_recon);\n"
+            "    memcpy(dsc_cicd_c_output.valid, dsc_cicd_c_valid, "
+            "sizeof(dsc_cicd_c_output.valid));\n"
+            "    memcpy(dsc_cicd_c_output.pixels, dsc_cicd_c_pixels, "
+            "sizeof(dsc_cicd_c_output.pixels));\n"
+            "    int mode = dsc_cicd_mode();\n    dsc_cicd_note_call(mode);\n"
+            "    if (mode == 0) {\n"
+            f"        dsc_cicd_apply_history({state_parameter}, &dsc_cicd_c_output);\n"
+            "        return;\n    }\n"
+            "    memset(&dsc_cicd_rtl_output, 0, sizeof(dsc_cicd_rtl_output));\n"
+            "    dsc_cicd_rtl(&dsc_cicd_input, &dsc_cicd_rtl_output);\n"
+            "    if (dsc_cicd_history_mismatch(&dsc_cicd_c_output, "
+            f"&dsc_cicd_rtl_output, {state_parameter}->numComponents)) {{\n"
+            "        ++dsc_cicd_mismatches;\n"
+            "        fprintf(stderr, \"C/RTL bounded history mismatch: h=%d v=%d components=%d\\n\", "
+            f"{state_parameter}->hPos, {state_parameter}->vPos, "
+            f"{state_parameter}->numComponents);\n    }}\n"
+            "    if (mode == 2) {\n"
+            f"        dsc_cicd_apply_history({state_parameter}, &dsc_cicd_rtl_output);\n"
+            "        return;\n    }\n"
+            f"    dsc_cicd_apply_history({state_parameter}, &dsc_cicd_c_output);\n"
+            "}\n"
+            + f"void {function_name}({caller_declarations}) {{\n"
+            f"    dsc_cicd_invoke({alias_call});\n}}\n",
+            encoding="utf-8",
+        )
+
+        bridge_assignments = [
+            f"    dut.{scalar_ports['cfg_native_420']} = static_cast<std::uint32_t>(input->cfg_native_420);",
+            f"    dut.{scalar_ports['hPos']} = static_cast<std::uint32_t>(input->hpos);",
+            f"    dut.{scalar_ports['vPos']} = static_cast<std::uint32_t>(input->vpos);",
+            f"    dut.{scalar_ports['numComponents']} = static_cast<std::uint32_t>(input->num_components);",
+            f"    dut.{scalar_ports['isEncoder']} = static_cast<std::uint32_t>(input->is_encoder);",
+            f"    dut.{scalar_ports['ichSelected']} = static_cast<std::uint32_t>(input->ich_selected);",
+            f"    dut.{scalar_ports['prevIchSelected']} = static_cast<std::uint32_t>(input->prev_ich_selected);",
+        ]
+        bridge_outputs = []
+        for component in range(components):
+            bridge_assignments.append(
+                f"    dut.{recon_ports[component]} = input->recon[{component}];"
+            )
+        for entry in range(entries):
+            bridge_assignments.append(
+                f"    dut.{valid_inputs[entry]} = "
+                f"static_cast<std::uint32_t>(input->valid[{entry}]);"
+            )
+            bridge_outputs.append(
+                f"    output->valid[{entry}] = "
+                f"static_cast<std::int32_t>(dut.{valid_outputs[entry]});"
+            )
+        for component in range(components):
+            for entry in range(entries):
+                bridge_assignments.append(
+                    f"    dut.{pixel_inputs[component][entry]} = "
+                    f"input->pixels[{component}][{entry}];"
+                )
+                bridge_outputs.append(
+                    f"    output->pixels[{component}][{entry}] = "
+                    f"static_cast<std::uint32_t>(dut.{pixel_outputs[component][entry]});"
+                )
+        bridge = source_dir / "rtl_bridge.cpp"
+        bridge.write_text(
+            "#include <cstdint>\n#include \"verilated.h\"\n"
+            "#include \"dsc_cicd_rtl_abi.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            "extern \"C\" void dsc_cicd_rtl("
+            "const dsc_cicd_history_input_t *input, "
+            "dsc_cicd_history_output_t *output) {\n"
+            f"    static V{safe_identifier(module)} dut;\n"
+            + "\n".join(bridge_assignments)
+            + "\n    dut.eval();\n"
+            + "\n".join(bridge_outputs)
+            + "\n}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\nextern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) { return dsc_cicd_original_main(argc, argv); }\n",
+            encoding="utf-8",
+        )
+        rtl_bindings = [
+            f"{config_parameter}->{native_420_field}",
+            f"{state_parameter}->hPos",
+            f"{state_parameter}->vPos",
+            f"{state_parameter}->numComponents",
+            f"{state_parameter}->isEncoder",
+            f"{state_parameter}->ichSelected",
+            f"{state_parameter}->prevIchSelected",
+            *[f"{recon_parameter}[{component}]" for component in range(components)],
+            *[
+                f"{state_parameter}->{history_field}.{valid_field}[{entry}]"
+                for entry in range(entries)
+            ],
+            *[
+                f"active({component}) ? {state_parameter}->{history_field}."
+                f"{pixels_field}[{component}][{entry}] : 0"
+                for component in range(components) for entry in range(entries)
+            ],
+        ]
+        return {
+            "header": header,
+            "abi": abi,
+            "overlay": overlay,
+            "bridge": bridge,
+            "main": main,
+            "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": "explicit_bounded_history_update_transition",
+                "caller_parameter_count": len(parameters),
+                "rtl_input_count": len(inputs),
+                "frozen_input_ports": [str(port.get("name")) for port in inputs],
+                "rtl_bindings": rtl_bindings,
+                "state_outputs": [str(port.get("name")) for port in outputs],
+                "rtl_return_controls_complete_active_history_image": True,
+                "c_oracle_uses_private_history_memory": True,
+                "inactive_component_planes_are_not_dereferenced_or_committed": True,
+                "residual_symbol_alias_routes_to_dispatcher": True,
+            },
+        }
+
+    def write_bounded_history_caller_transition_overlay_sources(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        module: str,
+        candidate_sv: pathlib.Path,
+    ) -> dict[str, Any]:
+        """Bind line sampling plus a complete composed ICH output image."""
+        semantics = contract.get("semantics", {}) or {}
+        constants = semantics.get("constants", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        entries = int(constants.get("ich_entries", 0))
+        components = int(constants.get("component_count", 0))
+        padding_left = int(constants.get("padding_left", 0))
+        if (entries, components, padding_left) != (32, 4, 5):
+            raise RuntimeError("bounded history caller constants are incomplete")
+        argument_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("argument_ports", {}) or {}).items()
+        }
+        config_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("config_ports", {}) or {}).items()
+        }
+        state_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("state_ports", {}) or {}).items()
+        }
+        line_ports = [str(value) for value in bindings.get("line_sample_ports", [])]
+        valid_inputs = [str(value) for value in bindings.get("valid_input_ports", [])]
+        pixel_inputs = [
+            [str(value) for value in row]
+            for row in bindings.get("pixel_input_ports", [])
+        ]
+        valid_outputs = [str(value) for value in bindings.get("valid_output_ports", [])]
+        pixel_outputs = [
+            [str(value) for value in row]
+            for row in bindings.get("pixel_output_ports", [])
+        ]
+        if (
+            set(config_ports) != {"native_420", "slice_width", "pic_width"}
+            or set(state_ports) != {
+                "hPos", "vPos", "numComponents", "pixelsInGroup",
+                "isEncoder", "ichSelected", "prevIchSelected",
+            }
+            or len(argument_ports) != 2
+            or len(line_ports) != components
+            or len(valid_inputs) != entries
+            or len(valid_outputs) != entries
+            or len(pixel_inputs) != components
+            or len(pixel_outputs) != components
+            or any(len(row) != entries for row in pixel_inputs)
+            or any(len(row) != entries for row in pixel_outputs)
+        ):
+            raise RuntimeError("bounded history caller bindings are incomplete")
+        horizontal_parameter = str(bindings.get("horizontal_position_parameter", ""))
+        vertical_parameter = str(bindings.get("vertical_position_parameter", ""))
+        if set(argument_ports) != {horizontal_parameter, vertical_parameter}:
+            raise RuntimeError("bounded history caller scalar positions are incomplete")
+
+        ports = [
+            port for port in (contract.get("interface", {}) or {}).get("ports", [])
+            if isinstance(port, dict)
+        ]
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        outputs = [port for port in ports if port.get("direction") == "output"]
+        expected_inputs = {
+            *argument_ports.values(), *config_ports.values(), *state_ports.values(),
+            *line_ports, *valid_inputs,
+            *[value for row in pixel_inputs for value in row],
+        }
+        expected_outputs = {
+            *valid_outputs, *[value for row in pixel_outputs for value in row],
+        }
+        if (
+            {str(port.get("name")) for port in inputs} != expected_inputs
+            or {str(port.get("name")) for port in outputs} != expected_outputs
+        ):
+            raise RuntimeError("bounded history caller ports do not match frozen interface")
+
+        parameters = self.function_parameters(contract)
+        parameter_by_name = {
+            str(parameter.get("name")): parameter for parameter in parameters
+        }
+        config_parameter = str(bindings.get("config_parameter", ""))
+        state_parameter = str(bindings.get("state_parameter", ""))
+        line_parameter = str(bindings.get("line_parameter", ""))
+        if set(parameter_by_name) != {
+            config_parameter, state_parameter, line_parameter,
+            horizontal_parameter, vertical_parameter,
+        }:
+            raise RuntimeError("bounded history caller native ABI is incomplete")
+        if not all(
+            parameter_is_pointer(parameter_by_name[name])
+            for name in (config_parameter, state_parameter, line_parameter)
+        ) or any(
+            parameter_is_pointer(parameter_by_name[name])
+            for name in (horizontal_parameter, vertical_parameter)
+        ):
+            raise RuntimeError("bounded history caller pointer/scalar ABI changed")
+
+        history_field = str(bindings.get("history_field", ""))
+        pixels_field = str(bindings.get("history_pixels_field", ""))
+        valid_field = str(bindings.get("history_valid_field", ""))
+        identifier = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+        identifiers = {
+            config_parameter, state_parameter, line_parameter,
+            horizontal_parameter, vertical_parameter,
+            history_field, pixels_field, valid_field,
+            *argument_ports.values(), *config_ports.values(), *state_ports.values(),
+            *line_ports, *valid_inputs, *valid_outputs,
+            *[value for row in pixel_inputs for value in row],
+            *[value for row in pixel_outputs for value in row],
+        }
+        if not all(identifier.fullmatch(value) for value in identifiers):
+            raise RuntimeError("bounded history caller bindings contain invalid identifier")
+
+        parameter_specs = [
+            f"{str(parameter.get('type', 'int')).strip()} {parameter.get('name')}"
+            for parameter in parameters
+        ]
+        parameter_names = [str(parameter.get("name")) for parameter in parameters]
+        caller_declarations = ", ".join(parameter_specs)
+        alias_call = ", ".join(parameter_names)
+        function_name = str(contract_function(contract).get("name"))
+        original = function_name + "_original"
+
+        abi = source_dir / "dsc_cicd_rtl_abi.h"
+        abi.write_text(
+            "#ifndef DSC_CICD_RTL_ABI_H\n#define DSC_CICD_RTL_ABI_H\n"
+            "#include <stdint.h>\n"
+            f"#define DSC_CICD_HISTORY_ENTRIES {entries}\n"
+            f"#define DSC_CICD_HISTORY_COMPONENTS {components}\n"
+            "typedef struct {\n"
+            "    int32_t hpos_arg;\n    int32_t vpos_arg;\n"
+            "    int32_t cfg_native_420;\n    int32_t cfg_slice_width;\n"
+            "    int32_t cfg_pic_width;\n    int32_t state_hpos;\n"
+            "    int32_t state_vpos;\n    int32_t num_components;\n"
+            "    int32_t pixels_in_group;\n    int32_t is_encoder;\n"
+            "    int32_t ich_selected;\n    int32_t prev_ich_selected;\n"
+            "    uint32_t line_sample[DSC_CICD_HISTORY_COMPONENTS];\n"
+            "    int32_t valid[DSC_CICD_HISTORY_ENTRIES];\n"
+            "    uint32_t pixels[DSC_CICD_HISTORY_COMPONENTS]"
+            "[DSC_CICD_HISTORY_ENTRIES];\n"
+            "} dsc_cicd_history_input_t;\n"
+            "typedef struct {\n"
+            "    int32_t valid[DSC_CICD_HISTORY_ENTRIES];\n"
+            "    uint32_t pixels[DSC_CICD_HISTORY_COMPONENTS]"
+            "[DSC_CICD_HISTORY_ENTRIES];\n"
+            "} dsc_cicd_history_output_t;\n"
+            "#ifdef __cplusplus\nextern \"C\" {\n#endif\n"
+            "void dsc_cicd_rtl(const dsc_cicd_history_input_t *input, "
+            "dsc_cicd_history_output_t *output);\n"
+            "#ifdef __cplusplus\n}\n#endif\n#endif\n",
+            encoding="utf-8",
+        )
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n#define DSC_CICD_OVERLAY_H\n"
+            "#include \"dsc_types.h\"\n"
+            f"void dsc_cicd_invoke({caller_declarations});\n#endif\n",
+            encoding="utf-8",
+        )
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdint.h>\n#include <stdio.h>\n#include <stdlib.h>\n"
+            "#include <string.h>\n#include \"dsc_cicd_overlay.h\"\n"
+            "#include \"dsc_cicd_rtl_abi.h\"\n"
+            f"extern void {original}({caller_declarations});\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n}\n"
+            + self.overlay_runtime_metrics_source()
+            + "static void dsc_cicd_require_history(const dsc_state_t *state) {\n"
+            "    if (!state || !state->history.valid || state->numComponents < 3 || "
+            "state->numComponents > DSC_CICD_HISTORY_COMPONENTS) {\n"
+            "        fprintf(stderr, \"unsupported history caller domain: components=%d\\n\", "
+            "state ? state->numComponents : -1);\n        exit(2);\n    }\n"
+            "    for (int component = 0; component < state->numComponents; ++component)\n"
+            "        if (!state->history.pixels[component]) {\n"
+            "            fprintf(stderr, \"missing active history plane: %d\\n\", component);\n"
+            "            exit(2);\n        }\n}\n"
+            "static void dsc_cicd_apply_history(dsc_state_t *state, "
+            "const dsc_cicd_history_output_t *source) {\n"
+            "    memcpy(state->history.valid, source->valid, sizeof(source->valid));\n"
+            "    for (int component = 0; component < state->numComponents; ++component)\n"
+            "        memcpy(state->history.pixels[component], source->pixels[component], "
+            "sizeof(source->pixels[component]));\n}\n"
+            "static int dsc_cicd_history_mismatch("
+            "const dsc_cicd_history_output_t *left, "
+            "const dsc_cicd_history_output_t *right, int components) {\n"
+            "    if (memcmp(left->valid, right->valid, sizeof(left->valid)) != 0) return 1;\n"
+            "    for (int component = 0; component < components; ++component)\n"
+            "        if (memcmp(left->pixels[component], right->pixels[component], "
+            "sizeof(left->pixels[component])) != 0) return 1;\n"
+            "    return 0;\n}\n"
+            + f"void dsc_cicd_invoke({caller_declarations}) {{\n"
+            f"    dsc_cicd_require_history({state_parameter});\n"
+            "    dsc_cicd_history_input_t dsc_cicd_input;\n"
+            "    dsc_cicd_history_output_t dsc_cicd_c_output;\n"
+            "    dsc_cicd_history_output_t dsc_cicd_rtl_output;\n"
+            "    memset(&dsc_cicd_input, 0, sizeof(dsc_cicd_input));\n"
+            f"    dsc_cicd_input.hpos_arg = {horizontal_parameter};\n"
+            f"    dsc_cicd_input.vpos_arg = {vertical_parameter};\n"
+            f"    dsc_cicd_input.cfg_native_420 = {config_parameter}->native_420;\n"
+            f"    dsc_cicd_input.cfg_slice_width = {config_parameter}->slice_width;\n"
+            f"    dsc_cicd_input.cfg_pic_width = {config_parameter}->pic_width;\n"
+            f"    dsc_cicd_input.state_hpos = {state_parameter}->hPos;\n"
+            f"    dsc_cicd_input.state_vpos = {state_parameter}->vPos;\n"
+            f"    dsc_cicd_input.num_components = {state_parameter}->numComponents;\n"
+            f"    dsc_cicd_input.pixels_in_group = {state_parameter}->pixelsInGroup;\n"
+            f"    dsc_cicd_input.is_encoder = {state_parameter}->isEncoder;\n"
+            f"    dsc_cicd_input.ich_selected = {state_parameter}->ichSelected;\n"
+            f"    dsc_cicd_input.prev_ich_selected = {state_parameter}->prevIchSelected;\n"
+            f"    memcpy(dsc_cicd_input.valid, {state_parameter}->{history_field}."
+            f"{valid_field}, sizeof(dsc_cicd_input.valid));\n"
+            f"    int dsc_cicd_previous_hpos = {horizontal_parameter} - "
+            f"{state_parameter}->pixelsInGroup;\n"
+            "    for (int component = 0; component < "
+            f"{state_parameter}->numComponents; ++component) {{\n"
+            f"        memcpy(dsc_cicd_input.pixels[component], {state_parameter}->"
+            f"{history_field}.{pixels_field}[component], "
+            "sizeof(dsc_cicd_input.pixels[component]));\n"
+            "        if (dsc_cicd_previous_hpos >= 0) {\n"
+            f"            if (!{line_parameter} || !{line_parameter}[component]) {{\n"
+            "                fprintf(stderr, \"missing active reconstructed line plane\\n\");\n"
+            "                exit(2);\n            }\n"
+            f"            dsc_cicd_input.line_sample[component] = (uint32_t)"
+            f"{line_parameter}[component][dsc_cicd_previous_hpos + {padding_left}];\n"
+            "        }\n    }\n"
+            f"    dsc_state_t dsc_cicd_c_state = *{state_parameter};\n"
+            "    int dsc_cicd_c_valid[DSC_CICD_HISTORY_ENTRIES];\n"
+            "    unsigned int dsc_cicd_c_pixels[DSC_CICD_HISTORY_COMPONENTS]"
+            "[DSC_CICD_HISTORY_ENTRIES] = {{0}};\n"
+            "    memcpy(dsc_cicd_c_valid, dsc_cicd_input.valid, "
+            "sizeof(dsc_cicd_c_valid));\n"
+            "    for (int component = 0; component < DSC_CICD_HISTORY_COMPONENTS; ++component) {\n"
+            "        memcpy(dsc_cicd_c_pixels[component], dsc_cicd_input.pixels[component], "
+            "sizeof(dsc_cicd_c_pixels[component]));\n"
+            "        dsc_cicd_c_state.history.pixels[component] = "
+            "dsc_cicd_c_pixels[component];\n    }\n"
+            "    dsc_cicd_c_state.history.valid = dsc_cicd_c_valid;\n"
+            f"    {original}({config_parameter}, &dsc_cicd_c_state, {line_parameter}, "
+            f"{horizontal_parameter}, {vertical_parameter});\n"
+            "    memcpy(dsc_cicd_c_output.valid, dsc_cicd_c_valid, "
+            "sizeof(dsc_cicd_c_output.valid));\n"
+            "    memcpy(dsc_cicd_c_output.pixels, dsc_cicd_c_pixels, "
+            "sizeof(dsc_cicd_c_output.pixels));\n"
+            "    int mode = dsc_cicd_mode();\n    dsc_cicd_note_call(mode);\n"
+            "    if (mode == 0) {\n"
+            f"        dsc_cicd_apply_history({state_parameter}, &dsc_cicd_c_output);\n"
+            "        return;\n    }\n"
+            "    memset(&dsc_cicd_rtl_output, 0, sizeof(dsc_cicd_rtl_output));\n"
+            "    dsc_cicd_rtl(&dsc_cicd_input, &dsc_cicd_rtl_output);\n"
+            "    if (dsc_cicd_history_mismatch(&dsc_cicd_c_output, "
+            f"&dsc_cicd_rtl_output, {state_parameter}->numComponents)) {{\n"
+            "        ++dsc_cicd_mismatches;\n"
+            "        fprintf(stderr, \"C/RTL bounded history caller mismatch: h=%d v=%d components=%d\\n\", "
+            f"{horizontal_parameter}, {vertical_parameter}, "
+            f"{state_parameter}->numComponents);\n    }}\n"
+            "    if (mode == 2) {\n"
+            f"        dsc_cicd_apply_history({state_parameter}, &dsc_cicd_rtl_output);\n"
+            "        return;\n    }\n"
+            f"    dsc_cicd_apply_history({state_parameter}, &dsc_cicd_c_output);\n"
+            "}\n"
+            + f"void {function_name}({caller_declarations}) {{\n"
+            f"    dsc_cicd_invoke({alias_call});\n}}\n",
+            encoding="utf-8",
+        )
+
+        bridge_assignments = [
+            f"    dut.{argument_ports[horizontal_parameter]} = static_cast<std::uint32_t>(input->hpos_arg);",
+            f"    dut.{argument_ports[vertical_parameter]} = static_cast<std::uint32_t>(input->vpos_arg);",
+            f"    dut.{config_ports['native_420']} = static_cast<std::uint32_t>(input->cfg_native_420);",
+            f"    dut.{config_ports['slice_width']} = static_cast<std::uint32_t>(input->cfg_slice_width);",
+            f"    dut.{config_ports['pic_width']} = static_cast<std::uint32_t>(input->cfg_pic_width);",
+            f"    dut.{state_ports['hPos']} = static_cast<std::uint32_t>(input->state_hpos);",
+            f"    dut.{state_ports['vPos']} = static_cast<std::uint32_t>(input->state_vpos);",
+            f"    dut.{state_ports['numComponents']} = static_cast<std::uint32_t>(input->num_components);",
+            f"    dut.{state_ports['pixelsInGroup']} = static_cast<std::uint32_t>(input->pixels_in_group);",
+            f"    dut.{state_ports['isEncoder']} = static_cast<std::uint32_t>(input->is_encoder);",
+            f"    dut.{state_ports['ichSelected']} = static_cast<std::uint32_t>(input->ich_selected);",
+            f"    dut.{state_ports['prevIchSelected']} = static_cast<std::uint32_t>(input->prev_ich_selected);",
+        ]
+        bridge_outputs = []
+        for component in range(components):
+            bridge_assignments.append(
+                f"    dut.{line_ports[component]} = input->line_sample[{component}];"
+            )
+        for entry in range(entries):
+            bridge_assignments.append(
+                f"    dut.{valid_inputs[entry]} = "
+                f"static_cast<std::uint32_t>(input->valid[{entry}]);"
+            )
+            bridge_outputs.append(
+                f"    output->valid[{entry}] = "
+                f"static_cast<std::int32_t>(dut.{valid_outputs[entry]});"
+            )
+        for component in range(components):
+            for entry in range(entries):
+                bridge_assignments.append(
+                    f"    dut.{pixel_inputs[component][entry]} = "
+                    f"input->pixels[{component}][{entry}];"
+                )
+                bridge_outputs.append(
+                    f"    output->pixels[{component}][{entry}] = "
+                    f"static_cast<std::uint32_t>(dut.{pixel_outputs[component][entry]});"
+                )
+        bridge = source_dir / "rtl_bridge.cpp"
+        bridge.write_text(
+            "#include <cstdint>\n#include \"verilated.h\"\n"
+            "#include \"dsc_cicd_rtl_abi.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            "extern \"C\" void dsc_cicd_rtl("
+            "const dsc_cicd_history_input_t *input, "
+            "dsc_cicd_history_output_t *output) {\n"
+            f"    static V{safe_identifier(module)} dut;\n"
+            + "\n".join(bridge_assignments)
+            + "\n    dut.eval();\n"
+            + "\n".join(bridge_outputs)
+            + "\n}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\nextern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) { return dsc_cicd_original_main(argc, argv); }\n",
+            encoding="utf-8",
+        )
+        rtl_bindings = [
+            horizontal_parameter, vertical_parameter,
+            f"{config_parameter}->native_420",
+            f"{config_parameter}->slice_width",
+            f"{config_parameter}->pic_width",
+            f"{state_parameter}->hPos",
+            f"{state_parameter}->vPos",
+            f"{state_parameter}->numComponents",
+            f"{state_parameter}->pixelsInGroup",
+            f"{state_parameter}->isEncoder",
+            f"{state_parameter}->ichSelected",
+            f"{state_parameter}->prevIchSelected",
+            *[
+                f"update ? {line_parameter}[{component}][hPos-pixelsInGroup+{padding_left}] : 0"
+                for component in range(components)
+            ],
+            *[
+                f"{state_parameter}->{history_field}.{valid_field}[{entry}]"
+                for entry in range(entries)
+            ],
+            *[
+                f"active({component}) ? {state_parameter}->{history_field}."
+                f"{pixels_field}[{component}][{entry}] : 0"
+                for component in range(components) for entry in range(entries)
+            ],
+        ]
+        return {
+            "header": header,
+            "abi": abi,
+            "overlay": overlay,
+            "bridge": bridge,
+            "main": main,
+            "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": "explicit_bounded_history_caller_transition",
+                "caller_parameter_count": len(parameters),
+                "rtl_input_count": len(inputs),
+                "frozen_input_ports": [str(port.get("name")) for port in inputs],
+                "rtl_bindings": rtl_bindings,
+                "state_outputs": [str(port.get("name")) for port in outputs],
+                "rtl_return_controls_complete_active_history_image": True,
+                "c_oracle_uses_private_history_memory": True,
+                "line_samples_are_read_only_and_guarded_by_update_condition": True,
+                "inactive_component_planes_are_not_dereferenced_or_committed": True,
+                "residual_symbol_alias_routes_to_dispatcher": True,
+            },
+        }
+
+    def write_bounded_vld_unit_transition_overlay_sources(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        module: str,
+        candidate_sv: pathlib.Path,
+    ) -> dict[str, Any]:
+        """Bind one decoder VLD unit to a complete selected-FIFO snapshot."""
+        semantics = contract.get("semantics", {}) or {}
+        constants = semantics.get("constants", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        units = int(constants.get("max_units", 0))
+        samples = int(constants.get("samples_per_unit", 0))
+        indices = int(constants.get("max_ich_indices", 0))
+        fifo_bytes = int(constants.get("fifo_bytes", 0))
+        prefix_bits = int(constants.get("max_prefix_bits", 0))
+        if (units, samples, indices, fifo_bytes, prefix_bits) != (4, 3, 6, 17, 17):
+            raise RuntimeError("bounded VLD constants are incomplete")
+
+        config_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("config_ports", {}) or {}).items()
+        }
+        state_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("state_ports", {}) or {}).items()
+        }
+        array_inputs = {
+            str(key): [str(value) for value in values]
+            for key, values in (bindings.get("array_input_ports", {}) or {}).items()
+        }
+        state_outputs = {
+            str(key): str(value)
+            for key, value in (bindings.get("state_output_ports", {}) or {}).items()
+        }
+        array_outputs = {
+            str(key): [str(value) for value in values]
+            for key, values in (bindings.get("array_output_ports", {}) or {}).items()
+        }
+        qlevel_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("qlevel_ports", {}) or {}).items()
+        }
+        residual_inputs = [str(value) for value in bindings.get("residual_input_ports", [])]
+        residual_outputs = [str(value) for value in bindings.get("residual_output_ports", [])]
+        fifo_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("fifo_ports", {}) or {}).items()
+        }
+        fifo_data_ports = [str(value) for value in bindings.get("fifo_data_ports", [])]
+        fifo_outputs = {
+            str(key): str(value)
+            for key, value in (bindings.get("fifo_output_ports", {}) or {}).items()
+        }
+        unit_port = str(bindings.get("unit_port", ""))
+        expected_array_sizes = {
+            "cpntBitDepth": units,
+            "unitCType": units,
+            "unitSspMap": units,
+            "ichIndexUnitMap": indices,
+            "ichLookup": indices,
+            "predictedSize": units,
+            "rcSizeUnit": units,
+            "useMidpoint": units,
+        }
+        if (
+            set(config_ports) != {
+                "bits_per_component", "somewhat_flat_qp_thresh",
+                "dsc_version_minor", "native_420", "flatness_min_qp",
+                "flatness_max_qp",
+            }
+            or set(state_ports) != {
+                "firstFlat", "flatnessType", "groupCount", "ichIndicesInGroup",
+                "ichSelected", "prevFirstFlat", "prevIchSelected", "primaryQp",
+                "prevPrimaryQp", "unitsPerGroup", "numBits",
+            }
+            or set(array_inputs) != set(expected_array_sizes)
+            or any(
+                len(array_inputs[field]) != size
+                for field, size in expected_array_sizes.items()
+            )
+            or set(state_outputs) != {
+                "firstFlat", "flatnessType", "ichSelected", "prevFirstFlat",
+                "prevIchSelected", "numBits",
+            }
+            or set(array_outputs) != {
+                "ichLookup", "predictedSize", "rcSizeUnit", "useMidpoint",
+            }
+            or any(
+                len(array_outputs[field]) != expected_array_sizes[field]
+                for field in array_outputs
+            )
+            or set(qlevel_ports) != {
+                "luma_primary", "chroma_primary", "luma_previous",
+                "chroma_previous",
+            }
+            or len(residual_inputs) != samples
+            or len(residual_outputs) != samples
+            or set(fifo_ports) != {"size", "fullness", "read_ptr"}
+            or len(fifo_data_ports) != fifo_bytes
+            or set(fifo_outputs) != {"lane", "fullness", "read_ptr"}
+            or not unit_port
+        ):
+            raise RuntimeError("bounded VLD bindings are incomplete")
+
+        ports = [
+            port for port in (contract.get("interface", {}) or {}).get("ports", [])
+            if isinstance(port, dict)
+        ]
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        outputs = [port for port in ports if port.get("direction") == "output"]
+        expected_inputs = {
+            unit_port, *config_ports.values(), *state_ports.values(),
+            *[value for row in array_inputs.values() for value in row],
+            *qlevel_ports.values(), *residual_inputs, *fifo_ports.values(),
+            *fifo_data_ports,
+        }
+        expected_outputs = {
+            "domain_valid", *state_outputs.values(),
+            *[value for row in array_outputs.values() for value in row],
+            *residual_outputs, *fifo_outputs.values(),
+        }
+        if (
+            {str(port.get("name")) for port in inputs} != expected_inputs
+            or {str(port.get("name")) for port in outputs} != expected_outputs
+        ):
+            raise RuntimeError("bounded VLD ports do not match the frozen interface")
+
+        parameters = self.function_parameters(contract)
+        parameter_by_name = {
+            str(parameter.get("name")): parameter for parameter in parameters
+        }
+        config_parameter = str(bindings.get("config_parameter", ""))
+        state_parameter = str(bindings.get("state_parameter", ""))
+        unit_parameter = str(bindings.get("unit_parameter", ""))
+        residual_parameter = str(bindings.get("residual_parameter", ""))
+        byte_parameter = str(bindings.get("byte_pointer_parameter", ""))
+        if set(parameter_by_name) != {
+            config_parameter, state_parameter, unit_parameter,
+            residual_parameter, byte_parameter,
+        }:
+            raise RuntimeError("bounded VLD native ABI is incomplete")
+        if (
+            not parameter_is_pointer(parameter_by_name[config_parameter])
+            or not parameter_is_pointer(parameter_by_name[state_parameter])
+            or parameter_is_pointer(parameter_by_name[unit_parameter])
+            or not parameter_is_pointer(parameter_by_name[residual_parameter])
+            or not parameter_is_pointer(parameter_by_name[byte_parameter])
+        ):
+            raise RuntimeError("bounded VLD pointer/scalar ABI changed")
+
+        identifier = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+        identifiers = {
+            config_parameter, state_parameter, unit_parameter,
+            residual_parameter, byte_parameter, unit_port,
+            *expected_inputs, *expected_outputs,
+        }
+        if not all(identifier.fullmatch(value) for value in identifiers):
+            raise RuntimeError("bounded VLD bindings contain invalid identifier")
+
+        parameter_specs = [
+            f"{str(parameter.get('type', 'int')).strip()} {parameter.get('name')}"
+            for parameter in parameters
+        ]
+        parameter_names = [str(parameter.get("name")) for parameter in parameters]
+        caller_declarations = ", ".join(parameter_specs)
+        alias_call = ", ".join(parameter_names)
+        function_name = str(contract_function(contract).get("name"))
+        original = function_name + "_original"
+
+        config_abi = {
+            "bits_per_component": "cfg_bits_per_component",
+            "somewhat_flat_qp_thresh": "cfg_somewhat_flat_qp_thresh",
+            "dsc_version_minor": "cfg_dsc_version_minor",
+            "native_420": "cfg_native_420",
+            "flatness_min_qp": "cfg_flatness_min_qp",
+            "flatness_max_qp": "cfg_flatness_max_qp",
+        }
+        state_abi = {
+            "firstFlat": "state_first_flat",
+            "flatnessType": "state_flatness_type",
+            "groupCount": "state_group_count",
+            "ichIndicesInGroup": "state_ich_indices_in_group",
+            "ichSelected": "state_ich_selected",
+            "prevFirstFlat": "state_prev_first_flat",
+            "prevIchSelected": "state_prev_ich_selected",
+            "primaryQp": "state_primary_qp",
+            "prevPrimaryQp": "state_prev_primary_qp",
+            "unitsPerGroup": "state_units_per_group",
+            "numBits": "state_num_bits",
+        }
+        array_abi = {
+            "cpntBitDepth": "cpnt_bit_depth",
+            "unitCType": "unit_c_type",
+            "unitSspMap": "unit_ssp_map",
+            "ichIndexUnitMap": "ich_index_unit_map",
+            "ichLookup": "ich_lookup",
+            "predictedSize": "predicted_size",
+            "rcSizeUnit": "rc_size_unit",
+            "useMidpoint": "use_midpoint",
+        }
+        qlevel_abi = {
+            "luma_primary": "qlevel_luma_primary",
+            "chroma_primary": "qlevel_chroma_primary",
+            "luma_previous": "qlevel_luma_previous",
+            "chroma_previous": "qlevel_chroma_previous",
+        }
+
+        abi = source_dir / "dsc_cicd_rtl_abi.h"
+        abi.write_text(
+            "#ifndef DSC_CICD_RTL_ABI_H\n#define DSC_CICD_RTL_ABI_H\n"
+            "#include <stdint.h>\n"
+            f"#define DSC_CICD_VLD_UNITS {units}\n"
+            f"#define DSC_CICD_VLD_SAMPLES {samples}\n"
+            f"#define DSC_CICD_VLD_INDICES {indices}\n"
+            f"#define DSC_CICD_VLD_FIFO_BYTES {fifo_bytes}\n"
+            "typedef struct {\n"
+            "    int32_t unit;\n"
+            + "".join(f"    int32_t {name};\n" for name in config_abi.values())
+            + "".join(f"    int32_t {name};\n" for name in state_abi.values())
+            + "    int32_t cpnt_bit_depth[DSC_CICD_VLD_UNITS];\n"
+            "    int32_t unit_c_type[DSC_CICD_VLD_UNITS];\n"
+            "    int32_t unit_ssp_map[DSC_CICD_VLD_UNITS];\n"
+            "    int32_t ich_index_unit_map[DSC_CICD_VLD_INDICES];\n"
+            "    int32_t ich_lookup[DSC_CICD_VLD_INDICES];\n"
+            "    int32_t predicted_size[DSC_CICD_VLD_UNITS];\n"
+            "    int32_t rc_size_unit[DSC_CICD_VLD_UNITS];\n"
+            "    int32_t use_midpoint[DSC_CICD_VLD_UNITS];\n"
+            + "".join(f"    int32_t {name};\n" for name in qlevel_abi.values())
+            + "    int32_t quantized_residual[DSC_CICD_VLD_SAMPLES];\n"
+            "    int32_t fifo_size;\n    int32_t fifo_fullness;\n"
+            "    int32_t fifo_read_ptr;\n"
+            "    uint8_t fifo_data[DSC_CICD_VLD_FIFO_BYTES];\n"
+            "} dsc_cicd_vld_input_t;\n"
+            "typedef struct {\n"
+            "    int32_t domain_valid;\n"
+            "    int32_t first_flat;\n    int32_t flatness_type;\n"
+            "    int32_t ich_selected;\n    int32_t prev_first_flat;\n"
+            "    int32_t prev_ich_selected;\n    int32_t num_bits;\n"
+            "    int32_t ich_lookup[DSC_CICD_VLD_INDICES];\n"
+            "    int32_t predicted_size[DSC_CICD_VLD_UNITS];\n"
+            "    int32_t rc_size_unit[DSC_CICD_VLD_UNITS];\n"
+            "    int32_t use_midpoint[DSC_CICD_VLD_UNITS];\n"
+            "    int32_t quantized_residual[DSC_CICD_VLD_SAMPLES];\n"
+            "    int32_t fifo_lane;\n    int32_t fifo_fullness;\n"
+            "    int32_t fifo_read_ptr;\n"
+            "} dsc_cicd_vld_output_t;\n"
+            "#ifdef __cplusplus\nextern \"C\" {\n#endif\n"
+            "void dsc_cicd_rtl(const dsc_cicd_vld_input_t *input, "
+            "dsc_cicd_vld_output_t *output);\n"
+            "#ifdef __cplusplus\n}\n#endif\n#endif\n",
+            encoding="utf-8",
+        )
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n#define DSC_CICD_OVERLAY_H\n"
+            "#include \"dsc_types.h\"\n"
+            f"void dsc_cicd_invoke({caller_declarations});\n#endif\n",
+            encoding="utf-8",
+        )
+
+        capture_input_scalars = "".join(
+            f"    dsc_cicd_input.{abi_name} = {config_parameter}->{field};\n"
+            for field, abi_name in config_abi.items()
+        ) + "".join(
+            f"    dsc_cicd_input.{abi_name} = {state_parameter}->{field};\n"
+            for field, abi_name in state_abi.items()
+        )
+        capture_input_arrays = "".join(
+            f"    memcpy(dsc_cicd_input.{abi_name}, {state_parameter}->{field}, "
+            f"sizeof(dsc_cicd_input.{abi_name}));\n"
+            for field, abi_name in array_abi.items()
+        )
+        capture_output_arrays = "".join(
+            f"    memcpy(output->{array_abi[field]}, state->{field}, "
+            f"sizeof(output->{array_abi[field]}));\n"
+            for field in ("ichLookup", "predictedSize", "rcSizeUnit", "useMidpoint")
+        )
+        apply_output_arrays = "".join(
+            f"    memcpy(state->{field}, output->{array_abi[field]}, "
+            f"sizeof(output->{array_abi[field]}));\n"
+            for field in ("ichLookup", "predictedSize", "rcSizeUnit", "useMidpoint")
+        )
+
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdint.h>\n#include <stdio.h>\n#include <stdlib.h>\n"
+            "#include <string.h>\n#include \"dsc_cicd_overlay.h\"\n"
+            "#include \"dsc_cicd_rtl_abi.h\"\n"
+            f"extern void {original}({caller_declarations});\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n}\n"
+            + self.overlay_runtime_metrics_source()
+            + "static void dsc_cicd_require_vld(const dsc_cfg_t *cfg, "
+            "const dsc_state_t *state, int unit, const int *residuals, "
+            "unsigned char **byte_in_p) {\n"
+            "    if (!cfg || !state || !residuals || !byte_in_p || unit < 0 || "
+            "unit >= DSC_CICD_VLD_UNITS || !state->quantTableLuma || "
+            "!state->quantTableChroma || state->primaryQp < 0 || "
+            "state->primaryQp > 31 || state->prevPrimaryQp < 0 || "
+            "state->prevPrimaryQp > 31 || state->ichIndicesInGroup < 0 || "
+            "state->ichIndicesInGroup > DSC_CICD_VLD_INDICES || "
+            "state->unitsPerGroup < 0 || state->unitsPerGroup > DSC_CICD_VLD_UNITS) {\n"
+            "        fprintf(stderr, \"unsupported VLD scalar domain: unit=%d\\n\", unit);\n"
+            "        exit(2);\n    }\n"
+            "    int cpnt = state->unitCType[unit];\n"
+            "    int lane = state->unitSspMap[unit];\n"
+            "    if (cpnt < 0 || cpnt >= DSC_CICD_VLD_UNITS || lane < 0 || "
+            "lane >= DSC_CICD_VLD_UNITS) {\n"
+            "        fprintf(stderr, \"unsupported VLD component/lane: cpnt=%d lane=%d\\n\", "
+            "cpnt, lane);\n        exit(2);\n    }\n"
+            "    const fifo_t *fifo = &state->shifter[lane];\n"
+            "    if (!fifo->data || fifo->size <= 0 || fifo->size > "
+            "DSC_CICD_VLD_FIFO_BYTES * 8 || (fifo->size & 7) != 0 || "
+            "fifo->fullness < 0 || fifo->fullness > fifo->size || "
+            "fifo->read_ptr < 0 || fifo->read_ptr >= fifo->size) {\n"
+            "        fprintf(stderr, \"unsupported VLD FIFO domain: size=%d fullness=%d "
+            "read_ptr=%d\\n\", fifo->size, fifo->fullness, fifo->read_ptr);\n"
+            "        exit(2);\n    }\n}\n"
+            "static void dsc_cicd_capture_vld(const dsc_state_t *state, int lane, "
+            "const int *residuals, dsc_cicd_vld_output_t *output) {\n"
+            "    memset(output, 0, sizeof(*output));\n"
+            "    output->domain_valid = 1;\n"
+            "    output->first_flat = state->firstFlat;\n"
+            "    output->flatness_type = state->flatnessType;\n"
+            "    output->ich_selected = state->ichSelected;\n"
+            "    output->prev_first_flat = state->prevFirstFlat;\n"
+            "    output->prev_ich_selected = state->prevIchSelected;\n"
+            "    output->num_bits = state->numBits;\n"
+            + capture_output_arrays
+            + "    memcpy(output->quantized_residual, residuals, "
+            "sizeof(output->quantized_residual));\n"
+            "    output->fifo_lane = lane;\n"
+            "    output->fifo_fullness = state->shifter[lane].fullness;\n"
+            "    output->fifo_read_ptr = state->shifter[lane].read_ptr;\n"
+            "}\n"
+            "static void dsc_cicd_apply_vld(dsc_state_t *state, int *residuals, "
+            "int lane, const dsc_cicd_vld_output_t *output) {\n"
+            "    state->firstFlat = output->first_flat;\n"
+            "    state->flatnessType = output->flatness_type;\n"
+            "    state->ichSelected = output->ich_selected;\n"
+            "    state->prevFirstFlat = output->prev_first_flat;\n"
+            "    state->prevIchSelected = output->prev_ich_selected;\n"
+            "    state->numBits = output->num_bits;\n"
+            + apply_output_arrays
+            + "    memcpy(residuals, output->quantized_residual, "
+            "sizeof(output->quantized_residual));\n"
+            "    state->shifter[lane].fullness = output->fifo_fullness;\n"
+            "    state->shifter[lane].read_ptr = output->fifo_read_ptr;\n"
+            "}\n"
+            "static int dsc_cicd_vld_mismatch(const dsc_cicd_vld_output_t *left, "
+            "const dsc_cicd_vld_output_t *right) {\n"
+            "    return memcmp(left, right, sizeof(*left)) != 0;\n}\n"
+            "static void dsc_cicd_print_vld_mismatch(int unit, int group, "
+            "const dsc_cicd_vld_output_t *c, const dsc_cicd_vld_output_t *rtl) {\n"
+            "    fprintf(stderr, \"C/RTL VLDUnit mismatch: unit=%d group=%d "
+            "domain=%d/%d bits=%d/%d fifo=%d,%d/%d,%d "
+            "ich=%d/%d prevIch=%d/%d first=%d/%d prevFirst=%d/%d "
+            "residual=%d,%d,%d/%d,%d,%d\\n\", unit, group, "
+            "c->domain_valid, rtl->domain_valid, c->num_bits, rtl->num_bits, "
+            "c->fifo_fullness, c->fifo_read_ptr, rtl->fifo_fullness, "
+            "rtl->fifo_read_ptr, c->ich_selected, rtl->ich_selected, "
+            "c->prev_ich_selected, rtl->prev_ich_selected, c->first_flat, "
+            "rtl->first_flat, c->prev_first_flat, rtl->prev_first_flat, "
+            "c->quantized_residual[0], c->quantized_residual[1], "
+            "c->quantized_residual[2], rtl->quantized_residual[0], "
+            "rtl->quantized_residual[1], rtl->quantized_residual[2]);\n"
+            "}\n"
+            + f"void dsc_cicd_invoke({caller_declarations}) {{\n"
+            f"    dsc_cicd_require_vld({config_parameter}, {state_parameter}, "
+            f"{unit_parameter}, {residual_parameter}, {byte_parameter});\n"
+            f"    int dsc_cicd_lane = {state_parameter}->unitSspMap[{unit_parameter}];\n"
+            "    dsc_cicd_vld_input_t dsc_cicd_input;\n"
+            "    dsc_cicd_vld_output_t dsc_cicd_c_output;\n"
+            "    dsc_cicd_vld_output_t dsc_cicd_rtl_output;\n"
+            "    memset(&dsc_cicd_input, 0, sizeof(dsc_cicd_input));\n"
+            f"    dsc_cicd_input.unit = {unit_parameter};\n"
+            + capture_input_scalars
+            + capture_input_arrays
+            + f"    dsc_cicd_input.qlevel_luma_primary = {state_parameter}->"
+            f"quantTableLuma[{state_parameter}->primaryQp];\n"
+            f"    dsc_cicd_input.qlevel_chroma_primary = {state_parameter}->"
+            f"quantTableChroma[{state_parameter}->primaryQp];\n"
+            f"    dsc_cicd_input.qlevel_luma_previous = {state_parameter}->"
+            f"quantTableLuma[{state_parameter}->prevPrimaryQp];\n"
+            f"    dsc_cicd_input.qlevel_chroma_previous = {state_parameter}->"
+            f"quantTableChroma[{state_parameter}->prevPrimaryQp];\n"
+            f"    memcpy(dsc_cicd_input.quantized_residual, {residual_parameter}, "
+            "sizeof(dsc_cicd_input.quantized_residual));\n"
+            f"    const fifo_t *dsc_cicd_fifo = &{state_parameter}->shifter[dsc_cicd_lane];\n"
+            "    dsc_cicd_input.fifo_size = dsc_cicd_fifo->size;\n"
+            "    dsc_cicd_input.fifo_fullness = dsc_cicd_fifo->fullness;\n"
+            "    dsc_cicd_input.fifo_read_ptr = dsc_cicd_fifo->read_ptr;\n"
+            "    memcpy(dsc_cicd_input.fifo_data, dsc_cicd_fifo->data, "
+            "(size_t)dsc_cicd_fifo->size / 8);\n"
+            f"    dsc_state_t dsc_cicd_c_state = *{state_parameter};\n"
+            "    unsigned char dsc_cicd_c_fifo[DSC_CICD_VLD_FIFO_BYTES] = {0};\n"
+            "    int dsc_cicd_c_residual[DSC_CICD_VLD_SAMPLES];\n"
+            "    memcpy(dsc_cicd_c_fifo, dsc_cicd_input.fifo_data, "
+            "sizeof(dsc_cicd_c_fifo));\n"
+            "    memcpy(dsc_cicd_c_residual, dsc_cicd_input.quantized_residual, "
+            "sizeof(dsc_cicd_c_residual));\n"
+            "    dsc_cicd_c_state.shifter[dsc_cicd_lane].data = dsc_cicd_c_fifo;\n"
+            f"    {original}({config_parameter}, &dsc_cicd_c_state, {unit_parameter}, "
+            f"dsc_cicd_c_residual, {byte_parameter});\n"
+            "    dsc_cicd_capture_vld(&dsc_cicd_c_state, dsc_cicd_lane, "
+            "dsc_cicd_c_residual, &dsc_cicd_c_output);\n"
+            "    int mode = dsc_cicd_mode();\n    dsc_cicd_note_call(mode);\n"
+            "    if (mode == 0) {\n"
+            f"        dsc_cicd_apply_vld({state_parameter}, {residual_parameter}, "
+            "dsc_cicd_lane, &dsc_cicd_c_output);\n        return;\n    }\n"
+            "    memset(&dsc_cicd_rtl_output, 0, sizeof(dsc_cicd_rtl_output));\n"
+            "    dsc_cicd_rtl(&dsc_cicd_input, &dsc_cicd_rtl_output);\n"
+            "    if (dsc_cicd_vld_mismatch(&dsc_cicd_c_output, "
+            "&dsc_cicd_rtl_output)) {\n"
+            "        ++dsc_cicd_mismatches;\n"
+            "        if (dsc_cicd_mismatches <= 16)\n"
+            f"            dsc_cicd_print_vld_mismatch({unit_parameter}, "
+            f"{state_parameter}->groupCount, &dsc_cicd_c_output, "
+            "&dsc_cicd_rtl_output);\n    }\n"
+            "    if (mode == 2) {\n"
+            f"        dsc_cicd_apply_vld({state_parameter}, {residual_parameter}, "
+            "dsc_cicd_lane, &dsc_cicd_rtl_output);\n        return;\n    }\n"
+            f"    dsc_cicd_apply_vld({state_parameter}, {residual_parameter}, "
+            "dsc_cicd_lane, &dsc_cicd_c_output);\n}\n"
+            + f"void {function_name}({caller_declarations}) {{\n"
+            f"    dsc_cicd_invoke({alias_call});\n}}\n",
+            encoding="utf-8",
+        )
+
+        bridge_assignments = [
+            f"    dut.{unit_port} = static_cast<std::uint32_t>(input->unit);"
+        ]
+        bridge_assignments.extend(
+            f"    dut.{config_ports[field]} = static_cast<std::uint32_t>(input->{abi_name});"
+            for field, abi_name in config_abi.items()
+        )
+        bridge_assignments.extend(
+            f"    dut.{state_ports[field]} = static_cast<std::uint32_t>(input->{abi_name});"
+            for field, abi_name in state_abi.items()
+        )
+        for field, names in array_inputs.items():
+            bridge_assignments.extend(
+                f"    dut.{name} = static_cast<std::uint32_t>(input->{array_abi[field]}[{index}]);"
+                for index, name in enumerate(names)
+            )
+        bridge_assignments.extend(
+            f"    dut.{qlevel_ports[field]} = static_cast<std::uint32_t>(input->{abi_name});"
+            for field, abi_name in qlevel_abi.items()
+        )
+        bridge_assignments.extend(
+            f"    dut.{name} = static_cast<std::uint32_t>(input->quantized_residual[{index}]);"
+            for index, name in enumerate(residual_inputs)
+        )
+        bridge_assignments.extend([
+            f"    dut.{fifo_ports['size']} = static_cast<std::uint32_t>(input->fifo_size);",
+            f"    dut.{fifo_ports['fullness']} = static_cast<std::uint32_t>(input->fifo_fullness);",
+            f"    dut.{fifo_ports['read_ptr']} = static_cast<std::uint32_t>(input->fifo_read_ptr);",
+        ])
+        bridge_assignments.extend(
+            f"    dut.{name} = input->fifo_data[{index}];"
+            for index, name in enumerate(fifo_data_ports)
+        )
+
+        bridge_outputs = [
+            "    output->domain_valid = static_cast<std::int32_t>(dut.domain_valid);",
+            f"    output->first_flat = static_cast<std::int32_t>(dut.{state_outputs['firstFlat']});",
+            f"    output->flatness_type = static_cast<std::int32_t>(dut.{state_outputs['flatnessType']});",
+            f"    output->ich_selected = static_cast<std::int32_t>(dut.{state_outputs['ichSelected']});",
+            f"    output->prev_first_flat = static_cast<std::int32_t>(dut.{state_outputs['prevFirstFlat']});",
+            f"    output->prev_ich_selected = static_cast<std::int32_t>(dut.{state_outputs['prevIchSelected']});",
+            f"    output->num_bits = static_cast<std::int32_t>(dut.{state_outputs['numBits']});",
+        ]
+        for field, names in array_outputs.items():
+            bridge_outputs.extend(
+                f"    output->{array_abi[field]}[{index}] = "
+                f"static_cast<std::int32_t>(dut.{name});"
+                for index, name in enumerate(names)
+            )
+        bridge_outputs.extend(
+            f"    output->quantized_residual[{index}] = "
+            f"static_cast<std::int32_t>(dut.{name});"
+            for index, name in enumerate(residual_outputs)
+        )
+        bridge_outputs.extend([
+            f"    output->fifo_lane = static_cast<std::int32_t>(dut.{fifo_outputs['lane']});",
+            f"    output->fifo_fullness = static_cast<std::int32_t>(dut.{fifo_outputs['fullness']});",
+            f"    output->fifo_read_ptr = static_cast<std::int32_t>(dut.{fifo_outputs['read_ptr']});",
+        ])
+        bridge = source_dir / "rtl_bridge.cpp"
+        bridge.write_text(
+            "#include <cstdint>\n#include \"verilated.h\"\n"
+            "#include \"dsc_cicd_rtl_abi.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            "extern \"C\" void dsc_cicd_rtl(const dsc_cicd_vld_input_t *input, "
+            "dsc_cicd_vld_output_t *output) {\n"
+            f"    static V{safe_identifier(module)} dut;\n"
+            + "\n".join(bridge_assignments)
+            + "\n    dut.eval();\n"
+            + "\n".join(bridge_outputs)
+            + "\n}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\nextern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) { return dsc_cicd_original_main(argc, argv); }\n",
+            encoding="utf-8",
+        )
+        rtl_bindings = [
+            unit_parameter,
+            *[f"{config_parameter}->{field}" for field in config_abi],
+            *[f"{state_parameter}->{field}" for field in state_abi],
+            *[
+                f"{state_parameter}->{field}[{index}]"
+                for field, size in expected_array_sizes.items()
+                for index in range(size)
+            ],
+            f"{state_parameter}->quantTableLuma[primaryQp]",
+            f"{state_parameter}->quantTableChroma[primaryQp]",
+            f"{state_parameter}->quantTableLuma[prevPrimaryQp]",
+            f"{state_parameter}->quantTableChroma[prevPrimaryQp]",
+            *[f"{residual_parameter}[{index}]" for index in range(samples)],
+            *[
+                f"{state_parameter}->shifter[unitSspMap[unit]].{field}"
+                for field in ("size", "fullness", "read_ptr")
+            ],
+            *[
+                f"{state_parameter}->shifter[unitSspMap[unit]].data[{index}]"
+                for index in range(fifo_bytes)
+            ],
+        ]
+        return {
+            "header": header,
+            "abi": abi,
+            "overlay": overlay,
+            "bridge": bridge,
+            "main": main,
+            "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": "explicit_bounded_vld_unit_transition",
+                "caller_parameter_count": len(parameters),
+                "rtl_input_count": len(inputs),
+                "frozen_input_ports": [str(port.get("name")) for port in inputs],
+                "rtl_bindings": rtl_bindings,
+                "state_outputs": [str(port.get("name")) for port in outputs],
+                "selected_fifo_snapshot_bytes": fifo_bytes,
+                "prefix_unroll_bound": prefix_bits,
+                "rtl_return_controls_complete_vld_write_footprint": True,
+                "c_oracle_uses_private_state_fifo_and_residuals": True,
+                "byte_input_pointer_is_not_dereferenced_by_rtl": True,
+                "residual_symbol_alias_routes_to_dispatcher": True,
+            },
+        }
+
+    def write_bounded_vld_group_decode_transition_overlay_sources(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        module: str,
+        candidate_sv: pathlib.Path,
+    ) -> dict[str, Any]:
+        """Bind a complete decoder group state image to composed Verilated RTL."""
+        semantics = contract.get("semantics", {}) or {}
+        constants = semantics.get("constants", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        units = int(constants.get("max_units", 0))
+        samples = int(constants.get("samples_per_unit", 0))
+        indices = int(constants.get("max_ich_indices", 0))
+        fifo_bytes = int(constants.get("fifo_bytes", 0))
+        stream_bytes = int(constants.get("stream_window_bytes", 0))
+        if (units, samples, indices, fifo_bytes, stream_bytes) != (4, 3, 6, 17, 33):
+            raise RuntimeError("bounded VLD group constants are incomplete")
+
+        mux = bindings.get("mux", {}) or {}
+        vld = bindings.get("vld", {}) or {}
+        residual_inputs = [
+            [str(value) for value in row]
+            for row in bindings.get("residual_input_ports", [])
+        ]
+        residual_outputs = [
+            [str(value) for value in row]
+            for row in bindings.get("residual_output_ports", [])
+        ]
+        direct_inputs = {
+            str(key): str(value)
+            for key, value in (bindings.get("direct_input_ports", {}) or {}).items()
+        }
+        direct_outputs = {
+            str(key): str(value)
+            for key, value in (bindings.get("direct_output_ports", {}) or {}).items()
+        }
+        lanes = [dict(value) for value in mux.get("fifo_lanes", [])]
+        vld_config = {
+            str(key): str(value)
+            for key, value in (vld.get("config_ports", {}) or {}).items()
+        }
+        vld_state = {
+            str(key): str(value)
+            for key, value in (vld.get("state_ports", {}) or {}).items()
+        }
+        vld_arrays = {
+            str(key): [str(value) for value in values]
+            for key, values in (vld.get("array_input_ports", {}) or {}).items()
+        }
+        vld_state_outputs = {
+            str(key): str(value)
+            for key, value in (vld.get("state_output_ports", {}) or {}).items()
+        }
+        vld_array_outputs = {
+            str(key): [str(value) for value in values]
+            for key, values in (vld.get("array_output_ports", {}) or {}).items()
+        }
+        qlevels = {
+            str(key): str(value)
+            for key, value in (vld.get("qlevel_ports", {}) or {}).items()
+        }
+        if (
+            len(lanes) != units
+            or len(residual_inputs) != units
+            or len(residual_outputs) != units
+            or any(len(row) != samples for row in residual_inputs + residual_outputs)
+            or set(direct_inputs) != {
+                "rcb_bits", "bufferFullness", "errorOccurred", "groupCountLine"
+            }
+            or set(direct_outputs) != {
+                "prevPrimaryQp", "codedGroupSize", "bufferFullness",
+                "errorOccurred", "origIsFlat", "groupCountLine",
+            }
+        ):
+            raise RuntimeError("bounded VLD group bindings are incomplete")
+
+        ports = [
+            port for port in (contract.get("interface", {}) or {}).get("ports", [])
+            if isinstance(port, dict)
+        ]
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        outputs = [port for port in ports if port.get("direction") == "output"]
+        input_names = [str(port.get("name")) for port in inputs]
+        output_names = [str(port.get("name")) for port in outputs]
+        if len(inputs) != 205 or len(outputs) != 136 or "domain_valid" not in output_names:
+            raise RuntimeError("bounded VLD group flattened interface changed")
+
+        parameters = self.function_parameters(contract)
+        parameter_by_name = {
+            str(parameter.get("name")): parameter for parameter in parameters
+        }
+        config_parameter = str(bindings.get("config_parameter", ""))
+        state_parameter = str(bindings.get("state_parameter", ""))
+        byte_parameter = str(bindings.get("byte_pointer_parameter", ""))
+        if set(parameter_by_name) != {config_parameter, state_parameter, byte_parameter}:
+            raise RuntimeError("bounded VLD group native ABI is incomplete")
+        if not all(parameter_is_pointer(parameter_by_name[name]) for name in parameter_by_name):
+            raise RuntimeError("bounded VLD group native ABI must be pointer-only")
+
+        identifier = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+        if not all(identifier.fullmatch(value) for value in [
+            config_parameter, state_parameter, byte_parameter, *input_names, *output_names,
+        ]):
+            raise RuntimeError("bounded VLD group contains an invalid identifier")
+        parameter_specs = [
+            f"{str(parameter.get('type', 'int')).strip()} {parameter.get('name')}"
+            for parameter in parameters
+        ]
+        parameter_names = [str(parameter.get("name")) for parameter in parameters]
+        caller_declarations = ", ".join(parameter_specs)
+        alias_call = ", ".join(parameter_names)
+        function_name = str(contract_function(contract).get("name"))
+        original = function_name + "_original"
+
+        input_captures: dict[str, str] = {}
+        output_captures: dict[str, str] = {"domain_valid": "1"}
+        output_applies: dict[str, str] = {}
+        fifo_data_apply_guards: dict[str, tuple[str, int]] = {}
+
+        mux_word_port = str(mux["mux_word_size_port"])
+        num_ssps_port = str(mux["num_ssps_port"])
+        post_port = str(mux["post_mux_num_bits_port"])
+        post_output = str(mux["post_mux_num_bits_output_port"])
+        mux_word_field = str(mux["mux_word_size_field"])
+        num_ssps_field = str(mux["num_ssps_field"])
+        post_field = str(mux["post_mux_num_bits_field"])
+        max_se_field = str(mux["max_se_size_field"])
+        shifter_field = str(mux["shifter_field"])
+        input_captures[mux_word_port] = f"{config_parameter}->{mux_word_field}"
+        input_captures[num_ssps_port] = f"{state_parameter}->{num_ssps_field}"
+        input_captures[post_port] = f"{state_parameter}->{post_field}"
+        for index, port in enumerate(mux["max_se_size_ports"]):
+            input_captures[str(port)] = f"{state_parameter}->{max_se_field}[{index}]"
+        for index, port in enumerate(mux["stream_byte_ports"]):
+            input_captures[str(port)] = f"dsc_cicd_stream[{index}]"
+        output_captures[post_output] = f"state->{post_field}"
+        output_applies[post_output] = f"state->{post_field}"
+        fifo_scalar_pairs = (
+            ("size_port", "size_output_port", "size"),
+            ("fullness_port", "fullness_output_port", "fullness"),
+            ("read_ptr_port", "read_ptr_output_port", "read_ptr"),
+            ("write_ptr_port", "write_ptr_output_port", "write_ptr"),
+            ("max_fullness_port", "max_fullness_output_port", "max_fullness"),
+            ("byte_ctr_port", "byte_ctr_output_port", "byte_ctr"),
+        )
+        for lane_index, lane in enumerate(lanes):
+            for input_key, output_key, field in fifo_scalar_pairs:
+                input_captures[str(lane[input_key])] = (
+                    f"{state_parameter}->{shifter_field}[{lane_index}].{field}"
+                )
+                output_captures[str(lane[output_key])] = (
+                    f"state->{shifter_field}[{lane_index}].{field}"
+                )
+                output_applies[str(lane[output_key])] = (
+                    f"state->{shifter_field}[{lane_index}].{field}"
+                )
+            for byte_index, (input_port, output_port) in enumerate(zip(
+                lane["data_input_ports"], lane["data_output_ports"]
+            )):
+                input_captures[str(input_port)] = (
+                    f"({byte_index} < {state_parameter}->{shifter_field}[{lane_index}].size / 8 "
+                    f"? {state_parameter}->{shifter_field}[{lane_index}].data[{byte_index}] : 0)"
+                )
+                output_captures[str(output_port)] = (
+                    f"state->{shifter_field}[{lane_index}].data[{byte_index}]"
+                )
+                output_applies[str(output_port)] = (
+                    f"state->{shifter_field}[{lane_index}].data[{byte_index}]"
+                )
+                fifo_data_apply_guards[str(output_port)] = (
+                    str(lane["size_output_port"]), byte_index
+                )
+
+        for field, port in vld_config.items():
+            input_captures[port] = f"{config_parameter}->{field}"
+        for field, port in vld_state.items():
+            input_captures[port] = f"{state_parameter}->{field}"
+        for field, names in vld_arrays.items():
+            for index, port in enumerate(names):
+                input_captures[port] = f"{state_parameter}->{field}[{index}]"
+        qlevel_expressions = {
+            "luma_primary": (
+                f"{state_parameter}->quantTableLuma[{state_parameter}->primaryQp]"
+            ),
+            "chroma_primary": (
+                f"{state_parameter}->quantTableChroma[{state_parameter}->primaryQp]"
+            ),
+            "luma_previous": (
+                f"{state_parameter}->quantTableLuma[{state_parameter}->prevPrimaryQp]"
+            ),
+            "chroma_previous": (
+                f"{state_parameter}->quantTableChroma[{state_parameter}->prevPrimaryQp]"
+            ),
+        }
+        for field, port in qlevels.items():
+            input_captures[port] = qlevel_expressions[field]
+        for unit in range(units):
+            for sample in range(samples):
+                input_captures[residual_inputs[unit][sample]] = (
+                    f"{state_parameter}->quantizedResidual[{unit}][{sample}]"
+                )
+                output_captures[residual_outputs[unit][sample]] = (
+                    f"state->quantizedResidual[{unit}][{sample}]"
+                )
+                output_applies[residual_outputs[unit][sample]] = (
+                    f"state->quantizedResidual[{unit}][{sample}]"
+                )
+        for field, port in vld_state_outputs.items():
+            output_captures[port] = f"state->{field}"
+            output_applies[port] = f"state->{field}"
+        for field, names in vld_array_outputs.items():
+            for index, port in enumerate(names):
+                output_captures[port] = f"state->{field}[{index}]"
+                output_applies[port] = f"state->{field}[{index}]"
+        for field, port in direct_inputs.items():
+            owner = config_parameter if field == "rcb_bits" else state_parameter
+            input_captures[port] = f"{owner}->{field}"
+        for field, port in direct_outputs.items():
+            output_captures[port] = f"state->{field}"
+            output_applies[port] = f"state->{field}"
+        if set(input_captures) != set(input_names):
+            missing = sorted(set(input_names) - set(input_captures))
+            extra = sorted(set(input_captures) - set(input_names))
+            raise RuntimeError(f"bounded VLD group input mapping mismatch: {missing}/{extra}")
+        if set(output_captures) != set(output_names) or set(output_applies) != (
+            set(output_names) - {"domain_valid"}
+        ):
+            raise RuntimeError("bounded VLD group output mapping is incomplete")
+
+        abi = source_dir / "dsc_cicd_rtl_abi.h"
+        abi.write_text(
+            "#ifndef DSC_CICD_RTL_ABI_H\n#define DSC_CICD_RTL_ABI_H\n"
+            "#include <stdint.h>\n"
+            f"#define DSC_CICD_VLD_GROUP_UNITS {units}\n"
+            f"#define DSC_CICD_VLD_GROUP_FIFO_BYTES {fifo_bytes}\n"
+            f"#define DSC_CICD_VLD_GROUP_STREAM_BYTES {stream_bytes}\n"
+            "typedef struct {\n"
+            + "".join(f"    int32_t {name};\n" for name in input_names)
+            + "} dsc_cicd_vld_group_input_t;\n"
+            "typedef struct {\n"
+            + "".join(f"    int32_t {name};\n" for name in output_names)
+            + "} dsc_cicd_vld_group_output_t;\n"
+            "#ifdef __cplusplus\nextern \"C\" {\n#endif\n"
+            "void dsc_cicd_rtl(const dsc_cicd_vld_group_input_t *input, "
+            "dsc_cicd_vld_group_output_t *output);\n"
+            "#ifdef __cplusplus\n}\n#endif\n#endif\n",
+            encoding="utf-8",
+        )
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n#define DSC_CICD_OVERLAY_H\n"
+            "#include \"dsc_types.h\"\n"
+            f"void dsc_cicd_invoke({caller_declarations});\n#endif\n",
+            encoding="utf-8",
+        )
+        capture_input_source = "".join(
+            f"    dsc_cicd_input.{name} = (int32_t)({input_captures[name]});\n"
+            for name in input_names
+        )
+        capture_output_source = "".join(
+            f"    output->{name} = (int32_t)({output_captures[name]});\n"
+            for name in output_names
+        )
+        apply_output_source = "".join(
+            (
+                f"    if ({fifo_data_apply_guards[name][1]} < "
+                f"output->{fifo_data_apply_guards[name][0]} / 8) "
+                f"{output_applies[name]} = output->{name};\n"
+                if name in fifo_data_apply_guards
+                else f"    {output_applies[name]} = output->{name};\n"
+            )
+            for name in output_names if name != "domain_valid"
+        )
+
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdint.h>\n#include <stdio.h>\n#include <stdlib.h>\n"
+            "#include <string.h>\n#include \"dsc_cicd_overlay.h\"\n"
+            "#include \"dsc_cicd_rtl_abi.h\"\n"
+            f"extern void {original}({caller_declarations});\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n}\n"
+            + self.overlay_runtime_metrics_source()
+            + "static void dsc_cicd_require_vld_group(const dsc_cfg_t *cfg, "
+            "const dsc_state_t *state, unsigned char **byte_in_p) {\n"
+            "    if (!cfg || !state || !byte_in_p || !*byte_in_p || "
+            "!state->quantTableLuma || !state->quantTableChroma || "
+            "state->unitsPerGroup < 3 || state->unitsPerGroup > "
+            "DSC_CICD_VLD_GROUP_UNITS || state->numSsps < 0 || "
+            "state->numSsps > DSC_CICD_VLD_GROUP_UNITS || "
+            "(cfg->mux_word_size != 48 && cfg->mux_word_size != 64) || "
+            "state->primaryQp < 0 || state->primaryQp > 31 || "
+            "state->prevPrimaryQp < 0 || state->prevPrimaryQp > 31 || "
+            "state->ichIndicesInGroup < 0 || state->ichIndicesInGroup > 6) {\n"
+            "        fprintf(stderr, \"unsupported VLDGroup scalar domain\\n\");\n"
+            "        exit(2);\n    }\n"
+            "    for (int unit = 0; unit < DSC_CICD_VLD_GROUP_UNITS; ++unit) {\n"
+            "        if (state->unitCType[unit] < 0 || state->unitCType[unit] >= 4 || "
+            "state->unitSspMap[unit] < 0 || state->unitSspMap[unit] >= 4) {\n"
+            "            fprintf(stderr, \"unsupported VLDGroup unit map\\n\");\n"
+            "            exit(2);\n        }\n"
+            "        const fifo_t *fifo = &state->shifter[unit];\n"
+            "        if (!fifo->data || fifo->size <= 0 || fifo->size > "
+            "DSC_CICD_VLD_GROUP_FIFO_BYTES * 8 || (fifo->size & 7) || "
+            "fifo->fullness < 0 || fifo->fullness > fifo->size || "
+            "fifo->read_ptr < 0 || fifo->read_ptr >= fifo->size || "
+            "fifo->write_ptr < 0 || fifo->write_ptr >= fifo->size) {\n"
+            "            fprintf(stderr, \"unsupported VLDGroup FIFO domain: lane=%d\\n\", unit);\n"
+            "            exit(2);\n        }\n    }\n"
+            "    for (int index = 0; index < 6; ++index) {\n"
+            "        if (state->ichIndexUnitMap[index] < 0 || "
+            "state->ichIndexUnitMap[index] >= 4) {\n"
+            "            fprintf(stderr, \"unsupported VLDGroup ICH map\\n\");\n"
+            "            exit(2);\n        }\n    }\n}\n"
+            "static void dsc_cicd_capture_output(const dsc_state_t *state, "
+            "dsc_cicd_vld_group_output_t *output) {\n"
+            "    memset(output, 0, sizeof(*output));\n"
+            + capture_output_source
+            + "}\n"
+            "static void dsc_cicd_apply_output(dsc_state_t *state, "
+            "dsc_cicd_vld_group_output_t const *output) {\n"
+            + apply_output_source
+            + "}\n"
+            + f"void dsc_cicd_invoke({caller_declarations}) {{\n"
+            f"    dsc_cicd_require_vld_group({config_parameter}, {state_parameter}, "
+            f"{byte_parameter});\n"
+            "    uint8_t dsc_cicd_stream[DSC_CICD_VLD_GROUP_STREAM_BYTES] = {0};\n"
+            f"    int dsc_cicd_base = {state_parameter}->{post_field} >> 3;\n"
+            "    for (int index = 0; index < DSC_CICD_VLD_GROUP_STREAM_BYTES; ++index) {\n"
+            f"        if (index + 1 < DSC_CICD_VLD_GROUP_STREAM_BYTES || "
+            f"({state_parameter}->{post_field} & 7))\n"
+            f"            dsc_cicd_stream[index] = (*{byte_parameter})[dsc_cicd_base + index];\n"
+            "    }\n"
+            "    dsc_cicd_vld_group_input_t dsc_cicd_input;\n"
+            "    dsc_cicd_vld_group_output_t dsc_cicd_c_output;\n"
+            "    dsc_cicd_vld_group_output_t dsc_cicd_rtl_output;\n"
+            "    memset(&dsc_cicd_input, 0, sizeof(dsc_cicd_input));\n"
+            + capture_input_source
+            + f"    dsc_state_t dsc_cicd_c_state = *{state_parameter};\n"
+            "    unsigned char dsc_cicd_c_fifo[DSC_CICD_VLD_GROUP_UNITS]"
+            "[DSC_CICD_VLD_GROUP_FIFO_BYTES] = {{0}};\n"
+            "    for (int lane = 0; lane < DSC_CICD_VLD_GROUP_UNITS; ++lane) {\n"
+            f"        memcpy(dsc_cicd_c_fifo[lane], {state_parameter}->{shifter_field}[lane].data, "
+            f"(size_t){state_parameter}->{shifter_field}[lane].size / 8);\n"
+            f"        dsc_cicd_c_state.{shifter_field}[lane].data = dsc_cicd_c_fifo[lane];\n"
+            "    }\n"
+            f"    unsigned char *dsc_cicd_c_byte = *{byte_parameter};\n"
+            f"    {original}({config_parameter}, &dsc_cicd_c_state, &dsc_cicd_c_byte);\n"
+            "    dsc_cicd_capture_output(&dsc_cicd_c_state, &dsc_cicd_c_output);\n"
+            "    int mode = dsc_cicd_mode();\n    dsc_cicd_note_call(mode);\n"
+            "    if (mode == 0) {\n"
+            f"        dsc_cicd_apply_output({state_parameter}, &dsc_cicd_c_output);\n"
+            "        return;\n    }\n"
+            "    memset(&dsc_cicd_rtl_output, 0, sizeof(dsc_cicd_rtl_output));\n"
+            "    dsc_cicd_rtl(&dsc_cicd_input, &dsc_cicd_rtl_output);\n"
+            "    int mismatch = memcmp(&dsc_cicd_c_output, &dsc_cicd_rtl_output, "
+            "sizeof(dsc_cicd_c_output)) != 0;\n"
+            "    if (mismatch) {\n        ++dsc_cicd_mismatches;\n"
+            "        if (dsc_cicd_mismatches <= 16)\n"
+            "            fprintf(stderr, \"C/RTL VLDGroup mismatch: group=%d "
+            "bits=%d/%d fullness=%d/%d domain=%d\\n\", "
+            f"{state_parameter}->groupCount, dsc_cicd_c_output."
+            f"{vld_state_outputs['numBits']}, dsc_cicd_rtl_output."
+            f"{vld_state_outputs['numBits']}, dsc_cicd_c_output."
+            f"{direct_outputs['bufferFullness']}, dsc_cicd_rtl_output."
+            f"{direct_outputs['bufferFullness']}, dsc_cicd_rtl_output.domain_valid);\n"
+            "    }\n"
+            "    if (mode == 2 && dsc_cicd_rtl_output.domain_valid) {\n"
+            f"        dsc_cicd_apply_output({state_parameter}, &dsc_cicd_rtl_output);\n"
+            "        return;\n    }\n"
+            f"    dsc_cicd_apply_output({state_parameter}, &dsc_cicd_c_output);\n"
+            "}\n"
+            + f"void {function_name}({caller_declarations}) {{\n"
+            f"    dsc_cicd_invoke({alias_call});\n}}\n",
+            encoding="utf-8",
+        )
+
+        bridge_assignments = [
+            f"    dut.{name} = static_cast<std::uint32_t>(input->{name});"
+            for name in input_names
+        ]
+        bridge_outputs = [
+            f"    output->{name} = static_cast<std::int32_t>(dut.{name});"
+            for name in output_names
+        ]
+        bridge = source_dir / "rtl_bridge.cpp"
+        bridge.write_text(
+            "#include <cstdint>\n#include \"verilated.h\"\n"
+            "#include \"dsc_cicd_rtl_abi.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            "extern \"C\" void dsc_cicd_rtl("
+            "const dsc_cicd_vld_group_input_t *input, "
+            "dsc_cicd_vld_group_output_t *output) {\n"
+            f"    static V{safe_identifier(module)} dut;\n"
+            + "\n".join(bridge_assignments)
+            + "\n    dut.eval();\n"
+            + "\n".join(bridge_outputs)
+            + "\n}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\nextern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) { return dsc_cicd_original_main(argc, argv); }\n",
+            encoding="utf-8",
+        )
+        return {
+            "header": header,
+            "abi": abi,
+            "overlay": overlay,
+            "bridge": bridge,
+            "main": main,
+            "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": "explicit_bounded_vld_group_decode_transition",
+                "caller_parameter_count": len(parameters),
+                "rtl_input_count": len(inputs),
+                "rtl_output_count": len(outputs),
+                "frozen_input_ports": input_names,
+                "rtl_bindings": [input_captures[name] for name in input_names],
+                "state_outputs": output_names,
+                "source_order_child_sequence": [
+                    "ProcessGroupDec", "VLDUnit[0]", "VLDUnit[1]",
+                    "VLDUnit[2]", "VLDUnit[3]",
+                ],
+                "rtl_return_controls_complete_vld_group_write_footprint": True,
+                "c_oracle_uses_private_state_and_four_fifo_images": True,
+                "byte_input_pointer_is_read_only": True,
+                "residual_symbol_alias_routes_to_dispatcher": True,
+            },
+        }
+
+    def write_raster_color_transform_overlay_sources(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        module: str,
+        candidate_sv: pathlib.Path,
+    ) -> dict[str, Any]:
+        """Iterate a Verilated three-channel kernel over the source raster bounds."""
+        semantics = contract.get("semantics", {}) or {}
+        constants = semantics.get("constants", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        direction = str(bindings.get("direction", ""))
+        input_ports = [str(value) for value in bindings.get("input_ports", [])]
+        output_ports = [str(value) for value in bindings.get("output_ports", [])]
+        input_fields = [str(value) for value in bindings.get("input_plane_fields", [])]
+        output_fields = [str(value) for value in bindings.get("output_plane_fields", [])]
+        bits_port = str(bindings.get("bits_port", ""))
+        if (
+            direction not in {"rgb_to_ycocg", "ycocg_to_rgb"}
+            or len(input_ports) != 3
+            or len(output_ports) != 3
+            or len(input_fields) != 3
+            or len(output_fields) != 3
+            or int(constants.get("channel_count", 0)) != 3
+            or not constants.get("reduce_chroma_16bpc")
+        ):
+            raise RuntimeError("raster color transform bindings are incomplete")
+        ports = [
+            port for port in (contract.get("interface", {}) or {}).get("ports", [])
+            if isinstance(port, dict)
+        ]
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        outputs = [port for port in ports if port.get("direction") == "output"]
+        if (
+            [str(port.get("name")) for port in inputs] != [bits_port, *input_ports]
+            or {str(port.get("name")) for port in outputs}
+            != {"domain_valid", *output_ports}
+        ):
+            raise RuntimeError("raster color transform interface changed")
+
+        parameters = self.function_parameters(contract)
+        parameter_by_name = {
+            str(parameter.get("name")): parameter for parameter in parameters
+        }
+        input_parameter = str(bindings.get("input_parameter", ""))
+        output_parameter = str(bindings.get("output_parameter", ""))
+        config_parameter = str(bindings.get("config_parameter", ""))
+        if set(parameter_by_name) != {
+            input_parameter, output_parameter, config_parameter
+        } or not all(parameter_is_pointer(value) for value in parameter_by_name.values()):
+            raise RuntimeError("raster color transform native ABI changed")
+        parameter_specs = [
+            f"{str(parameter.get('type', 'int')).strip()} {parameter.get('name')}"
+            for parameter in parameters
+        ]
+        parameter_names = [str(parameter.get("name")) for parameter in parameters]
+        caller_declarations = ", ".join(parameter_specs)
+        alias_call = ", ".join(parameter_names)
+        function_name = str(contract_function(contract).get("name"))
+        original = function_name + "_original"
+        input_union = "rgb" if direction == "rgb_to_ycocg" else "yuv"
+        output_union = "yuv" if direction == "rgb_to_ycocg" else "rgb"
+        input_access = [
+            f"{input_parameter}->data.{input_union}.{field}[row][column]"
+            for field in input_fields
+        ]
+        output_access = [
+            f"{output_parameter}->data.{output_union}.{field}[row][column]"
+            for field in output_fields
+        ]
+
+        abi = source_dir / "dsc_cicd_rtl_abi.h"
+        abi.write_text(
+            "#ifndef DSC_CICD_RTL_ABI_H\n#define DSC_CICD_RTL_ABI_H\n"
+            "#include <stdint.h>\n#ifdef __cplusplus\nextern \"C\" {\n#endif\n"
+            "void dsc_cicd_rtl(int32_t bits, int32_t input_0, int32_t input_1, "
+            "int32_t input_2, int32_t *domain_valid, int32_t *output_0, "
+            "int32_t *output_1, int32_t *output_2);\n"
+            "#ifdef __cplusplus\n}\n#endif\n#endif\n",
+            encoding="utf-8",
+        )
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n#define DSC_CICD_OVERLAY_H\n"
+            "#include \"dsc_utils.h\"\n"
+            f"void dsc_cicd_invoke({caller_declarations});\n#endif\n",
+            encoding="utf-8",
+        )
+        save_lines = "".join(
+            f"            saved[position * 3 + {index}] = {access};\n"
+            for index, access in enumerate(output_access)
+        )
+        capture_lines = "".join(
+            f"            c_result[position * 3 + {index}] = {access};\n"
+            for index, access in enumerate(output_access)
+        )
+        restore_lines = "".join(
+            f"            {access} = saved[position * 3 + {index}];\n"
+            for index, access in enumerate(output_access)
+        )
+        apply_lines = "".join(
+            f"            {access} = selected[position * 3 + {index}];\n"
+            for index, access in enumerate(output_access)
+        )
+        rtl_call_inputs = ", ".join(input_access)
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdint.h>\n#include <stdio.h>\n#include <stdlib.h>\n"
+            "#include <string.h>\n#include \"dsc_cicd_overlay.h\"\n"
+            "#include \"dsc_cicd_rtl_abi.h\"\n"
+            f"extern void {original}({caller_declarations});\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n}\n"
+            + self.overlay_runtime_metrics_source()
+            + f"void dsc_cicd_invoke({caller_declarations}) {{\n"
+            f"    if (!{input_parameter} || !{output_parameter} || !{config_parameter} || "
+            f"{input_parameter} == {output_parameter} || {input_parameter}->w != "
+            f"{output_parameter}->w || {input_parameter}->h != {output_parameter}->h || "
+            f"{input_parameter}->bits < 8 || {input_parameter}->bits > 16 || "
+            f"{config_parameter}->xstart < 0 || {config_parameter}->ystart < 0 || "
+            f"{config_parameter}->slice_width < 0 || {config_parameter}->slice_height < 0) {{\n"
+            "        fprintf(stderr, \"unsupported raster color-transform domain\\n\");\n"
+            "        exit(2);\n    }\n"
+            f"    int x_begin = {config_parameter}->xstart;\n"
+            f"    int y_begin = {config_parameter}->ystart;\n"
+            f"    int x_end = x_begin + {config_parameter}->slice_width;\n"
+            f"    int y_end = y_begin + {config_parameter}->slice_height;\n"
+            f"    if (x_end > {input_parameter}->w) x_end = {input_parameter}->w;\n"
+            f"    if (y_end > {input_parameter}->h) y_end = {input_parameter}->h;\n"
+            "    if (x_end < x_begin) x_end = x_begin;\n"
+            "    if (y_end < y_begin) y_end = y_begin;\n"
+            "    size_t width = (size_t)(x_end - x_begin);\n"
+            "    size_t height = (size_t)(y_end - y_begin);\n"
+            "    size_t pixels = width * height;\n"
+            "    size_t elements = (pixels ? pixels : 1) * 3;\n"
+            "    int *saved = (int *)malloc(elements * sizeof(int));\n"
+            "    int *c_result = (int *)malloc(elements * sizeof(int));\n"
+            "    int *rtl_result = (int *)malloc(elements * sizeof(int));\n"
+            "    if (!saved || !c_result || !rtl_result) {\n"
+            "        fprintf(stderr, \"color-transform oracle allocation failed\\n\");\n"
+            "        exit(2);\n    }\n"
+            "    for (int row = y_begin; row < y_end; ++row) {\n"
+            "        for (int column = x_begin; column < x_end; ++column) {\n"
+            "            size_t position = (size_t)(row - y_begin) * width + "
+            "(size_t)(column - x_begin);\n"
+            + save_lines
+            + "        }\n    }\n"
+            f"    {original}({alias_call});\n"
+            "    for (int row = y_begin; row < y_end; ++row) {\n"
+            "        for (int column = x_begin; column < x_end; ++column) {\n"
+            "            size_t position = (size_t)(row - y_begin) * width + "
+            "(size_t)(column - x_begin);\n"
+            + capture_lines
+            + restore_lines
+            + "        }\n    }\n"
+            "    int mode = dsc_cicd_mode();\n"
+            "    dsc_cicd_note_call(0);\n"
+            "    int rtl_all_valid = 1;\n"
+            "    if (mode != 0) {\n"
+            "        for (int row = y_begin; row < y_end; ++row) {\n"
+            "            for (int column = x_begin; column < x_end; ++column) {\n"
+            "                size_t position = (size_t)(row - y_begin) * width + "
+            "(size_t)(column - x_begin);\n"
+            "                int32_t domain_valid = 0, out_0 = 0, out_1 = 0, out_2 = 0;\n"
+            f"                dsc_cicd_rtl({input_parameter}->bits, {rtl_call_inputs}, "
+            "&domain_valid, &out_0, &out_1, &out_2);\n"
+            "                ++dsc_cicd_rtl_invocations;\n"
+            "                rtl_result[position * 3 + 0] = out_0;\n"
+            "                rtl_result[position * 3 + 1] = out_1;\n"
+            "                rtl_result[position * 3 + 2] = out_2;\n"
+            "                if (!domain_valid) rtl_all_valid = 0;\n"
+            "                if (!domain_valid || out_0 != c_result[position * 3 + 0] || "
+            "out_1 != c_result[position * 3 + 1] || "
+            "out_2 != c_result[position * 3 + 2]) ++dsc_cicd_mismatches;\n"
+            "            }\n        }\n    }\n"
+            "    const int *selected = "
+            "(mode == 2 && rtl_all_valid) ? rtl_result : c_result;\n"
+            "    for (int row = y_begin; row < y_end; ++row) {\n"
+            "        for (int column = x_begin; column < x_end; ++column) {\n"
+            "            size_t position = (size_t)(row - y_begin) * width + "
+            "(size_t)(column - x_begin);\n"
+            + apply_lines
+            + "        }\n    }\n"
+            "    free(rtl_result);\n    free(c_result);\n    free(saved);\n}\n"
+            + f"void {function_name}({caller_declarations}) {{\n"
+            f"    dsc_cicd_invoke({alias_call});\n}}\n",
+            encoding="utf-8",
+        )
+
+        bridge = source_dir / "rtl_bridge.cpp"
+        bridge.write_text(
+            "#include <cstdint>\n#include \"verilated.h\"\n"
+            "#include \"dsc_cicd_rtl_abi.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            "extern \"C\" void dsc_cicd_rtl(int32_t bits, int32_t input_0, "
+            "int32_t input_1, int32_t input_2, int32_t *domain_valid, "
+            "int32_t *output_0, int32_t *output_1, int32_t *output_2) {\n"
+            f"    static V{safe_identifier(module)} dut;\n"
+            f"    dut.{bits_port} = static_cast<std::uint32_t>(bits);\n"
+            f"    dut.{input_ports[0]} = static_cast<std::uint32_t>(input_0);\n"
+            f"    dut.{input_ports[1]} = static_cast<std::uint32_t>(input_1);\n"
+            f"    dut.{input_ports[2]} = static_cast<std::uint32_t>(input_2);\n"
+            "    dut.eval();\n"
+            "    *domain_valid = static_cast<std::int32_t>(dut.domain_valid);\n"
+            f"    *output_0 = static_cast<std::int32_t>(dut.{output_ports[0]});\n"
+            f"    *output_1 = static_cast<std::int32_t>(dut.{output_ports[1]});\n"
+            f"    *output_2 = static_cast<std::int32_t>(dut.{output_ports[2]});\n"
+            "}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\nextern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) { return dsc_cicd_original_main(argc, argv); }\n",
+            encoding="utf-8",
+        )
+        return {
+            "header": header,
+            "abi": abi,
+            "overlay": overlay,
+            "bridge": bridge,
+            "main": main,
+            "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": "iterated_raster_color_transform_transition",
+                "caller_parameter_count": len(parameters),
+                "rtl_input_count": len(inputs),
+                "frozen_input_ports": [str(port.get("name")) for port in inputs],
+                "rtl_bindings": [
+                    f"{input_parameter}->bits",
+                    *[
+                        f"{input_parameter}->data.{input_union}.{field}[row][column]"
+                        for field in input_fields
+                    ],
+                ],
+                "state_outputs": [str(port.get("name")) for port in outputs],
+                "iteration_adapter_invokes_rtl_per_active_pixel": True,
+                "rtl_return_controls_every_active_output_pixel": True,
+                "original_c_writes_are_saved_and_restored_before_commit": True,
+                "input_and_output_picture_alias_is_rejected": True,
+            },
+        }
+
+    def write_bounded_rate_control_decode_transition_overlay_sources(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        module: str,
+        candidate_sv: pathlib.Path,
+    ) -> dict[str, Any]:
+        """Bind decoder rate-control scalar state around three child stages."""
+        semantics = contract.get("semantics", {}) or {}
+        constants = semantics.get("constants", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        ranges = int(constants.get("num_buf_ranges", 0))
+        units = int(constants.get("max_units", 0))
+        samples = int(constants.get("samples_per_unit", 0))
+        stages = int(constants.get("max_remove_stages", 0))
+        if (ranges, units, samples, stages) != (15, 4, 3, 3):
+            raise RuntimeError("bounded rate-control constants are incomplete")
+        argument_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("argument_ports", {}) or {}).items()
+        }
+        config_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("config_ports", {}) or {}).items()
+        }
+        state_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("state_ports", {}) or {}).items()
+        }
+        depth_ports = [str(value) for value in bindings.get("depth_ports", [])]
+        predicted_ports = [
+            str(value) for value in bindings.get("predicted_ports", [])
+        ]
+        rc_size_ports = [str(value) for value in bindings.get("rc_size_ports", [])]
+        use_midpoint_ports = [
+            str(value) for value in bindings.get("use_midpoint_ports", [])
+        ]
+        threshold_ports = [
+            str(value) for value in bindings.get("threshold_ports", [])
+        ]
+        range_ports = {
+            str(key): [str(value) for value in row]
+            for key, row in (bindings.get("range_ports", {}) or {}).items()
+        }
+        state_output_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("state_output_ports", {}) or {}).items()
+        }
+        expected_config = {
+            "bits_per_component", "bits_per_pixel", "chunk_size",
+            "dsc_version_minor", "initial_xmit_delay", "native_420", "native_422",
+            "rc_edge_factor", "rc_model_size", "rc_quant_incr_limit0",
+            "rc_quant_incr_limit1", "rc_tgt_offset_hi", "rc_tgt_offset_lo",
+            "rcb_bits", "vbr_enable",
+        }
+        expected_state = {
+            "bitSaveMode", "bitsClamped", "bpgFracAccum", "bufferFullness",
+            "chunkCount", "chunkPixelTimes", "codedGroupSize", "errorOccurred",
+            "firstFlat", "ichSelected", "isEncoder", "mppState", "numBitsChunk",
+            "pixelCount", "prevQp", "prevRange", "rcSizeGroup", "sliceWidth",
+            "stQp", "unitsPerGroup", "vPos",
+        }
+        expected_outputs = {
+            "bitSaveMode", "bitsClamped", "bpgFracAccum", "bufferFullness",
+            "chunkCount", "chunkPixelTimes", "errorOccurred", "mppState",
+            "numBitsChunk", "pixelCount", "prevQp", "prevRange",
+            "rcSizeGroup", "stQp",
+        }
+        if (
+            len(argument_ports) != 5 or set(config_ports) != expected_config
+            or set(state_ports) != expected_state
+            or set(state_output_ports) != expected_outputs
+            or len(depth_ports) != 2 or len(predicted_ports) != units
+            or len(rc_size_ports) != units or len(use_midpoint_ports) != units
+            or len(threshold_ports) != ranges - 1
+            or set(range_ports) != {
+                "range_min_qp", "range_max_qp", "range_bpg_offset"
+            }
+            or any(len(row) != ranges for row in range_ports.values())
+        ):
+            raise RuntimeError("bounded rate-control bindings are incomplete")
+        ports = [
+            port for port in (contract.get("interface", {}) or {}).get("ports", [])
+            if isinstance(port, dict)
+        ]
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        outputs = [port for port in ports if port.get("direction") == "output"]
+        expected_inputs = {
+            *argument_ports.values(), *config_ports.values(), *state_ports.values(),
+            *depth_ports, *predicted_ports, *rc_size_ports, *use_midpoint_ports,
+            *threshold_ports, *[value for row in range_ports.values() for value in row],
+        }
+        expected_output_ports = {"domain_valid", *state_output_ports.values()}
+        if (
+            {str(port.get("name")) for port in inputs} != expected_inputs
+            or {str(port.get("name")) for port in outputs} != expected_output_ports
+        ):
+            raise RuntimeError("bounded rate-control ports changed")
+        parameters = self.function_parameters(contract)
+        parameter_by_name = {
+            str(parameter.get("name")): parameter for parameter in parameters
+        }
+        config_parameter = str(bindings.get("config_parameter", ""))
+        state_parameter = str(bindings.get("state_parameter", ""))
+        scalar_parameters = [
+            str(parameter.get("name"))
+            for parameter in parameters if not parameter_is_pointer(parameter)
+        ]
+        if (
+            set(parameter_by_name) != {
+                config_parameter, state_parameter, *scalar_parameters
+            }
+            or len(scalar_parameters) != 5
+            or not parameter_is_pointer(parameter_by_name[config_parameter])
+            or not parameter_is_pointer(parameter_by_name[state_parameter])
+        ):
+            raise RuntimeError("bounded rate-control native ABI is incomplete")
+        throttle_parameter, bpg_parameter, group_count_parameter, scale_parameter, group_size_parameter = scalar_parameters
+        identifier = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+        identifiers = {
+            config_parameter, state_parameter, *scalar_parameters,
+            *expected_inputs, *expected_output_ports,
+        }
+        if not all(identifier.fullmatch(value) for value in identifiers):
+            raise RuntimeError("bounded rate-control contains invalid identifiers")
+        parameter_specs = [
+            f"{str(parameter.get('type', 'int')).strip()} {parameter.get('name')}"
+            for parameter in parameters
+        ]
+        parameter_names = [str(parameter.get("name")) for parameter in parameters]
+        caller_declarations = ", ".join(parameter_specs)
+        alias_call = ", ".join(parameter_names)
+        function_name = str(contract_function(contract).get("name"))
+        original = function_name + "_original"
+
+        argument_abi = {name: safe_identifier(name) for name in scalar_parameters}
+        config_abi = {field: "cfg_" + safe_identifier(field) for field in config_ports}
+        state_abi = {field: "state_" + safe_identifier(field) for field in state_ports}
+        output_abi = {field: safe_identifier(field) for field in state_output_ports}
+        abi = source_dir / "dsc_cicd_rtl_abi.h"
+        abi.write_text(
+            "#ifndef DSC_CICD_RTL_ABI_H\n#define DSC_CICD_RTL_ABI_H\n"
+            "#include <stdint.h>\n"
+            f"#define DSC_CICD_RC_RANGES {ranges}\n"
+            f"#define DSC_CICD_RC_THRESHOLDS {ranges - 1}\n"
+            f"#define DSC_CICD_RC_UNITS {units}\n"
+            "typedef struct {\n"
+            + "".join(
+                f"    int32_t {argument_abi[name]};\n" for name in scalar_parameters
+            )
+            + "".join(
+                f"    int32_t {config_abi[field]};\n" for field in config_ports
+            )
+            + "".join(
+                f"    int32_t {state_abi[field]};\n" for field in state_ports
+            )
+            + "    int32_t cpnt_bit_depth[2];\n"
+            "    int32_t predicted_size[DSC_CICD_RC_UNITS];\n"
+            "    int32_t rc_size_unit[DSC_CICD_RC_UNITS];\n"
+            "    int32_t use_midpoint[DSC_CICD_RC_UNITS];\n"
+            "    int32_t rc_buf_thresh[DSC_CICD_RC_THRESHOLDS];\n"
+            "    int32_t range_min_qp[DSC_CICD_RC_RANGES];\n"
+            "    int32_t range_max_qp[DSC_CICD_RC_RANGES];\n"
+            "    int32_t range_bpg_offset[DSC_CICD_RC_RANGES];\n"
+            "} dsc_cicd_rate_control_input_t;\n"
+            "typedef struct {\n    int32_t domain_valid;\n"
+            + "".join(
+                f"    int32_t {output_abi[field]};\n"
+                for field in state_output_ports
+            )
+            + "} dsc_cicd_rate_control_output_t;\n"
+            "#ifdef __cplusplus\nextern \"C\" {\n#endif\n"
+            "void dsc_cicd_rtl(const dsc_cicd_rate_control_input_t *input, "
+            "dsc_cicd_rate_control_output_t *output);\n"
+            "#ifdef __cplusplus\n}\n#endif\n#endif\n",
+            encoding="utf-8",
+        )
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n#define DSC_CICD_OVERLAY_H\n"
+            "#include \"dsc_types.h\"\n"
+            f"void dsc_cicd_invoke({caller_declarations});\n#endif\n",
+            encoding="utf-8",
+        )
+        capture_lines = "".join(
+            f"    output->{output_abi[field]} = state->{field};\n"
+            for field in state_output_ports
+        )
+        apply_lines = "".join(
+            f"    state->{field} = output->{output_abi[field]};\n"
+            for field in state_output_ports
+        )
+        input_scalar_lines = "".join(
+            f"    dsc_cicd_input.{argument_abi[name]} = {name};\n"
+            for name in scalar_parameters
+        ) + "".join(
+            f"    dsc_cicd_input.{config_abi[field]} = {config_parameter}->{field};\n"
+            for field in config_ports
+        ) + "".join(
+            f"    dsc_cicd_input.{state_abi[field]} = {state_parameter}->{field};\n"
+            for field in state_ports
+        )
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdint.h>\n#include <stdio.h>\n#include <stdlib.h>\n"
+            "#include <string.h>\n#include \"dsc_cicd_overlay.h\"\n"
+            "#include \"dsc_cicd_rtl_abi.h\"\n"
+            f"extern void {original}({caller_declarations});\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n}\n"
+            + self.overlay_runtime_metrics_source()
+            + "static void dsc_cicd_require_rate_control(const dsc_cfg_t *cfg, "
+            "const dsc_state_t *state, int group_count, int group_size) {\n"
+            "    if (!cfg || !state || state->isEncoder != 0 || group_count < 0 || "
+            "group_size < 1 || group_size > 3 || state->unitsPerGroup < 3 || "
+            "state->unitsPerGroup > 4 || state->prevRange < 0 || "
+            "state->prevRange >= 15 || state->sliceWidth <= 0 || "
+            "state->chunkPixelTimes < 0 || state->chunkPixelTimes >= state->sliceWidth || "
+            "cfg->dsc_version_minor < 1 || cfg->dsc_version_minor > 2 || "
+            "(cfg->native_420 != 0 && cfg->native_420 != 1) || "
+            "(cfg->native_422 != 0 && cfg->native_422 != 1) || "
+            "(cfg->native_420 && cfg->native_422) || "
+            "state->cpntBitDepth[0] < 8 || state->cpntBitDepth[0] > 16 || "
+            "state->cpntBitDepth[1] < 8 || state->cpntBitDepth[1] > 16) {\n"
+            "        fprintf(stderr, \"unsupported RateControl decode domain: "
+            "group=%d size=%d\\n\", group_count, group_size);\n"
+            "        exit(2);\n    }\n}\n"
+            "static void dsc_cicd_capture_rate_control(const dsc_state_t *state, "
+            "dsc_cicd_rate_control_output_t *output) {\n"
+            "    memset(output, 0, sizeof(*output));\n"
+            "    output->domain_valid = 1;\n"
+            + capture_lines
+            + "}\n"
+            "static void dsc_cicd_apply_rate_control(dsc_state_t *state, "
+            "const dsc_cicd_rate_control_output_t *output) {\n"
+            + apply_lines
+            + "}\n"
+            "static int dsc_cicd_rate_control_mismatch("
+            "const dsc_cicd_rate_control_output_t *left, "
+            "const dsc_cicd_rate_control_output_t *right) {\n"
+            "    return memcmp(left, right, sizeof(*left)) != 0;\n}\n"
+            "static void dsc_cicd_print_rate_control_mismatch(int group_count, "
+            "int group_size, const dsc_cicd_rate_control_output_t *c, "
+            "const dsc_cicd_rate_control_output_t *rtl) {\n"
+            "    fprintf(stderr, \"C/RTL RateControl decode mismatch: group=%d "
+            "size=%d domain=%d/%d qp=%d/%d fullness=%d/%d range=%d/%d "
+            "pixel=%d/%d error=%d/%d\\n\", group_count, group_size, "
+            f"c->domain_valid, rtl->domain_valid, c->{output_abi['stQp']}, "
+            f"rtl->{output_abi['stQp']}, c->{output_abi['bufferFullness']}, "
+            f"rtl->{output_abi['bufferFullness']}, c->{output_abi['prevRange']}, "
+            f"rtl->{output_abi['prevRange']}, c->{output_abi['pixelCount']}, "
+            f"rtl->{output_abi['pixelCount']}, c->{output_abi['errorOccurred']}, "
+            f"rtl->{output_abi['errorOccurred']});\n}}\n"
+            + f"void dsc_cicd_invoke({caller_declarations}) {{\n"
+            f"    if (!{state_parameter}) {{ fprintf(stderr, \"null RateControl state\\n\"); exit(2); }}\n"
+            f"    if ({state_parameter}->isEncoder != 0) {{\n"
+            f"        {original}({alias_call});\n        return;\n    }}\n"
+            f"    dsc_cicd_require_rate_control({config_parameter}, {state_parameter}, "
+            f"{group_count_parameter}, {group_size_parameter});\n"
+            "    dsc_cicd_rate_control_input_t dsc_cicd_input;\n"
+            "    dsc_cicd_rate_control_output_t dsc_cicd_c_output;\n"
+            "    dsc_cicd_rate_control_output_t dsc_cicd_rtl_output;\n"
+            "    memset(&dsc_cicd_input, 0, sizeof(dsc_cicd_input));\n"
+            + input_scalar_lines
+            + f"    dsc_cicd_input.cpnt_bit_depth[0] = {state_parameter}->cpntBitDepth[0];\n"
+            f"    dsc_cicd_input.cpnt_bit_depth[1] = {state_parameter}->cpntBitDepth[1];\n"
+            f"    memcpy(dsc_cicd_input.predicted_size, {state_parameter}->predictedSize, "
+            "sizeof(dsc_cicd_input.predicted_size));\n"
+            f"    memcpy(dsc_cicd_input.rc_size_unit, {state_parameter}->rcSizeUnit, "
+            "sizeof(dsc_cicd_input.rc_size_unit));\n"
+            f"    memcpy(dsc_cicd_input.use_midpoint, {state_parameter}->useMidpoint, "
+            "sizeof(dsc_cicd_input.use_midpoint));\n"
+            f"    memcpy(dsc_cicd_input.rc_buf_thresh, {config_parameter}->rc_buf_thresh, "
+            "sizeof(dsc_cicd_input.rc_buf_thresh));\n"
+            "    for (int range = 0; range < DSC_CICD_RC_RANGES; ++range) {\n"
+            f"        dsc_cicd_input.range_min_qp[range] = {config_parameter}->"
+            "rc_range_parameters[range].range_min_qp;\n"
+            f"        dsc_cicd_input.range_max_qp[range] = {config_parameter}->"
+            "rc_range_parameters[range].range_max_qp;\n"
+            f"        dsc_cicd_input.range_bpg_offset[range] = {config_parameter}->"
+            "rc_range_parameters[range].range_bpg_offset;\n    }\n"
+            f"    dsc_state_t dsc_cicd_c_state = *{state_parameter};\n"
+            f"    {original}({config_parameter}, &dsc_cicd_c_state, "
+            f"{throttle_parameter}, {bpg_parameter}, {group_count_parameter}, "
+            f"{scale_parameter}, {group_size_parameter});\n"
+            "    dsc_cicd_capture_rate_control(&dsc_cicd_c_state, &dsc_cicd_c_output);\n"
+            "    int mode = dsc_cicd_mode();\n    dsc_cicd_note_call(mode);\n"
+            "    if (mode == 0) {\n"
+            f"        dsc_cicd_apply_rate_control({state_parameter}, &dsc_cicd_c_output);\n"
+            "        return;\n    }\n"
+            "    memset(&dsc_cicd_rtl_output, 0, sizeof(dsc_cicd_rtl_output));\n"
+            "    dsc_cicd_rtl(&dsc_cicd_input, &dsc_cicd_rtl_output);\n"
+            "    if (dsc_cicd_rate_control_mismatch(&dsc_cicd_c_output, "
+            "&dsc_cicd_rtl_output)) {\n"
+            "        ++dsc_cicd_mismatches;\n"
+            "        if (dsc_cicd_mismatches <= 16)\n"
+            f"            dsc_cicd_print_rate_control_mismatch({group_count_parameter}, "
+            f"{group_size_parameter}, &dsc_cicd_c_output, &dsc_cicd_rtl_output);\n"
+            "    }\n"
+            "    if (mode == 2) {\n"
+            f"        dsc_cicd_apply_rate_control({state_parameter}, &dsc_cicd_rtl_output);\n"
+            "        return;\n    }\n"
+            f"    dsc_cicd_apply_rate_control({state_parameter}, &dsc_cicd_c_output);\n"
+            "}\n"
+            + f"void {function_name}({caller_declarations}) {{\n"
+            f"    dsc_cicd_invoke({alias_call});\n}}\n",
+            encoding="utf-8",
+        )
+
+        bridge_assignments = []
+        bridge_assignments.extend(
+            f"    dut.{argument_ports[name]} = static_cast<std::uint32_t>(input->{argument_abi[name]});"
+            for name in scalar_parameters
+        )
+        bridge_assignments.extend(
+            f"    dut.{config_ports[field]} = static_cast<std::uint32_t>(input->{config_abi[field]});"
+            for field in config_ports
+        )
+        bridge_assignments.extend(
+            f"    dut.{state_ports[field]} = static_cast<std::uint32_t>(input->{state_abi[field]});"
+            for field in state_ports
+        )
+        bridge_assignments.extend(
+            f"    dut.{port} = static_cast<std::uint32_t>(input->cpnt_bit_depth[{index}]);"
+            for index, port in enumerate(depth_ports)
+        )
+        bridge_assignments.extend(
+            f"    dut.{port} = static_cast<std::uint32_t>(input->predicted_size[{index}]);"
+            for index, port in enumerate(predicted_ports)
+        )
+        bridge_assignments.extend(
+            f"    dut.{port} = static_cast<std::uint32_t>(input->rc_size_unit[{index}]);"
+            for index, port in enumerate(rc_size_ports)
+        )
+        bridge_assignments.extend(
+            f"    dut.{port} = static_cast<std::uint32_t>(input->use_midpoint[{index}]);"
+            for index, port in enumerate(use_midpoint_ports)
+        )
+        bridge_assignments.extend(
+            f"    dut.{port} = static_cast<std::uint32_t>(input->rc_buf_thresh[{index}]);"
+            for index, port in enumerate(threshold_ports)
+        )
+        for field, abi_field in (
+            ("range_min_qp", "range_min_qp"),
+            ("range_max_qp", "range_max_qp"),
+            ("range_bpg_offset", "range_bpg_offset"),
+        ):
+            bridge_assignments.extend(
+                f"    dut.{port} = static_cast<std::uint32_t>(input->{abi_field}[{index}]);"
+                for index, port in enumerate(range_ports[field])
+            )
+        bridge_outputs = [
+            "    output->domain_valid = static_cast<std::int32_t>(dut.domain_valid);",
+            *[
+                f"    output->{output_abi[field]} = static_cast<std::int32_t>(dut.{state_output_ports[field]});"
+                for field in state_output_ports
+            ],
+        ]
+        bridge = source_dir / "rtl_bridge.cpp"
+        bridge.write_text(
+            "#include <cstdint>\n#include \"verilated.h\"\n"
+            "#include \"dsc_cicd_rtl_abi.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            "extern \"C\" void dsc_cicd_rtl("
+            "const dsc_cicd_rate_control_input_t *input, "
+            "dsc_cicd_rate_control_output_t *output) {\n"
+            f"    static V{safe_identifier(module)} dut;\n"
+            + "\n".join(bridge_assignments)
+            + "\n    dut.eval();\n"
+            + "\n".join(bridge_outputs)
+            + "\n}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\nextern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) { return dsc_cicd_original_main(argc, argv); }\n",
+            encoding="utf-8",
+        )
+        rtl_bindings = [
+            *scalar_parameters,
+            *[f"{config_parameter}->{field}" for field in config_ports],
+            *[f"{state_parameter}->{field}" for field in state_ports],
+            f"{state_parameter}->cpntBitDepth[0]",
+            f"{state_parameter}->cpntBitDepth[1]",
+            *[f"{state_parameter}->predictedSize[{index}]" for index in range(units)],
+            *[f"{state_parameter}->rcSizeUnit[{index}]" for index in range(units)],
+            *[f"{state_parameter}->useMidpoint[{index}]" for index in range(units)],
+            *[f"{config_parameter}->rc_buf_thresh[{index}]" for index in range(ranges - 1)],
+            *[
+                f"{config_parameter}->rc_range_parameters[{index}].{field}"
+                for field in ("range_min_qp", "range_max_qp", "range_bpg_offset")
+                for index in range(ranges)
+            ],
+        ]
+        return {
+            "header": header, "abi": abi, "overlay": overlay,
+            "bridge": bridge, "main": main, "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": "explicit_bounded_rate_control_decode_transition",
+                "caller_parameter_count": len(parameters),
+                "rtl_input_count": len(inputs),
+                "frozen_input_ports": [str(port.get("name")) for port in inputs],
+                "rtl_bindings": rtl_bindings,
+                "state_outputs": [str(port.get("name")) for port in outputs],
+                "decoder_only_specialization_is_explicit": True,
+                "encoder_calls_bypass_rtl_and_remain_original_c": True,
+                "three_remove_bits_stages_are_hash_bound_and_ordered": True,
+                "decoder_specialization_has_no_chunk_memory_write": True,
+                "c_oracle_uses_private_embedded_state": True,
+                "rtl_return_controls_complete_rate_control_scalar_footprint": True,
+                "residual_symbol_alias_routes_to_dispatcher": True,
+            },
+        }
+
+    def write_bounded_prediction_decode_transition_overlay_sources(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        module: str,
+        candidate_sv: pathlib.Path,
+    ) -> dict[str, Any]:
+        """Bind decoder reconstruction to four explicit line-write slots."""
+        semantics = contract.get("semantics", {}) or {}
+        constants = semantics.get("constants", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        units = int(constants.get("max_units", 0))
+        samples = int(constants.get("samples_per_unit", 0))
+        components = int(constants.get("component_count", 0))
+        padding_left = int(constants.get("padding_left", 0))
+        pred_block_size = int(constants.get("pred_block_size", 0))
+        pt_map = int(constants.get("pt_map", -1))
+        pt_left = int(constants.get("pt_left", -1))
+        pt_block = int(constants.get("pt_block", -1))
+        if (
+            units, samples, components, padding_left, pred_block_size,
+            pt_map, pt_left, pt_block
+        ) != (4, 3, 4, 5, 3, 0, 1, 2):
+            raise RuntimeError("bounded prediction decoder constants are incomplete")
+
+        argument_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("argument_ports", {}) or {}).items()
+        }
+        config_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("config_ports", {}) or {}).items()
+        }
+        state_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("state_ports", {}) or {}).items()
+        }
+        depth_ports = [str(value) for value in bindings.get("depth_ports", [])]
+        unit_type_ports = [str(value) for value in bindings.get("unit_type_ports", [])]
+        unit_start_ports = [str(value) for value in bindings.get("unit_start_ports", [])]
+        midpoint_ports = [str(value) for value in bindings.get("midpoint_ports", [])]
+        left_ports = [str(value) for value in bindings.get("left_ports", [])]
+        residual_ports = [
+            [str(value) for value in row]
+            for row in bindings.get("residual_ports", [])
+        ]
+        qlevel_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("qlevel_ports", {}) or {}).items()
+        }
+        prediction_port = str(bindings.get("prediction_port", ""))
+        previous_ports = [
+            [str(value) for value in row]
+            for row in bindings.get("previous_line_ports", [])
+        ]
+        current_a_ports = [
+            str(value) for value in bindings.get("current_a_ports", [])
+        ]
+        current_block_ports = [
+            str(value) for value in bindings.get("current_block_ports", [])
+        ]
+        write_ports = [
+            {str(key): str(value) for key, value in slot.items()}
+            for slot in bindings.get("write_ports", [])
+        ]
+        if (
+            len(argument_ports) != 4
+            or set(config_ports) != {"native_420", "dsc_version_minor"}
+            or set(state_ports) != {"isEncoder", "unitsPerGroup"}
+            or len(depth_ports) != components
+            or len(unit_type_ports) != units
+            or len(unit_start_ports) != units
+            or len(midpoint_ports) != units
+            or len(left_ports) != components
+            or len(residual_ports) != units
+            or any(len(row) != samples for row in residual_ports)
+            or set(qlevel_ports) != {"luma", "chroma"}
+            or not prediction_port
+            or len(previous_ports) != units
+            or any(len(row) != 6 for row in previous_ports)
+            or len(current_a_ports) != units
+            or len(current_block_ports) != units
+            or len(write_ports) != units
+            or any(
+                set(slot) != {"enable", "component", "index", "value"}
+                for slot in write_ports
+            )
+        ):
+            raise RuntimeError("bounded prediction decoder bindings are incomplete")
+
+        ports = [
+            port for port in (contract.get("interface", {}) or {}).get("ports", [])
+            if isinstance(port, dict)
+        ]
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        outputs = [port for port in ports if port.get("direction") == "output"]
+        expected_inputs = {
+            *argument_ports.values(), *config_ports.values(), *state_ports.values(),
+            *depth_ports, *unit_type_ports, *unit_start_ports, *midpoint_ports,
+            *left_ports, *[value for row in residual_ports for value in row],
+            *qlevel_ports.values(), prediction_port,
+            *[value for row in previous_ports for value in row],
+            *current_a_ports, *current_block_ports,
+        }
+        expected_outputs = {
+            "domain_valid",
+            *[value for slot in write_ports for value in slot.values()],
+        }
+        if (
+            {str(port.get("name")) for port in inputs} != expected_inputs
+            or {str(port.get("name")) for port in outputs} != expected_outputs
+        ):
+            raise RuntimeError("bounded prediction decoder ports changed")
+
+        parameters = self.function_parameters(contract)
+        parameter_by_name = {
+            str(parameter.get("name")): parameter for parameter in parameters
+        }
+        config_parameter = str(bindings.get("config_parameter", ""))
+        state_parameter = str(bindings.get("state_parameter", ""))
+        hpos_parameter = str(bindings.get("horizontal_parameter", ""))
+        vpos_parameter = str(bindings.get("vertical_parameter", ""))
+        sample_parameter = str(bindings.get("sample_count_parameter", ""))
+        qp_parameter = str(bindings.get("qp_parameter", ""))
+        if set(parameter_by_name) != {
+            config_parameter, state_parameter, hpos_parameter, vpos_parameter,
+            sample_parameter, qp_parameter,
+        }:
+            raise RuntimeError("bounded prediction decoder native ABI is incomplete")
+        if (
+            not parameter_is_pointer(parameter_by_name[config_parameter])
+            or not parameter_is_pointer(parameter_by_name[state_parameter])
+            or any(
+                parameter_is_pointer(parameter_by_name[name])
+                for name in (hpos_parameter, vpos_parameter, sample_parameter, qp_parameter)
+            )
+        ):
+            raise RuntimeError("bounded prediction decoder pointer/scalar ABI changed")
+        identifier = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+        identifiers = {
+            config_parameter, state_parameter, hpos_parameter, vpos_parameter,
+            sample_parameter, qp_parameter, *expected_inputs, *expected_outputs,
+        }
+        if not all(identifier.fullmatch(value) for value in identifiers):
+            raise RuntimeError("bounded prediction decoder contains invalid identifiers")
+
+        parameter_specs = [
+            f"{str(parameter.get('type', 'int')).strip()} {parameter.get('name')}"
+            for parameter in parameters
+        ]
+        parameter_names = [str(parameter.get("name")) for parameter in parameters]
+        caller_declarations = ", ".join(parameter_specs)
+        alias_call = ", ".join(parameter_names)
+        function_name = str(contract_function(contract).get("name"))
+        original = function_name + "_original"
+
+        abi = source_dir / "dsc_cicd_rtl_abi.h"
+        abi.write_text(
+            "#ifndef DSC_CICD_RTL_ABI_H\n#define DSC_CICD_RTL_ABI_H\n"
+            "#include <stdint.h>\n"
+            f"#define DSC_CICD_PRED_UNITS {units}\n"
+            f"#define DSC_CICD_PRED_SAMPLES {samples}\n"
+            f"#define DSC_CICD_PRED_COMPONENTS {components}\n"
+            "#define DSC_CICD_PRED_PREV_TAPS 6\n"
+            "typedef struct {\n"
+            "    int32_t hpos;\n    int32_t vpos;\n"
+            "    int32_t sample_count;\n    int32_t qp;\n"
+            "    int32_t cfg_native_420;\n    int32_t cfg_dsc_version_minor;\n"
+            "    int32_t is_encoder;\n    int32_t units_per_group;\n"
+            "    int32_t cpnt_bit_depth[DSC_CICD_PRED_COMPONENTS];\n"
+            "    int32_t unit_c_type[DSC_CICD_PRED_UNITS];\n"
+            "    int32_t unit_start_hpos[DSC_CICD_PRED_UNITS];\n"
+            "    int32_t use_midpoint[DSC_CICD_PRED_UNITS];\n"
+            "    int32_t left_recon[DSC_CICD_PRED_COMPONENTS];\n"
+            "    int32_t quantized_residual[DSC_CICD_PRED_UNITS]"
+            "[DSC_CICD_PRED_SAMPLES];\n"
+            "    int32_t qlevel_luma;\n    int32_t qlevel_chroma;\n"
+            "    int32_t prev_line_prediction;\n"
+            "    int32_t prev_line[DSC_CICD_PRED_UNITS]"
+            "[DSC_CICD_PRED_PREV_TAPS];\n"
+            "    int32_t curr_a[DSC_CICD_PRED_UNITS];\n"
+            "    int32_t curr_block[DSC_CICD_PRED_UNITS];\n"
+            "} dsc_cicd_prediction_input_t;\n"
+            "typedef struct {\n"
+            "    int32_t domain_valid;\n"
+            "    int32_t write_enable[DSC_CICD_PRED_UNITS];\n"
+            "    int32_t write_component[DSC_CICD_PRED_UNITS];\n"
+            "    int32_t write_index[DSC_CICD_PRED_UNITS];\n"
+            "    int32_t write_value[DSC_CICD_PRED_UNITS];\n"
+            "} dsc_cicd_prediction_output_t;\n"
+            "#ifdef __cplusplus\nextern \"C\" {\n#endif\n"
+            "void dsc_cicd_rtl(const dsc_cicd_prediction_input_t *input, "
+            "dsc_cicd_prediction_output_t *output);\n"
+            "#ifdef __cplusplus\n}\n#endif\n#endif\n",
+            encoding="utf-8",
+        )
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n#define DSC_CICD_OVERLAY_H\n"
+            "#include \"dsc_types.h\"\n"
+            f"void dsc_cicd_invoke({caller_declarations});\n#endif\n",
+            encoding="utf-8",
+        )
+
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdint.h>\n#include <stdio.h>\n#include <stdlib.h>\n"
+            "#include <string.h>\n#include \"dsc_cicd_overlay.h\"\n"
+            "#include \"dsc_cicd_rtl_abi.h\"\n"
+            f"extern void {original}({caller_declarations});\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n}\n"
+            + self.overlay_runtime_metrics_source()
+            + "static int dsc_cicd_map_qlevel_c(const dsc_cfg_t *cfg, "
+            "const dsc_state_t *state, int qp, int cpnt) {\n"
+            "    int qlevel;\n"
+            "    if ((cpnt % 3) == 0) qlevel = state->quantTableLuma[qp];\n"
+            "    else if (cfg->native_420 && cpnt == 1) "
+            "qlevel = state->quantTableLuma[qp];\n"
+            "    else {\n        qlevel = state->quantTableChroma[qp];\n"
+            "        if (cfg->dsc_version_minor == 2 && "
+            "state->cpntBitDepth[0] == state->cpntBitDepth[1])\n"
+            "            qlevel = qlevel > 0 ? qlevel - 1 : 0;\n    }\n"
+            "    return qlevel;\n}\n"
+            "static int dsc_cicd_prediction_type(const dsc_cfg_t *cfg, "
+            "const dsc_state_t *state, int cpnt, int hpos, int vpos) {\n"
+            f"    int pred = vpos == 0 ? {pt_left} : state->prevLinePred[hpos / {pred_block_size}];\n"
+            f"    if (cfg->native_420 && cpnt == 2) pred = vpos <= 1 ? {pt_left} : {pt_map};\n"
+            "    return pred;\n}\n"
+            "static void dsc_cicd_require_prediction(const dsc_cfg_t *cfg, "
+            "const dsc_state_t *state, int hpos, int vpos, int sample_count, int qp) {\n"
+            "    if (!cfg || !state || state->isEncoder != 0 || "
+            "state->unitsPerGroup < 3 || state->unitsPerGroup > DSC_CICD_PRED_UNITS || "
+            "hpos < 0 || hpos >= state->sliceWidth || vpos < 0 || "
+            "vpos >= cfg->slice_height || sample_count < 0 || "
+            "sample_count >= DSC_CICD_PRED_SAMPLES || qp < 0 || qp > 31 || "
+            "!state->quantTableLuma || !state->quantTableChroma || "
+            "(vpos > 0 && !state->prevLinePred)) {\n"
+            "        fprintf(stderr, \"unsupported PredictionLoop decode domain: "
+            "hpos=%d vpos=%d sample=%d qp=%d\\n\", hpos, vpos, sample_count, qp);\n"
+            "        exit(2);\n    }\n"
+            "    int seen[DSC_CICD_PRED_COMPONENTS] = {0};\n"
+            "    for (int unit = 0; unit < state->unitsPerGroup; ++unit) {\n"
+            "        int cpnt = state->unitCType[unit];\n"
+            "        int residual_index = sample_count - state->unitStartHPos[unit];\n"
+            "        if (cpnt < 0 || cpnt >= DSC_CICD_PRED_COMPONENTS || seen[cpnt] || "
+            "state->cpntBitDepth[cpnt] < 8 || state->cpntBitDepth[cpnt] > 16 || "
+            "residual_index < 0 || residual_index >= DSC_CICD_PRED_SAMPLES || "
+            "!state->currLine[cpnt]) {\n"
+            "            fprintf(stderr, \"unsupported PredictionLoop unit domain: "
+            "unit=%d cpnt=%d residual=%d\\n\", unit, cpnt, residual_index);\n"
+            "            exit(2);\n        }\n"
+            "        seen[cpnt] = 1;\n"
+            "        int plane = cfg->native_420 && cpnt == 2 ? cpnt + (vpos % 2) : cpnt;\n"
+            "        int qlevel = dsc_cicd_map_qlevel_c(cfg, state, qp, cpnt);\n"
+            "        int pred = dsc_cicd_prediction_type(cfg, state, cpnt, hpos, vpos);\n"
+            "        if (plane < 0 || plane > DSC_CICD_PRED_COMPONENTS || "
+            "!state->prevLine[plane] || qlevel < 0 || qlevel > state->cpntBitDepth[cpnt] || "
+            f"pred < {pt_map} || pred > 11) {{\n"
+            "            fprintf(stderr, \"unsupported PredictionLoop taps: "
+            "unit=%d plane=%d qlevel=%d pred=%d\\n\", unit, plane, qlevel, pred);\n"
+            "            exit(2);\n        }\n    }\n}\n"
+            "static void dsc_cicd_apply_prediction(dsc_state_t *state, "
+            "const dsc_cicd_prediction_output_t *output) {\n"
+            "    for (int unit = 0; unit < DSC_CICD_PRED_UNITS; ++unit)\n"
+            "        if (output->write_enable[unit])\n"
+            "            state->currLine[output->write_component[unit]]"
+            "[output->write_index[unit]] = output->write_value[unit];\n}\n"
+            "static int dsc_cicd_prediction_mismatch("
+            "const dsc_cicd_prediction_output_t *left, "
+            "const dsc_cicd_prediction_output_t *right) {\n"
+            "    return memcmp(left, right, sizeof(*left)) != 0;\n}\n"
+            "static void dsc_cicd_print_prediction_mismatch(int hpos, int vpos, "
+            "int sample_count, const dsc_cicd_prediction_output_t *c, "
+            "const dsc_cicd_prediction_output_t *rtl) {\n"
+            "    fprintf(stderr, \"C/RTL PredictionLoop decode mismatch: "
+            "hpos=%d vpos=%d sample=%d domain=%d/%d\", hpos, vpos, sample_count, "
+            "c->domain_valid, rtl->domain_valid);\n"
+            "    for (int unit = 0; unit < DSC_CICD_PRED_UNITS; ++unit)\n"
+            "        fprintf(stderr, \" u%d=%d,%d,%d,%d/%d,%d,%d,%d\", unit, "
+            "c->write_enable[unit], c->write_component[unit], c->write_index[unit], "
+            "c->write_value[unit], rtl->write_enable[unit], "
+            "rtl->write_component[unit], rtl->write_index[unit], "
+            "rtl->write_value[unit]);\n"
+            "    fputc('\\n', stderr);\n}\n"
+            + f"void dsc_cicd_invoke({caller_declarations}) {{\n"
+            f"    if (!{state_parameter}) {{ fprintf(stderr, \"null PredictionLoop state\\n\"); exit(2); }}\n"
+            f"    if ({state_parameter}->isEncoder != 0) {{\n"
+            f"        {original}({alias_call});\n        return;\n    }}\n"
+            f"    dsc_cicd_require_prediction({config_parameter}, {state_parameter}, "
+            f"{hpos_parameter}, {vpos_parameter}, {sample_parameter}, {qp_parameter});\n"
+            "    dsc_cicd_prediction_input_t dsc_cicd_input;\n"
+            "    dsc_cicd_prediction_output_t dsc_cicd_c_output;\n"
+            "    dsc_cicd_prediction_output_t dsc_cicd_rtl_output;\n"
+            "    memset(&dsc_cicd_input, 0, sizeof(dsc_cicd_input));\n"
+            "    memset(&dsc_cicd_c_output, 0, sizeof(dsc_cicd_c_output));\n"
+            f"    dsc_cicd_input.hpos = {hpos_parameter};\n"
+            f"    dsc_cicd_input.vpos = {vpos_parameter};\n"
+            f"    dsc_cicd_input.sample_count = {sample_parameter};\n"
+            f"    dsc_cicd_input.qp = {qp_parameter};\n"
+            f"    dsc_cicd_input.cfg_native_420 = {config_parameter}->native_420;\n"
+            f"    dsc_cicd_input.cfg_dsc_version_minor = {config_parameter}->dsc_version_minor;\n"
+            f"    dsc_cicd_input.is_encoder = {state_parameter}->isEncoder;\n"
+            f"    dsc_cicd_input.units_per_group = {state_parameter}->unitsPerGroup;\n"
+            f"    memcpy(dsc_cicd_input.cpnt_bit_depth, {state_parameter}->cpntBitDepth, "
+            "sizeof(dsc_cicd_input.cpnt_bit_depth));\n"
+            f"    memcpy(dsc_cicd_input.unit_c_type, {state_parameter}->unitCType, "
+            "sizeof(dsc_cicd_input.unit_c_type));\n"
+            f"    memcpy(dsc_cicd_input.unit_start_hpos, {state_parameter}->unitStartHPos, "
+            "sizeof(dsc_cicd_input.unit_start_hpos));\n"
+            f"    memcpy(dsc_cicd_input.use_midpoint, {state_parameter}->useMidpoint, "
+            "sizeof(dsc_cicd_input.use_midpoint));\n"
+            f"    memcpy(dsc_cicd_input.left_recon, {state_parameter}->leftRecon, "
+            "sizeof(dsc_cicd_input.left_recon));\n"
+            f"    memcpy(dsc_cicd_input.quantized_residual, {state_parameter}->quantizedResidual, "
+            "sizeof(dsc_cicd_input.quantized_residual));\n"
+            f"    dsc_cicd_input.qlevel_luma = {state_parameter}->quantTableLuma[{qp_parameter}];\n"
+            f"    dsc_cicd_input.qlevel_chroma = {state_parameter}->quantTableChroma[{qp_parameter}];\n"
+            f"    dsc_cicd_input.prev_line_prediction = {vpos_parameter} == 0 ? {pt_left} : "
+            f"{state_parameter}->prevLinePred[{hpos_parameter} / {pred_block_size}];\n"
+            "    int dsc_cicd_prior[DSC_CICD_PRED_UNITS] = {0};\n"
+            f"    int dsc_cicd_write_index = {hpos_parameter} + {padding_left};\n"
+            f"    int dsc_cicd_group_base = ({hpos_parameter} / {samples}) * {samples} + {padding_left};\n"
+            f"    for (int unit = 0; unit < {state_parameter}->unitsPerGroup; ++unit) {{\n"
+            f"        int cpnt = {state_parameter}->unitCType[unit];\n"
+            f"        int plane = {config_parameter}->native_420 && cpnt == 2 ? "
+            f"cpnt + ({vpos_parameter} % 2) : cpnt;\n"
+            f"        int pred = dsc_cicd_prediction_type({config_parameter}, "
+            f"{state_parameter}, cpnt, {hpos_parameter}, {vpos_parameter});\n"
+            "        for (int tap = 0; tap < DSC_CICD_PRED_PREV_TAPS; ++tap)\n"
+            f"            dsc_cicd_input.prev_line[unit][tap] = {state_parameter}->"
+            "prevLine[plane][dsc_cicd_group_base - 2 + tap];\n"
+            f"        dsc_cicd_input.curr_a[unit] = {state_parameter}->"
+            "currLine[cpnt][dsc_cicd_group_base - 1];\n"
+            f"        if (pred >= {pt_block}) {{\n"
+            f"            int block_index = {hpos_parameter} + {padding_left} - 1 - "
+            f"(pred - {pt_block});\n"
+            "            if (block_index < 0) block_index = 0;\n"
+            f"            dsc_cicd_input.curr_block[unit] = {state_parameter}->"
+            "currLine[cpnt][block_index];\n        }\n"
+            f"        dsc_cicd_prior[unit] = {state_parameter}->"
+            "currLine[cpnt][dsc_cicd_write_index];\n    }\n"
+            f"    dsc_state_t dsc_cicd_c_state = *{state_parameter};\n"
+            f"    {original}({config_parameter}, &dsc_cicd_c_state, "
+            f"{hpos_parameter}, {vpos_parameter}, {sample_parameter}, {qp_parameter});\n"
+            "    dsc_cicd_c_output.domain_valid = 1;\n"
+            f"    for (int unit = 0; unit < {state_parameter}->unitsPerGroup; ++unit) {{\n"
+            f"        int cpnt = {state_parameter}->unitCType[unit];\n"
+            "        dsc_cicd_c_output.write_enable[unit] = 1;\n"
+            "        dsc_cicd_c_output.write_component[unit] = cpnt;\n"
+            "        dsc_cicd_c_output.write_index[unit] = dsc_cicd_write_index;\n"
+            f"        dsc_cicd_c_output.write_value[unit] = {state_parameter}->"
+            "currLine[cpnt][dsc_cicd_write_index];\n"
+            f"        {state_parameter}->currLine[cpnt][dsc_cicd_write_index] = "
+            "dsc_cicd_prior[unit];\n    }\n"
+            "    int mode = dsc_cicd_mode();\n    dsc_cicd_note_call(mode);\n"
+            "    if (mode == 0) {\n"
+            f"        dsc_cicd_apply_prediction({state_parameter}, &dsc_cicd_c_output);\n"
+            "        return;\n    }\n"
+            "    memset(&dsc_cicd_rtl_output, 0, sizeof(dsc_cicd_rtl_output));\n"
+            "    dsc_cicd_rtl(&dsc_cicd_input, &dsc_cicd_rtl_output);\n"
+            "    if (dsc_cicd_prediction_mismatch(&dsc_cicd_c_output, "
+            "&dsc_cicd_rtl_output)) {\n"
+            "        ++dsc_cicd_mismatches;\n"
+            "        if (dsc_cicd_mismatches <= 16)\n"
+            f"            dsc_cicd_print_prediction_mismatch({hpos_parameter}, "
+            f"{vpos_parameter}, {sample_parameter}, &dsc_cicd_c_output, "
+            "&dsc_cicd_rtl_output);\n    }\n"
+            "    if (mode == 2) {\n"
+            f"        dsc_cicd_apply_prediction({state_parameter}, &dsc_cicd_rtl_output);\n"
+            "        return;\n    }\n"
+            f"    dsc_cicd_apply_prediction({state_parameter}, &dsc_cicd_c_output);\n"
+            "}\n"
+            + f"void {function_name}({caller_declarations}) {{\n"
+            f"    dsc_cicd_invoke({alias_call});\n}}\n",
+            encoding="utf-8",
+        )
+
+        bridge_assignments = [
+            f"    dut.{argument_ports[hpos_parameter]} = static_cast<std::uint32_t>(input->hpos);",
+            f"    dut.{argument_ports[vpos_parameter]} = static_cast<std::uint32_t>(input->vpos);",
+            f"    dut.{argument_ports[sample_parameter]} = static_cast<std::uint32_t>(input->sample_count);",
+            f"    dut.{argument_ports[qp_parameter]} = static_cast<std::uint32_t>(input->qp);",
+            f"    dut.{config_ports['native_420']} = static_cast<std::uint32_t>(input->cfg_native_420);",
+            f"    dut.{config_ports['dsc_version_minor']} = static_cast<std::uint32_t>(input->cfg_dsc_version_minor);",
+            f"    dut.{state_ports['isEncoder']} = static_cast<std::uint32_t>(input->is_encoder);",
+            f"    dut.{state_ports['unitsPerGroup']} = static_cast<std::uint32_t>(input->units_per_group);",
+        ]
+        bridge_assignments.extend(
+            f"    dut.{port} = static_cast<std::uint32_t>(input->cpnt_bit_depth[{index}]);"
+            for index, port in enumerate(depth_ports)
+        )
+        bridge_assignments.extend(
+            f"    dut.{port} = static_cast<std::uint32_t>(input->unit_c_type[{index}]);"
+            for index, port in enumerate(unit_type_ports)
+        )
+        bridge_assignments.extend(
+            f"    dut.{port} = static_cast<std::uint32_t>(input->unit_start_hpos[{index}]);"
+            for index, port in enumerate(unit_start_ports)
+        )
+        bridge_assignments.extend(
+            f"    dut.{port} = static_cast<std::uint32_t>(input->use_midpoint[{index}]);"
+            for index, port in enumerate(midpoint_ports)
+        )
+        bridge_assignments.extend(
+            f"    dut.{port} = static_cast<std::uint32_t>(input->left_recon[{index}]);"
+            for index, port in enumerate(left_ports)
+        )
+        bridge_assignments.extend(
+            f"    dut.{residual_ports[unit][index]} = static_cast<std::uint32_t>("
+            f"input->quantized_residual[{unit}][{index}]);"
+            for unit in range(units) for index in range(samples)
+        )
+        bridge_assignments.extend([
+            f"    dut.{qlevel_ports['luma']} = static_cast<std::uint32_t>(input->qlevel_luma);",
+            f"    dut.{qlevel_ports['chroma']} = static_cast<std::uint32_t>(input->qlevel_chroma);",
+            f"    dut.{prediction_port} = static_cast<std::uint32_t>(input->prev_line_prediction);",
+        ])
+        bridge_assignments.extend(
+            f"    dut.{previous_ports[unit][tap]} = static_cast<std::uint32_t>("
+            f"input->prev_line[{unit}][{tap}]);"
+            for unit in range(units) for tap in range(6)
+        )
+        bridge_assignments.extend(
+            f"    dut.{current_a_ports[unit]} = static_cast<std::uint32_t>(input->curr_a[{unit}]);"
+            for unit in range(units)
+        )
+        bridge_assignments.extend(
+            f"    dut.{current_block_ports[unit]} = static_cast<std::uint32_t>(input->curr_block[{unit}]);"
+            for unit in range(units)
+        )
+        bridge_outputs = [
+            "    output->domain_valid = static_cast<std::int32_t>(dut.domain_valid);"
+        ]
+        for unit, slot in enumerate(write_ports):
+            bridge_outputs.extend([
+                f"    output->write_enable[{unit}] = static_cast<std::int32_t>(dut.{slot['enable']});",
+                f"    output->write_component[{unit}] = static_cast<std::int32_t>(dut.{slot['component']});",
+                f"    output->write_index[{unit}] = static_cast<std::int32_t>(dut.{slot['index']});",
+                f"    output->write_value[{unit}] = static_cast<std::int32_t>(dut.{slot['value']});",
+            ])
+        bridge = source_dir / "rtl_bridge.cpp"
+        bridge.write_text(
+            "#include <cstdint>\n#include \"verilated.h\"\n"
+            "#include \"dsc_cicd_rtl_abi.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            "extern \"C\" void dsc_cicd_rtl("
+            "const dsc_cicd_prediction_input_t *input, "
+            "dsc_cicd_prediction_output_t *output) {\n"
+            f"    static V{safe_identifier(module)} dut;\n"
+            + "\n".join(bridge_assignments)
+            + "\n    dut.eval();\n"
+            + "\n".join(bridge_outputs)
+            + "\n}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\nextern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) { return dsc_cicd_original_main(argc, argv); }\n",
+            encoding="utf-8",
+        )
+        rtl_bindings = [
+            hpos_parameter, vpos_parameter, sample_parameter, qp_parameter,
+            f"{config_parameter}->native_420",
+            f"{config_parameter}->dsc_version_minor",
+            f"{state_parameter}->isEncoder",
+            f"{state_parameter}->unitsPerGroup",
+            *[f"{state_parameter}->cpntBitDepth[{index}]" for index in range(components)],
+            *[f"{state_parameter}->unitCType[{index}]" for index in range(units)],
+            *[f"{state_parameter}->unitStartHPos[{index}]" for index in range(units)],
+            *[f"{state_parameter}->useMidpoint[{index}]" for index in range(units)],
+            *[f"{state_parameter}->leftRecon[{index}]" for index in range(components)],
+            *[
+                f"{state_parameter}->quantizedResidual[{unit}][{index}]"
+                for unit in range(units) for index in range(samples)
+            ],
+            f"{state_parameter}->quantTableLuma[{qp_parameter}]",
+            f"{state_parameter}->quantTableChroma[{qp_parameter}]",
+            f"guarded {state_parameter}->prevLinePred[{hpos_parameter}/{pred_block_size}]",
+            *[
+                f"selected {state_parameter}->prevLine[plane][group_base-2+{tap}]"
+                for plane in range(units) for tap in range(6)
+            ],
+            *[f"selected {state_parameter}->currLine[cpnt][group_base-1]" for _ in range(units)],
+            *[f"guarded {state_parameter}->currLine[cpnt][block_index]" for _ in range(units)],
+        ]
+        return {
+            "header": header, "abi": abi, "overlay": overlay,
+            "bridge": bridge, "main": main, "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": "explicit_bounded_prediction_decode_transition",
+                "caller_parameter_count": len(parameters),
+                "rtl_input_count": len(inputs),
+                "frozen_input_ports": [str(port.get("name")) for port in inputs],
+                "rtl_bindings": rtl_bindings,
+                "state_outputs": [str(port.get("name")) for port in outputs],
+                "decoder_only_specialization_is_explicit": True,
+                "encoder_calls_bypass_rtl_and_remain_original_c": True,
+                "rtl_return_controls_complete_decoder_line_write_footprint": True,
+                "c_oracle_uses_private_embedded_state_and_restored_line_writes": True,
+                "inactive_line_taps_are_not_dereferenced": True,
+                "residual_symbol_alias_routes_to_dispatcher": True,
+            },
+        }
+
+    def write_bounded_block_pred_search_transition_overlay_sources(
+        self,
+        contract: dict[str, Any],
+        source_dir: pathlib.Path,
+        module: str,
+        candidate_sv: pathlib.Path,
+    ) -> dict[str, Any]:
+        """Bind the bounded predictor accumulators and one decision write."""
+        semantics = contract.get("semantics", {}) or {}
+        constants = semantics.get("constants", {}) or {}
+        bindings = semantics.get("bindings", {}) or {}
+        components = int(constants.get("component_count", 0))
+        bp_range = int(constants.get("bp_range", 0))
+        bp_size = int(constants.get("bp_size", 0))
+        pred_block_size = int(constants.get("pred_block_size", 0))
+        padding_left = int(constants.get("padding_left", 0))
+        if (
+            components, bp_range, bp_size, pred_block_size, padding_left
+        ) != (4, 13, 3, 3, 5):
+            raise RuntimeError("bounded block predictor constants are incomplete")
+
+        argument_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("argument_ports", {}) or {}).items()
+        }
+        config_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("config_ports", {}) or {}).items()
+        }
+        state_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("state_ports", {}) or {}).items()
+        }
+        depth_ports = [str(value) for value in bindings.get("depth_ports", [])]
+        pred_inputs = [
+            [str(value) for value in row]
+            for row in bindings.get("pred_input_ports", [])
+        ]
+        last_inputs = [
+            [[str(value) for value in block] for block in component]
+            for component in bindings.get("last_input_ports", [])
+        ]
+        line_offsets = [int(value) for value in bindings.get("line_sample_offsets", [])]
+        line_ports = [str(value) for value in bindings.get("line_sample_ports", [])]
+        state_outputs = {
+            str(key): str(value)
+            for key, value in (bindings.get("state_output_ports", {}) or {}).items()
+        }
+        pred_outputs = [
+            [str(value) for value in row]
+            for row in bindings.get("pred_output_ports", [])
+        ]
+        last_outputs = [
+            [[str(value) for value in block] for block in component]
+            for component in bindings.get("last_output_ports", [])
+        ]
+        write_ports = {
+            str(key): str(value)
+            for key, value in (bindings.get("write_ports", {}) or {}).items()
+        }
+        if (
+            len(argument_ports) != 2
+            or set(config_ports) != {
+                "bits_per_component", "block_pred_enable", "native_420"
+            }
+            or set(state_ports) != {
+                "numComponents", "bpCount", "lastEdgeCount", "edgeDetected"
+            }
+            or len(depth_ports) != components
+            or len(pred_inputs) != components
+            or len(pred_outputs) != components
+            or any(len(row) != bp_range for row in pred_inputs + pred_outputs)
+            or len(last_inputs) != components
+            or len(last_outputs) != components
+            or any(len(component) != bp_size for component in last_inputs + last_outputs)
+            or any(
+                len(block) != bp_range
+                for component in last_inputs + last_outputs for block in component
+            )
+            or line_offsets != list(range(-8, 6))
+            or len(line_ports) != len(line_offsets)
+            or set(state_outputs) != {"bpCount", "lastEdgeCount", "edgeDetected"}
+            or set(write_ports) != {"enable", "index", "value"}
+        ):
+            raise RuntimeError("bounded block predictor bindings are incomplete")
+
+        ports = [
+            port for port in (contract.get("interface", {}) or {}).get("ports", [])
+            if isinstance(port, dict)
+        ]
+        inputs = [port for port in ports if port.get("direction") == "input"]
+        outputs = [port for port in ports if port.get("direction") == "output"]
+        expected_inputs = {
+            *argument_ports.values(), *config_ports.values(), *state_ports.values(),
+            *depth_ports, *[value for row in pred_inputs for value in row],
+            *[
+                value for component in last_inputs
+                for block in component for value in block
+            ],
+            *line_ports,
+        }
+        expected_outputs = {
+            "domain_valid", *state_outputs.values(),
+            *[value for row in pred_outputs for value in row],
+            *[
+                value for component in last_outputs
+                for block in component for value in block
+            ],
+            *write_ports.values(),
+        }
+        if (
+            {str(port.get("name")) for port in inputs} != expected_inputs
+            or {str(port.get("name")) for port in outputs} != expected_outputs
+        ):
+            raise RuntimeError("bounded block predictor ports changed")
+
+        parameters = self.function_parameters(contract)
+        parameter_by_name = {
+            str(parameter.get("name")): parameter for parameter in parameters
+        }
+        config_parameter = str(bindings.get("config_parameter", ""))
+        state_parameter = str(bindings.get("state_parameter", ""))
+        line_parameter = str(bindings.get("line_parameter", ""))
+        cpnt_parameter = str(bindings.get("component_parameter", ""))
+        hpos_parameter = str(bindings.get("horizontal_parameter", ""))
+        if set(parameter_by_name) != {
+            config_parameter, state_parameter, line_parameter,
+            cpnt_parameter, hpos_parameter,
+        }:
+            raise RuntimeError("bounded block predictor native ABI is incomplete")
+        if (
+            not parameter_is_pointer(parameter_by_name[config_parameter])
+            or not parameter_is_pointer(parameter_by_name[state_parameter])
+            or not parameter_is_pointer(parameter_by_name[line_parameter])
+            or parameter_is_pointer(parameter_by_name[cpnt_parameter])
+            or parameter_is_pointer(parameter_by_name[hpos_parameter])
+        ):
+            raise RuntimeError("bounded block predictor pointer/scalar ABI changed")
+        identifier = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+        identifiers = {
+            config_parameter, state_parameter, line_parameter,
+            cpnt_parameter, hpos_parameter,
+            *expected_inputs, *expected_outputs,
+        }
+        if not all(identifier.fullmatch(value) for value in identifiers):
+            raise RuntimeError("bounded block predictor contains invalid identifiers")
+
+        parameter_specs = [
+            f"{str(parameter.get('type', 'int')).strip()} {parameter.get('name')}"
+            for parameter in parameters
+        ]
+        parameter_names = [str(parameter.get("name")) for parameter in parameters]
+        caller_declarations = ", ".join(parameter_specs)
+        alias_call = ", ".join(parameter_names)
+        function_name = str(contract_function(contract).get("name"))
+        original = function_name + "_original"
+
+        abi = source_dir / "dsc_cicd_rtl_abi.h"
+        abi.write_text(
+            "#ifndef DSC_CICD_RTL_ABI_H\n#define DSC_CICD_RTL_ABI_H\n"
+            "#include <stdint.h>\n"
+            f"#define DSC_CICD_BP_COMPONENTS {components}\n"
+            f"#define DSC_CICD_BP_RANGE {bp_range}\n"
+            f"#define DSC_CICD_BP_SIZE {bp_size}\n"
+            f"#define DSC_CICD_BP_LINE_SAMPLES {len(line_ports)}\n"
+            "typedef struct {\n"
+            "    int32_t cpnt;\n    int32_t hpos;\n"
+            "    int32_t cfg_bits_per_component;\n"
+            "    int32_t cfg_block_pred_enable;\n    int32_t cfg_native_420;\n"
+            "    int32_t num_components;\n    int32_t bp_count;\n"
+            "    int32_t last_edge_count;\n    int32_t edge_detected;\n"
+            "    int32_t cpnt_bit_depth[DSC_CICD_BP_COMPONENTS];\n"
+            "    int32_t pred_err[DSC_CICD_BP_COMPONENTS][DSC_CICD_BP_RANGE];\n"
+            "    int32_t last_err[DSC_CICD_BP_COMPONENTS][DSC_CICD_BP_SIZE]"
+            "[DSC_CICD_BP_RANGE];\n"
+            "    int32_t line_sample[DSC_CICD_BP_LINE_SAMPLES];\n"
+            "} dsc_cicd_bp_input_t;\n"
+            "typedef struct {\n"
+            "    int32_t domain_valid;\n    int32_t bp_count;\n"
+            "    int32_t last_edge_count;\n    int32_t edge_detected;\n"
+            "    int32_t pred_err[DSC_CICD_BP_COMPONENTS][DSC_CICD_BP_RANGE];\n"
+            "    int32_t last_err[DSC_CICD_BP_COMPONENTS][DSC_CICD_BP_SIZE]"
+            "[DSC_CICD_BP_RANGE];\n"
+            "    int32_t write_enable;\n    int32_t write_index;\n"
+            "    int32_t write_value;\n"
+            "} dsc_cicd_bp_output_t;\n"
+            "#ifdef __cplusplus\nextern \"C\" {\n#endif\n"
+            "void dsc_cicd_rtl(const dsc_cicd_bp_input_t *input, "
+            "dsc_cicd_bp_output_t *output);\n"
+            "#ifdef __cplusplus\n}\n#endif\n#endif\n",
+            encoding="utf-8",
+        )
+        header = source_dir / "dsc_cicd_overlay.h"
+        header.write_text(
+            "#ifndef DSC_CICD_OVERLAY_H\n#define DSC_CICD_OVERLAY_H\n"
+            "#include \"dsc_types.h\"\n"
+            f"void dsc_cicd_invoke({caller_declarations});\n#endif\n",
+            encoding="utf-8",
+        )
+
+        overlay = source_dir / "dsc_cicd_overlay.c"
+        overlay.write_text(
+            "#include <stdint.h>\n#include <stdio.h>\n#include <stdlib.h>\n"
+            "#include <string.h>\n#include \"dsc_cicd_overlay.h\"\n"
+            "#include \"dsc_cicd_rtl_abi.h\"\n"
+            f"extern void {original}({caller_declarations});\n"
+            "static int dsc_cicd_mode(void) {\n"
+            "    const char *value = getenv(\"DSC_CICD_MODE\");\n"
+            "    if (value && strcmp(value, \"SHADOW\") == 0) return 1;\n"
+            "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
+            "    return 0;\n}\n"
+            + self.overlay_runtime_metrics_source()
+            + "static int dsc_cicd_bp_active(const dsc_cfg_t *cfg, int cpnt) {\n"
+            "    return !(cfg->native_420 && cpnt > 1);\n}\n"
+            "static int dsc_cicd_bp_write_enable(const dsc_cfg_t *cfg, "
+            "const dsc_state_t *state, int cpnt, int hpos) {\n"
+            "    int max_cpnt = cfg->native_420 ? 1 : state->numComponents - 1;\n"
+            f"    return dsc_cicd_bp_active(cfg, cpnt) && "
+            f"(hpos % {pred_block_size}) == {pred_block_size - 1} && cpnt >= max_cpnt;\n"
+            "}\n"
+            "static void dsc_cicd_require_bp(const dsc_cfg_t *cfg, "
+            "const dsc_state_t *state, int cpnt, int **line, int hpos) {\n"
+            "    if (!cfg || !state || cpnt < 0 || cpnt >= DSC_CICD_BP_COMPONENTS || "
+            "hpos < 0 || state->numComponents < 3 || "
+            "state->numComponents > DSC_CICD_BP_COMPONENTS || "
+            "cpnt >= state->numComponents || cfg->bits_per_component < 8 || "
+            "cfg->bits_per_component > 16 || state->cpntBitDepth[cpnt] < 8 || "
+            "state->cpntBitDepth[cpnt] > 16) {\n"
+            "        fprintf(stderr, \"unsupported block predictor domain: "
+            "cpnt=%d hpos=%d\\n\", cpnt, hpos);\n        exit(2);\n    }\n"
+            "    if (dsc_cicd_bp_active(cfg, cpnt) && (!line || !line[cpnt])) {\n"
+            "        fprintf(stderr, \"missing active block predictor line plane\\n\");\n"
+            "        exit(2);\n    }\n"
+            "    if (dsc_cicd_bp_write_enable(cfg, state, cpnt, hpos) && "
+            "!state->prevLinePred) {\n"
+            "        fprintf(stderr, \"missing block predictor decision buffer\\n\");\n"
+            "        exit(2);\n    }\n}\n"
+            "static void dsc_cicd_capture_bp(const dsc_state_t *state, "
+            "int write_enable, int write_index, int write_value, "
+            "dsc_cicd_bp_output_t *output) {\n"
+            "    memset(output, 0, sizeof(*output));\n"
+            "    output->domain_valid = 1;\n"
+            "    output->bp_count = state->bpCount;\n"
+            "    output->last_edge_count = state->lastEdgeCount;\n"
+            "    output->edge_detected = state->edgeDetected;\n"
+            "    memcpy(output->pred_err, state->predErr, sizeof(output->pred_err));\n"
+            "    memcpy(output->last_err, state->lastErr, sizeof(output->last_err));\n"
+            "    output->write_enable = write_enable;\n"
+            "    output->write_index = write_index;\n"
+            "    output->write_value = write_value;\n"
+            "}\n"
+            "static void dsc_cicd_apply_bp(dsc_state_t *state, "
+            "const dsc_cicd_bp_output_t *output) {\n"
+            "    state->bpCount = output->bp_count;\n"
+            "    state->lastEdgeCount = output->last_edge_count;\n"
+            "    state->edgeDetected = output->edge_detected;\n"
+            "    memcpy(state->predErr, output->pred_err, sizeof(output->pred_err));\n"
+            "    memcpy(state->lastErr, output->last_err, sizeof(output->last_err));\n"
+            "    if (output->write_enable)\n"
+            "        state->prevLinePred[output->write_index] = "
+            "(PRED_TYPE)output->write_value;\n"
+            "}\n"
+            "static int dsc_cicd_bp_mismatch(const dsc_cicd_bp_output_t *left, "
+            "const dsc_cicd_bp_output_t *right) {\n"
+            "    return memcmp(left, right, sizeof(*left)) != 0;\n}\n"
+            "static void dsc_cicd_print_bp_mismatch(int cpnt, int hpos, "
+            "const dsc_cicd_bp_output_t *c, const dsc_cicd_bp_output_t *rtl) {\n"
+            "    fprintf(stderr, \"C/RTL BlockPredSearch mismatch: cpnt=%d hpos=%d "
+            "domain=%d/%d bp=%d/%d edge=%d/%d last=%d/%d "
+            "write=%d,%d,%d/%d,%d,%d\\n\", cpnt, hpos, "
+            "c->domain_valid, rtl->domain_valid, c->bp_count, rtl->bp_count, "
+            "c->edge_detected, rtl->edge_detected, c->last_edge_count, "
+            "rtl->last_edge_count, c->write_enable, c->write_index, "
+            "c->write_value, rtl->write_enable, rtl->write_index, "
+            "rtl->write_value);\n}\n"
+            + f"void dsc_cicd_invoke({caller_declarations}) {{\n"
+            f"    dsc_cicd_require_bp({config_parameter}, {state_parameter}, "
+            f"{cpnt_parameter}, {line_parameter}, {hpos_parameter});\n"
+            "    dsc_cicd_bp_input_t dsc_cicd_input;\n"
+            "    dsc_cicd_bp_output_t dsc_cicd_c_output;\n"
+            "    dsc_cicd_bp_output_t dsc_cicd_rtl_output;\n"
+            "    memset(&dsc_cicd_input, 0, sizeof(dsc_cicd_input));\n"
+            f"    dsc_cicd_input.cpnt = {cpnt_parameter};\n"
+            f"    dsc_cicd_input.hpos = {hpos_parameter};\n"
+            f"    dsc_cicd_input.cfg_bits_per_component = "
+            f"{config_parameter}->bits_per_component;\n"
+            f"    dsc_cicd_input.cfg_block_pred_enable = "
+            f"{config_parameter}->block_pred_enable;\n"
+            f"    dsc_cicd_input.cfg_native_420 = {config_parameter}->native_420;\n"
+            f"    dsc_cicd_input.num_components = {state_parameter}->numComponents;\n"
+            f"    dsc_cicd_input.bp_count = {state_parameter}->bpCount;\n"
+            f"    dsc_cicd_input.last_edge_count = {state_parameter}->lastEdgeCount;\n"
+            f"    dsc_cicd_input.edge_detected = {state_parameter}->edgeDetected;\n"
+            f"    memcpy(dsc_cicd_input.cpnt_bit_depth, {state_parameter}->cpntBitDepth, "
+            "sizeof(dsc_cicd_input.cpnt_bit_depth));\n"
+            f"    memcpy(dsc_cicd_input.pred_err, {state_parameter}->predErr, "
+            "sizeof(dsc_cicd_input.pred_err));\n"
+            f"    memcpy(dsc_cicd_input.last_err, {state_parameter}->lastErr, "
+            "sizeof(dsc_cicd_input.last_err));\n"
+            f"    if (dsc_cicd_bp_active({config_parameter}, {cpnt_parameter})) {{\n"
+            f"        dsc_cicd_input.line_sample[13] = {line_parameter}[{cpnt_parameter}]"
+            f"[{hpos_parameter} + {padding_left}];\n"
+            f"        for (int vector = 0; vector < {bp_range}; ++vector)\n"
+            f"            if ({hpos_parameter} > vector)\n"
+            f"                dsc_cicd_input.line_sample[12 - vector] = "
+            f"{line_parameter}[{cpnt_parameter}]"
+            f"[{hpos_parameter} + {padding_left} - 1 - vector];\n"
+            "    }\n"
+            f"    int dsc_cicd_write_enable = dsc_cicd_bp_write_enable("
+            f"{config_parameter}, {state_parameter}, {cpnt_parameter}, "
+            f"{hpos_parameter});\n"
+            f"    int dsc_cicd_write_index = {hpos_parameter} / {pred_block_size};\n"
+            "    int dsc_cicd_prior_write = 0;\n"
+            "    if (dsc_cicd_write_enable)\n"
+            f"        dsc_cicd_prior_write = {state_parameter}->"
+            "prevLinePred[dsc_cicd_write_index];\n"
+            f"    dsc_state_t dsc_cicd_c_state = *{state_parameter};\n"
+            f"    {original}({config_parameter}, &dsc_cicd_c_state, "
+            f"{cpnt_parameter}, {line_parameter}, {hpos_parameter});\n"
+            "    int dsc_cicd_c_write = 0;\n"
+            "    if (dsc_cicd_write_enable) {\n"
+            f"        dsc_cicd_c_write = {state_parameter}->"
+            "prevLinePred[dsc_cicd_write_index];\n"
+            f"        {state_parameter}->prevLinePred[dsc_cicd_write_index] = "
+            "(PRED_TYPE)dsc_cicd_prior_write;\n    }\n"
+            "    dsc_cicd_capture_bp(&dsc_cicd_c_state, dsc_cicd_write_enable, "
+            "dsc_cicd_write_index, dsc_cicd_c_write, &dsc_cicd_c_output);\n"
+            "    int mode = dsc_cicd_mode();\n    dsc_cicd_note_call(mode);\n"
+            "    if (mode == 0) {\n"
+            f"        dsc_cicd_apply_bp({state_parameter}, &dsc_cicd_c_output);\n"
+            "        return;\n    }\n"
+            "    memset(&dsc_cicd_rtl_output, 0, sizeof(dsc_cicd_rtl_output));\n"
+            "    dsc_cicd_rtl(&dsc_cicd_input, &dsc_cicd_rtl_output);\n"
+            "    if (dsc_cicd_bp_mismatch(&dsc_cicd_c_output, "
+            "&dsc_cicd_rtl_output)) {\n"
+            "        ++dsc_cicd_mismatches;\n"
+            "        if (dsc_cicd_mismatches <= 16)\n"
+            f"            dsc_cicd_print_bp_mismatch({cpnt_parameter}, "
+            f"{hpos_parameter}, &dsc_cicd_c_output, &dsc_cicd_rtl_output);\n"
+            "    }\n"
+            "    if (mode == 2) {\n"
+            f"        dsc_cicd_apply_bp({state_parameter}, &dsc_cicd_rtl_output);\n"
+            "        return;\n    }\n"
+            f"    dsc_cicd_apply_bp({state_parameter}, &dsc_cicd_c_output);\n"
+            "}\n"
+            + f"void {function_name}({caller_declarations}) {{\n"
+            f"    dsc_cicd_invoke({alias_call});\n}}\n",
+            encoding="utf-8",
+        )
+
+        bridge_assignments = [
+            f"    dut.{argument_ports[cpnt_parameter]} = "
+            "static_cast<std::uint32_t>(input->cpnt);",
+            f"    dut.{argument_ports[hpos_parameter]} = "
+            "static_cast<std::uint32_t>(input->hpos);",
+            f"    dut.{config_ports['bits_per_component']} = "
+            "static_cast<std::uint32_t>(input->cfg_bits_per_component);",
+            f"    dut.{config_ports['block_pred_enable']} = "
+            "static_cast<std::uint32_t>(input->cfg_block_pred_enable);",
+            f"    dut.{config_ports['native_420']} = "
+            "static_cast<std::uint32_t>(input->cfg_native_420);",
+            f"    dut.{state_ports['numComponents']} = "
+            "static_cast<std::uint32_t>(input->num_components);",
+            f"    dut.{state_ports['bpCount']} = "
+            "static_cast<std::uint32_t>(input->bp_count);",
+            f"    dut.{state_ports['lastEdgeCount']} = "
+            "static_cast<std::uint32_t>(input->last_edge_count);",
+            f"    dut.{state_ports['edgeDetected']} = "
+            "static_cast<std::uint32_t>(input->edge_detected);",
+        ]
+        bridge_assignments.extend(
+            f"    dut.{port} = static_cast<std::uint32_t>(input->cpnt_bit_depth[{index}]);"
+            for index, port in enumerate(depth_ports)
+        )
+        bridge_assignments.extend(
+            f"    dut.{pred_inputs[component][vector]} = "
+            f"static_cast<std::uint32_t>(input->pred_err[{component}][{vector}]);"
+            for component in range(components) for vector in range(bp_range)
+        )
+        bridge_assignments.extend(
+            f"    dut.{last_inputs[component][block][vector]} = "
+            f"static_cast<std::uint32_t>(input->last_err[{component}][{block}][{vector}]);"
+            for component in range(components)
+            for block in range(bp_size)
+            for vector in range(bp_range)
+        )
+        bridge_assignments.extend(
+            f"    dut.{port} = static_cast<std::uint32_t>(input->line_sample[{index}]);"
+            for index, port in enumerate(line_ports)
+        )
+        bridge_outputs = [
+            "    output->domain_valid = static_cast<std::int32_t>(dut.domain_valid);",
+            f"    output->bp_count = static_cast<std::int32_t>(dut.{state_outputs['bpCount']});",
+            f"    output->last_edge_count = static_cast<std::int32_t>(dut.{state_outputs['lastEdgeCount']});",
+            f"    output->edge_detected = static_cast<std::int32_t>(dut.{state_outputs['edgeDetected']});",
+        ]
+        bridge_outputs.extend(
+            f"    output->pred_err[{component}][{vector}] = "
+            f"static_cast<std::int32_t>(dut.{pred_outputs[component][vector]});"
+            for component in range(components) for vector in range(bp_range)
+        )
+        bridge_outputs.extend(
+            f"    output->last_err[{component}][{block}][{vector}] = "
+            f"static_cast<std::int32_t>(dut.{last_outputs[component][block][vector]});"
+            for component in range(components)
+            for block in range(bp_size)
+            for vector in range(bp_range)
+        )
+        bridge_outputs.extend([
+            f"    output->write_enable = static_cast<std::int32_t>(dut.{write_ports['enable']});",
+            f"    output->write_index = static_cast<std::int32_t>(dut.{write_ports['index']});",
+            f"    output->write_value = static_cast<std::int32_t>(dut.{write_ports['value']});",
+        ])
+        bridge = source_dir / "rtl_bridge.cpp"
+        bridge.write_text(
+            "#include <cstdint>\n#include \"verilated.h\"\n"
+            "#include \"dsc_cicd_rtl_abi.h\"\n"
+            f"#include \"V{safe_identifier(module)}.h\"\n"
+            "double sc_time_stamp() { return 0.0; }\n"
+            "extern \"C\" void dsc_cicd_rtl(const dsc_cicd_bp_input_t *input, "
+            "dsc_cicd_bp_output_t *output) {\n"
+            f"    static V{safe_identifier(module)} dut;\n"
+            + "\n".join(bridge_assignments)
+            + "\n    dut.eval();\n"
+            + "\n".join(bridge_outputs)
+            + "\n}\n",
+            encoding="utf-8",
+        )
+        main = source_dir / "dsc_cicd_main.c"
+        main.write_text(
+            "#include <stdio.h>\nextern int dsc_cicd_original_main(int, char **);\n"
+            "int main(int argc, char **argv) { return dsc_cicd_original_main(argc, argv); }\n",
+            encoding="utf-8",
+        )
+        rtl_bindings = [
+            cpnt_parameter, hpos_parameter,
+            *[f"{config_parameter}->{field}" for field in (
+                "bits_per_component", "block_pred_enable", "native_420"
+            )],
+            *[f"{state_parameter}->{field}" for field in (
+                "numComponents", "bpCount", "lastEdgeCount", "edgeDetected"
+            )],
+            *[
+                f"{state_parameter}->cpntBitDepth[{index}]"
+                for index in range(components)
+            ],
+            *[
+                f"{state_parameter}->predErr[{component}][{vector}]"
+                for component in range(components) for vector in range(bp_range)
+            ],
+            *[
+                f"{state_parameter}->lastErr[{component}][{block}][{vector}]"
+                for component in range(components)
+                for block in range(bp_size)
+                for vector in range(bp_range)
+            ],
+            *[
+                f"guarded {line_parameter}[{cpnt_parameter}]"
+                f"[{hpos_parameter}+{padding_left + offset}]"
+                for offset in line_offsets
+            ],
+        ]
+        return {
+            "header": header,
+            "abi": abi,
+            "overlay": overlay,
+            "bridge": bridge,
+            "main": main,
+            "candidate": candidate_sv,
+            "composition": {
+                "status": "PASS",
+                "adapter_kind": "explicit_bounded_block_pred_search_transition",
+                "caller_parameter_count": len(parameters),
+                "rtl_input_count": len(inputs),
+                "frozen_input_ports": [str(port.get("name")) for port in inputs],
+                "rtl_bindings": rtl_bindings,
+                "state_outputs": [str(port.get("name")) for port in outputs],
+                "rtl_return_controls_complete_predictor_accumulators": True,
+                "rtl_return_controls_indexed_prev_line_prediction_write": True,
+                "c_oracle_uses_private_state_arrays": True,
+                "c_oracle_decision_write_is_restored_before_mode_commit": True,
+                "inactive_candidate_line_taps_are_not_dereferenced": True,
+                "residual_symbol_alias_routes_to_dispatcher": True,
+            },
+        }
+
     def write_overlay_sources(self, contract: dict[str, Any], source_dir: pathlib.Path,
                               module: str, candidate_sv: pathlib.Path) -> dict[str, Any]:
         if (contract.get("semantics", {}) or {}).get("kind") == "flatness_window":
             return self.write_flatness_overlay_sources(contract, source_dir, module, candidate_sv)
         if (contract.get("semantics", {}) or {}).get("kind") == "ich_decision":
             return self.write_ich_decision_overlay_sources(contract, source_dir, module, candidate_sv)
+        if (contract.get("semantics", {}) or {}).get("kind") == "bitstream_read_transition":
+            return self.write_bitstream_read_transition_overlay_sources(
+                contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "bitstream_write_transition":
+            return self.write_bitstream_write_transition_overlay_sources(
+                contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "fifo_read_transition":
+            return self.write_fifo_read_transition_overlay_sources(
+                contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "fifo_read_accounting_transition":
+            return self.write_fifo_read_accounting_transition_overlay_sources(
+                contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "fifo_write_transition":
+            return self.write_fifo_write_transition_overlay_sources(
+                contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "fifo_write_accounting_transition":
+            return self.write_fifo_write_accounting_transition_overlay_sources(
+                contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "bounded_midpoint_line_write_transition":
+            return self.write_midpoint_line_write_transition_overlay_sources(
+                contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "populate_orig_line_memory_transition":
+            return self.write_populate_orig_line_transition_overlay_sources(
+                contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "bounded_ich_decision_transition":
+            return self.write_bounded_ich_decision_transition_overlay_sources(
+                contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") in {
+            "history_reduction_transition", "history_qerr_transition"
+        }:
+            try:
+                from encode_history_adapters import (
+                    write_history_encode_overlay_sources,
+                )
+            except ImportError:
+                from tools.encode_history_adapters import (
+                    write_history_encode_overlay_sources,
+                )
+            return write_history_encode_overlay_sources(
+                self, contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "bounded_prediction_encode_transition":
+            try:
+                from encode_prediction_adapter import (
+                    write_prediction_encode_overlay_sources,
+                )
+            except ImportError:
+                from tools.encode_prediction_adapter import (
+                    write_prediction_encode_overlay_sources,
+                )
+            return write_prediction_encode_overlay_sources(
+                self, contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "bounded_process_group_encode_transition":
+            try:
+                from encode_process_group_adapter import (
+                    write_process_group_encode_overlay_sources,
+                )
+            except ImportError:
+                from tools.encode_process_group_adapter import (
+                    write_process_group_encode_overlay_sources,
+                )
+            return write_process_group_encode_overlay_sources(
+                self, contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "bounded_rate_control_encode_transition":
+            try:
+                from encode_rate_control_adapter import (
+                    write_rate_control_encode_overlay_sources,
+                )
+            except ImportError:
+                from tools.encode_rate_control_adapter import (
+                    write_rate_control_encode_overlay_sources,
+                )
+            return write_rate_control_encode_overlay_sources(
+                self, contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "bounded_vlc_unit_encode_transition":
+            try:
+                from encode_vlc_unit_adapter import (
+                    write_vlc_unit_encode_overlay_sources,
+                )
+            except ImportError:
+                from tools.encode_vlc_unit_adapter import (
+                    write_vlc_unit_encode_overlay_sources,
+                )
+            return write_vlc_unit_encode_overlay_sources(
+                self, contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "vlc_group_encode_fsm":
+            try:
+                from encode_vlc_group_adapter import (
+                    write_vlc_group_encode_overlay_sources,
+                )
+            except ImportError:
+                from tools.encode_vlc_group_adapter import (
+                    write_vlc_group_encode_overlay_sources,
+                )
+            return write_vlc_group_encode_overlay_sources(
+                self, contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "scalar_record_next_state":
+            return self.write_scalar_record_next_state_overlay_sources(
+                contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "sampled_lookup_transition":
+            return self.write_sampled_lookup_transition_overlay_sources(
+                contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "scalar_record_memory_transition":
+            return self.write_scalar_record_memory_transition_overlay_sources(
+                contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "bounded_mux_refill_transition":
+            return self.write_bounded_mux_refill_transition_overlay_sources(
+                contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "bounded_flatness_state_transition":
+            return self.write_bounded_flatness_state_transition_overlay_sources(
+                contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "bounded_line_write_transition":
+            return self.write_bounded_line_write_transition_overlay_sources(
+                contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "bounded_history_update_transition":
+            return self.write_bounded_history_update_transition_overlay_sources(
+                contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "bounded_history_caller_transition":
+            return self.write_bounded_history_caller_transition_overlay_sources(
+                contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "bounded_vld_unit_transition":
+            return self.write_bounded_vld_unit_transition_overlay_sources(
+                contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "bounded_block_pred_search_transition":
+            return self.write_bounded_block_pred_search_transition_overlay_sources(
+                contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "bounded_prediction_decode_transition":
+            return self.write_bounded_prediction_decode_transition_overlay_sources(
+                contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "bounded_rate_control_decode_transition":
+            return self.write_bounded_rate_control_decode_transition_overlay_sources(
+                contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "bounded_vld_group_decode_transition":
+            return self.write_bounded_vld_group_decode_transition_overlay_sources(
+                contract, source_dir, module, candidate_sv
+            )
+        if (contract.get("semantics", {}) or {}).get("kind") == "raster_color_transform_transition":
+            return self.write_raster_color_transform_overlay_sources(
+                contract, source_dir, module, candidate_sv
+            )
         inputs = [
             port for port in contract.get("interface", {}).get("ports", [])
             if port.get("direction") == "input"
@@ -6526,10 +14996,11 @@ class Agent:
             "    if (value && strcmp(value, \"RTL_RETURN\") == 0) return 2;\n"
             "    return 0;\n"
             "}\n"
-            "static unsigned long dsc_cicd_mismatches;\n"
-            f"int dsc_cicd_invoke({caller_declarations}) {{\n"
+            + self.overlay_runtime_metrics_source()
+            + f"int dsc_cicd_invoke({caller_declarations}) {{\n"
             f"    int c_value = {original}({caller_call});\n"
             "    int mode = dsc_cicd_mode();\n"
+            "    dsc_cicd_note_call(mode);\n"
             "    if (mode == 0) return c_value;\n"
             f"    int rtl_value = dsc_cicd_rtl({rtl_call});\n"
             "    if (rtl_value != c_value) {\n"
@@ -6661,8 +15132,157 @@ class Agent:
         }
         write_json(source_dir / "overlay-compile-receipt.json", receipt)
         return receipt
+
+    @staticmethod
+    def parse_overlay_metrics(output: str) -> dict[str, Any]:
+        matches = re.findall(
+            r"DSC_CICD_OVERLAY_METRICS(?:\s+candidate=([A-Za-z0-9_.-]+))?\s+"
+            r"calls=(\d+)\s+"
+            r"rtl_invocations=(\d+)\s+mismatches=(\d+)",
+            str(output),
+        )
+        if not matches:
+            return {
+                "metrics_present": False,
+                "calls": 0,
+                "rtl_invocations": 0,
+                "mismatches": len(re.findall(r"C/RTL mismatch", str(output))),
+                "replacement_reached": False,
+                "rtl_exercised": False,
+            }
+        calls = sum(int(item[1]) for item in matches)
+        rtl_invocations = sum(int(item[2]) for item in matches)
+        mismatches = sum(int(item[3]) for item in matches)
+        candidate_metrics = {
+            candidate: {
+                "calls": int(candidate_calls),
+                "rtl_invocations": int(candidate_rtl),
+                "mismatches": int(candidate_mismatches),
+                "replacement_reached": int(candidate_calls) > 0,
+                "rtl_exercised": int(candidate_rtl) > 0,
+            }
+            for candidate, candidate_calls, candidate_rtl, candidate_mismatches in matches
+            if candidate
+        }
+        parsed = {
+            "metrics_present": True,
+            "calls": calls,
+            "rtl_invocations": rtl_invocations,
+            "mismatches": mismatches,
+            "replacement_reached": calls > 0,
+            "rtl_exercised": rtl_invocations > 0,
+        }
+        if candidate_metrics:
+            parsed["candidates"] = candidate_metrics
+        return parsed
+
+    @staticmethod
+    def files_byte_equal(left: pathlib.Path, right: pathlib.Path) -> bool:
+        if not left.is_file() or not right.is_file():
+            return False
+        if left.stat().st_size != right.stat().st_size:
+            return False
+        with left.open("rb") as left_handle, right.open("rb") as right_handle:
+            while True:
+                left_block = left_handle.read(1024 * 1024)
+                right_block = right_handle.read(1024 * 1024)
+                if left_block != right_block:
+                    return False
+                if not left_block:
+                    return True
+
+    def run_decode_frame(
+        self,
+        model_root: pathlib.Path,
+        binary: pathlib.Path,
+        scenario: dict[str, Any],
+        bitstream: pathlib.Path,
+        output_dir: pathlib.Path,
+        mode: str | None = None,
+    ) -> dict[str, Any]:
+        if output_dir.exists():
+            shutil.rmtree(output_dir)
+        output_dir.mkdir(parents=True, exist_ok=True)
+        copied_bitstream = output_dir / pathlib.Path(str(scenario["golden"])).name
+        if not bitstream.is_file():
+            return {
+                "status": "FAIL",
+                "reason": "decode input bitstream is missing",
+                "input_bitstream": str(bitstream),
+                "output_directory": str(output_dir),
+            }
+        shutil.copy2(bitstream, copied_bitstream)
+        command = self.run_process(
+            [
+                str(binary),
+                "-F", str(scenario["config"]),
+                "-do", "2",
+                "-ppm", "1",
+                "-O", f"LOG_FILENAME {output_dir / 'decode.log'}",
+                str(scenario["list"]),
+                str(output_dir),
+            ],
+            cwd=model_root,
+            env={"DSC_CICD_MODE": mode} if mode else None,
+            timeout=1800,
+        )
+        outputs = sorted(output_dir.glob("*.out.ppm"))
+        output_file = outputs[0] if len(outputs) == 1 else None
+        metrics = self.parse_overlay_metrics(str(command.get("output", "")))
+        execution_pass = command.get("returncode") == 0 and output_file is not None
+        return {
+            "status": "PASS" if execution_pass else "FAIL",
+            "command": command,
+            "mode": mode or "ORIGINAL_C",
+            "input_bitstream": str(copied_bitstream),
+            "input_bitstream_sha256": file_hash(copied_bitstream),
+            "output_directory": str(output_dir),
+            "output_count": len(outputs),
+            "output_file": str(output_file) if output_file else None,
+            "sha256": file_hash(output_file) if output_file else None,
+            "size_bytes": output_file.stat().st_size if output_file else None,
+            "overlay_metrics": metrics,
+        }
+
+    @staticmethod
+    def matrix_scope() -> str:
+        scope = os.environ.get("DSC_CICD_MATRIX_SCOPE", "smoke").strip().lower() or "smoke"
+        if scope not in {"smoke", "all"}:
+            raise ValueError(
+                "DSC_CICD_MATRIX_SCOPE must be either 'smoke' or 'all'"
+            )
+        return scope
+
+    @staticmethod
+    def matrix_evidence_summary(scenarios: list[dict[str, Any]]) -> dict[str, Any]:
+        anchored = sum(
+            1 for scenario in scenarios
+            if scenario.get("oracle_class") == "ANCHORED_EXPECTED_SHA"
+        )
+        differential_only = len(scenarios) - anchored
+        mode_count = 3
+        return {
+            "selected_profiles": len(scenarios),
+            "anchored_profiles": anchored,
+            "differential_only_profiles": differential_only,
+            "all_profiles_anchored": differential_only == 0,
+            "mode_count": mode_count,
+            "anchored_mode_rows": anchored * mode_count,
+            "differential_only_mode_rows": differential_only * mode_count,
+            "differential_only_excluded_from_promotion": True,
+            "policy": (
+                "ANCHORED_EXPECTED_SHA profiles must match both the fixed script SHA-256 "
+                "and the same-run C baseline; C_BASELINE_DIFFERENTIAL_ONLY profiles may "
+                "provide simulation evidence but are not promotion evidence"
+            ),
+        }
+
     def discover_matrix(self) -> list[dict[str, Any]]:
-        scripts = [str(item) for item in self.input_facts.get("baseline_scripts", [])]
+        scripts = sorted({
+            str(item) for item in self.input_facts.get("baseline_scripts", [])
+        })
+        if self.matrix_scope() == "all":
+            return [self.scenario_info(name) for name in scripts]
         selected = []
         preferred = [
             "bittrue_smoke/run_c_baseline.sh",
@@ -6690,18 +15310,43 @@ class Agent:
         golden = golden_match.group(1) if golden_match else ""
         if golden.startswith("$model_dir/"):
             golden = golden[len("$model_dir/"):]
-        expected_match = re.search(r'\bexpected_hash\s*=\s*["]([0-9a-fA-F]+)["]', text)
-        expected = expected_match.group(1) if expected_match else None
+        expected_match = re.search(
+            r'\b(expected_hash|expected)\s*=\s*["\']?([0-9a-fA-F]{64})["\']?',
+            text,
+        )
+        expected = expected_match.group(2).lower() if expected_match else None
         config_match = re.search(r'(?:-F|--config)\s+([A-Za-z0-9_./{}-]+)', text)
         config = config_match.group(1) if config_match else ""
         if config.startswith("$model_dir/"):
             config = config[len("$model_dir/"):]
+        config_path = model_root / config
+        list_path = config_path.with_suffix(".list") if config else pathlib.Path()
+        list_file = (
+            str(list_path.relative_to(model_root))
+            if config and list_path.is_absolute() and list_path.is_relative_to(model_root)
+            else str(pathlib.Path(config).with_suffix(".list")) if config else ""
+        )
         return {
             "script": script,
             "name": pathlib.Path(script).stem,
             "golden": golden,
             "config": config,
+            "list": list_file,
             "expected_sha256": expected,
+            "expected_variable": expected_match.group(1) if expected_match else None,
+            "oracle_class": (
+                "ANCHORED_EXPECTED_SHA"
+                if expected
+                else "C_BASELINE_DIFFERENTIAL_ONLY"
+            ),
+            "parse_status": (
+                "PASS"
+                if golden and config and config_path.is_file() and list_path.is_file()
+                else "FAIL"
+            ),
+            "script_sha256": file_hash(path),
+            "config_sha256": file_hash(config_path) if config_path.is_file() else None,
+            "list_sha256": file_hash(list_path) if list_path.is_file() else None,
         }
 
     def copy_model(self, label: str) -> pathlib.Path:
@@ -6716,18 +15361,49 @@ class Agent:
 
     def run_matrix(self, contract: dict[str, Any], artifact: pathlib.Path,
                    candidate: dict[str, Any]) -> dict[str, Any]:
-        scenarios = self.discover_matrix()
+        try:
+            matrix_scope = self.matrix_scope()
+            scenarios = self.discover_matrix()
+        except ValueError as error:
+            result = {
+                "status": "INFRASTRUCTURE_FAILURE",
+                "reason": str(error),
+                "matrix_scope": os.environ.get("DSC_CICD_MATRIX_SCOPE"),
+            }
+            write_json(artifact / "matrix-receipt.json", result)
+            return result
+        evidence_summary = self.matrix_evidence_summary(scenarios)
         if len(scenarios) < 1:
-            result = {"status": "INFRASTRUCTURE_FAILURE", "reason": "no baseline scripts discovered"}
+            result = {
+                "status": "INFRASTRUCTURE_FAILURE",
+                "reason": "no baseline scripts discovered",
+                "matrix_scope": matrix_scope,
+                "evidence_summary": evidence_summary,
+            }
+            write_json(artifact / "matrix-receipt.json", result)
+            return result
+        if not all(scenario.get("parse_status") == "PASS" for scenario in scenarios):
+            result = {
+                "status": "INFRASTRUCTURE_FAILURE",
+                "reason": "one or more matrix scripts lack a parseable golden or config",
+                "matrix_scope": matrix_scope,
+                "scenarios": scenarios,
+                "evidence_summary": evidence_summary,
+            }
             write_json(artifact / "matrix-receipt.json", result)
             return result
         base_model = self.copy_model("baseline")
         overlay_model: pathlib.Path | None = None
+        baseline_decode_results: list[dict[str, Any]] = []
 
         def persist_matrix_failure(result: dict[str, Any]) -> dict[str, Any]:
-            roots: list[pathlib.Path] = [base_model, self.root]
+            result.setdefault("matrix_scope", matrix_scope)
+            result.setdefault("matrix_profiles_selected", len(scenarios))
+            result.setdefault("matrix_scripts_discovered", len(self.input_facts.get("baseline_scripts", [])))
+            result.setdefault("evidence_summary", evidence_summary)
+            roots: list[pathlib.Path] = [base_model, base_model.parent, self.root]
             if overlay_model is not None:
-                roots.insert(1, overlay_model)
+                roots[0:0] = [overlay_model, overlay_model.parent]
             scrubbed = scrub_paths(result, roots)
             write_json(artifact / "matrix-receipt.json", scrubbed)
             if isinstance(scrubbed.get("overlay"), dict):
@@ -6743,12 +15419,22 @@ class Agent:
                 result = self.run_process([str(script_path)], cwd=base_model, timeout=1800)
                 golden = base_model / scenario["golden"]
                 actual = file_hash(golden) if golden.is_file() else None
+                expected = scenario.get("expected_sha256")
+                expected_match = actual == expected if expected else None
+                baseline_pass = bool(
+                    result["returncode"] == 0
+                    and actual
+                    and expected_match is not False
+                )
                 baseline_results.append({
                     "scenario": scenario,
-                    "status": "PASS" if result["returncode"] == 0 and actual else "FAIL",
+                    "status": "PASS" if baseline_pass else "FAIL",
                     "command": result,
                     "sha256": actual,
                     "size_bytes": golden.stat().st_size if golden.is_file() else None,
+                    "oracle_class": scenario.get("oracle_class"),
+                    "expected_sha256": expected,
+                    "expected_sha256_match": expected_match,
                 })
             if not all(item["status"] == "PASS" for item in baseline_results):
                 return persist_matrix_failure({
@@ -6756,6 +15442,35 @@ class Agent:
                     "reason": "baseline matrix failed",
                     "baseline": baseline_results,
                 })
+
+            # The encode scripts above only prepare anchored input bitstreams.
+            # Decode is the first replacement phase: the immutable C model
+            # produces the frame oracle before any Verilator overlay is built.
+            baseline_decode_root = base_model.parent / "decode-original-c"
+            baseline_binary = base_model / "source" / "dsc"
+            for baseline in baseline_results:
+                scenario = baseline["scenario"]
+                decode = self.run_decode_frame(
+                    base_model,
+                    baseline_binary,
+                    scenario,
+                    base_model / scenario["golden"],
+                    baseline_decode_root / safe_identifier(str(scenario["name"])),
+                )
+                decode["scenario"] = scenario
+                baseline_decode_results.append(decode)
+            if not all(item.get("status") == "PASS" for item in baseline_decode_results):
+                return persist_matrix_failure({
+                    "status": "INFRASTRUCTURE_FAILURE",
+                    "reason": "original C full-frame decode oracle failed",
+                    "phase_order": ["DECODE", "ENCODE"],
+                    "baseline": baseline_results,
+                    "decode": {
+                        "status": "FAIL",
+                        "oracle": baseline_decode_results,
+                    },
+                })
+
             overlay_temp = pathlib.Path(tempfile.mkdtemp(prefix="dsc-cicd-overlay-", dir=str(self.root / "tmp")))
             overlay_model = overlay_temp / base_model.name
             shutil.copytree(base_model, overlay_model, ignore=shutil.ignore_patterns(".git", "__pycache__", "target", "build", "dsc-rs", "operator_bittrue"))
@@ -6793,7 +15508,16 @@ class Agent:
                         "RTL_RETURN": {"status": "NOT_RUN", "scenarios": []},
                     },
                 })
-            overlay_receipt = self.run_overlay_rewriter(contract, overlay_model / "source", overlay_paths["header"])
+            overlay_receipt = self.run_overlay_rewriter(
+                contract,
+                overlay_model / "source",
+                overlay_paths["header"],
+                allow_residual_symbol_alias=bool(
+                    (overlay_paths.get("composition", {}) or {}).get(
+                        "residual_symbol_alias_routes_to_dispatcher"
+                    )
+                ),
+            )
             if overlay_receipt.get("status") != "PASS":
                 return persist_matrix_failure({
                     "status": "INFRASTRUCTURE_FAILURE",
@@ -6856,8 +15580,111 @@ class Agent:
                     "overlay": overlay_receipt,
                     "compile": compile_receipt,
                 })
-            mode_results: dict[str, Any] = {}
             binary = overlay_model / "source" / "dsc"
+
+            decode_mode_results: dict[str, Any] = {}
+            decode_output_root = overlay_model.parent / "decode-verilator-overlay"
+            decode_oracles = {
+                str(item["scenario"]["script"]): item
+                for item in baseline_decode_results
+            }
+            for mode in ("C_ONLY", "SHADOW", "RTL_RETURN"):
+                scenario_results = []
+                for baseline in baseline_results:
+                    scenario = baseline["scenario"]
+                    oracle = decode_oracles[str(scenario["script"])]
+                    decode = self.run_decode_frame(
+                        overlay_model,
+                        binary,
+                        scenario,
+                        base_model / scenario["golden"],
+                        decode_output_root
+                        / mode.lower()
+                        / safe_identifier(str(scenario["name"])),
+                        mode=mode,
+                    )
+                    execution_status = decode.get("status")
+                    output_file = pathlib.Path(str(decode.get("output_file", "")))
+                    oracle_file = pathlib.Path(str(oracle.get("output_file", "")))
+                    byte_equal = self.files_byte_equal(output_file, oracle_file)
+                    metrics = decode.get("overlay_metrics", {}) or {}
+                    mismatch_count = int(metrics.get("mismatches", 0))
+                    scenario_pass = bool(
+                        execution_status == "PASS"
+                        and byte_equal
+                        and mismatch_count == 0
+                    )
+                    if mode == "C_ONLY":
+                        replacement_status = (
+                            "C_PATH_REACHED"
+                            if metrics.get("replacement_reached")
+                            else "NOT_REACHED"
+                        )
+                    else:
+                        replacement_status = (
+                            "RTL_EXERCISED"
+                            if metrics.get("rtl_exercised")
+                            else "NOT_REACHED"
+                        )
+                    decode.update({
+                        "scenario": scenario,
+                        "status": "PASS" if scenario_pass else "FAIL",
+                        "execution_status": execution_status,
+                        "oracle_sha256": oracle.get("sha256"),
+                        "oracle_size_bytes": oracle.get("size_bytes"),
+                        "byte_for_byte_match": byte_equal,
+                        "mismatch_count": mismatch_count,
+                        "replacement_status": replacement_status,
+                    })
+                    scenario_results.append(decode)
+                total_calls = sum(
+                    int((item.get("overlay_metrics", {}) or {}).get("calls", 0))
+                    for item in scenario_results
+                )
+                total_rtl_invocations = sum(
+                    int((item.get("overlay_metrics", {}) or {}).get("rtl_invocations", 0))
+                    for item in scenario_results
+                )
+                coverage_status = (
+                    "RTL_EXERCISED"
+                    if total_rtl_invocations > 0
+                    else "C_PATH_REACHED"
+                    if total_calls > 0
+                    else "NOT_REACHED"
+                )
+                decode_mode_results[mode] = {
+                    "status": (
+                        "PASS"
+                        if all(item["status"] == "PASS" for item in scenario_results)
+                        else "FAIL"
+                    ),
+                    "coverage_status": coverage_status,
+                    "total_calls": total_calls,
+                    "total_rtl_invocations": total_rtl_invocations,
+                    "scenarios": scenario_results,
+                }
+
+            decode_modes_pass = all(
+                decode_mode_results.get(mode, {}).get("status") == "PASS"
+                for mode in ("C_ONLY", "SHADOW", "RTL_RETURN")
+            )
+            decode_shadow_rtl = int(
+                decode_mode_results.get("SHADOW", {}).get("total_rtl_invocations", 0)
+            )
+            decode_return_rtl = int(
+                decode_mode_results.get("RTL_RETURN", {}).get("total_rtl_invocations", 0)
+            )
+            decode_coverage_status = (
+                "RTL_EXERCISED"
+                if decode_shadow_rtl > 0 and decode_return_rtl > 0
+                else "PARTIAL"
+                if decode_shadow_rtl > 0 or decode_return_rtl > 0
+                else "NOT_REACHED"
+            )
+
+            # Encode runs second.  The legacy top-level `modes` field remains
+            # an alias for these rows so existing receipt readers stay valid.
+            mode_results: dict[str, Any] = {}
             for mode in ("C_ONLY", "SHADOW", "RTL_RETURN"):
                 scenario_results = []
                 for baseline in baseline_results:
@@ -6873,41 +15700,139 @@ class Agent:
                     )
                     actual = file_hash(golden) if golden.is_file() else None
                     output = str(command.get("output", ""))
-                    mismatch_count = len(re.findall(r"C/RTL mismatch", output))
+                    metrics = self.parse_overlay_metrics(output)
+                    mismatch_count = int(metrics.get("mismatches", 0))
+                    expected = scenario.get("expected_sha256")
+                    expected_match = actual == expected if expected else None
+                    baseline_match = actual == baseline["sha256"]
+                    scenario_pass = bool(
+                        command["returncode"] == 0
+                        and baseline_match
+                        and expected_match is not False
+                        and mismatch_count == 0
+                    )
                     scenario_results.append({
                         "scenario": scenario,
-                        "status": "PASS" if command["returncode"] == 0 and actual == baseline["sha256"] and mismatch_count == 0 else "FAIL",
+                        "status": "PASS" if scenario_pass else "FAIL",
                         "command": command,
                         "sha256": actual,
                         "size_bytes": golden.stat().st_size if golden.is_file() else None,
                         "baseline_sha256": baseline["sha256"],
+                        "baseline_sha256_match": baseline_match,
+                        "oracle_class": scenario.get("oracle_class"),
+                        "expected_sha256": expected,
+                        "expected_sha256_match": expected_match,
                         "mismatch_count": mismatch_count,
+                        "overlay_metrics": metrics,
+                        "replacement_status": (
+                            "RTL_EXERCISED"
+                            if metrics.get("rtl_exercised")
+                            else "C_PATH_REACHED"
+                            if metrics.get("replacement_reached")
+                            else "NOT_REACHED"
+                        ),
                     })
+                total_calls = sum(
+                    int((item.get("overlay_metrics", {}) or {}).get("calls", 0))
+                    for item in scenario_results
+                )
+                total_rtl_invocations = sum(
+                    int((item.get("overlay_metrics", {}) or {}).get("rtl_invocations", 0))
+                    for item in scenario_results
+                )
                 mode_results[mode] = {
                     "status": "PASS" if all(item["status"] == "PASS" for item in scenario_results) else "FAIL",
+                    "coverage_status": (
+                        "RTL_EXERCISED"
+                        if total_rtl_invocations > 0
+                        else "C_PATH_REACHED"
+                        if total_calls > 0
+                        else "NOT_REACHED"
+                    ),
+                    "total_calls": total_calls,
+                    "total_rtl_invocations": total_rtl_invocations,
                     "scenarios": scenario_results,
                 }
             overlay_receipt = scrub_paths(overlay_receipt, [base_model, overlay_model, self.root])
             compile_receipt = scrub_paths(compile_receipt, [base_model, overlay_model, self.root])
             mode_results = scrub_paths(mode_results, [base_model, overlay_model, self.root])
-            all_modes_pass = all(
+            decode_mode_results = scrub_paths(
+                decode_mode_results,
+                [base_model, base_model.parent, overlay_model, overlay_model.parent, self.root],
+            )
+            scrubbed_decode_oracles = scrub_paths(
+                baseline_decode_results,
+                [base_model, base_model.parent, overlay_model, overlay_model.parent, self.root],
+            )
+            encode_modes_pass = all(
                 mode_results.get(mode, {}).get("status") == "PASS"
                 for mode in ("C_ONLY", "SHADOW", "RTL_RETURN")
             )
+            combined_shadow_rtl = decode_shadow_rtl + int(
+                mode_results.get("SHADOW", {}).get("total_rtl_invocations", 0)
+            )
+            combined_return_rtl = decode_return_rtl + int(
+                mode_results.get("RTL_RETURN", {}).get("total_rtl_invocations", 0)
+            )
+            replacement_coverage_pass = (
+                combined_shadow_rtl > 0 and combined_return_rtl > 0
+            )
+            all_phases_pass = bool(
+                decode_modes_pass
+                and encode_modes_pass
+                and replacement_coverage_pass
+            )
+            decode_receipt = {
+                "status": "PASS" if decode_modes_pass else "FAIL",
+                "execution_order": 1,
+                "oracle": "ORIGINAL_C_SOURCE",
+                "replacement": "VERILOG_VIA_VERILATOR_CXX",
+                "comparison": "FULL_DECODED_FRAME_BYTE_FOR_BYTE",
+                "coverage_status": decode_coverage_status,
+                "oracle_frames": scrubbed_decode_oracles,
+                "modes": decode_mode_results,
+            }
+            encode_receipt = {
+                "status": "PASS" if encode_modes_pass else "FAIL",
+                "execution_order": 2,
+                "oracle": "ORIGINAL_C_SOURCE",
+                "replacement": "VERILOG_VIA_VERILATOR_CXX",
+                "comparison": "FULL_ENCODED_BITSTREAM_BYTE_FOR_BYTE",
+                "modes": mode_results,
+            }
             result = {
-                "status": "PASS" if all_modes_pass else "FAIL",
+                "status": "PASS" if all_phases_pass else "FAIL",
+                "matrix_scope": matrix_scope,
+                "matrix_profiles_selected": len(scenarios),
                 "matrix_scripts_discovered": len(self.input_facts.get("baseline_scripts", [])),
+                "evidence_summary": evidence_summary,
+                "phase_order": ["DECODE", "ENCODE"],
                 "scenarios": [item["scenario"] for item in baseline_results],
                 "baseline": scrub_paths(baseline_results, [base_model, overlay_model, self.root]),
                 "overlay": overlay_receipt,
                 "compile": compile_receipt,
                 "composition": composition,
+                "decode": decode_receipt,
+                "encode": encode_receipt,
+                "replacement_coverage": {
+                    "status": "PASS" if replacement_coverage_pass else "FAIL",
+                    "policy": (
+                        "SHADOW and RTL_RETURN must each invoke the Verilated replacement "
+                        "in at least one full-frame Decode or Encode scenario"
+                    ),
+                    "shadow_rtl_invocations": combined_shadow_rtl,
+                    "rtl_return_rtl_invocations": combined_return_rtl,
+                    "decode_coverage_status": decode_coverage_status,
+                    "encode_shadow_coverage_status": mode_results.get("SHADOW", {}).get("coverage_status"),
+                    "encode_rtl_return_coverage_status": mode_results.get("RTL_RETURN", {}).get("coverage_status"),
+                },
                 "modes": mode_results,
                 "candidate": candidate.get("candidate"),
                 "execution_status": "EXECUTED_NOW",
             }
             write_json(artifact / "shadow-receipt.json", result["modes"]["SHADOW"])
             write_json(artifact / "rtl-return-receipt.json", result["modes"]["RTL_RETURN"])
+            write_json(artifact / "decode-receipt.json", result["decode"])
             write_json(artifact / "bitstream-receipt.json", result)
             write_json(artifact / "overlay-receipt.json", result["overlay"])
             write_json(artifact / "matrix-receipt.json", result)
@@ -7446,6 +16371,9 @@ class Agent:
                     mode: matrix.get("modes", {}).get(mode, {}).get("status")
                     for mode in ("C_ONLY", "SHADOW", "RTL_RETURN")
                 },
+                "decode_status": (matrix.get("decode", {}) or {}).get("status"),
+                "decode_coverage_status": (matrix.get("decode", {}) or {}).get("coverage_status"),
+                "replacement_coverage_status": (matrix.get("replacement_coverage", {}) or {}).get("status"),
                 "executed_shards": domain.get("shard_count", 0),
                 "executed_vectors": domain.get("total_vectors", 0),
                 "domain_proof_complete": domain.get("proof_complete", True),
@@ -7490,6 +16418,7 @@ class Agent:
                 for result in self.run_results if result.get("unit")
             ],
             "dependency_pair": self.plan.get("dependency_pair"),
+            "matrix_scope": os.environ.get("DSC_CICD_MATRIX_SCOPE", "smoke").strip().lower() or "smoke",
             "matrix_scripts_discovered": len(self.input_facts.get("baseline_scripts", [])),
             "results": result_lines,
             "blockers": self.report_blockers(),
@@ -7516,6 +16445,7 @@ class Agent:
             f"- model calls: {self.state.get('model_calls', 0)}",
             f"- token count: {self.state.get('token_count', 0)}",
             f"- dependency pair: {json.dumps(self.plan.get('dependency_pair'), sort_keys=True)}",
+            f"- matrix scope: {report['matrix_scope']}",
             f"- baseline scripts discovered: {len(self.input_facts.get('baseline_scripts', []))}",
             "",
             "## Results",
@@ -7531,6 +16461,11 @@ class Agent:
                 f"strategy={value['vector_strategy']}"
             )
             lines.append(f"  - matrix modes: {json.dumps(value['matrix_modes'], sort_keys=True)}")
+            lines.append(
+                f"  - decode: {value['decode_status']} "
+                f"({value['decode_coverage_status']}); replacement coverage: "
+                f"{value['replacement_coverage_status']}"
+            )
             lines.append(f"  - dependency evidence: {json.dumps(value['dependency_evidence'], sort_keys=True)}")
             for rejected in value.get("rejected_candidates", []):
                 lines.append(

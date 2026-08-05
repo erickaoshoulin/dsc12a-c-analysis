@@ -1,0 +1,2359 @@
+{
+  "composition": {
+    "absorption": "NONE",
+    "child_modules_instantiated": false,
+    "child_source_embedded": false,
+    "children": [
+      {
+        "absorption": "EXTERNALIZED_TRANSACTION_ADAPTER",
+        "contract_file": "/private/tmp/dsc12a-regression-dashboard/rtl/encode-candidates/selected-vlc-unit-encode-transition/provisional-contract.json",
+        "contract_sha256": "37f4a90480d1c6e05997c849f9e89b8646953383f859b5ea3e10edb86eb9b6d6",
+        "module": "addbits_encode_transition",
+        "module_file": "/private/tmp/dsc12a-regression-dashboard/rtl/encode-candidates/selected-vlc-unit-encode-transition/candidate_01.sv",
+        "module_sha256": "a602e976fd06e9481b2faa8bcadf8303025a690ffe574aac076b1869da799ded",
+        "role": "vlc_unit",
+        "source_body_sha256": "68f11a3cc9c8b65c280e2cb29df2988529a556887253e956caa206ab41ac73f4",
+        "source_file": "dsc_codec.c",
+        "source_file_sha256": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf"
+      },
+      {
+        "absorption": "EXTERNALIZED_TRANSACTION_ADAPTER",
+        "contract_file": "/private/tmp/dsc12a-regression-dashboard/rtl/encode-candidates/selected-process-group-encode-transition/provisional-contract.json",
+        "contract_sha256": "028e379da74e8df5a2313a856d671d0c9d280f6c756d11b4c8234ae9cec4cb57",
+        "module": "process_group_encode_fsm",
+        "module_file": "/private/tmp/dsc12a-regression-dashboard/rtl/encode-candidates/selected-process-group-encode-transition/candidate_01.sv",
+        "module_sha256": "5aeacbb6c1e46b5ebbe2767f523bf9f7ed91053dbad2d321e442a49828c84e6e",
+        "role": "process_group",
+        "source_body_sha256": "30b4e2cf73b2bcecf90d68143cbca203888622546f92b000193ceda40d4498fb",
+        "source_file": "multiplex.c",
+        "source_file_sha256": "ab549255599fbdf1f69dd9fa8013ed39c044c3b8f591b187e2e056a5f1f5ab50"
+      }
+    ],
+    "memory_events_externalized": [
+      "enc_balance",
+      "shifter",
+      "se_size",
+      "frame"
+    ],
+    "ordered_child_sequence": [
+      "vlc_unit[0..units_per_group-1]",
+      "se_size_fifo_put[0..num_ssps-1]",
+      "process_group_enc[conditional]"
+    ],
+    "status": "EXTERNALIZED_CHILD_BOUNDARY"
+  },
+  "contract_id": "vlc_group_encode_fsm_v1",
+  "dependencies": [
+    {
+      "artifact_path": "/private/tmp/dsc12a-regression-dashboard/rtl/encode-candidates/selected-vlc-unit-encode-transition",
+      "composition": {
+        "module_embedded_in_parent": false,
+        "state_and_memory_adapter_required": true,
+        "status": "EXTERNALIZED_CHILD_BOUNDARY"
+      },
+      "contract_file": "/private/tmp/dsc12a-regression-dashboard/rtl/encode-candidates/selected-vlc-unit-encode-transition/provisional-contract.json",
+      "contract_id": "vlcunit_encode_transition",
+      "contract_sha256": "37f4a90480d1c6e05997c849f9e89b8646953383f859b5ea3e10edb86eb9b6d6",
+      "function": {
+        "clang_usr": "c:@F@VLCUnit",
+        "name": "VLCUnit",
+        "parameters": [
+          {
+            "name": "dsc_cfg",
+            "pointee_const": false,
+            "pointer": true,
+            "type": "dsc_cfg_t *"
+          },
+          {
+            "name": "dsc_state",
+            "pointee_const": false,
+            "pointer": true,
+            "type": "dsc_state_t *"
+          },
+          {
+            "name": "unit",
+            "pointee_const": false,
+            "pointer": false,
+            "type": "int"
+          },
+          {
+            "name": "quantized_residuals",
+            "pointee_const": false,
+            "pointer": true,
+            "type": "int *"
+          },
+          {
+            "name": "force_p1_ich2",
+            "pointee_const": false,
+            "pointer": false,
+            "type": "int"
+          }
+        ],
+        "qualified_name": "VLCUnit",
+        "return_type": "void",
+        "source_body_sha256": "68f11a3cc9c8b65c280e2cb29df2988529a556887253e956caa206ab41ac73f4",
+        "source_file": "dsc_codec.c",
+        "source_file_sha256": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf",
+        "source_span": {
+          "end_line": 1703,
+          "start_line": 1494
+        }
+      },
+      "module": "addbits_encode_transition",
+      "module_file": "/private/tmp/dsc12a-regression-dashboard/rtl/encode-candidates/selected-vlc-unit-encode-transition/candidate_01.sv",
+      "module_sha256": "a602e976fd06e9481b2faa8bcadf8303025a690ffe574aac076b1869da799ded",
+      "role": "vlc_unit",
+      "semantic_kind": "bounded_vlc_unit_encode_transition"
+    },
+    {
+      "artifact_path": "/private/tmp/dsc12a-regression-dashboard/rtl/encode-candidates/selected-process-group-encode-transition",
+      "composition": {
+        "module_embedded_in_parent": false,
+        "state_and_memory_adapter_required": true,
+        "status": "EXTERNALIZED_CHILD_BOUNDARY"
+      },
+      "contract_file": "/private/tmp/dsc12a-regression-dashboard/rtl/encode-candidates/selected-process-group-encode-transition/provisional-contract.json",
+      "contract_id": "process_group_encode_fsm_v1",
+      "contract_sha256": "028e379da74e8df5a2313a856d671d0c9d280f6c756d11b4c8234ae9cec4cb57",
+      "function": {
+        "clang_usr": "c:@F@ProcessGroupEnc",
+        "name": "ProcessGroupEnc",
+        "parameters": [
+          {
+            "name": "dsc_cfg",
+            "pointee_const": false,
+            "pointer": true,
+            "type": "dsc_cfg_t *"
+          },
+          {
+            "name": "dsc_state",
+            "pointee_const": false,
+            "pointer": true,
+            "type": "dsc_state_t *"
+          },
+          {
+            "name": "buf",
+            "pointee_const": false,
+            "pointer": true,
+            "type": "unsigned char *"
+          }
+        ],
+        "return_type": "void",
+        "source_body_sha256": "30b4e2cf73b2bcecf90d68143cbca203888622546f92b000193ceda40d4498fb",
+        "source_file": "multiplex.c",
+        "source_file_sha256": "ab549255599fbdf1f69dd9fa8013ed39c044c3b8f591b187e2e056a5f1f5ab50",
+        "source_span": {
+          "end_line": 152,
+          "start_line": 116
+        }
+      },
+      "module": "process_group_encode_fsm",
+      "module_file": "/private/tmp/dsc12a-regression-dashboard/rtl/encode-candidates/selected-process-group-encode-transition/candidate_01.sv",
+      "module_sha256": "5aeacbb6c1e46b5ebbe2767f523bf9f7ed91053dbad2d321e442a49828c84e6e",
+      "role": "process_group",
+      "semantic_kind": "bounded_process_group_encode_transition"
+    }
+  ],
+  "dependency_pins_by_role": {
+    "process_group": {
+      "artifact_path": "/private/tmp/dsc12a-regression-dashboard/rtl/encode-candidates/selected-process-group-encode-transition",
+      "composition": {
+        "module_embedded_in_parent": false,
+        "state_and_memory_adapter_required": true,
+        "status": "EXTERNALIZED_CHILD_BOUNDARY"
+      },
+      "contract_file": "/private/tmp/dsc12a-regression-dashboard/rtl/encode-candidates/selected-process-group-encode-transition/provisional-contract.json",
+      "contract_id": "process_group_encode_fsm_v1",
+      "contract_sha256": "028e379da74e8df5a2313a856d671d0c9d280f6c756d11b4c8234ae9cec4cb57",
+      "function": {
+        "clang_usr": "c:@F@ProcessGroupEnc",
+        "name": "ProcessGroupEnc",
+        "parameters": [
+          {
+            "name": "dsc_cfg",
+            "pointee_const": false,
+            "pointer": true,
+            "type": "dsc_cfg_t *"
+          },
+          {
+            "name": "dsc_state",
+            "pointee_const": false,
+            "pointer": true,
+            "type": "dsc_state_t *"
+          },
+          {
+            "name": "buf",
+            "pointee_const": false,
+            "pointer": true,
+            "type": "unsigned char *"
+          }
+        ],
+        "return_type": "void",
+        "source_body_sha256": "30b4e2cf73b2bcecf90d68143cbca203888622546f92b000193ceda40d4498fb",
+        "source_file": "multiplex.c",
+        "source_file_sha256": "ab549255599fbdf1f69dd9fa8013ed39c044c3b8f591b187e2e056a5f1f5ab50",
+        "source_span": {
+          "end_line": 152,
+          "start_line": 116
+        }
+      },
+      "module": "process_group_encode_fsm",
+      "module_file": "/private/tmp/dsc12a-regression-dashboard/rtl/encode-candidates/selected-process-group-encode-transition/candidate_01.sv",
+      "module_sha256": "5aeacbb6c1e46b5ebbe2767f523bf9f7ed91053dbad2d321e442a49828c84e6e",
+      "role": "process_group",
+      "semantic_kind": "bounded_process_group_encode_transition"
+    },
+    "vlc_unit": {
+      "artifact_path": "/private/tmp/dsc12a-regression-dashboard/rtl/encode-candidates/selected-vlc-unit-encode-transition",
+      "composition": {
+        "module_embedded_in_parent": false,
+        "state_and_memory_adapter_required": true,
+        "status": "EXTERNALIZED_CHILD_BOUNDARY"
+      },
+      "contract_file": "/private/tmp/dsc12a-regression-dashboard/rtl/encode-candidates/selected-vlc-unit-encode-transition/provisional-contract.json",
+      "contract_id": "vlcunit_encode_transition",
+      "contract_sha256": "37f4a90480d1c6e05997c849f9e89b8646953383f859b5ea3e10edb86eb9b6d6",
+      "function": {
+        "clang_usr": "c:@F@VLCUnit",
+        "name": "VLCUnit",
+        "parameters": [
+          {
+            "name": "dsc_cfg",
+            "pointee_const": false,
+            "pointer": true,
+            "type": "dsc_cfg_t *"
+          },
+          {
+            "name": "dsc_state",
+            "pointee_const": false,
+            "pointer": true,
+            "type": "dsc_state_t *"
+          },
+          {
+            "name": "unit",
+            "pointee_const": false,
+            "pointer": false,
+            "type": "int"
+          },
+          {
+            "name": "quantized_residuals",
+            "pointee_const": false,
+            "pointer": true,
+            "type": "int *"
+          },
+          {
+            "name": "force_p1_ich2",
+            "pointee_const": false,
+            "pointer": false,
+            "type": "int"
+          }
+        ],
+        "qualified_name": "VLCUnit",
+        "return_type": "void",
+        "source_body_sha256": "68f11a3cc9c8b65c280e2cb29df2988529a556887253e956caa206ab41ac73f4",
+        "source_file": "dsc_codec.c",
+        "source_file_sha256": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf",
+        "source_span": {
+          "end_line": 1703,
+          "start_line": 1494
+        }
+      },
+      "module": "addbits_encode_transition",
+      "module_file": "/private/tmp/dsc12a-regression-dashboard/rtl/encode-candidates/selected-vlc-unit-encode-transition/candidate_01.sv",
+      "module_sha256": "a602e976fd06e9481b2faa8bcadf8303025a690ffe574aac076b1869da799ded",
+      "role": "vlc_unit",
+      "semantic_kind": "bounded_vlc_unit_encode_transition"
+    }
+  },
+  "domain": {
+    "bits_per_component": [
+      8,
+      16
+    ],
+    "fifo_pointer_is_bit_address": true,
+    "fifo_size_positive_multiple_of_8": true,
+    "frame_capacity_bits_positive": true,
+    "is_encoder": 1,
+    "max_cycles": 4096,
+    "max_se_size": 68,
+    "mux_word_size": [
+      48,
+      64
+    ],
+    "native_422_branch": "source-disabled-if-zero-not-composed",
+    "num_ssps": [
+      3,
+      4
+    ],
+    "units_per_group": [
+      3,
+      4
+    ]
+  },
+  "flags": [
+    "illegal_domain",
+    "fatal_error",
+    "bound_violation",
+    "child_error",
+    "fifo_underflow",
+    "fifo_overflow",
+    "se_size_overflow",
+    "buffer_overflow",
+    "done"
+  ],
+  "function": {
+    "clang_usr": "c:@F@VLCGroup",
+    "name": "VLCGroup",
+    "parameters": [
+      {
+        "name": "dsc_cfg",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_cfg_t *"
+      },
+      {
+        "name": "dsc_state",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_state_t *"
+      },
+      {
+        "name": "byte_out_p",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "unsigned char **"
+      },
+      {
+        "name": "force_p1_ich2",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      }
+    ],
+    "return_type": "void",
+    "source_body_sha256": "58adde32bf9e598ed3521d0278d8eb8095601688f4f756af3dea00bc346915c0",
+    "source_file": "dsc_codec.c",
+    "source_span": {
+      "end_line": 1799,
+      "start_line": 1710
+    }
+  },
+  "interface": {
+    "module": "vlc_group_encode_fsm",
+    "ports": [
+      {
+        "direction": "input",
+        "name": "clk",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "rst_n",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "start",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "is_encoder",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "units_per_group",
+        "signed": false,
+        "unpacked": "",
+        "width": 3
+      },
+      {
+        "direction": "input",
+        "name": "num_ssps",
+        "signed": false,
+        "unpacked": "",
+        "width": 3
+      },
+      {
+        "direction": "input",
+        "name": "mux_word_size",
+        "signed": false,
+        "unpacked": "",
+        "width": 7
+      },
+      {
+        "direction": "input",
+        "name": "bits_per_pixel",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "bits_per_component",
+        "signed": true,
+        "unpacked": "",
+        "width": 6
+      },
+      {
+        "direction": "input",
+        "name": "chunk_size",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "initial_xmit_delay",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "vbr_enable",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "rcb_bits",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "frame_capacity_bits",
+        "signed": false,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "max_se_size",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 7
+      },
+      {
+        "direction": "output",
+        "name": "busy",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "done",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "domain_valid",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "illegal_domain",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "fatal_error",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "bound_violation",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "child_error",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "fifo_underflow",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "fifo_overflow",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "se_size_overflow",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "buffer_overflow",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "post_mux_num_bits_in",
+        "signed": false,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "post_mux_num_bits_out",
+        "signed": false,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "num_bits_in",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "num_bits_out",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "buffer_fullness_in",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "buffer_fullness_out",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "num_bits_chunk_in",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "num_bits_chunk_out",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "pixels_in_group_in",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "pixels_in_group_out",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "slice_width_in",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "slice_width_out",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "pixel_count_in",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "pixel_count_out",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "group_count_in",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "group_count_out",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "primary_qp_in",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "primary_qp_out",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_primary_qp_in",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "prev_primary_qp_out",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_num_bits_in",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "prev_num_bits_out",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "coded_group_size_in",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "coded_group_size_out",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "group_count_line_in",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "group_count_line_out",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "force_mpp_in",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "force_mpp_out",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "midpoint_selected_in",
+        "signed": true,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "midpoint_selected_out",
+        "signed": true,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "quantized_residual_in",
+        "signed": true,
+        "unpacked": "[0:3][0:2]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "quantized_residual_out",
+        "signed": true,
+        "unpacked": "[0:3][0:2]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "quantized_residual_mid_in",
+        "signed": true,
+        "unpacked": "[0:3][0:2]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "quantized_residual_mid_out",
+        "signed": true,
+        "unpacked": "[0:3][0:2]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "enc_balance_size_bits_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "enc_balance_size_bits_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "enc_balance_fullness_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "enc_balance_fullness_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "enc_balance_read_ptr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "enc_balance_read_ptr_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "enc_balance_write_ptr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "enc_balance_write_ptr_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "enc_balance_max_fullness_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "enc_balance_max_fullness_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "enc_balance_byte_ctr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "enc_balance_byte_ctr_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "enc_balance_mem_read_req",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "output",
+        "name": "enc_balance_mem_read_addr",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "enc_balance_mem_read_valid",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "input",
+        "name": "enc_balance_mem_read_data",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "enc_balance_mem_write_req",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "output",
+        "name": "enc_balance_mem_write_addr",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "enc_balance_mem_write_ready",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "output",
+        "name": "enc_balance_mem_write_data",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "enc_balance_mem_write_bit_mask",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "shifter_size_bits_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "shifter_size_bits_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "shifter_fullness_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "shifter_fullness_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "shifter_read_ptr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "shifter_read_ptr_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "shifter_write_ptr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "shifter_write_ptr_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "shifter_max_fullness_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "shifter_max_fullness_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "shifter_byte_ctr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "shifter_byte_ctr_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "shifter_mem_read_req",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "output",
+        "name": "shifter_mem_read_addr",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "shifter_mem_read_valid",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "input",
+        "name": "shifter_mem_read_data",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "shifter_mem_write_req",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "output",
+        "name": "shifter_mem_write_addr",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "shifter_mem_write_ready",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "output",
+        "name": "shifter_mem_write_data",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "shifter_mem_write_bit_mask",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "se_size_size_bits_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "se_size_size_bits_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "se_size_fullness_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "se_size_fullness_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "se_size_read_ptr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "se_size_read_ptr_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "se_size_write_ptr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "se_size_write_ptr_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "se_size_max_fullness_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "se_size_max_fullness_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "se_size_byte_ctr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "se_size_byte_ctr_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "se_size_mem_read_req",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "output",
+        "name": "se_size_mem_read_addr",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "se_size_mem_read_valid",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "input",
+        "name": "se_size_mem_read_data",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "se_size_mem_write_req",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "output",
+        "name": "se_size_mem_write_addr",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 16
+      },
+      {
+        "direction": "input",
+        "name": "se_size_mem_write_ready",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "output",
+        "name": "se_size_mem_write_data",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "se_size_mem_write_bit_mask",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_start",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_ready",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_done",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_domain_valid",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_fatal_error",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_index",
+        "signed": false,
+        "unpacked": "",
+        "width": 3
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_force_p1_ich2",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_num_bits_in",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_num_bits_out",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_primary_qp_in",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_primary_qp_out",
+        "signed": true,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_enc_balance_size_bits_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_enc_balance_size_bits_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_enc_balance_fullness_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_enc_balance_fullness_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_enc_balance_read_ptr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_enc_balance_read_ptr_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_enc_balance_write_ptr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_enc_balance_write_ptr_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_enc_balance_max_fullness_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_enc_balance_max_fullness_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_enc_balance_byte_ctr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_enc_balance_byte_ctr_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_shifter_size_bits_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_shifter_fullness_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_shifter_read_ptr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_shifter_write_ptr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_shifter_max_fullness_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_shifter_byte_ctr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_se_size_size_bits_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_se_size_fullness_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_se_size_read_ptr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_se_size_write_ptr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_se_size_max_fullness_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_se_size_byte_ctr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_enc_balance_mem_read_req",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_enc_balance_mem_read_addr",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 16
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_enc_balance_mem_read_valid",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_enc_balance_mem_read_data",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_enc_balance_mem_write_req",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_enc_balance_mem_write_addr",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 16
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_enc_balance_mem_write_ready",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_enc_balance_mem_write_data",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_enc_balance_mem_write_bit_mask",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_shifter_mem_read_req",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_shifter_mem_read_addr",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 16
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_shifter_mem_read_valid",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_shifter_mem_read_data",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_shifter_mem_write_req",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_shifter_mem_write_addr",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 16
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_shifter_mem_write_ready",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_shifter_mem_write_data",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_shifter_mem_write_bit_mask",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_se_size_mem_read_req",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_se_size_mem_read_addr",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 16
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_se_size_mem_read_valid",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_se_size_mem_read_data",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_se_size_mem_write_req",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_se_size_mem_write_addr",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 16
+      },
+      {
+        "direction": "output",
+        "name": "vlc_unit_se_size_mem_write_ready",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_se_size_mem_write_data",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "vlc_unit_se_size_mem_write_bit_mask",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "process_group_start",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "process_group_ready",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "process_group_done",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "process_group_domain_valid",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "process_group_fatal_error",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "process_group_is_encoder",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "process_group_num_ssps",
+        "signed": false,
+        "unpacked": "",
+        "width": 3
+      },
+      {
+        "direction": "output",
+        "name": "process_group_mux_word_size",
+        "signed": false,
+        "unpacked": "",
+        "width": 7
+      },
+      {
+        "direction": "output",
+        "name": "process_group_frame_capacity_bits",
+        "signed": false,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "process_group_post_mux_num_bits_in",
+        "signed": false,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "process_group_post_mux_num_bits_out",
+        "signed": false,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "process_group_enc_balance_size_bits_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "process_group_enc_balance_size_bits_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "process_group_enc_balance_fullness_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "process_group_enc_balance_fullness_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "process_group_enc_balance_read_ptr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "process_group_enc_balance_read_ptr_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "process_group_enc_balance_write_ptr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "process_group_enc_balance_write_ptr_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "process_group_enc_balance_max_fullness_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "process_group_enc_balance_max_fullness_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "process_group_enc_balance_byte_ctr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "process_group_enc_balance_byte_ctr_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "process_group_enc_balance_mem_read_req",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "input",
+        "name": "process_group_enc_balance_mem_read_addr",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 16
+      },
+      {
+        "direction": "output",
+        "name": "process_group_enc_balance_mem_read_valid",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "output",
+        "name": "process_group_enc_balance_mem_read_data",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "process_group_enc_balance_mem_write_req",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "input",
+        "name": "process_group_enc_balance_mem_write_addr",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 16
+      },
+      {
+        "direction": "output",
+        "name": "process_group_enc_balance_mem_write_ready",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "input",
+        "name": "process_group_enc_balance_mem_write_data",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "process_group_enc_balance_mem_write_bit_mask",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "process_group_shifter_size_bits_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "process_group_shifter_size_bits_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "process_group_shifter_fullness_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "process_group_shifter_fullness_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "process_group_shifter_read_ptr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "process_group_shifter_read_ptr_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "process_group_shifter_write_ptr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "process_group_shifter_write_ptr_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "process_group_shifter_max_fullness_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "process_group_shifter_max_fullness_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "process_group_shifter_byte_ctr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "process_group_shifter_byte_ctr_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "process_group_shifter_mem_read_req",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "input",
+        "name": "process_group_shifter_mem_read_addr",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 16
+      },
+      {
+        "direction": "output",
+        "name": "process_group_shifter_mem_read_valid",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "output",
+        "name": "process_group_shifter_mem_read_data",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "process_group_shifter_mem_write_req",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "input",
+        "name": "process_group_shifter_mem_write_addr",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 16
+      },
+      {
+        "direction": "output",
+        "name": "process_group_shifter_mem_write_ready",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "input",
+        "name": "process_group_shifter_mem_write_data",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "process_group_shifter_mem_write_bit_mask",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "process_group_se_size_size_bits_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "process_group_se_size_size_bits_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "process_group_se_size_fullness_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "process_group_se_size_fullness_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "process_group_se_size_read_ptr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "process_group_se_size_read_ptr_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "process_group_se_size_write_ptr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "process_group_se_size_write_ptr_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "process_group_se_size_max_fullness_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "process_group_se_size_max_fullness_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "process_group_se_size_byte_ctr_in",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "process_group_se_size_byte_ctr_out",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "process_group_se_size_mem_read_req",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "input",
+        "name": "process_group_se_size_mem_read_addr",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 16
+      },
+      {
+        "direction": "output",
+        "name": "process_group_se_size_mem_read_valid",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "output",
+        "name": "process_group_se_size_mem_read_data",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "process_group_se_size_mem_write_req",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "input",
+        "name": "process_group_se_size_mem_write_addr",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 16
+      },
+      {
+        "direction": "output",
+        "name": "process_group_se_size_mem_write_ready",
+        "signed": false,
+        "unpacked": "",
+        "width": 4
+      },
+      {
+        "direction": "input",
+        "name": "process_group_se_size_mem_write_data",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "process_group_se_size_mem_write_bit_mask",
+        "signed": false,
+        "unpacked": "[0:3]",
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "process_group_frame_mem_write_req",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "process_group_frame_mem_write_addr",
+        "signed": false,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "process_group_frame_mem_write_ready",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "process_group_frame_mem_write_data",
+        "signed": false,
+        "unpacked": "",
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "process_group_frame_mem_write_bit_mask",
+        "signed": false,
+        "unpacked": "",
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "frame_mem_write_req",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "frame_mem_write_addr",
+        "signed": false,
+        "unpacked": "",
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "frame_mem_write_ready",
+        "signed": false,
+        "unpacked": "",
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "frame_mem_write_data",
+        "signed": false,
+        "unpacked": "",
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "frame_mem_write_bit_mask",
+        "signed": false,
+        "unpacked": "",
+        "width": 8
+      }
+    ]
+  },
+  "obligations": [
+    "compose the pinned VLCUnit and ProcessGroupEnc modules in the Verilator C adapter",
+    "compare full state/FIFO/frame write footprints against the C source",
+    "exercise legal and illegal finite-bound domains",
+    "human review before promotion; no promotion is performed by this generator"
+  ],
+  "origin": "tool_discovered_encode_coverage_structural_sequential_parent",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "rtl": {
+    "candidate_sha256": "25b4d466075fb8509118fb620b02af44e51565fa8359ecdff60186c527b09d19",
+    "module": "vlc_group_encode_fsm"
+  },
+  "schema_version": 1,
+  "selection": {
+    "basis": [
+      "positive Encode-phase execution coverage",
+      "four-parameter config/state/output-pointer signature",
+      "Clang state/config read and write footprint",
+      "structural VLCUnit and ProcessGroupEnc callee roles",
+      "source-order call locations for units, SE-size FIFO, and mux processing",
+      "completion/accounting markers after the child calls",
+      "function spelling is traceability only, not an admission predicate"
+    ],
+    "execution_count": 131328,
+    "source_order_evidence": {
+      "fifo_put": [
+        1759,
+        1777
+      ],
+      "process_group": [
+        1766,
+        1784
+      ],
+      "vlc_unit": [
+        1754,
+        1774
+      ]
+    },
+    "structural_evidence": [
+      "void-four-parameter-config-state-output-pointer-signature",
+      "seven-source-loop-facts",
+      "units-per-group-loop-bound",
+      "ssp-loop-bound",
+      "state-read:bufferFullness",
+      "state-read:encBalanceFifo",
+      "state-read:groupCount",
+      "state-read:maxSeSize",
+      "state-read:numBits",
+      "state-read:numBitsChunk",
+      "state-read:numSsps",
+      "state-read:pixelCount",
+      "state-read:pixelsInGroup",
+      "state-read:prevNumBits",
+      "state-read:primaryQp",
+      "state-read:quantizedResidual",
+      "state-read:seSizeFifo",
+      "state-read:sliceWidth",
+      "state-read:unitsPerGroup",
+      "config-read:bits_per_component",
+      "config-read:bits_per_pixel",
+      "config-read:chunk_size",
+      "config-read:initial_xmit_delay",
+      "config-read:mux_word_size",
+      "config-read:rcb_bits",
+      "config-read:vbr_enable",
+      "state-write:bufferFullness",
+      "state-write:codedGroupSize",
+      "state-write:forceMpp",
+      "state-write:groupCountLine",
+      "state-write:midpointSelected",
+      "state-write:prevNumBits",
+      "state-write:prevPrimaryQp",
+      "source-order-unit-then-se-size-fifo-then-process-group",
+      "completion-accounting-after-process-group",
+      "source-state-effects-and-completion-markers",
+      "native-422-branch-is-source-disabled"
+    ],
+    "structural_score": 90
+  },
+  "semantics": {
+    "bindings": {
+      "completion": "done",
+      "frame_write_event": "frame_mem_write_req",
+      "process_child_role": "process_group",
+      "se_size_fifo_write": "se_size_mem_write_req",
+      "unit_child_role": "vlc_unit"
+    },
+    "composition_reduction": "child modules are hash-pinned and exposed through external transaction/state/memory adapters; no child source is inlined or represented as absorbed",
+    "finite_bounds": {
+      "max_cycles": 4096,
+      "max_se_size": 68,
+      "max_ssps": 4,
+      "max_units": 4
+    },
+    "kind": "vlc_group_encode_fsm",
+    "legal_domain": {
+      "child_domain_valid_required": true,
+      "mux_word_size": [
+        48,
+        64
+      ],
+      "num_ssps": [
+        3,
+        4
+      ],
+      "se_size_delta": [
+        0,
+        68
+      ],
+      "units_per_group": [
+        3,
+        4
+      ]
+    },
+    "state_transition": "bounded sequential encoder parent with one ordered VLCUnit transaction per active unit, SE-size FIFO accounting, optional ProcessGroupEnc, and final group accounting"
+  },
+  "source_order": [
+    "clear midpointSelected for active units",
+    "capture encBalanceFifo fullness before any VLCUnit call",
+    "set prevNumBits and compute forceMpp",
+    "for unit=0..unitsPerGroup-1: call VLCUnit and commit its state snapshot",
+    "for ssp=0..numSsps-1: fifo_put_bits(seSizeFifo, encBalance delta, 8)",
+    "if groupCount > mux_word_size + (4 * bits_per_component + 4) - 3: call ProcessGroupEnc",
+    "native 4:2:2 second pass is excluded because the source predicate is if(0)",
+    "update bufferFullness, codedGroupSize, prevPrimaryQp, and groupCountLine"
+  ],
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

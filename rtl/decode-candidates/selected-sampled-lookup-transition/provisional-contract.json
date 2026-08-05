@@ -1,0 +1,307 @@
+{
+  "contract_id": "historylookup_decode_transition",
+  "function": {
+    "clang_usr": "c:@F@HistoryLookup",
+    "name": "HistoryLookup",
+    "parameters": [
+      {
+        "name": "dsc_cfg",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_cfg_t *"
+      },
+      {
+        "name": "dsc_state",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_state_t *"
+      },
+      {
+        "name": "entry",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "p",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "unsigned int *"
+      },
+      {
+        "name": "hPos",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "first_line_flag",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "is_odd_line",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      }
+    ],
+    "return_type": "void",
+    "source_body_sha256": "3cc42cbdb6b767e87040250762060e6e2b5463788416019111ac9e13ef4fcd5c",
+    "source_file": "dsc_codec.c",
+    "source_span": {
+      "end_line": 600,
+      "start_line": 543
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "name": "native_420",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "native_422",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "entry",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "direction": "input",
+        "name": "first_line_flag",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "is_odd_line",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "num_components",
+        "signed": false,
+        "width": 3
+      },
+      {
+        "direction": "input",
+        "name": "history_0",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_1",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_2",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_3",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "native_base_0",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "native_base_1",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "native_base_2",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "native_base_3",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "native_base1_0",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "native_base1_1",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "native_base1_2",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "native_base1_3",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "simple_tap_0",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "simple_tap_1",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "simple_tap_2",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "p_0_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "p_1_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "p_2_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "p_3_out",
+        "signed": false,
+        "width": 32
+      }
+    ]
+  },
+  "obligations": [
+    "full-frame Decode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "full-frame Encode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "human review of sampled address adapter and fixed output extent before promotion"
+  ],
+  "origin": "tool_discovered_decoder_runtime_transition",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "schema_version": 2,
+  "selection": {
+    "basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "decode_execution_count": 9471828,
+    "shape_evidence": {
+      "complete_for_visible_literal_calls": false,
+      "evidence": "fixed-extent sampled lookup transition from Clang facts",
+      "maximum": null,
+      "values": []
+    }
+  },
+  "semantics": {
+    "bindings": {
+      "config_parameter": "dsc_cfg",
+      "entry_parameter": "entry",
+      "first_line_parameter": "first_line_flag",
+      "history_field": "history",
+      "history_pixels_field": "pixels",
+      "history_ports": [
+        "history_0",
+        "history_1",
+        "history_2",
+        "history_3"
+      ],
+      "horizontal_position_parameter": "hPos",
+      "native_420_field": "native_420",
+      "native_422_field": "native_422",
+      "native_base1_ports": [
+        "native_base1_0",
+        "native_base1_1",
+        "native_base1_2",
+        "native_base1_3"
+      ],
+      "native_base_ports": [
+        "native_base_0",
+        "native_base_1",
+        "native_base_2",
+        "native_base_3"
+      ],
+      "num_components_field": "numComponents",
+      "odd_line_parameter": "is_odd_line",
+      "output_parameter": "p",
+      "output_ports": [
+        "p_0_out",
+        "p_1_out",
+        "p_2_out",
+        "p_3_out"
+      ],
+      "pixels_in_group_field": "pixelsInGroup",
+      "prev_line_field": "prevLine",
+      "simple_tap_ports": [
+        "simple_tap_0",
+        "simple_tap_1",
+        "simple_tap_2"
+      ],
+      "slice_width_field": "sliceWidth",
+      "state_parameter": "dsc_state"
+    },
+    "constants": {
+      "component_count": 4,
+      "ich_bits": 5,
+      "ich_pixels_above": 7,
+      "ich_size": 32,
+      "padding_left": 5
+    },
+    "kind": "sampled_lookup_transition",
+    "legal_domain": {
+      "entry": [
+        0,
+        31
+      ],
+      "flags": [
+        0,
+        1
+      ],
+      "num_components": [
+        3,
+        4
+      ],
+      "pixels_in_group_positive": true,
+      "sample_width": 32
+    },
+    "state_transition": "select four output words from sampled history or clamped previous-line taps"
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

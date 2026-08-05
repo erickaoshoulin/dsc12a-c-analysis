@@ -1,0 +1,1090 @@
+{
+  "contract_id": "ratecontrol_decode_transition",
+  "dependencies": [
+    {
+      "contract_file": "rtl/decode-candidates/selected-scalar-memory-transition/provisional-contract.json",
+      "contract_id": "removebitsencoderbuffer_decode_transition",
+      "contract_sha256": "cdca9ed54ebd6a4c9b55d72e1b75e8ee57ab11e51e835a3b6a5b7fe4819e95e9",
+      "function": "RemoveBitsEncoderBuffer",
+      "memory_write_disabled_by_decoder_specialization": true,
+      "module": "removebitsencoderbuffer_decode_transition",
+      "module_file": "rtl/decode-candidates/selected-scalar-memory-transition/candidate_01.sv",
+      "module_sha256": "0209ac6b819161e4d8f0a0cfd91fd4312b79ca19917be5c3321fa4aab70c6385",
+      "role": "remove_one_pixel_bits"
+    }
+  ],
+  "function": {
+    "clang_usr": "c:@F@RateControl",
+    "name": "RateControl",
+    "parameters": [
+      {
+        "name": "dsc_cfg",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_cfg_t *"
+      },
+      {
+        "name": "dsc_state",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_state_t *"
+      },
+      {
+        "name": "throttle_offset",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "bpg_offset",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "group_count",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "scale",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "group_size",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      }
+    ],
+    "return_type": "void",
+    "source_body_sha256": "e63553446899087e82189527bc23341531452f1e85d34d38048434d69d06d69d",
+    "source_file": "dsc_codec.c",
+    "source_span": {
+      "end_line": 1469,
+      "start_line": 1242
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "name": "throttle_offset",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "bpg_offset",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "group_count",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "scale",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "group_size",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_bits_per_component",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_bits_per_pixel",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_chunk_size",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_dsc_version_minor",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_initial_xmit_delay",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_native_420",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_native_422",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_rc_edge_factor",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_rc_model_size",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_rc_quant_incr_limit0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_rc_quant_incr_limit1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_rc_tgt_offset_hi",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_rc_tgt_offset_lo",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_rcb_bits",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_vbr_enable",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_bitsavemode",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_bitsclamped",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_bpgfracaccum",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_bufferfullness",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_chunkcount",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_chunkpixeltimes",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_codedgroupsize",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_erroroccurred",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_firstflat",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichselected",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_isencoder",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_mppstate",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_numbitschunk",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pixelcount",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_prevqp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_prevrange",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_rcsizegroup",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_slicewidth",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_stqp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unitspergroup",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_vpos",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpnt_bit_depth_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpnt_bit_depth_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_predicted_size_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_predicted_size_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_predicted_size_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_predicted_size_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_rc_size_unit_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_rc_size_unit_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_rc_size_unit_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_rc_size_unit_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_use_midpoint_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_use_midpoint_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_use_midpoint_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_use_midpoint_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_rc_buf_thresh_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_rc_buf_thresh_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_rc_buf_thresh_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_rc_buf_thresh_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_rc_buf_thresh_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_rc_buf_thresh_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_rc_buf_thresh_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_rc_buf_thresh_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_rc_buf_thresh_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_rc_buf_thresh_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_rc_buf_thresh_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_rc_buf_thresh_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_rc_buf_thresh_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_rc_buf_thresh_13",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_min_qp_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_min_qp_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_min_qp_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_min_qp_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_min_qp_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_min_qp_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_min_qp_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_min_qp_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_min_qp_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_min_qp_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_min_qp_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_min_qp_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_min_qp_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_min_qp_13",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_min_qp_14",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_max_qp_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_max_qp_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_max_qp_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_max_qp_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_max_qp_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_max_qp_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_max_qp_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_max_qp_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_max_qp_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_max_qp_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_max_qp_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_max_qp_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_max_qp_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_max_qp_13",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_max_qp_14",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_bpg_offset_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_bpg_offset_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_bpg_offset_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_bpg_offset_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_bpg_offset_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_bpg_offset_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_bpg_offset_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_bpg_offset_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_bpg_offset_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_bpg_offset_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_bpg_offset_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_bpg_offset_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_bpg_offset_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_bpg_offset_13",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_range_bpg_offset_14",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "domain_valid",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "state_bitsavemode_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_bitsclamped_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_bpgfracaccum_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_bufferfullness_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_chunkcount_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_chunkpixeltimes_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_erroroccurred_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_mppstate_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_numbitschunk_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pixelcount_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_prevqp_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_prevrange_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_rcsizegroup_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_stqp_out",
+        "signed": true,
+        "width": 32
+      }
+    ]
+  },
+  "obligations": [
+    "full-frame Decode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "prove encoder calls and chunk-memory writes are outside this specialization",
+    "human review of signed RC arithmetic, delayed range selection, and QP priority before promotion"
+  ],
+  "origin": "tool_discovered_decoder_runtime_transition",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "schema_version": 2,
+  "selection": {
+    "basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "decode_execution_count": 131328,
+    "shape_evidence": {
+      "callee": "RemoveBitsEncoderBuffer",
+      "callee_candidate_file": "/private/tmp/dsc12a-regression-dashboard/rtl/decode-candidates/selected-scalar-memory-transition/candidate_01.sv",
+      "callee_candidate_sha256": "0209ac6b819161e4d8f0a0cfd91fd4312b79ca19917be5c3321fa4aab70c6385",
+      "callee_contract_file": "/private/tmp/dsc12a-regression-dashboard/rtl/decode-candidates/selected-scalar-memory-transition/provisional-contract.json",
+      "callee_contract_id": "removebitsencoderbuffer_decode_transition",
+      "callee_contract_sha256": "cdca9ed54ebd6a4c9b55d72e1b75e8ee57ab11e51e835a3b6a5b7fe4819e95e9",
+      "complete_for_visible_literal_calls": false,
+      "evidence": "bounded three-pixel decoder rate-control transition composed from a hash-bound scalar-memory buffer-removal transition",
+      "maximum": null,
+      "values": []
+    }
+  },
+  "semantics": {
+    "bindings": {
+      "argument_ports": {
+        "bpg_offset": "bpg_offset",
+        "group_count": "group_count",
+        "group_size": "group_size",
+        "scale": "scale",
+        "throttle_offset": "throttle_offset"
+      },
+      "bpg_parameter": "bpg_offset",
+      "config_parameter": "dsc_cfg",
+      "config_ports": {
+        "bits_per_component": "cfg_bits_per_component",
+        "bits_per_pixel": "cfg_bits_per_pixel",
+        "chunk_size": "cfg_chunk_size",
+        "dsc_version_minor": "cfg_dsc_version_minor",
+        "initial_xmit_delay": "cfg_initial_xmit_delay",
+        "native_420": "cfg_native_420",
+        "native_422": "cfg_native_422",
+        "rc_edge_factor": "cfg_rc_edge_factor",
+        "rc_model_size": "cfg_rc_model_size",
+        "rc_quant_incr_limit0": "cfg_rc_quant_incr_limit0",
+        "rc_quant_incr_limit1": "cfg_rc_quant_incr_limit1",
+        "rc_tgt_offset_hi": "cfg_rc_tgt_offset_hi",
+        "rc_tgt_offset_lo": "cfg_rc_tgt_offset_lo",
+        "rcb_bits": "cfg_rcb_bits",
+        "vbr_enable": "cfg_vbr_enable"
+      },
+      "depth_ports": [
+        "state_cpnt_bit_depth_0",
+        "state_cpnt_bit_depth_1"
+      ],
+      "group_count_parameter": "group_count",
+      "group_size_parameter": "group_size",
+      "inactive_encoder_state_fields": [
+        "midpointSelected"
+      ],
+      "predicted_ports": [
+        "state_predicted_size_0",
+        "state_predicted_size_1",
+        "state_predicted_size_2",
+        "state_predicted_size_3"
+      ],
+      "range_parameter_field": "rc_range_parameters",
+      "range_ports": {
+        "range_bpg_offset": [
+          "cfg_range_bpg_offset_0",
+          "cfg_range_bpg_offset_1",
+          "cfg_range_bpg_offset_2",
+          "cfg_range_bpg_offset_3",
+          "cfg_range_bpg_offset_4",
+          "cfg_range_bpg_offset_5",
+          "cfg_range_bpg_offset_6",
+          "cfg_range_bpg_offset_7",
+          "cfg_range_bpg_offset_8",
+          "cfg_range_bpg_offset_9",
+          "cfg_range_bpg_offset_10",
+          "cfg_range_bpg_offset_11",
+          "cfg_range_bpg_offset_12",
+          "cfg_range_bpg_offset_13",
+          "cfg_range_bpg_offset_14"
+        ],
+        "range_max_qp": [
+          "cfg_range_max_qp_0",
+          "cfg_range_max_qp_1",
+          "cfg_range_max_qp_2",
+          "cfg_range_max_qp_3",
+          "cfg_range_max_qp_4",
+          "cfg_range_max_qp_5",
+          "cfg_range_max_qp_6",
+          "cfg_range_max_qp_7",
+          "cfg_range_max_qp_8",
+          "cfg_range_max_qp_9",
+          "cfg_range_max_qp_10",
+          "cfg_range_max_qp_11",
+          "cfg_range_max_qp_12",
+          "cfg_range_max_qp_13",
+          "cfg_range_max_qp_14"
+        ],
+        "range_min_qp": [
+          "cfg_range_min_qp_0",
+          "cfg_range_min_qp_1",
+          "cfg_range_min_qp_2",
+          "cfg_range_min_qp_3",
+          "cfg_range_min_qp_4",
+          "cfg_range_min_qp_5",
+          "cfg_range_min_qp_6",
+          "cfg_range_min_qp_7",
+          "cfg_range_min_qp_8",
+          "cfg_range_min_qp_9",
+          "cfg_range_min_qp_10",
+          "cfg_range_min_qp_11",
+          "cfg_range_min_qp_12",
+          "cfg_range_min_qp_13",
+          "cfg_range_min_qp_14"
+        ]
+      },
+      "rc_size_ports": [
+        "state_rc_size_unit_0",
+        "state_rc_size_unit_1",
+        "state_rc_size_unit_2",
+        "state_rc_size_unit_3"
+      ],
+      "scale_parameter": "scale",
+      "state_output_ports": {
+        "bitSaveMode": "state_bitsavemode_out",
+        "bitsClamped": "state_bitsclamped_out",
+        "bpgFracAccum": "state_bpgfracaccum_out",
+        "bufferFullness": "state_bufferfullness_out",
+        "chunkCount": "state_chunkcount_out",
+        "chunkPixelTimes": "state_chunkpixeltimes_out",
+        "errorOccurred": "state_erroroccurred_out",
+        "mppState": "state_mppstate_out",
+        "numBitsChunk": "state_numbitschunk_out",
+        "pixelCount": "state_pixelcount_out",
+        "prevQp": "state_prevqp_out",
+        "prevRange": "state_prevrange_out",
+        "rcSizeGroup": "state_rcsizegroup_out",
+        "stQp": "state_stqp_out"
+      },
+      "state_parameter": "dsc_state",
+      "state_ports": {
+        "bitSaveMode": "state_bitsavemode",
+        "bitsClamped": "state_bitsclamped",
+        "bpgFracAccum": "state_bpgfracaccum",
+        "bufferFullness": "state_bufferfullness",
+        "chunkCount": "state_chunkcount",
+        "chunkPixelTimes": "state_chunkpixeltimes",
+        "codedGroupSize": "state_codedgroupsize",
+        "errorOccurred": "state_erroroccurred",
+        "firstFlat": "state_firstflat",
+        "ichSelected": "state_ichselected",
+        "isEncoder": "state_isencoder",
+        "mppState": "state_mppstate",
+        "numBitsChunk": "state_numbitschunk",
+        "pixelCount": "state_pixelcount",
+        "prevQp": "state_prevqp",
+        "prevRange": "state_prevrange",
+        "rcSizeGroup": "state_rcsizegroup",
+        "sliceWidth": "state_slicewidth",
+        "stQp": "state_stqp",
+        "unitsPerGroup": "state_unitspergroup",
+        "vPos": "state_vpos"
+      },
+      "threshold_field": "rc_buf_thresh",
+      "threshold_ports": [
+        "cfg_rc_buf_thresh_0",
+        "cfg_rc_buf_thresh_1",
+        "cfg_rc_buf_thresh_2",
+        "cfg_rc_buf_thresh_3",
+        "cfg_rc_buf_thresh_4",
+        "cfg_rc_buf_thresh_5",
+        "cfg_rc_buf_thresh_6",
+        "cfg_rc_buf_thresh_7",
+        "cfg_rc_buf_thresh_8",
+        "cfg_rc_buf_thresh_9",
+        "cfg_rc_buf_thresh_10",
+        "cfg_rc_buf_thresh_11",
+        "cfg_rc_buf_thresh_12",
+        "cfg_rc_buf_thresh_13"
+      ],
+      "throttle_parameter": "throttle_offset",
+      "use_midpoint_ports": [
+        "state_use_midpoint_0",
+        "state_use_midpoint_1",
+        "state_use_midpoint_2",
+        "state_use_midpoint_3"
+      ]
+    },
+    "composition_reduction": "the hash-bound RemoveBitsEncoderBuffer transition is instantiated three times; its chunk-memory write is unreachable for isEncoder==0",
+    "constants": {
+      "max_remove_stages": 3,
+      "max_units": 4,
+      "num_buf_ranges": 15,
+      "overflow_avoid_native_422": -224,
+      "overflow_avoid_other": -172,
+      "print_debug_rc": 0,
+      "rc_scale_binary_point": 3,
+      "samples_per_unit": 3
+    },
+    "kind": "bounded_rate_control_decode_transition",
+    "legal_domain": {
+      "chunk_pixel_times_before_slice_width": true,
+      "component_bit_depth": [
+        8,
+        16
+      ],
+      "decoder_only": true,
+      "dsc_version_minor": [
+        1,
+        2
+      ],
+      "group_size": [
+        1,
+        3
+      ],
+      "integer_arithmetic": "signed 32-bit C-compatible",
+      "native_modes_are_boolean_and_mutually_exclusive": true,
+      "previous_range": [
+        0,
+        14
+      ],
+      "slice_width_positive": true,
+      "units_per_group": [
+        3,
+        4
+      ]
+    },
+    "specialization": {
+      "state_is_encoder": 0
+    },
+    "state_transition": "chain zero to three pixel-removal stages, choose one of 15 RC ranges, update bit-save/MPP state, and emit all decoder scalar writes"
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

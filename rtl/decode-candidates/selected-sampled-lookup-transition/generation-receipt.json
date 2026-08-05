@@ -1,0 +1,26 @@
+{
+  "candidate": "candidate_01.sv",
+  "candidate_sha256": "247297547a72ffd176caea2bf7c90523c9ab5e4386a6cd912eea4bf128ed06d5",
+  "contract": "provisional-contract.json",
+  "contract_sha256": "7d629d8b2f37a025a4d2693a4791f63fa120106bcbf92407c9ca8d07a17b7231",
+  "promotion_status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW",
+  "schema_version": 1,
+  "selection": {
+    "callee_contract_id": null,
+    "clang_usr": "c:@F@HistoryLookup",
+    "execution_count": 9471828,
+    "human_review_required_before_promotion": true,
+    "literal_size_bound": {
+      "complete_for_visible_literal_calls": false,
+      "evidence": "fixed-extent sampled lookup transition from Clang facts",
+      "maximum": null,
+      "values": []
+    },
+    "name": "HistoryLookup",
+    "provisional_max_bits": null,
+    "selection_basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "semantics_kind": "sampled_lookup_transition",
+    "window_bytes": 0
+  },
+  "status": "PASS"
+}

@@ -1,0 +1,97 @@
+{
+  "candidate": "candidate_01.sv",
+  "contract_id": "ichdecision_encode_transition",
+  "match_count": 1,
+  "matches": [
+    {
+      "adjusted_size_parameter": "adj_predicted_size",
+      "alternate_prefix_parameter": "alt_pfx",
+      "alternate_size_parameter": "alt_size_to_generate",
+      "clang_usr": "c:@F@IchDecision",
+      "config_parameter": "dsc_cfg",
+      "coverage": {
+        "branch_coverage_percent": 50.0,
+        "covered": true,
+        "end_line": 533,
+        "execution_count": 20889,
+        "line_coverage_percent": 74.419,
+        "name": "IchDecision",
+        "raw_summary": {
+          "branch_arm_count": 30,
+          "covered_branch_arm_count": 15,
+          "covered_line_region_count": 32,
+          "function_count": 1,
+          "function_covered": 1,
+          "line_region_count": 43
+        },
+        "region_coverage_percent": 74.419,
+        "source_file": "dsc_codec.c",
+        "start_line": 485
+      },
+      "dependencies": [
+        {
+          "contract_id": "estimatebitsforgroup",
+          "contract_sha256": "f3a24d1654cb6402c80f454a077b15bd885ed0c85849102b0c9720c0c917a483",
+          "function": "EstimateBitsForGroup",
+          "module_sha256": "da8e09494b9dad38a4591c81c21adf445cc0b92cdaf4eabc1604aa1ca2db3f9f"
+        },
+        {
+          "contract_id": "isorigflathindex",
+          "contract_sha256": "d9b7a77df4ab02ab3d1b0eb6da19f15bca887f0c3c4a49454681e9370f175e60",
+          "function": "IsOrigFlatHIndex",
+          "module_sha256": "cfb707d7aa001c86145ecff6476c1fd36b7d2755ecabe5d5af41f817ea22d855"
+        },
+        {
+          "contract_id": "usingmidpoint",
+          "contract_sha256": "4390f41693ddfdfe4ecf2a390ca190dee4c13e5b5ea31f3790194d4bb3590ffd",
+          "function": "UsingMidpoint",
+          "module_sha256": "fc765032b32c15013196fa87328b8692da41071277c4bdd13ffb941c86132ab8"
+        },
+        {
+          "contract_id": "ceil_log2",
+          "contract_sha256": "b665f3832cfcbe811837bfa3f8a35e033760b5973b4f43af91629c59123682a5",
+          "function": "ceil_log2",
+          "module_sha256": "71784bb792966a7e48e98d35cc2e2c3f6052f1c17528ffe1b4256f805c9fda65"
+        }
+      ],
+      "estimate_callee": "EstimateBitsForGroup",
+      "execution_count": 20889,
+      "flat_callee": "IsOrigFlatHIndex",
+      "hpos_field": "hPos",
+      "ich_bits": 5,
+      "ich_indices_field": "ichIndicesInGroup",
+      "ich_lambda": 4,
+      "log_callee": "ceil_log2",
+      "max_error_field": "maxError",
+      "max_ich_error_field": "maxIchError",
+      "max_mid_error_field": "maxMidError",
+      "max_units": 4,
+      "midpoint_callee": "UsingMidpoint",
+      "name": "IchDecision",
+      "previous_ich_field": "prevIchSelected",
+      "selection_basis": [
+        "Encode runtime coverage reached the read-only decision",
+        "all four direct callees are hash-checked stable RTL components",
+        "callee ABI arities derive midpoint, estimate, flat-index, and logarithm roles",
+        "AST/source bindings derive every scalar and fixed four-lane error vector",
+        "three state-bounded loops are capped by the header maximum",
+        "no function-name allowlist is used"
+      ],
+      "semantics_kind": "bounded_ich_decision_transition",
+      "source_span": {
+        "end_line": 533,
+        "start_line": 484
+      },
+      "state_parameter": "dsc_state",
+      "unit_type_field": "unitCType",
+      "units_field": "unitsPerGroup",
+      "version_field": "dsc_version_minor"
+    }
+  ],
+  "promotion_status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW",
+  "schema_version": 1,
+  "selected_clang_usr": "c:@F@IchDecision",
+  "selected_function": "IchDecision",
+  "selection_policy": "highest Encode execution count among structural bounded bounded composed ICH decision matches; no function-name allowlist",
+  "status": "PASS"
+}

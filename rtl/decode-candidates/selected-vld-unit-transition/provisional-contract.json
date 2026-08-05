@@ -1,0 +1,1049 @@
+{
+  "contract_id": "vldunit_decode_transition",
+  "dependencies": [
+    {
+      "contract_file": "library/contracts/getqpadjpredsize.json",
+      "contract_id": "getqpadjpredsize",
+      "contract_sha256": "387615cddbe548b74c2a65060634ef252ec2c0993e1a360d85bdb7f82e9b7170",
+      "function": "GetQpAdjPredSize",
+      "module": "getqpadjpredsize",
+      "module_file": "library/rtl/getqpadjpredsize.sv",
+      "module_sha256": "a8a237d111078f013fa7c15edf430b37d8c58a60595b1082166f16b0334c24b4",
+      "role": "adjusted_prediction"
+    },
+    {
+      "contract_file": "library/contracts/escapecodesize.json",
+      "contract_id": "escapecodesize",
+      "contract_sha256": "d67fc78ecb166ca5529645709eb7b400decdb65faac492ebd02d486d1aa14544",
+      "function": "EscapeCodeSize",
+      "module": "escapecodesize",
+      "module_file": "library/rtl/escapecodesize.sv",
+      "module_sha256": "582d5e131e638e5a6aa4f9783cf1755b041f9369f9c8c84e57fb413845272167",
+      "role": "escape_size"
+    },
+    {
+      "contract_file": "library/contracts/isflatnessinfosent.json",
+      "contract_id": "isflatnessinfosent",
+      "contract_sha256": "fa60490ed384c2ad476c2123b07e5753391c5b923df4f70066bb2132fb518c3e",
+      "function": "IsFlatnessInfoSent",
+      "module": "isflatnessinfosent",
+      "module_file": "library/rtl/isflatnessinfosent.sv",
+      "module_sha256": "0a4b0d5ee2f45598e3ea1859102a42e3fa2ef66aba94e7049fc1d47876a5c07e",
+      "role": "flatness_sent"
+    },
+    {
+      "contract_file": "rtl/decode-candidates/selected-fifo-accounting-transition/provisional-contract.json",
+      "contract_id": "getbits_fifo_accounting_decode_transition",
+      "contract_sha256": "a94d294a60f60e0ac5366691dc0ebad3265a57eddbcb1a7bfdefeb5df79193ca",
+      "function": "GetBits",
+      "module": "getbits_fifo_accounting_decode_transition",
+      "module_file": "rtl/decode-candidates/selected-fifo-accounting-transition/candidate_01.sv",
+      "module_sha256": "0b114ab03469269e949567145482e8ebbe6380805d5d86668f8f67c93c6d5eb9",
+      "role": "get_bits"
+    },
+    {
+      "contract_file": "library/contracts/maxresidualsize.json",
+      "contract_id": "maxresidualsize",
+      "contract_sha256": "84e97590a3bd35586be554aee05a306a3390367b2324703e68f6f6beaf9a9714",
+      "function": "MaxResidualSize",
+      "module": "maxresidualsize",
+      "module_file": "library/rtl/maxresidualsize.sv",
+      "module_sha256": "cfdb54a0936d5bd70d45ddd9bcb20d05d99b73039a3789c1124ed564ae5aa65b",
+      "role": "max_residual"
+    },
+    {
+      "contract_file": "library/contracts/predictsize.json",
+      "contract_id": "predictsize",
+      "contract_sha256": "2feb60e2053707c6df943a8b469a4f761de1bce04631267b87da9fbf60f2b64f",
+      "function": "PredictSize",
+      "module": "predictsize",
+      "module_file": "library/rtl/predictsize.sv",
+      "module_sha256": "861239ab7f41e5c98845588cfa54631e2d4449920afe9cdbde2eae0920b09af7",
+      "role": "predict_size"
+    },
+    {
+      "contract_file": "library/contracts/mapqptoqlevel.json",
+      "contract_id": "mapqptoqlevel",
+      "contract_sha256": "9bbbf576bb551a7cf896d43f54fd6d3bf779c447bf4a87660ee63f302c8c191f",
+      "function": "MapQpToQlevel",
+      "module": "mapqptoqlevel",
+      "module_file": "library/rtl/mapqptoqlevel.sv",
+      "module_sha256": "5dda9dc25483193295e7af8abbd927b209f8e9715f2f4791864200f2fc0a3334",
+      "role": "qp_mapping"
+    },
+    {
+      "contract_file": "library/contracts/findresidualsize.json",
+      "contract_id": "findresidualsize",
+      "contract_sha256": "c80809ad3149bc843d4ac9cfbde3eb22275ff38d330871729232be8253912811",
+      "function": "FindResidualSize",
+      "module": "findresidualsize",
+      "module_file": "library/rtl/findresidualsize.sv",
+      "module_sha256": "a10d4649d371883b4bdfef25fc99448c5a719e937a93425900ddf00b26474073",
+      "role": "residual_size"
+    }
+  ],
+  "function": {
+    "clang_usr": "c:@F@VLDUnit",
+    "name": "VLDUnit",
+    "parameters": [
+      {
+        "name": "dsc_cfg",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_cfg_t *"
+      },
+      {
+        "name": "dsc_state",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_state_t *"
+      },
+      {
+        "name": "unit",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "quantized_residuals",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "int *"
+      },
+      {
+        "name": "byte_in_p",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "unsigned char **"
+      }
+    ],
+    "return_type": "void",
+    "source_body_sha256": "c14608075d6b742ae35f0f864662baa8b900ab83e5c2d04e4e50b1c898fdeb80",
+    "source_file": "dsc_codec.c",
+    "source_span": {
+      "end_line": 1981,
+      "start_line": 1808
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "name": "unit",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_bits_per_component",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_somewhat_flat_qp_thresh",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_dsc_version_minor",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_native_420",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_flatness_min_qp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_flatness_max_qp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_firstflat",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_flatnesstype",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_groupcount",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichindicesingroup",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichselected",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_prevfirstflat",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_previchselected",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_primaryqp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_prevprimaryqp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unitspergroup",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_numbits",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpntbitdepth_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpntbitdepth_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpntbitdepth_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpntbitdepth_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unitctype_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unitctype_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unitctype_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unitctype_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unitsspmap_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unitsspmap_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unitsspmap_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unitsspmap_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichindexunitmap_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichindexunitmap_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichindexunitmap_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichindexunitmap_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichindexunitmap_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichindexunitmap_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichlookup_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichlookup_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichlookup_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichlookup_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichlookup_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichlookup_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_predictedsize_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_predictedsize_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_predictedsize_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_predictedsize_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_rcsizeunit_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_rcsizeunit_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_rcsizeunit_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_rcsizeunit_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_usemidpoint_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_usemidpoint_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_usemidpoint_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_usemidpoint_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "qlevel_luma_primary",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "qlevel_chroma_primary",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "qlevel_luma_previous",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "qlevel_chroma_previous",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "quantized_residual_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "quantized_residual_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "quantized_residual_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_size",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_fullness",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_read_ptr",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_byte_0",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_byte_1",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_byte_2",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_byte_3",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_byte_4",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_byte_5",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_byte_6",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_byte_7",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_byte_8",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_byte_9",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_byte_10",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_byte_11",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_byte_12",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_byte_13",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_byte_14",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_byte_15",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_byte_16",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "domain_valid",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "state_firstflat_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_flatnesstype_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_ichselected_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_prevfirstflat_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_previchselected_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_numbits_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_ichlookup_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_ichlookup_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_ichlookup_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_ichlookup_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_ichlookup_4_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_ichlookup_5_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_predictedsize_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_predictedsize_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_predictedsize_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_predictedsize_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_rcsizeunit_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_rcsizeunit_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_rcsizeunit_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_rcsizeunit_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_usemidpoint_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_usemidpoint_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_usemidpoint_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_usemidpoint_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "quantized_residual_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "quantized_residual_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "quantized_residual_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_lane_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_fullness_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_read_ptr_out",
+        "signed": true,
+        "width": 32
+      }
+    ]
+  },
+  "obligations": [
+    "full-frame Decode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "full-frame Encode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "human review of prefix bound, FIFO read recurrence, early returns, and complete outputs before promotion"
+  ],
+  "origin": "tool_discovered_decoder_runtime_transition",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "schema_version": 2,
+  "selection": {
+    "basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "decode_execution_count": 404352,
+    "shape_evidence": {
+      "callee": "GetBits",
+      "callee_candidate_file": "/private/tmp/dsc12a-regression-dashboard/rtl/decode-candidates/selected-fifo-accounting-transition/candidate_01.sv",
+      "callee_candidate_sha256": "0b114ab03469269e949567145482e8ebbe6380805d5d86668f8f67c93c6d5eb9",
+      "callee_contract_file": "/private/tmp/dsc12a-regression-dashboard/rtl/decode-candidates/selected-fifo-accounting-transition/provisional-contract.json",
+      "callee_contract_id": "getbits_fifo_accounting_decode_transition",
+      "callee_contract_sha256": "a94d294a60f60e0ac5366691dc0ebad3265a57eddbcb1a7bfdefeb5df79193ca",
+      "complete_for_visible_literal_calls": false,
+      "evidence": "bounded decoder syntax-unit transition composed from accepted pure leaves and a verified FIFO accounting transition",
+      "maximum": null,
+      "values": []
+    }
+  },
+  "semantics": {
+    "bindings": {
+      "array_input_ports": {
+        "cpntBitDepth": [
+          "state_cpntbitdepth_0",
+          "state_cpntbitdepth_1",
+          "state_cpntbitdepth_2",
+          "state_cpntbitdepth_3"
+        ],
+        "ichIndexUnitMap": [
+          "state_ichindexunitmap_0",
+          "state_ichindexunitmap_1",
+          "state_ichindexunitmap_2",
+          "state_ichindexunitmap_3",
+          "state_ichindexunitmap_4",
+          "state_ichindexunitmap_5"
+        ],
+        "ichLookup": [
+          "state_ichlookup_0",
+          "state_ichlookup_1",
+          "state_ichlookup_2",
+          "state_ichlookup_3",
+          "state_ichlookup_4",
+          "state_ichlookup_5"
+        ],
+        "predictedSize": [
+          "state_predictedsize_0",
+          "state_predictedsize_1",
+          "state_predictedsize_2",
+          "state_predictedsize_3"
+        ],
+        "rcSizeUnit": [
+          "state_rcsizeunit_0",
+          "state_rcsizeunit_1",
+          "state_rcsizeunit_2",
+          "state_rcsizeunit_3"
+        ],
+        "unitCType": [
+          "state_unitctype_0",
+          "state_unitctype_1",
+          "state_unitctype_2",
+          "state_unitctype_3"
+        ],
+        "unitSspMap": [
+          "state_unitsspmap_0",
+          "state_unitsspmap_1",
+          "state_unitsspmap_2",
+          "state_unitsspmap_3"
+        ],
+        "useMidpoint": [
+          "state_usemidpoint_0",
+          "state_usemidpoint_1",
+          "state_usemidpoint_2",
+          "state_usemidpoint_3"
+        ]
+      },
+      "array_output_ports": {
+        "ichLookup": [
+          "state_ichlookup_0_out",
+          "state_ichlookup_1_out",
+          "state_ichlookup_2_out",
+          "state_ichlookup_3_out",
+          "state_ichlookup_4_out",
+          "state_ichlookup_5_out"
+        ],
+        "predictedSize": [
+          "state_predictedsize_0_out",
+          "state_predictedsize_1_out",
+          "state_predictedsize_2_out",
+          "state_predictedsize_3_out"
+        ],
+        "rcSizeUnit": [
+          "state_rcsizeunit_0_out",
+          "state_rcsizeunit_1_out",
+          "state_rcsizeunit_2_out",
+          "state_rcsizeunit_3_out"
+        ],
+        "useMidpoint": [
+          "state_usemidpoint_0_out",
+          "state_usemidpoint_1_out",
+          "state_usemidpoint_2_out",
+          "state_usemidpoint_3_out"
+        ]
+      },
+      "byte_pointer_parameter": "byte_in_p",
+      "config_parameter": "dsc_cfg",
+      "config_ports": {
+        "bits_per_component": "cfg_bits_per_component",
+        "dsc_version_minor": "cfg_dsc_version_minor",
+        "flatness_max_qp": "cfg_flatness_max_qp",
+        "flatness_min_qp": "cfg_flatness_min_qp",
+        "native_420": "cfg_native_420",
+        "somewhat_flat_qp_thresh": "cfg_somewhat_flat_qp_thresh"
+      },
+      "fifo_array_field": "shifter",
+      "fifo_data_ports": [
+        "fifo_byte_0",
+        "fifo_byte_1",
+        "fifo_byte_2",
+        "fifo_byte_3",
+        "fifo_byte_4",
+        "fifo_byte_5",
+        "fifo_byte_6",
+        "fifo_byte_7",
+        "fifo_byte_8",
+        "fifo_byte_9",
+        "fifo_byte_10",
+        "fifo_byte_11",
+        "fifo_byte_12",
+        "fifo_byte_13",
+        "fifo_byte_14",
+        "fifo_byte_15",
+        "fifo_byte_16"
+      ],
+      "fifo_output_ports": {
+        "fullness": "fifo_fullness_out",
+        "lane": "fifo_lane_out",
+        "read_ptr": "fifo_read_ptr_out"
+      },
+      "fifo_ports": {
+        "fullness": "fifo_fullness",
+        "read_ptr": "fifo_read_ptr",
+        "size": "fifo_size"
+      },
+      "qlevel_ports": {
+        "chroma_previous": "qlevel_chroma_previous",
+        "chroma_primary": "qlevel_chroma_primary",
+        "luma_previous": "qlevel_luma_previous",
+        "luma_primary": "qlevel_luma_primary"
+      },
+      "quant_table_chroma_field": "quantTableChroma",
+      "quant_table_luma_field": "quantTableLuma",
+      "residual_input_ports": [
+        "quantized_residual_0",
+        "quantized_residual_1",
+        "quantized_residual_2"
+      ],
+      "residual_output_ports": [
+        "quantized_residual_0_out",
+        "quantized_residual_1_out",
+        "quantized_residual_2_out"
+      ],
+      "residual_parameter": "quantized_residuals",
+      "state_output_ports": {
+        "firstFlat": "state_firstflat_out",
+        "flatnessType": "state_flatnesstype_out",
+        "ichSelected": "state_ichselected_out",
+        "numBits": "state_numbits_out",
+        "prevFirstFlat": "state_prevfirstflat_out",
+        "prevIchSelected": "state_previchselected_out"
+      },
+      "state_parameter": "dsc_state",
+      "state_ports": {
+        "firstFlat": "state_firstflat",
+        "flatnessType": "state_flatnesstype",
+        "groupCount": "state_groupcount",
+        "ichIndicesInGroup": "state_ichindicesingroup",
+        "ichSelected": "state_ichselected",
+        "numBits": "state_numbits",
+        "prevFirstFlat": "state_prevfirstflat",
+        "prevIchSelected": "state_previchselected",
+        "prevPrimaryQp": "state_prevprimaryqp",
+        "primaryQp": "state_primaryqp",
+        "unitsPerGroup": "state_unitspergroup"
+      },
+      "unit_parameter": "unit",
+      "unit_port": "unit"
+    },
+    "composition_reduction": "accepted pure leaf RTL supplies mapping/size predicates; the hash-bound GetBits contract is inlined over a complete selected-FIFO image",
+    "constants": {
+      "fifo_bytes": 17,
+      "groups_per_supergroup": 4,
+      "ich_bits": 5,
+      "max_ich_indices": 6,
+      "max_prefix_bits": 17,
+      "max_units": 4,
+      "print_debug_vlc": 0,
+      "samples_per_unit": 3
+    },
+    "kind": "bounded_vld_unit_transition",
+    "legal_domain": {
+      "bits_per_component": [
+        8,
+        16
+      ],
+      "byte_input_pointer_is_semantically_unused": true,
+      "fifo_fullness_covers_every_requested_bit": true,
+      "fifo_size_bits_at_most": 136,
+      "fifo_size_positive_multiple_of_8": true,
+      "ich_indices": [
+        0,
+        6
+      ],
+      "num_components": [
+        3,
+        4
+      ],
+      "prefix_unroll_bound": 17,
+      "previous_qp": [
+        0,
+        31
+      ],
+      "primary_qp": [
+        0,
+        31
+      ],
+      "unit": [
+        0,
+        3
+      ],
+      "units_per_group": [
+        3,
+        4
+      ]
+    },
+    "state_transition": "decode one syntax unit, consume the selected FIFO, and emit every written scalar/array plus the three residual outputs"
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

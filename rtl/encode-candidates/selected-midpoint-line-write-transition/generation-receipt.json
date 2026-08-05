@@ -1,0 +1,64 @@
+{
+  "candidate": "candidate_01.sv",
+  "contract_id": "updatemidpoint_encode_transition",
+  "match_count": 1,
+  "matches": [
+    {
+      "clang_usr": "c:@F@UpdateMidpoint",
+      "component_field": "unitCType",
+      "config_parameter": "dsc_cfg",
+      "coverage": {
+        "branch_coverage_percent": 87.5,
+        "covered": true,
+        "end_line": 899,
+        "execution_count": 131328,
+        "line_coverage_percent": 68.421,
+        "name": "UpdateMidpoint",
+        "raw_summary": {
+          "branch_arm_count": 8,
+          "covered_branch_arm_count": 7,
+          "covered_line_region_count": 13,
+          "function_count": 1,
+          "function_covered": 1,
+          "line_region_count": 19
+        },
+        "region_coverage_percent": 68.421,
+        "source_file": "dsc_codec.c",
+        "start_line": 876
+      },
+      "execution_count": 131328,
+      "hpos_parameter": "hPos",
+      "line_parameter": "currLine",
+      "max_units": 4,
+      "name": "UpdateMidpoint",
+      "padding_left": 5,
+      "pixels_per_group_field": "pixelsInGroup",
+      "reconstruction_field": "midpointRecon",
+      "samples_per_unit": 3,
+      "selected_field": "midpointSelected",
+      "selection_basis": [
+        "Encode runtime coverage reached the function",
+        "Clang found one scalar position and one write-through reconstructed-line parameter",
+        "AST found a fixed sample loop and a state-bounded unit loop",
+        "AST/source bindings derive all scalar, vector, matrix, component, address, and write-enable roles",
+        "header constants bound the complete write-sideband set",
+        "no function-name allowlist is used"
+      ],
+      "semantics_kind": "bounded_midpoint_line_write_transition",
+      "slice_width_field": "sliceWidth",
+      "source_span": {
+        "end_line": 899,
+        "start_line": 875
+      },
+      "state_parameter": "dsc_state",
+      "unit_start_field": "unitStartHPos",
+      "units_per_group_field": "unitsPerGroup"
+    }
+  ],
+  "promotion_status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW",
+  "schema_version": 1,
+  "selected_clang_usr": "c:@F@UpdateMidpoint",
+  "selected_function": "UpdateMidpoint",
+  "selection_policy": "highest Encode execution count among structural bounded bounded midpoint reconstructed-line write matches; no function-name allowlist",
+  "status": "PASS"
+}

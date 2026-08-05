@@ -1,0 +1,32 @@
+{
+  "candidate": "candidate_01.sv",
+  "candidate_sha256": "28f3763f0dd1fd491f9c5b82ce8b4b22ab5ad46a9d176170378e7778e12bfb2e",
+  "contract": "provisional-contract.json",
+  "contract_sha256": "ea1da6e962c003888013d4a0bb203d13aa787a39174a03035f4327bda72408cd",
+  "promotion_status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW",
+  "schema_version": 1,
+  "selection": {
+    "callee_contract_id": "removebitsencoderbuffer_decode_transition",
+    "clang_usr": "c:@F@RateControl",
+    "execution_count": 131328,
+    "human_review_required_before_promotion": true,
+    "literal_size_bound": {
+      "callee": "RemoveBitsEncoderBuffer",
+      "callee_candidate_file": "/private/tmp/dsc12a-regression-dashboard/rtl/decode-candidates/selected-scalar-memory-transition/candidate_01.sv",
+      "callee_candidate_sha256": "0209ac6b819161e4d8f0a0cfd91fd4312b79ca19917be5c3321fa4aab70c6385",
+      "callee_contract_file": "/private/tmp/dsc12a-regression-dashboard/rtl/decode-candidates/selected-scalar-memory-transition/provisional-contract.json",
+      "callee_contract_id": "removebitsencoderbuffer_decode_transition",
+      "callee_contract_sha256": "cdca9ed54ebd6a4c9b55d72e1b75e8ee57ab11e51e835a3b6a5b7fe4819e95e9",
+      "complete_for_visible_literal_calls": false,
+      "evidence": "bounded three-pixel decoder rate-control transition composed from a hash-bound scalar-memory buffer-removal transition",
+      "maximum": null,
+      "values": []
+    },
+    "name": "RateControl",
+    "provisional_max_bits": null,
+    "selection_basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "semantics_kind": "bounded_rate_control_decode_transition",
+    "window_bytes": 0
+  },
+  "status": "PASS"
+}

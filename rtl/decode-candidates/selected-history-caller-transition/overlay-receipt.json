@@ -1,0 +1,115 @@
+{
+  "call_sites": [
+    {
+      "arguments": [
+        "dsc_cfg",
+        "dsc_state",
+        "currLine",
+        "hPos+i",
+        "vPos"
+      ],
+      "call_text": "UpdateICHistory(dsc_cfg, dsc_state, currLine, hPos+i, vPos)",
+      "callee_usr": "c:@F@UpdateICHistory",
+      "location": "<overlay-work>/source/dsc_codec.c:2722:5",
+      "result": "discarded"
+    }
+  ],
+  "changed_files": [
+    {
+      "new_sha256": "5f6f43dd1141ba8f2a275aa3abcc2471b2f31aec4402fb3926de6db9bdfd0632",
+      "old_sha256": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf",
+      "path": "dsc_codec.c"
+    }
+  ],
+  "command": {
+    "command": [
+      "<overlay-work>/tmp/cicd-clang-rewriter/dsc-clang-rewrite",
+      "--compdb",
+      "<overlay-work>/source/compile_commands.json",
+      "--target-usr",
+      "c:@F@UpdateICHistory",
+      "--original-name",
+      "UpdateICHistory_original",
+      "--dispatcher-name",
+      "dsc_cicd_invoke",
+      "--receipt",
+      "<overlay-work>/source/clang-overlay-receipt.json",
+      "<overlay-work>/source/cmd_parse.c",
+      "<overlay-work>/source/codec_main.c",
+      "<overlay-work>/source/dpx.c",
+      "<overlay-work>/source/dsc_codec.c",
+      "<overlay-work>/source/dsc_utils.c",
+      "<overlay-work>/source/fifo.c",
+      "<overlay-work>/source/hdr_dpx.c",
+      "<overlay-work>/source/logging.c",
+      "<overlay-work>/source/multiplex.c",
+      "<overlay-work>/source/psnr.c",
+      "<overlay-work>/source/utl.c"
+    ],
+    "cwd": "<overlay-work>/source",
+    "duration_seconds": 0.275,
+    "output": "[1/11] Processing file <overlay-work>/source/cmd_parse.c.\n[2/11] Processing file <overlay-work>/source/codec_main.c.\n[3/11] Processing file <overlay-work>/source/dpx.c.\n[4/11] Processing file <overlay-work>/source/dsc_codec.c.\n[5/11] Processing file <overlay-work>/source/dsc_utils.c.\n[6/11] Processing file <overlay-work>/source/fifo.c.\n[7/11] Processing file <overlay-work>/source/hdr_dpx.c.\n[8/11] Processing file <overlay-work>/source/logging.c.\n[9/11] Processing file <overlay-work>/source/multiplex.c.\n[10/11] Processing file <overlay-work>/source/psnr.c.\n[11/11] Processing file <overlay-work>/source/utl.c.\n",
+    "returncode": 0
+  },
+  "contract_id": "updateichistory_decode_transition",
+  "definitions_seen": 1,
+  "direct_calls_seen": 1,
+  "direct_reference_locations": [
+    "<overlay-work>/source/dsc_codec.c:2722:5"
+  ],
+  "dispatcher_name": "dsc_cicd_invoke",
+  "failures": [],
+  "indirect_locations": [],
+  "macro_locations": [],
+  "original_name": "UpdateICHistory_original",
+  "pending_reference_locations": [],
+  "residual_symbol_alias": {
+    "accepted": false,
+    "declared_by_adapter": true,
+    "policy": "definition must be renamed exactly once; every recognized direct call must be rewritten; only residual references routed by the generated same-name dispatcher alias may remain"
+  },
+  "rewritten_calls": 1,
+  "rewritten_usrs": [
+    "c:@F@UpdateICHistory"
+  ],
+  "schema_version": 2,
+  "source_copy_hashes_after": {
+    "cmd_parse.c": "aa6f8ca2ed1cd62c73007b920f2561d690643a3a63381c3777d04b1b59c08b01",
+    "codec_main.c": "6f10916c2e72e3b6c5e8d578fb607954b6b501f309ba3735f8ec4ec61c689500",
+    "dpx.c": "cf8b5216b23015de699935536163fc47d8ccf2e42df3e0ae3e85dba6eee6e17d",
+    "dsc_cicd_main.c": "2413c94d787fbafbe4538e6427b51ae769cfe2d03af97471391a9879b3b22349",
+    "dsc_cicd_overlay.c": "180e204abf70f9a4d713abd01b20bde41b2843ac8189cd98cb27a0bd73b3d60f",
+    "dsc_codec.c": "5f6f43dd1141ba8f2a275aa3abcc2471b2f31aec4402fb3926de6db9bdfd0632",
+    "dsc_utils.c": "8aadcb1ecff2586892f385255a73fea367eec9afb6e14608d1010c08b7aca14e",
+    "fifo.c": "6a886eaffd01b6651703da54bbb90e9cf77d6503131ab419644e0ad3e50a3e6e",
+    "hdr_dpx.c": "655820d0da1f2e68565030fe674eb708e1dc53df231e69c3ed403f1867930f3d",
+    "logging.c": "9194d16f129d5c92e7fca52a7c34de5d0312f64f33d2e069accc85f33913919c",
+    "multiplex.c": "ab549255599fbdf1f69dd9fa8013ed39c044c3b8f591b187e2e056a5f1f5ab50",
+    "psnr.c": "331f5e3f4ec62c51a184c1e766d073a348a45301745b06b84dc20cda6ad9e438",
+    "utl.c": "c673e2e5cd8dd6c5f91461908f628977644a8ad424d2e8a9fe9ba575bfcbffed"
+  },
+  "source_copy_hashes_before": {
+    "cmd_parse.c": "aa6f8ca2ed1cd62c73007b920f2561d690643a3a63381c3777d04b1b59c08b01",
+    "codec_main.c": "6f10916c2e72e3b6c5e8d578fb607954b6b501f309ba3735f8ec4ec61c689500",
+    "dpx.c": "cf8b5216b23015de699935536163fc47d8ccf2e42df3e0ae3e85dba6eee6e17d",
+    "dsc_cicd_main.c": "2413c94d787fbafbe4538e6427b51ae769cfe2d03af97471391a9879b3b22349",
+    "dsc_cicd_overlay.c": "180e204abf70f9a4d713abd01b20bde41b2843ac8189cd98cb27a0bd73b3d60f",
+    "dsc_codec.c": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf",
+    "dsc_utils.c": "8aadcb1ecff2586892f385255a73fea367eec9afb6e14608d1010c08b7aca14e",
+    "fifo.c": "6a886eaffd01b6651703da54bbb90e9cf77d6503131ab419644e0ad3e50a3e6e",
+    "hdr_dpx.c": "655820d0da1f2e68565030fe674eb708e1dc53df231e69c3ed403f1867930f3d",
+    "logging.c": "9194d16f129d5c92e7fca52a7c34de5d0312f64f33d2e069accc85f33913919c",
+    "multiplex.c": "ab549255599fbdf1f69dd9fa8013ed39c044c3b8f591b187e2e056a5f1f5ab50",
+    "psnr.c": "331f5e3f4ec62c51a184c1e766d073a348a45301745b06b84dc20cda6ad9e438",
+    "utl.c": "c673e2e5cd8dd6c5f91461908f628977644a8ad424d2e8a9fe9ba575bfcbffed"
+  },
+  "status": "PASS",
+  "target_usr": "c:@F@UpdateICHistory",
+  "tool": {
+    "binary": "<overlay-work>/tmp/cicd-clang-rewriter/dsc-clang-rewrite",
+    "source_fingerprint": "2bedf29f5ca4d30b8ebfba004d2d0098dfc5b37f498d816bb84c982f5ed3c025",
+    "status": "REUSED_BUILD"
+  },
+  "upstream_source_hash": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
+  "upstream_source_unchanged": true
+}

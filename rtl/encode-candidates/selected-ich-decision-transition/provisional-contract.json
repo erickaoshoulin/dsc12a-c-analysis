@@ -1,0 +1,332 @@
+{
+  "composition": {
+    "child_results": "accepted midpoint, P-mode bit estimate, and flat-index functions are invoked by the adapter and become RTL calls in the simultaneous replacement executable",
+    "dependencies": [
+      {
+        "contract_id": "estimatebitsforgroup",
+        "contract_sha256": "f3a24d1654cb6402c80f454a077b15bd885ed0c85849102b0c9720c0c917a483",
+        "function": "EstimateBitsForGroup",
+        "module_sha256": "da8e09494b9dad38a4591c81c21adf445cc0b92cdaf4eabc1604aa1ca2db3f9f"
+      },
+      {
+        "contract_id": "isorigflathindex",
+        "contract_sha256": "d9b7a77df4ab02ab3d1b0eb6da19f15bca887f0c3c4a49454681e9370f175e60",
+        "function": "IsOrigFlatHIndex",
+        "module_sha256": "cfb707d7aa001c86145ecff6476c1fd36b7d2755ecabe5d5af41f817ea22d855"
+      },
+      {
+        "contract_id": "usingmidpoint",
+        "contract_sha256": "4390f41693ddfdfe4ecf2a390ca190dee4c13e5b5ea31f3790194d4bb3590ffd",
+        "function": "UsingMidpoint",
+        "module_sha256": "fc765032b32c15013196fa87328b8692da41071277c4bdd13ffb941c86132ab8"
+      },
+      {
+        "contract_id": "ceil_log2",
+        "contract_sha256": "b665f3832cfcbe811837bfa3f8a35e033760b5973b4f43af91629c59123682a5",
+        "function": "ceil_log2",
+        "module_sha256": "71784bb792966a7e48e98d35cc2e2c3f6052f1c17528ffe1b4256f805c9fda65"
+      }
+    ],
+    "logarithm_helper": "accepted scalar helper semantics are inlined exactly in the generated parent RTL"
+  },
+  "contract_id": "ichdecision_encode_transition",
+  "function": {
+    "clang_usr": "c:@F@IchDecision",
+    "name": "IchDecision",
+    "parameters": [
+      {
+        "name": "dsc_cfg",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_cfg_t *"
+      },
+      {
+        "name": "dsc_state",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_state_t *"
+      },
+      {
+        "name": "adj_predicted_size",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "alt_pfx",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "alt_size_to_generate",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      }
+    ],
+    "return_type": "int",
+    "source_body_sha256": "191b28a02ded30b7f51d211bcedd233d9c9a2fc1bd96bedea8ba1f0d395d545c",
+    "source_file": "dsc_codec.c",
+    "source_span": {
+      "end_line": 533,
+      "start_line": 484
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "name": "adjusted_predicted_size",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "alternate_prefix",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "alternate_size",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "version_minor",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "units_per_group",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "previous_ich_selected",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "ich_indices_in_group",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "max_mid_error_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "max_mid_error_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "max_mid_error_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "max_mid_error_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "max_error_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "max_error_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "max_error_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "max_error_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "max_ich_error_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "max_ich_error_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "max_ich_error_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "max_ich_error_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "using_midpoint_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "using_midpoint_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "using_midpoint_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "using_midpoint_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "estimated_p_mode_bits",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "original_flat_index",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "return_value",
+        "signed": false,
+        "width": 1
+      }
+    ]
+  },
+  "obligations": [
+    "full-frame Encode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "simultaneous all-RTL integration must replace every composed child",
+    "human review of composed child-result boundary before promotion"
+  ],
+  "origin": "tool_discovered_encoder_runtime_transition",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "schema_version": 2,
+  "selection": {
+    "basis": [
+      "Encode runtime coverage reached the read-only decision",
+      "all four direct callees are hash-checked stable RTL components",
+      "callee ABI arities derive midpoint, estimate, flat-index, and logarithm roles",
+      "AST/source bindings derive every scalar and fixed four-lane error vector",
+      "three state-bounded loops are capped by the header maximum",
+      "no function-name allowlist is used"
+    ],
+    "encode_execution_count": 20889
+  },
+  "semantics": {
+    "bindings": {
+      "adjusted_size_parameter": "adj_predicted_size",
+      "adjusted_size_port": "adjusted_predicted_size",
+      "alternate_prefix_parameter": "alt_pfx",
+      "alternate_prefix_port": "alternate_prefix",
+      "alternate_size_parameter": "alt_size_to_generate",
+      "alternate_size_port": "alternate_size",
+      "config_parameter": "dsc_cfg",
+      "estimate_callee": "EstimateBitsForGroup",
+      "estimated_bits_port": "estimated_p_mode_bits",
+      "flat_callee": "IsOrigFlatHIndex",
+      "flat_index_port": "original_flat_index",
+      "hpos_field": "hPos",
+      "ich_indices_field": "ichIndicesInGroup",
+      "ich_indices_port": "ich_indices_in_group",
+      "log_callee": "ceil_log2",
+      "max_error_field": "maxError",
+      "max_error_ports": [
+        "max_error_0",
+        "max_error_1",
+        "max_error_2",
+        "max_error_3"
+      ],
+      "max_ich_error_field": "maxIchError",
+      "max_ich_error_ports": [
+        "max_ich_error_0",
+        "max_ich_error_1",
+        "max_ich_error_2",
+        "max_ich_error_3"
+      ],
+      "max_mid_error_field": "maxMidError",
+      "max_mid_error_ports": [
+        "max_mid_error_0",
+        "max_mid_error_1",
+        "max_mid_error_2",
+        "max_mid_error_3"
+      ],
+      "midpoint_callee": "UsingMidpoint",
+      "previous_ich_field": "prevIchSelected",
+      "previous_ich_port": "previous_ich_selected",
+      "return_port": "return_value",
+      "state_parameter": "dsc_state",
+      "unit_type_field": "unitCType",
+      "units_field": "unitsPerGroup",
+      "units_port": "units_per_group",
+      "using_midpoint_ports": [
+        "using_midpoint_0",
+        "using_midpoint_1",
+        "using_midpoint_2",
+        "using_midpoint_3"
+      ],
+      "version_field": "dsc_version_minor",
+      "version_port": "version_minor"
+    },
+    "ich_bits": 5,
+    "ich_lambda": 4,
+    "kind": "bounded_ich_decision_transition",
+    "legal_domain": {
+      "child_calls_within_their_accepted_domains": true,
+      "error_magnitudes_nonnegative": true,
+      "units_per_group": [
+        0,
+        4
+      ],
+      "version_minor_values": [
+        1,
+        2
+      ]
+    },
+    "max_units": 4,
+    "state_transition": "select predictive or ICH mode from child RTL results and fixed-lane error-cost reduction with exact DSC 1.1/1.2 branches"
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

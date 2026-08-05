@@ -1,0 +1,27 @@
+{
+  "candidate": "candidate_01.sv",
+  "candidate_sha256": "f27b9832b4f3bd4c1c6202dfbf4fa6c0aa6e67e655d6461797f7ff65e6558fa6",
+  "contract": "provisional-contract.json",
+  "contract_sha256": "9aee7b809b49a1cc624ce3b150c7287fa5234fd27182115060fa874b7fe3052f",
+  "promotion_status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW",
+  "schema_version": 1,
+  "selection": {
+    "callee_contract_id": null,
+    "clang_usr": "c:@F@ycocg2rgb",
+    "execution_count": 15,
+    "human_review_required_before_promotion": true,
+    "literal_size_bound": {
+      "complete_for_visible_literal_calls": false,
+      "direction": "ycocg_to_rgb",
+      "evidence": "typed RGB/YUV plane read-write direction plus a bounded independent per-pixel arithmetic kernel",
+      "maximum": null,
+      "values": []
+    },
+    "name": "ycocg2rgb",
+    "provisional_max_bits": null,
+    "selection_basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "semantics_kind": "raster_color_transform_transition",
+    "window_bytes": 0
+  },
+  "status": "PASS"
+}

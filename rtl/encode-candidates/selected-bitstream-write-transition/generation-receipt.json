@@ -1,0 +1,56 @@
+{
+  "candidate": "candidate_01.sv",
+  "contract_id": "putbits_encode_transition",
+  "match_count": 1,
+  "matches": [
+    {
+      "buffer_parameter": "buf",
+      "clang_usr": "c:@F@putbits",
+      "coverage": {
+        "branch_coverage_percent": 87.5,
+        "covered": true,
+        "end_line": 101,
+        "execution_count": 586716,
+        "line_coverage_percent": 78.571,
+        "name": "putbits",
+        "raw_summary": {
+          "branch_arm_count": 8,
+          "covered_branch_arm_count": 7,
+          "covered_line_region_count": 11,
+          "function_count": 1,
+          "function_covered": 1,
+          "line_region_count": 14
+        },
+        "region_coverage_percent": 78.571,
+        "source_file": "dsc_utils.c",
+        "start_line": 82
+      },
+      "cursor_parameter": "bit_count",
+      "execution_count": 586716,
+      "max_bits": 32,
+      "name": "putbits",
+      "selection_basis": [
+        "Encode runtime coverage reached the function",
+        "Clang found two scalar int inputs and exactly one write-through byte buffer",
+        "Clang found exactly one write-through integer cursor",
+        "the sole loop is bounded by a scalar size parameter",
+        "the source guard supplies a finite legal maximum",
+        "candidate effects contain no allocation, assertion, indirect call, or file I/O"
+      ],
+      "semantics_kind": "bitstream_write_transition",
+      "size_parameter": "size",
+      "source_span": {
+        "end_line": 101,
+        "start_line": 81
+      },
+      "value_parameter": "val",
+      "window_bytes": 5
+    }
+  ],
+  "promotion_status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW",
+  "schema_version": 1,
+  "selected_clang_usr": "c:@F@putbits",
+  "selected_function": "putbits",
+  "selection_policy": "highest Encode execution count among structural bounded bitstream-write matches; no function-name allowlist",
+  "status": "PASS"
+}

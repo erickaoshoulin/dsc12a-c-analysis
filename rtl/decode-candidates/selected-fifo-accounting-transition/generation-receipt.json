@@ -1,0 +1,28 @@
+{
+  "candidate": "candidate_01.sv",
+  "candidate_sha256": "0b114ab03469269e949567145482e8ebbe6380805d5d86668f8f67c93c6d5eb9",
+  "contract": "provisional-contract.json",
+  "contract_sha256": "a94d294a60f60e0ac5366691dc0ebad3265a57eddbcb1a7bfdefeb5df79193ca",
+  "promotion_status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW",
+  "schema_version": 1,
+  "selection": {
+    "callee_contract_id": "fifo_get_bits_decode_transition",
+    "clang_usr": "c:@F@GetBits",
+    "execution_count": 1835127,
+    "human_review_required_before_promotion": true,
+    "literal_size_bound": {
+      "callee": "fifo_get_bits",
+      "callee_contract_id": "fifo_get_bits_decode_transition",
+      "complete_for_visible_literal_calls": false,
+      "evidence": "verified provisional FIFO-read callee contract",
+      "maximum": 64,
+      "values": []
+    },
+    "name": "GetBits",
+    "provisional_max_bits": 64,
+    "selection_basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "semantics_kind": "fifo_read_accounting_transition",
+    "window_bytes": 9
+  },
+  "status": "PASS"
+}

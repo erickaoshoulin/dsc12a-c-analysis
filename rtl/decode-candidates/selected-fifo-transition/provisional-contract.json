@@ -1,0 +1,212 @@
+{
+  "contract_id": "fifo_get_bits_decode_transition",
+  "function": {
+    "clang_usr": "c:@F@fifo_get_bits",
+    "name": "fifo_get_bits",
+    "parameters": [
+      {
+        "name": "fifo",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "fifo_t *"
+      },
+      {
+        "name": "n",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "sign_extend",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      }
+    ],
+    "return_type": "int",
+    "source_body_sha256": "1a4bee3492d25ed63f4b17d10f20e630cb9ada3eac067e1970c9a3f10fae7e29",
+    "source_file": "fifo.c",
+    "source_span": {
+      "end_line": 108,
+      "start_line": 77
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "name": "nbits",
+        "signed": false,
+        "width": 7
+      },
+      {
+        "direction": "input",
+        "name": "byte_0",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "byte_1",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "byte_2",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "byte_3",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "byte_4",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "byte_5",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "byte_6",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "byte_7",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "byte_8",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fullness",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "read_ptr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_size",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "sign_extend",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "return_value",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fullness_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "read_ptr_out",
+        "signed": false,
+        "width": 32
+      }
+    ]
+  },
+  "obligations": [
+    "full-frame Decode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "full-frame Encode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "human review of FIFO legal-domain and explicit state outputs before promotion"
+  ],
+  "origin": "tool_discovered_decoder_runtime_transition",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "schema_version": 2,
+  "selection": {
+    "basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "decode_execution_count": 1835127,
+    "literal_size_bound": {
+      "argument_index": 1,
+      "complete_for_visible_literal_calls": false,
+      "evidence": "integer literals at directly visible C callsites",
+      "maximum": 32,
+      "nonliteral_calls": 10,
+      "values": [
+        1,
+        2,
+        4,
+        8,
+        10,
+        12,
+        16,
+        32
+      ],
+      "visible_calls": 46
+    }
+  },
+  "semantics": {
+    "bindings": {
+      "byte_ports": [
+        "byte_0",
+        "byte_1",
+        "byte_2",
+        "byte_3",
+        "byte_4",
+        "byte_5",
+        "byte_6",
+        "byte_7",
+        "byte_8"
+      ],
+      "fifo_parameter": "fifo",
+      "fifo_size_port": "fifo_size",
+      "fullness_output_port": "fullness_out",
+      "fullness_port": "fullness",
+      "nbits_parameter": "n",
+      "nbits_port": "nbits",
+      "read_ptr_output_port": "read_ptr_out",
+      "read_ptr_port": "read_ptr",
+      "return_port": "return_value",
+      "sign_extend_parameter": "sign_extend",
+      "sign_extend_port": "sign_extend"
+    },
+    "kind": "fifo_read_transition",
+    "legal_domain": {
+      "fifo_size_positive_multiple_of_8": true,
+      "fullness_at_least_nbits": true,
+      "nbits": [
+        0,
+        64
+      ]
+    },
+    "max_bits": 64,
+    "state_transition": "return n MSB-first FIFO bits, decrement fullness, and advance/wrap read_ptr",
+    "window_bytes": 9
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

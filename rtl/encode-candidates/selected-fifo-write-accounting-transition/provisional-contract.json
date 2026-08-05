@@ -1,0 +1,261 @@
+{
+  "composition": {
+    "callee_candidate_sha256": "1f3e8a1942e9dfebd2cb90c6b047c9b5e4ea0d7038b1bc422faab2fa34a90196",
+    "callee_contract_id": "fifo_put_bits_decode_transition",
+    "callee_contract_sha256": "b0bbe172207984f831920abba4df0e5e20e3ede82846cfbc6d835e18e5f272c6",
+    "callee_encode_rtl_return_invocations": 2523961,
+    "callee_function": "fifo_put_bits",
+    "implementation": "verified FIFO-write transition inlined before scalar counter update in exact C source order"
+  },
+  "contract_id": "addbits_encode_transition",
+  "function": {
+    "clang_usr": "c:@F@AddBits",
+    "name": "AddBits",
+    "parameters": [
+      {
+        "name": "dsc_cfg",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_cfg_t *"
+      },
+      {
+        "name": "dsc_state",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_state_t *"
+      },
+      {
+        "name": "CType",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "d",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "nbits",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      }
+    ],
+    "return_type": "void",
+    "source_body_sha256": "df2c6a2cde5372651a209e157f7451bb57b894a8be38198ac2cb83afd95d21fc",
+    "source_file": "multiplex.c",
+    "source_span": {
+      "end_line": 93,
+      "start_line": 89
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "name": "data",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "nbits",
+        "signed": false,
+        "width": 6
+      },
+      {
+        "direction": "input",
+        "name": "byte_0",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "byte_1",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "byte_2",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "byte_3",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "byte_4",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "num_bits",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fullness",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "write_ptr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_size",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "max_fullness",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "byte_0_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "byte_1_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "byte_2_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "byte_3_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "byte_4_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "num_bits_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fullness_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_ptr_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "max_fullness_out",
+        "signed": false,
+        "width": 32
+      }
+    ]
+  },
+  "obligations": [
+    "full-frame Encode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "all selected Encode profiles must exercise RTL in SHADOW and RTL_RETURN",
+    "human review of composed FIFO memory and bit-counter contract before promotion"
+  ],
+  "origin": "tool_discovered_encoder_runtime_transition",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "schema_version": 2,
+  "selection": {
+    "basis": [
+      "Encode runtime coverage reached the function",
+      "Clang found one loop-free mutable DSC state parameter",
+      "the only callee has all-scope Encode RTL_RETURN evidence",
+      "the callee contract is an explicit FIFO write transition",
+      "AST fields expose one indexed FIFO array and one scalar bit counter",
+      "source binding maps the FIFO index, payload, and size without a function allowlist"
+    ],
+    "encode_execution_count": 1535313
+  },
+  "semantics": {
+    "bindings": {
+      "byte_output_ports": [
+        "byte_0_out",
+        "byte_1_out",
+        "byte_2_out",
+        "byte_3_out",
+        "byte_4_out"
+      ],
+      "byte_ports": [
+        "byte_0",
+        "byte_1",
+        "byte_2",
+        "byte_3",
+        "byte_4"
+      ],
+      "config_parameter": "dsc_cfg",
+      "data_field": "data",
+      "data_parameter": "d",
+      "data_port": "data",
+      "fifo_array_field": "encBalanceFifo",
+      "fifo_index_parameter": "CType",
+      "fifo_size_port": "fifo_size",
+      "fullness_field": "fullness",
+      "fullness_output_port": "fullness_out",
+      "fullness_port": "fullness",
+      "max_fullness_field": "max_fullness",
+      "max_fullness_output_port": "max_fullness_out",
+      "max_fullness_port": "max_fullness",
+      "nbits_parameter": "nbits",
+      "nbits_port": "nbits",
+      "num_bits_output_port": "num_bits_out",
+      "num_bits_port": "num_bits",
+      "size_field": "size",
+      "state_counter_field": "numBits",
+      "state_parameter": "dsc_state",
+      "write_ptr_field": "write_ptr",
+      "write_ptr_output_port": "write_ptr_out",
+      "write_ptr_port": "write_ptr"
+    },
+    "kind": "fifo_write_accounting_transition",
+    "legal_domain": {
+      "fifo_index_nonnegative_and_in_range": true,
+      "fifo_size_positive_multiple_of_8": true,
+      "free_space_at_least_nbits": true,
+      "nbits": [
+        0,
+        32
+      ]
+    },
+    "max_bits": 32,
+    "state_transition": "write n payload bits into one selected encoder FIFO, advance its memory/scalar state, and increment the explicit encoded-bit counter",
+    "window_bytes": 5
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}
