@@ -1,0 +1,2781 @@
+{
+  "contract_id": "vldgroup_decode_transition",
+  "dependencies": [
+    {
+      "contract_file": "rtl/decode-candidates/selected-mux-refill-transition/provisional-contract.json",
+      "contract_id": "processgroupdec_decode_transition",
+      "contract_sha256": "be36106bc1a5b42faf1719f405214a5c10e582efe7bc98d768d8871cafaf4396",
+      "function": "ProcessGroupDec",
+      "module": "processgroupdec_decode_transition",
+      "module_file": "rtl/decode-candidates/selected-mux-refill-transition/candidate_01.sv",
+      "module_sha256": "bd65915d2ef2757bebd501c496ad6da7fa278c8ed9520ee4abd594a065367d97",
+      "role": "mux_refill",
+      "semantics_kind": "bounded_mux_refill_transition"
+    },
+    {
+      "contract_file": "rtl/decode-candidates/selected-vld-unit-transition/provisional-contract.json",
+      "contract_id": "vldunit_decode_transition",
+      "contract_sha256": "cf4fdeb21aa16de1ae9120470953b358d4ffc04b81cc8fdcc4c238261af6cb36",
+      "function": "VLDUnit",
+      "module": "vldunit_decode_transition",
+      "module_file": "rtl/decode-candidates/selected-vld-unit-transition/candidate_01.sv",
+      "module_sha256": "90adc4d38484532c08f5131a2fa7bb6bb61c32fbc0d39f5662354eb9cdda59e5",
+      "role": "vld_unit",
+      "semantics_kind": "bounded_vld_unit_transition"
+    }
+  ],
+  "function": {
+    "clang_usr": "c:@F@VLDGroup",
+    "name": "VLDGroup",
+    "parameters": [
+      {
+        "name": "dsc_cfg",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_cfg_t *"
+      },
+      {
+        "name": "dsc_state",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_state_t *"
+      },
+      {
+        "name": "byte_in_p",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "unsigned char **"
+      }
+    ],
+    "return_type": "void",
+    "source_body_sha256": "871df5da2255bd08f04d585dd56341c280d3b9edc7297423ae798a991dc6e68c",
+    "source_file": "dsc_codec.c",
+    "source_span": {
+      "end_line": 2028,
+      "start_line": 1988
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "name": "mux_word_size",
+        "signed": false,
+        "width": 7
+      },
+      {
+        "direction": "input",
+        "name": "num_ssps",
+        "signed": false,
+        "width": 3
+      },
+      {
+        "direction": "input",
+        "name": "post_mux_num_bits",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "max_se_size_0",
+        "signed": false,
+        "width": 7
+      },
+      {
+        "direction": "input",
+        "name": "max_se_size_1",
+        "signed": false,
+        "width": 7
+      },
+      {
+        "direction": "input",
+        "name": "max_se_size_2",
+        "signed": false,
+        "width": 7
+      },
+      {
+        "direction": "input",
+        "name": "max_se_size_3",
+        "signed": false,
+        "width": 7
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_0",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_1",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_2",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_3",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_4",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_5",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_6",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_7",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_8",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_9",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_10",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_11",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_12",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_13",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_14",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_15",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_16",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_17",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_18",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_19",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_20",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_21",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_22",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_23",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_24",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_25",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_26",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_27",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_28",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_29",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_30",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_31",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_32",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_size",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_fullness",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_read_ptr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_write_ptr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_max_fullness",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_ctr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_size",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_fullness",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_read_ptr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_write_ptr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_max_fullness",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_ctr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_size",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_fullness",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_read_ptr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_write_ptr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_max_fullness",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_ctr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_size",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_fullness",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_read_ptr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_write_ptr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_max_fullness",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_ctr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_0",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_1",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_2",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_3",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_4",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_5",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_6",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_7",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_8",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_9",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_10",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_11",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_12",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_13",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_14",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_15",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_16",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_0",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_1",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_2",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_3",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_4",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_5",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_6",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_7",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_8",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_9",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_10",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_11",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_12",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_13",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_14",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_15",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_16",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_0",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_1",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_2",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_3",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_4",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_5",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_6",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_7",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_8",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_9",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_10",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_11",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_12",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_13",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_14",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_15",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_16",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_0",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_1",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_2",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_3",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_4",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_5",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_6",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_7",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_8",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_9",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_10",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_11",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_12",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_13",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_14",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_15",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_16",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "cfg_bits_per_component",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_somewhat_flat_qp_thresh",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_dsc_version_minor",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_native_420",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_flatness_min_qp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_flatness_max_qp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_firstflat",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_flatnesstype",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_groupcount",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichindicesingroup",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichselected",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_prevfirstflat",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_previchselected",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_primaryqp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_prevprimaryqp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unitspergroup",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_numbits",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpntbitdepth_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpntbitdepth_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpntbitdepth_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpntbitdepth_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unitctype_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unitctype_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unitctype_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unitctype_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unitsspmap_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unitsspmap_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unitsspmap_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unitsspmap_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichindexunitmap_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichindexunitmap_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichindexunitmap_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichindexunitmap_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichindexunitmap_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichindexunitmap_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichlookup_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichlookup_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichlookup_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichlookup_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichlookup_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ichlookup_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_predictedsize_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_predictedsize_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_predictedsize_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_predictedsize_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_rcsizeunit_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_rcsizeunit_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_rcsizeunit_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_rcsizeunit_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_usemidpoint_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_usemidpoint_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_usemidpoint_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_usemidpoint_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "qlevel_luma_primary",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "qlevel_chroma_primary",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "qlevel_luma_previous",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "qlevel_chroma_previous",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantizedresidual_0_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantizedresidual_0_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantizedresidual_0_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantizedresidual_1_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantizedresidual_1_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantizedresidual_1_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantizedresidual_2_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantizedresidual_2_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantizedresidual_2_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantizedresidual_3_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantizedresidual_3_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantizedresidual_3_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_rcb_bits",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_bufferfullness",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_erroroccurred",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_groupcountline",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "domain_valid",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "post_mux_num_bits_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_0_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_1_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_2_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_3_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_4_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_5_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_6_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_7_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_8_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_9_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_10_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_11_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_12_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_13_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_14_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_15_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_16_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_0_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_1_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_2_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_3_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_4_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_5_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_6_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_7_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_8_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_9_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_10_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_11_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_12_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_13_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_14_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_15_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_16_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_0_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_1_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_2_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_3_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_4_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_5_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_6_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_7_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_8_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_9_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_10_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_11_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_12_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_13_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_14_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_15_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_16_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_0_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_1_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_2_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_3_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_4_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_5_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_6_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_7_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_8_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_9_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_10_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_11_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_12_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_13_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_14_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_15_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_16_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_size_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_fullness_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_read_ptr_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_write_ptr_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_max_fullness_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_ctr_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_size_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_fullness_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_read_ptr_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_write_ptr_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_max_fullness_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_ctr_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_size_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_fullness_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_read_ptr_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_write_ptr_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_max_fullness_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_ctr_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_size_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_fullness_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_read_ptr_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_write_ptr_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_max_fullness_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_ctr_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_firstflat_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_flatnesstype_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_ichselected_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_prevfirstflat_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_previchselected_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_numbits_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_ichlookup_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_ichlookup_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_ichlookup_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_ichlookup_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_ichlookup_4_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_ichlookup_5_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_predictedsize_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_predictedsize_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_predictedsize_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_predictedsize_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_rcsizeunit_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_rcsizeunit_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_rcsizeunit_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_rcsizeunit_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_usemidpoint_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_usemidpoint_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_usemidpoint_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_usemidpoint_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantizedresidual_0_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantizedresidual_0_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantizedresidual_0_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantizedresidual_1_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantizedresidual_1_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantizedresidual_1_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantizedresidual_2_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantizedresidual_2_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantizedresidual_2_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantizedresidual_3_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantizedresidual_3_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantizedresidual_3_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_prevprimaryqp_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_codedgroupsize_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_bufferfullness_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_erroroccurred_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_origisflat_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_groupcountline_out",
+        "signed": true,
+        "width": 32
+      }
+    ]
+  },
+  "obligations": [
+    "full-frame Decode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "full-frame Encode C_ONLY/SHADOW/RTL_RETURN non-reachability check",
+    "human review of sequential child composition and complete state/FIFO outputs before promotion"
+  ],
+  "origin": "tool_discovered_decoder_runtime_transition",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "schema_version": 2,
+  "selection": {
+    "basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "decode_execution_count": 131328,
+    "shape_evidence": {
+      "complete_for_visible_literal_calls": false,
+      "dependencies": [
+        {
+          "candidate_file": "/private/tmp/dsc12a-regression-dashboard/rtl/decode-candidates/selected-mux-refill-transition/candidate_01.sv",
+          "candidate_sha256": "bd65915d2ef2757bebd501c496ad6da7fa278c8ed9520ee4abd594a065367d97",
+          "contract_file": "/private/tmp/dsc12a-regression-dashboard/rtl/decode-candidates/selected-mux-refill-transition/provisional-contract.json",
+          "contract_id": "processgroupdec_decode_transition",
+          "contract_sha256": "be36106bc1a5b42faf1719f405214a5c10e582efe7bc98d768d8871cafaf4396",
+          "function": "ProcessGroupDec",
+          "semantics_kind": "bounded_mux_refill_transition"
+        },
+        {
+          "candidate_file": "/private/tmp/dsc12a-regression-dashboard/rtl/decode-candidates/selected-vld-unit-transition/candidate_01.sv",
+          "candidate_sha256": "90adc4d38484532c08f5131a2fa7bb6bb61c32fbc0d39f5662354eb9cdda59e5",
+          "contract_file": "/private/tmp/dsc12a-regression-dashboard/rtl/decode-candidates/selected-vld-unit-transition/provisional-contract.json",
+          "contract_id": "vldunit_decode_transition",
+          "contract_sha256": "cf4fdeb21aa16de1ae9120470953b358d4ffc04b81cc8fdcc4c238261af6cb36",
+          "function": "VLDUnit",
+          "semantics_kind": "bounded_vld_unit_transition"
+        }
+      ],
+      "evidence": "bounded decoder group transition composed in source order from hash-bound mux-refill and VLD-unit transitions",
+      "maximum": null,
+      "values": []
+    }
+  },
+  "semantics": {
+    "bindings": {
+      "byte_pointer_parameter": "byte_in_p",
+      "config_parameter": "dsc_cfg",
+      "direct_input_ports": {
+        "bufferFullness": "state_bufferfullness",
+        "errorOccurred": "state_erroroccurred",
+        "groupCountLine": "state_groupcountline",
+        "rcb_bits": "cfg_rcb_bits"
+      },
+      "direct_output_ports": {
+        "bufferFullness": "state_bufferfullness_out",
+        "codedGroupSize": "state_codedgroupsize_out",
+        "errorOccurred": "state_erroroccurred_out",
+        "groupCountLine": "state_groupcountline_out",
+        "origIsFlat": "state_origisflat_out",
+        "prevPrimaryQp": "state_prevprimaryqp_out"
+      },
+      "mux": {
+        "buffer_parameter": "buf",
+        "config_parameter": "dsc_cfg",
+        "fifo_lanes": [
+          {
+            "byte_ctr_output_port": "fifo_0_byte_ctr_out",
+            "byte_ctr_port": "fifo_0_byte_ctr",
+            "data_input_ports": [
+              "fifo_0_byte_0",
+              "fifo_0_byte_1",
+              "fifo_0_byte_2",
+              "fifo_0_byte_3",
+              "fifo_0_byte_4",
+              "fifo_0_byte_5",
+              "fifo_0_byte_6",
+              "fifo_0_byte_7",
+              "fifo_0_byte_8",
+              "fifo_0_byte_9",
+              "fifo_0_byte_10",
+              "fifo_0_byte_11",
+              "fifo_0_byte_12",
+              "fifo_0_byte_13",
+              "fifo_0_byte_14",
+              "fifo_0_byte_15",
+              "fifo_0_byte_16"
+            ],
+            "data_output_ports": [
+              "fifo_0_byte_0_out",
+              "fifo_0_byte_1_out",
+              "fifo_0_byte_2_out",
+              "fifo_0_byte_3_out",
+              "fifo_0_byte_4_out",
+              "fifo_0_byte_5_out",
+              "fifo_0_byte_6_out",
+              "fifo_0_byte_7_out",
+              "fifo_0_byte_8_out",
+              "fifo_0_byte_9_out",
+              "fifo_0_byte_10_out",
+              "fifo_0_byte_11_out",
+              "fifo_0_byte_12_out",
+              "fifo_0_byte_13_out",
+              "fifo_0_byte_14_out",
+              "fifo_0_byte_15_out",
+              "fifo_0_byte_16_out"
+            ],
+            "fullness_output_port": "fifo_0_fullness_out",
+            "fullness_port": "fifo_0_fullness",
+            "max_fullness_output_port": "fifo_0_max_fullness_out",
+            "max_fullness_port": "fifo_0_max_fullness",
+            "read_ptr_output_port": "fifo_0_read_ptr_out",
+            "read_ptr_port": "fifo_0_read_ptr",
+            "size_output_port": "fifo_0_size_out",
+            "size_port": "fifo_0_size",
+            "write_ptr_output_port": "fifo_0_write_ptr_out",
+            "write_ptr_port": "fifo_0_write_ptr"
+          },
+          {
+            "byte_ctr_output_port": "fifo_1_byte_ctr_out",
+            "byte_ctr_port": "fifo_1_byte_ctr",
+            "data_input_ports": [
+              "fifo_1_byte_0",
+              "fifo_1_byte_1",
+              "fifo_1_byte_2",
+              "fifo_1_byte_3",
+              "fifo_1_byte_4",
+              "fifo_1_byte_5",
+              "fifo_1_byte_6",
+              "fifo_1_byte_7",
+              "fifo_1_byte_8",
+              "fifo_1_byte_9",
+              "fifo_1_byte_10",
+              "fifo_1_byte_11",
+              "fifo_1_byte_12",
+              "fifo_1_byte_13",
+              "fifo_1_byte_14",
+              "fifo_1_byte_15",
+              "fifo_1_byte_16"
+            ],
+            "data_output_ports": [
+              "fifo_1_byte_0_out",
+              "fifo_1_byte_1_out",
+              "fifo_1_byte_2_out",
+              "fifo_1_byte_3_out",
+              "fifo_1_byte_4_out",
+              "fifo_1_byte_5_out",
+              "fifo_1_byte_6_out",
+              "fifo_1_byte_7_out",
+              "fifo_1_byte_8_out",
+              "fifo_1_byte_9_out",
+              "fifo_1_byte_10_out",
+              "fifo_1_byte_11_out",
+              "fifo_1_byte_12_out",
+              "fifo_1_byte_13_out",
+              "fifo_1_byte_14_out",
+              "fifo_1_byte_15_out",
+              "fifo_1_byte_16_out"
+            ],
+            "fullness_output_port": "fifo_1_fullness_out",
+            "fullness_port": "fifo_1_fullness",
+            "max_fullness_output_port": "fifo_1_max_fullness_out",
+            "max_fullness_port": "fifo_1_max_fullness",
+            "read_ptr_output_port": "fifo_1_read_ptr_out",
+            "read_ptr_port": "fifo_1_read_ptr",
+            "size_output_port": "fifo_1_size_out",
+            "size_port": "fifo_1_size",
+            "write_ptr_output_port": "fifo_1_write_ptr_out",
+            "write_ptr_port": "fifo_1_write_ptr"
+          },
+          {
+            "byte_ctr_output_port": "fifo_2_byte_ctr_out",
+            "byte_ctr_port": "fifo_2_byte_ctr",
+            "data_input_ports": [
+              "fifo_2_byte_0",
+              "fifo_2_byte_1",
+              "fifo_2_byte_2",
+              "fifo_2_byte_3",
+              "fifo_2_byte_4",
+              "fifo_2_byte_5",
+              "fifo_2_byte_6",
+              "fifo_2_byte_7",
+              "fifo_2_byte_8",
+              "fifo_2_byte_9",
+              "fifo_2_byte_10",
+              "fifo_2_byte_11",
+              "fifo_2_byte_12",
+              "fifo_2_byte_13",
+              "fifo_2_byte_14",
+              "fifo_2_byte_15",
+              "fifo_2_byte_16"
+            ],
+            "data_output_ports": [
+              "fifo_2_byte_0_out",
+              "fifo_2_byte_1_out",
+              "fifo_2_byte_2_out",
+              "fifo_2_byte_3_out",
+              "fifo_2_byte_4_out",
+              "fifo_2_byte_5_out",
+              "fifo_2_byte_6_out",
+              "fifo_2_byte_7_out",
+              "fifo_2_byte_8_out",
+              "fifo_2_byte_9_out",
+              "fifo_2_byte_10_out",
+              "fifo_2_byte_11_out",
+              "fifo_2_byte_12_out",
+              "fifo_2_byte_13_out",
+              "fifo_2_byte_14_out",
+              "fifo_2_byte_15_out",
+              "fifo_2_byte_16_out"
+            ],
+            "fullness_output_port": "fifo_2_fullness_out",
+            "fullness_port": "fifo_2_fullness",
+            "max_fullness_output_port": "fifo_2_max_fullness_out",
+            "max_fullness_port": "fifo_2_max_fullness",
+            "read_ptr_output_port": "fifo_2_read_ptr_out",
+            "read_ptr_port": "fifo_2_read_ptr",
+            "size_output_port": "fifo_2_size_out",
+            "size_port": "fifo_2_size",
+            "write_ptr_output_port": "fifo_2_write_ptr_out",
+            "write_ptr_port": "fifo_2_write_ptr"
+          },
+          {
+            "byte_ctr_output_port": "fifo_3_byte_ctr_out",
+            "byte_ctr_port": "fifo_3_byte_ctr",
+            "data_input_ports": [
+              "fifo_3_byte_0",
+              "fifo_3_byte_1",
+              "fifo_3_byte_2",
+              "fifo_3_byte_3",
+              "fifo_3_byte_4",
+              "fifo_3_byte_5",
+              "fifo_3_byte_6",
+              "fifo_3_byte_7",
+              "fifo_3_byte_8",
+              "fifo_3_byte_9",
+              "fifo_3_byte_10",
+              "fifo_3_byte_11",
+              "fifo_3_byte_12",
+              "fifo_3_byte_13",
+              "fifo_3_byte_14",
+              "fifo_3_byte_15",
+              "fifo_3_byte_16"
+            ],
+            "data_output_ports": [
+              "fifo_3_byte_0_out",
+              "fifo_3_byte_1_out",
+              "fifo_3_byte_2_out",
+              "fifo_3_byte_3_out",
+              "fifo_3_byte_4_out",
+              "fifo_3_byte_5_out",
+              "fifo_3_byte_6_out",
+              "fifo_3_byte_7_out",
+              "fifo_3_byte_8_out",
+              "fifo_3_byte_9_out",
+              "fifo_3_byte_10_out",
+              "fifo_3_byte_11_out",
+              "fifo_3_byte_12_out",
+              "fifo_3_byte_13_out",
+              "fifo_3_byte_14_out",
+              "fifo_3_byte_15_out",
+              "fifo_3_byte_16_out"
+            ],
+            "fullness_output_port": "fifo_3_fullness_out",
+            "fullness_port": "fifo_3_fullness",
+            "max_fullness_output_port": "fifo_3_max_fullness_out",
+            "max_fullness_port": "fifo_3_max_fullness",
+            "read_ptr_output_port": "fifo_3_read_ptr_out",
+            "read_ptr_port": "fifo_3_read_ptr",
+            "size_output_port": "fifo_3_size_out",
+            "size_port": "fifo_3_size",
+            "write_ptr_output_port": "fifo_3_write_ptr_out",
+            "write_ptr_port": "fifo_3_write_ptr"
+          }
+        ],
+        "max_se_size_field": "maxSeSize",
+        "max_se_size_ports": [
+          "max_se_size_0",
+          "max_se_size_1",
+          "max_se_size_2",
+          "max_se_size_3"
+        ],
+        "mux_word_size_field": "mux_word_size",
+        "mux_word_size_port": "mux_word_size",
+        "num_ssps_field": "numSsps",
+        "num_ssps_port": "num_ssps",
+        "post_mux_num_bits_field": "postMuxNumBits",
+        "post_mux_num_bits_output_port": "post_mux_num_bits_out",
+        "post_mux_num_bits_port": "post_mux_num_bits",
+        "shifter_field": "shifter",
+        "state_parameter": "dsc_state",
+        "stream_byte_ports": [
+          "stream_byte_0",
+          "stream_byte_1",
+          "stream_byte_2",
+          "stream_byte_3",
+          "stream_byte_4",
+          "stream_byte_5",
+          "stream_byte_6",
+          "stream_byte_7",
+          "stream_byte_8",
+          "stream_byte_9",
+          "stream_byte_10",
+          "stream_byte_11",
+          "stream_byte_12",
+          "stream_byte_13",
+          "stream_byte_14",
+          "stream_byte_15",
+          "stream_byte_16",
+          "stream_byte_17",
+          "stream_byte_18",
+          "stream_byte_19",
+          "stream_byte_20",
+          "stream_byte_21",
+          "stream_byte_22",
+          "stream_byte_23",
+          "stream_byte_24",
+          "stream_byte_25",
+          "stream_byte_26",
+          "stream_byte_27",
+          "stream_byte_28",
+          "stream_byte_29",
+          "stream_byte_30",
+          "stream_byte_31",
+          "stream_byte_32"
+        ]
+      },
+      "quant_table_chroma_field": "quantTableChroma",
+      "quant_table_luma_field": "quantTableLuma",
+      "residual_input_ports": [
+        [
+          "state_quantizedresidual_0_0",
+          "state_quantizedresidual_0_1",
+          "state_quantizedresidual_0_2"
+        ],
+        [
+          "state_quantizedresidual_1_0",
+          "state_quantizedresidual_1_1",
+          "state_quantizedresidual_1_2"
+        ],
+        [
+          "state_quantizedresidual_2_0",
+          "state_quantizedresidual_2_1",
+          "state_quantizedresidual_2_2"
+        ],
+        [
+          "state_quantizedresidual_3_0",
+          "state_quantizedresidual_3_1",
+          "state_quantizedresidual_3_2"
+        ]
+      ],
+      "residual_output_ports": [
+        [
+          "state_quantizedresidual_0_0_out",
+          "state_quantizedresidual_0_1_out",
+          "state_quantizedresidual_0_2_out"
+        ],
+        [
+          "state_quantizedresidual_1_0_out",
+          "state_quantizedresidual_1_1_out",
+          "state_quantizedresidual_1_2_out"
+        ],
+        [
+          "state_quantizedresidual_2_0_out",
+          "state_quantizedresidual_2_1_out",
+          "state_quantizedresidual_2_2_out"
+        ],
+        [
+          "state_quantizedresidual_3_0_out",
+          "state_quantizedresidual_3_1_out",
+          "state_quantizedresidual_3_2_out"
+        ]
+      ],
+      "state_parameter": "dsc_state",
+      "vld": {
+        "array_input_ports": {
+          "cpntBitDepth": [
+            "state_cpntbitdepth_0",
+            "state_cpntbitdepth_1",
+            "state_cpntbitdepth_2",
+            "state_cpntbitdepth_3"
+          ],
+          "ichIndexUnitMap": [
+            "state_ichindexunitmap_0",
+            "state_ichindexunitmap_1",
+            "state_ichindexunitmap_2",
+            "state_ichindexunitmap_3",
+            "state_ichindexunitmap_4",
+            "state_ichindexunitmap_5"
+          ],
+          "ichLookup": [
+            "state_ichlookup_0",
+            "state_ichlookup_1",
+            "state_ichlookup_2",
+            "state_ichlookup_3",
+            "state_ichlookup_4",
+            "state_ichlookup_5"
+          ],
+          "predictedSize": [
+            "state_predictedsize_0",
+            "state_predictedsize_1",
+            "state_predictedsize_2",
+            "state_predictedsize_3"
+          ],
+          "rcSizeUnit": [
+            "state_rcsizeunit_0",
+            "state_rcsizeunit_1",
+            "state_rcsizeunit_2",
+            "state_rcsizeunit_3"
+          ],
+          "unitCType": [
+            "state_unitctype_0",
+            "state_unitctype_1",
+            "state_unitctype_2",
+            "state_unitctype_3"
+          ],
+          "unitSspMap": [
+            "state_unitsspmap_0",
+            "state_unitsspmap_1",
+            "state_unitsspmap_2",
+            "state_unitsspmap_3"
+          ],
+          "useMidpoint": [
+            "state_usemidpoint_0",
+            "state_usemidpoint_1",
+            "state_usemidpoint_2",
+            "state_usemidpoint_3"
+          ]
+        },
+        "array_output_ports": {
+          "ichLookup": [
+            "state_ichlookup_0_out",
+            "state_ichlookup_1_out",
+            "state_ichlookup_2_out",
+            "state_ichlookup_3_out",
+            "state_ichlookup_4_out",
+            "state_ichlookup_5_out"
+          ],
+          "predictedSize": [
+            "state_predictedsize_0_out",
+            "state_predictedsize_1_out",
+            "state_predictedsize_2_out",
+            "state_predictedsize_3_out"
+          ],
+          "rcSizeUnit": [
+            "state_rcsizeunit_0_out",
+            "state_rcsizeunit_1_out",
+            "state_rcsizeunit_2_out",
+            "state_rcsizeunit_3_out"
+          ],
+          "useMidpoint": [
+            "state_usemidpoint_0_out",
+            "state_usemidpoint_1_out",
+            "state_usemidpoint_2_out",
+            "state_usemidpoint_3_out"
+          ]
+        },
+        "byte_pointer_parameter": "byte_in_p",
+        "config_parameter": "dsc_cfg",
+        "config_ports": {
+          "bits_per_component": "cfg_bits_per_component",
+          "dsc_version_minor": "cfg_dsc_version_minor",
+          "flatness_max_qp": "cfg_flatness_max_qp",
+          "flatness_min_qp": "cfg_flatness_min_qp",
+          "native_420": "cfg_native_420",
+          "somewhat_flat_qp_thresh": "cfg_somewhat_flat_qp_thresh"
+        },
+        "fifo_array_field": "shifter",
+        "fifo_data_ports": [
+          "fifo_byte_0",
+          "fifo_byte_1",
+          "fifo_byte_2",
+          "fifo_byte_3",
+          "fifo_byte_4",
+          "fifo_byte_5",
+          "fifo_byte_6",
+          "fifo_byte_7",
+          "fifo_byte_8",
+          "fifo_byte_9",
+          "fifo_byte_10",
+          "fifo_byte_11",
+          "fifo_byte_12",
+          "fifo_byte_13",
+          "fifo_byte_14",
+          "fifo_byte_15",
+          "fifo_byte_16"
+        ],
+        "fifo_output_ports": {
+          "fullness": "fifo_fullness_out",
+          "lane": "fifo_lane_out",
+          "read_ptr": "fifo_read_ptr_out"
+        },
+        "fifo_ports": {
+          "fullness": "fifo_fullness",
+          "read_ptr": "fifo_read_ptr",
+          "size": "fifo_size"
+        },
+        "qlevel_ports": {
+          "chroma_previous": "qlevel_chroma_previous",
+          "chroma_primary": "qlevel_chroma_primary",
+          "luma_previous": "qlevel_luma_previous",
+          "luma_primary": "qlevel_luma_primary"
+        },
+        "quant_table_chroma_field": "quantTableChroma",
+        "quant_table_luma_field": "quantTableLuma",
+        "residual_input_ports": [
+          "quantized_residual_0",
+          "quantized_residual_1",
+          "quantized_residual_2"
+        ],
+        "residual_output_ports": [
+          "quantized_residual_0_out",
+          "quantized_residual_1_out",
+          "quantized_residual_2_out"
+        ],
+        "residual_parameter": "quantized_residuals",
+        "state_output_ports": {
+          "firstFlat": "state_firstflat_out",
+          "flatnessType": "state_flatnesstype_out",
+          "ichSelected": "state_ichselected_out",
+          "numBits": "state_numbits_out",
+          "prevFirstFlat": "state_prevfirstflat_out",
+          "prevIchSelected": "state_previchselected_out"
+        },
+        "state_parameter": "dsc_state",
+        "state_ports": {
+          "firstFlat": "state_firstflat",
+          "flatnessType": "state_flatnesstype",
+          "groupCount": "state_groupcount",
+          "ichIndicesInGroup": "state_ichindicesingroup",
+          "ichSelected": "state_ichselected",
+          "numBits": "state_numbits",
+          "prevFirstFlat": "state_prevfirstflat",
+          "prevIchSelected": "state_previchselected",
+          "prevPrimaryQp": "state_prevprimaryqp",
+          "primaryQp": "state_primaryqp",
+          "unitsPerGroup": "state_unitspergroup"
+        },
+        "unit_parameter": "unit",
+        "unit_port": "unit"
+      },
+      "vld_parent_input_ports": [
+        "cfg_bits_per_component",
+        "cfg_somewhat_flat_qp_thresh",
+        "cfg_dsc_version_minor",
+        "cfg_native_420",
+        "cfg_flatness_min_qp",
+        "cfg_flatness_max_qp",
+        "state_firstflat",
+        "state_flatnesstype",
+        "state_groupcount",
+        "state_ichindicesingroup",
+        "state_ichselected",
+        "state_prevfirstflat",
+        "state_previchselected",
+        "state_primaryqp",
+        "state_prevprimaryqp",
+        "state_unitspergroup",
+        "state_numbits",
+        "state_cpntbitdepth_0",
+        "state_cpntbitdepth_1",
+        "state_cpntbitdepth_2",
+        "state_cpntbitdepth_3",
+        "state_unitctype_0",
+        "state_unitctype_1",
+        "state_unitctype_2",
+        "state_unitctype_3",
+        "state_unitsspmap_0",
+        "state_unitsspmap_1",
+        "state_unitsspmap_2",
+        "state_unitsspmap_3",
+        "state_ichindexunitmap_0",
+        "state_ichindexunitmap_1",
+        "state_ichindexunitmap_2",
+        "state_ichindexunitmap_3",
+        "state_ichindexunitmap_4",
+        "state_ichindexunitmap_5",
+        "state_ichlookup_0",
+        "state_ichlookup_1",
+        "state_ichlookup_2",
+        "state_ichlookup_3",
+        "state_ichlookup_4",
+        "state_ichlookup_5",
+        "state_predictedsize_0",
+        "state_predictedsize_1",
+        "state_predictedsize_2",
+        "state_predictedsize_3",
+        "state_rcsizeunit_0",
+        "state_rcsizeunit_1",
+        "state_rcsizeunit_2",
+        "state_rcsizeunit_3",
+        "state_usemidpoint_0",
+        "state_usemidpoint_1",
+        "state_usemidpoint_2",
+        "state_usemidpoint_3",
+        "qlevel_luma_primary",
+        "qlevel_chroma_primary",
+        "qlevel_luma_previous",
+        "qlevel_chroma_previous"
+      ],
+      "vld_parent_output_ports": [
+        "state_firstflat_out",
+        "state_flatnesstype_out",
+        "state_ichselected_out",
+        "state_prevfirstflat_out",
+        "state_previchselected_out",
+        "state_numbits_out",
+        "state_ichlookup_0_out",
+        "state_ichlookup_1_out",
+        "state_ichlookup_2_out",
+        "state_ichlookup_3_out",
+        "state_ichlookup_4_out",
+        "state_ichlookup_5_out",
+        "state_predictedsize_0_out",
+        "state_predictedsize_1_out",
+        "state_predictedsize_2_out",
+        "state_predictedsize_3_out",
+        "state_rcsizeunit_0_out",
+        "state_rcsizeunit_1_out",
+        "state_rcsizeunit_2_out",
+        "state_rcsizeunit_3_out",
+        "state_usemidpoint_0_out",
+        "state_usemidpoint_1_out",
+        "state_usemidpoint_2_out",
+        "state_usemidpoint_3_out"
+      ]
+    },
+    "composition_reduction": "hash-bound provisional mux-refill and VLD-unit modules are composed strictly in C source order over complete FIFO and decoder state images",
+    "constants": {
+      "fifo_bytes": 17,
+      "groups_per_supergroup": 4,
+      "max_ich_indices": 6,
+      "max_ssps": 4,
+      "max_units": 4,
+      "samples_per_unit": 3,
+      "stream_window_bytes": 33
+    },
+    "kind": "bounded_vld_group_decode_transition",
+    "legal_domain": {
+      "active_source_branch": "if(1)",
+      "bits_per_component": [
+        8,
+        16
+      ],
+      "byte_input_pointer_is_read_only": true,
+      "fifo_size_bits_at_most": 136,
+      "fifo_size_positive_multiple_of_8": true,
+      "ich_indices": [
+        0,
+        6
+      ],
+      "mux_word_size": [
+        48,
+        64
+      ],
+      "num_ssps": [
+        0,
+        4
+      ],
+      "qp": [
+        0,
+        31
+      ],
+      "stream_window_bytes": 33,
+      "unit_component_and_ssp_maps": [
+        0,
+        3
+      ],
+      "units_per_group": [
+        3,
+        4
+      ]
+    },
+    "state_transition": "execute ProcessGroupDec once, chain VLDUnit for each active unit, then apply the six VLDGroup tail writes"
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

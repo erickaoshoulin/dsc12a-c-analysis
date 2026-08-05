@@ -1,0 +1,217 @@
+{
+  "contract_id": "removebitsencoderbuffer_decode_transition",
+  "function": {
+    "clang_usr": "c:@F@RemoveBitsEncoderBuffer",
+    "name": "RemoveBitsEncoderBuffer",
+    "parameters": [
+      {
+        "name": "dsc_cfg",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_cfg_t *"
+      },
+      {
+        "name": "dsc_state",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_state_t *"
+      }
+    ],
+    "return_type": "void",
+    "source_body_sha256": "dd2e9737b2f499238db81ab389e87b4d801132a76d89facb3026555877aaefd2",
+    "source_file": "dsc_codec.c",
+    "source_span": {
+      "end_line": 1231,
+      "start_line": 1201
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "name": "cfg_bits_per_pixel",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_chunk_size",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_vbr_enable",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_bitsclamped",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_bpgfracaccum",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_bufferfullness",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_chunkcount",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_chunkpixeltimes",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_isencoder",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_numbitschunk",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_slicewidth",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_bitsclamped_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_bpgfracaccum_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_bufferfullness_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_chunkcount_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_chunkpixeltimes_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_numbitschunk_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "chunk_write_enable",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "chunk_write_index",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "chunk_write_value",
+        "signed": true,
+        "width": 32
+      }
+    ]
+  },
+  "obligations": [
+    "full-frame Decode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "full-frame Encode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "human review of signed arithmetic, scalar state, and indexed write before promotion"
+  ],
+  "origin": "tool_discovered_decoder_runtime_transition",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "schema_version": 2,
+  "selection": {
+    "basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "decode_execution_count": 386271,
+    "shape_evidence": {
+      "complete_for_visible_literal_calls": false,
+      "evidence": "loop-free scalar record plus one memory write from Clang facts",
+      "maximum": null,
+      "values": []
+    }
+  },
+  "semantics": {
+    "bindings": {
+      "config_parameter": "dsc_cfg",
+      "config_ports": {
+        "bits_per_pixel": "cfg_bits_per_pixel",
+        "chunk_size": "cfg_chunk_size",
+        "vbr_enable": "cfg_vbr_enable"
+      },
+      "memory_field": "chunkSizes",
+      "memory_write_ports": {
+        "enable": "chunk_write_enable",
+        "index": "chunk_write_index",
+        "value": "chunk_write_value"
+      },
+      "state_input_ports": {
+        "bitsClamped": "state_bitsclamped",
+        "bpgFracAccum": "state_bpgfracaccum",
+        "bufferFullness": "state_bufferfullness",
+        "chunkCount": "state_chunkcount",
+        "chunkPixelTimes": "state_chunkpixeltimes",
+        "isEncoder": "state_isencoder",
+        "numBitsChunk": "state_numbitschunk",
+        "sliceWidth": "state_slicewidth"
+      },
+      "state_output_ports": {
+        "bitsClamped": "state_bitsclamped_out",
+        "bpgFracAccum": "state_bpgfracaccum_out",
+        "bufferFullness": "state_bufferfullness_out",
+        "chunkCount": "state_chunkcount_out",
+        "chunkPixelTimes": "state_chunkpixeltimes_out",
+        "numBitsChunk": "state_numbitschunk_out"
+      },
+      "state_parameter": "dsc_state"
+    },
+    "kind": "scalar_record_memory_transition",
+    "legal_domain": {
+      "chunk_sizes_storage_required_when_enabled": true,
+      "chunk_write_index_valid_when_enabled": true,
+      "integer_width": 32,
+      "slice_width_positive": true
+    },
+    "state_transition": "remove one pixel allocation from encoder buffer state and emit one optional indexed chunk-size write as explicit sideband state"
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

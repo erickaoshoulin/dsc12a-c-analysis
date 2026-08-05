@@ -1,0 +1,232 @@
+{
+  "contract_id": "fifo_put_bits_decode_transition",
+  "function": {
+    "clang_usr": "c:@F@fifo_put_bits",
+    "name": "fifo_put_bits",
+    "parameters": [
+      {
+        "name": "fifo",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "fifo_t *"
+      },
+      {
+        "name": "d",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "unsigned int"
+      },
+      {
+        "name": "nbits",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      }
+    ],
+    "return_type": "void",
+    "source_body_sha256": "175127423ef1e2b5b2c8f62dd77c08283e4594e84c693fcb93536bb9ab918e20",
+    "source_file": "fifo.c",
+    "source_span": {
+      "end_line": 140,
+      "start_line": 115
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "name": "data",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "nbits",
+        "signed": false,
+        "width": 6
+      },
+      {
+        "direction": "input",
+        "name": "byte_0",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "byte_1",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "byte_2",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "byte_3",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "byte_4",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fullness",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "write_ptr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_size",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "max_fullness",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "byte_0_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "byte_1_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "byte_2_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "byte_3_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "byte_4_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fullness_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_ptr_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "max_fullness_out",
+        "signed": false,
+        "width": 32
+      }
+    ]
+  },
+  "obligations": [
+    "full-frame Decode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "full-frame Encode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "human review of FIFO memory-window and scalar state outputs before promotion"
+  ],
+  "origin": "tool_discovered_decoder_runtime_transition",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "schema_version": 2,
+  "selection": {
+    "basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "decode_execution_count": 584296,
+    "literal_size_bound": {
+      "argument_index": 2,
+      "complete_for_visible_literal_calls": false,
+      "evidence": "integer literals at directly visible C callsites",
+      "maximum": 32,
+      "nonliteral_calls": 11,
+      "values": [
+        2,
+        4,
+        8,
+        10,
+        12,
+        16,
+        32
+      ],
+      "visible_calls": 35
+    }
+  },
+  "semantics": {
+    "bindings": {
+      "byte_output_ports": [
+        "byte_0_out",
+        "byte_1_out",
+        "byte_2_out",
+        "byte_3_out",
+        "byte_4_out"
+      ],
+      "byte_ports": [
+        "byte_0",
+        "byte_1",
+        "byte_2",
+        "byte_3",
+        "byte_4"
+      ],
+      "data_field": "data",
+      "data_parameter": "d",
+      "data_port": "data",
+      "fifo_parameter": "fifo",
+      "fifo_size_port": "fifo_size",
+      "fullness_field": "fullness",
+      "fullness_output_port": "fullness_out",
+      "fullness_port": "fullness",
+      "max_fullness_field": "max_fullness",
+      "max_fullness_output_port": "max_fullness_out",
+      "max_fullness_port": "max_fullness",
+      "nbits_parameter": "nbits",
+      "nbits_port": "nbits",
+      "size_field": "size",
+      "write_ptr_field": "write_ptr",
+      "write_ptr_output_port": "write_ptr_out",
+      "write_ptr_port": "write_ptr"
+    },
+    "kind": "fifo_write_transition",
+    "legal_domain": {
+      "fifo_size_positive_multiple_of_8": true,
+      "free_space_at_least_nbits": true,
+      "nbits": [
+        0,
+        32
+      ]
+    },
+    "max_bits": 32,
+    "state_transition": "write n payload bits into a bounded FIFO byte window, increment fullness, advance/wrap write_ptr, and update max_fullness",
+    "window_bytes": 5
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

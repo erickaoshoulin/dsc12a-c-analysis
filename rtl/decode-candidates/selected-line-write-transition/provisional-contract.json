@@ -1,0 +1,717 @@
+{
+  "contract_id": "useichistory_decode_transition",
+  "function": {
+    "clang_usr": "c:@F@UseICHistory",
+    "name": "UseICHistory",
+    "parameters": [
+      {
+        "name": "dsc_cfg",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_cfg_t *"
+      },
+      {
+        "name": "dsc_state",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_state_t *"
+      },
+      {
+        "name": "currLine",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "int **"
+      }
+    ],
+    "return_type": "void",
+    "source_body_sha256": "77aa014b33386625c2cc2a2d3acdabc85271d41efb0aed1e4ecf7a021285de73",
+    "source_file": "dsc_codec.c",
+    "source_span": {
+      "end_line": 867,
+      "start_line": 832
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "name": "state_hpos",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pixels_in_group",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ich_indices",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ich_selected",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_num_components",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "ich_pixel_0_0",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "ich_pixel_0_1",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "ich_pixel_0_2",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "ich_pixel_0_3",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "ich_pixel_1_0",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "ich_pixel_1_1",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "ich_pixel_1_2",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "ich_pixel_1_3",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "ich_pixel_2_0",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "ich_pixel_2_1",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "ich_pixel_2_2",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "ich_pixel_2_3",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "ich_pixel_3_0",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "ich_pixel_3_1",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "ich_pixel_3_2",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "ich_pixel_3_3",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "ich_pixel_4_0",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "ich_pixel_4_1",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "ich_pixel_4_2",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "ich_pixel_4_3",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "ich_pixel_5_0",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "ich_pixel_5_1",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "ich_pixel_5_2",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "ich_pixel_5_3",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_index_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_index_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_index_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_index_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_index_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_index_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_0_0",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_0_1",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_0_2",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_0_3",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_1_0",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_1_1",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_1_2",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_1_3",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_2_0",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_2_1",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_2_2",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_2_3",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_3_0",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_3_1",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_3_2",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_3_3",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_4_0",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_4_1",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_4_2",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_4_3",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_5_0",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_5_1",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_5_2",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_enable_5_3",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_value_0_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_0_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_0_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_0_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_1_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_1_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_1_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_1_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_2_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_2_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_2_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_2_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_3_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_3_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_3_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_3_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_4_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_4_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_4_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_4_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_5_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_5_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_5_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value_5_3",
+        "signed": true,
+        "width": 32
+      }
+    ]
+  },
+  "obligations": [
+    "full-frame Decode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "full-frame Encode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "human review of bounded line-write addresses and values before promotion"
+  ],
+  "origin": "tool_discovered_decoder_runtime_transition",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "schema_version": 2,
+  "selection": {
+    "basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "decode_execution_count": 11704,
+    "shape_evidence": {
+      "complete_for_visible_literal_calls": false,
+      "evidence": "fixed-extent state-to-line-buffer scatter transition",
+      "maximum": null,
+      "values": []
+    }
+  },
+  "semantics": {
+    "bindings": {
+      "config_parameter": "dsc_cfg",
+      "hpos_field": "hPos",
+      "hpos_port": "state_hpos",
+      "ich_indices_field": "ichIndicesInGroup",
+      "ich_indices_port": "state_ich_indices",
+      "ich_pixels_field": "ichPixels",
+      "ich_selected_field": "ichSelected",
+      "ich_selected_port": "state_ich_selected",
+      "line_parameter": "currLine",
+      "num_components_field": "numComponents",
+      "num_components_port": "state_num_components",
+      "pixel_ports": [
+        [
+          "ich_pixel_0_0",
+          "ich_pixel_0_1",
+          "ich_pixel_0_2",
+          "ich_pixel_0_3"
+        ],
+        [
+          "ich_pixel_1_0",
+          "ich_pixel_1_1",
+          "ich_pixel_1_2",
+          "ich_pixel_1_3"
+        ],
+        [
+          "ich_pixel_2_0",
+          "ich_pixel_2_1",
+          "ich_pixel_2_2",
+          "ich_pixel_2_3"
+        ],
+        [
+          "ich_pixel_3_0",
+          "ich_pixel_3_1",
+          "ich_pixel_3_2",
+          "ich_pixel_3_3"
+        ],
+        [
+          "ich_pixel_4_0",
+          "ich_pixel_4_1",
+          "ich_pixel_4_2",
+          "ich_pixel_4_3"
+        ],
+        [
+          "ich_pixel_5_0",
+          "ich_pixel_5_1",
+          "ich_pixel_5_2",
+          "ich_pixel_5_3"
+        ]
+      ],
+      "pixels_in_group_field": "pixelsInGroup",
+      "pixels_in_group_port": "state_pixels_in_group",
+      "state_parameter": "dsc_state",
+      "write_enable_ports": [
+        [
+          "write_enable_0_0",
+          "write_enable_0_1",
+          "write_enable_0_2",
+          "write_enable_0_3"
+        ],
+        [
+          "write_enable_1_0",
+          "write_enable_1_1",
+          "write_enable_1_2",
+          "write_enable_1_3"
+        ],
+        [
+          "write_enable_2_0",
+          "write_enable_2_1",
+          "write_enable_2_2",
+          "write_enable_2_3"
+        ],
+        [
+          "write_enable_3_0",
+          "write_enable_3_1",
+          "write_enable_3_2",
+          "write_enable_3_3"
+        ],
+        [
+          "write_enable_4_0",
+          "write_enable_4_1",
+          "write_enable_4_2",
+          "write_enable_4_3"
+        ],
+        [
+          "write_enable_5_0",
+          "write_enable_5_1",
+          "write_enable_5_2",
+          "write_enable_5_3"
+        ]
+      ],
+      "write_index_ports": [
+        "write_index_0",
+        "write_index_1",
+        "write_index_2",
+        "write_index_3",
+        "write_index_4",
+        "write_index_5"
+      ],
+      "write_value_ports": [
+        [
+          "write_value_0_0",
+          "write_value_0_1",
+          "write_value_0_2",
+          "write_value_0_3"
+        ],
+        [
+          "write_value_1_0",
+          "write_value_1_1",
+          "write_value_1_2",
+          "write_value_1_3"
+        ],
+        [
+          "write_value_2_0",
+          "write_value_2_1",
+          "write_value_2_2",
+          "write_value_2_3"
+        ],
+        [
+          "write_value_3_0",
+          "write_value_3_1",
+          "write_value_3_2",
+          "write_value_3_3"
+        ],
+        [
+          "write_value_4_0",
+          "write_value_4_1",
+          "write_value_4_2",
+          "write_value_4_3"
+        ],
+        [
+          "write_value_5_0",
+          "write_value_5_1",
+          "write_value_5_2",
+          "write_value_5_3"
+        ]
+      ]
+    },
+    "constants": {
+      "component_count": 4,
+      "ich_bits": 5,
+      "max_pixels": 6,
+      "padding_left": 5
+    },
+    "kind": "bounded_line_write_transition",
+    "legal_domain": {
+      "ich_indices": [
+        0,
+        6
+      ],
+      "num_components": [
+        3,
+        4
+      ],
+      "target_line_storage_valid": true
+    },
+    "state_transition": "emit up to six by four explicit reconstructed-line writes from stored ICH pixels"
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

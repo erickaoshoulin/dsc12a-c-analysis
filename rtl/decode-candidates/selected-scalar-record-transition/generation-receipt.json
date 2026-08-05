@@ -1,0 +1,26 @@
+{
+  "candidate": "candidate_01.sv",
+  "candidate_sha256": "a1ad3005215ed531cedfb984983d52789193ef3d1bcd33e9e67e1d4837ed53d8",
+  "contract": "provisional-contract.json",
+  "contract_sha256": "1c9e0a255fba5ba6dc931ac772a52a204d57e4d191ac2d57909b6f60f4f00fd5",
+  "promotion_status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW",
+  "schema_version": 1,
+  "selection": {
+    "callee_contract_id": null,
+    "clang_usr": "c:@F@CalcFullnessOffset",
+    "execution_count": 131328,
+    "human_review_required_before_promotion": true,
+    "literal_size_bound": {
+      "complete_for_visible_literal_calls": false,
+      "evidence": "loop-free scalar record transition from Clang facts",
+      "maximum": null,
+      "values": []
+    },
+    "name": "CalcFullnessOffset",
+    "provisional_max_bits": null,
+    "selection_basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "semantics_kind": "scalar_record_next_state",
+    "window_bytes": 0
+  },
+  "status": "PASS"
+}

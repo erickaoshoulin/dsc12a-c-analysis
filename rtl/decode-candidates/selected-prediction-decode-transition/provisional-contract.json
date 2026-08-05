@@ -1,0 +1,955 @@
+{
+  "contract_id": "predictionloop_decode_transition",
+  "dependencies": [
+    {
+      "active_in_decode_specialization": false,
+      "contract_file": "library/contracts/maxresidualsize.json",
+      "contract_id": "maxresidualsize",
+      "contract_sha256": "84e97590a3bd35586be554aee05a306a3390367b2324703e68f6f6beaf9a9714",
+      "function": "MaxResidualSize",
+      "module_file": "library/rtl/maxresidualsize.sv",
+      "module_sha256": "cfdb54a0936d5bd70d45ddd9bcb20d05d99b73039a3789c1124ed564ae5aa65b",
+      "role": "max_residual"
+    },
+    {
+      "active_in_decode_specialization": true,
+      "contract_file": "library/contracts/findmidpoint.json",
+      "contract_id": "findmidpoint",
+      "contract_sha256": "5d2617730d3c210dbfd119c68c722d035c65df571b5ac628af7bf19b0d722a12",
+      "function": "FindMidpoint",
+      "module_file": "library/rtl/findmidpoint.sv",
+      "module_sha256": "95b00b9f217f19697deb92e6926e102faf48b91af79a9fb6331900a7217d480b",
+      "role": "midpoint"
+    },
+    {
+      "active_in_decode_specialization": true,
+      "contract_file": "library/contracts/mapqptoqlevel.json",
+      "contract_id": "mapqptoqlevel",
+      "contract_sha256": "9bbbf576bb551a7cf896d43f54fd6d3bf779c447bf4a87660ee63f302c8c191f",
+      "function": "MapQpToQlevel",
+      "module_file": "library/rtl/mapqptoqlevel.sv",
+      "module_sha256": "5dda9dc25483193295e7af8abbd927b209f8e9715f2f4791864200f2fc0a3334",
+      "role": "qp_mapping"
+    },
+    {
+      "active_in_decode_specialization": false,
+      "contract_file": "library/contracts/quantizeresidual.json",
+      "contract_id": "quantizeresidual",
+      "contract_sha256": "c8e83afed963044c81b588a1bad28ec2c1dd81ded0055be1ea438139118592eb",
+      "function": "QuantizeResidual",
+      "module_file": "library/rtl/quantizeresidual.sv",
+      "module_sha256": "7c9d729bbe1ac193b6f355b3d8281a92ab350a9c27a7717145fdea31a863d9cd",
+      "role": "quantize"
+    },
+    {
+      "active_in_decode_specialization": false,
+      "contract_file": "library/contracts/findresidualsize.json",
+      "contract_id": "findresidualsize",
+      "contract_sha256": "c80809ad3149bc843d4ac9cfbde3eb22275ff38d330871729232be8253912811",
+      "function": "FindResidualSize",
+      "module_file": "library/rtl/findresidualsize.sv",
+      "module_sha256": "a10d4649d371883b4bdfef25fc99448c5a719e937a93425900ddf00b26474073",
+      "role": "residual_size"
+    },
+    {
+      "active_in_decode_specialization": true,
+      "contract_file": "library/contracts/samplepredict.json",
+      "contract_id": "samplepredict",
+      "contract_sha256": "1f2f0f64cfa4c4b3ea889b8f1602b3811c5343e7cc1b7271fbadb6d86336663b",
+      "function": "SamplePredict",
+      "module_file": "library/rtl/samplepredict.sv",
+      "module_sha256": "831411aefb7fd14c630f6a71d75191a62320ce17566d6292637fcdab603e2011",
+      "role": "sample_predict"
+    }
+  ],
+  "function": {
+    "clang_usr": "c:@F@PredictionLoop",
+    "name": "PredictionLoop",
+    "parameters": [
+      {
+        "name": "dsc_cfg",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_cfg_t *"
+      },
+      {
+        "name": "dsc_state",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_state_t *"
+      },
+      {
+        "name": "hPos",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "vPos",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "sampModCnt",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "qp",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      }
+    ],
+    "return_type": "void",
+    "source_body_sha256": "68250b06f5e7c49e737e40eb13a8ff173c26ba3c90bb04dec83197f6bd6e8773",
+    "source_file": "dsc_codec.c",
+    "source_span": {
+      "end_line": 2502,
+      "start_line": 2361
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "name": "hpos",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "vpos",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "sampmodcnt",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "qp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_native_420",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_dsc_version_minor",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_is_encoder",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_units_per_group",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpnt_bit_depth_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpnt_bit_depth_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpnt_bit_depth_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpnt_bit_depth_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unit_c_type_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unit_c_type_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unit_c_type_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unit_c_type_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unit_start_hpos_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unit_start_hpos_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unit_start_hpos_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unit_start_hpos_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_use_midpoint_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_use_midpoint_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_use_midpoint_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_use_midpoint_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_left_recon_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_left_recon_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_left_recon_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_left_recon_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_0_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_0_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_0_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_1_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_1_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_1_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_2_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_2_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_2_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_3_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_3_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_3_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "qlevel_luma_qp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "qlevel_chroma_qp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_prediction",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_0_tap_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_0_tap_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_0_tap_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_0_tap_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_0_tap_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_0_tap_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_1_tap_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_1_tap_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_1_tap_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_1_tap_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_1_tap_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_1_tap_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_2_tap_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_2_tap_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_2_tap_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_2_tap_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_2_tap_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_2_tap_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_3_tap_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_3_tap_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_3_tap_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_3_tap_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_3_tap_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_3_tap_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_0_a",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_1_a",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_2_a",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_3_a",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_0_block",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_1_block",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_2_block",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_3_block",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "domain_valid",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "line_write_0_enable",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "line_write_0_component",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "line_write_0_index",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "line_write_0_value",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "line_write_1_enable",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "line_write_1_component",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "line_write_1_index",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "line_write_1_value",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "line_write_2_enable",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "line_write_2_component",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "line_write_2_index",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "line_write_2_value",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "line_write_3_enable",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "line_write_3_component",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "line_write_3_index",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "line_write_3_value",
+        "signed": true,
+        "width": 32
+      }
+    ]
+  },
+  "obligations": [
+    "full-frame Decode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "prove encoder calls are bypassed and reported NOT_REACHED",
+    "human review of decoder specialization and complete line-write footprint before promotion"
+  ],
+  "origin": "tool_discovered_decoder_runtime_transition",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "schema_version": 2,
+  "selection": {
+    "basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "decode_execution_count": 393984,
+    "shape_evidence": {
+      "accepted_dependencies": [
+        {
+          "candidate_file": "/private/tmp/dsc12a-regression-dashboard/library/rtl/findmidpoint.sv",
+          "candidate_sha256": "95b00b9f217f19697deb92e6926e102faf48b91af79a9fb6331900a7217d480b",
+          "contract_file": "/private/tmp/dsc12a-regression-dashboard/library/contracts/findmidpoint.json",
+          "contract_id": "findmidpoint",
+          "contract_sha256": "5d2617730d3c210dbfd119c68c722d035c65df571b5ac628af7bf19b0d722a12",
+          "function": "FindMidpoint"
+        },
+        {
+          "candidate_file": "/private/tmp/dsc12a-regression-dashboard/library/rtl/findresidualsize.sv",
+          "candidate_sha256": "a10d4649d371883b4bdfef25fc99448c5a719e937a93425900ddf00b26474073",
+          "contract_file": "/private/tmp/dsc12a-regression-dashboard/library/contracts/findresidualsize.json",
+          "contract_id": "findresidualsize",
+          "contract_sha256": "c80809ad3149bc843d4ac9cfbde3eb22275ff38d330871729232be8253912811",
+          "function": "FindResidualSize"
+        },
+        {
+          "candidate_file": "/private/tmp/dsc12a-regression-dashboard/library/rtl/mapqptoqlevel.sv",
+          "candidate_sha256": "5dda9dc25483193295e7af8abbd927b209f8e9715f2f4791864200f2fc0a3334",
+          "contract_file": "/private/tmp/dsc12a-regression-dashboard/library/contracts/mapqptoqlevel.json",
+          "contract_id": "mapqptoqlevel",
+          "contract_sha256": "9bbbf576bb551a7cf896d43f54fd6d3bf779c447bf4a87660ee63f302c8c191f",
+          "function": "MapQpToQlevel"
+        },
+        {
+          "candidate_file": "/private/tmp/dsc12a-regression-dashboard/library/rtl/maxresidualsize.sv",
+          "candidate_sha256": "cfdb54a0936d5bd70d45ddd9bcb20d05d99b73039a3789c1124ed564ae5aa65b",
+          "contract_file": "/private/tmp/dsc12a-regression-dashboard/library/contracts/maxresidualsize.json",
+          "contract_id": "maxresidualsize",
+          "contract_sha256": "84e97590a3bd35586be554aee05a306a3390367b2324703e68f6f6beaf9a9714",
+          "function": "MaxResidualSize"
+        },
+        {
+          "candidate_file": "/private/tmp/dsc12a-regression-dashboard/library/rtl/quantizeresidual.sv",
+          "candidate_sha256": "7c9d729bbe1ac193b6f355b3d8281a92ab350a9c27a7717145fdea31a863d9cd",
+          "contract_file": "/private/tmp/dsc12a-regression-dashboard/library/contracts/quantizeresidual.json",
+          "contract_id": "quantizeresidual",
+          "contract_sha256": "c8e83afed963044c81b588a1bad28ec2c1dd81ded0055be1ea438139118592eb",
+          "function": "QuantizeResidual"
+        },
+        {
+          "candidate_file": "/private/tmp/dsc12a-regression-dashboard/library/rtl/samplepredict.sv",
+          "candidate_sha256": "831411aefb7fd14c630f6a71d75191a62320ce17566d6292637fcdab603e2011",
+          "contract_file": "/private/tmp/dsc12a-regression-dashboard/library/contracts/samplepredict.json",
+          "contract_id": "samplepredict",
+          "contract_sha256": "1f2f0f64cfa4c4b3ea889b8f1602b3811c5343e7cc1b7271fbadb6d86336663b",
+          "function": "SamplePredict"
+        }
+      ],
+      "complete_for_visible_literal_calls": false,
+      "evidence": "fixed MAX_UNITS_PER_GROUP decoder reconstruction composed from hash-bound accepted pure leaves; encoder-only branches are outside this specialization",
+      "maximum": null,
+      "values": []
+    }
+  },
+  "semantics": {
+    "bindings": {
+      "argument_ports": {
+        "hPos": "hpos",
+        "qp": "qp",
+        "sampModCnt": "sampmodcnt",
+        "vPos": "vpos"
+      },
+      "config_parameter": "dsc_cfg",
+      "config_ports": {
+        "dsc_version_minor": "cfg_dsc_version_minor",
+        "native_420": "cfg_native_420"
+      },
+      "current_a_ports": [
+        "curr_line_unit_0_a",
+        "curr_line_unit_1_a",
+        "curr_line_unit_2_a",
+        "curr_line_unit_3_a"
+      ],
+      "current_block_ports": [
+        "curr_line_unit_0_block",
+        "curr_line_unit_1_block",
+        "curr_line_unit_2_block",
+        "curr_line_unit_3_block"
+      ],
+      "current_line_field": "currLine",
+      "depth_ports": [
+        "state_cpnt_bit_depth_0",
+        "state_cpnt_bit_depth_1",
+        "state_cpnt_bit_depth_2",
+        "state_cpnt_bit_depth_3"
+      ],
+      "horizontal_parameter": "hPos",
+      "left_ports": [
+        "state_left_recon_0",
+        "state_left_recon_1",
+        "state_left_recon_2",
+        "state_left_recon_3"
+      ],
+      "midpoint_ports": [
+        "state_use_midpoint_0",
+        "state_use_midpoint_1",
+        "state_use_midpoint_2",
+        "state_use_midpoint_3"
+      ],
+      "prediction_field": "prevLinePred",
+      "prediction_port": "prev_line_prediction",
+      "previous_line_field": "prevLine",
+      "previous_line_ports": [
+        [
+          "prev_line_unit_0_tap_0",
+          "prev_line_unit_0_tap_1",
+          "prev_line_unit_0_tap_2",
+          "prev_line_unit_0_tap_3",
+          "prev_line_unit_0_tap_4",
+          "prev_line_unit_0_tap_5"
+        ],
+        [
+          "prev_line_unit_1_tap_0",
+          "prev_line_unit_1_tap_1",
+          "prev_line_unit_1_tap_2",
+          "prev_line_unit_1_tap_3",
+          "prev_line_unit_1_tap_4",
+          "prev_line_unit_1_tap_5"
+        ],
+        [
+          "prev_line_unit_2_tap_0",
+          "prev_line_unit_2_tap_1",
+          "prev_line_unit_2_tap_2",
+          "prev_line_unit_2_tap_3",
+          "prev_line_unit_2_tap_4",
+          "prev_line_unit_2_tap_5"
+        ],
+        [
+          "prev_line_unit_3_tap_0",
+          "prev_line_unit_3_tap_1",
+          "prev_line_unit_3_tap_2",
+          "prev_line_unit_3_tap_3",
+          "prev_line_unit_3_tap_4",
+          "prev_line_unit_3_tap_5"
+        ]
+      ],
+      "qlevel_ports": {
+        "chroma": "qlevel_chroma_qp",
+        "luma": "qlevel_luma_qp"
+      },
+      "qp_parameter": "qp",
+      "quant_table_chroma_field": "quantTableChroma",
+      "quant_table_luma_field": "quantTableLuma",
+      "residual_ports": [
+        [
+          "state_quantized_residual_0_0",
+          "state_quantized_residual_0_1",
+          "state_quantized_residual_0_2"
+        ],
+        [
+          "state_quantized_residual_1_0",
+          "state_quantized_residual_1_1",
+          "state_quantized_residual_1_2"
+        ],
+        [
+          "state_quantized_residual_2_0",
+          "state_quantized_residual_2_1",
+          "state_quantized_residual_2_2"
+        ],
+        [
+          "state_quantized_residual_3_0",
+          "state_quantized_residual_3_1",
+          "state_quantized_residual_3_2"
+        ]
+      ],
+      "sample_count_parameter": "sampModCnt",
+      "state_parameter": "dsc_state",
+      "state_ports": {
+        "isEncoder": "state_is_encoder",
+        "unitsPerGroup": "state_units_per_group"
+      },
+      "unit_start_ports": [
+        "state_unit_start_hpos_0",
+        "state_unit_start_hpos_1",
+        "state_unit_start_hpos_2",
+        "state_unit_start_hpos_3"
+      ],
+      "unit_type_ports": [
+        "state_unit_c_type_0",
+        "state_unit_c_type_1",
+        "state_unit_c_type_2",
+        "state_unit_c_type_3"
+      ],
+      "vertical_parameter": "vPos",
+      "write_ports": [
+        {
+          "component": "line_write_0_component",
+          "enable": "line_write_0_enable",
+          "index": "line_write_0_index",
+          "value": "line_write_0_value"
+        },
+        {
+          "component": "line_write_1_component",
+          "enable": "line_write_1_enable",
+          "index": "line_write_1_index",
+          "value": "line_write_1_value"
+        },
+        {
+          "component": "line_write_2_component",
+          "enable": "line_write_2_enable",
+          "index": "line_write_2_index",
+          "value": "line_write_2_value"
+        },
+        {
+          "component": "line_write_3_component",
+          "enable": "line_write_3_enable",
+          "index": "line_write_3_index",
+          "value": "line_write_3_value"
+        }
+      ]
+    },
+    "composition_reduction": "hash-bound mapping, sample-predict, and midpoint leaves are specialized into a fixed four-slot chain; quantization and error accumulation dependencies are proven inactive by isEncoder==0",
+    "constants": {
+      "component_count": 4,
+      "max_units": 4,
+      "padding_left": 5,
+      "pred_block_size": 3,
+      "pt_block": 2,
+      "pt_left": 1,
+      "pt_map": 0,
+      "samples_per_unit": 3
+    },
+    "kind": "bounded_prediction_decode_transition",
+    "legal_domain": {
+      "active_unit_component_indices_are_unique": true,
+      "all_active_line_taps_present": true,
+      "component": [
+        0,
+        3
+      ],
+      "component_bit_depth": [
+        8,
+        16
+      ],
+      "decoder_only": true,
+      "horizontal_position_nonnegative": true,
+      "prev_line_prediction": [
+        0,
+        11
+      ],
+      "qlevel": [
+        0,
+        16
+      ],
+      "qp": [
+        0,
+        31
+      ],
+      "residual_index_per_active_unit": [
+        0,
+        2
+      ],
+      "sample_count": [
+        0,
+        2
+      ],
+      "units_per_group": [
+        3,
+        4
+      ],
+      "vertical_position_nonnegative": true
+    },
+    "specialization": {
+      "state_is_encoder": 0
+    },
+    "state_transition": "for decoder state only, reconstruct each active unit and emit one explicit current-line write slot"
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

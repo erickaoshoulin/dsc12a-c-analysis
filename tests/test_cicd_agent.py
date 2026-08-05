@@ -1,3 +1,4 @@
+import copy
 import json
 import hashlib
 import os
@@ -71,6 +72,136 @@ class CicdAgentUnitTests(unittest.TestCase):
     def test_generated_identifiers_are_safe(self):
         self.assertEqual(safe_identifier("a.b-c"), "a_b_c")
         self.assertEqual(len(digest({"a": 1})), 64)
+
+    def test_matrix_scope_all_discovers_every_script_and_expected_alias(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            model = root / "model"
+            smoke = model / "bittrue_smoke"
+            smoke.mkdir(parents=True)
+            scripts = [
+                "bittrue_smoke/run_c_baseline.sh",
+                "bittrue_smoke/run_c_baseline_10bpc.sh",
+                "bittrue_smoke/run_c_baseline_native420.sh",
+                "bittrue_smoke/run_c_baseline_vbr_2slice.sh",
+            ]
+            for index, relative in enumerate(scripts):
+                expected_name = "expected" if relative.endswith("vbr_2slice.sh") else "expected_hash"
+                (model / relative).write_text(
+                    f'{expected_name}="{index:064x}"\n'
+                    f'golden="$model_dir/bittrue_smoke/out/{index}.dsc"\n'
+                    f'./source/dsc -F bittrue_smoke/profile_{index}.cfg\n',
+                    encoding="utf-8",
+                )
+                (smoke / f"profile_{index}.cfg").write_text("profile\n", encoding="utf-8")
+                (smoke / f"profile_{index}.list").write_text("frame.ppm\n", encoding="utf-8")
+            agent = Agent(root, "plan")
+            agent.input_facts = {
+                "source_root": str(model),
+                "baseline_scripts": scripts,
+            }
+            with mock.patch.dict(
+                os.environ, {"DSC_CICD_MATRIX_SCOPE": "all"}, clear=False
+            ):
+                scenarios = agent.discover_matrix()
+        self.assertEqual(len(scenarios), 4)
+        self.assertEqual(
+            scenarios[-1]["expected_variable"], "expected"
+        )
+        self.assertTrue(all(item["list"].endswith(".list") for item in scenarios))
+        self.assertTrue(all(item["list_sha256"] for item in scenarios))
+        self.assertTrue(all(
+            item["oracle_class"] == "ANCHORED_EXPECTED_SHA"
+            for item in scenarios
+        ))
+        self.assertEqual(
+            Agent.matrix_evidence_summary(scenarios)["anchored_mode_rows"], 12
+        )
+
+    def test_matrix_scope_smoke_remains_bounded_and_unanchored_is_classified(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            model = root / "model"
+            smoke = model / "bittrue_smoke"
+            smoke.mkdir(parents=True)
+            scripts = [
+                "bittrue_smoke/run_c_baseline.sh",
+                "bittrue_smoke/run_c_baseline_10bpc.sh",
+                "bittrue_smoke/run_c_baseline_native420.sh",
+                "bittrue_smoke/run_c_baseline_future.sh",
+            ]
+            for index, relative in enumerate(scripts):
+                expected = "" if relative.endswith("future.sh") else f'expected_hash="{index:064x}"\n'
+                (model / relative).write_text(
+                    expected
+                    + f'golden="$model_dir/bittrue_smoke/out/{index}.dsc"\n'
+                    + f'./source/dsc -F bittrue_smoke/profile_{index}.cfg\n',
+                    encoding="utf-8",
+                )
+                (smoke / f"profile_{index}.cfg").write_text("profile\n", encoding="utf-8")
+                (smoke / f"profile_{index}.list").write_text("frame.ppm\n", encoding="utf-8")
+            agent = Agent(root, "plan")
+            agent.input_facts = {
+                "source_root": str(model),
+                "baseline_scripts": scripts,
+            }
+            with mock.patch.dict(
+                os.environ, {"DSC_CICD_MATRIX_SCOPE": "smoke"}, clear=False
+            ):
+                smoke_scenarios = agent.discover_matrix()
+            future = agent.scenario_info(
+                "bittrue_smoke/run_c_baseline_future.sh"
+            )
+        self.assertEqual(len(smoke_scenarios), 3)
+        self.assertEqual(future["oracle_class"], "C_BASELINE_DIFFERENTIAL_ONLY")
+        summary = Agent.matrix_evidence_summary([future])
+        self.assertEqual(summary["differential_only_profiles"], 1)
+        self.assertTrue(summary["differential_only_excluded_from_promotion"])
+
+    def test_invalid_matrix_scope_is_rejected(self):
+        with mock.patch.dict(
+            os.environ, {"DSC_CICD_MATRIX_SCOPE": "typo"}, clear=False
+        ):
+            with self.assertRaisesRegex(ValueError, "smoke.*all"):
+                Agent.matrix_scope()
+
+    def test_overlay_metrics_prove_runtime_replacement_invocation(self):
+        parsed = Agent.parse_overlay_metrics(
+            "noise\nDSC_CICD_OVERLAY_METRICS calls=41 "
+            "rtl_invocations=41 mismatches=0\n"
+        )
+        self.assertTrue(parsed["metrics_present"])
+        self.assertTrue(parsed["replacement_reached"])
+        self.assertTrue(parsed["rtl_exercised"])
+        self.assertEqual(parsed["calls"], 41)
+        self.assertEqual(parsed["mismatches"], 0)
+
+        absent = Agent.parse_overlay_metrics("ordinary codec output\n")
+        self.assertFalse(absent["metrics_present"])
+        self.assertFalse(absent["replacement_reached"])
+        self.assertEqual(absent["calls"], 0)
+
+    def test_overlay_metrics_aggregate_named_multi_rtl_adapters(self):
+        parsed = Agent.parse_overlay_metrics(
+            "DSC_CICD_OVERLAY_METRICS candidate=vldgroup calls=12 "
+            "rtl_invocations=12 mismatches=0\n"
+            "DSC_CICD_OVERLAY_METRICS candidate=ratecontrol calls=7 "
+            "rtl_invocations=7 mismatches=0\n"
+        )
+        self.assertEqual(parsed["calls"], 19)
+        self.assertEqual(parsed["rtl_invocations"], 19)
+        self.assertEqual(parsed["mismatches"], 0)
+        self.assertEqual(parsed["candidates"]["vldgroup"]["calls"], 12)
+        self.assertEqual(parsed["candidates"]["ratecontrol"]["rtl_invocations"], 7)
+
+    def test_receipt_path_scrubbing_accepts_path_objects(self):
+        from tools.cicd_agent import scrub_paths
+
+        root = pathlib.Path("/tmp/example-root")
+        self.assertEqual(
+            scrub_paths({"path": root / "source" / "dsc"}, [root]),
+            {"path": "<overlay-work>/source/dsc"},
+        )
 
     def test_freeze_ports_deduplicates_flattened_pointer_fields(self):
         agent = Agent(pathlib.Path(tempfile.mkdtemp()), "test")
@@ -158,6 +289,62 @@ class CicdAgentUnitTests(unittest.TestCase):
         self.assertEqual(digest(loaded[0]), digest(snapshot))
         self.assertNotIn("library_promotion", loaded[0])
         self.assertNotIn("do_not_edit", loaded[0])
+
+    def test_accepted_rtl_uses_checkout_snapshot_with_fresh_external_artifact_root(self):
+        accepted = {
+            "contract_id": "tool_leaf",
+            "status": "LOCKED",
+            "function": {"name": "ToolLeaf", "clang_usr": "c:@F@ToolLeaf"},
+            "spec_links": [{"status": "EXACT", "anchor_id": "pdf:section:tool_leaf"}],
+            "obligations": [],
+            "dependencies": {"unresolved": []},
+            "interface": {"ports": [
+                {"name": "value", "direction": "input", "width": 8, "signed": False},
+                {"name": "return_value", "direction": "output", "width": 8, "signed": False},
+            ]},
+            "semantics": {"kind": "pure_expression"},
+            "selection": {"candidate_rank": 1},
+        }
+        current = copy.deepcopy(accepted)
+        current["selection"] = {"candidate_rank": 2}
+        current["lock"] = {"contract_sha256": "refreshed-routing-hash"}
+        current["provenance"] = {"coverage_sha256": "refreshed-coverage-hash"}
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            external = root / "external-artifacts"
+            snapshot_dir = root / "artifacts" / digest(accepted)
+            snapshot_dir.mkdir(parents=True)
+            (snapshot_dir / "locked-contract.json").write_text(
+                json.dumps(accepted), encoding="utf-8"
+            )
+            rtl = root / "library" / "rtl" / "tool_leaf.sv"
+            rtl.parent.mkdir(parents=True)
+            rtl.write_text(
+                "module tool_leaf(input logic [7:0] value, output logic [7:0] return_value);\n"
+                "  assign return_value = value;\nendmodule\n",
+                encoding="utf-8",
+            )
+            manifest = {
+                "components": [{
+                    "contract_id": "tool_leaf",
+                    "status": "PASS",
+                    "contract_hash": digest(accepted),
+                    "artifact_dir": str(snapshot_dir.relative_to(root)),
+                    "module_file": "rtl/tool_leaf.sv",
+                    "module_sha256": file_hash(rtl),
+                }],
+            }
+            with mock.patch.dict(
+                os.environ,
+                {"DSC_CICD_ARTIFACT_ROOT": str(external)},
+                clear=False,
+            ):
+                agent = Agent(root, "plan")
+                component = agent.accepted_rtl_component(
+                    "tool_leaf", digest(current), manifest, current
+                )
+        self.assertIsNotNone(component)
+        self.assertEqual(component["contract_id"], "tool_leaf")
 
     def test_stable_refresh_reloads_accepted_library_contracts(self):
         accepted = {
@@ -1570,6 +1757,8 @@ class CicdAgentUnitTests(unittest.TestCase):
             self.assertIn("dsc_cfg->dsc_version_minor", overlay)
             self.assertIn("dsc_state->quantTableLuma[qp]", overlay)
             self.assertIn("dsc_state->cpntBitDepth[0]", overlay)
+            self.assertIn("DSC_CICD_OVERLAY_METRICS", overlay)
+            self.assertIn("dsc_cicd_note_call(mode)", overlay)
 
             paths = agent.write_overlay_sources(
                 contract, root, "map_qp_to_qlevel", root / "candidate.sv"

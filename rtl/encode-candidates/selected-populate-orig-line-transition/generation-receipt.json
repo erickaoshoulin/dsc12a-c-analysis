@@ -1,0 +1,60 @@
+{
+  "candidate": "candidate_01.sv",
+  "contract_id": "populateorigline_encode_transition",
+  "match_count": 1,
+  "matches": [
+    {
+      "clang_usr": "c:@F@PopulateOrigLine",
+      "component_count": 4,
+      "config_parameter": "dsc_cfg",
+      "coverage": {
+        "branch_coverage_percent": 91.935,
+        "covered": true,
+        "end_line": 2351,
+        "execution_count": 2592,
+        "line_coverage_percent": 77.778,
+        "name": "PopulateOrigLine",
+        "raw_summary": {
+          "branch_arm_count": 62,
+          "covered_branch_arm_count": 57,
+          "covered_line_region_count": 42,
+          "function_count": 1,
+          "function_covered": 1,
+          "line_region_count": 54
+        },
+        "region_coverage_percent": 77.778,
+        "source_file": "dsc_codec.c",
+        "start_line": 2295
+      },
+      "execution_count": 2592,
+      "max_slice_height": 65535,
+      "max_slice_width": 65535,
+      "name": "PopulateOrigLine",
+      "padding_left": 5,
+      "padding_right": 10,
+      "picture_parameter": "ip",
+      "selection_basis": [
+        "Encode runtime coverage reached the function",
+        "Clang found read-only config/picture pointers, one mutable state pointer, and one scalar vertical position",
+        "Clang effects found only the indexed original-line output field and no callee/allocation/I/O effects",
+        "Clang fields expose component depth, component count, slice width, picture dimensions, and Y/U/V planes",
+        "source loops and MIN/PADDING/switch facts preserve the complete native-422 mapping and clamp order",
+        "the finite slice-width and slice-height bounds are extracted from immutable source RANGE_CHECK facts",
+        "no function-name allowlist is used"
+      ],
+      "semantics_kind": "populate_orig_line_memory_transition",
+      "source_span": {
+        "end_line": 2351,
+        "start_line": 2294
+      },
+      "state_parameter": "dsc_state",
+      "vpos_parameter": "vPos"
+    }
+  ],
+  "promotion_status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW",
+  "schema_version": 1,
+  "selected_clang_usr": "c:@F@PopulateOrigLine",
+  "selected_function": "PopulateOrigLine",
+  "selection_policy": "highest Encode execution count among structural bounded bounded picture-memory original-line transaction matches; no function-name allowlist",
+  "status": "PASS"
+}

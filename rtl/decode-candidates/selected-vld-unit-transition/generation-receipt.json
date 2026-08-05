@@ -1,0 +1,32 @@
+{
+  "candidate": "candidate_01.sv",
+  "candidate_sha256": "90adc4d38484532c08f5131a2fa7bb6bb61c32fbc0d39f5662354eb9cdda59e5",
+  "contract": "provisional-contract.json",
+  "contract_sha256": "cf4fdeb21aa16de1ae9120470953b358d4ffc04b81cc8fdcc4c238261af6cb36",
+  "promotion_status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW",
+  "schema_version": 1,
+  "selection": {
+    "callee_contract_id": "getbits_fifo_accounting_decode_transition",
+    "clang_usr": "c:@F@VLDUnit",
+    "execution_count": 404352,
+    "human_review_required_before_promotion": true,
+    "literal_size_bound": {
+      "callee": "GetBits",
+      "callee_candidate_file": "/private/tmp/dsc12a-regression-dashboard/rtl/decode-candidates/selected-fifo-accounting-transition/candidate_01.sv",
+      "callee_candidate_sha256": "0b114ab03469269e949567145482e8ebbe6380805d5d86668f8f67c93c6d5eb9",
+      "callee_contract_file": "/private/tmp/dsc12a-regression-dashboard/rtl/decode-candidates/selected-fifo-accounting-transition/provisional-contract.json",
+      "callee_contract_id": "getbits_fifo_accounting_decode_transition",
+      "callee_contract_sha256": "a94d294a60f60e0ac5366691dc0ebad3265a57eddbcb1a7bfdefeb5df79193ca",
+      "complete_for_visible_literal_calls": false,
+      "evidence": "bounded decoder syntax-unit transition composed from accepted pure leaves and a verified FIFO accounting transition",
+      "maximum": null,
+      "values": []
+    },
+    "name": "VLDUnit",
+    "provisional_max_bits": null,
+    "selection_basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "semantics_kind": "bounded_vld_unit_transition",
+    "window_bytes": 0
+  },
+  "status": "PASS"
+}

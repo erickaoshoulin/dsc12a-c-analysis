@@ -1,0 +1,31 @@
+{
+  "candidate": "candidate_01.sv",
+  "contract_id": "useichistory_decode_transition",
+  "decode": {
+    "coverage_status": "RTL_EXERCISED",
+    "rtl_return_invocations": 11704,
+    "status": "PASS"
+  },
+  "encode": {
+    "rtl_return_invocations": 11704,
+    "status": "PASS"
+  },
+  "matrix_receipt": "matrix-receipt.json",
+  "matrix_scope": "all",
+  "phase_order": [
+    "DECODE",
+    "ENCODE"
+  ],
+  "promotion_status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW",
+  "replacement_coverage": {
+    "decode_coverage_status": "RTL_EXERCISED",
+    "encode_rtl_return_coverage_status": "RTL_EXERCISED",
+    "encode_shadow_coverage_status": "RTL_EXERCISED",
+    "policy": "SHADOW and RTL_RETURN must each invoke the Verilated replacement in at least one full-frame Decode or Encode scenario",
+    "rtl_return_rtl_invocations": 23408,
+    "shadow_rtl_invocations": 23408,
+    "status": "PASS"
+  },
+  "schema_version": 1,
+  "status": "PASS"
+}

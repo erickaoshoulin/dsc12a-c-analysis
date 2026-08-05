@@ -1,22 +1,28 @@
 # Standalone DSC 1.2a C-model analysis, auto-discovery, and RTL-slice prompt
 
-Work only in this standalone repository. The project is independent of SVRT
-and may generate bounded combinational Verilog library slices, but it does
-not generate sequential hardware or an LLM runtime. Do not modify or commit
-the upstream C model or the local PDF.
+Work only in this standalone repository. The project is independent of SVRT.
+Do not modify or commit the upstream C model or the local PDF, and do not use
+Rust in the oracle, adapter, simulation, or replacement path. The promoted
+designer library remains bounded and combinational. Separately, the
+provisional verification plane may generate bounded state-transition RTL,
+compile it to C++ with Verilator, and substitute it at tool-discovered
+Encode/Decode boundaries inside a copied full-frame C model. Provisional RTL
+is regression evidence, not permission to enter the stable library.
 
 ## Goal
 
 Build a deterministic, rerunnable pipeline that discovers the local DSC 1.2a
 PDF and C model, proves the C model can clean-build and smoke-run, discovers
-combinational DUT candidates from tool facts rather than hardcoded names,
-generates bidirectional PDF <-> C traceability, joins dynamic LLVM coverage,
-and incrementally grows a stable designer-facing Verilog library. Every new
-leaf is first exercised through the immutable C oracle, real Verilator builds,
-and parallel shards; only a complete legal-domain proof may enter the stable
-library. This project is not SVRT and must not grow SVRT integration,
-whole-codec RTL generation, an LLM runtime, C/Rust parsing, or
-sequential-hardware behavior.
+DUT candidates from Clang/coverage/effect facts rather than hardcoded names,
+generates bidirectional PDF <-> C traceability, and incrementally grows both a
+stable designer-facing Verilog library and an isolated provisional full-frame
+verification frontier. Every new boundary is exercised through the immutable
+C oracle, real Verilator builds, and parallel profile shards. The provisional
+goal is zero tool-discovered Encode/Decode compute gaps while retaining only
+allocation, I/O, memory lifecycle, and frame orchestration as C shells. Only a
+complete legal-domain proof plus explicit human review may enter the stable
+library. This project is not SVRT and must not grow SVRT integration, an LLM
+runtime, or a Rust replacement path.
 
 The local PDF and C model are mandatory preflight inputs, not optional
 context: every run must rediscover and hash the PDF, compile the immutable C
@@ -70,6 +76,29 @@ durable storage.
   may be keyed by reviewed contract semantics, never by a function-name
   recipe or hardcoded source-function list. The C oracle is retained for
   stateful/non-DUT behavior and for every rollback path.
+
+## Provisional full-frame RTL substitution
+
+- Discover Encode and Decode runtime frontiers from LLVM phase coverage,
+  Clang call/effect facts, stable manifests, and hash-verified provisional
+  receipts. Neither the prompt nor an operator may provide a function-name
+  allowlist; names are outputs of discovery only.
+- Stateful compute may use bounded sequential RTL, explicit state images, and
+  external memory/FIFO/frame handshakes in the provisional plane. C remains
+  responsible for orchestration, allocation, file/process I/O, and lifecycle.
+- Build one copied source-model executable containing the original C shells
+  and all selected Verilator-generated C++ models. Run `C_ONLY`, `SHADOW`, and
+  `RTL_RETURN` on the same discovered profiles. The original C oracle must run
+  on private state; nested child calls are forced to C-only while that oracle
+  is active.
+- `RTL_RETURN` commits only RTL outputs. Require exact frame bytes/SHA, zero
+  mismatches, and nonzero replacement evidence. A child absorbed by a parent
+  RTL boundary is credited only through exact contract/module hash pins and is
+  reported as `ABSORBED_BY_PARENT_RTL`, never as a direct invocation.
+- Human contract review and promotion may remain pending while regression
+  proceeds. Pending review must stay visible and must still block stable
+  library promotion; it must not block provisional discovery or full-profile
+  simulation.
 
 ## Input discovery
 
@@ -768,6 +797,86 @@ selected caller waits for selected callees, while already-promoted callees
 are treated as verified boundaries. Each contract still compiles its C oracle
 and Verilator candidate once and runs its input shards in parallel under the
 separate shard worker limit.
+
+The frame matrix must execute in `DECODE`, then `ENCODE` phase order after the
+original C encode scripts prepare anchored `.dsc` fixtures. Decode authority is
+the immutable original C source model: decode each fixture once with original
+C, then decode that exact fixture with the Verilog candidate compiled by
+Verilator in `C_ONLY`, `SHADOW`, and `RTL_RETURN`, comparing the complete output
+frame byte-for-byte. The replacement wrapper must report runtime call count,
+Verilator invocation count, and mismatch count at process exit. Zero calls are
+`NOT_REACHED`, never an RTL pass. `RTL_RETURN` must source both the return value
+and any contracted state outputs from RTL; an original-C shadow may run on a
+private state copy only. Encode authority is likewise the immutable original C
+source model: compare the complete emitted `.dsc` byte-for-byte and by SHA-256
+in all three modes, while `SHADOW` runs C and Verilator on isolated state and
+`RTL_RETURN` commits only the RTL result. Rust is outside this verification
+path.
+
+Discover separate Decode and Encode function frontiers from phase-specific
+runtime coverage, their root call graphs, Clang facts, candidate effects, and
+the stable RTL manifest. Do not configure function names. Encoder runs used
+only to prepare decoder fixtures must be excluded from Decode LLVM profiles;
+the Encode frontier must start at the facts-resolved `DSC_Encode` root and use
+Encode execution counts. Existing pure combinational candidates continue
+through the ordinary contract pipeline. A newly discovered explicit
+state-transition candidate may be generated and regression-tested
+provisionally, but it must not enter `library/rtl/` before human contract
+review and the normal promotion gates. Re-scan provisional candidates
+recursively after each full matrix and treat only `all`-scope PASS receipts as
+available callee boundaries. A provisional boundary may unlock the next
+facts-matched transition, but it remains distinct from stable RTL. Contracts
+with memory effects must expose either every bounded write sideband or a
+complete bounded memory image, and restore every private C-oracle write before
+applying RTL state in `RTL_RETURN`. Non-byte-aligned cursors and FIFO write
+positions must remain explicit inputs/outputs rather than adapter-owned state.
+A parent transition that calls stateful children must instantiate the
+hash-bound child RTL in exact C source order and chain every contracted state
+output into the next call; independent-looking loop iterations must not be
+parallelized when an earlier child can change shared state or a selected FIFO
+cursor. For a fixed-capacity FIFO snapshot, bytes outside the active
+`size / 8` extent are not functional state: canonicalize them to zero at the
+C/Verilator boundary, exclude them from comparison and commit, and never
+dereference backing storage beyond the active extent.
+A bounded reconstructed-line scatter follows the same rule: RTL emits address,
+enable, and value for every possible write, and only those RTL sidebands modify
+the real line buffer in `RTL_RETURN`. Complete-memory-image contracts must not
+dereference or commit an inactive component plane; tie that plane to zero at
+the Verilator boundary, compare/commit only active planes, and retain the full
+width of non-Boolean C storage such as `int history.valid[]`.
+
+After each phase's provisional frontier has `all`-scope PASS receipts, run one
+simultaneous whole-frame integration gate for that phase. Discover candidates
+from those receipts; do not configure a function allowlist. Namespace every
+generated C adapter and Verilator bridge, rewrite selected callers before
+selected callees, and link all selected Verilated models into one copied
+source-model executable. For Decode, build the immutable original-C decoded
+frame oracle first and require byte-for-byte output-frame equality. For Encode,
+build the immutable original-C `.dsc` oracle first and require both byte-for-byte
+and SHA-256 equality. Run `C_ONLY`, `SHADOW`, and `RTL_RETURN` over the exact
+same discovered profiles and emit named per-candidate call, RTL-invocation, and
+mismatch counters.
+
+A passing integration receipt requires every selected boundary to be reached,
+zero RTL invocations in `C_ONLY`, replacement evidence in both `SHADOW` and
+`RTL_RETURN`, zero mismatches, and exact whole-frame equality for every profile.
+A child may report `ABSORBED_BY_PARENT_RTL` instead of a direct invocation only
+when the directly executed parent pins the child's exact contract/module hash
+and composes it in C source order. A smoke matrix is not zero-gap evidence when
+it omits a branch-specific profile; use `all` scope as the authoritative gate.
+Allocation/free, process/file I/O, top-level frame orchestration, and
+effect-free one-callee wrappers remain C boundaries; classify them from tool
+effects and call shape rather than pretending heap or I/O behavior is missing
+datapath RTL.
+
+The checked provisional checkpoint in this repository is Decode 29 RTL plus
+six C shells and Encode 39 RTL plus five C shells, with zero tool-discovered
+runtime compute gaps in both phases across all 22 profiles. Decode
+`SHADOW`/`RTL_RETURN` each records 4,449,264 Verilator invocations; Encode each
+records 30,978,137, with zero candidate or whole-frame mismatches. The Encode
+receipt must remain `BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW` until a human
+reviews the contracts. If receipts are regenerated, their JSON values replace
+this prose snapshot; regression success never implies stable promotion.
 
 Run the loop continuously in bounded batches, keeping the immutable C model as
 the oracle while replacing only proven DUT leaves:

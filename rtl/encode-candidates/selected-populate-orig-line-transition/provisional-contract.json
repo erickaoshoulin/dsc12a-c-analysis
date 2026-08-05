@@ -1,0 +1,393 @@
+{
+  "contract_id": "populateorigline_encode_transition",
+  "function": {
+    "clang_usr": "c:@F@PopulateOrigLine",
+    "name": "PopulateOrigLine",
+    "parameters": [
+      {
+        "name": "dsc_cfg",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_cfg_t *"
+      },
+      {
+        "name": "dsc_state",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_state_t *"
+      },
+      {
+        "name": "ip",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "pic_t *"
+      },
+      {
+        "name": "vPos",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      }
+    ],
+    "return_type": "void",
+    "source_body_sha256": "73aec940dbd07ce756868d1f721c07c37bc476521cc7e22329be9a9727e2c8b0",
+    "source_file": "dsc_codec.c",
+    "source_span": {
+      "end_line": 2351,
+      "start_line": 2294
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "legal_domain": {
+          "range": [
+            0,
+            1
+          ]
+        },
+        "name": "native_420",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "legal_domain": {
+          "range": [
+            0,
+            1
+          ]
+        },
+        "name": "native_422",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "legal_domain": {
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "xstart",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "legal_domain": {
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "ystart",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "legal_domain": {
+          "range": [
+            1,
+            4
+          ]
+        },
+        "name": "num_components",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "legal_domain": {
+          "range": [
+            1,
+            65535
+          ]
+        },
+        "name": "slice_width",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "legal_domain": {
+          "range": [
+            1,
+            65535
+          ]
+        },
+        "name": "pic_width",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "legal_domain": {
+          "range": [
+            1,
+            65535
+          ]
+        },
+        "name": "pic_height",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "legal_domain": {
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "vpos",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "legal_domain": {
+          "range": [
+            0,
+            3
+          ]
+        },
+        "name": "component",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "legal_domain": {
+          "range": [
+            0,
+            65544
+          ]
+        },
+        "name": "sample_index",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "legal_domain": {
+          "range": [
+            1,
+            30
+          ]
+        },
+        "name": "component_bit_depth",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "legal_domain": {
+          "range": [
+            0,
+            65535
+          ]
+        },
+        "name": "pixel_data",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "read_enable",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "read_plane",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "direction": "output",
+        "name": "read_y",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "read_x",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_enable",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "write_component",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "direction": "output",
+        "name": "write_address",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "write_value",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "illegal_domain",
+        "signed": false,
+        "width": 1
+      }
+    ]
+  },
+  "obligations": [
+    "full-frame Encode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "the adapter must compare every touched origLine element and request metadata",
+    "RTL_RETURN must commit the RTL-produced line image without C fallback",
+    "human review of external picture-memory and address contract before promotion"
+  ],
+  "origin": "tool_discovered_encoder_runtime_transition",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "schema_version": 2,
+  "selection": {
+    "basis": [
+      "Encode runtime coverage reached the function",
+      "Clang found read-only config/picture pointers, one mutable state pointer, and one scalar vertical position",
+      "Clang effects found only the indexed original-line output field and no callee/allocation/I/O effects",
+      "Clang fields expose component depth, component count, slice width, picture dimensions, and Y/U/V planes",
+      "source loops and MIN/PADDING/switch facts preserve the complete native-422 mapping and clamp order",
+      "the finite slice-width and slice-height bounds are extracted from immutable source RANGE_CHECK facts",
+      "no function-name allowlist is used"
+    ],
+    "encode_execution_count": 2592
+  },
+  "semantics": {
+    "bindings": {
+      "component_depth_field": "cpntBitDepth",
+      "component_depth_port": "component_bit_depth",
+      "component_port": "component",
+      "config_parameter": "dsc_cfg",
+      "illegal_domain_port": "illegal_domain",
+      "input_ports": [
+        "native_420",
+        "native_422",
+        "xstart",
+        "ystart",
+        "num_components",
+        "slice_width",
+        "pic_width",
+        "pic_height",
+        "vpos",
+        "component",
+        "sample_index",
+        "component_bit_depth",
+        "pixel_data"
+      ],
+      "native_420_field": "native_420",
+      "native_420_port": "native_420",
+      "native_422_field": "native_422",
+      "native_422_port": "native_422",
+      "num_components_field": "numComponents",
+      "num_components_port": "num_components",
+      "output_ports": [
+        "read_enable",
+        "read_plane",
+        "read_y",
+        "read_x",
+        "write_enable",
+        "write_component",
+        "write_address",
+        "write_value",
+        "illegal_domain"
+      ],
+      "picture_height_field": "h",
+      "picture_height_port": "pic_height",
+      "picture_parameter": "ip",
+      "picture_width_field": "w",
+      "picture_width_port": "pic_width",
+      "pixel_data_port": "pixel_data",
+      "read_enable_port": "read_enable",
+      "read_plane_port": "read_plane",
+      "read_x_port": "read_x",
+      "read_y_port": "read_y",
+      "sample_index_port": "sample_index",
+      "slice_width_field": "sliceWidth",
+      "slice_width_port": "slice_width",
+      "state_parameter": "dsc_state",
+      "vpos_parameter": "vPos",
+      "vpos_port": "vpos",
+      "write_address_port": "write_address",
+      "write_component_port": "write_component",
+      "write_enable_port": "write_enable",
+      "write_value_port": "write_value",
+      "xstart_field": "xstart",
+      "xstart_port": "xstart",
+      "ystart_field": "ystart",
+      "ystart_port": "ystart"
+    },
+    "component_count": 4,
+    "external_memory": {
+      "adapter_must_service_request": true,
+      "read_only": true,
+      "record": "pic_t",
+      "request_fields": [
+        "read_enable",
+        "read_plane",
+        "read_y",
+        "read_x"
+      ],
+      "response_field": "pixel_data"
+    },
+    "kind": "populate_orig_line_memory_transition",
+    "legal_domain": {
+      "component_bit_depth": [
+        1,
+        30
+      ],
+      "component_is_less_than_num_components": true,
+      "native_flags_are_binary_and_mutually_exclusive": true,
+      "num_components": [
+        1,
+        4
+      ],
+      "orig_line_storage_covers_padding_left_and_right": true,
+      "picture_dimensions_positive": true,
+      "sample_index": [
+        0,
+        65544
+      ],
+      "slice_width": [
+        1,
+        65535
+      ],
+      "source_plane_memory_is_read_only_and_row_addressable": true
+    },
+    "legal_vector_strategy": {
+      "coverage_mode": "native-422-plane-map-plus-x-clamp-bottom-padding-and-write-address-boundaries",
+      "exhaustive": false,
+      "formal_required": false,
+      "kind": "populate_orig_line"
+    },
+    "max_slice_height": 65535,
+    "max_slice_width": 65535,
+    "padding_left": 5,
+    "padding_right": 10,
+    "state_transition": "produce one source-plane/y/x read request and, after the returned pixel is supplied, the exact origLine component, PADDING_LEFT address, and value",
+    "transactional": true
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

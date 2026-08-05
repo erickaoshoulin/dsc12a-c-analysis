@@ -1,0 +1,429 @@
+{
+  "contract_id": "pickbesthistoryvalue_encode_history_transition",
+  "dependencies": [
+    {
+      "contract_file": "rtl/decode-candidates/selected-sampled-lookup-transition/provisional-contract.json",
+      "contract_id": "historylookup_decode_transition",
+      "contract_sha256": "7d629d8b2f37a025a4d2693a4791f63fa120106bcbf92407c9ca8d07a17b7231",
+      "contract_status": "PROVISIONAL_SIMULATION_ONLY",
+      "encode_evidence": {
+        "contract_id": "historylookup_decode_transition",
+        "encode_rtl_return_invocations": 25291655,
+        "frontier_file": "coverage/encode/frontier.json",
+        "frontier_sha256": "ae0e5d1461d17a02a3b18abfcb699bf7add2fdf2a0f9a50aff9349deea3dcbff",
+        "status": "PASS"
+      },
+      "function": "HistoryLookup",
+      "function_usr": "c:@F@HistoryLookup",
+      "module_file": "rtl/decode-candidates/selected-sampled-lookup-transition/candidate_01.sv",
+      "module_sha256": "247297547a72ffd176caea2bf7c90523c9ab5e4386a6cd912eea4bf128ed06d5",
+      "role": "history_lookup",
+      "semantics_kind": "sampled_lookup_transition",
+      "source_body_sha256": "3cc42cbdb6b767e87040250762060e6e2b5463788416019111ac9e13ef4fcd5c"
+    }
+  ],
+  "function": {
+    "clang_usr": "c:@F@PickBestHistoryValue",
+    "name": "PickBestHistoryValue",
+    "parameters": [
+      {
+        "name": "dsc_cfg",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_cfg_t *"
+      },
+      {
+        "name": "dsc_state",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_state_t *"
+      },
+      {
+        "name": "hPos",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "orig",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "unsigned int *"
+      }
+    ],
+    "return_type": "int",
+    "source_body_sha256": "497f4a90828e370feeaecd12cad54da27e35cd87c28247cb778f579cc2934170",
+    "source_file": "dsc_codec.c",
+    "source_file_sha256": "0adcf9732bdbe11281982dafa134ee858432097d559f11397124449615a2dddf",
+    "source_span": {
+      "end_line": 777,
+      "start_line": 736
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "name": "cfg_native_420",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "cfg_native_422",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "input",
+        "name": "cfg_dsc_version_minor",
+        "signed": false,
+        "width": 2
+      },
+      {
+        "direction": "input",
+        "name": "state_v_pos",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_num_components",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pixels_in_group",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_slice_width",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "h_pos",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "array": [
+          0,
+          31
+        ],
+        "direction": "input",
+        "name": "history_valid",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "orig_0",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "orig_1",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "orig_2",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "orig_3",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "array": [
+          0,
+          31
+        ],
+        "direction": "input",
+        "name": "history_lookup_0",
+        "role": "HistoryLookup child result",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "array": [
+          0,
+          31
+        ],
+        "direction": "input",
+        "name": "history_lookup_1",
+        "role": "HistoryLookup child result",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "array": [
+          0,
+          31
+        ],
+        "direction": "input",
+        "name": "history_lookup_2",
+        "role": "HistoryLookup child result",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "array": [
+          0,
+          31
+        ],
+        "direction": "input",
+        "name": "history_lookup_3",
+        "role": "HistoryLookup child result",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "array": [
+          0,
+          31
+        ],
+        "direction": "input",
+        "name": "history_lookup_result_valid",
+        "role": "HistoryLookup child result valid",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "array": [
+          0,
+          31
+        ],
+        "direction": "output",
+        "name": "lookup_request_valid",
+        "role": "HistoryLookup child request",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "array": [
+          0,
+          31
+        ],
+        "direction": "output",
+        "name": "lookup_request_entry",
+        "role": "HistoryLookup child request",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "array": [
+          0,
+          31
+        ],
+        "direction": "output",
+        "name": "lookup_request_first_line",
+        "role": "HistoryLookup child request",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "array": [
+          0,
+          31
+        ],
+        "direction": "output",
+        "name": "lookup_request_is_odd_line",
+        "role": "HistoryLookup child request",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "array": [
+          0,
+          31
+        ],
+        "direction": "output",
+        "name": "lookup_request_h_pos",
+        "role": "HistoryLookup child request",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "return_value",
+        "role": "selected history index",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "search_failed",
+        "role": "no valid history entry",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "illegal_domain",
+        "role": "legal-domain sideband",
+        "signed": false,
+        "width": 1
+      }
+    ]
+  },
+  "legal_domain": {
+    "entry": [
+      0,
+      31
+    ],
+    "h_pos": "0 <= h_pos < state_slice_width",
+    "history_lookup_result_valid_for_requested_entries": true,
+    "native_flags_not_both_set": true,
+    "num_components": [
+      3,
+      4
+    ],
+    "num_components_matches_native_422": true,
+    "pixels_in_group": 3,
+    "slice_width_minimum": {
+      "native": 5,
+      "non_native": 7
+    }
+  },
+  "obligations": [
+    "bind every history_lookup result port to the hash-pinned HistoryLookup child",
+    "compare return_value/search_failed/illegal_domain in the adapter",
+    "preserve source-order first-winner tie behavior",
+    "human review remains required before promotion"
+  ],
+  "origin": "tool_discovered_encode_history_transition",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "schema_version": 1,
+  "selection": {
+    "basis": "immutable source structure + Clang facts + positive Encode coverage; function spelling is evidence only and is not an allowlist",
+    "coverage": {
+      "clang_usr": "c:@F@PickBestHistoryValue",
+      "contributes_to_observable_output": true,
+      "coverage": {
+        "branch_coverage_percent": 90.0,
+        "covered": true,
+        "end_line": 777,
+        "execution_count": 125208,
+        "line_coverage_percent": 80.0,
+        "name": "PickBestHistoryValue",
+        "raw_summary": {
+          "branch_arm_count": 20,
+          "covered_branch_arm_count": 18,
+          "covered_line_region_count": 28,
+          "function_count": 1,
+          "function_covered": 1,
+          "line_region_count": 35
+        },
+        "region_coverage_percent": 80.0,
+        "source_file": "dsc_codec.c",
+        "start_line": 737
+      },
+      "coverage_status": "EXECUTED",
+      "covered": true,
+      "direct_effects": {
+        "allocation": false,
+        "assertion": false,
+        "indirect_call": false,
+        "io": false,
+        "logging": true,
+        "state_write": false,
+        "unknown_facts": []
+      },
+      "eligible_after_coverage": false,
+      "end_line": 777,
+      "execution_count": 125208,
+      "line": 736,
+      "name": "PickBestHistoryValue",
+      "production_reachable": true,
+      "purity": "IMPURE",
+      "role": "DUT",
+      "source_file": "dsc_codec.c",
+      "static_eligible": false,
+      "timing": "UNKNOWN",
+      "transitive_effects": {
+        "allocation": false,
+        "assertion": false,
+        "indirect_call": false,
+        "io": false,
+        "logging": true,
+        "state_write": true,
+        "unknown_facts": []
+      }
+    },
+    "encode_execution_count": 125208,
+    "role": "history_reduction",
+    "selection_basis": [
+      "immutable source span was read from Clang facts",
+      "Encode coverage reports a positive execution count",
+      "candidate facts retain production reachability and observable output",
+      "role was selected by loop/call/field/effect fingerprint, not function spelling"
+    ],
+    "structural_evidence": [
+      "signed-int return with configuration/state pointers",
+      "immutable source directly calls the sampled history lookup role",
+      "unsigned sample-array input is represented as explicit child-result data",
+      "exactly one source loop is bounded by ICH_SIZE",
+      "source carries lowest_sad/best cross-iteration reduction state",
+      "source contains native 4:2:2, native 4:2:0, and version weight branches",
+      "source uses signed abs differences and strict lowest_sad > weighted_sad",
+      "source initializes and reports the no-history result 99"
+    ]
+  },
+  "semantics": {
+    "algorithm": {
+      "entry_count": 32,
+      "lowest_sad_initial": 1073741824,
+      "native_420_v1_or_non420_weights": [
+        2,
+        1,
+        1,
+        0
+      ],
+      "native_420_v2_weights": [
+        1,
+        1,
+        1,
+        0
+      ],
+      "native_422_weights": [
+        2,
+        1,
+        1,
+        2
+      ],
+      "no_history_result": 99,
+      "search_failed": "return_value == 99",
+      "signed_sample_difference": true,
+      "tie_rule": "strict lowest_sad > weighted_sad; first entry wins ties"
+    },
+    "child_result_protocol": {
+      "c_precomputed_sad_forbidden": true,
+      "history_lookup_result_ports": "history_lookup_0..3[0..31]",
+      "history_lookup_result_valid": "history_lookup_result_valid[0..31]",
+      "request_ports": "lookup_request_*[0..31]",
+      "sad_is_computed_in_rtl": true
+    },
+    "constants": {
+      "ich_pixels_above": 7,
+      "ich_size": 32,
+      "large_int": 1073741824,
+      "padding_left": 5
+    },
+    "kind": "history_reduction_transition"
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

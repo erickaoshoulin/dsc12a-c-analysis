@@ -2,7 +2,7 @@ import pathlib
 import tempfile
 import unittest
 
-from tools.run_coverage import discover_coverage_scripts, join_coverage
+from tools.run_coverage import baseline_scenario, discover_coverage_scripts, join_coverage
 
 
 class CoverageDiscoveryTests(unittest.TestCase):
@@ -41,6 +41,27 @@ class CoverageDiscoveryTests(unittest.TestCase):
             scripts = discover_coverage_scripts(root, "default")
 
         self.assertEqual([script.name for script in scripts], ["run_c_baseline.sh"])
+
+    def test_decode_scenario_is_derived_from_script_and_matching_list(self):
+        with tempfile.TemporaryDirectory() as directory:
+            root = pathlib.Path(directory)
+            smoke = root / "bittrue_smoke"
+            smoke.mkdir()
+            script = smoke / "run_c_baseline_future.sh"
+            script.write_text(
+                'golden="$model_dir/bittrue_smoke/out/frame.dsc"\n'
+                './source/dsc -F bittrue_smoke/profile.cfg\n',
+                encoding="utf-8",
+            )
+            (smoke / "profile.cfg").write_text("profile\n", encoding="utf-8")
+            (smoke / "profile.list").write_text("frame.ppm\n", encoding="utf-8")
+
+            scenario = baseline_scenario(script, root)
+
+        self.assertEqual(scenario["status"], "PASS")
+        self.assertEqual(scenario["golden"], "bittrue_smoke/out/frame.dsc")
+        self.assertEqual(scenario["config"], "bittrue_smoke/profile.cfg")
+        self.assertEqual(scenario["list"], "bittrue_smoke/profile.list")
 
     def test_llvm_body_line_still_joins_to_clang_declaration(self):
         exported = {

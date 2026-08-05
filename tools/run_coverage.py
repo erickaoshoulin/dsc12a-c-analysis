@@ -13,6 +13,7 @@ import hashlib
 import json
 import os
 import pathlib
+import re
 import shutil
 import subprocess
 import sys
@@ -37,6 +38,15 @@ def parse_args() -> argparse.Namespace:
         choices=("default", "all"),
         default=os.environ.get("DSC_COVERAGE_SCRIPTS", "all"),
         help="profile the default smoke script or every discovered run_c_baseline*.sh script",
+    )
+    parser.add_argument(
+        "--coverage-phases",
+        choices=("encode", "decode", "both"),
+        default=os.environ.get("DSC_COVERAGE_PHASES", "encode"),
+        help=(
+            "collect encoder execution, decoder execution, or both; decoder mode "
+            "uses encoded bitstreams only as fixtures and excludes their profiles"
+        ),
     )
     return parser.parse_args()
 
@@ -106,6 +116,81 @@ def discover_coverage_scripts(copy_root: pathlib.Path, mode: str = "all") -> lis
     else:
         scripts = sorted(smoke_dir.glob("run_c_baseline*.sh"))
     return [script for script in scripts if script.is_file()]
+
+
+def baseline_scenario(script: pathlib.Path, copy_root: pathlib.Path) -> dict[str, Any]:
+    """Derive a decode fixture from the existing data-driven baseline script."""
+    text = script.read_text(encoding="utf-8", errors="replace")
+    golden_match = re.search(r'\bgolden\s*=\s*["\']([^"\']+)', text)
+    golden = golden_match.group(1) if golden_match else ""
+    if golden.startswith("$model_dir/"):
+        golden = golden[len("$model_dir/"):]
+    config_match = re.search(r'(?:-F|--config)\s+([A-Za-z0-9_./{}-]+)', text)
+    config = config_match.group(1) if config_match else ""
+    if config.startswith("$model_dir/"):
+        config = config[len("$model_dir/"):]
+    list_file = str(pathlib.Path(config).with_suffix(".list")) if config else ""
+    return {
+        "script": script.relative_to(copy_root).as_posix(),
+        "golden": golden,
+        "config": config,
+        "list": list_file,
+        "status": (
+            "PASS"
+            if golden
+            and config
+            and (copy_root / config).is_file()
+            and (copy_root / list_file).is_file()
+            else "FAIL"
+        ),
+    }
+
+
+def run_decode_fixture(
+    copy_root: pathlib.Path,
+    binary: pathlib.Path,
+    scenario: dict[str, Any],
+    output_dir: pathlib.Path,
+    env: dict[str, str],
+    timeout: int,
+) -> dict[str, Any]:
+    if output_dir.exists():
+        shutil.rmtree(output_dir)
+    output_dir.mkdir(parents=True, exist_ok=True)
+    golden = copy_root / str(scenario.get("golden", ""))
+    if scenario.get("status") != "PASS" or not golden.is_file():
+        return {
+            "status": "FAIL",
+            "returncode": 2,
+            "failure_reason": "decode fixture metadata or bitstream is missing",
+            "scenario": scenario,
+        }
+    bitstream = output_dir / golden.name
+    shutil.copy2(golden, bitstream)
+    command = [
+        str(binary),
+        "-F", str(scenario["config"]),
+        "-do", "2",
+        "-ppm", "1",
+        "-O", f"LOG_FILENAME {output_dir / 'decode.log'}",
+        str(scenario["list"]),
+        str(output_dir),
+    ]
+    result = run(command, copy_root, env, timeout)
+    outputs = sorted(output_dir.glob("*.out.ppm"))
+    output = outputs[0] if len(outputs) == 1 else None
+    status = "PASS" if result.get("status") == "PASS" and output else "FAIL"
+    return {
+        "status": status,
+        "scenario": scenario,
+        "command": compact_command(command, copy_root),
+        "result": result,
+        "input_bitstream_sha256": sha256_file(bitstream),
+        "output_count": len(outputs),
+        "decoded_frame": output.name if output else None,
+        "decoded_frame_sha256": sha256_file(output) if output else None,
+        "decoded_frame_size_bytes": output.stat().st_size if output else None,
+    }
 
 
 def function_key(value: dict[str, Any]) -> tuple[str, int, str]:
@@ -324,14 +409,22 @@ def main() -> int:
                 f"no coverage scripts discovered in {copy_root / 'bittrue_smoke'}"
             )
         receipt["coverage_script_mode"] = args.coverage_scripts
+        receipt["coverage_phases"] = args.coverage_phases
         receipt["coverage_scripts"] = []
+        receipt["decode_runs"] = []
         for index, smoke_script in enumerate(coverage_scripts, start=1):
             # Give every profile a unique prefix.  Several scripts rebuild the
             # same binary and the operating system may reuse a PID between
             # sequential runs; a per-script prefix prevents profile overwrite.
             script_env = env.copy()
+            fixture_phase = (
+                "encode"
+                if args.coverage_phases in {"encode", "both"}
+                else "fixture"
+            )
+            fixture_prefix = f"{index:02d}-{fixture_phase}-{smoke_script.stem}"
             script_env["LLVM_PROFILE_FILE"] = str(
-                profile_dir / f"{index:02d}-{smoke_script.stem}-%p.profraw"
+                profile_dir / f"{fixture_prefix}-%p.profraw"
             )
             command = ["bash", str(smoke_script)]
             result = run(command, copy_root, script_env, args.timeout)
@@ -363,6 +456,42 @@ def main() -> int:
                 )
                 receipt_path.write_text(json.dumps(receipt, indent=2, sort_keys=True) + "\n", encoding="utf-8")
                 return 1
+            if args.coverage_phases in {"decode", "both"}:
+                # In decoder-only mode the baseline script is fixture
+                # preparation, not runtime evidence.  Delete only that
+                # script's uniquely prefixed encoder profiles before decode.
+                if args.coverage_phases == "decode":
+                    for fixture_profile in profile_dir.glob(f"{fixture_prefix}-*.profraw"):
+                        fixture_profile.unlink()
+                scenario = baseline_scenario(smoke_script, copy_root)
+                decode_env = env.copy()
+                decode_env["LLVM_PROFILE_FILE"] = str(
+                    profile_dir / f"{index:02d}-decode-{smoke_script.stem}-%p.profraw"
+                )
+                decode = run_decode_fixture(
+                    copy_root,
+                    binary,
+                    scenario,
+                    copy_root / "coverage-decode-output" / smoke_script.stem,
+                    decode_env,
+                    args.timeout,
+                )
+                receipt["decode_runs"].append(decode)
+                if decode.get("command") and isinstance(decode.get("result"), dict):
+                    receipt["commands"].append({
+                        "command": decode["command"],
+                        **decode["result"],
+                    })
+                if decode.get("status") != "PASS":
+                    receipt["failure_reason"] = (
+                        f"instrumented C decode failed: "
+                        f"{smoke_script.relative_to(copy_root).as_posix()}"
+                    )
+                    receipt_path.write_text(
+                        json.dumps(receipt, indent=2, sort_keys=True) + "\n",
+                        encoding="utf-8",
+                    )
+                    return 1
         if not binary.is_file():
             raise RuntimeError("instrumented source/dsc was not produced")
         profraw = sorted(profile_dir.glob("*.profraw"))
@@ -417,7 +546,9 @@ def main() -> int:
             "instrumented_binary_sha256": sha256_file(binary),
         }
         coverage["coverage_script_mode"] = args.coverage_scripts
+        coverage["coverage_phases"] = args.coverage_phases
         coverage["coverage_scripts"] = receipt["coverage_scripts"]
+        coverage["decode_runs"] = receipt["decode_runs"]
         (output_dir / "coverage.json").write_text(json.dumps(coverage, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         receipt.update(
             {

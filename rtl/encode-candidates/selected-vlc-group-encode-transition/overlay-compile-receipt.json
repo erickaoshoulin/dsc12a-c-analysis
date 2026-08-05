@@ -1,0 +1,308 @@
+{
+  "binary": "<overlay-work>/source/dsc",
+  "candidate": "candidate.sv",
+  "commands": [
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/cmd_parse.c",
+        "-o",
+        "<overlay-work>/overlay-build/cmd_parse.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.119,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-Dmain=dsc_cicd_original_main",
+        "-c",
+        "<overlay-work>/source/codec_main.c",
+        "-o",
+        "<overlay-work>/overlay-build/codec_main.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.225,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/dpx.c",
+        "-o",
+        "<overlay-work>/overlay-build/dpx.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.131,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/dsc_cicd_main.c",
+        "-o",
+        "<overlay-work>/overlay-build/dsc_cicd_main.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.027,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/dsc_cicd_overlay.c",
+        "-o",
+        "<overlay-work>/overlay-build/dsc_cicd_overlay.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.173,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/dsc_codec.c",
+        "-o",
+        "<overlay-work>/overlay-build/dsc_codec.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.299,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/dsc_utils.c",
+        "-o",
+        "<overlay-work>/overlay-build/dsc_utils.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.144,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/fifo.c",
+        "-o",
+        "<overlay-work>/overlay-build/fifo.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.047,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/hdr_dpx.c",
+        "-o",
+        "<overlay-work>/overlay-build/hdr_dpx.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.194,
+      "output": "<overlay-work>/source/hdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n<overlay-work>/source/hdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n2 warnings generated.\n",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/logging.c",
+        "-o",
+        "<overlay-work>/overlay-build/logging.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.034,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/multiplex.c",
+        "-o",
+        "<overlay-work>/overlay-build/multiplex.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.037,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/psnr.c",
+        "-o",
+        "<overlay-work>/overlay-build/psnr.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.048,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/utl.c",
+        "-o",
+        "<overlay-work>/overlay-build/utl.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.209,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang++",
+        "-std=c++17",
+        "-O2",
+        "-I",
+        "<overlay-work>/overlay-build/rtl-object",
+        "-I",
+        "/opt/homebrew/Cellar/verilator/5.050/share/verilator/include",
+        "-c",
+        "<overlay-work>/source/rtl_bridge.cpp",
+        "-o",
+        "<overlay-work>/overlay-build/rtl_bridge.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.53,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang++",
+        "-O2",
+        "-o",
+        "<overlay-work>/source/dsc",
+        "<overlay-work>/overlay-build/cmd_parse.o",
+        "<overlay-work>/overlay-build/codec_main.o",
+        "<overlay-work>/overlay-build/dpx.o",
+        "<overlay-work>/overlay-build/dsc_cicd_main.o",
+        "<overlay-work>/overlay-build/dsc_cicd_overlay.o",
+        "<overlay-work>/overlay-build/dsc_codec.o",
+        "<overlay-work>/overlay-build/dsc_utils.o",
+        "<overlay-work>/overlay-build/fifo.o",
+        "<overlay-work>/overlay-build/hdr_dpx.o",
+        "<overlay-work>/overlay-build/logging.o",
+        "<overlay-work>/overlay-build/multiplex.o",
+        "<overlay-work>/overlay-build/psnr.o",
+        "<overlay-work>/overlay-build/utl.o",
+        "<overlay-work>/overlay-build/rtl_bridge.o",
+        "<overlay-work>/overlay-build/rtl-object/Vvlc_group_encode_fsm__ALL.a",
+        "<overlay-work>/overlay-build/rtl-object/libverilated.a"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.038,
+      "output": "Undefined symbols for architecture arm64:\n  \"sc_time_stamp()\", referenced from:\n      VerilatedContext::timeWithUnitString() const in libverilated.a[2](verilated.o)\n      VerilatedContext::timeWithUnitString() const in libverilated.a[2](verilated.o)\n      VerilatedContext::time() const in libverilated.a[2](verilated.o)\n      VerilatedContext::time() const in libverilated.a[2](verilated.o)\n      VerilatedContext::statsPrintSummary() in libverilated.a[2](verilated.o)\n      VerilatedContext::statsPrintSummary() in libverilated.a[2](verilated.o)\n      vl_time_stamp64() in libverilated.a[2](verilated.o)\n      vl_time_stamp64() in libverilated.a[2](verilated.o)\n      ...\nld: symbol(s) not found for architecture arm64\nclang++: error: linker command failed with exit code 1 (use -v to see invocation)\n",
+      "returncode": 1
+    }
+  ],
+  "make_archive": {
+    "command": [
+      "make",
+      "-C",
+      "<overlay-work>/overlay-build/rtl-object",
+      "-f",
+      "Vvlc_group_encode_fsm.mk",
+      "-j",
+      "1"
+    ],
+    "cwd": "<overlay-work>/source",
+    "duration_seconds": 2.831,
+    "output": "python3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vvlc_group_encode_fsm.cpp Vvlc_group_encode_fsm___024root__0.cpp Vvlc_group_encode_fsm___024root__Slow.cpp Vvlc_group_encode_fsm___024root__0__Slow.cpp Vvlc_group_encode_fsm__Syms__Slow.cpp > Vvlc_group_encode_fsm__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o Vvlc_group_encode_fsm__ALL.o Vvlc_group_encode_fsm__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nrm Vvlc_group_encode_fsm__ALL.verilator_deplist.tmp libVvlc_group_encode_fsm.verilator_deplist.tmp libverilated.verilator_deplist.tmp\n",
+    "returncode": 0
+  },
+  "module": "vlc_group_encode_fsm",
+  "status": "INFRASTRUCTURE_FAILURE",
+  "verilator": {
+    "command": [
+      "/opt/homebrew/bin/verilator",
+      "--cc",
+      "<overlay-work>/candidate.sv",
+      "--Mdir",
+      "<overlay-work>/overlay-build/rtl-object",
+      "--top-module",
+      "vlc_group_encode_fsm",
+      "--Wno-fatal"
+    ],
+    "cwd": "<overlay-work>/source",
+    "duration_seconds": 0.086,
+    "output": " <overlay-work>/candidate.sv:843:74: Bit extraction of array[3:0] requires 2 bit index, not 3 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  843 |           else if (enc_balance_fullness_r[ssp_index_r] < start_fullness_r[ssp_index_r]) begin\n      |                                                                          ^\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:877:31: Bit extraction of array[3:0] requires 2 bit index, not 3 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  877 |             se_size_fullness_r[ssp_index_r] <= se_size_fullness_r[ssp_index_r] + 32'd8;\n      |                               ^\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:877:66: Bit extraction of array[3:0] requires 2 bit index, not 3 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  877 |             se_size_fullness_r[ssp_index_r] <= se_size_fullness_r[ssp_index_r] + 32'd8;\n      |                                                                  ^\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:878:32: Bit extraction of array[3:0] requires 2 bit index, not 3 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  878 |             se_size_write_ptr_r[ssp_index_r] <= advance_byte_ptr(\n      |                                ^\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:879:36: Bit extraction of array[3:0] requires 2 bit index, not 3 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  879 |                 se_size_write_ptr_r[ssp_index_r], se_size_size_bits_r[ssp_index_r]);\n      |                                    ^\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:879:70: Bit extraction of array[3:0] requires 2 bit index, not 3 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  879 |                 se_size_write_ptr_r[ssp_index_r], se_size_size_bits_r[ssp_index_r]);\n      |                                                                      ^\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:880:31: Bit extraction of array[3:0] requires 2 bit index, not 3 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  880 |             se_size_byte_ctr_r[ssp_index_r] <= se_size_byte_ctr_r[ssp_index_r] + 32'd1;\n      |                               ^\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:880:66: Bit extraction of array[3:0] requires 2 bit index, not 3 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  880 |             se_size_byte_ctr_r[ssp_index_r] <= se_size_byte_ctr_r[ssp_index_r] + 32'd1;\n      |                                                                  ^\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:883:37: Bit extraction of array[3:0] requires 2 bit index, not 3 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  883 |               se_size_max_fullness_r[ssp_index_r] <=\n      |                                     ^\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:884:37: Bit extraction of array[3:0] requires 2 bit index, not 3 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  884 |                   se_size_fullness_r[ssp_index_r] + 32'd8;\n      |                                     ^\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:881:36: Bit extraction of array[3:0] requires 2 bit index, not 3 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  881 |             if ((se_size_fullness_r[ssp_index_r] + 32'd8) >\n      |                                    ^\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:882:39: Bit extraction of array[3:0] requires 2 bit index, not 3 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  882 |                 se_size_max_fullness_r[ssp_index_r])\n      |                                       ^\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:887:23: Operator ASSIGNDLY expects 4 bits on the Assign RHS, but Assign RHS's VARREF 'ST_SE_PREP' generates 32 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  887 |               state_r <= ST_SE_PREP;\n      |                       ^~\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:890:23: Operator ASSIGNDLY expects 4 bits on the Assign RHS, but Assign RHS's VARREF 'ST_PROCESS_CHECK' generates 32 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  890 |               state_r <= ST_PROCESS_CHECK;\n      |                       ^~\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:876:38: Bit extraction of var[3:0] requires 2 bit index, not 3 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  876 |           if (se_size_mem_write_ready[ssp_index_r]) begin\n      |                                      ^\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:897:21: Operator ASSIGNDLY expects 4 bits on the Assign RHS, but Assign RHS's VARREF 'ST_PROCESS_START' generates 32 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  897 |             state_r <= ST_PROCESS_START;\n      |                     ^~\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:899:21: Operator ASSIGNDLY expects 4 bits on the Assign RHS, but Assign RHS's VARREF 'ST_ACCOUNT' generates 32 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  899 |             state_r <= ST_ACCOUNT;\n      |                     ^~\n%Warning-WIDTHEXPAND: <overlay-work>/candidate.sv:896:46: Operator ADD expects 32 bits on the LHS, but LHS's VARREF 'mux_word_size' generates 7 bits.\n                                                                                                                                   : ... note: In instance 'vlc_group_encode_fsm'\n  896 |           if (group_count_r > (mux_word_size + MAX_SE_SIZE - 3))\n      |                                              ^\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:904:21: Operator ASSIGNDLY expects 4 bits on the Assign RHS, but Assign RHS's VARREF 'ST_PROCESS_WAIT' generates 32 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  904 |             state_r <= ST_PROCESS_WAIT;\n      |                     ^~\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:914:23: Operator ASSIGNDLY expects 4 bits on the Assign RHS, but Assign RHS's VARREF 'ST_ERROR' generates 32 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  914 |               state_r <= ST_ERROR;\n      |                       ^~\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:938:23: Operator ASSIGNDLY expects 4 bits on the Assign RHS, but Assign RHS's VARREF 'ST_ACCOUNT' generates 32 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  938 |               state_r <= ST_ACCOUNT;\n      |                       ^~\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:951:21: Operator ASSIGNDLY expects 4 bits on the Assign RHS, but Assign RHS's VARREF 'ST_ERROR' generates 32 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  951 |             state_r <= ST_ERROR;\n      |                     ^~\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:954:21: Operator ASSIGNDLY expects 4 bits on the Assign RHS, but Assign RHS's VARREF 'ST_DONE' generates 32 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  954 |             state_r <= ST_DONE;\n      |                     ^~\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:959:19: Operator ASSIGNDLY expects 4 bits on the Assign RHS, but Assign RHS's VARREF 'ST_IDLE' generates 32 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  959 |           state_r <= ST_IDLE;\n      |                   ^~\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:963:19: Operator ASSIGNDLY expects 4 bits on the Assign RHS, but Assign RHS's VARREF 'ST_IDLE' generates 32 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  963 |           state_r <= ST_IDLE;\n      |                   ^~\n%Warning-WIDTHTRUNC: <overlay-work>/candidate.sv:970:19: Operator ASSIGNDLY expects 4 bits on the Assign RHS, but Assign RHS's VARREF 'ST_ERROR' generates 32 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  970 |           state_r <= ST_ERROR;\n      |                   ^~\n%Warning-WIDTHEXPAND: <overlay-work>/candidate.sv:728:7: Operator CASE expects 32 bits on the Case expression, but Case expression's VARREF 'state_r' generates 4 bits.\n                                                                                                                                  : ... note: In instance 'vlc_group_encode_fsm'\n  728 |       case (state_r)\n      |       ^~~~\n%Warning-WIDTHEXPAND: <overlay-work>/candidate.sv:718:23: Operator NEQ expects 32 bits on the LHS, but LHS's VARREF 'state_r' generates 4 bits.\n                                                                                                                                   : ... note: In instance 'vlc_group_encode_fsm'\n  718 |     else if ((state_r != ST_IDLE) && (state_r != ST_DONE) &&\n      |                       ^~\n%Warning-WIDTHEXPAND: <overlay-work>/candidate.sv:718:47: Operator NEQ expects 32 bits on the LHS, but LHS's VARREF 'state_r' generates 4 bits.\n                                                                                                                                   : ... note: In instance 'vlc_group_encode_fsm'\n  718 |     else if ((state_r != ST_IDLE) && (state_r != ST_DONE) &&\n      |                                               ^~\n%Warning-WIDTHEXPAND: <overlay-work>/candidate.sv:719:23: Operator NEQ expects 32 bits on the LHS, but LHS's VARREF 'state_r' generates 4 bits.\n                                                                                                                                   : ... note: In instance 'vlc_group_encode_fsm'\n  719 |              (state_r != ST_ERROR) && (cycle_count_r >= MAX_CYCLES - 1)) begin\n      |                       ^~\n%Warning-MULTIDRIVEN: <overlay-work>/candidate.sv:819:20: Variable also written to in always_comb (IEEE 1800-2023 9.2.2.2): 'k'\n                                                                                                                                   : ... note: In instance 'vlc_group_encode_fsm'\n                      <overlay-work>/candidate.sv:819:20: \n  819 |               for (k = 0; k < MAX_SSPS; k = k + 1) begin\n      |                    ^\n                      <overlay-work>/candidate.sv:372:31: ... Location of always_comb write\n  372 |     for (k = 0; k < MAX_SSPS; k = k + 1) begin\n      |                               ^\n                      ... For warning description see https://verilator.org/warn/MULTIDRIVEN?v=5.050\n                      ... Use \"/* verilator lint_off MULTIDRIVEN */\" and lint_on around source to disable this message.\n%Warning-MULTIDRIVEN: <overlay-work>/candidate.sv:819:20: Variable written to in always_ff also written by other process (IEEE 1800-2023 9.2.2.4): 'k'\n                                                                                                                                   : ... note: In instance 'vlc_group_encode_fsm'\n                      <overlay-work>/candidate.sv:819:20: \n  819 |               for (k = 0; k < MAX_SSPS; k = k + 1) begin\n      |                    ^\n                      <overlay-work>/candidate.sv:372:31: ... Location of other write\n  372 |     for (k = 0; k < MAX_SSPS; k = k + 1) begin\n      |                               ^\n%Warning-MULTIDRIVEN: <overlay-work>/candidate.sv:819:41: Variable also written to in always_comb (IEEE 1800-2023 9.2.2.2): 'k'\n                                                                                                                                   : ... note: In instance 'vlc_group_encode_fsm'\n                      <overlay-work>/candidate.sv:819:41: \n  819 |               for (k = 0; k < MAX_SSPS; k = k + 1) begin\n      |                                         ^\n                      <overlay-work>/candidate.sv:819:20: ... Location of always_comb write\n  819 |               for (k = 0; k < MAX_SSPS; k = k + 1) begin\n      |                    ^\n%Warning-MULTIDRIVEN: <overlay-work>/candidate.sv:918:20: Variable also written to in always_comb (IEEE 1800-2023 9.2.2.2): 'k'\n                                                                                                                                   : ... note: In instance 'vlc_group_encode_fsm'\n                      <overlay-work>/candidate.sv:918:20: \n  918 |               for (k = 0; k < MAX_SSPS; k = k + 1) begin\n      |                    ^\n                      <overlay-work>/candidate.sv:819:41: ... Location of always_comb write\n  819 |               for (k = 0; k < MAX_SSPS; k = k + 1) begin\n      |                                         ^\n%Warning-MULTIDRIVEN: <overlay-work>/candidate.sv:918:41: Variable also written to in always_comb (IEEE 1800-2023 9.2.2.2): 'k'\n                                                                                                                                   : ... note: In instance 'vlc_group_encode_fsm'\n                      <overlay-work>/candidate.sv:918:41: \n  918 |               for (k = 0; k < MAX_SSPS; k = k + 1) begin\n      |                                         ^\n                      <overlay-work>/candidate.sv:918:20: ... Location of always_comb write\n  918 |               for (k = 0; k < MAX_SSPS; k = k + 1) begin\n      |                    ^\n- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.079 MB sources in 2 modules, into 0.464 MB in 5 C++ files needing 0.002 MB\n- Verilator: Walltime 0.041 s (elab=0.005, cvt=0.025, bld=0.000); cpu 0.041 s on 1 threads; allocated 17.531 MB\n",
+    "returncode": 0
+  }
+}

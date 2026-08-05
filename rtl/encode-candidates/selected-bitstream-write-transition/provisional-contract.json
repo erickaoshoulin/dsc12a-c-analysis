@@ -1,0 +1,222 @@
+{
+  "contract_id": "putbits_encode_transition",
+  "function": {
+    "clang_usr": "c:@F@putbits",
+    "name": "putbits",
+    "parameters": [
+      {
+        "name": "val",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "size",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "buf",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "unsigned char *"
+      },
+      {
+        "name": "bit_count",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "int *"
+      }
+    ],
+    "return_type": "void",
+    "source_body_sha256": "4a8b1ea3dad69b2ecc7ea373b037fb3515d4d2485c324c8ae76f224ff9b67ad6",
+    "source_file": "dsc_utils.c",
+    "source_span": {
+      "end_line": 101,
+      "start_line": 81
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "name": "value",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "size",
+        "signed": false,
+        "width": 6
+      },
+      {
+        "direction": "input",
+        "name": "byte_0",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "byte_1",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "byte_2",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "byte_3",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "byte_4",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "bit_count",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "byte_0_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "byte_1_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "byte_2_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "byte_3_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "byte_4_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "bit_count_out",
+        "signed": false,
+        "width": 32
+      }
+    ]
+  },
+  "obligations": [
+    "full-frame Encode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "all selected Encode profiles must exercise RTL in SHADOW and RTL_RETURN",
+    "human review of output-memory and cursor contract before promotion"
+  ],
+  "origin": "tool_discovered_encoder_runtime_transition",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "schema_version": 2,
+  "selection": {
+    "basis": [
+      "Encode runtime coverage reached the function",
+      "Clang found two scalar int inputs and exactly one write-through byte buffer",
+      "Clang found exactly one write-through integer cursor",
+      "the sole loop is bounded by a scalar size parameter",
+      "the source guard supplies a finite legal maximum",
+      "candidate effects contain no allocation, assertion, indirect call, or file I/O"
+    ],
+    "encode_execution_count": 586716,
+    "window_bytes": 5
+  },
+  "semantics": {
+    "bindings": {
+      "buffer_parameter": "buf",
+      "byte_output_ports": [
+        "byte_0_out",
+        "byte_1_out",
+        "byte_2_out",
+        "byte_3_out",
+        "byte_4_out"
+      ],
+      "byte_ports": [
+        "byte_0",
+        "byte_1",
+        "byte_2",
+        "byte_3",
+        "byte_4"
+      ],
+      "cursor_output_port": "bit_count_out",
+      "cursor_parameter": "bit_count",
+      "cursor_port": "bit_count",
+      "size_parameter": "size",
+      "size_port": "size",
+      "value_parameter": "val",
+      "value_port": "value"
+    },
+    "kind": "bitstream_write_transition",
+    "legal_domain": {
+      "runtime_error_logging_branch_excluded": true,
+      "size_maximum": 32,
+      "size_minimum": 0
+    },
+    "legal_size_values": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8,
+      9,
+      10,
+      11,
+      12,
+      13,
+      14,
+      15,
+      16,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22,
+      23,
+      24,
+      25,
+      26,
+      27,
+      28,
+      29,
+      30,
+      31,
+      32
+    ],
+    "max_bits": 32,
+    "state_transition": "write size bits MSB-first into a bounded output-byte image and advance the explicit bit cursor",
+    "window_bytes": 5
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

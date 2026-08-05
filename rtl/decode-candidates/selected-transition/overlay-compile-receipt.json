@@ -1,0 +1,247 @@
+{
+  "commands": [
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/cmd_parse.c",
+        "-o",
+        "<overlay-work>/overlay-build/cmd_parse.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.146,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-Dmain=dsc_cicd_original_main",
+        "-c",
+        "<overlay-work>/source/codec_main.c",
+        "-o",
+        "<overlay-work>/overlay-build/codec_main.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.276,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/dpx.c",
+        "-o",
+        "<overlay-work>/overlay-build/dpx.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.156,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/dsc_cicd_main.c",
+        "-o",
+        "<overlay-work>/overlay-build/dsc_cicd_main.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.029,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/dsc_cicd_overlay.c",
+        "-o",
+        "<overlay-work>/overlay-build/dsc_cicd_overlay.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.038,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/dsc_codec.c",
+        "-o",
+        "<overlay-work>/overlay-build/dsc_codec.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.363,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/dsc_utils.c",
+        "-o",
+        "<overlay-work>/overlay-build/dsc_utils.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.149,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/fifo.c",
+        "-o",
+        "<overlay-work>/overlay-build/fifo.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.054,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/hdr_dpx.c",
+        "-o",
+        "<overlay-work>/overlay-build/hdr_dpx.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.22,
+      "output": "<overlay-work>/source/hdr_dpx.c:1718:31: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1718 |         if (dpxh->TvHeader.Interlace == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n<overlay-work>/source/hdr_dpx.c:1720:33: warning: result of comparison of constant 4294967295 with expression of type 'BYTE' (aka 'unsigned char') is always false [-Wtautological-constant-out-of-range-compare]\n 1720 |         if (dpxh->TvHeader.FieldNumber == UINT32_MAX)\n      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~ ^  ~~~~~~~~~~\n2 warnings generated.\n",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/logging.c",
+        "-o",
+        "<overlay-work>/overlay-build/logging.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.038,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/multiplex.c",
+        "-o",
+        "<overlay-work>/overlay-build/multiplex.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.043,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/psnr.c",
+        "-o",
+        "<overlay-work>/overlay-build/psnr.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.054,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/utl.c",
+        "-o",
+        "<overlay-work>/overlay-build/utl.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.246,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang++",
+        "-std=c++17",
+        "-O2",
+        "-I",
+        "<overlay-work>/overlay-build/rtl-object",
+        "-I",
+        "/opt/homebrew/Cellar/verilator/5.050/share/verilator/include",
+        "-c",
+        "<overlay-work>/source/rtl_bridge.cpp",
+        "-o",
+        "<overlay-work>/overlay-build/rtl_bridge.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.434,
+      "output": "<overlay-work>/source/rtl_bridge.cpp:22:40: error: called object type 'int' is not a function or function pointer\n   22 |     return static_cast<int>(sign_extend(static_cast<long long>(dut.return_value), 32));\n      |                             ~~~~~~~~~~~^\n1 error generated.\n",
+      "returncode": 1
+    }
+  ],
+  "reason": "RTL bridge compile failed",
+  "status": "INFRASTRUCTURE_FAILURE"
+}

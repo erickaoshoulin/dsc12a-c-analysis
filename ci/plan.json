@@ -2,7 +2,6 @@
   "agent": "executable-generic-c-to-rtl-cicd",
   "approval_resume_contracts": [],
   "auto_refresh_contracts": [
-    "ceil_log2",
     "escapecodesize",
     "estimatebitsforgroup",
     "findmidpoint",
@@ -51,11 +50,11 @@
   "contracts": [
     {
       "accepted_rtl_available": true,
-      "auto_refresh": true,
+      "auto_refresh": false,
       "blocked_reasons": [],
       "boundary_retry_requested": false,
       "cache_hit": false,
-      "cache_key": "5e6869369334d38339c1dca43cea1b7e74021a75af1b78c92f22020ab3bc66da",
+      "cache_key": "36490b4f627ab4b90a515c2bf1017556fc609f5373a3011f9ded81ecf4dcb9e3",
       "call_sites": [],
       "clang_usr": "c:@F@ceil_log2",
       "contract_hash": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
@@ -67,13 +66,13 @@
       "generation_required": false,
       "generator_hook_configured": true,
       "hashes": {
-        "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
+        "agent": "0e62e2dc98fedb97c6159176b669548799a8cdaf73176d03e865628578d309ff",
         "contract": "aa7d7eefb3fad458001508932987614cc5ab43a10476ef5a987c769eeebf7896",
-        "dependency": "4a5442ee94151d2e6ba60b488d1a79bc4f81e0e0eb9da651bac1d7b6636c0903",
+        "dependency": "18222e137b7fcc3bff7d12b7170ee14d4d503c3abf56ab8002af8acf529d148c",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
+        "prompt": "a915001316bf467266a24f69c8ef098e35dadca6f29c9bdf23b93b9a1565732b",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -106,12 +105,8 @@
       "resume_needed": false,
       "reuse_accepted_rtl": true,
       "selected": true,
-      "stale": true,
-      "stale_reasons": [
-        "prompt",
-        "generator",
-        "tools"
-      ],
+      "stale": false,
+      "stale_reasons": [],
       "targeted": false
     },
     {
@@ -120,7 +115,7 @@
       "blocked_reasons": [],
       "boundary_retry_requested": false,
       "cache_hit": false,
-      "cache_key": "a6ccf8b17783e8216ea863ad84ce2d41dcca8adee1febb5046fddb0f3021d656",
+      "cache_key": "575acaf63fb9b4c230474969c82dd47fc235212f9a14571a56a5a32b6256ef4b",
       "call_sites": [
         {
           "callee_contract": "mapqptoqlevel",
@@ -149,13 +144,13 @@
       "generation_required": false,
       "generator_hook_configured": true,
       "hashes": {
-        "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
+        "agent": "0e62e2dc98fedb97c6159176b669548799a8cdaf73176d03e865628578d309ff",
         "contract": "919d079c4ab2b01d886ad37974c76bdb2c104f3d7457219c8520735c4dab47d1",
-        "dependency": "5bbb07e9af0c0e1dc8724047acfdf53caaf53dbfc2c7e190e016ef05238c48be",
+        "dependency": "294e9e5b6fadd7d160b3c802adafb390d391d670532a3cea22a9688808086b01",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
+        "prompt": "a915001316bf467266a24f69c8ef098e35dadca6f29c9bdf23b93b9a1565732b",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -214,9 +209,9 @@
       "selected": true,
       "stale": true,
       "stale_reasons": [
-        "prompt",
+        "agent",
         "generator",
-        "tools"
+        "workers"
       ],
       "targeted": false
     },
@@ -226,7 +221,7 @@
       "blocked_reasons": [],
       "boundary_retry_requested": false,
       "cache_hit": false,
-      "cache_key": "4c62fd6d6ed1c5018b56e5b46f447edc4c44b29605ed9dca1f00a26eead0dbcc",
+      "cache_key": "c74ef5323708b86bdf3fa787b1b94d3925b185bc38dedd5d97307ef9e2ef3a0c",
       "call_sites": [
         {
           "callee_contract": "findresidualsize",
@@ -313,13 +308,13 @@
       "generation_required": false,
       "generator_hook_configured": true,
       "hashes": {
-        "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
+        "agent": "0e62e2dc98fedb97c6159176b669548799a8cdaf73176d03e865628578d309ff",
         "contract": "c5df1296bcc105ab0e0796e782a82abc3434bc173f8320565e5f4586f6562a13",
-        "dependency": "6deb7d32a0542be5e6bf91755eba9ac4ac731922d3e08485e075cf80c9de3486",
+        "dependency": "a60a4de30bf3ee44029aaf326b6a185dcc1e0d092474388d6142cb3898888bab",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
+        "prompt": "a915001316bf467266a24f69c8ef098e35dadca6f29c9bdf23b93b9a1565732b",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -594,9 +589,9 @@
       "selected": true,
       "stale": true,
       "stale_reasons": [
-        "prompt",
+        "agent",
         "generator",
-        "tools"
+        "workers"
       ],
       "targeted": false
     },
@@ -606,10 +601,10 @@
       "blocked_reasons": [],
       "boundary_retry_requested": false,
       "cache_hit": false,
-      "cache_key": "71efa58c23a4f46ac9df1f5101fca26e11c205c510f13e6d9b92ef6629861ead",
+      "cache_key": "054b7ce87838f4a88e2bac9961c870230bcb3f91d3b6d2988e3b932896a79eaf",
       "call_sites": [],
       "clang_usr": "c:@F@FindMidpoint",
-      "contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+      "contract_hash": "46e1c2662f13fdd1660aabc1ba969c95dc20669e9578c6580a1918a4b94bc804",
       "contract_id": "findmidpoint",
       "deferred": false,
       "dependencies": [],
@@ -618,13 +613,13 @@
       "generation_required": false,
       "generator_hook_configured": true,
       "hashes": {
-        "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
-        "contract": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
-        "dependency": "8075807255cf4e44064896310cc884d94fcc351bf7f74af032ae856b8ac37661",
+        "agent": "0e62e2dc98fedb97c6159176b669548799a8cdaf73176d03e865628578d309ff",
+        "contract": "46e1c2662f13fdd1660aabc1ba969c95dc20669e9578c6580a1918a4b94bc804",
+        "dependency": "289d0bcb034e6e2ba183f21c5748874896fb8037ed9a29958ab0187d54726d6a",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
+        "prompt": "a915001316bf467266a24f69c8ef098e35dadca6f29c9bdf23b93b9a1565732b",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -677,9 +672,9 @@
       "selected": true,
       "stale": true,
       "stale_reasons": [
-        "prompt",
+        "agent",
         "generator",
-        "tools"
+        "workers"
       ],
       "targeted": false
     },
@@ -689,7 +684,7 @@
       "blocked_reasons": [],
       "boundary_retry_requested": false,
       "cache_hit": false,
-      "cache_key": "b7f5094f3c7c3c5db85ad26148d1d13bbb57473a33f360c27e2bfc0d609f8f5b",
+      "cache_key": "7e66694f609e719781800b49029943a4ce655734fc0cc9112fc998b94a2454d3",
       "call_sites": [],
       "clang_usr": "c:@F@FindResidualSize",
       "contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
@@ -701,13 +696,13 @@
       "generation_required": false,
       "generator_hook_configured": true,
       "hashes": {
-        "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
+        "agent": "0e62e2dc98fedb97c6159176b669548799a8cdaf73176d03e865628578d309ff",
         "contract": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
-        "dependency": "d6657965d155244e4b80b6ab49c86ce3736eebe4e6decc771789b2b11342612a",
+        "dependency": "cc6fc02dd34fa7bfa77bc5cc36c58ba9a74ab8a337488f245d92bce5379e3c2e",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
+        "prompt": "a915001316bf467266a24f69c8ef098e35dadca6f29c9bdf23b93b9a1565732b",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -742,9 +737,9 @@
       "selected": true,
       "stale": true,
       "stale_reasons": [
-        "prompt",
+        "agent",
         "generator",
-        "tools"
+        "workers"
       ],
       "targeted": false
     },
@@ -754,7 +749,7 @@
       "blocked_reasons": [],
       "boundary_retry_requested": false,
       "cache_hit": false,
-      "cache_key": "9c0bef7d91117ad2ad9e455ab5834ac8ebe6e385550ce192eb66c797a98d35f0",
+      "cache_key": "966d8dc52f95ba8e2a4dbcf4335a3e072388fbbbaf16d98f6bad18397cf70198",
       "call_sites": [
         {
           "callee_contract": "mapqptoqlevel",
@@ -812,13 +807,13 @@
       "generation_required": false,
       "generator_hook_configured": true,
       "hashes": {
-        "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
+        "agent": "0e62e2dc98fedb97c6159176b669548799a8cdaf73176d03e865628578d309ff",
         "contract": "dcab7637a1a2c69f878a404a3ca7a732ca495dc0b8c7d4525100d99b4b593e7c",
-        "dependency": "1bd73d2d1d0dc0d92f6e4a1eb1724c3584ff7007ace11c1f5d8de29477a7e26d",
+        "dependency": "e5552fa5173ce368c7f5579a13bb44b7c6dc68092f3ebf5150e299c879da480b",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
+        "prompt": "a915001316bf467266a24f69c8ef098e35dadca6f29c9bdf23b93b9a1565732b",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -937,9 +932,9 @@
       "selected": true,
       "stale": true,
       "stale_reasons": [
-        "prompt",
+        "agent",
         "generator",
-        "tools"
+        "workers"
       ],
       "targeted": false
     },
@@ -951,7 +946,7 @@
       ],
       "boundary_retry_requested": false,
       "cache_hit": false,
-      "cache_key": "990ae24f54e436e098c977974a737e4ce6cbe45e36fd612f6af21b3c93c588ea",
+      "cache_key": "0de4417b04ad66e7ec06327479f289cbf7b6742b6be0aae234251f9480377764",
       "call_sites": [
         {
           "callee_contract": "estimatebitsforgroup",
@@ -1039,13 +1034,13 @@
       "generation_required": false,
       "generator_hook_configured": true,
       "hashes": {
-        "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
+        "agent": "0e62e2dc98fedb97c6159176b669548799a8cdaf73176d03e865628578d309ff",
         "contract": "c6ce277dabb46d076d390f7be80c6b6106e2d5aa774f130fa01d3f097ba99919",
-        "dependency": "25626d6fa2e173ab00157660578aecb09ff633bce62f61973f7cdd3c45550358",
+        "dependency": "c2cb5889a50a109c3e17567e04689128939544620d5e581611ec61dc0e9fb369",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
+        "prompt": "a915001316bf467266a24f69c8ef098e35dadca6f29c9bdf23b93b9a1565732b",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -1628,10 +1623,10 @@
       "blocked_reasons": [],
       "boundary_retry_requested": false,
       "cache_hit": false,
-      "cache_key": "98a713e1b519184f4eb0baacebe52629dffe3161698c63691f99f4a2895fa548",
+      "cache_key": "57f53b41e184f977bf735c6e73f50c781989526be1140b5c63e012e70f858067",
       "call_sites": [],
       "clang_usr": "c:@F@IsFlatnessInfoSent",
-      "contract_hash": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
+      "contract_hash": "a633539014273cf80a3fd75abd17c6781acf298d04a266bb119f2e9f776aa41f",
       "contract_id": "isflatnessinfosent",
       "deferred": false,
       "dependencies": [],
@@ -1640,13 +1635,13 @@
       "generation_required": false,
       "generator_hook_configured": true,
       "hashes": {
-        "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
-        "contract": "bf7447eb0d360538c6dffdacf94982d7b1671af91edb93db9435bc43f539818d",
-        "dependency": "5056ccfe9eee6dceaa183024a88208bfc55732b5b236ed8baacd98d44b7b8b68",
+        "agent": "0e62e2dc98fedb97c6159176b669548799a8cdaf73176d03e865628578d309ff",
+        "contract": "a633539014273cf80a3fd75abd17c6781acf298d04a266bb119f2e9f776aa41f",
+        "dependency": "b9fc16274a7823128d4de33f9932612e110f4a305f810c98f66358d9cce54b2f",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
+        "prompt": "a915001316bf467266a24f69c8ef098e35dadca6f29c9bdf23b93b9a1565732b",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -1693,9 +1688,9 @@
       "selected": true,
       "stale": true,
       "stale_reasons": [
-        "prompt",
+        "agent",
         "generator",
-        "tools"
+        "workers"
       ],
       "targeted": false
     },
@@ -1705,7 +1700,7 @@
       "blocked_reasons": [],
       "boundary_retry_requested": false,
       "cache_hit": false,
-      "cache_key": "2a53d72aebf4299a6df22540b9090caa227fc15a6ccd2ab11a08a27bcbbb6382",
+      "cache_key": "beff28cacab637ac4d2f758c0bc2d316fb7cfc0f3b4e47c057c177e2bbf98419",
       "call_sites": [
         {
           "callee_contract": "mapqptoqlevel",
@@ -1734,13 +1729,13 @@
       "generation_required": false,
       "generator_hook_configured": true,
       "hashes": {
-        "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
+        "agent": "0e62e2dc98fedb97c6159176b669548799a8cdaf73176d03e865628578d309ff",
         "contract": "ede1a64844ae2271851a9b28a12aa879360255ea68f5e98ffacb1a12b1ba8115",
-        "dependency": "202e4f3e09329e86568bf6e445ea40aad44b08cbc2e08d8e8e889404269c84cc",
+        "dependency": "85eb0662dd26a370fee09552735ecdbe315d7a6d95844a3959b8d114867ffe23",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
+        "prompt": "a915001316bf467266a24f69c8ef098e35dadca6f29c9bdf23b93b9a1565732b",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -2003,9 +1998,9 @@
       "selected": true,
       "stale": true,
       "stale_reasons": [
-        "prompt",
+        "agent",
         "generator",
-        "tools"
+        "workers"
       ],
       "targeted": false
     },
@@ -2015,10 +2010,10 @@
       "blocked_reasons": [],
       "boundary_retry_requested": false,
       "cache_hit": false,
-      "cache_key": "a9fd1fa7891e5c8030fd2b3aae96073ffc112412d203332cc6c88a1f86a2e3a7",
+      "cache_key": "bc760517a1e4856f6a35ef09a6dee4d90ace9536e7da92c3e7bc9e3b651d828b",
       "call_sites": [],
       "clang_usr": "c:@F@MapQpToQlevel",
-      "contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+      "contract_hash": "1900e70b5c3507aee2bca1b8793ed698280d1cc9f1c80f215ec62742f2016918",
       "contract_id": "mapqptoqlevel",
       "deferred": false,
       "dependencies": [],
@@ -2027,13 +2022,13 @@
       "generation_required": false,
       "generator_hook_configured": true,
       "hashes": {
-        "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
-        "contract": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
-        "dependency": "ffc5198137d6fbbf9f09edcc8a760d5e25650efffae54cb01ec94bc447f7eae4",
+        "agent": "0e62e2dc98fedb97c6159176b669548799a8cdaf73176d03e865628578d309ff",
+        "contract": "1900e70b5c3507aee2bca1b8793ed698280d1cc9f1c80f215ec62742f2016918",
+        "dependency": "ca48696990002c0d0e8b91bef745cb54d4e7e574820b9bb0ebfc633ea8319013",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
+        "prompt": "a915001316bf467266a24f69c8ef098e35dadca6f29c9bdf23b93b9a1565732b",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -2110,9 +2105,9 @@
       "selected": true,
       "stale": true,
       "stale_reasons": [
-        "prompt",
+        "agent",
         "generator",
-        "tools"
+        "workers"
       ],
       "targeted": false
     },
@@ -2122,7 +2117,7 @@
       "blocked_reasons": [],
       "boundary_retry_requested": false,
       "cache_hit": false,
-      "cache_key": "abcf819b87852fb91ce4e904521e67d1045e37891e2f3bd8a12d9b412116cb4e",
+      "cache_key": "06d4f2d5422b125c202e659c318d4fde97dfaf9e0b1b726070aeef1bce83d94a",
       "call_sites": [
         {
           "callee_contract": "mapqptoqlevel",
@@ -2151,13 +2146,13 @@
       "generation_required": false,
       "generator_hook_configured": true,
       "hashes": {
-        "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
+        "agent": "0e62e2dc98fedb97c6159176b669548799a8cdaf73176d03e865628578d309ff",
         "contract": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
-        "dependency": "674bbe59bc7b3e1b6c7bb740fb94db009fb7e014c1d815ece9de3cb2595ebd3d",
+        "dependency": "c65c320f5c5b6cf8a1fb59e5a315d2536e2ad1349f630053f3c001d95dff56ee",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
+        "prompt": "a915001316bf467266a24f69c8ef098e35dadca6f29c9bdf23b93b9a1565732b",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -2240,9 +2235,9 @@
       "selected": true,
       "stale": true,
       "stale_reasons": [
-        "prompt",
+        "agent",
         "generator",
-        "tools"
+        "workers"
       ],
       "targeted": false
     },
@@ -2252,10 +2247,10 @@
       "blocked_reasons": [],
       "boundary_retry_requested": false,
       "cache_hit": false,
-      "cache_key": "7a2ff1020c54cfdf63dcf7bcf3eb2875b9f8c47632eb800125d9515ea6d3c76d",
+      "cache_key": "bd5dcd9389178b98c2ed36de86a9293f9167043c2ed4cf97308db87319a7b6f8",
       "call_sites": [],
       "clang_usr": "c:@F@PredictSize",
-      "contract_hash": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
+      "contract_hash": "84fd728f50034834e3eb244a373b6b18341dd956e2594ecad9d9e5c84ca9d4c5",
       "contract_id": "predictsize",
       "deferred": false,
       "dependencies": [],
@@ -2264,13 +2259,13 @@
       "generation_required": false,
       "generator_hook_configured": true,
       "hashes": {
-        "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
-        "contract": "19a8feb4db7de6eca3d912962cb93f776c85cc04cb99ee509ad8151adec2fe4d",
-        "dependency": "c06c81af7f0aebcd65a6303518839aea78d8faea46d3e398b160f92f6173e030",
+        "agent": "0e62e2dc98fedb97c6159176b669548799a8cdaf73176d03e865628578d309ff",
+        "contract": "84fd728f50034834e3eb244a373b6b18341dd956e2594ecad9d9e5c84ca9d4c5",
+        "dependency": "b095672def413a9006e0053cd990dcb5eacc62fdade01077005b8dfdf916eadd",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
+        "prompt": "a915001316bf467266a24f69c8ef098e35dadca6f29c9bdf23b93b9a1565732b",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -2317,9 +2312,9 @@
       "selected": true,
       "stale": true,
       "stale_reasons": [
-        "prompt",
+        "agent",
         "generator",
-        "tools"
+        "workers"
       ],
       "targeted": false
     },
@@ -2329,7 +2324,7 @@
       "blocked_reasons": [],
       "boundary_retry_requested": false,
       "cache_hit": false,
-      "cache_key": "c9b6f31553328a8dcfc79f724c57b7d979c8f2a31781fdaf3a48c72afa12289d",
+      "cache_key": "b5b544c93f1f556c10e227bd038b3a3bbbbeeb93cb10145901f758a87c0dfe48",
       "call_sites": [],
       "clang_usr": "c:@F@Qp2Qlevel",
       "contract_hash": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
@@ -2341,13 +2336,13 @@
       "generation_required": false,
       "generator_hook_configured": true,
       "hashes": {
-        "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
+        "agent": "0e62e2dc98fedb97c6159176b669548799a8cdaf73176d03e865628578d309ff",
         "contract": "ac55b700324881611f728c9419b69341ef1592de9753de719c3a3109d0c3d026",
-        "dependency": "1eb0c0b6879eb69d337b06eeac34f3d0087bafca0c9ab3daa778de067446e8ce",
+        "dependency": "af87600b4e45802dcc70419acd4c63816aed78c53ed8aae6f28f30dfda0c4d65",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
+        "prompt": "a915001316bf467266a24f69c8ef098e35dadca6f29c9bdf23b93b9a1565732b",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -2412,9 +2407,9 @@
       "selected": true,
       "stale": true,
       "stale_reasons": [
-        "prompt",
+        "agent",
         "generator",
-        "tools"
+        "workers"
       ],
       "targeted": false
     },
@@ -2424,10 +2419,10 @@
       "blocked_reasons": [],
       "boundary_retry_requested": false,
       "cache_hit": false,
-      "cache_key": "5b805c3ef2f3dbbbbd97879b378854037d21a612bc743e74f4b6c0eb1c73de53",
+      "cache_key": "d68f2c8313e1e006509e95c0254a25e8daae6a131ca200eef5aca895ec7ab6f5",
       "call_sites": [],
       "clang_usr": "c:@F@QuantizeResidual",
-      "contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
+      "contract_hash": "b4baa02eb3aa35d13f75f5728939e9f9cf9438a414d87271365b9c68cd4f86ef",
       "contract_id": "quantizeresidual",
       "deferred": false,
       "dependencies": [],
@@ -2436,13 +2431,13 @@
       "generation_required": false,
       "generator_hook_configured": true,
       "hashes": {
-        "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
-        "contract": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
-        "dependency": "ba208475235b6e92b65547f31cdffa4fe40ad3cdd5c1eec9bb75103c3ad7a956",
+        "agent": "0e62e2dc98fedb97c6159176b669548799a8cdaf73176d03e865628578d309ff",
+        "contract": "b4baa02eb3aa35d13f75f5728939e9f9cf9438a414d87271365b9c68cd4f86ef",
+        "dependency": "5f2d7795464bd032134da362608fb73f68bbf00511f00f2d93900812fe56847c",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
+        "prompt": "a915001316bf467266a24f69c8ef098e35dadca6f29c9bdf23b93b9a1565732b",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -2483,9 +2478,9 @@
       "selected": true,
       "stale": true,
       "stale_reasons": [
-        "prompt",
+        "agent",
         "generator",
-        "tools"
+        "workers"
       ],
       "targeted": false
     },
@@ -2495,10 +2490,10 @@
       "blocked_reasons": [],
       "boundary_retry_requested": false,
       "cache_hit": false,
-      "cache_key": "7f6c5b1aa74d1be1abf8d01ac79eac0754128875cf3730218ed7d8796366f651",
+      "cache_key": "3247d057b3d7588cb455aa660463eb0a878c0cd41da173b75cd58b72aac7a700",
       "call_sites": [],
       "clang_usr": "c:@F@SamplePredict",
-      "contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+      "contract_hash": "0bdba948a8ce8493f3410fa9ef368a479d819be19f197781e11d7157ae1c274c",
       "contract_id": "samplepredict",
       "deferred": false,
       "dependencies": [],
@@ -2507,13 +2502,13 @@
       "generation_required": false,
       "generator_hook_configured": true,
       "hashes": {
-        "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
-        "contract": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
-        "dependency": "048c7cbc13af700b569cec566195f24f12782209a1fbfa528ca7b95d44a168c8",
+        "agent": "0e62e2dc98fedb97c6159176b669548799a8cdaf73176d03e865628578d309ff",
+        "contract": "0bdba948a8ce8493f3410fa9ef368a479d819be19f197781e11d7157ae1c274c",
+        "dependency": "f2eab0d85d9beaee4f110ec1e6cf4e4262510a841b9aa071eee95e637ca0f61b",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
+        "prompt": "a915001316bf467266a24f69c8ef098e35dadca6f29c9bdf23b93b9a1565732b",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -2776,9 +2771,9 @@
       "selected": true,
       "stale": true,
       "stale_reasons": [
-        "prompt",
+        "agent",
         "generator",
-        "tools"
+        "workers"
       ],
       "targeted": false
     },
@@ -2788,10 +2783,10 @@
       "blocked_reasons": [],
       "boundary_retry_requested": false,
       "cache_hit": false,
-      "cache_key": "968bbcd8aefd76455e5f066517043287268bfdfac91826557f525ac82cd2c936",
+      "cache_key": "9928fae94c09f816086500b9123fa51cc59e37771e8173c1214b6f808ed3b549",
       "call_sites": [],
       "clang_usr": "c:@F@SampToLineBuf",
-      "contract_hash": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
+      "contract_hash": "b391f8f0809cd88d459c0161040ab6830ee4a0ba85c2e88eebb6963f5aa7713e",
       "contract_id": "samptolinebuf",
       "deferred": false,
       "dependencies": [],
@@ -2800,13 +2795,13 @@
       "generation_required": false,
       "generator_hook_configured": true,
       "hashes": {
-        "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
-        "contract": "cfd1b515d7114e627f43d8306df877d2c0010024613afccddb7263203e02215a",
-        "dependency": "ef867cd7536ed109df25b32711d8bcc5a652673b12c1ce871c588a3df2e0e1b6",
+        "agent": "0e62e2dc98fedb97c6159176b669548799a8cdaf73176d03e865628578d309ff",
+        "contract": "b391f8f0809cd88d459c0161040ab6830ee4a0ba85c2e88eebb6963f5aa7713e",
+        "dependency": "73ab38c039dac6ed400b61824dc9d3977e92a9a4ac52b496c4b31b3527ec66bd",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
+        "prompt": "a915001316bf467266a24f69c8ef098e35dadca6f29c9bdf23b93b9a1565732b",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -2859,9 +2854,9 @@
       "selected": true,
       "stale": true,
       "stale_reasons": [
-        "prompt",
+        "agent",
         "generator",
-        "tools"
+        "workers"
       ],
       "targeted": false
     },
@@ -2871,7 +2866,7 @@
       "blocked_reasons": [],
       "boundary_retry_requested": false,
       "cache_hit": false,
-      "cache_key": "bfd3f5d0b87d33216b329cad2579b0df63f0bf4936c44ecc4d4efb99542c64a9",
+      "cache_key": "f773deb000879f99c46de7ecd5874624ada507c9f42bbf10997e58efcb58731c",
       "call_sites": [
         {
           "callee_contract": "findresidualsize",
@@ -2915,13 +2910,13 @@
       "generation_required": false,
       "generator_hook_configured": true,
       "hashes": {
-        "agent": "94797385416140b8821dedf745b669379dd62bf55d4a4851b12ef7f7e3e4f17c",
+        "agent": "0e62e2dc98fedb97c6159176b669548799a8cdaf73176d03e865628578d309ff",
         "contract": "46c31f1a781d9f532c5509d7dfe9f834be86693e1736754aaff40fc7c1e95abf",
-        "dependency": "190a9a354943b435750ae28f6ae44805aaf9805259f9c5cfed0cb493014c0849",
+        "dependency": "02c640415e989ef56356d01f46e8f3101dba0a077ec7dbc1efc3063fd28beb98",
         "generator": "6ef9ef2c00e8417a9f4105f5c7a0a65932f72831ba45ceaf985ca79ed6a28d66",
         "model": "external-generator-hook",
         "pipeline": "executable-cicd-v2",
-        "prompt": "41df5341d6331de718e7207b5acaa186b7cdbf1ef3bf8ae5b1b700a7e1c9e3c4",
+        "prompt": "a915001316bf467266a24f69c8ef098e35dadca6f29c9bdf23b93b9a1565732b",
         "shards": "8",
         "source": "1cd2ac33e983d1489b2fcc5e138324efba18069db5a6bbe72f6cce3b7d8b9cdf",
         "spec": "724c0979b0a04bb9a5ad7143755bf6fab4bf8cf9598d24a536a5048a66e2aecd",
@@ -3040,9 +3035,9 @@
       "selected": true,
       "stale": true,
       "stale_reasons": [
-        "prompt",
+        "agent",
         "generator",
-        "tools"
+        "workers"
       ],
       "targeted": false
     }

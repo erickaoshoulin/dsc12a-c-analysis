@@ -1,0 +1,26 @@
+{
+  "candidate": "candidate_01.sv",
+  "candidate_sha256": "5a4d1b0ac8438ae8324a51bf7d54e4474ea2a9d6f85d82ad19a75a70e57fea70",
+  "contract": "provisional-contract.json",
+  "contract_sha256": "2b03cc4fed545d9221655c6b2610c44ff8f721b7e4b8a97ea7a7c7a052e72553",
+  "promotion_status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW",
+  "schema_version": 1,
+  "selection": {
+    "callee_contract_id": null,
+    "clang_usr": "c:@F@UseICHistory",
+    "execution_count": 11704,
+    "human_review_required_before_promotion": true,
+    "literal_size_bound": {
+      "complete_for_visible_literal_calls": false,
+      "evidence": "fixed-extent state-to-line-buffer scatter transition",
+      "maximum": null,
+      "values": []
+    },
+    "name": "UseICHistory",
+    "provisional_max_bits": null,
+    "selection_basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "semantics_kind": "bounded_line_write_transition",
+    "window_bytes": 0
+  },
+  "status": "PASS"
+}

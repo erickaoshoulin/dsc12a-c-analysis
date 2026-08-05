@@ -1,0 +1,46 @@
+{
+  "candidate": "candidate_01.sv",
+  "candidate_sha256": "ca1f97f79ad60df0c401ace487bbba5112ae5fe68e3ac56ff2476e3ee8d65058",
+  "contract": "provisional-contract.json",
+  "contract_sha256": "98654c7ac0d4eca2f454b4baf8aae1b9e88cf1f45195833f551bb446dce0a925",
+  "promotion_status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW",
+  "schema_version": 1,
+  "selection": {
+    "callee_contract_id": null,
+    "clang_usr": "c:@F@VLDGroup",
+    "execution_count": 131328,
+    "human_review_required_before_promotion": true,
+    "literal_size_bound": {
+      "complete_for_visible_literal_calls": false,
+      "dependencies": [
+        {
+          "candidate_file": "/private/tmp/dsc12a-regression-dashboard/rtl/decode-candidates/selected-mux-refill-transition/candidate_01.sv",
+          "candidate_sha256": "bd65915d2ef2757bebd501c496ad6da7fa278c8ed9520ee4abd594a065367d97",
+          "contract_file": "/private/tmp/dsc12a-regression-dashboard/rtl/decode-candidates/selected-mux-refill-transition/provisional-contract.json",
+          "contract_id": "processgroupdec_decode_transition",
+          "contract_sha256": "be36106bc1a5b42faf1719f405214a5c10e582efe7bc98d768d8871cafaf4396",
+          "function": "ProcessGroupDec",
+          "semantics_kind": "bounded_mux_refill_transition"
+        },
+        {
+          "candidate_file": "/private/tmp/dsc12a-regression-dashboard/rtl/decode-candidates/selected-vld-unit-transition/candidate_01.sv",
+          "candidate_sha256": "90adc4d38484532c08f5131a2fa7bb6bb61c32fbc0d39f5662354eb9cdda59e5",
+          "contract_file": "/private/tmp/dsc12a-regression-dashboard/rtl/decode-candidates/selected-vld-unit-transition/provisional-contract.json",
+          "contract_id": "vldunit_decode_transition",
+          "contract_sha256": "cf4fdeb21aa16de1ae9120470953b358d4ffc04b81cc8fdcc4c238261af6cb36",
+          "function": "VLDUnit",
+          "semantics_kind": "bounded_vld_unit_transition"
+        }
+      ],
+      "evidence": "bounded decoder group transition composed in source order from hash-bound mux-refill and VLD-unit transitions",
+      "maximum": null,
+      "values": []
+    },
+    "name": "VLDGroup",
+    "provisional_max_bits": null,
+    "selection_basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "semantics_kind": "bounded_vld_group_decode_transition",
+    "window_bytes": 0
+  },
+  "status": "PASS"
+}

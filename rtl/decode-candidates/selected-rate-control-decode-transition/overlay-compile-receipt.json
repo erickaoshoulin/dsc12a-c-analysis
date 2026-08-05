@@ -1,0 +1,123 @@
+{
+  "commands": [
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/cmd_parse.c",
+        "-o",
+        "<overlay-work>/overlay-build/cmd_parse.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.124,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-Dmain=dsc_cicd_original_main",
+        "-c",
+        "<overlay-work>/source/codec_main.c",
+        "-o",
+        "<overlay-work>/overlay-build/codec_main.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.233,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/dpx.c",
+        "-o",
+        "<overlay-work>/overlay-build/dpx.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.133,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/dsc_cicd_main.c",
+        "-o",
+        "<overlay-work>/overlay-build/dsc_cicd_main.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.028,
+      "output": "",
+      "returncode": 0
+    },
+    {
+      "command": [
+        "/usr/bin/clang",
+        "-std=gnu99",
+        "-O3",
+        "-I",
+        "<overlay-work>/source",
+        "-c",
+        "<overlay-work>/source/dsc_cicd_overlay.c",
+        "-o",
+        "<overlay-work>/overlay-build/dsc_cicd_overlay.o"
+      ],
+      "cwd": "<overlay-work>/source",
+      "duration_seconds": 0.05,
+      "output": "<overlay-work>/source/dsc_cicd_overlay.c:74:215: error: no member named 'stqp' in 'dsc_cicd_rate_control_output_t'; did you mean 'stQp'?\n   74 |     fprintf(stderr, \"C/RTL RateControl decode mismatch: group=%d size=%d domain=%d/%d qp=%d/%d fullness=%d/%d range=%d/%d pixel=%d/%d error=%d/%d\\n\", group_count, group_size, c->domain_valid, rtl->domain_valid, c->stqp, rtl->stqp, c->bufferfullness, rtl->bufferfullness, c->prevrange, rtl->prevrange, c->pixelcount, rtl->pixelcount, c->erroroccurred, rtl->erroroccurred);\n      |                                                                                                                                                                                                                       ^~~~\n      |                                                                                                                                                                                                                       stQp\n<overlay-work>/source/dsc_cicd_rtl_abi.h:73:13: note: 'stQp' declared here\n   73 |     int32_t stQp;\n      |             ^\n<overlay-work>/source/dsc_cicd_overlay.c:74:226: error: no member named 'stqp' in 'dsc_cicd_rate_control_output_t'; did you mean 'stQp'?\n   74 |     fprintf(stderr, \"C/RTL RateControl decode mismatch: group=%d size=%d domain=%d/%d qp=%d/%d fullness=%d/%d range=%d/%d pixel=%d/%d error=%d/%d\\n\", group_count, group_size, c->domain_valid, rtl->domain_valid, c->stqp, rtl->stqp, c->bufferfullness, rtl->bufferfullness, c->prevrange, rtl->prevrange, c->pixelcount, rtl->pixelcount, c->erroroccurred, rtl->erroroccurred);\n      |                                                                                                                                                                                                                                  ^~~~\n      |                                                                                                                                                                                                                                  stQp\n<overlay-work>/source/dsc_cicd_rtl_abi.h:73:13: note: 'stQp' declared here\n   73 |     int32_t stQp;\n      |             ^\n<overlay-work>/source/dsc_cicd_overlay.c:74:235: error: no member named 'bufferfullness' in 'dsc_cicd_rate_control_output_t'; did you mean 'bufferFullness'?\n   74 |     fprintf(stderr, \"C/RTL RateControl decode mismatch: group=%d size=%d domain=%d/%d qp=%d/%d fullness=%d/%d range=%d/%d pixel=%d/%d error=%d/%d\\n\", group_count, group_size, c->domain_valid, rtl->domain_valid, c->stqp, rtl->stqp, c->bufferfullness, rtl->bufferfullness, c->prevrange, rtl->prevrange, c->pixelcount, rtl->pixelcount, c->erroroccurred, rtl->erroroccurred);\n      |                                                                                                                                                                                                                                           ^~~~~~~~~~~~~~\n      |                                                                                                                                                                                                                                           bufferFullness\n<overlay-work>/source/dsc_cicd_rtl_abi.h:63:13: note: 'bufferFullness' declared here\n   63 |     int32_t bufferFullness;\n      |             ^\n<overlay-work>/source/dsc_cicd_overlay.c:74:256: error: no member named 'bufferfullness' in 'dsc_cicd_rate_control_output_t'; did you mean 'bufferFullness'?\n   74 |     fprintf(stderr, \"C/RTL RateControl decode mismatch: group=%d size=%d domain=%d/%d qp=%d/%d fullness=%d/%d range=%d/%d pixel=%d/%d error=%d/%d\\n\", group_count, group_size, c->domain_valid, rtl->domain_valid, c->stqp, rtl->stqp, c->bufferfullness, rtl->bufferfullness, c->prevrange, rtl->prevrange, c->pixelcount, rtl->pixelcount, c->erroroccurred, rtl->erroroccurred);\n      |                                                                                                                                                                                                                                                                ^~~~~~~~~~~~~~\n      |                                                                                                                                                                                                                                                                bufferFullness\n<overlay-work>/source/dsc_cicd_rtl_abi.h:63:13: note: 'bufferFullness' declared here\n   63 |     int32_t bufferFullness;\n      |             ^\n<overlay-work>/source/dsc_cicd_overlay.c:74:275: error: no member named 'prevrange' in 'dsc_cicd_rate_control_output_t'; did you mean 'prevRange'?\n   74 |     fprintf(stderr, \"C/RTL RateControl decode mismatch: group=%d size=%d domain=%d/%d qp=%d/%d fullness=%d/%d range=%d/%d pixel=%d/%d error=%d/%d\\n\", group_count, group_size, c->domain_valid, rtl->domain_valid, c->stqp, rtl->stqp, c->bufferfullness, rtl->bufferfullness, c->prevrange, rtl->prevrange, c->pixelcount, rtl->pixelcount, c->erroroccurred, rtl->erroroccurred);\n      |                                                                                                                                                                                                                                                                                   ^~~~~~~~~\n      |                                                                                                                                                                                                                                                                                   prevRange\n<overlay-work>/source/dsc_cicd_rtl_abi.h:71:13: note: 'prevRange' declared here\n   71 |     int32_t prevRange;\n      |             ^\n<overlay-work>/source/dsc_cicd_overlay.c:74:291: error: no member named 'prevrange' in 'dsc_cicd_rate_control_output_t'; did you mean 'prevRange'?\n   74 |     fprintf(stderr, \"C/RTL RateControl decode mismatch: group=%d size=%d domain=%d/%d qp=%d/%d fullness=%d/%d range=%d/%d pixel=%d/%d error=%d/%d\\n\", group_count, group_size, c->domain_valid, rtl->domain_valid, c->stqp, rtl->stqp, c->bufferfullness, rtl->bufferfullness, c->prevrange, rtl->prevrange, c->pixelcount, rtl->pixelcount, c->erroroccurred, rtl->erroroccurred);\n      |                                                                                                                                                                                                                                                                                                   ^~~~~~~~~\n      |                                                                                                                                                                                                                                                                                                   prevRange\n<overlay-work>/source/dsc_cicd_rtl_abi.h:71:13: note: 'prevRange' declared here\n   71 |     int32_t prevRange;\n      |             ^\n<overlay-work>/source/dsc_cicd_overlay.c:74:305: error: no member named 'pixelcount' in 'dsc_cicd_rate_control_output_t'; did you mean 'pixelCount'?\n   74 |     fprintf(stderr, \"C/RTL RateControl decode mismatch: group=%d size=%d domain=%d/%d qp=%d/%d fullness=%d/%d range=%d/%d pixel=%d/%d error=%d/%d\\n\", group_count, group_size, c->domain_valid, rtl->domain_valid, c->stqp, rtl->stqp, c->bufferfullness, rtl->bufferfullness, c->prevrange, rtl->prevrange, c->pixelcount, rtl->pixelcount, c->erroroccurred, rtl->erroroccurred);\n      |                                                                                                                                                                                                                                                                                                                 ^~~~~~~~~~\n      |                                                                                                                                                                                                                                                                                                                 pixelCount\n<overlay-work>/source/dsc_cicd_rtl_abi.h:69:13: note: 'pixelCount' declared here\n   69 |     int32_t pixelCount;\n      |             ^\n<overlay-work>/source/dsc_cicd_overlay.c:74:322: error: no member named 'pixelcount' in 'dsc_cicd_rate_control_output_t'; did you mean 'pixelCount'?\n   74 |     fprintf(stderr, \"C/RTL RateControl decode mismatch: group=%d size=%d domain=%d/%d qp=%d/%d fullness=%d/%d range=%d/%d pixel=%d/%d error=%d/%d\\n\", group_count, group_size, c->domain_valid, rtl->domain_valid, c->stqp, rtl->stqp, c->bufferfullness, rtl->bufferfullness, c->prevrange, rtl->prevrange, c->pixelcount, rtl->pixelcount, c->erroroccurred, rtl->erroroccurred);\n      |                                                                                                                                                                                                                                                                                                                                  ^~~~~~~~~~\n      |                                                                                                                                                                                                                                                                                                                                  pixelCount\n<overlay-work>/source/dsc_cicd_rtl_abi.h:69:13: note: 'pixelCount' declared here\n   69 |     int32_t pixelCount;\n      |             ^\n<overlay-work>/source/dsc_cicd_overlay.c:74:337: error: no member named 'erroroccurred' in 'dsc_cicd_rate_control_output_t'; did you mean 'errorOccurred'?\n   74 |     fprintf(stderr, \"C/RTL RateControl decode mismatch: group=%d size=%d domain=%d/%d qp=%d/%d fullness=%d/%d range=%d/%d pixel=%d/%d error=%d/%d\\n\", group_count, group_size, c->domain_valid, rtl->domain_valid, c->stqp, rtl->stqp, c->bufferfullness, rtl->bufferfullness, c->prevrange, rtl->prevrange, c->pixelcount, rtl->pixelcount, c->erroroccurred, rtl->erroroccurred);\n      |                                                                                                                                                                                                                                                                                                                                                 ^~~~~~~~~~~~~\n      |                                                                                                                                                                                                                                                                                                                                                 errorOccurred\n<overlay-work>/source/dsc_cicd_rtl_abi.h:66:13: note: 'errorOccurred' declared here\n   66 |     int32_t errorOccurred;\n      |             ^\n<overlay-work>/source/dsc_cicd_overlay.c:74:357: error: no member named 'erroroccurred' in 'dsc_cicd_rate_control_output_t'; did you mean 'errorOccurred'?\n   74 |     fprintf(stderr, \"C/RTL RateControl decode mismatch: group=%d size=%d domain=%d/%d qp=%d/%d fullness=%d/%d range=%d/%d pixel=%d/%d error=%d/%d\\n\", group_count, group_size, c->domain_valid, rtl->domain_valid, c->stqp, rtl->stqp, c->bufferfullness, rtl->bufferfullness, c->prevrange, rtl->prevrange, c->pixelcount, rtl->pixelcount, c->erroroccurred, rtl->erroroccurred);\n      |                                                                                                                                                                                                                                                                                                                                                                     ^~~~~~~~~~~~~\n      |                                                                                                                                                                                                                                                                                                                                                                     errorOccurred\n<overlay-work>/source/dsc_cicd_rtl_abi.h:66:13: note: 'errorOccurred' declared here\n   66 |     int32_t errorOccurred;\n      |             ^\n10 errors generated.\n",
+      "returncode": 1
+    }
+  ],
+  "make": {
+    "command": [
+      "make",
+      "-C",
+      "<overlay-work>/overlay-build/rtl-object",
+      "-f",
+      "Vratecontrol_decode_transition.mk",
+      "-j",
+      "1"
+    ],
+    "cwd": "<overlay-work>/source",
+    "duration_seconds": 2.799,
+    "output": "python3 /opt/homebrew/Cellar/verilator/5.050/share/verilator/bin/verilator_includer -DVL_INCLUDE_OPT=include Vratecontrol_decode_transition.cpp Vratecontrol_decode_transition___024root__0.cpp Vratecontrol_decode_transition___024root__Slow.cpp Vratecontrol_decode_transition___024root__0__Slow.cpp Vratecontrol_decode_transition__Syms__Slow.cpp > Vratecontrol_decode_transition__ALL.cpp\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o Vratecontrol_decode_transition__ALL.o Vratecontrol_decode_transition__ALL.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nc++ -Os  -I.  -MMD -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include -I/opt/homebrew/Cellar/verilator/5.050/share/verilator/include/vltstd -DVERILATOR=1 -DVM_COVERAGE=0 -DVM_SC=0 -DVM_TIMING=0 -DVM_TRACE=0 -DVM_TRACE_FST=0 -DVM_TRACE_VCD=0 -DVM_TRACE_SAIF=0 -DVM_VPI=0 -faligned-new -fbracket-depth=4096 -fcf-protection=none -Xclang -fno-pch-timestamp -Qunused-arguments -Wno-bool-operation -Wno-c++11-narrowing -Wno-constant-logical-operand -Wno-int-in-bool-context -Wno-non-pod-varargs -Wno-parentheses-equality -Wno-shadow -Wno-sign-compare -Wno-tautological-bitwise-compare -Wno-tautological-compare -Wno-uninitialized -Wno-unnecessary-virtual-specifier -Wno-unused-but-set-parameter -Wno-unused-but-set-variable -Wno-unused-parameter -Wno-unused-variable -Wno-vla-cxx-extension      -c -o verilated_threads.o /opt/homebrew/Cellar/verilator/5.050/share/verilator/include/verilated_threads.cpp\nwarning: unknown warning option '-Wno-unnecessary-virtual-specifier'; did you mean '-Wno-duplicate-decl-specifier'? [-Wunknown-warning-option]\n1 warning generated.\nrm Vratecontrol_decode_transition__ALL.verilator_deplist.tmp libverilated.verilator_deplist.tmp libVratecontrol_decode_transition.verilator_deplist.tmp\n",
+    "returncode": 0
+  },
+  "reason": "overlay C compile failed for dsc_cicd_overlay.c",
+  "status": "INFRASTRUCTURE_FAILURE",
+  "verilator": {
+    "command": [
+      "/opt/homebrew/bin/verilator",
+      "--cc",
+      "<overlay-work>/candidate.sv",
+      "--Mdir",
+      "<overlay-work>/overlay-build/rtl-object",
+      "--top-module",
+      "ratecontrol_decode_transition",
+      "--Wno-fatal"
+    ],
+    "cwd": "<overlay-work>/source",
+    "duration_seconds": 0.103,
+    "output": "- V e r i l a t i o n   R e p o r t: Verilator 5.050 2026-07-01 rev vUNKNOWN-built20260701\n- Verilator: Built from 0.062 MB sources in 3 modules, into 0.285 MB in 5 C++ files needing 0.001 MB\n- Verilator: Walltime 0.053 s (elab=0.008, cvt=0.029, bld=0.000); cpu 0.034 s on 1 threads; allocated 14.109 MB\n",
+    "returncode": 0
+  }
+}

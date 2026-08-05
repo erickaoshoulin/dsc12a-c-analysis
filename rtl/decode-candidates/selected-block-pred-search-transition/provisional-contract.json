@@ -1,0 +1,3403 @@
+{
+  "contract_id": "blockpredsearch_decode_transition",
+  "dependencies": [
+    {
+      "contract_file": "library/contracts/samplepredict.json",
+      "contract_id": "samplepredict",
+      "contract_sha256": "1f2f0f64cfa4c4b3ea889b8f1602b3811c5343e7cc1b7271fbadb6d86336663b",
+      "function": "SamplePredict",
+      "module": "samplepredict",
+      "module_file": "library/rtl/samplepredict.sv",
+      "module_sha256": "831411aefb7fd14c630f6a71d75191a62320ce17566d6292637fcdab603e2011",
+      "role": "block_sample_predict"
+    }
+  ],
+  "function": {
+    "clang_usr": "c:@F@BlockPredSearch",
+    "name": "BlockPredSearch",
+    "parameters": [
+      {
+        "name": "dsc_cfg",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_cfg_t *"
+      },
+      {
+        "name": "dsc_state",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_state_t *"
+      },
+      {
+        "name": "cpnt",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "currLine",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "int **"
+      },
+      {
+        "name": "hPos",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      }
+    ],
+    "return_type": "void",
+    "source_body_sha256": "a8db31f2d658a2ac96c5aa3e1d2a71ac02c0e55bf17d7dd7dfb534f6d5d67e9f",
+    "source_file": "dsc_codec.c",
+    "source_span": {
+      "end_line": 1073,
+      "start_line": 924
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "name": "cpnt",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "hpos",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_bits_per_component",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_block_pred_enable",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_native_420",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_numcomponents",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_bpcount",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_lastedgecount",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_edgedetected",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpnt_bit_depth_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpnt_bit_depth_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpnt_bit_depth_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpnt_bit_depth_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_0_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_0_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_0_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_0_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_0_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_0_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_0_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_0_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_0_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_0_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_0_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_0_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_0_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_1_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_1_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_1_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_1_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_1_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_1_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_1_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_1_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_1_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_1_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_1_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_1_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_1_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_2_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_2_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_2_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_2_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_2_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_2_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_2_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_2_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_2_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_2_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_2_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_2_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_2_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_3_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_3_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_3_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_3_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_3_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_3_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_3_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_3_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_3_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_3_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_3_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_3_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pred_err_3_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_0_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_0_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_0_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_0_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_0_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_0_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_0_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_0_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_0_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_0_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_0_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_0_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_0_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_1_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_1_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_1_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_1_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_1_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_1_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_1_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_1_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_1_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_1_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_1_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_1_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_1_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_2_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_2_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_2_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_2_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_2_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_2_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_2_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_2_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_2_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_2_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_2_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_2_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_0_2_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_0_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_0_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_0_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_0_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_0_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_0_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_0_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_0_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_0_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_0_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_0_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_0_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_0_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_1_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_1_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_1_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_1_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_1_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_1_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_1_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_1_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_1_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_1_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_1_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_1_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_1_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_2_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_2_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_2_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_2_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_2_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_2_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_2_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_2_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_2_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_2_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_2_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_2_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_1_2_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_0_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_0_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_0_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_0_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_0_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_0_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_0_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_0_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_0_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_0_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_0_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_0_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_0_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_1_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_1_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_1_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_1_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_1_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_1_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_1_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_1_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_1_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_1_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_1_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_1_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_1_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_2_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_2_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_2_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_2_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_2_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_2_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_2_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_2_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_2_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_2_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_2_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_2_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_2_2_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_0_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_0_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_0_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_0_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_0_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_0_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_0_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_0_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_0_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_0_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_0_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_0_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_0_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_1_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_1_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_1_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_1_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_1_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_1_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_1_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_1_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_1_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_1_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_1_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_1_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_1_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_2_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_2_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_2_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_2_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_2_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_2_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_2_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_2_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_2_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_2_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_2_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_2_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_last_err_3_2_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "line_sample_m8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "line_sample_m7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "line_sample_m6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "line_sample_m5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "line_sample_m4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "line_sample_m3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "line_sample_m2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "line_sample_m1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "line_sample_p0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "line_sample_p1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "line_sample_p2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "line_sample_p3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "line_sample_p4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "line_sample_p5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "domain_valid",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "state_bpcount_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_lastedgecount_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_edgedetected_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_0_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_0_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_0_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_0_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_0_4_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_0_5_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_0_6_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_0_7_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_0_8_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_0_9_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_0_10_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_0_11_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_0_12_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_1_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_1_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_1_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_1_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_1_4_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_1_5_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_1_6_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_1_7_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_1_8_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_1_9_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_1_10_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_1_11_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_1_12_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_2_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_2_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_2_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_2_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_2_4_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_2_5_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_2_6_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_2_7_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_2_8_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_2_9_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_2_10_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_2_11_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_2_12_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_3_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_3_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_3_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_3_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_3_4_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_3_5_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_3_6_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_3_7_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_3_8_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_3_9_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_3_10_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_3_11_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_pred_err_3_12_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_0_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_0_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_0_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_0_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_0_4_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_0_5_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_0_6_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_0_7_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_0_8_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_0_9_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_0_10_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_0_11_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_0_12_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_1_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_1_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_1_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_1_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_1_4_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_1_5_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_1_6_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_1_7_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_1_8_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_1_9_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_1_10_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_1_11_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_1_12_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_2_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_2_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_2_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_2_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_2_4_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_2_5_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_2_6_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_2_7_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_2_8_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_2_9_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_2_10_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_2_11_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_0_2_12_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_0_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_0_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_0_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_0_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_0_4_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_0_5_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_0_6_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_0_7_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_0_8_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_0_9_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_0_10_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_0_11_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_0_12_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_1_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_1_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_1_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_1_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_1_4_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_1_5_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_1_6_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_1_7_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_1_8_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_1_9_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_1_10_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_1_11_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_1_12_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_2_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_2_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_2_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_2_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_2_4_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_2_5_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_2_6_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_2_7_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_2_8_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_2_9_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_2_10_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_2_11_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_1_2_12_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_0_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_0_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_0_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_0_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_0_4_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_0_5_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_0_6_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_0_7_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_0_8_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_0_9_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_0_10_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_0_11_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_0_12_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_1_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_1_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_1_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_1_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_1_4_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_1_5_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_1_6_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_1_7_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_1_8_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_1_9_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_1_10_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_1_11_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_1_12_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_2_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_2_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_2_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_2_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_2_4_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_2_5_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_2_6_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_2_7_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_2_8_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_2_9_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_2_10_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_2_11_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_2_2_12_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_0_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_0_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_0_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_0_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_0_4_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_0_5_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_0_6_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_0_7_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_0_8_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_0_9_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_0_10_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_0_11_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_0_12_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_1_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_1_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_1_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_1_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_1_4_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_1_5_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_1_6_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_1_7_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_1_8_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_1_9_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_1_10_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_1_11_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_1_12_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_2_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_2_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_2_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_2_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_2_4_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_2_5_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_2_6_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_2_7_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_2_8_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_2_9_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_2_10_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_2_11_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_last_err_3_2_12_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "prev_line_pred_write_enable",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "prev_line_pred_write_index",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "prev_line_pred_write_value",
+        "signed": true,
+        "width": 32
+      }
+    ]
+  },
+  "obligations": [
+    "full-frame Decode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "full-frame Encode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "human review of PT_BLOCK specialization, accumulator bounds, and indexed write before promotion"
+  ],
+  "origin": "tool_discovered_decoder_runtime_transition",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "schema_version": 2,
+  "selection": {
+    "basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "decode_execution_count": 1213056,
+    "shape_evidence": {
+      "callee": "SamplePredict",
+      "callee_candidate_file": "/private/tmp/dsc12a-regression-dashboard/library/rtl/samplepredict.sv",
+      "callee_candidate_sha256": "831411aefb7fd14c630f6a71d75191a62320ce17566d6292637fcdab603e2011",
+      "callee_contract_file": "/private/tmp/dsc12a-regression-dashboard/library/contracts/samplepredict.json",
+      "callee_contract_id": "samplepredict",
+      "callee_contract_sha256": "1f2f0f64cfa4c4b3ea889b8f1602b3811c5343e7cc1b7271fbadb6d86336663b",
+      "complete_for_visible_literal_calls": false,
+      "evidence": "fixed BP_RANGE/BP_SIZE predictor search composed from a hash-bound accepted sample predictor",
+      "maximum": null,
+      "values": []
+    }
+  },
+  "semantics": {
+    "bindings": {
+      "argument_ports": {
+        "cpnt": "cpnt",
+        "hPos": "hpos"
+      },
+      "component_parameter": "cpnt",
+      "config_parameter": "dsc_cfg",
+      "config_ports": {
+        "bits_per_component": "cfg_bits_per_component",
+        "block_pred_enable": "cfg_block_pred_enable",
+        "native_420": "cfg_native_420"
+      },
+      "decision_field": "prevLinePred",
+      "depth_ports": [
+        "state_cpnt_bit_depth_0",
+        "state_cpnt_bit_depth_1",
+        "state_cpnt_bit_depth_2",
+        "state_cpnt_bit_depth_3"
+      ],
+      "horizontal_parameter": "hPos",
+      "last_input_ports": [
+        [
+          [
+            "state_last_err_0_0_0",
+            "state_last_err_0_0_1",
+            "state_last_err_0_0_2",
+            "state_last_err_0_0_3",
+            "state_last_err_0_0_4",
+            "state_last_err_0_0_5",
+            "state_last_err_0_0_6",
+            "state_last_err_0_0_7",
+            "state_last_err_0_0_8",
+            "state_last_err_0_0_9",
+            "state_last_err_0_0_10",
+            "state_last_err_0_0_11",
+            "state_last_err_0_0_12"
+          ],
+          [
+            "state_last_err_0_1_0",
+            "state_last_err_0_1_1",
+            "state_last_err_0_1_2",
+            "state_last_err_0_1_3",
+            "state_last_err_0_1_4",
+            "state_last_err_0_1_5",
+            "state_last_err_0_1_6",
+            "state_last_err_0_1_7",
+            "state_last_err_0_1_8",
+            "state_last_err_0_1_9",
+            "state_last_err_0_1_10",
+            "state_last_err_0_1_11",
+            "state_last_err_0_1_12"
+          ],
+          [
+            "state_last_err_0_2_0",
+            "state_last_err_0_2_1",
+            "state_last_err_0_2_2",
+            "state_last_err_0_2_3",
+            "state_last_err_0_2_4",
+            "state_last_err_0_2_5",
+            "state_last_err_0_2_6",
+            "state_last_err_0_2_7",
+            "state_last_err_0_2_8",
+            "state_last_err_0_2_9",
+            "state_last_err_0_2_10",
+            "state_last_err_0_2_11",
+            "state_last_err_0_2_12"
+          ]
+        ],
+        [
+          [
+            "state_last_err_1_0_0",
+            "state_last_err_1_0_1",
+            "state_last_err_1_0_2",
+            "state_last_err_1_0_3",
+            "state_last_err_1_0_4",
+            "state_last_err_1_0_5",
+            "state_last_err_1_0_6",
+            "state_last_err_1_0_7",
+            "state_last_err_1_0_8",
+            "state_last_err_1_0_9",
+            "state_last_err_1_0_10",
+            "state_last_err_1_0_11",
+            "state_last_err_1_0_12"
+          ],
+          [
+            "state_last_err_1_1_0",
+            "state_last_err_1_1_1",
+            "state_last_err_1_1_2",
+            "state_last_err_1_1_3",
+            "state_last_err_1_1_4",
+            "state_last_err_1_1_5",
+            "state_last_err_1_1_6",
+            "state_last_err_1_1_7",
+            "state_last_err_1_1_8",
+            "state_last_err_1_1_9",
+            "state_last_err_1_1_10",
+            "state_last_err_1_1_11",
+            "state_last_err_1_1_12"
+          ],
+          [
+            "state_last_err_1_2_0",
+            "state_last_err_1_2_1",
+            "state_last_err_1_2_2",
+            "state_last_err_1_2_3",
+            "state_last_err_1_2_4",
+            "state_last_err_1_2_5",
+            "state_last_err_1_2_6",
+            "state_last_err_1_2_7",
+            "state_last_err_1_2_8",
+            "state_last_err_1_2_9",
+            "state_last_err_1_2_10",
+            "state_last_err_1_2_11",
+            "state_last_err_1_2_12"
+          ]
+        ],
+        [
+          [
+            "state_last_err_2_0_0",
+            "state_last_err_2_0_1",
+            "state_last_err_2_0_2",
+            "state_last_err_2_0_3",
+            "state_last_err_2_0_4",
+            "state_last_err_2_0_5",
+            "state_last_err_2_0_6",
+            "state_last_err_2_0_7",
+            "state_last_err_2_0_8",
+            "state_last_err_2_0_9",
+            "state_last_err_2_0_10",
+            "state_last_err_2_0_11",
+            "state_last_err_2_0_12"
+          ],
+          [
+            "state_last_err_2_1_0",
+            "state_last_err_2_1_1",
+            "state_last_err_2_1_2",
+            "state_last_err_2_1_3",
+            "state_last_err_2_1_4",
+            "state_last_err_2_1_5",
+            "state_last_err_2_1_6",
+            "state_last_err_2_1_7",
+            "state_last_err_2_1_8",
+            "state_last_err_2_1_9",
+            "state_last_err_2_1_10",
+            "state_last_err_2_1_11",
+            "state_last_err_2_1_12"
+          ],
+          [
+            "state_last_err_2_2_0",
+            "state_last_err_2_2_1",
+            "state_last_err_2_2_2",
+            "state_last_err_2_2_3",
+            "state_last_err_2_2_4",
+            "state_last_err_2_2_5",
+            "state_last_err_2_2_6",
+            "state_last_err_2_2_7",
+            "state_last_err_2_2_8",
+            "state_last_err_2_2_9",
+            "state_last_err_2_2_10",
+            "state_last_err_2_2_11",
+            "state_last_err_2_2_12"
+          ]
+        ],
+        [
+          [
+            "state_last_err_3_0_0",
+            "state_last_err_3_0_1",
+            "state_last_err_3_0_2",
+            "state_last_err_3_0_3",
+            "state_last_err_3_0_4",
+            "state_last_err_3_0_5",
+            "state_last_err_3_0_6",
+            "state_last_err_3_0_7",
+            "state_last_err_3_0_8",
+            "state_last_err_3_0_9",
+            "state_last_err_3_0_10",
+            "state_last_err_3_0_11",
+            "state_last_err_3_0_12"
+          ],
+          [
+            "state_last_err_3_1_0",
+            "state_last_err_3_1_1",
+            "state_last_err_3_1_2",
+            "state_last_err_3_1_3",
+            "state_last_err_3_1_4",
+            "state_last_err_3_1_5",
+            "state_last_err_3_1_6",
+            "state_last_err_3_1_7",
+            "state_last_err_3_1_8",
+            "state_last_err_3_1_9",
+            "state_last_err_3_1_10",
+            "state_last_err_3_1_11",
+            "state_last_err_3_1_12"
+          ],
+          [
+            "state_last_err_3_2_0",
+            "state_last_err_3_2_1",
+            "state_last_err_3_2_2",
+            "state_last_err_3_2_3",
+            "state_last_err_3_2_4",
+            "state_last_err_3_2_5",
+            "state_last_err_3_2_6",
+            "state_last_err_3_2_7",
+            "state_last_err_3_2_8",
+            "state_last_err_3_2_9",
+            "state_last_err_3_2_10",
+            "state_last_err_3_2_11",
+            "state_last_err_3_2_12"
+          ]
+        ]
+      ],
+      "last_output_ports": [
+        [
+          [
+            "state_last_err_0_0_0_out",
+            "state_last_err_0_0_1_out",
+            "state_last_err_0_0_2_out",
+            "state_last_err_0_0_3_out",
+            "state_last_err_0_0_4_out",
+            "state_last_err_0_0_5_out",
+            "state_last_err_0_0_6_out",
+            "state_last_err_0_0_7_out",
+            "state_last_err_0_0_8_out",
+            "state_last_err_0_0_9_out",
+            "state_last_err_0_0_10_out",
+            "state_last_err_0_0_11_out",
+            "state_last_err_0_0_12_out"
+          ],
+          [
+            "state_last_err_0_1_0_out",
+            "state_last_err_0_1_1_out",
+            "state_last_err_0_1_2_out",
+            "state_last_err_0_1_3_out",
+            "state_last_err_0_1_4_out",
+            "state_last_err_0_1_5_out",
+            "state_last_err_0_1_6_out",
+            "state_last_err_0_1_7_out",
+            "state_last_err_0_1_8_out",
+            "state_last_err_0_1_9_out",
+            "state_last_err_0_1_10_out",
+            "state_last_err_0_1_11_out",
+            "state_last_err_0_1_12_out"
+          ],
+          [
+            "state_last_err_0_2_0_out",
+            "state_last_err_0_2_1_out",
+            "state_last_err_0_2_2_out",
+            "state_last_err_0_2_3_out",
+            "state_last_err_0_2_4_out",
+            "state_last_err_0_2_5_out",
+            "state_last_err_0_2_6_out",
+            "state_last_err_0_2_7_out",
+            "state_last_err_0_2_8_out",
+            "state_last_err_0_2_9_out",
+            "state_last_err_0_2_10_out",
+            "state_last_err_0_2_11_out",
+            "state_last_err_0_2_12_out"
+          ]
+        ],
+        [
+          [
+            "state_last_err_1_0_0_out",
+            "state_last_err_1_0_1_out",
+            "state_last_err_1_0_2_out",
+            "state_last_err_1_0_3_out",
+            "state_last_err_1_0_4_out",
+            "state_last_err_1_0_5_out",
+            "state_last_err_1_0_6_out",
+            "state_last_err_1_0_7_out",
+            "state_last_err_1_0_8_out",
+            "state_last_err_1_0_9_out",
+            "state_last_err_1_0_10_out",
+            "state_last_err_1_0_11_out",
+            "state_last_err_1_0_12_out"
+          ],
+          [
+            "state_last_err_1_1_0_out",
+            "state_last_err_1_1_1_out",
+            "state_last_err_1_1_2_out",
+            "state_last_err_1_1_3_out",
+            "state_last_err_1_1_4_out",
+            "state_last_err_1_1_5_out",
+            "state_last_err_1_1_6_out",
+            "state_last_err_1_1_7_out",
+            "state_last_err_1_1_8_out",
+            "state_last_err_1_1_9_out",
+            "state_last_err_1_1_10_out",
+            "state_last_err_1_1_11_out",
+            "state_last_err_1_1_12_out"
+          ],
+          [
+            "state_last_err_1_2_0_out",
+            "state_last_err_1_2_1_out",
+            "state_last_err_1_2_2_out",
+            "state_last_err_1_2_3_out",
+            "state_last_err_1_2_4_out",
+            "state_last_err_1_2_5_out",
+            "state_last_err_1_2_6_out",
+            "state_last_err_1_2_7_out",
+            "state_last_err_1_2_8_out",
+            "state_last_err_1_2_9_out",
+            "state_last_err_1_2_10_out",
+            "state_last_err_1_2_11_out",
+            "state_last_err_1_2_12_out"
+          ]
+        ],
+        [
+          [
+            "state_last_err_2_0_0_out",
+            "state_last_err_2_0_1_out",
+            "state_last_err_2_0_2_out",
+            "state_last_err_2_0_3_out",
+            "state_last_err_2_0_4_out",
+            "state_last_err_2_0_5_out",
+            "state_last_err_2_0_6_out",
+            "state_last_err_2_0_7_out",
+            "state_last_err_2_0_8_out",
+            "state_last_err_2_0_9_out",
+            "state_last_err_2_0_10_out",
+            "state_last_err_2_0_11_out",
+            "state_last_err_2_0_12_out"
+          ],
+          [
+            "state_last_err_2_1_0_out",
+            "state_last_err_2_1_1_out",
+            "state_last_err_2_1_2_out",
+            "state_last_err_2_1_3_out",
+            "state_last_err_2_1_4_out",
+            "state_last_err_2_1_5_out",
+            "state_last_err_2_1_6_out",
+            "state_last_err_2_1_7_out",
+            "state_last_err_2_1_8_out",
+            "state_last_err_2_1_9_out",
+            "state_last_err_2_1_10_out",
+            "state_last_err_2_1_11_out",
+            "state_last_err_2_1_12_out"
+          ],
+          [
+            "state_last_err_2_2_0_out",
+            "state_last_err_2_2_1_out",
+            "state_last_err_2_2_2_out",
+            "state_last_err_2_2_3_out",
+            "state_last_err_2_2_4_out",
+            "state_last_err_2_2_5_out",
+            "state_last_err_2_2_6_out",
+            "state_last_err_2_2_7_out",
+            "state_last_err_2_2_8_out",
+            "state_last_err_2_2_9_out",
+            "state_last_err_2_2_10_out",
+            "state_last_err_2_2_11_out",
+            "state_last_err_2_2_12_out"
+          ]
+        ],
+        [
+          [
+            "state_last_err_3_0_0_out",
+            "state_last_err_3_0_1_out",
+            "state_last_err_3_0_2_out",
+            "state_last_err_3_0_3_out",
+            "state_last_err_3_0_4_out",
+            "state_last_err_3_0_5_out",
+            "state_last_err_3_0_6_out",
+            "state_last_err_3_0_7_out",
+            "state_last_err_3_0_8_out",
+            "state_last_err_3_0_9_out",
+            "state_last_err_3_0_10_out",
+            "state_last_err_3_0_11_out",
+            "state_last_err_3_0_12_out"
+          ],
+          [
+            "state_last_err_3_1_0_out",
+            "state_last_err_3_1_1_out",
+            "state_last_err_3_1_2_out",
+            "state_last_err_3_1_3_out",
+            "state_last_err_3_1_4_out",
+            "state_last_err_3_1_5_out",
+            "state_last_err_3_1_6_out",
+            "state_last_err_3_1_7_out",
+            "state_last_err_3_1_8_out",
+            "state_last_err_3_1_9_out",
+            "state_last_err_3_1_10_out",
+            "state_last_err_3_1_11_out",
+            "state_last_err_3_1_12_out"
+          ],
+          [
+            "state_last_err_3_2_0_out",
+            "state_last_err_3_2_1_out",
+            "state_last_err_3_2_2_out",
+            "state_last_err_3_2_3_out",
+            "state_last_err_3_2_4_out",
+            "state_last_err_3_2_5_out",
+            "state_last_err_3_2_6_out",
+            "state_last_err_3_2_7_out",
+            "state_last_err_3_2_8_out",
+            "state_last_err_3_2_9_out",
+            "state_last_err_3_2_10_out",
+            "state_last_err_3_2_11_out",
+            "state_last_err_3_2_12_out"
+          ]
+        ]
+      ],
+      "line_parameter": "currLine",
+      "line_sample_offsets": [
+        -8,
+        -7,
+        -6,
+        -5,
+        -4,
+        -3,
+        -2,
+        -1,
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "line_sample_ports": [
+        "line_sample_m8",
+        "line_sample_m7",
+        "line_sample_m6",
+        "line_sample_m5",
+        "line_sample_m4",
+        "line_sample_m3",
+        "line_sample_m2",
+        "line_sample_m1",
+        "line_sample_p0",
+        "line_sample_p1",
+        "line_sample_p2",
+        "line_sample_p3",
+        "line_sample_p4",
+        "line_sample_p5"
+      ],
+      "pred_input_ports": [
+        [
+          "state_pred_err_0_0",
+          "state_pred_err_0_1",
+          "state_pred_err_0_2",
+          "state_pred_err_0_3",
+          "state_pred_err_0_4",
+          "state_pred_err_0_5",
+          "state_pred_err_0_6",
+          "state_pred_err_0_7",
+          "state_pred_err_0_8",
+          "state_pred_err_0_9",
+          "state_pred_err_0_10",
+          "state_pred_err_0_11",
+          "state_pred_err_0_12"
+        ],
+        [
+          "state_pred_err_1_0",
+          "state_pred_err_1_1",
+          "state_pred_err_1_2",
+          "state_pred_err_1_3",
+          "state_pred_err_1_4",
+          "state_pred_err_1_5",
+          "state_pred_err_1_6",
+          "state_pred_err_1_7",
+          "state_pred_err_1_8",
+          "state_pred_err_1_9",
+          "state_pred_err_1_10",
+          "state_pred_err_1_11",
+          "state_pred_err_1_12"
+        ],
+        [
+          "state_pred_err_2_0",
+          "state_pred_err_2_1",
+          "state_pred_err_2_2",
+          "state_pred_err_2_3",
+          "state_pred_err_2_4",
+          "state_pred_err_2_5",
+          "state_pred_err_2_6",
+          "state_pred_err_2_7",
+          "state_pred_err_2_8",
+          "state_pred_err_2_9",
+          "state_pred_err_2_10",
+          "state_pred_err_2_11",
+          "state_pred_err_2_12"
+        ],
+        [
+          "state_pred_err_3_0",
+          "state_pred_err_3_1",
+          "state_pred_err_3_2",
+          "state_pred_err_3_3",
+          "state_pred_err_3_4",
+          "state_pred_err_3_5",
+          "state_pred_err_3_6",
+          "state_pred_err_3_7",
+          "state_pred_err_3_8",
+          "state_pred_err_3_9",
+          "state_pred_err_3_10",
+          "state_pred_err_3_11",
+          "state_pred_err_3_12"
+        ]
+      ],
+      "pred_output_ports": [
+        [
+          "state_pred_err_0_0_out",
+          "state_pred_err_0_1_out",
+          "state_pred_err_0_2_out",
+          "state_pred_err_0_3_out",
+          "state_pred_err_0_4_out",
+          "state_pred_err_0_5_out",
+          "state_pred_err_0_6_out",
+          "state_pred_err_0_7_out",
+          "state_pred_err_0_8_out",
+          "state_pred_err_0_9_out",
+          "state_pred_err_0_10_out",
+          "state_pred_err_0_11_out",
+          "state_pred_err_0_12_out"
+        ],
+        [
+          "state_pred_err_1_0_out",
+          "state_pred_err_1_1_out",
+          "state_pred_err_1_2_out",
+          "state_pred_err_1_3_out",
+          "state_pred_err_1_4_out",
+          "state_pred_err_1_5_out",
+          "state_pred_err_1_6_out",
+          "state_pred_err_1_7_out",
+          "state_pred_err_1_8_out",
+          "state_pred_err_1_9_out",
+          "state_pred_err_1_10_out",
+          "state_pred_err_1_11_out",
+          "state_pred_err_1_12_out"
+        ],
+        [
+          "state_pred_err_2_0_out",
+          "state_pred_err_2_1_out",
+          "state_pred_err_2_2_out",
+          "state_pred_err_2_3_out",
+          "state_pred_err_2_4_out",
+          "state_pred_err_2_5_out",
+          "state_pred_err_2_6_out",
+          "state_pred_err_2_7_out",
+          "state_pred_err_2_8_out",
+          "state_pred_err_2_9_out",
+          "state_pred_err_2_10_out",
+          "state_pred_err_2_11_out",
+          "state_pred_err_2_12_out"
+        ],
+        [
+          "state_pred_err_3_0_out",
+          "state_pred_err_3_1_out",
+          "state_pred_err_3_2_out",
+          "state_pred_err_3_3_out",
+          "state_pred_err_3_4_out",
+          "state_pred_err_3_5_out",
+          "state_pred_err_3_6_out",
+          "state_pred_err_3_7_out",
+          "state_pred_err_3_8_out",
+          "state_pred_err_3_9_out",
+          "state_pred_err_3_10_out",
+          "state_pred_err_3_11_out",
+          "state_pred_err_3_12_out"
+        ]
+      ],
+      "state_output_ports": {
+        "bpCount": "state_bpcount_out",
+        "edgeDetected": "state_edgedetected_out",
+        "lastEdgeCount": "state_lastedgecount_out"
+      },
+      "state_parameter": "dsc_state",
+      "state_ports": {
+        "bpCount": "state_bpcount",
+        "edgeDetected": "state_edgedetected",
+        "lastEdgeCount": "state_lastedgecount",
+        "numComponents": "state_numcomponents"
+      },
+      "write_ports": {
+        "enable": "prev_line_pred_write_enable",
+        "index": "prev_line_pred_write_index",
+        "value": "prev_line_pred_write_value"
+      }
+    },
+    "composition_reduction": "the hash-bound sample predictor is specialized to its PT_BLOCK branch for candidate vectors 0..12",
+    "constants": {
+      "bp_range": 13,
+      "bp_size": 3,
+      "component_count": 4,
+      "edge_count": 3,
+      "edge_strength": 32,
+      "padding_left": 5,
+      "pred_block_size": 3,
+      "pt_block": 2,
+      "pt_left": 1,
+      "pt_map": 0
+    },
+    "kind": "bounded_block_pred_search_transition",
+    "legal_domain": {
+      "bits_per_component": [
+        8,
+        16
+      ],
+      "component": [
+        0,
+        3
+      ],
+      "component_bit_depth": [
+        8,
+        16
+      ],
+      "horizontal_position_nonnegative": true,
+      "inactive_candidate_taps_tied_zero_and_not_dereferenced": true,
+      "line_samples": "recon at hPos+PADDING_LEFT and candidate taps at hPos+PADDING_LEFT-1-vector only when hPos>vector",
+      "num_components": [
+        3,
+        4
+      ]
+    },
+    "state_transition": "update fixed BP accumulators and emit at most one indexed prevLinePred decision write"
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

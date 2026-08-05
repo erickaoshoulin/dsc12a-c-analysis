@@ -1,0 +1,36 @@
+{
+  "candidate": "candidate_01.sv",
+  "candidate_sha256": "6837dbc207e65f6d69ec3bc691ffbc14b6af98664579eeb4c0c4cf4598295fb1",
+  "contract": "provisional-contract.json",
+  "contract_sha256": "0e4a84ddf41d67022b9915bfc80cc9c7479c36b4be5780fbe7745bc78ea245a2",
+  "promotion_status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW",
+  "schema_version": 1,
+  "selection": {
+    "clang_usr": "c:@F@getbits",
+    "execution_count": 586716,
+    "human_review_required_before_promotion": true,
+    "literal_size_bound": {
+      "complete_for_visible_literal_calls": true,
+      "evidence": "literal first arguments at every directly visible C callsite",
+      "maximum": 16,
+      "values": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        10,
+        11,
+        12,
+        16
+      ]
+    },
+    "name": "getbits",
+    "selection_basis": "decoder runtime execution + missing stable RTL + scalar return + one read-only byte buffer + one write-through integer cursor + no callees",
+    "semantics_kind": "bitstream_read_transition",
+    "window_bytes": 3
+  },
+  "status": "PASS"
+}

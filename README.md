@@ -2,11 +2,13 @@
 
 This standalone repository analyzes the local DSC 1.2a C reference model and
 links tool-discovered C facts back to the local PDF specification. It is
-isolated from SVRT and unrelated projects. It does not modify the upstream
-model or copy the PDF. The pipeline uses LLVM coverage, creates bounded
-tool-selected contract batches, and incrementally verifies a designer-facing
-combinational RTL library; it does not generate whole-codec RTL or add
-sequential hardware.
+isolated from SVRT and unrelated projects, does not modify the upstream model
+or copy the PDF, and does not use Rust. The pipeline uses LLVM coverage and
+Clang facts to create tool-selected contract batches. Promoted `library/rtl`
+remains a human-reviewed combinational library; an isolated provisional plane
+also verifies bounded stateful Encode/Decode RTL inside the copied full-frame C
+model through Verilator-generated C++. Provisional success is simulation
+evidence and never bypasses human promotion review.
 
 ## Inputs
 
@@ -297,6 +299,139 @@ DSC_CICD_CONTRACT_WORKERS=4 DSC_CICD_WORKERS=8 \
 DSC_CICD_SHARDS=8 DSC_CICD_GENERATOR_CMD='python3 tools/generator_fixture.py' \
 python3 tools/cicd_agent.py run
 ```
+
+The default frame gate uses three smoke profiles. Set
+`DSC_CICD_MATRIX_SCOPE=all` for a full data-driven sweep of every discovered
+`bittrue_smoke/run_c_baseline*.sh` profile. Each script's `expected_hash=` or
+`expected=` SHA-256 is parsed into the receipt and independently checked in
+all three execution modes; any future profile without a fixed SHA is labeled
+`C_BASELINE_DIFFERENTIAL_ONLY` and excluded from promotion evidence.
+
+The frame gate is Decode-first after fixture preparation. For every selected
+profile, the immutable original C decoder first produces the decoded-frame
+oracle. The same `.dsc` is then decoded in `C_ONLY`, `SHADOW`, and
+`RTL_RETURN` using the Verilog candidate compiled to C++ by Verilator. Decoded
+frames are compared byte-for-byte. Every generated overlay emits an exit-time
+invocation receipt, so a candidate that was not called is reported as
+`NOT_REACHED` and cannot masquerade as replacement evidence. Encode runs
+second and retains the fixed `.dsc` SHA-256 gates. Rust is not part of either
+oracle or replacement path.
+
+### Decode frontier and integration
+
+Decoder runtime discovery can be refreshed independently with LLVM coverage:
+
+```sh
+python3 tools/run_coverage.py \
+  --model-root "$DSC_MODEL_ROOT" --output-dir coverage/decode \
+  --work-dir "$DSC_COVERAGE_WORK" --timeout 1800 \
+  --functions facts/functions.json --candidates facts/candidates.json \
+  --build-receipt facts/build-receipt.json \
+  --coverage-scripts all --coverage-phases decode
+
+python3 tools/decode_frontier.py \
+  --coverage coverage/decode/coverage.json \
+  --functions facts/functions.json --candidates facts/candidates.json \
+  --manifest library/manifest.json --source-dir "$DSC_SOURCE_DIR" \
+  --provisional-root rtl/decode-candidates \
+  --integration-receipt \
+    rtl/decode-integration/whole-frame-multi-rtl/matrix-receipt.json \
+  --output coverage/decode/frontier.json \
+  --report reports/decode-rtl-frontier.md
+```
+
+This profile excludes encoder fixture execution before merging LLVM data. If
+the existing combinational frontier is exhausted, the frontier tool may select
+a provisional explicit state-transition shape. Such RTL may be generated and
+run through full-frame C/Verilator regression, but remains outside
+`library/rtl/` until its state contract is reviewed. The provisional scan is
+recursive and accepts only `all`-scope PASS receipts, so a verified lower-level
+transition can unlock a caller without being mistaken for stable/promoted RTL.
+Current structural classes cover bounded bitstream and FIFO read/write state,
+composed FIFO accounting/refill, scalar record next-state, sampled lookup
+taps, scalar state plus explicit indexed-memory writes, composed flatness
+state, bounded reconstructed-line scatter writes, and complete 32-entry ICH
+memory transitions (including a guarded reconstructed-line sampling caller),
+plus source-ordered parent composition over complete decoder/FIFO state images.
+Fixed-capacity FIFO ports canonicalize bytes beyond the active `size / 8`
+extent and never compare or commit those inactive backing bytes.
+Selection remains based on Clang USRs/facts and decoder execution counts,
+never a function-name list.
+
+```sh
+python3 tools/generate_decode_transition.py \
+  --frontier coverage/decode/frontier.json \
+  --functions facts/functions.json --source-dir "$DSC_SOURCE_DIR" \
+  --output-dir rtl/decode-candidates/selected-transition-N
+
+DSC_CICD_MATRIX_SCOPE=all python3 tools/verify_decode_transition.py \
+  --root . --artifact rtl/decode-candidates/selected-transition-N
+```
+
+Once individual Decode transitions have full-matrix receipts, the simultaneous
+integration gate discovers every Decode-exercised PASS candidate and links all
+of their Verilator-generated C++ models into one copied source model. It does
+not use a function allowlist. The immutable original C decoder produces each
+frame oracle first; the integrated executable then runs `C_ONLY`, `SHADOW`, and
+`RTL_RETURN` against the same fixtures, records named metrics for every
+replacement, and requires every decoded frame to match byte-for-byte.
+
+```sh
+python3 tools/verify_decode_integration.py \
+  --root . \
+  --artifact rtl/decode-integration/whole-frame-multi-rtl \
+  --scope all --jobs 4
+```
+
+The current authoritative `all`-scope receipt covers 29 simultaneous Verilog
+replacements across 22 Decode profiles. `SHADOW` and `RTL_RETURN` each made
+43,345,758 instrumented boundary calls and 4,449,264 Verilator invocations,
+with zero candidate mismatches and zero decoded-frame differences. Decoder
+coverage also reaches six non-datapath C boundaries: frame/process I/O
+orchestration, memory lifecycle, and a thin call wrapper. They remain in C by
+structural effect classification; the current unresolved Decode compute
+frontier is zero.
+
+### Encode frontier and integration
+
+The Encode frontier starts from the tool-discovered `DSC_Encode` root graph,
+Encode execution counts, Clang effects, the stable manifest, and hash-verified
+provisional receipts. Refresh it without a function allowlist:
+
+```sh
+python3 tools/encode_frontier.py \
+  --coverage coverage/coverage.json \
+  --functions facts/functions.json \
+  --candidates facts/candidates.json \
+  --manifest library/manifest.json \
+  --source-dir "$DSC_SOURCE_DIR" \
+  --provisional-root rtl \
+  --integration-receipt \
+    rtl/encode-integration/whole-frame-multi-rtl/matrix-receipt.json \
+  --output coverage/encode/frontier.json \
+  --report reports/encode-rtl-frontier.md
+
+python3 tools/verify_encode_integration.py \
+  --root . \
+  --artifact rtl/encode-integration/whole-frame-multi-rtl \
+  --scope all --jobs 6
+```
+
+The current frontier reaches 44 Encode functions: 39 RTL compute boundaries
+(15 stable and 24 provisional), five C orchestration/lifecycle shells, and
+zero compute gaps. The authoritative 22-profile receipt links all 39 Verilog
+replacements into the copied full-frame source model. `C_ONLY` made 89,066,025
+instrumented calls and no RTL calls. `SHADOW` and `RTL_RETURN` each made
+160,636,518 calls and 30,978,137 Verilator invocations; 32 candidates executed
+directly and seven were hash-pinned, source-ordered children absorbed by a
+parent RTL boundary. Candidate mismatches, encoded-frame byte differences,
+and SHA-256 differences are all zero.
+
+The three-profile smoke scope is only a development gate: it may not reach a
+branch-specific boundary such as the VBR-only encoder-buffer removal path.
+Only the `all`-scope receipt is authoritative for zero-gap replacement. This
+provisional result remains `BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW`; it does not
+promote stateful RTL into `library/rtl/`.
 
 New/repair contracts get their own generator invocation, C oracle, Verilator
 candidate build, parallel differential shards, caller composition check, and

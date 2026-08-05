@@ -1,0 +1,342 @@
+{
+  "contract_id": "calcfullnessoffset_decode_transition",
+  "function": {
+    "clang_usr": "c:@F@CalcFullnessOffset",
+    "name": "CalcFullnessOffset",
+    "parameters": [
+      {
+        "name": "dsc_cfg",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_cfg_t *"
+      },
+      {
+        "name": "dsc_state",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_state_t *"
+      },
+      {
+        "name": "vPos",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "group_count",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "scale",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "int *"
+      },
+      {
+        "name": "bpg_offset",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "int *"
+      }
+    ],
+    "return_type": "void",
+    "source_body_sha256": "e17ca81ded2d91775caf9616e75f8c3556f665588f69cc9fb6add2d879243a2b",
+    "source_file": "dsc_codec.c",
+    "source_span": {
+      "end_line": 2286,
+      "start_line": 2188
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "name": "vpos",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "group_count",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_bits_per_pixel",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_final_offset",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_first_line_bpg_ofs",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_initial_scale_value",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_initial_xmit_delay",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_nfl_bpg_offset",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_nsl_bpg_offset",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_scale_decrement_interval",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_scale_increment_interval",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_second_line_bpg_ofs",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_second_line_ofs_adj",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_slice_bpg_offset",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_currentscale",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pixelcount",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_pixelsingroup",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_prevpixelcount",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_rcoffsetclampenable",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_rcxformoffset",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_scaleadjustcounter",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_scaleincrementstart",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_secondoffsetapplied",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_throttlefrac",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "scale_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "bpg_offset_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_currentscale_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_prevpixelcount_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_rcoffsetclampenable_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_rcxformoffset_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_scaleadjustcounter_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_scaleincrementstart_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_secondoffsetapplied_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_throttlefrac_out",
+        "signed": true,
+        "width": 32
+      }
+    ]
+  },
+  "obligations": [
+    "full-frame Decode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "full-frame Encode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "human review of signed arithmetic and scalar state outputs before promotion"
+  ],
+  "origin": "tool_discovered_decoder_runtime_transition",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "schema_version": 2,
+  "selection": {
+    "basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "decode_execution_count": 131328,
+    "shape_evidence": {
+      "complete_for_visible_literal_calls": false,
+      "evidence": "loop-free scalar record transition from Clang facts",
+      "maximum": null,
+      "values": []
+    }
+  },
+  "semantics": {
+    "bindings": {
+      "bpg_offset_output_parameter": "bpg_offset",
+      "config_parameter": "dsc_cfg",
+      "config_ports": {
+        "bits_per_pixel": "cfg_bits_per_pixel",
+        "final_offset": "cfg_final_offset",
+        "first_line_bpg_ofs": "cfg_first_line_bpg_ofs",
+        "initial_scale_value": "cfg_initial_scale_value",
+        "initial_xmit_delay": "cfg_initial_xmit_delay",
+        "nfl_bpg_offset": "cfg_nfl_bpg_offset",
+        "nsl_bpg_offset": "cfg_nsl_bpg_offset",
+        "scale_decrement_interval": "cfg_scale_decrement_interval",
+        "scale_increment_interval": "cfg_scale_increment_interval",
+        "second_line_bpg_ofs": "cfg_second_line_bpg_ofs",
+        "second_line_ofs_adj": "cfg_second_line_ofs_adj",
+        "slice_bpg_offset": "cfg_slice_bpg_offset"
+      },
+      "group_count_parameter": "group_count",
+      "scalar_input_ports": {
+        "group_count": "group_count",
+        "vPos": "vpos"
+      },
+      "scalar_output_ports": {
+        "bpg_offset": "bpg_offset_out",
+        "scale": "scale_out"
+      },
+      "scale_output_parameter": "scale",
+      "state_input_ports": {
+        "currentScale": "state_currentscale",
+        "pixelCount": "state_pixelcount",
+        "pixelsInGroup": "state_pixelsingroup",
+        "prevPixelCount": "state_prevpixelcount",
+        "rcOffsetClampEnable": "state_rcoffsetclampenable",
+        "rcXformOffset": "state_rcxformoffset",
+        "scaleAdjustCounter": "state_scaleadjustcounter",
+        "scaleIncrementStart": "state_scaleincrementstart",
+        "secondOffsetApplied": "state_secondoffsetapplied",
+        "throttleFrac": "state_throttlefrac"
+      },
+      "state_output_ports": {
+        "currentScale": "state_currentscale_out",
+        "prevPixelCount": "state_prevpixelcount_out",
+        "rcOffsetClampEnable": "state_rcoffsetclampenable_out",
+        "rcXformOffset": "state_rcxformoffset_out",
+        "scaleAdjustCounter": "state_scaleadjustcounter_out",
+        "scaleIncrementStart": "state_scaleincrementstart_out",
+        "secondOffsetApplied": "state_secondoffsetapplied_out",
+        "throttleFrac": "state_throttlefrac_out"
+      },
+      "state_parameter": "dsc_state",
+      "vertical_position_parameter": "vPos"
+    },
+    "constants": {
+      "offset_fractional_bits": 11,
+      "rc_scale_binary_point": 3
+    },
+    "kind": "scalar_record_next_state",
+    "state_transition": "compute rate-control scale/BPG outputs and all explicitly written dsc_state scalar next-state fields"
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

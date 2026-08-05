@@ -1,0 +1,32 @@
+{
+  "candidate": "candidate_01.sv",
+  "candidate_sha256": "a6fed1e887115c27a1ee029df3eedf5bc265ceaef62624a4f3b7ceaf18aac656",
+  "contract": "provisional-contract.json",
+  "contract_sha256": "0209cc8756955bc3427c3999aafae38f77322a6874acec27bbfe3f4779b6f1ee",
+  "promotion_status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW",
+  "schema_version": 1,
+  "selection": {
+    "callee_contract_id": "historylookup_decode_transition",
+    "clang_usr": "c:@F@UpdateHistoryElement",
+    "execution_count": 386208,
+    "human_review_required_before_promotion": true,
+    "literal_size_bound": {
+      "callee": "HistoryLookup",
+      "callee_candidate_file": "/private/tmp/dsc12a-regression-dashboard/rtl/decode-candidates/selected-sampled-lookup-transition/candidate_01.sv",
+      "callee_candidate_sha256": "247297547a72ffd176caea2bf7c90523c9ab5e4386a6cd912eea4bf128ed06d5",
+      "callee_contract_file": "/private/tmp/dsc12a-regression-dashboard/rtl/decode-candidates/selected-sampled-lookup-transition/provisional-contract.json",
+      "callee_contract_id": "historylookup_decode_transition",
+      "callee_contract_sha256": "7d629d8b2f37a025a4d2693a4791f63fa120106bcbf92407c9ca8d07a17b7231",
+      "complete_for_visible_literal_calls": false,
+      "evidence": "bounded MRU history update composed from a verified sampled lookup transition",
+      "maximum": null,
+      "values": []
+    },
+    "name": "UpdateHistoryElement",
+    "provisional_max_bits": null,
+    "selection_basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "semantics_kind": "bounded_history_update_transition",
+    "window_bytes": 0
+  },
+  "status": "PASS"
+}

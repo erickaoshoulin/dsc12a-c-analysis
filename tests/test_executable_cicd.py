@@ -601,6 +601,22 @@ class ExecutableCicdTests(unittest.TestCase):
             rewritten = caller.read_text(encoding="utf-8")
             self.assertEqual(rewritten.count("dsc_cicd_invoke"), 2)
 
+    def test_clang_rewriter_handles_macro_expansion_inside_direct_call_argument(self):
+        with tempfile.TemporaryDirectory() as directory:
+            result, receipt_path, _, caller = self._run_rewriter_fixture(
+                pathlib.Path(directory),
+                '#include "selected_leaf.h"\n'
+                "#define NORMALIZE(value) ((value) + 1)\n"
+                "int call_one(int value) { return selected_leaf(NORMALIZE(value)); }\n",
+            )
+            receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+            self.assertEqual(result.returncode, 0, result.stdout)
+            self.assertEqual(receipt["status"], "PASS")
+            self.assertEqual(receipt["direct_calls_seen"], 1)
+            self.assertEqual(receipt["rewritten_calls"], 1)
+            self.assertFalse(receipt["indirect_locations"])
+            self.assertIn("dsc_cicd_invoke", caller.read_text(encoding="utf-8"))
+
     def test_clang_rewriter_fails_closed_for_macro_and_indirect_calls(self):
         with tempfile.TemporaryDirectory() as directory:
             result, receipt_path, _, _ = self._run_rewriter_fixture(

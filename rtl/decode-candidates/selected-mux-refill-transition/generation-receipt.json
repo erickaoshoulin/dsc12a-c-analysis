@@ -1,0 +1,26 @@
+{
+  "candidate": "candidate_01.sv",
+  "candidate_sha256": "bd65915d2ef2757bebd501c496ad6da7fa278c8ed9520ee4abd594a065367d97",
+  "contract": "provisional-contract.json",
+  "contract_sha256": "be36106bc1a5b42faf1719f405214a5c10e582efe7bc98d768d8871cafaf4396",
+  "promotion_status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW",
+  "schema_version": 1,
+  "selection": {
+    "callee_contract_id": null,
+    "clang_usr": "c:@F@ProcessGroupDec",
+    "execution_count": 131328,
+    "human_review_required_before_promotion": true,
+    "literal_size_bound": {
+      "complete_for_visible_literal_calls": false,
+      "evidence": "bounded multi-lane refill composed from verified transition callees",
+      "maximum": null,
+      "values": []
+    },
+    "name": "ProcessGroupDec",
+    "provisional_max_bits": null,
+    "selection_basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "semantics_kind": "bounded_mux_refill_transition",
+    "window_bytes": 0
+  },
+  "status": "PASS"
+}

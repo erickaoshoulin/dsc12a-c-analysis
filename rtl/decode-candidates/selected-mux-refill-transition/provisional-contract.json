@@ -1,0 +1,1715 @@
+{
+  "contract_id": "processgroupdec_decode_transition",
+  "function": {
+    "clang_usr": "c:@F@ProcessGroupDec",
+    "name": "ProcessGroupDec",
+    "parameters": [
+      {
+        "name": "dsc_cfg",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_cfg_t *"
+      },
+      {
+        "name": "dsc_state",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_state_t *"
+      },
+      {
+        "name": "buf",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "unsigned char *"
+      }
+    ],
+    "return_type": "void",
+    "source_body_sha256": "b2bae68f30cca3a8e64b7f1a4908607f8362a238dab224e9af0985a580ebd867",
+    "source_file": "multiplex.c",
+    "source_span": {
+      "end_line": 176,
+      "start_line": 159
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "name": "mux_word_size",
+        "signed": false,
+        "width": 7
+      },
+      {
+        "direction": "input",
+        "name": "num_ssps",
+        "signed": false,
+        "width": 3
+      },
+      {
+        "direction": "input",
+        "name": "post_mux_num_bits",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "max_se_size_0",
+        "signed": false,
+        "width": 7
+      },
+      {
+        "direction": "input",
+        "name": "max_se_size_1",
+        "signed": false,
+        "width": 7
+      },
+      {
+        "direction": "input",
+        "name": "max_se_size_2",
+        "signed": false,
+        "width": 7
+      },
+      {
+        "direction": "input",
+        "name": "max_se_size_3",
+        "signed": false,
+        "width": 7
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_0",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_1",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_2",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_3",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_4",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_5",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_6",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_7",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_8",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_9",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_10",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_11",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_12",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_13",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_14",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_15",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_16",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_17",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_18",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_19",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_20",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_21",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_22",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_23",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_24",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_25",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_26",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_27",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_28",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_29",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_30",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_31",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "stream_byte_32",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_size",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_fullness",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_read_ptr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_write_ptr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_max_fullness",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_ctr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_size",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_fullness",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_read_ptr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_write_ptr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_max_fullness",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_ctr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_size",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_fullness",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_read_ptr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_write_ptr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_max_fullness",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_ctr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_size",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_fullness",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_read_ptr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_write_ptr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_max_fullness",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_ctr",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_0",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_1",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_2",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_3",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_4",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_5",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_6",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_7",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_8",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_9",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_10",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_11",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_12",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_13",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_14",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_15",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_0_byte_16",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_0",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_1",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_2",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_3",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_4",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_5",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_6",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_7",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_8",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_9",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_10",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_11",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_12",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_13",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_14",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_15",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_1_byte_16",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_0",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_1",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_2",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_3",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_4",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_5",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_6",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_7",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_8",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_9",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_10",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_11",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_12",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_13",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_14",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_15",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_2_byte_16",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_0",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_1",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_2",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_3",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_4",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_5",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_6",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_7",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_8",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_9",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_10",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_11",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_12",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_13",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_14",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_15",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "fifo_3_byte_16",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "domain_valid",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "post_mux_num_bits_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_0_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_1_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_2_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_3_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_4_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_5_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_6_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_7_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_8_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_9_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_10_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_11_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_12_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_13_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_14_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_15_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_16_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_0_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_1_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_2_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_3_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_4_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_5_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_6_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_7_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_8_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_9_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_10_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_11_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_12_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_13_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_14_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_15_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_16_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_0_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_1_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_2_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_3_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_4_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_5_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_6_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_7_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_8_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_9_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_10_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_11_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_12_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_13_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_14_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_15_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_16_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_0_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_1_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_2_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_3_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_4_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_5_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_6_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_7_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_8_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_9_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_10_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_11_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_12_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_13_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_14_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_15_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_16_out",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_size_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_fullness_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_read_ptr_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_write_ptr_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_max_fullness_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_0_byte_ctr_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_size_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_fullness_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_read_ptr_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_write_ptr_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_max_fullness_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_1_byte_ctr_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_size_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_fullness_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_read_ptr_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_write_ptr_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_max_fullness_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_2_byte_ctr_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_size_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_fullness_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_read_ptr_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_write_ptr_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_max_fullness_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "fifo_3_byte_ctr_out",
+        "signed": false,
+        "width": 32
+      }
+    ]
+  },
+  "obligations": [
+    "full-frame Decode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "full-frame Encode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "human review of bounded SSP count, bitstream window, and FIFO writes before promotion"
+  ],
+  "origin": "tool_discovered_decoder_runtime_transition",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "schema_version": 2,
+  "selection": {
+    "basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "callee_names": [
+      "fifo_put_bits",
+      "getbits"
+    ],
+    "decode_execution_count": 131328,
+    "shape_evidence": {
+      "complete_for_visible_literal_calls": false,
+      "evidence": "bounded multi-lane refill composed from verified transition callees",
+      "maximum": null,
+      "values": []
+    }
+  },
+  "semantics": {
+    "bindings": {
+      "buffer_parameter": "buf",
+      "config_parameter": "dsc_cfg",
+      "fifo_lanes": [
+        {
+          "byte_ctr_output_port": "fifo_0_byte_ctr_out",
+          "byte_ctr_port": "fifo_0_byte_ctr",
+          "data_input_ports": [
+            "fifo_0_byte_0",
+            "fifo_0_byte_1",
+            "fifo_0_byte_2",
+            "fifo_0_byte_3",
+            "fifo_0_byte_4",
+            "fifo_0_byte_5",
+            "fifo_0_byte_6",
+            "fifo_0_byte_7",
+            "fifo_0_byte_8",
+            "fifo_0_byte_9",
+            "fifo_0_byte_10",
+            "fifo_0_byte_11",
+            "fifo_0_byte_12",
+            "fifo_0_byte_13",
+            "fifo_0_byte_14",
+            "fifo_0_byte_15",
+            "fifo_0_byte_16"
+          ],
+          "data_output_ports": [
+            "fifo_0_byte_0_out",
+            "fifo_0_byte_1_out",
+            "fifo_0_byte_2_out",
+            "fifo_0_byte_3_out",
+            "fifo_0_byte_4_out",
+            "fifo_0_byte_5_out",
+            "fifo_0_byte_6_out",
+            "fifo_0_byte_7_out",
+            "fifo_0_byte_8_out",
+            "fifo_0_byte_9_out",
+            "fifo_0_byte_10_out",
+            "fifo_0_byte_11_out",
+            "fifo_0_byte_12_out",
+            "fifo_0_byte_13_out",
+            "fifo_0_byte_14_out",
+            "fifo_0_byte_15_out",
+            "fifo_0_byte_16_out"
+          ],
+          "fullness_output_port": "fifo_0_fullness_out",
+          "fullness_port": "fifo_0_fullness",
+          "max_fullness_output_port": "fifo_0_max_fullness_out",
+          "max_fullness_port": "fifo_0_max_fullness",
+          "read_ptr_output_port": "fifo_0_read_ptr_out",
+          "read_ptr_port": "fifo_0_read_ptr",
+          "size_output_port": "fifo_0_size_out",
+          "size_port": "fifo_0_size",
+          "write_ptr_output_port": "fifo_0_write_ptr_out",
+          "write_ptr_port": "fifo_0_write_ptr"
+        },
+        {
+          "byte_ctr_output_port": "fifo_1_byte_ctr_out",
+          "byte_ctr_port": "fifo_1_byte_ctr",
+          "data_input_ports": [
+            "fifo_1_byte_0",
+            "fifo_1_byte_1",
+            "fifo_1_byte_2",
+            "fifo_1_byte_3",
+            "fifo_1_byte_4",
+            "fifo_1_byte_5",
+            "fifo_1_byte_6",
+            "fifo_1_byte_7",
+            "fifo_1_byte_8",
+            "fifo_1_byte_9",
+            "fifo_1_byte_10",
+            "fifo_1_byte_11",
+            "fifo_1_byte_12",
+            "fifo_1_byte_13",
+            "fifo_1_byte_14",
+            "fifo_1_byte_15",
+            "fifo_1_byte_16"
+          ],
+          "data_output_ports": [
+            "fifo_1_byte_0_out",
+            "fifo_1_byte_1_out",
+            "fifo_1_byte_2_out",
+            "fifo_1_byte_3_out",
+            "fifo_1_byte_4_out",
+            "fifo_1_byte_5_out",
+            "fifo_1_byte_6_out",
+            "fifo_1_byte_7_out",
+            "fifo_1_byte_8_out",
+            "fifo_1_byte_9_out",
+            "fifo_1_byte_10_out",
+            "fifo_1_byte_11_out",
+            "fifo_1_byte_12_out",
+            "fifo_1_byte_13_out",
+            "fifo_1_byte_14_out",
+            "fifo_1_byte_15_out",
+            "fifo_1_byte_16_out"
+          ],
+          "fullness_output_port": "fifo_1_fullness_out",
+          "fullness_port": "fifo_1_fullness",
+          "max_fullness_output_port": "fifo_1_max_fullness_out",
+          "max_fullness_port": "fifo_1_max_fullness",
+          "read_ptr_output_port": "fifo_1_read_ptr_out",
+          "read_ptr_port": "fifo_1_read_ptr",
+          "size_output_port": "fifo_1_size_out",
+          "size_port": "fifo_1_size",
+          "write_ptr_output_port": "fifo_1_write_ptr_out",
+          "write_ptr_port": "fifo_1_write_ptr"
+        },
+        {
+          "byte_ctr_output_port": "fifo_2_byte_ctr_out",
+          "byte_ctr_port": "fifo_2_byte_ctr",
+          "data_input_ports": [
+            "fifo_2_byte_0",
+            "fifo_2_byte_1",
+            "fifo_2_byte_2",
+            "fifo_2_byte_3",
+            "fifo_2_byte_4",
+            "fifo_2_byte_5",
+            "fifo_2_byte_6",
+            "fifo_2_byte_7",
+            "fifo_2_byte_8",
+            "fifo_2_byte_9",
+            "fifo_2_byte_10",
+            "fifo_2_byte_11",
+            "fifo_2_byte_12",
+            "fifo_2_byte_13",
+            "fifo_2_byte_14",
+            "fifo_2_byte_15",
+            "fifo_2_byte_16"
+          ],
+          "data_output_ports": [
+            "fifo_2_byte_0_out",
+            "fifo_2_byte_1_out",
+            "fifo_2_byte_2_out",
+            "fifo_2_byte_3_out",
+            "fifo_2_byte_4_out",
+            "fifo_2_byte_5_out",
+            "fifo_2_byte_6_out",
+            "fifo_2_byte_7_out",
+            "fifo_2_byte_8_out",
+            "fifo_2_byte_9_out",
+            "fifo_2_byte_10_out",
+            "fifo_2_byte_11_out",
+            "fifo_2_byte_12_out",
+            "fifo_2_byte_13_out",
+            "fifo_2_byte_14_out",
+            "fifo_2_byte_15_out",
+            "fifo_2_byte_16_out"
+          ],
+          "fullness_output_port": "fifo_2_fullness_out",
+          "fullness_port": "fifo_2_fullness",
+          "max_fullness_output_port": "fifo_2_max_fullness_out",
+          "max_fullness_port": "fifo_2_max_fullness",
+          "read_ptr_output_port": "fifo_2_read_ptr_out",
+          "read_ptr_port": "fifo_2_read_ptr",
+          "size_output_port": "fifo_2_size_out",
+          "size_port": "fifo_2_size",
+          "write_ptr_output_port": "fifo_2_write_ptr_out",
+          "write_ptr_port": "fifo_2_write_ptr"
+        },
+        {
+          "byte_ctr_output_port": "fifo_3_byte_ctr_out",
+          "byte_ctr_port": "fifo_3_byte_ctr",
+          "data_input_ports": [
+            "fifo_3_byte_0",
+            "fifo_3_byte_1",
+            "fifo_3_byte_2",
+            "fifo_3_byte_3",
+            "fifo_3_byte_4",
+            "fifo_3_byte_5",
+            "fifo_3_byte_6",
+            "fifo_3_byte_7",
+            "fifo_3_byte_8",
+            "fifo_3_byte_9",
+            "fifo_3_byte_10",
+            "fifo_3_byte_11",
+            "fifo_3_byte_12",
+            "fifo_3_byte_13",
+            "fifo_3_byte_14",
+            "fifo_3_byte_15",
+            "fifo_3_byte_16"
+          ],
+          "data_output_ports": [
+            "fifo_3_byte_0_out",
+            "fifo_3_byte_1_out",
+            "fifo_3_byte_2_out",
+            "fifo_3_byte_3_out",
+            "fifo_3_byte_4_out",
+            "fifo_3_byte_5_out",
+            "fifo_3_byte_6_out",
+            "fifo_3_byte_7_out",
+            "fifo_3_byte_8_out",
+            "fifo_3_byte_9_out",
+            "fifo_3_byte_10_out",
+            "fifo_3_byte_11_out",
+            "fifo_3_byte_12_out",
+            "fifo_3_byte_13_out",
+            "fifo_3_byte_14_out",
+            "fifo_3_byte_15_out",
+            "fifo_3_byte_16_out"
+          ],
+          "fullness_output_port": "fifo_3_fullness_out",
+          "fullness_port": "fifo_3_fullness",
+          "max_fullness_output_port": "fifo_3_max_fullness_out",
+          "max_fullness_port": "fifo_3_max_fullness",
+          "read_ptr_output_port": "fifo_3_read_ptr_out",
+          "read_ptr_port": "fifo_3_read_ptr",
+          "size_output_port": "fifo_3_size_out",
+          "size_port": "fifo_3_size",
+          "write_ptr_output_port": "fifo_3_write_ptr_out",
+          "write_ptr_port": "fifo_3_write_ptr"
+        }
+      ],
+      "max_se_size_field": "maxSeSize",
+      "max_se_size_ports": [
+        "max_se_size_0",
+        "max_se_size_1",
+        "max_se_size_2",
+        "max_se_size_3"
+      ],
+      "mux_word_size_field": "mux_word_size",
+      "mux_word_size_port": "mux_word_size",
+      "num_ssps_field": "numSsps",
+      "num_ssps_port": "num_ssps",
+      "post_mux_num_bits_field": "postMuxNumBits",
+      "post_mux_num_bits_output_port": "post_mux_num_bits_out",
+      "post_mux_num_bits_port": "post_mux_num_bits",
+      "shifter_field": "shifter",
+      "state_parameter": "dsc_state",
+      "stream_byte_ports": [
+        "stream_byte_0",
+        "stream_byte_1",
+        "stream_byte_2",
+        "stream_byte_3",
+        "stream_byte_4",
+        "stream_byte_5",
+        "stream_byte_6",
+        "stream_byte_7",
+        "stream_byte_8",
+        "stream_byte_9",
+        "stream_byte_10",
+        "stream_byte_11",
+        "stream_byte_12",
+        "stream_byte_13",
+        "stream_byte_14",
+        "stream_byte_15",
+        "stream_byte_16",
+        "stream_byte_17",
+        "stream_byte_18",
+        "stream_byte_19",
+        "stream_byte_20",
+        "stream_byte_21",
+        "stream_byte_22",
+        "stream_byte_23",
+        "stream_byte_24",
+        "stream_byte_25",
+        "stream_byte_26",
+        "stream_byte_27",
+        "stream_byte_28",
+        "stream_byte_29",
+        "stream_byte_30",
+        "stream_byte_31",
+        "stream_byte_32"
+      ]
+    },
+    "constants": {
+      "max_bits_per_component": 16,
+      "max_fifo_bytes": 17,
+      "max_mux_bytes": 8,
+      "max_ssps": 4,
+      "mux_word_values": [
+        48,
+        64
+      ],
+      "stream_window_bytes": 33
+    },
+    "kind": "bounded_mux_refill_transition",
+    "legal_domain": {
+      "fifo_free_space_at_least_mux_word": true,
+      "fifo_size_bytes_at_most": 17,
+      "fifo_size_positive_multiple_of_8": true,
+      "fifo_write_pointer_may_be_unaligned": true,
+      "input_window_bytes": 33,
+      "mux_word_size": [
+        48,
+        64
+      ],
+      "num_ssps": [
+        0,
+        4
+      ]
+    },
+    "state_transition": "for each active underfilled SSP, consume one mux word from the explicit bitstream cursor and append its bytes to that lane FIFO"
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

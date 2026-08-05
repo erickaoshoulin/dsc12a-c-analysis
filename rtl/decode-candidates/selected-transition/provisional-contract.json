@@ -1,0 +1,161 @@
+{
+  "contract_id": "getbits_decode_transition",
+  "function": {
+    "clang_usr": "c:@F@getbits",
+    "name": "getbits",
+    "parameters": [
+      {
+        "name": "size",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "buf",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "unsigned char *"
+      },
+      {
+        "name": "bit_count",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "int *"
+      },
+      {
+        "name": "sign_extend",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      }
+    ],
+    "return_type": "int",
+    "source_body_sha256": "63a8733c21786d764d94ce0fb947ab0c81ae8ddde536377cf3a898a25a36b688",
+    "source_file": "dsc_utils.c",
+    "source_span": {
+      "end_line": 138,
+      "start_line": 109
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "name": "size",
+        "signed": false,
+        "width": 5
+      },
+      {
+        "direction": "input",
+        "name": "byte_0",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "byte_1",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "byte_2",
+        "signed": false,
+        "width": 8
+      },
+      {
+        "direction": "input",
+        "name": "bit_count",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "sign_extend",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "return_value",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "bit_count_out",
+        "signed": false,
+        "width": 32
+      }
+    ]
+  },
+  "obligations": [
+    "full-frame Decode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "full-frame Encode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "human review of explicit cursor state contract before promotion"
+  ],
+  "origin": "tool_discovered_decoder_runtime_transition",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "schema_version": 2,
+  "selection": {
+    "basis": "decoder runtime execution + missing stable RTL + scalar return + one read-only byte buffer + one write-through integer cursor + no callees",
+    "decode_execution_count": 586716,
+    "literal_size_bound": {
+      "complete_for_visible_literal_calls": true,
+      "evidence": "literal first arguments at every directly visible C callsite",
+      "maximum": 16,
+      "values": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        8,
+        10,
+        11,
+        12,
+        16
+      ]
+    }
+  },
+  "semantics": {
+    "bindings": {
+      "buffer_parameter": "buf",
+      "byte_ports": [
+        "byte_0",
+        "byte_1",
+        "byte_2"
+      ],
+      "cursor_output_port": "bit_count_out",
+      "cursor_parameter": "bit_count",
+      "cursor_port": "bit_count",
+      "return_port": "return_value",
+      "sign_extend_parameter": "sign_extend",
+      "sign_extend_port": "sign_extend",
+      "size_parameter": "size",
+      "size_port": "size"
+    },
+    "kind": "bitstream_read_transition",
+    "legal_size_values": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      8,
+      10,
+      11,
+      12,
+      16
+    ],
+    "max_bits": 16,
+    "state_transition": "return selected MSB-first bits and advance the explicit bit cursor by size",
+    "window_bytes": 3
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

@@ -1,0 +1,792 @@
+{
+  "composition": {
+    "dependencies": [
+      {
+        "composition_mode": "semantics_inlined_into_parent_fsm",
+        "contract_file": "rtl/encode-candidates/selected-bitstream-write-transition/provisional-contract.json",
+        "contract_id": "putbits_encode_transition",
+        "contract_sha256": "c0efd335edd62da9ceb5e33d6b34dd35dbca95bcd154cbf3012d5198f74a352e",
+        "function": "putbits",
+        "module": "putbits_encode_transition",
+        "module_file": "rtl/encode-candidates/selected-bitstream-write-transition/candidate_01.sv",
+        "module_sha256": "0aeb9e479fc12bcbf28b6d117106669e5129f04bc548e2bcd4a373e4f3f377f4",
+        "role": "bitstream_write_transition"
+      },
+      {
+        "composition_mode": "semantics_inlined_into_parent_fsm",
+        "contract_file": "rtl/decode-candidates/selected-fifo-transition/provisional-contract.json",
+        "contract_id": "fifo_get_bits_decode_transition",
+        "contract_sha256": "51dfb43262052647eaf08bb1a41ee7aeaed7a7578afccb6756390f97b8c62bb7",
+        "function": "fifo_get_bits",
+        "module": "fifo_get_bits_decode_transition",
+        "module_file": "rtl/decode-candidates/selected-fifo-transition/candidate_01.sv",
+        "module_sha256": "640bca2be6b6475647e4d6540d81de21f7370b37d26d95cb95e18c69354a3432",
+        "role": "fifo_read_transition"
+      },
+      {
+        "composition_mode": "semantics_inlined_into_parent_fsm",
+        "contract_file": "rtl/decode-candidates/selected-fifo-write-transition/provisional-contract.json",
+        "contract_id": "fifo_put_bits_decode_transition",
+        "contract_sha256": "b0bbe172207984f831920abba4df0e5e20e3ede82846cfbc6d835e18e5f272c6",
+        "function": "fifo_put_bits",
+        "module": "fifo_put_bits_decode_transition",
+        "module_file": "rtl/decode-candidates/selected-fifo-write-transition/candidate_01.sv",
+        "module_sha256": "1f3e8a1942e9dfebd2cb90c6b047c9b5e4ea0d7038b1bc422faab2fa34a90196",
+        "role": "fifo_write_transition"
+      }
+    ]
+  },
+  "contract_id": "process_group_encode_fsm_v1",
+  "dependencies": {
+    "bitstream_write_transition": {
+      "clang_usr": "c:@F@putbits",
+      "contract_id": "putbits_encode_transition",
+      "contract_path": "rtl/encode-candidates/selected-bitstream-write-transition/provisional-contract.json",
+      "contract_sha256": "c0efd335edd62da9ceb5e33d6b34dd35dbca95bcd154cbf3012d5198f74a352e",
+      "function_name": "putbits",
+      "kind": "bitstream_write_transition",
+      "module": "putbits_encode_transition",
+      "module_path": "rtl/encode-candidates/selected-bitstream-write-transition/candidate_01.sv",
+      "module_sha256": "0aeb9e479fc12bcbf28b6d117106669e5129f04bc548e2bcd4a373e4f3f377f4",
+      "source_body_sha256": "4a8b1ea3dad69b2ecc7ea373b037fb3515d4d2485c324c8ae76f224ff9b67ad6",
+      "source_file": "dsc_utils.c",
+      "source_file_sha256": "8aadcb1ecff2586892f385255a73fea367eec9afb6e14608d1010c08b7aca14e",
+      "source_span": {
+        "end_line": 101,
+        "start_line": 81
+      }
+    },
+    "fifo_read_transition": {
+      "clang_usr": "c:@F@fifo_get_bits",
+      "contract_id": "fifo_get_bits_decode_transition",
+      "contract_path": "rtl/decode-candidates/selected-fifo-transition/provisional-contract.json",
+      "contract_sha256": "51dfb43262052647eaf08bb1a41ee7aeaed7a7578afccb6756390f97b8c62bb7",
+      "function_name": "fifo_get_bits",
+      "kind": "fifo_read_transition",
+      "module": "fifo_get_bits_decode_transition",
+      "module_path": "rtl/decode-candidates/selected-fifo-transition/candidate_01.sv",
+      "module_sha256": "640bca2be6b6475647e4d6540d81de21f7370b37d26d95cb95e18c69354a3432",
+      "source_body_sha256": "1a4bee3492d25ed63f4b17d10f20e630cb9ada3eac067e1970c9a3f10fae7e29",
+      "source_file": "fifo.c",
+      "source_file_sha256": "6a886eaffd01b6651703da54bbb90e9cf77d6503131ab419644e0ad3e50a3e6e",
+      "source_span": {
+        "end_line": 108,
+        "start_line": 77
+      }
+    },
+    "fifo_write_transition": {
+      "clang_usr": "c:@F@fifo_put_bits",
+      "contract_id": "fifo_put_bits_decode_transition",
+      "contract_path": "rtl/decode-candidates/selected-fifo-write-transition/provisional-contract.json",
+      "contract_sha256": "b0bbe172207984f831920abba4df0e5e20e3ede82846cfbc6d835e18e5f272c6",
+      "function_name": "fifo_put_bits",
+      "kind": "fifo_write_transition",
+      "module": "fifo_put_bits_decode_transition",
+      "module_path": "rtl/decode-candidates/selected-fifo-write-transition/candidate_01.sv",
+      "module_sha256": "1f3e8a1942e9dfebd2cb90c6b047c9b5e4ea0d7038b1bc422faab2fa34a90196",
+      "source_body_sha256": "175127423ef1e2b5b2c8f62dd77c08283e4594e84c693fcb93536bb9ab918e20",
+      "source_file": "fifo.c",
+      "source_file_sha256": "6a886eaffd01b6651703da54bbb90e9cf77d6503131ab419644e0ad3e50a3e6e",
+      "source_span": {
+        "end_line": 140,
+        "start_line": 115
+      }
+    }
+  },
+  "domain": {
+    "external_memory_read_handshake": "request-held-until-read-valid",
+    "external_memory_write_handshake": "request-held-until-write-ready",
+    "fifo_pointer_is_bit_address": true,
+    "fifo_size_bits_positive_multiple_of_8": true,
+    "frame_write_mask_is_read_modify_write": true,
+    "is_encoder": 1,
+    "max_se_size_bound": 68,
+    "max_ssps": 4,
+    "mux_word_size": [
+      48,
+      64
+    ],
+    "num_ssps": [
+      3,
+      4
+    ],
+    "se_size_value": [
+      0,
+      68
+    ]
+  },
+  "flags": [
+    "illegal_domain",
+    "fifo_underflow",
+    "fifo_overflow",
+    "frame_overflow",
+    "se_size_overflow"
+  ],
+  "function": {
+    "clang_usr": "c:@F@ProcessGroupEnc",
+    "name": "ProcessGroupEnc",
+    "parameters": [
+      {
+        "name": "dsc_cfg",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_cfg_t *"
+      },
+      {
+        "name": "dsc_state",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_state_t *"
+      },
+      {
+        "name": "buf",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "unsigned char *"
+      }
+    ],
+    "return_type": "void",
+    "source_body_sha256": "30b4e2cf73b2bcecf90d68143cbca203888622546f92b000193ceda40d4498fb",
+    "source_file": "multiplex.c",
+    "source_span": {
+      "end_line": 152,
+      "start_line": 116
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "name": "clk",
+        "unpacked": "",
+        "width": "1"
+      },
+      {
+        "direction": "input",
+        "name": "rst_n",
+        "unpacked": "",
+        "width": "1"
+      },
+      {
+        "direction": "input",
+        "name": "start",
+        "unpacked": "",
+        "width": "1"
+      },
+      {
+        "direction": "input",
+        "name": "is_encoder",
+        "unpacked": "",
+        "width": "1"
+      },
+      {
+        "direction": "input",
+        "name": "num_ssps",
+        "unpacked": "",
+        "width": "3"
+      },
+      {
+        "direction": "input",
+        "name": "mux_word_size",
+        "unpacked": "",
+        "width": "7"
+      },
+      {
+        "direction": "input",
+        "name": "max_se_size",
+        "unpacked": "[0:3]",
+        "width": "7"
+      },
+      {
+        "direction": "input",
+        "name": "frame_capacity_bits",
+        "unpacked": "",
+        "width": "32"
+      },
+      {
+        "direction": "output",
+        "name": "busy",
+        "unpacked": "",
+        "width": "1"
+      },
+      {
+        "direction": "output",
+        "name": "done",
+        "unpacked": "",
+        "width": "1"
+      },
+      {
+        "direction": "output",
+        "name": "illegal_domain",
+        "unpacked": "",
+        "width": "1"
+      },
+      {
+        "direction": "output",
+        "name": "fifo_underflow",
+        "unpacked": "",
+        "width": "1"
+      },
+      {
+        "direction": "output",
+        "name": "fifo_overflow",
+        "unpacked": "",
+        "width": "1"
+      },
+      {
+        "direction": "output",
+        "name": "frame_overflow",
+        "unpacked": "",
+        "width": "1"
+      },
+      {
+        "direction": "output",
+        "name": "se_size_overflow",
+        "unpacked": "",
+        "width": "1"
+      },
+      {
+        "direction": "input",
+        "name": "post_mux_num_bits_in",
+        "unpacked": "",
+        "width": "32"
+      },
+      {
+        "direction": "output",
+        "name": "post_mux_num_bits_out",
+        "unpacked": "",
+        "width": "32"
+      },
+      {
+        "direction": "input",
+        "name": "enc_balance_size_bits_in",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "output",
+        "name": "enc_balance_size_bits_out",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "input",
+        "name": "enc_balance_fullness_in",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "output",
+        "name": "enc_balance_fullness_out",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "input",
+        "name": "enc_balance_read_ptr_in",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "output",
+        "name": "enc_balance_read_ptr_out",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "input",
+        "name": "enc_balance_write_ptr_in",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "output",
+        "name": "enc_balance_write_ptr_out",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "input",
+        "name": "enc_balance_max_fullness_in",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "output",
+        "name": "enc_balance_max_fullness_out",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "input",
+        "name": "enc_balance_byte_ctr_in",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "output",
+        "name": "enc_balance_byte_ctr_out",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "output",
+        "name": "enc_balance_mem_read_req",
+        "unpacked": "",
+        "width": "4"
+      },
+      {
+        "direction": "output",
+        "name": "enc_balance_mem_read_addr",
+        "unpacked": "[0:3]",
+        "width": "16"
+      },
+      {
+        "direction": "input",
+        "name": "enc_balance_mem_read_valid",
+        "unpacked": "",
+        "width": "4"
+      },
+      {
+        "direction": "input",
+        "name": "enc_balance_mem_read_data",
+        "unpacked": "[0:3]",
+        "width": "8"
+      },
+      {
+        "direction": "output",
+        "name": "enc_balance_mem_write_req",
+        "unpacked": "",
+        "width": "4"
+      },
+      {
+        "direction": "output",
+        "name": "enc_balance_mem_write_addr",
+        "unpacked": "[0:3]",
+        "width": "16"
+      },
+      {
+        "direction": "input",
+        "name": "enc_balance_mem_write_ready",
+        "unpacked": "",
+        "width": "4"
+      },
+      {
+        "direction": "output",
+        "name": "enc_balance_mem_write_data",
+        "unpacked": "[0:3]",
+        "width": "8"
+      },
+      {
+        "direction": "output",
+        "name": "enc_balance_mem_write_bit_mask",
+        "unpacked": "[0:3]",
+        "width": "8"
+      },
+      {
+        "direction": "input",
+        "name": "shifter_size_bits_in",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "output",
+        "name": "shifter_size_bits_out",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "input",
+        "name": "shifter_fullness_in",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "output",
+        "name": "shifter_fullness_out",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "input",
+        "name": "shifter_read_ptr_in",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "output",
+        "name": "shifter_read_ptr_out",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "input",
+        "name": "shifter_write_ptr_in",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "output",
+        "name": "shifter_write_ptr_out",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "input",
+        "name": "shifter_max_fullness_in",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "output",
+        "name": "shifter_max_fullness_out",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "input",
+        "name": "shifter_byte_ctr_in",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "output",
+        "name": "shifter_byte_ctr_out",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "output",
+        "name": "shifter_mem_read_req",
+        "unpacked": "",
+        "width": "4"
+      },
+      {
+        "direction": "output",
+        "name": "shifter_mem_read_addr",
+        "unpacked": "[0:3]",
+        "width": "16"
+      },
+      {
+        "direction": "input",
+        "name": "shifter_mem_read_valid",
+        "unpacked": "",
+        "width": "4"
+      },
+      {
+        "direction": "input",
+        "name": "shifter_mem_read_data",
+        "unpacked": "[0:3]",
+        "width": "8"
+      },
+      {
+        "direction": "output",
+        "name": "shifter_mem_write_req",
+        "unpacked": "",
+        "width": "4"
+      },
+      {
+        "direction": "output",
+        "name": "shifter_mem_write_addr",
+        "unpacked": "[0:3]",
+        "width": "16"
+      },
+      {
+        "direction": "input",
+        "name": "shifter_mem_write_ready",
+        "unpacked": "",
+        "width": "4"
+      },
+      {
+        "direction": "output",
+        "name": "shifter_mem_write_data",
+        "unpacked": "[0:3]",
+        "width": "8"
+      },
+      {
+        "direction": "output",
+        "name": "shifter_mem_write_bit_mask",
+        "unpacked": "[0:3]",
+        "width": "8"
+      },
+      {
+        "direction": "input",
+        "name": "se_size_size_bits_in",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "output",
+        "name": "se_size_size_bits_out",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "input",
+        "name": "se_size_fullness_in",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "output",
+        "name": "se_size_fullness_out",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "input",
+        "name": "se_size_read_ptr_in",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "output",
+        "name": "se_size_read_ptr_out",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "input",
+        "name": "se_size_write_ptr_in",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "output",
+        "name": "se_size_write_ptr_out",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "input",
+        "name": "se_size_max_fullness_in",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "output",
+        "name": "se_size_max_fullness_out",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "input",
+        "name": "se_size_byte_ctr_in",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "output",
+        "name": "se_size_byte_ctr_out",
+        "unpacked": "[0:3]",
+        "width": "32"
+      },
+      {
+        "direction": "output",
+        "name": "se_size_mem_read_req",
+        "unpacked": "",
+        "width": "4"
+      },
+      {
+        "direction": "output",
+        "name": "se_size_mem_read_addr",
+        "unpacked": "[0:3]",
+        "width": "16"
+      },
+      {
+        "direction": "input",
+        "name": "se_size_mem_read_valid",
+        "unpacked": "",
+        "width": "4"
+      },
+      {
+        "direction": "input",
+        "name": "se_size_mem_read_data",
+        "unpacked": "[0:3]",
+        "width": "8"
+      },
+      {
+        "direction": "output",
+        "name": "se_size_mem_write_req",
+        "unpacked": "",
+        "width": "4"
+      },
+      {
+        "direction": "output",
+        "name": "se_size_mem_write_addr",
+        "unpacked": "[0:3]",
+        "width": "16"
+      },
+      {
+        "direction": "input",
+        "name": "se_size_mem_write_ready",
+        "unpacked": "",
+        "width": "4"
+      },
+      {
+        "direction": "output",
+        "name": "se_size_mem_write_data",
+        "unpacked": "[0:3]",
+        "width": "8"
+      },
+      {
+        "direction": "output",
+        "name": "se_size_mem_write_bit_mask",
+        "unpacked": "[0:3]",
+        "width": "8"
+      },
+      {
+        "direction": "output",
+        "name": "frame_mem_write_req",
+        "unpacked": "",
+        "width": "1"
+      },
+      {
+        "direction": "output",
+        "name": "frame_mem_write_addr",
+        "unpacked": "",
+        "width": "32"
+      },
+      {
+        "direction": "input",
+        "name": "frame_mem_write_ready",
+        "unpacked": "",
+        "width": "1"
+      },
+      {
+        "direction": "output",
+        "name": "frame_mem_write_data",
+        "unpacked": "",
+        "width": "8"
+      },
+      {
+        "direction": "output",
+        "name": "frame_mem_write_bit_mask",
+        "unpacked": "",
+        "width": "8"
+      }
+    ]
+  },
+  "origin": "tool_discovered_encode_coverage_structural_fsm",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "rtl": {
+    "candidate_sha256": "5aeacbb6c1e46b5ebbe2767f523bf9f7ed91053dbad2d321e442a49828c84e6e",
+    "module": "process_group_encode_fsm"
+  },
+  "schema_version": 1,
+  "selection": {
+    "basis": [
+      "Encode-phase positive execution coverage",
+      "config/state/frame pointer signature",
+      "outer SSP loop and inner mux-byte loop facts",
+      "encoder branch and FIFO/bitstream callee roles",
+      "source-order memory-effect markers"
+    ],
+    "callee_names": [
+      "fifo_get_bits",
+      "fifo_put_bits",
+      "putbits"
+    ],
+    "execution_count": 131328,
+    "structural_evidence": [
+      "void-return",
+      "config-state-frame-pointer-shape",
+      "two-nested-loop-facts",
+      "ssp-loop-bound",
+      "mux-byte-loop-bound",
+      "two-loop-count",
+      "field:encBalanceFifo",
+      "field:isEncoder",
+      "field:maxSeSize",
+      "field:mux_word_size",
+      "field:numSsps",
+      "field:postMuxNumBits",
+      "field:seSizeFifo",
+      "field:shifter",
+      "callee-role:fifo_read",
+      "callee-role:fifo_write",
+      "callee-role:bitstream_write",
+      "three-pinned-callee-roles",
+      "source-state-effects",
+      "source-call-order-markers",
+      "encoder-branch"
+    ],
+    "structural_score": 91
+  },
+  "semantics": {
+    "bindings": {
+      "buffer_parameter": "buf",
+      "config_parameter": "dsc_cfg",
+      "fifo_prefixes": [
+        "enc_balance",
+        "shifter",
+        "se_size"
+      ],
+      "frame_prefix": "frame",
+      "post_mux_num_bits_input": "post_mux_num_bits_in",
+      "post_mux_num_bits_output": "post_mux_num_bits_out",
+      "state_parameter": "dsc_state"
+    },
+    "constants": {
+      "fifo_address_width": 16,
+      "frame_address_width": 32,
+      "max_se_size": 68,
+      "max_ssps": 4,
+      "min_ssps": 3,
+      "mux_word_sizes": [
+        48,
+        64
+      ]
+    },
+    "kind": "bounded_process_group_encode_transition",
+    "legal_domain": {
+      "external_memory_read_handshake": "request-held-until-read-valid",
+      "external_memory_write_handshake": "request-held-until-write-ready",
+      "fifo_pointer_is_bit_address": true,
+      "fifo_size_bits_positive_multiple_of_8": true,
+      "frame_write_mask_is_read_modify_write": true,
+      "is_encoder": 1,
+      "max_se_size_bound": 68,
+      "max_ssps": 4,
+      "mux_word_size": [
+        48,
+        64
+      ],
+      "num_ssps": [
+        3,
+        4
+      ],
+      "se_size_value": [
+        0,
+        68
+      ]
+    },
+    "state_transition": "bounded source-ordered encoder mux/FIFO/frame FSM with explicit external memory handshakes"
+  },
+  "source_order": [
+    "for each active SSP in increasing index",
+    "capture refill from shifter fullness once per SSP",
+    "for each mux byte in increasing index",
+    "read encBalanceFifo bits before frame write",
+    "write one 8-bit mux byte to frame before shifter FIFO write",
+    "write the same mux byte to shifter FIFO",
+    "read one 8-bit syntax-element size from seSizeFifo",
+    "discard exactly that many bits from shifter FIFO"
+  ],
+  "state_outputs": {
+    "fifo_scalar_fields": [
+      "size_bits",
+      "fullness",
+      "read_ptr",
+      "write_ptr",
+      "max_fullness",
+      "byte_ctr"
+    ],
+    "inactive_ssp_state_passthrough": true,
+    "post_mux_num_bits": true
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

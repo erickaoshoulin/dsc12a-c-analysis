@@ -1,0 +1,2459 @@
+{
+  "contract_id": "updatehistoryelement_decode_transition",
+  "dependencies": [
+    {
+      "contract_file": "rtl/decode-candidates/selected-sampled-lookup-transition/provisional-contract.json",
+      "contract_id": "historylookup_decode_transition",
+      "contract_sha256": "7d629d8b2f37a025a4d2693a4791f63fa120106bcbf92407c9ca8d07a17b7231",
+      "function": "HistoryLookup",
+      "module": "historylookup_decode_transition",
+      "module_file": "rtl/decode-candidates/selected-sampled-lookup-transition/candidate_01.sv",
+      "module_sha256": "247297547a72ffd176caea2bf7c90523c9ab5e4386a6cd912eea4bf128ed06d5",
+      "role": "history_lookup_branch_guard"
+    }
+  ],
+  "function": {
+    "clang_usr": "c:@F@UpdateHistoryElement",
+    "name": "UpdateHistoryElement",
+    "parameters": [
+      {
+        "name": "dsc_cfg",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_cfg_t *"
+      },
+      {
+        "name": "dsc_state",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_state_t *"
+      },
+      {
+        "name": "recon",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "unsigned int *"
+      }
+    ],
+    "return_type": "void",
+    "source_body_sha256": "962bc40cca0a014cc165a0d365c335bf8a574a4dbc9be2bd978c19d9107a1d4d",
+    "source_file": "dsc_codec.c",
+    "source_span": {
+      "end_line": 726,
+      "start_line": 674
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "name": "cfg_native_420",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_hpos",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_vpos",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_num_components",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_is_encoder",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_ich_selected",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_prev_ich_selected",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "recon_0",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "recon_1",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "recon_2",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "recon_3",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_13",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_14",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_15",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_16",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_17",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_18",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_19",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_20",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_21",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_22",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_23",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_24",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_25",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_26",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_27",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_28",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_29",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_30",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_valid_31",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_0",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_1",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_2",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_3",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_4",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_5",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_6",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_7",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_8",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_9",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_10",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_11",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_12",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_13",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_14",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_15",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_16",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_17",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_18",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_19",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_20",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_21",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_22",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_23",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_24",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_25",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_26",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_27",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_28",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_29",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_30",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_0_31",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_0",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_1",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_2",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_3",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_4",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_5",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_6",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_7",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_8",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_9",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_10",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_11",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_12",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_13",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_14",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_15",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_16",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_17",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_18",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_19",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_20",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_21",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_22",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_23",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_24",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_25",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_26",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_27",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_28",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_29",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_30",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_1_31",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_0",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_1",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_2",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_3",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_4",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_5",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_6",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_7",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_8",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_9",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_10",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_11",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_12",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_13",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_14",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_15",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_16",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_17",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_18",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_19",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_20",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_21",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_22",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_23",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_24",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_25",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_26",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_27",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_28",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_29",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_30",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_2_31",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_0",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_1",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_2",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_3",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_4",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_5",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_6",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_7",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_8",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_9",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_10",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_11",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_12",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_13",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_14",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_15",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_16",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_17",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_18",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_19",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_20",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_21",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_22",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_23",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_24",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_25",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_26",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_27",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_28",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_29",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_30",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "history_pixel_3_31",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_4_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_5_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_6_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_7_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_8_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_9_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_10_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_11_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_12_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_13_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_14_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_15_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_16_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_17_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_18_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_19_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_20_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_21_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_22_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_23_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_24_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_25_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_26_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_27_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_28_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_29_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_30_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_valid_31_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_0_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_1_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_2_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_3_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_4_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_5_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_6_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_7_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_8_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_9_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_10_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_11_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_12_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_13_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_14_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_15_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_16_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_17_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_18_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_19_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_20_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_21_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_22_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_23_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_24_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_25_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_26_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_27_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_28_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_29_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_30_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_0_31_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_0_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_1_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_2_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_3_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_4_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_5_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_6_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_7_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_8_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_9_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_10_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_11_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_12_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_13_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_14_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_15_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_16_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_17_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_18_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_19_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_20_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_21_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_22_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_23_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_24_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_25_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_26_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_27_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_28_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_29_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_30_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_1_31_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_0_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_1_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_2_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_3_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_4_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_5_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_6_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_7_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_8_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_9_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_10_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_11_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_12_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_13_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_14_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_15_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_16_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_17_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_18_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_19_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_20_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_21_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_22_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_23_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_24_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_25_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_26_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_27_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_28_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_29_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_30_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_2_31_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_0_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_1_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_2_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_3_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_4_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_5_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_6_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_7_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_8_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_9_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_10_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_11_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_12_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_13_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_14_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_15_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_16_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_17_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_18_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_19_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_20_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_21_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_22_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_23_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_24_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_25_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_26_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_27_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_28_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_29_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_30_out",
+        "signed": false,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "history_pixel_3_31_out",
+        "signed": false,
+        "width": 32
+      }
+    ]
+  },
+  "obligations": [
+    "full-frame Decode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "full-frame Encode C_ONLY/SHADOW/RTL_RETURN comparison",
+    "human review of lookup-branch reduction, location priority, and complete history image before promotion"
+  ],
+  "origin": "tool_discovered_decoder_runtime_transition",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "schema_version": 2,
+  "selection": {
+    "basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "decode_execution_count": 386208,
+    "shape_evidence": {
+      "callee": "HistoryLookup",
+      "callee_candidate_file": "/private/tmp/dsc12a-regression-dashboard/rtl/decode-candidates/selected-sampled-lookup-transition/candidate_01.sv",
+      "callee_candidate_sha256": "247297547a72ffd176caea2bf7c90523c9ab5e4386a6cd912eea4bf128ed06d5",
+      "callee_contract_file": "/private/tmp/dsc12a-regression-dashboard/rtl/decode-candidates/selected-sampled-lookup-transition/provisional-contract.json",
+      "callee_contract_id": "historylookup_decode_transition",
+      "callee_contract_sha256": "7d629d8b2f37a025a4d2693a4791f63fa120106bcbf92407c9ca8d07a17b7231",
+      "complete_for_visible_literal_calls": false,
+      "evidence": "bounded MRU history update composed from a verified sampled lookup transition",
+      "maximum": null,
+      "values": []
+    }
+  },
+  "semantics": {
+    "bindings": {
+      "config_parameter": "dsc_cfg",
+      "history_field": "history",
+      "history_pixels_field": "pixels",
+      "history_valid_field": "valid",
+      "native_420_field": "native_420",
+      "pixel_input_ports": [
+        [
+          "history_pixel_0_0",
+          "history_pixel_0_1",
+          "history_pixel_0_2",
+          "history_pixel_0_3",
+          "history_pixel_0_4",
+          "history_pixel_0_5",
+          "history_pixel_0_6",
+          "history_pixel_0_7",
+          "history_pixel_0_8",
+          "history_pixel_0_9",
+          "history_pixel_0_10",
+          "history_pixel_0_11",
+          "history_pixel_0_12",
+          "history_pixel_0_13",
+          "history_pixel_0_14",
+          "history_pixel_0_15",
+          "history_pixel_0_16",
+          "history_pixel_0_17",
+          "history_pixel_0_18",
+          "history_pixel_0_19",
+          "history_pixel_0_20",
+          "history_pixel_0_21",
+          "history_pixel_0_22",
+          "history_pixel_0_23",
+          "history_pixel_0_24",
+          "history_pixel_0_25",
+          "history_pixel_0_26",
+          "history_pixel_0_27",
+          "history_pixel_0_28",
+          "history_pixel_0_29",
+          "history_pixel_0_30",
+          "history_pixel_0_31"
+        ],
+        [
+          "history_pixel_1_0",
+          "history_pixel_1_1",
+          "history_pixel_1_2",
+          "history_pixel_1_3",
+          "history_pixel_1_4",
+          "history_pixel_1_5",
+          "history_pixel_1_6",
+          "history_pixel_1_7",
+          "history_pixel_1_8",
+          "history_pixel_1_9",
+          "history_pixel_1_10",
+          "history_pixel_1_11",
+          "history_pixel_1_12",
+          "history_pixel_1_13",
+          "history_pixel_1_14",
+          "history_pixel_1_15",
+          "history_pixel_1_16",
+          "history_pixel_1_17",
+          "history_pixel_1_18",
+          "history_pixel_1_19",
+          "history_pixel_1_20",
+          "history_pixel_1_21",
+          "history_pixel_1_22",
+          "history_pixel_1_23",
+          "history_pixel_1_24",
+          "history_pixel_1_25",
+          "history_pixel_1_26",
+          "history_pixel_1_27",
+          "history_pixel_1_28",
+          "history_pixel_1_29",
+          "history_pixel_1_30",
+          "history_pixel_1_31"
+        ],
+        [
+          "history_pixel_2_0",
+          "history_pixel_2_1",
+          "history_pixel_2_2",
+          "history_pixel_2_3",
+          "history_pixel_2_4",
+          "history_pixel_2_5",
+          "history_pixel_2_6",
+          "history_pixel_2_7",
+          "history_pixel_2_8",
+          "history_pixel_2_9",
+          "history_pixel_2_10",
+          "history_pixel_2_11",
+          "history_pixel_2_12",
+          "history_pixel_2_13",
+          "history_pixel_2_14",
+          "history_pixel_2_15",
+          "history_pixel_2_16",
+          "history_pixel_2_17",
+          "history_pixel_2_18",
+          "history_pixel_2_19",
+          "history_pixel_2_20",
+          "history_pixel_2_21",
+          "history_pixel_2_22",
+          "history_pixel_2_23",
+          "history_pixel_2_24",
+          "history_pixel_2_25",
+          "history_pixel_2_26",
+          "history_pixel_2_27",
+          "history_pixel_2_28",
+          "history_pixel_2_29",
+          "history_pixel_2_30",
+          "history_pixel_2_31"
+        ],
+        [
+          "history_pixel_3_0",
+          "history_pixel_3_1",
+          "history_pixel_3_2",
+          "history_pixel_3_3",
+          "history_pixel_3_4",
+          "history_pixel_3_5",
+          "history_pixel_3_6",
+          "history_pixel_3_7",
+          "history_pixel_3_8",
+          "history_pixel_3_9",
+          "history_pixel_3_10",
+          "history_pixel_3_11",
+          "history_pixel_3_12",
+          "history_pixel_3_13",
+          "history_pixel_3_14",
+          "history_pixel_3_15",
+          "history_pixel_3_16",
+          "history_pixel_3_17",
+          "history_pixel_3_18",
+          "history_pixel_3_19",
+          "history_pixel_3_20",
+          "history_pixel_3_21",
+          "history_pixel_3_22",
+          "history_pixel_3_23",
+          "history_pixel_3_24",
+          "history_pixel_3_25",
+          "history_pixel_3_26",
+          "history_pixel_3_27",
+          "history_pixel_3_28",
+          "history_pixel_3_29",
+          "history_pixel_3_30",
+          "history_pixel_3_31"
+        ]
+      ],
+      "pixel_output_ports": [
+        [
+          "history_pixel_0_0_out",
+          "history_pixel_0_1_out",
+          "history_pixel_0_2_out",
+          "history_pixel_0_3_out",
+          "history_pixel_0_4_out",
+          "history_pixel_0_5_out",
+          "history_pixel_0_6_out",
+          "history_pixel_0_7_out",
+          "history_pixel_0_8_out",
+          "history_pixel_0_9_out",
+          "history_pixel_0_10_out",
+          "history_pixel_0_11_out",
+          "history_pixel_0_12_out",
+          "history_pixel_0_13_out",
+          "history_pixel_0_14_out",
+          "history_pixel_0_15_out",
+          "history_pixel_0_16_out",
+          "history_pixel_0_17_out",
+          "history_pixel_0_18_out",
+          "history_pixel_0_19_out",
+          "history_pixel_0_20_out",
+          "history_pixel_0_21_out",
+          "history_pixel_0_22_out",
+          "history_pixel_0_23_out",
+          "history_pixel_0_24_out",
+          "history_pixel_0_25_out",
+          "history_pixel_0_26_out",
+          "history_pixel_0_27_out",
+          "history_pixel_0_28_out",
+          "history_pixel_0_29_out",
+          "history_pixel_0_30_out",
+          "history_pixel_0_31_out"
+        ],
+        [
+          "history_pixel_1_0_out",
+          "history_pixel_1_1_out",
+          "history_pixel_1_2_out",
+          "history_pixel_1_3_out",
+          "history_pixel_1_4_out",
+          "history_pixel_1_5_out",
+          "history_pixel_1_6_out",
+          "history_pixel_1_7_out",
+          "history_pixel_1_8_out",
+          "history_pixel_1_9_out",
+          "history_pixel_1_10_out",
+          "history_pixel_1_11_out",
+          "history_pixel_1_12_out",
+          "history_pixel_1_13_out",
+          "history_pixel_1_14_out",
+          "history_pixel_1_15_out",
+          "history_pixel_1_16_out",
+          "history_pixel_1_17_out",
+          "history_pixel_1_18_out",
+          "history_pixel_1_19_out",
+          "history_pixel_1_20_out",
+          "history_pixel_1_21_out",
+          "history_pixel_1_22_out",
+          "history_pixel_1_23_out",
+          "history_pixel_1_24_out",
+          "history_pixel_1_25_out",
+          "history_pixel_1_26_out",
+          "history_pixel_1_27_out",
+          "history_pixel_1_28_out",
+          "history_pixel_1_29_out",
+          "history_pixel_1_30_out",
+          "history_pixel_1_31_out"
+        ],
+        [
+          "history_pixel_2_0_out",
+          "history_pixel_2_1_out",
+          "history_pixel_2_2_out",
+          "history_pixel_2_3_out",
+          "history_pixel_2_4_out",
+          "history_pixel_2_5_out",
+          "history_pixel_2_6_out",
+          "history_pixel_2_7_out",
+          "history_pixel_2_8_out",
+          "history_pixel_2_9_out",
+          "history_pixel_2_10_out",
+          "history_pixel_2_11_out",
+          "history_pixel_2_12_out",
+          "history_pixel_2_13_out",
+          "history_pixel_2_14_out",
+          "history_pixel_2_15_out",
+          "history_pixel_2_16_out",
+          "history_pixel_2_17_out",
+          "history_pixel_2_18_out",
+          "history_pixel_2_19_out",
+          "history_pixel_2_20_out",
+          "history_pixel_2_21_out",
+          "history_pixel_2_22_out",
+          "history_pixel_2_23_out",
+          "history_pixel_2_24_out",
+          "history_pixel_2_25_out",
+          "history_pixel_2_26_out",
+          "history_pixel_2_27_out",
+          "history_pixel_2_28_out",
+          "history_pixel_2_29_out",
+          "history_pixel_2_30_out",
+          "history_pixel_2_31_out"
+        ],
+        [
+          "history_pixel_3_0_out",
+          "history_pixel_3_1_out",
+          "history_pixel_3_2_out",
+          "history_pixel_3_3_out",
+          "history_pixel_3_4_out",
+          "history_pixel_3_5_out",
+          "history_pixel_3_6_out",
+          "history_pixel_3_7_out",
+          "history_pixel_3_8_out",
+          "history_pixel_3_9_out",
+          "history_pixel_3_10_out",
+          "history_pixel_3_11_out",
+          "history_pixel_3_12_out",
+          "history_pixel_3_13_out",
+          "history_pixel_3_14_out",
+          "history_pixel_3_15_out",
+          "history_pixel_3_16_out",
+          "history_pixel_3_17_out",
+          "history_pixel_3_18_out",
+          "history_pixel_3_19_out",
+          "history_pixel_3_20_out",
+          "history_pixel_3_21_out",
+          "history_pixel_3_22_out",
+          "history_pixel_3_23_out",
+          "history_pixel_3_24_out",
+          "history_pixel_3_25_out",
+          "history_pixel_3_26_out",
+          "history_pixel_3_27_out",
+          "history_pixel_3_28_out",
+          "history_pixel_3_29_out",
+          "history_pixel_3_30_out",
+          "history_pixel_3_31_out"
+        ]
+      ],
+      "recon_parameter": "recon",
+      "recon_ports": [
+        "recon_0",
+        "recon_1",
+        "recon_2",
+        "recon_3"
+      ],
+      "scalar_ports": {
+        "cfg_native_420": "cfg_native_420",
+        "hPos": "state_hpos",
+        "ichSelected": "state_ich_selected",
+        "isEncoder": "state_is_encoder",
+        "numComponents": "state_num_components",
+        "prevIchSelected": "state_prev_ich_selected",
+        "vPos": "state_vpos"
+      },
+      "state_parameter": "dsc_state",
+      "valid_input_ports": [
+        "history_valid_0",
+        "history_valid_1",
+        "history_valid_2",
+        "history_valid_3",
+        "history_valid_4",
+        "history_valid_5",
+        "history_valid_6",
+        "history_valid_7",
+        "history_valid_8",
+        "history_valid_9",
+        "history_valid_10",
+        "history_valid_11",
+        "history_valid_12",
+        "history_valid_13",
+        "history_valid_14",
+        "history_valid_15",
+        "history_valid_16",
+        "history_valid_17",
+        "history_valid_18",
+        "history_valid_19",
+        "history_valid_20",
+        "history_valid_21",
+        "history_valid_22",
+        "history_valid_23",
+        "history_valid_24",
+        "history_valid_25",
+        "history_valid_26",
+        "history_valid_27",
+        "history_valid_28",
+        "history_valid_29",
+        "history_valid_30",
+        "history_valid_31"
+      ],
+      "valid_output_ports": [
+        "history_valid_0_out",
+        "history_valid_1_out",
+        "history_valid_2_out",
+        "history_valid_3_out",
+        "history_valid_4_out",
+        "history_valid_5_out",
+        "history_valid_6_out",
+        "history_valid_7_out",
+        "history_valid_8_out",
+        "history_valid_9_out",
+        "history_valid_10_out",
+        "history_valid_11_out",
+        "history_valid_12_out",
+        "history_valid_13_out",
+        "history_valid_14_out",
+        "history_valid_15_out",
+        "history_valid_16_out",
+        "history_valid_17_out",
+        "history_valid_18_out",
+        "history_valid_19_out",
+        "history_valid_20_out",
+        "history_valid_21_out",
+        "history_valid_22_out",
+        "history_valid_23_out",
+        "history_valid_24_out",
+        "history_valid_25_out",
+        "history_valid_26_out",
+        "history_valid_27_out",
+        "history_valid_28_out",
+        "history_valid_29_out",
+        "history_valid_30_out",
+        "history_valid_31_out"
+      ]
+    },
+    "composition_reduction": "the verified lookup dependency can only select history memory: first-line updates set first_line_flag, while non-first-line search indices are strictly below ICH_SIZE-ICH_PIXELS_ABOVE",
+    "constants": {
+      "component_count": 4,
+      "ich_bits": 5,
+      "ich_entries": 32,
+      "ich_pixels_above": 7,
+      "reserved_nonfirst": 25
+    },
+    "kind": "bounded_history_update_transition",
+    "legal_domain": {
+      "first_line_reserved_entries": 32,
+      "history_storage_entries": 32,
+      "history_valid_values": [
+        0,
+        1
+      ],
+      "inactive_component_planes_tied_zero_and_not_dereferenced": true,
+      "nonfirst_line_reserved_entries": 25,
+      "num_components": [
+        3,
+        4
+      ],
+      "vpos_nonnegative": true
+    },
+    "state_transition": "find the first empty or selected matching entry, shift active component histories toward LRU, insert recon at MRU, and emit the complete 4x32 pixel plus 32-valid-bit memory image"
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

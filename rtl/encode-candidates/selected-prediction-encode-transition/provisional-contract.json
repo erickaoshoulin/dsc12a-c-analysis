@@ -1,0 +1,2042 @@
+{
+  "contract_id": "predictionloop_encode_transition",
+  "dependencies": [
+    {
+      "clang_usr": "c:@F@MapQpToQlevel",
+      "contract_file": "library/contracts/mapqptoqlevel.json",
+      "contract_id": "mapqptoqlevel",
+      "contract_sha256": "9bbbf576bb551a7cf896d43f54fd6d3bf779c447bf4a87660ee63f302c8c191f",
+      "function": "MapQpToQlevel",
+      "manifest_contract_hash": "ac022d1dc609d17daa512d4e387a221dfa8c2d16311e526c36e7bb40445d2371",
+      "module_file": "library/rtl/mapqptoqlevel.sv",
+      "module_sha256": "5dda9dc25483193295e7af8abbd927b209f8e9715f2f4791864200f2fc0a3334",
+      "role": "map_qp_to_qlevel",
+      "semantic_kind": "qp_mapping",
+      "source_body_sha256": "1df142a6789220d42d5b1a4a21a8e44123420067cec2390b8797ceb40d4bce4d"
+    },
+    {
+      "clang_usr": "c:@F@SamplePredict",
+      "contract_file": "library/contracts/samplepredict.json",
+      "contract_id": "samplepredict",
+      "contract_sha256": "1f2f0f64cfa4c4b3ea889b8f1602b3811c5343e7cc1b7271fbadb6d86336663b",
+      "function": "SamplePredict",
+      "manifest_contract_hash": "66e5309e5cf66c9b07022c746307cf37fecbccfa92d7c8ff549ed8b0cbb69509",
+      "module_file": "library/rtl/samplepredict.sv",
+      "module_sha256": "831411aefb7fd14c630f6a71d75191a62320ce17566d6292637fcdab603e2011",
+      "role": "sample_predict",
+      "semantic_kind": "windowed_sample_predict",
+      "source_body_sha256": "7768bd4e161fdec9757a0205141e0dcbfb372b5a259ca152ae5c056c428e4993"
+    },
+    {
+      "clang_usr": "c:@F@QuantizeResidual",
+      "contract_file": "library/contracts/quantizeresidual.json",
+      "contract_id": "quantizeresidual",
+      "contract_sha256": "c8e83afed963044c81b588a1bad28ec2c1dd81ded0055be1ea438139118592eb",
+      "function": "QuantizeResidual",
+      "manifest_contract_hash": "fdd965df16f8ed6aab36d5bec2aa7f9e252ff7fcab4c5b51a3308ae106af7d0a",
+      "module_file": "library/rtl/quantizeresidual.sv",
+      "module_sha256": "7c9d729bbe1ac193b6f355b3d8281a92ab350a9c27a7717145fdea31a863d9cd",
+      "role": "quantize_residual",
+      "semantic_kind": "quantization",
+      "source_body_sha256": "530349291cfeb32a0b9974bec45fda9796ff9aaab3e67709cc9aad82644cdd0c"
+    },
+    {
+      "clang_usr": "c:@F@FindMidpoint",
+      "contract_file": "library/contracts/findmidpoint.json",
+      "contract_id": "findmidpoint",
+      "contract_sha256": "5d2617730d3c210dbfd119c68c722d035c65df571b5ac628af7bf19b0d722a12",
+      "function": "FindMidpoint",
+      "manifest_contract_hash": "b73ae28f057ca94e607e12a999acef29d76ecb5a69c7015b1eb1cf800f405632",
+      "module_file": "library/rtl/findmidpoint.sv",
+      "module_sha256": "95b00b9f217f19697deb92e6926e102faf48b91af79a9fb6331900a7217d480b",
+      "role": "find_midpoint",
+      "semantic_kind": "midpoint_prediction",
+      "source_body_sha256": "f77f26c7cda5744cb7ca68eaa76b559defebe33173ed0a18d53d4cd52f345349"
+    },
+    {
+      "clang_usr": "c:@F@FindResidualSize",
+      "contract_file": "library/contracts/findresidualsize.json",
+      "contract_id": "findresidualsize",
+      "contract_sha256": "c80809ad3149bc843d4ac9cfbde3eb22275ff38d330871729232be8253912811",
+      "function": "FindResidualSize",
+      "manifest_contract_hash": "38ec41d9edb5f8fa1f125a2b86dba9193ce6ae29154c24cdaf3ddaf981fa856b",
+      "module_file": "library/rtl/findresidualsize.sv",
+      "module_sha256": "a10d4649d371883b4bdfef25fc99448c5a719e937a93425900ddf00b26474073",
+      "role": "find_residual_size",
+      "semantic_kind": "residual_size",
+      "source_body_sha256": "fb745368200eb46f64137a3ad6752552df1bc46978c98e0240508b5dea7f6e78"
+    },
+    {
+      "clang_usr": "c:@F@MaxResidualSize",
+      "contract_file": "library/contracts/maxresidualsize.json",
+      "contract_id": "maxresidualsize",
+      "contract_sha256": "84e97590a3bd35586be554aee05a306a3390367b2324703e68f6f6beaf9a9714",
+      "function": "MaxResidualSize",
+      "manifest_contract_hash": "1ba06acae8e3adf593df5fd4ed3f54a56c531c75a512e3e7564af9e8cf552b2c",
+      "module_file": "library/rtl/maxresidualsize.sv",
+      "module_sha256": "cfdb54a0936d5bd70d45ddd9bcb20d05d99b73039a3789c1124ed564ae5aa65b",
+      "role": "max_residual_size",
+      "semantic_kind": "max_residual_size",
+      "source_body_sha256": "6d2a9377c877135d217645c147adf827deeae94f17fdd92e0eb440c5fe4e16d4"
+    }
+  ],
+  "function": {
+    "clang_usr": "c:@F@PredictionLoop",
+    "name": "PredictionLoop",
+    "parameters": [
+      {
+        "name": "dsc_cfg",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_cfg_t *"
+      },
+      {
+        "name": "dsc_state",
+        "pointee_const": false,
+        "pointer": true,
+        "type": "dsc_state_t *"
+      },
+      {
+        "name": "hPos",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "vPos",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "sampModCnt",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      },
+      {
+        "name": "qp",
+        "pointee_const": false,
+        "pointer": false,
+        "type": "int"
+      }
+    ],
+    "return_type": "void",
+    "source_body_sha256": "68250b06f5e7c49e737e40eb13a8ff173c26ba3c90bb04dec83197f6bd6e8773",
+    "source_file": "dsc_codec.c",
+    "source_span": {
+      "end_line": 2502,
+      "start_line": 2361
+    }
+  },
+  "interface": {
+    "ports": [
+      {
+        "direction": "input",
+        "name": "hpos",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "vpos",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "sampmodcnt",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "qp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_native_420",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_dsc_version_minor",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_bits_per_component",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "cfg_full_ich_err_precision",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_is_encoder",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_units_per_group",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_primary_qp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_prev_line_prediction",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_qlevel_luma_qp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_qlevel_chroma_qp",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpnt_bit_depth_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_left_recon_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpnt_bit_depth_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_left_recon_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpnt_bit_depth_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_left_recon_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_cpnt_bit_depth_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_left_recon_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unit_c_type_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unit_start_hpos_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_max_error_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_max_mid_error_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "orig_sample_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_0_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_mid_0_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_0_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_mid_0_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_0_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_mid_0_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_recon_0_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_recon_0_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_recon_0_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_recon_0_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_recon_0_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_recon_0_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_0_tap_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_0_tap_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_0_tap_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_0_tap_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_0_tap_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_0_tap_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_0_tap_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_0_tap_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_0_tap_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_0_tap_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_0_tap_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_0_tap_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_0_tap_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_0_tap_13",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_0_tap_14",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_0_tap_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_0_tap_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_0_tap_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_0_tap_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_0_tap_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_0_tap_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_0_tap_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_0_tap_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_0_tap_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_0_tap_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_0_tap_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_0_tap_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_0_tap_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_0_tap_13",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_0_tap_14",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_0_tap_15",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unit_c_type_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unit_start_hpos_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_max_error_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_max_mid_error_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "orig_sample_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_1_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_mid_1_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_1_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_mid_1_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_1_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_mid_1_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_recon_1_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_recon_1_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_recon_1_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_recon_1_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_recon_1_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_recon_1_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_1_tap_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_1_tap_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_1_tap_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_1_tap_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_1_tap_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_1_tap_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_1_tap_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_1_tap_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_1_tap_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_1_tap_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_1_tap_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_1_tap_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_1_tap_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_1_tap_13",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_1_tap_14",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_1_tap_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_1_tap_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_1_tap_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_1_tap_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_1_tap_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_1_tap_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_1_tap_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_1_tap_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_1_tap_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_1_tap_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_1_tap_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_1_tap_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_1_tap_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_1_tap_13",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_1_tap_14",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_1_tap_15",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unit_c_type_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unit_start_hpos_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_max_error_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_max_mid_error_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "orig_sample_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_2_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_mid_2_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_2_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_mid_2_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_2_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_mid_2_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_recon_2_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_recon_2_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_recon_2_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_recon_2_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_recon_2_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_recon_2_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_2_tap_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_2_tap_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_2_tap_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_2_tap_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_2_tap_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_2_tap_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_2_tap_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_2_tap_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_2_tap_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_2_tap_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_2_tap_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_2_tap_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_2_tap_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_2_tap_13",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_2_tap_14",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_2_tap_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_2_tap_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_2_tap_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_2_tap_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_2_tap_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_2_tap_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_2_tap_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_2_tap_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_2_tap_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_2_tap_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_2_tap_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_2_tap_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_2_tap_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_2_tap_13",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_2_tap_14",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_2_tap_15",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unit_c_type_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_unit_start_hpos_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_max_error_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_max_mid_error_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "orig_sample_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_3_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_mid_3_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_3_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_mid_3_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_3_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_quantized_residual_mid_3_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_recon_3_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_recon_3_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_recon_3_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_recon_3_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_recon_3_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "state_midpoint_recon_3_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_3_tap_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_3_tap_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_3_tap_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_3_tap_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_3_tap_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_3_tap_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_3_tap_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_3_tap_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_3_tap_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_3_tap_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_3_tap_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_3_tap_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_3_tap_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_3_tap_13",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "prev_line_unit_3_tap_14",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_3_tap_0",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_3_tap_1",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_3_tap_2",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_3_tap_3",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_3_tap_4",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_3_tap_5",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_3_tap_6",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_3_tap_7",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_3_tap_8",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_3_tap_9",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_3_tap_10",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_3_tap_11",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_3_tap_12",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_3_tap_13",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_3_tap_14",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "input",
+        "name": "curr_line_unit_3_tap_15",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "domain_valid",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "illegal_domain",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "bound_violation",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "midpoint_clamp_violation",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "arithmetic_domain_violation",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "state_primary_qp_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantized_residual_0_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantized_residual_mid_0_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantized_residual_0_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantized_residual_mid_0_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantized_residual_0_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantized_residual_mid_0_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_recon_0_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_recon_0_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_recon_0_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_recon_0_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_recon_0_4_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_recon_0_5_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_max_error_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_max_mid_error_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "curr_line_write_0_enable",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "curr_line_write_0_component",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "curr_line_write_0_index",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "curr_line_write_0_value",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantized_residual_1_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantized_residual_mid_1_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantized_residual_1_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantized_residual_mid_1_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantized_residual_1_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantized_residual_mid_1_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_recon_1_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_recon_1_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_recon_1_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_recon_1_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_recon_1_4_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_recon_1_5_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_max_error_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_max_mid_error_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "curr_line_write_1_enable",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "curr_line_write_1_component",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "curr_line_write_1_index",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "curr_line_write_1_value",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantized_residual_2_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantized_residual_mid_2_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantized_residual_2_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantized_residual_mid_2_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantized_residual_2_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantized_residual_mid_2_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_recon_2_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_recon_2_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_recon_2_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_recon_2_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_recon_2_4_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_recon_2_5_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_max_error_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_max_mid_error_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "curr_line_write_2_enable",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "curr_line_write_2_component",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "curr_line_write_2_index",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "curr_line_write_2_value",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantized_residual_3_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantized_residual_mid_3_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantized_residual_3_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantized_residual_mid_3_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantized_residual_3_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_quantized_residual_mid_3_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_recon_3_0_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_recon_3_1_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_recon_3_2_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_recon_3_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_recon_3_4_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_midpoint_recon_3_5_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_max_error_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "state_max_mid_error_3_out",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "curr_line_write_3_enable",
+        "signed": false,
+        "width": 1
+      },
+      {
+        "direction": "output",
+        "name": "curr_line_write_3_component",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "curr_line_write_3_index",
+        "signed": true,
+        "width": 32
+      },
+      {
+        "direction": "output",
+        "name": "curr_line_write_3_value",
+        "signed": true,
+        "width": 32
+      }
+    ]
+  },
+  "obligations": [
+    "C_ONLY/SHADOW/RTL_RETURN adapter integration is intentionally outside this generator",
+    "full-frame Encode bit-true comparison before any promotion",
+    "human review of the composed state/sideband contract before promotion"
+  ],
+  "origin": "tool_discovered_encoder_runtime_transition",
+  "promotion": {
+    "simulation_may_proceed": true,
+    "status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW"
+  },
+  "schema_version": 2,
+  "selection": {
+    "basis": [
+      "Encode coverage is positive",
+      "six-parameter void config/state transition signature matched structurally",
+      "unit loop is bounded by the state unitsPerGroup field",
+      "two midpoint while-loop source spans were identified for finite replacement",
+      "complete encoder state write footprint matched Clang field facts",
+      "all six dependencies joined by semantic kind and pinned contract identity",
+      "function name is not an admission predicate"
+    ],
+    "encode_execution_count": 393984,
+    "structural_discovery": true
+  },
+  "semantics": {
+    "bindings": {
+      "config_parameter": "dsc_cfg",
+      "horizontal_parameter": "hPos",
+      "orig_sample_ports": [
+        "orig_sample_0",
+        "orig_sample_1",
+        "orig_sample_2",
+        "orig_sample_3"
+      ],
+      "prev_line_prediction_input": "state_prev_line_prediction",
+      "qp_parameter": "qp",
+      "sample_count_parameter": "sampModCnt",
+      "selected_qlevel_inputs": [
+        "state_qlevel_luma_qp",
+        "state_qlevel_chroma_qp"
+      ],
+      "state_parameter": "dsc_state",
+      "vertical_parameter": "vPos",
+      "write_sidebands": [
+        {
+          "component": "curr_line_write_0_component",
+          "enable": "curr_line_write_0_enable",
+          "index": "curr_line_write_0_index",
+          "value": "curr_line_write_0_value"
+        },
+        {
+          "component": "curr_line_write_1_component",
+          "enable": "curr_line_write_1_enable",
+          "index": "curr_line_write_1_index",
+          "value": "curr_line_write_1_value"
+        },
+        {
+          "component": "curr_line_write_2_component",
+          "enable": "curr_line_write_2_enable",
+          "index": "curr_line_write_2_index",
+          "value": "curr_line_write_2_value"
+        },
+        {
+          "component": "curr_line_write_3_component",
+          "enable": "curr_line_write_3_enable",
+          "index": "curr_line_write_3_index",
+          "value": "curr_line_write_3_value"
+        }
+      ]
+    },
+    "constants": {
+      "bp_range": 13,
+      "max_component_bit_depth": 16,
+      "max_units": 4,
+      "midpoint_recon_slots": 6,
+      "padding_left": 5,
+      "pred_block_size": 3,
+      "pt_block": 2,
+      "pt_left": 1,
+      "pt_map": 0,
+      "samples_per_unit": 3
+    },
+    "kind": "bounded_prediction_encode_transition",
+    "legal_domain": {
+      "bits_per_component": [
+        8,
+        16
+      ],
+      "component": [
+        0,
+        3
+      ],
+      "component_bit_depth": [
+        8,
+        16
+      ],
+      "full_ich_err_precision": [
+        0,
+        1
+      ],
+      "is_encoder": [
+        1,
+        1
+      ],
+      "native_420": [
+        0,
+        1
+      ],
+      "prev_line_prediction": [
+        0,
+        14
+      ],
+      "qlevel": [
+        0,
+        16
+      ],
+      "qp": [
+        0,
+        31
+      ],
+      "sample_position": [
+        0,
+        2
+      ],
+      "samples": [
+        0,
+        65535
+      ],
+      "signed_residual": [
+        -65535,
+        65535
+      ],
+      "source_order": "unit ascending, then the immutable C statements within each unit",
+      "units_per_group": [
+        0,
+        4
+      ],
+      "version_minor": [
+        1,
+        2
+      ]
+    },
+    "midpoint_clamp": {
+      "bound_violation_flag": "midpoint_clamp_violation",
+      "finite": true,
+      "formulation": "exact_threshold_interval_projection",
+      "proof": "For signed residual size N, the accepted interval is {-0} for N=0, [-1,0] for N=1, and [-2^(N-1), 2^(N-1)-1] for N>=2. The C loop moves one step toward that interval, so projection has exactly the same terminal value and needs no unbounded loop.",
+      "source_loops": 2
+    },
+    "mse_mode": false,
+    "specialization": "isEncoder == 1",
+    "state_transition": "Compute the encoder branch for up to four units and emit complete next-state arrays plus one ordered currLine write sideband per active unit."
+  },
+  "status": "PROVISIONAL_SIMULATION_ONLY"
+}

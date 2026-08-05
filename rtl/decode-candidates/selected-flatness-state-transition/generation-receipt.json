@@ -1,0 +1,26 @@
+{
+  "candidate": "candidate_01.sv",
+  "candidate_sha256": "0bb9813079cce6e7d3544bf693125869bde07c1bcb4031d0a573d7b3263c1cc9",
+  "contract": "provisional-contract.json",
+  "contract_sha256": "def0f65af75ab96da350482f0f8441631dcce03d6c0ce98766fd9f2e4f967242",
+  "promotion_status": "BLOCKED_PENDING_HUMAN_CONTRACT_REVIEW",
+  "schema_version": 1,
+  "selection": {
+    "callee_contract_id": null,
+    "clang_usr": "c:@F@FlatnessAdjustment",
+    "execution_count": 131328,
+    "human_review_required_before_promotion": true,
+    "literal_size_bound": {
+      "complete_for_visible_literal_calls": false,
+      "evidence": "fixed four-stage scalar state transition around accepted pure callees",
+      "maximum": null,
+      "values": []
+    },
+    "name": "FlatnessAdjustment",
+    "provisional_max_bits": null,
+    "selection_basis": "decoder runtime execution + no accepted/provisional RTL + tool-matched explicit state-transition shape",
+    "semantics_kind": "bounded_flatness_state_transition",
+    "window_bytes": 0
+  },
+  "status": "PASS"
+}
